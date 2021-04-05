@@ -203,6 +203,7 @@ Feature:
       "detail": "zone: Un rôle national ne peut pas définir de zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Un rôle national ne peut pas définir de zone."
         }
@@ -639,6 +640,7 @@ Feature:
       "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }
@@ -689,6 +691,7 @@ Feature:
       "detail": "zone: Veuillez spécifier une zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Veuillez spécifier une zone."
         }
@@ -1181,10 +1184,12 @@ Feature:
         "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "building",
                 "message": "Cette valeur ne doit pas être nulle."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
             }
@@ -1268,26 +1273,32 @@ Feature:
         "detail": "status: Le statut n'est pas valide.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse e-mail est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "message": "Cette valeur n'est pas une adresse email valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "message": "L'adresse e-mail est trop longue, 255 caractères maximum."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "gender",
                 "message": "Ce sexe n'est pas valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "age_range",
                 "message": "Cette valeur doit être l'un des choix proposés."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "profession",
                 "message": "Cette valeur doit être l'un des choix proposés."
             }
@@ -1343,14 +1354,17 @@ Feature:
         "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nsurvey: Cette valeur ne doit pas être vide.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "title",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "goal",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "survey",
                 "message": "Cette valeur ne doit pas être vide."
             }
@@ -1381,6 +1395,7 @@ Feature:
         "detail": "goal: Cette valeur doit être supérieure à \"0\".",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "goal",
                 "message": "Cette valeur doit être supérieure à \"0\"."
             }

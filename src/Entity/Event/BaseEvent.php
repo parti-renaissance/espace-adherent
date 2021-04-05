@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
@@ -15,7 +16,6 @@ use App\Api\Filter\EventsZipCodeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
-use App\Api\Filter\OrderFilter;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -92,22 +92,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/events/{id}",
+ *             "path": "/v3/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {
  *                 "groups": {"event_read", "image_owner_exposed", "with_user_registration"}
  *             },
  *         },
  *         "get_public": {
  *             "method": "GET",
- *             "path": "/events/{id}",
+ *             "path": "/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
- *             "path": "/v3/events/{id}",
+ *             "path": "/v3/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('CAN_MANAGE_EVENT', object)",
  *         },
  *         "delete": {
- *             "path": "/v3/events/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
  *             "swagger_context": {
  *                 "parameters": {
@@ -452,6 +455,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      */
     protected $postAddress;
 
+    /**
+     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_write"})
+     */
     protected $category;
 
     public function getCategory(): ?EventCategoryInterface

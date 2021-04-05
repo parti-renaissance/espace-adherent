@@ -78,8 +78,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get_public": {
  *             "method": "GET",
- *             "path": "/jecoute/news/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/jecoute/news/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *             "swagger_context": {
  *                 "summary": "Retrieves a News resource by UUID.",
@@ -96,15 +96,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             }
  *         },
  *         "get_private": {
- *             "path": "/v3/jecoute/news/{id}",
+ *             "path": "/v3/jecoute/news/{uuid}",
  *             "method": "GET",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
  *         },
  *         "put": {
- *             "path": "/v3/jecoute/news/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/jecoute/news/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('CAN_CHANGE_JECOUTE_NEWS', object)",
  *         },

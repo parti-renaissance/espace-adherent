@@ -52,19 +52,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/phoning_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/phoning_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "put": {
- *             "path": "/v3/phoning_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/phoning_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "get_with_scores_public": {
  *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{id}/scores",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/phoning_campaigns/{uuid}/scores",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)",
  *             "normalization_context": {
  *                 "groups": {"phoning_campaign_read_with_score"},
@@ -110,9 +110,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     subresourceOperations={
  *         "survey_get_subresource": {
  *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{id}/survey",
+ *             "path": "/v3/phoning_campaigns/{uuid}/survey",
  *             "access_control": "object.isPermanent() or is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *     },
  * )

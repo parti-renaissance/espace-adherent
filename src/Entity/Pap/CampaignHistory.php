@@ -5,9 +5,9 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\AdherentIdentityFilter;
-use App\Api\Filter\OrderFilter;
 use App\Api\Filter\PapCampaignHistoryScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
@@ -51,8 +51,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "put": {
- *             "path": "/v3/pap_campaign_histories/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap_campaign_histories/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and object.getQuestioner() == user",
  *         },
  *         "post_reply": {

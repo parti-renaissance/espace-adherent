@@ -5,9 +5,9 @@ namespace App\Entity\Coalition;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\MyCausesFilter;
-use App\Api\Filter\OrderFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
@@ -61,13 +61,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/causes/{id}",
- *             "requirements": {"id": "[\w-]+"},
+ *             "path": "/causes/{uuid}",
+ *             "requirements": {"uuid": "[\w-]+"},
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Coalition\RetrieveCauseController",
  *         },
  *         "put": {
- *             "path": "/v3/causes/{id}",
+ *             "path": "/v3/causes/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "object.getAuthor() == user",
  *             "denormalization_context": {"groups": {"cause_update"}}
@@ -75,9 +75,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "follow": {
  *             "method": "PUT|DELETE",
  *             "denormalization_context": {"api_allow_update": false},
- *             "path": "/v3/causes/{id}/follower",
+ *             "path": "/v3/causes/{uuid}/follower",
  *             "controller": "App\Controller\Api\FollowController::follower",
- *             "requirements": {"id": "%pattern_uuid%"}
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "deserialize": false,
  *         },
  *         "update_image": {
  *             "method": "POST",

@@ -201,6 +201,7 @@ Feature:
       "detail": "zone: Un rôle national ne peut pas définir de zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Un rôle national ne peut pas définir de zone."
         }
@@ -388,6 +389,7 @@ Feature:
       "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }
@@ -425,6 +427,7 @@ Feature:
       "detail": "zone: Veuillez spécifier une zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Veuillez spécifier une zone."
         }
@@ -603,6 +606,7 @@ Feature:
       "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "[0].adherent_uuid",
           "title": "Cette valeur ne doit pas être vide.",
           "parameters": {
@@ -633,6 +637,7 @@ Feature:
       "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "[0].adherent_uuid",
           "title": "Cette valeur ne doit pas être vide.",
           "parameters": {
@@ -663,6 +668,7 @@ Feature:
       "detail": "[0].adherent_uuid: Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\".",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "[0].adherent_uuid",
           "title": "Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\".",
           "parameters": {

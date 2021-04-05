@@ -61,7 +61,7 @@ use Ramsey\Uuid\UuidInterface;
  *         "get": {
  *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "method": "GET",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "swagger_context": {
  *                 "summary": "Retrieves a Committee resource by UUID.",
  *                 "description": "Retrieves a Committee resource by UUID.",

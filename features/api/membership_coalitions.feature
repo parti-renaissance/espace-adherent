@@ -64,6 +64,7 @@ Feature:
     {
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "email_address",
           "title": "Cette adresse e-mail existe déjà.",
           "parameters": {

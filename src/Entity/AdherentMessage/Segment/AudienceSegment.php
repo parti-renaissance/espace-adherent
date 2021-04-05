@@ -35,18 +35,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/audience-segments/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/audience-segments/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *         },
  *         "put": {
- *             "path": "/v3/audience-segments/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/audience-segments/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *         },
  *         "delete": {
- *             "path": "/v3/audience-segments/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/audience-segments/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *         },
  *     }

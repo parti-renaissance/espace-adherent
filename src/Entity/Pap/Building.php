@@ -30,21 +30,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/pap/buildings/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap/buildings/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
  *         },
  *         "put": {
- *             "path": "/v3/pap/buildings/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap/buildings/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
  *         },
  *     },
  *     subresourceOperations={
  *         "building_blocks_get_subresource": {
  *             "method": "GET",
- *             "path": "/v3/pap/buildings/{id}/building_blocks",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap/buildings/{uuid}/building_blocks",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *     },
  * )

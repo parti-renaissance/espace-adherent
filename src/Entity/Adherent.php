@@ -71,7 +71,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "normalization_context": {"groups": {"idea_vote_read"}},
  *             "method": "GET",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "swagger_context": {
  *                 "summary": "Retrieves an Adherent resource by UUID.",
  *                 "description": "Retrieves an Adherent resource by UUID.",

@@ -37,7 +37,7 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
                 ->setParameter('date', (new \DateTime('-60 days'))->setTime(0, 0))
             ;
 
-            if (!isset($context['filters']['with_enriched'])) {
+            if (!isset($context['filters']['withEnriched'])) {
                 $queryBuilder
                     ->andWhere("$alias.enriched = :false")
                     ->setParameter('false', false)

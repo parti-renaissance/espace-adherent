@@ -35,19 +35,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/audiences/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/audiences/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
  *         },
  *         "put": {
- *             "path": "/v3/audiences/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/audiences/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
  *             "validation_groups": {"Default", "api_scope_context"},
  *         },
  *         "delete": {
- *             "path": "/v3/audiences/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/audiences/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
  *         },
  *     }

@@ -43,18 +43,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/ripostes/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/ripostes/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"riposte_read"}},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
  *         },
  *         "put": {
- *             "path": "/v3/ripostes/{id}",
- *             "requirements": {"id": "%pattern_uuid%"}
+ *             "path": "/v3/ripostes/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"}
  *         },
  *         "delete": {
- *             "path": "/v3/ripostes/{id}",
- *             "requirements": {"id": "%pattern_uuid%"}
+ *             "path": "/v3/ripostes/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"}
  *         },
  *         "increment": {
  *             "method": "PUT",

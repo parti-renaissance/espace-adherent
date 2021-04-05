@@ -41,6 +41,10 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
         $context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED] = true;
 
+        if (!isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
+            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = new $messageClass();
+        }
+
         /** @var AdherentMessageInterface $message */
         $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context);
 

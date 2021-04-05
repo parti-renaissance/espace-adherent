@@ -23,9 +23,9 @@ Feature:
        "detail":"segment: Le segment n'est pas autorisé",
        "violations":[
           {
-             "propertyPath":"segment",
-             "title":"Le segment n'est pas autorisé",
-             "parameters":[]
+              "propertyPath":"segment",
+              "title":"Le segment n'est pas autorisé",
+              "parameters":[]
           }
        ]
     }

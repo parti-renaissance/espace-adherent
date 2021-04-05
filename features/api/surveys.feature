@@ -1893,6 +1893,7 @@ Feature:
       "detail": "questions: Le questionnaire doit contenir au moins une question.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "questions",
           "message": "Le questionnaire doit contenir au moins une question."
         }

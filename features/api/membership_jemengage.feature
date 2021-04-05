@@ -21,6 +21,7 @@ Feature:
         "detail": "last_name: Cette valeur ne doit pas être vide.\ngender: Veuillez renseigner un genre.\nbirthdate: Vous devez spécifier votre date de naissance.\nphone: Cette valeur n'est pas un numéro de téléphone valide.\nemail_address: Cette valeur ne doit pas être vide.\ncgu_accepted: Vous devez accepter la charte.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "last_name",
                 "title": "Cette valeur ne doit pas être vide.",
                 "parameters": {
@@ -29,6 +30,7 @@ Feature:
                 "type": "@string@"
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "gender",
                 "title": "Veuillez renseigner un genre.",
                 "parameters": {
@@ -37,6 +39,7 @@ Feature:
                 "type": "@string@"
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "birthdate",
                 "title": "Vous devez spécifier votre date de naissance.",
                 "parameters": {
@@ -45,6 +48,7 @@ Feature:
                 "type": "@string@"
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "phone",
                 "title": "Cette valeur n'est pas un numéro de téléphone valide.",
                 "parameters": {
@@ -54,6 +58,7 @@ Feature:
                 "type": "@string@"
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "title": "Cette valeur ne doit pas être vide.",
                 "parameters": {
@@ -62,6 +67,7 @@ Feature:
                 "type": "@string@"
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "cgu_accepted",
                 "title": "Vous devez accepter la charte.",
                 "parameters": {

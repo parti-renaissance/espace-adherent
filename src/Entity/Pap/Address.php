@@ -26,16 +26,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
- *             "path": "/v3/pap/address/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap/address/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"pap_address_read"}},
  *         },
  *     },
  *     subresourceOperations={
  *         "voters_get_subresource": {
  *             "method": "GET",
- *             "path": "/v3/pap/address/{id}/voters",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap/address/{uuid}/voters",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *     },
  * )

@@ -64,6 +64,7 @@ Feature:
       "detail": "comment: Vous devez cocher la case \"Autre\" afin de renseigner un commentaire.",
       "violations":[
         {
+          "code": "@uuid@",
           "propertyPath": "comment",
           "message": "Vous devez cocher la case \"Autre\" afin de renseigner un commentaire."
         }
@@ -89,6 +90,7 @@ Feature:
       "detail": "reasons: Afin de valider votre signalement, veuillez sélectionner au moins une raison.",
       "violations":[
         {
+          "code": "@uuid@",
           "propertyPath": "reasons",
           "message": "Afin de valider votre signalement, veuillez sélectionner au moins une raison."
         }

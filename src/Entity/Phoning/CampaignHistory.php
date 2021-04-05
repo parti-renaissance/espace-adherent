@@ -44,8 +44,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "put": {
- *             "path": "/v3/phoning_campaign_histories/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/phoning_campaign_histories/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
  *         },
  *         "post_reply": {

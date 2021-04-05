@@ -49,12 +49,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
- *             "path": "/v3/pap_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap_campaigns/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') and is_granted('SCOPE_CAN_MANAGE', object)",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *         },
@@ -87,8 +87,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     subresourceOperations={
  *         "survey_get_subresource": {
  *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{id}/survey",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/pap_campaigns/{uuid}/survey",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *     },
  * )

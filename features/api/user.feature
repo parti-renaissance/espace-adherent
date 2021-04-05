@@ -115,6 +115,7 @@ Feature:
       "detail": "password: Le mot de passe ne doit pas être vide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "password",
           "message": "Le mot de passe ne doit pas être vide."
         }
@@ -139,6 +140,7 @@ Feature:
       "detail": "password: Votre mot de passe doit comporter au moins 8 caractères.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "password",
           "message": "Votre mot de passe doit comporter au moins 8 caractères."
         }
