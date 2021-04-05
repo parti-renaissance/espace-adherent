@@ -63,6 +63,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/threads/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
+ *             "deserialize": false,
  *             "controller": "App\Controller\Api\IdeasWorkshop\ApproveThreadController::approve",
  *             "swagger_context": {
  *                 "parameters": {
@@ -81,6 +82,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/threads/{id}/disapprove",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
+ *             "deserialize": false,
  *             "controller": "App\Controller\Api\IdeasWorkshop\ApproveThreadController::disapprove",
  *             "swagger_context": {
  *                 "parameters": {

@@ -44,7 +44,7 @@ class Answer implements UserDocumentInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_read", "idea_with_answers", "idea_thread_list_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_read", "idea_with_answers", "idea_thread_list_read", "idea_write"})
      */
     private $id;
 

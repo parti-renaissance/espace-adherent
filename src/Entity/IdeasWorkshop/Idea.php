@@ -120,6 +120,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas-workshop/ideas/{id}/publish",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "deserialize": false,
  *             "controller": "App\Controller\Api\IdeasWorkshop\IdeaController::publish",
  *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "validation_groups": {"idea_publish"},
@@ -141,6 +142,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas-workshop/ideas/{id}/extend",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "deserialize": false,
  *             "controller": "App\Controller\Api\IdeasWorkshop\IdeaController::extend",
  *             "normalization_context": {"groups": {"idea_read"}},
  *             "swagger_context": {
@@ -194,7 +196,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "authorCategory": "exact",
  *     "author.uuid": "exact",
  *     "category.name": "exact",
- *     "needs.name": "exact"
+ *     "needs.name": "exact",
  * })
  * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"name"})

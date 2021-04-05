@@ -2,19 +2,18 @@
 
 namespace App\Intl;
 
-use Collator;
 use Symfony\Component\Intl\Intl;
 
 class UnitedNationsBundle
 {
-    private static $countries;
+    private static $countries = [];
 
     /**
      * Returns the list of the United Nations member states translated in a given locale.
      */
     public static function getCountries(?string $locale = 'fr'): array
     {
-        if (self::$countries[$locale]) {
+        if (isset(self::$countries[$locale])) {
             return self::$countries[$locale];
         }
 
@@ -26,7 +25,7 @@ class UnitedNationsBundle
         }
 
         // Sort by name
-        (new Collator($locale))->asort($names);
+        (new \Collator($locale))->asort($names);
 
         return self::$countries[$locale] = $names;
     }

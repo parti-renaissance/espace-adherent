@@ -192,7 +192,7 @@ class News implements AuthoredInterface
      *
      * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $published = true;
+    private $published;
 
     public function __construct(
         UuidInterface $uuid = null,
