@@ -3,6 +3,7 @@
 namespace App\Coalition\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,10 +14,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class PostCauseCreationListener implements EventSubscriberInterface
 {
     private $manager;
+    private $notifier;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, MessageNotifier $notifier)
     {
         $this->manager = $manager;
+        $this->notifier = $notifier;
     }
 
     public static function getSubscribedEvents()
@@ -34,5 +37,12 @@ class PostCauseCreationListener implements EventSubscriberInterface
 
         $this->manager->persist($cause->createFollower($cause->getAuthor()));
         $this->manager->flush();
+
+        $this->sendConfirmationEmail($cause);
+    }
+
+    private function sendConfirmationEmail(Cause $cause): void
+    {
+        $this->notifier->sendCauseCreationConfirmationMessage($cause);
     }
 }

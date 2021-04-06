@@ -31,4 +31,9 @@ abstract class AbstractFollower implements FollowerInterface
     {
         $this->adherent = $adherent;
     }
+
+    public function isAdherent(): bool
+    {
+        return null !== $this->adherent;
+    }
 }

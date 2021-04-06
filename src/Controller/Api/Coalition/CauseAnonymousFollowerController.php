@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Coalition;
 
 use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
+use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CauseFollower;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +26,8 @@ class CauseAnonymousFollowerController extends AbstractController
         Cause $cause,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MessageNotifier $notifier
     ): Response {
         /** @var CauseFollower $causeFollower */
         $causeFollower = $serializer->deserialize($request->getContent(), CauseFollower::class, JsonEncoder::FORMAT);
@@ -36,6 +38,8 @@ class CauseAnonymousFollowerController extends AbstractController
         if (0 === $errors->count()) {
             $entityManager->persist($causeFollower);
             $entityManager->flush();
+
+            $notifier->sendCauseFollowerAnonymousConfirmationMessage($causeFollower);
 
             return $this->json('OK');
         }

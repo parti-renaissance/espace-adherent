@@ -477,6 +477,43 @@ Feature:
         "uuid": "@string@"
     }
     """
+    And I should have 1 email "CauseFollowerConfirmationMessage" for "gisele-berthoux@caramail.com" with payload:
+    """
+    {
+        "template_name": "cause-follower-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "L'aventure débute maintenant !",
+            "from_email": "contact@pourunecause.fr",
+            "global_merge_vars": [
+                {
+                    "name": "first_name",
+                    "content": "Gisele"
+                },
+                {
+                    "name": "author_first_name",
+                    "content": "Michelle"
+                },
+                {
+                    "name": "cause_name",
+                    "content": "Cause pour la culture"
+                },
+                {
+                    "name": "cause_link",
+                    "content": "http://coalitions.code/cause/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+                }
+            ],
+            "from_name": "Pour une cause",
+            "to": [
+                {
+                    "email": "gisele-berthoux@caramail.com",
+                    "type": "to",
+                    "name": "Gisele Berthoux"
+                }
+            ]
+        }
+    }
+    """
 
   Scenario: As a logged-in user I can unfollow a cause
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
@@ -528,6 +565,47 @@ Feature:
     And the JSON should be equal to:
     """
       "OK"
+    """
+    And I should have 1 email "CauseFollowerAnonymousConfirmationMessage" for "adherent@en-marche-dev.fr" with payload:
+    """
+    {
+        "template_name": "cause-follower-anonymous-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "L'aventure débute maintenant !",
+            "from_email": "contact@pourunecause.fr",
+            "global_merge_vars": [
+                {
+                    "name": "first_name",
+                    "content": "Pierre"
+                },
+                {
+                    "name": "author_first_name",
+                    "content": "Michelle"
+                },
+                {
+                    "name": "cause_name",
+                    "content": "Cause pour la culture 2"
+                },
+                {
+                    "name": "cause_link",
+                    "content": "http://coalitions.code/cause/017491f9-1953-482e-b491-20418235af1f"
+                },
+                {
+                    "name": "create_account_link",
+                    "content": "http://coalitions.code/inscription"
+                }
+            ],
+            "from_name": "Pour une cause",
+            "to": [
+                {
+                    "email": "adherent@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Pierre"
+                }
+            ]
+        }
+    }
     """
 
   Scenario: As a non logged-in user I can not follow a cause if no all required data
