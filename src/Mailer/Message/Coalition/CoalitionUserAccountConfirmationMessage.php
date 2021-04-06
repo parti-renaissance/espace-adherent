@@ -6,11 +6,11 @@ use App\Entity\Adherent;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class CoalitionUserAccountConfirmationMessage extends Message
+final class CoalitionUserAccountConfirmationMessage extends AbstractCoalitionMessage
 {
-    public static function createFromAdherent(Adherent $adherent, string $createPasswordLink): self
+    public static function createFromAdherent(Adherent $adherent, string $createPasswordLink): Message
     {
-        return new self(
+        return self::updateSenderInfo(new self(
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
@@ -19,6 +19,6 @@ final class CoalitionUserAccountConfirmationMessage extends Message
                 'first_name' => self::escape($adherent->getFirstName()),
                 'create_password_link' => $createPasswordLink,
             ]
-        );
+        ));
     }
 }
