@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\FailedLoginAttempt;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,6 +37,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     /** @var Request|null */
     private $currentRequest;
     private $coalitionAuthHost;
+    private $coalitionFrontHost;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
@@ -44,7 +46,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         AnonymousFollowerSession $anonymousFollowerSession,
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
         string $apiPathPrefix,
-        string $coalitionAuthHost
+        string $coalitionAuthHost,
+        string $coalitionFrontHost
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -53,6 +56,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
         $this->apiPathPrefix = $apiPathPrefix;
         $this->coalitionAuthHost = $coalitionAuthHost;
+        $this->coalitionFrontHost = $coalitionFrontHost;
     }
 
     public function supports(Request $request)
@@ -106,6 +110,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
+        }
+
+        if (($adherent = $token->getUser()) && MembershipSourceEnum::COALITIONS === $adherent->getSource()) {
+            return new RedirectResponse($this->coalitionFrontHost);
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_search_events'));

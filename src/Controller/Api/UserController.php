@@ -124,12 +124,13 @@ class UserController extends AbstractController
             );
         }
 
+        // activate account if necessary
+        if (!$user->getActivatedAt()) {
+            $user->activate(AdherentActivationToken::generate($user));
+        }
+
         try {
             $handler->reset($user, $createPasswordToken, $password->getPassword());
-            // activate account if necessary
-            if (!$user->getActivatedAt()) {
-                $user->activate(AdherentActivationToken::generate($user));
-            }
 
             return $this->json('OK');
         } catch (AdherentTokenExpiredException $e) {

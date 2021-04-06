@@ -30,7 +30,7 @@ class AdherentResetPasswordHandler
         $this->encoderFactory = $encoderFactory;
     }
 
-    public function handle(Adherent $adherent)
+    public function handle(Adherent $adherent): void
     {
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent);
 
@@ -41,7 +41,7 @@ class AdherentResetPasswordHandler
         $this->mailer->sendMessage(AdherentResetPasswordMessage::createFromAdherent($adherent, $resetPasswordUrl));
     }
 
-    public function reset(Adherent $adherent, AdherentResetPasswordToken $token, string $newPassword)
+    public function reset(Adherent $adherent, AdherentResetPasswordToken $token, string $newPassword): void
     {
         $newEncodedPassword = $this->encoderFactory
             ->getEncoder(Adherent::class)
@@ -53,10 +53,12 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        if (null === $adherent->getSource()) {
+            $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        }
     }
 
-    private function generateAdherentResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token)
+    private function generateAdherentResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token): string
     {
         $params = [
             'adherent_uuid' => (string) $adherent->getUuid(),
