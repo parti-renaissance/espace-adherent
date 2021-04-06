@@ -14,7 +14,9 @@
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
         {% block stylesheets '' %}
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block favicon %}
+            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% endblock %}
     </head>
 
     <body>
