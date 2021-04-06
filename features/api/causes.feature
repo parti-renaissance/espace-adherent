@@ -719,6 +719,39 @@ Feature:
       | description     | Description de la nouvelle cause sur la culture |
       | coalition.uuid  | d5289058-2a35-4cf0-8f2f-a683d97d8315            |
       | followers_count | 1                                               |
+    And I should have 1 email "CauseCreationConfirmationMessage" for "gisele-berthoux@caramail.com" with payload:
+    """
+    {
+        "template_name": "cause-creation-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "Votre cause sera très vite en ligne !",
+            "from_email": "contact@pourunecause.fr",
+            "global_merge_vars": [
+                {
+                    "name": "first_name",
+                    "content": "Gisele"
+                },
+                {
+                    "name": "cause_name",
+                    "content": "Nouvelle cause sur la culture"
+                },
+                {
+                    "name": "cause_list_link",
+                    "content": "http:\/\/coalitions.code\/causes"
+                }
+            ],
+            "from_name": "Pour une cause",
+            "to": [
+                {
+                    "email": "gisele-berthoux@caramail.com",
+                    "type": "to",
+                    "name": "Gisele Berthoux"
+                }
+            ]
+        }
+    }
+    """
 
   Scenario: As a logged-in user I can create a cause with second coalition
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
