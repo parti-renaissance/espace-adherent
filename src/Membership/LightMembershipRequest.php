@@ -50,6 +50,16 @@ class LightMembershipRequest implements MembershipInterface
      */
     private $source;
 
+    /**
+     * @var bool
+     */
+    private $coalitionSubscription = false;
+
+    /**
+     * @var bool
+     */
+    private $causeSubscription = false;
+
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -83,5 +93,25 @@ class LightMembershipRequest implements MembershipInterface
     public function setSource(string $source): void
     {
         $this->source = $source;
+    }
+
+    public function isCoalitionSubscription(): bool
+    {
+        return $this->coalitionSubscription;
+    }
+
+    public function setCoalitionSubscription(bool $coalitionSubscription): void
+    {
+        $this->coalitionSubscription = $coalitionSubscription;
+    }
+
+    public function isCauseSubscription(): bool
+    {
+        return $this->causeSubscription;
+    }
+
+    public function setCauseSubscription(bool $causeSubscription): void
+    {
+        $this->causeSubscription = $causeSubscription;
     }
 }

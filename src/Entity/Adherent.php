@@ -630,6 +630,24 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $source;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
+     */
+    private $coalitionSubscription = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
+     */
+    private $causeSubscription = false;
+
+    /**
      * @var CertificationRequest[]|Collection
      *
      * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
@@ -702,7 +720,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         PostAddress $postAddress,
         string $password,
         string $status = self::DISABLED,
-        ?string $source = null
+        ?string $source = null,
+        bool $coalitionSubscription = false,
+        bool $causeSUbscription = false
     ): self {
         $adherent = new self();
 
@@ -716,6 +736,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->nicknameUsed = false;
         $adherent->registeredAt = new \DateTime('now');
         $adherent->source = $source;
+        $adherent->coalitionSubscription = $coalitionSubscription;
+        $adherent->causeSubscription = $causeSUbscription;
 
         return $adherent;
     }
@@ -2774,5 +2796,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setSource(?string $source): void
     {
         $this->source = $source;
+    }
+
+    public function isCoalitionSubscription(): bool
+    {
+        return $this->coalitionSubscription;
+    }
+
+    public function setCoalitionSubscription(bool $coalitionSubscription): void
+    {
+        $this->coalitionSubscription = $coalitionSubscription;
+    }
+
+    public function isCauseSubscription(): bool
+    {
+        return $this->causeSubscription;
+    }
+
+    public function setCauseSubscription(bool $causeSubscription): void
+    {
+        $this->causeSubscription = $causeSubscription;
     }
 }

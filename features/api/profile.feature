@@ -78,7 +78,9 @@ Feature:
                 "code": "senator_email"
             }
         ],
-        "interests": []
+        "interests": [],
+        "coalition_subscription": false,
+        "cause_subscription": false
     }
     """
 

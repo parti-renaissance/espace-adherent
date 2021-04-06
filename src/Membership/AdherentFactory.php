@@ -28,7 +28,9 @@ class AdherentFactory
             $this->addressFactory->createFromZone($request->getZone()),
             $this->encodePassword(Uuid::uuid4()),
             Adherent::DISABLED,
-            $request->getSource()
+            $request->getSource(),
+            $request->isCoalitionSubscription(),
+            $request->isCauseSubscription()
         );
     }
 
