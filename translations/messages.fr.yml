@@ -119,6 +119,7 @@ delegated_candidate_departmental: Candidat aux départementales délégué
 lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
 thematic_community_chief: Responsable Thématique
+coalition_moderator: Responsables des coalitions
 
 role_or_mandat.adherent: Adhérent
 role_or_mandat.supervisor: Animateur local
@@ -1198,3 +1199,10 @@ file_permission.candidate_departmental: Candidat aux départementales
 file.type.directory: Dossier
 file.type.file: Fichier
 file.type.external_link: Lien externe
+
+#
+# Coalition / Cause
+#
+cause.pending: En attente
+cause.approved: Approuvée
+cause.refused: Refusée

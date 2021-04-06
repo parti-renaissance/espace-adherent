@@ -36,6 +36,7 @@ use App\Form\Admin\ReferentManagedAreaType;
 use App\Form\Admin\SenatorAreaType;
 use App\Form\Admin\SenatorialCandidateManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
+use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\History\EmailSubscriptionHistoryHandler;
@@ -65,6 +66,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -386,6 +388,13 @@ class AdherentAdmin extends AbstractAdmin
                     'mapped' => false,
                 ])
             ->end()
+            ->with('Coalitions', ['class' => 'col-md-6'])
+                ->add('isCoalitionModeratorRole', CheckboxType::class, [
+                    'label' => 'Responsable Coalition',
+                    'required' => false,
+                    'mapped' => false,
+                ])
+            ->end()
             ->with('Responsabilités locales', ['class' => 'col-md-6'])
                 ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.committee',
@@ -515,6 +524,7 @@ HELP
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
+            ->addEventSubscriber(new CoalitionModeratorRoleListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
         ;
     }
@@ -913,6 +923,12 @@ HELP
                     if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.handledThematicCommunities', $alias), 'tc');
                         $where->add('tc IS NOT NULL');
+                    }
+
+                    // Coalition moderator
+                    if (\in_array(AdherentRoleEnum::COALITION_MODERATOR, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.coalitionModeratorRole', $alias), 'coalitionModerator');
+                        $where->add('coalitionModerator IS NOT NULL');
                     }
 
                     if ($where->count()) {

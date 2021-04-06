@@ -13,6 +13,7 @@ use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\CoordinatorManagedArea;
 use App\Entity\LreArea;
 use App\Entity\ManagedArea\CandidateManagedArea;
@@ -147,6 +148,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
         $adherent3->addCharter(new CandidateCharter());
         $adherent3->addCharter(new CommitteeHostCharter());
+        $adherent3->setCoalitionModeratorRole(new CoalitionModeratorRoleAssociation());
         $adherent3->certify();
         $this->addReference('adherent-3', $adherent3);
 

@@ -14,6 +14,7 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\ManagedArea\CandidateManagedArea;
@@ -301,6 +302,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $municipalManagerSupervisorRole;
+
+    /**
+     * @var CoalitionModeratorRoleAssociation|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Coalition\CoalitionModeratorRoleAssociation", cascade={"all"}, orphanRemoval=true)
+     */
+    private $coalitionModeratorRole;
 
     /**
      * @var BoardMember|null
@@ -974,6 +982,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
         }
 
+        if ($this->isCoalitionModerator()) {
+            $roles[] = 'ROLE_COALITION_MODERATOR';
+        }
+
         return array_merge(\array_unique($roles), $this->roles);
     }
 
@@ -1548,6 +1560,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isMunicipalManagerSupervisor(): bool
     {
         return $this->municipalManagerSupervisorRole instanceof MunicipalManagerSupervisorRole;
+    }
+
+    public function getCoalitionModeratorRole(): ?CoalitionModeratorRoleAssociation
+    {
+        return $this->coalitionModeratorRole;
+    }
+
+    public function setCoalitionModeratorRole(?CoalitionModeratorRoleAssociation $coalitionModeratorRole): void
+    {
+        $this->coalitionModeratorRole = $coalitionModeratorRole;
+    }
+
+    public function revokeCoalitionModeratorRole(): void
+    {
+        $this->coalitionModeratorRole = null;
+    }
+
+    public function isCoalitionModerator(): bool
+    {
+        return $this->coalitionModeratorRole instanceof CoalitionModeratorRoleAssociation;
     }
 
     public function getBoardMember(): ?BoardMember

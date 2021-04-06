@@ -1,0 +1,21 @@
+{% extends 'adherent_space/_layout.html.twig' %}
+
+{% block canonical_url url('app_coalition_causes_list') %}
+
+{% block page_title %}
+    Espace Coalition
+{% endblock %}
+
+{% set isCoalitionModerator = is_granted('ROLE_COALITION_MODERATOR') %}
+
+{% block manager_sidebar %}
+    {{ include('coalition/_sidebar.html.twig') }}
+{% endblock %}
+
+{% block manager_content %}
+    {% block coalition_content %}{% endblock %}
+{% endblock %}
+
+{% block adherent_space_header_title %}
+    Vous gérez toutes les coalitions
+{% endblock %}
