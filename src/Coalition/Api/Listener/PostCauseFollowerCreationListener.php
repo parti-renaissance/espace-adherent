@@ -5,7 +5,6 @@ namespace App\Coalition\Api\Listener;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\CauseFollower;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -15,7 +14,7 @@ class PostCauseFollowerCreationListener implements EventSubscriberInterface
 {
     private $notifier;
 
-    public function __construct(EntityManagerInterface $manager, MessageNotifier $notifier)
+    public function __construct(MessageNotifier $notifier)
     {
         $this->notifier = $notifier;
     }
