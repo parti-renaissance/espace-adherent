@@ -37,7 +37,7 @@ class SecurityController extends AbstractController
 
         if ($this->getUser()) {
             if ($coalition) {
-                return $this->redirect('//'.$this->getParameter('coalitions_host'));
+                return $this->redirect($this->getParameter('coalitions_host'));
             }
 
             return $this->redirectToRoute('app_search_events');
