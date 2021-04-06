@@ -5,6 +5,7 @@ namespace App\Coalition;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CauseFollower;
 use App\Mailer\MailerService;
+use App\Mailer\Message\Coalition\CauseApprovalMessage;
 use App\Mailer\Message\Coalition\CauseCreationConfirmationMessage;
 use App\Mailer\Message\Coalition\CauseFollowerAnonymousConfirmationMessage;
 use App\Mailer\Message\Coalition\CauseFollowerConfirmationMessage;
@@ -44,5 +45,12 @@ class MessageNotifier
             $causeLink,
             $createAccountLink
         ));
+    }
+
+    public function sendCauseApprovalMessage(Cause $cause): void
+    {
+        $causeLink = $this->coalitionUrlGenerator->generateCauseLink($cause);
+
+        $this->mailer->sendMessage(CauseApprovalMessage::create($cause, $causeLink));
     }
 }

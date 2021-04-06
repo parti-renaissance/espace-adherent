@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\Coalition;
 
 use App\Coalition\Filter\CauseFilter;
+use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
 use App\Form\Coalition\CauseFilterType;
 use App\Repository\Coalition\CauseRepository;
@@ -43,11 +44,16 @@ class CausesController extends AbstractController
     /**
      * @Route("/{slug}/approuver", name="approve_cause", methods={"POST"})
      */
-    public function approveCause(Cause $cause, EntityManagerInterface $entityManager): Response
-    {
+    public function approveCause(
+        Cause $cause,
+        EntityManagerInterface $entityManager,
+        MessageNotifier $notifier
+    ): Response {
         $cause->approve();
 
         $entityManager->flush($cause);
+
+        $notifier->sendCauseApprovalMessage($cause);
 
         return $this->redirectToRoute('app_coalition_causes_list');
     }
