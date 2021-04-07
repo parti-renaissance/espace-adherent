@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CitizenActionRepository")
@@ -21,6 +22,8 @@ class CitizenAction extends BaseEvent implements ReportableInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\CitizenActionCategory")
+     *
+     * @Groups({"event_list_read"})
      */
     protected $category;
 

@@ -29,7 +29,7 @@ class CoalitionEvent extends BaseEvent
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     protected $category;
 

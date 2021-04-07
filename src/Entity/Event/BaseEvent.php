@@ -14,7 +14,7 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
@@ -72,13 +72,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
- *             "groups": {"event_read"}
+ *             "groups": {"event_read", "image_owner_exposed"}
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/events/{id}",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {
+ *                 "groups": {"event_read", "image_owner_exposed", "with_user_registration"}
+ *             },
  *         },
  *         "put": {
  *             "path": "/v3/events/{id}",
@@ -90,7 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "normalization_context": {
- *                 "groups": {"event_list_read"}
+ *                 "groups": {"event_list_read", "image_owner_exposed", "with_user_registration"}
  *             },
  *         },
  *         "post": {
@@ -104,7 +107,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ImageOwnerInterface
+abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -202,7 +205,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("timeZone")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Timezone
@@ -217,7 +220,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("beginAt")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      */
@@ -231,7 +234,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("finishAt")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      */
@@ -294,6 +297,8 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * Mapping to be defined in child classes.
      *
      * @var BaseEventCategory|null
+     *
+     * @SymfonySerializer\Groups({"event_list_read"})
      */
     protected $category;
 
@@ -373,6 +378,9 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         $this->beginAt = $beginAt;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_list_read"})
+     */
     public function getLocalBeginAt(): \DateTimeInterface
     {
         return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
@@ -388,6 +396,9 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         $this->finishAt = $finishAt;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_list_read"})
+     */
     public function getLocalFinishAt(): \DateTimeInterface
     {
         return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));

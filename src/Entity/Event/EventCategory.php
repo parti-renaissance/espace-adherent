@@ -21,8 +21,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventCategory extends BaseEventCategory
 {
     /**
+     * @var EventGroupCategory|null
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventGroupCategory", inversedBy="eventCategories")
      * @ORM\JoinColumn(nullable=false)
+     *
      * @Assert\NotBlank
      */
     private $eventGroupCategory;
