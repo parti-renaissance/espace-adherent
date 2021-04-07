@@ -19,8 +19,8 @@ class ArticleNormalizer extends AbstractIndexerNormalizer
             'created_at' => $this->formatDate($object->getCreatedAt()),
             'updated_at' => $this->formatDate($object->getUpdatedAt()),
             'category' => [
-                'name' => $category->getName(),
-                'slug' => $category->getSlug(),
+                'name' => $category ? $category->getName() : '',
+                'slug' => $category ? $category->getSlug() : '',
             ],
         ];
     }

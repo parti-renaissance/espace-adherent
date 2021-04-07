@@ -10,11 +10,11 @@ export default class AlgoliaSearch extends React.Component {
 
         this.blacklist = props.blacklist || [];
 
-        this.customResultsIndex = client.initIndex(`CustomSearchResult_${props.environment}`);
-        this.proposalsIndex = client.initIndex(`Proposal_${props.environment}`);
-        this.clarificationsIndex = client.initIndex(`Clarification_${props.environment}`);
-        this.articlesIndex = client.initIndex(`Article_${props.environment}`);
-        this.eventsIndex = client.initIndex(`Event_${props.environment}`);
+        this.customResultsIndex = client.initIndex(`app_${props.environment}_custom_search_result`);
+        this.proposalsIndex = client.initIndex(`app_${props.environment}_proposal`);
+        this.clarificationsIndex = client.initIndex(`app_${props.environment}_clarification`);
+        this.articlesIndex = client.initIndex(`app_${props.environment}_article`);
+        this.eventsIndex = client.initIndex(`app_${props.environment}_event`);
 
         this.state = {
             term: '',
