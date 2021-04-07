@@ -154,6 +154,7 @@
     is_granted('ROLE_DELEGATED_SENATOR') or
     is_granted('ROLE_DELEGATED_CANDIDATE') or
     is_granted('ROLE_LRE') or
+    is_granted('ROLE_COALITION_MODERATOR') or
     is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF')
 %}
     {% set totalSections =
@@ -180,6 +181,7 @@
         app.user.isDelegatedDeputy +
         app.user.isDelegatedSenator +
         app.user.isDelegatedCandidate +
+        app.user.isCoalitionModerator +
         app.user.isThematicCommunityChief
     %}
 
