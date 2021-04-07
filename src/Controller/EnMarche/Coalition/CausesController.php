@@ -26,12 +26,12 @@ class CausesController extends AbstractController
      */
     public function list(Request $request, CauseRepository $causeRepository): Response
     {
-        $filter = new CauseFilter(Cause::STATUS_PENDING);
+        $filter = new CauseFilter();
 
         $form = $this->createForm(CauseFilterType::class, $filter)->handleRequest($request);
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = new CauseFilter(Cause::STATUS_PENDING);
+            $filter = new CauseFilter();
         }
 
         return $this->render('coalition/causes_list.html.twig', [
@@ -42,19 +42,40 @@ class CausesController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/approuver", name="approve_cause", methods={"POST"})
+     * @Route("/approuver", name="approve_causes", defaults={"status": Cause::STATUS_APPROVED}, condition="request.isXmlHttpRequest()", methods={"POST"})
+     * @Route("/refuser", name="refuse_causes", defaults={"status": Cause::STATUS_REFUSED}, condition="request.isXmlHttpRequest()", methods={"POST"})
      */
-    public function approveCause(
-        Cause $cause,
+    public function changeCauseStatus(
+        string $status,
+        Request $request,
+        CauseRepository $causeRepository,
         EntityManagerInterface $entityManager,
         MessageNotifier $notifier
     ): Response {
-        $cause->approve();
+        if (!$ids = (array) $request->request->get('ids')) {
+            return $this->json('"ids" not provided', Response::HTTP_BAD_REQUEST);
+        }
 
-        $entityManager->flush($cause);
+        foreach ($causeRepository->getByIds($ids) as $cause) {
+            if (Cause::STATUS_APPROVED === $status) {
+                if ($cause->isApproved()) {
+                    continue;
+                }
 
-        $notifier->sendCauseApprovalMessage($cause);
+                $cause->approve();
+                $entityManager->flush();
 
-        return $this->redirectToRoute('app_coalition_causes_list');
+                $notifier->sendCauseApprovalMessage($cause);
+            } else {
+                if ($cause->isRefused()) {
+                    continue;
+                }
+
+                $cause->refuse();
+                $entityManager->flush();
+            }
+        }
+
+        return $this->json('', Response::HTTP_OK);
     }
 }
