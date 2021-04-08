@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
@@ -31,6 +32,8 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
+     *
+     * @Groups({"event_list_read"})
      */
     protected $category;
 

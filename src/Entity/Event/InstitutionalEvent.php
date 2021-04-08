@@ -12,6 +12,7 @@ use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InstitutionalEventRepository")
@@ -20,6 +21,8 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface, Reporta
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\InstitutionalEventCategory")
+     *
+     * @Groups({"event_list_read"})
      */
     protected $category;
 

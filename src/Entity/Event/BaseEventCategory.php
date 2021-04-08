@@ -28,7 +28,7 @@ abstract class BaseEventCategory
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     protected $name = '';
 
