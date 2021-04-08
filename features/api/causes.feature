@@ -846,3 +846,48 @@ Feature:
       "items": []
     }
     """
+
+  Scenario: As a logged in cause author, i should be able to edit my cause description
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
+    """
+    {
+      "description": "Nouvelle description"
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be a superset of:
+    """
+    {
+      "description": "Nouvelle description"
+    }
+    """
+
+  Scenario: As a logged in cause author, i should not be able to edit my cause name
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
+    """
+    {
+      "name": "Nouveau nom"
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be a superset of:
+    """
+    {
+      "name": "Cause pour la culture"
+    }
+    """
+
+  Scenario: As a logged user, i should not be allowed to edit a cause i did not authored
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8" with body:
+    """
+    {
+      "description": "Nouvelle description"
+    }
+    """
+    Then the response status code should be 403
