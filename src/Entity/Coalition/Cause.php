@@ -54,6 +54,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/causes/{id}",
  *             "requirements": {"id": "%pattern_uuid%"}
  *         },
+ *         "put": {
+ *             "path": "/v3/causes/{id}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "access_control": "object.getAuthor() == user",
+ *             "denormalization_context": {"groups": {"cause_update"}}
+ *         },
  *         "follow": {
  *             "method": "PUT|DELETE",
  *             "denormalization_context": {"api_allow_update": false},
@@ -137,7 +143,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     * @SymfonySerializer\Groups({"cause_read", "cause_write", "cause_update"})
      */
     private $description;
 
