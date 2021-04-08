@@ -92,9 +92,9 @@ class ConfigureCommand extends Command
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureCopolElections($designation);
+            } else {
+                throw new RuntimeException(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
-
-            throw new RuntimeException(sprintf('Unhandled designation type "%s"', $designation->getType()));
         }
 
         $this->io->progressFinish();
