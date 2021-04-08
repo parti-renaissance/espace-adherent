@@ -62,6 +62,7 @@ class RemindUnconfirmedMembershipCommand extends Command
         return $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->where('adherent.status = :status AND adherent.activatedAt IS NULL')
+            ->andWhere('adherent.adherent = 1')
             ->andWhere('adherent.registeredAt <= :date')
             ->andWhere('adherent.remindSent = false')
             ->setParameter('status', Adherent::DISABLED)
