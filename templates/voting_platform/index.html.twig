@@ -64,6 +64,16 @@
 
                     <h2>Quand et comment seront affichés les résultats ?</h2>
                     <p>A la fin de la période de vote, vous recevrez un mail avec l’annonce des résultats. Ces informations seront également disponibles dans l’espace de votre comité.</p>
+                {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::NATIONAL_COUNCIL') %}
+                    <p>Pour assurer une meilleure représentativité et poursuivre nos objectifs de démocratie interne et de parité dans nos instances, nous vous invitions à désigner un trio composé d'un élu local, d'un animateur local et d'un adhérent qui constituera un quatuor paritaire avec le référent territorial. Le trio désigné siégera au Conseil national pendant 2 ans.</p>
+
+                    <p>Un choix innovant pour voter : le « jugement majoritaire »</p>
+
+                    <p>Le jugement majoritaire est représentatif des valeurs que porte le Mouvement, il permet de favoriser le consensus et la bienveillance.</p>
+
+                    <p>Lors du vote, vous allez ainsi donner votre avis sur une ou plusieurs listes de trinômes candidats en leur attribuant cinq mentions : Excellent; Très bien; Bien ; Passable; Insuffisant.</p>
+
+                    <p>👉 La liste de trinôme qui obtiendra le meilleur score auprès de 50% du corps électoral sera élu.</p>
                 {% endif %}
             </div>
 

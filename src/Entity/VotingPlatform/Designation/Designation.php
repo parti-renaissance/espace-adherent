@@ -426,7 +426,10 @@ class Designation
 
     public function isMajorityType(): bool
     {
-        return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
+        return \in_array($this->type, [
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::NATIONAL_COUNCIL,
+        ], true);
     }
 
     public function getDenomination(bool $withDeterminer = false): string

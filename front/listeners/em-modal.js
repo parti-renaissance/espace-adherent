@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import Modal from '../components/Modal';
 
 export default function () {
@@ -18,9 +18,7 @@ export default function () {
                 <Modal
                     side={element.dataset.modalSide || null}
                     content={dom(element.dataset.contentElement).innerHTML}
-                    closeCallback={() => {
-                        while (modalWrapper.firstChild) { modalWrapper.removeChild(modalWrapper.lastChild); }
-                    }}
+                    closeCallback={() => unmountComponentAtNode(modalWrapper)}
                 />,
                 modalWrapper
             );

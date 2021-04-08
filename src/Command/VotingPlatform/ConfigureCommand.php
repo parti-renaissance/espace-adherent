@@ -200,7 +200,7 @@ class ConfigureCommand extends Command
             }
 
             if (!isset($pools[$candidacy->getQuality()])) {
-                $pools[$candidacy->getQuality()] = new ElectionPool($candidacy->getQuality());
+                $pools[$candidacy->getQuality()] = new ElectionPool($candidacy->getQuality() ?? $election->getDesignationType());
             }
 
             $pools[$candidacy->getQuality()]->addCandidateGroup($group);

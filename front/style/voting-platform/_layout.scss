@@ -343,7 +343,8 @@
     }
 
     &.voting-platform-theme {
-        &__copol {
+        &__copol,
+        &__national_council {
             .candidate-names li::before {
                 background-color: $green--territory;
             }
@@ -465,9 +466,9 @@
             }
         }
 
-        &__committee_supervisor {
+        &__committee_supervisor,
+        &__national_council {
             .election-vote {
-
                 &__boxes {
                     margin: 0 -12px;
                 }
