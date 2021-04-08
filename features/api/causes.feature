@@ -11,6 +11,17 @@ Feature:
       | LoadCauseData         |
       | LoadGeoZoneData       |
 
+  Scenario: As a non logged-in user I can get causes statistics
+    Given I send a "GET" request to "/api/causes/statistiques"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "total": "6",
+      "total_followers": "5"
+    }
+    """
+
   Scenario: As a non logged-in user I can see first page of active causes
     Given I send a "GET" request to "/api/causes"
     Then the response status code should be 200

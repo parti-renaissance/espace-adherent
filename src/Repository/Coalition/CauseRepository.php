@@ -63,6 +63,21 @@ class CauseRepository extends ServiceEntityRepository
         return $this->findBy(['id' => $ids]);
     }
 
+    public function getStatistics(): array
+    {
+        $stats = $this->createQueryBuilder('cause')
+            ->leftJoin('cause.followers', 'follower')
+            ->select('COUNT(DISTINCT cause.id) as total')
+            ->addSelect('COUNT(DISTINCT follower.id) as total_followers')
+            ->where('cause.status = :approved')
+            ->setParameter('approved', Cause::STATUS_APPROVED)
+            ->getQuery()
+            ->getScalarResult()
+        ;
+
+        return $stats[0];
+    }
+
     private function createFilterQueryBuilder(CauseFilter $filter): QueryBuilder
     {
         $qb = $this
