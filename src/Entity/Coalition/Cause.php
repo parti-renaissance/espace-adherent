@@ -85,7 +85,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(name="cause_name_unique", columns="name")
  *     }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Coalition\CauseRepository")
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="author",
  *         joinColumns={
@@ -247,5 +247,20 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function approve(): void
     {
         $this->status = self::STATUS_APPROVED;
+    }
+
+    public function refuse(): void
+    {
+        $this->status = self::STATUS_REFUSED;
+    }
+
+    public function isApproved(): bool
+    {
+        return self::STATUS_APPROVED === $this->status;
+    }
+
+    public function isRefused(): bool
+    {
+        return self::STATUS_REFUSED === $this->status;
     }
 }

@@ -35,7 +35,7 @@ class CauseFilter
         $this->status = $status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(?string $status): void
     {
         $this->status = $status ?: null;
     }

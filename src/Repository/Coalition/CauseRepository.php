@@ -55,13 +55,28 @@ class CauseRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Cause[]
+     */
+    public function getByIds(array $ids): array
+    {
+        return $this->findBy(['id' => $ids]);
+    }
+
     private function createFilterQueryBuilder(CauseFilter $filter): QueryBuilder
     {
-        return $this
-            ->createQueryBuilder('u')
-            ->where('u.status = :status')
-            ->setParameter('status', $filter->getStatus())
-            ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
+        $qb = $this
+            ->createQueryBuilder('cause')
+            ->orderBy('cause.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
+
+        if ($filter->getStatus()) {
+            $qb
+                ->where('cause.status = :status')
+                ->setParameter('status', $filter->getStatus())
+            ;
+        }
+
+        return $qb;
     }
 }

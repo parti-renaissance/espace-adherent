@@ -263,6 +263,18 @@ class App {
         });
     }
 
+    runBatchActions(wrapperSelector, checkboxSelector, mainCheckboxSelector, actions) {
+        System.import('pages/batch_actions').catch((error) => { throw error; }).then((module) => {
+            module.default(
+                wrapperSelector,
+                checkboxSelector,
+                mainCheckboxSelector,
+                actions,
+                this.get('api'),
+            );
+        });
+    }
+
     runGrandeMarcheEurope() {
         System.import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
             module.default();

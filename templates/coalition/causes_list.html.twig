@@ -1,52 +1,32 @@
 {% extends 'coalition/_layout.html.twig' %}
 
 {% block coalition_content %}
-    <div class="datagrid__pre-table b__nudge--bottom-larger">
+    <div class="datagrid__pre-table">
         <h3>Causes</h3>
     </div>
 
-    <div class="manager__filters">
-        <div class="manager__filters__form">
-            {{ form_start(form) }}
-
-            {{ form_errors(form) }}
-
-            <h4 class="manager__filters__subtitle">Filtrer par</h4>
-
-            <div class="filter__row">
-                <label class="filter__label">Statut</label>
-                {{ form_widget(form.status, {attr: {class: 'filter__field', placeholder: 'Tous les status'}}) }}
-                {{ form_errors(form.status) }}
-            </div>
-
-            <div class="manager__filters__actions b__nudge--top">
-                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
-                <a href="" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
-            </div>
-
-            {{ form_end(form) }}
-        </div>
-    </div>
-
     <div class="datagrid">
+        <div class="l__row datagrid__action datagrid__action--sticky-scroll actions-wrapper"></div>
+
         <div class="b__nudge--bottom-larger">
             <div class="datagrid__table-container">
                 <table class="datagrid__table-manager">
                     <thead>
                     <tr>
+                        <th width="50" class="space--20"><input type="checkbox" id="items-check-all" /></th>
                         <th>Objectif de la cause</th>
                         <th style="width: 150px;">Porteur(se) de la cause</th>
                         <th style="width: 100px;">Image</th>
                         <th>Coalitions</th>
                         <th>Description</th>
                         <th style="width: 120px;">Date de création</th>
-                        <th style="width: 65px;">Statut</th>
-                        <th>Actions</th>
+                        <th style="width: 90px;">Statut</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for cause in causes %}
                         <tr class="event__item">
+                            <td><input type="checkbox" name="items[]" value="{{ cause.id }}" /></td>
                             <td>{{ cause.name }}</td>
                             <td class="adherent-identity">
                                 {% if cause.author %}
@@ -59,24 +39,18 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <div class="avatar avatar--small avatar--style-01">
-                                    {% if cause.hasImageName %}
+                                {% if cause.hasImageName %}
+                                    <div class="avatar avatar--small avatar--style-01">
                                         <img src="{{ path('asset_url', { path: cause.getImagePath }) }}" alt="image">
-                                    {% endif %}
-                                </div>
-
+                                    </div>
+                                {% endif %}
                             </td>
                             <td>{{ cause.coalition }}{{ cause.secondCoalition ? (','~cause.secondCoalition) : ''}}</td>
                             <td>
                                 {{ cause.description|length > 1000 ? cause.description|slice(0, 1000) ~ '...' : cause.description }}
                             </td>
                             <td>{{ cause.createdAt|date('d/m/Y H:i') }}</td>
-                            <td>{{ ('cause.'~cause.status)|trans }}</td>
-                            <td>
-                                <a href="{{ path('app_coalition_approve_cause', {slug: cause.slug}) }}" class="newbtn newbtn--smaller newbtn--light">
-                                    Approuver
-                                </a>
-                            </td>
+                            <td><span class="status status__{{ cause.status }}">{{ ('cause.'~cause.status)|trans }}</span></td>
                         </tr>
                     {% else %}
                         <tr>
@@ -91,11 +65,31 @@
             </div>
         </div>
 
-        {% if causes.count and causes.lastPage != 1 %}
-            {% include 'components/_modern_pagination.html.twig' with {
-                current_page: causes.currentPage,
-                total_pages: causes.lastPage,
-            } %}
-        {% endif %}
+        {% include 'components/_modern_pagination.html.twig' with {
+            current_page: causes.currentPage,
+            total_pages: causes.lastPage,
+        } %}
     </div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    {% if causes.count %}
+        <script type="text/javascript">
+            {% set actions = [
+                { name: 'Approuver', path: path('app_coalition_approve_causes'), method: 'post' },
+                { name: 'Refuser', path: path('app_coalition_refuse_causes'), method: 'post' },
+            ] %}
+
+            Kernel.onLoad(function() {
+                App.runBatchActions(
+                    '.actions-wrapper',
+                    'input[name="items[]"]',
+                    '#items-check-all',
+                    {{ actions|json_encode|raw }}
+                );
+            });
+        </script>
+    {% endif %}
 {% endblock %}
