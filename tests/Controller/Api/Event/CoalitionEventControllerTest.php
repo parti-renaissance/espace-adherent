@@ -4,6 +4,7 @@ namespace Tests\App\Controller\Api\Event;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
+use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
@@ -67,6 +68,7 @@ class CoalitionEventControllerTest extends WebTestCase
             'capacity' => 10,
             'visioUrl' => 'https://en-marche.fr/reunions/123',
             'interests' => ['agriculture'],
+            'mode' => BaseEvent::MODE_ONLINE,
        ]));
 
         $this->assertResponseStatusCodeSame(201);
@@ -83,6 +85,7 @@ class CoalitionEventControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         self::assertSame('My event', $response['name']);
+        self::assertSame('online', $response['mode']);
     }
 
     protected function setUp(): void

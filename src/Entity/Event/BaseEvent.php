@@ -126,6 +126,14 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         self::STATUS_SCHEDULED,
     ];
 
+    public const MODE_ONLINE = 'online';
+    public const MODE_MEETING = 'meeting';
+
+    public const MODES = [
+        self::MODE_ONLINE,
+        self::MODE_MEETING,
+    ];
+
     /**
      * @var Collection|ReferentTag[]
      *
@@ -314,6 +322,17 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * @AdherentInterestsConstraint
      */
     private $interests = [];
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     *
+     * @Assert\Choice(choices=self::MODES)
+     */
+    private $mode;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -548,5 +567,15 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function getAuthor(): ?Adherent
     {
         return $this->organizer;
+    }
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(?string $mode): void
+    {
+        $this->mode = $mode;
     }
 }
