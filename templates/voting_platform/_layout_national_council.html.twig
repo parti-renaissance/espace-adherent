@@ -1,0 +1,24 @@
+{% extends 'voting_platform/_layout_base.html.twig' %}
+
+{% block banner %}
+    <div class="space--10-0 background--green-territory">
+        <div class="l__wrapper--wide">
+            <a href="{{ path('app_territorial_council_index') }}"
+               class="text--body text--small text--white link--no-decor">
+                Retourner au Conseil territorial <span class="text--bold">{{ election.electionEntity.territorialCouncil.name }}</span> →
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block vote_step_pool_title %}
+    Évaluez votre satisfaction vis à vis de chaque candidature
+{% endblock %}
+
+{% block vote_finish_action_block %}
+    <div class="b__nudge--bottom-large b__nudge--top-large">
+        <a href="{{ path('app_territorial_council_index') }}" class="btn btn--blue">
+            Retour au Conseil territorial
+        </a>
+    </div>
+{% endblock %}
