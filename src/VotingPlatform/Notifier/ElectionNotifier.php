@@ -152,7 +152,7 @@ class ElectionNotifier
 
     private function getUrl(Election $election): string
     {
-        if (DesignationTypeEnum::COPOL === $election->getDesignationType()) {
+        if ($election->getDesignation()->isCopolType()) {
             return $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 

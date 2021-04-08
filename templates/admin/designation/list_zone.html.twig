@@ -1,9 +1,9 @@
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field %}
-    {% if object.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT') %}
+    {% if object.isCommitteeType() %}
         {{ object.zones|join(', ') }}
-    {% elseif object.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COPOL') %}
+    {% elseif object.isCopolType() %}
         {% if object.referentTags|length > 1 %}
             1+
         {% else %}

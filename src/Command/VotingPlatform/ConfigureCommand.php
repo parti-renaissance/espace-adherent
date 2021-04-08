@@ -30,6 +30,7 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -89,11 +90,11 @@ class ConfigureCommand extends Command
         foreach ($designations as $designation) {
             if ($designation->isCommitteeType()) {
                 $this->configureCommitteeElections($designation);
-            } elseif (DesignationTypeEnum::COPOL === $designation->getType()) {
+            } elseif ($designation->isCopolType()) {
                 $this->configureCopolElections($designation);
-            } else {
-                $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
+
+            throw new RuntimeException(sprintf('Unhandled designation type "%s"', $designation->getType()));
         }
 
         $this->io->progressFinish();

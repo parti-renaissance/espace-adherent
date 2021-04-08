@@ -3,7 +3,6 @@
 namespace App\VotingPlatform\Election;
 
 use App\Entity\VotingPlatform\Election;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RedirectManager
@@ -17,14 +16,17 @@ class RedirectManager
 
     public function getRedirection(Election $election): string
     {
-        switch ($election->getDesignationType()) {
-            case DesignationTypeEnum::COMMITTEE_ADHERENT:
-                return $this->urlGenerator->generate(
-                    'app_committee_show',
-                    ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()]
-                );
-            case DesignationTypeEnum::COPOL:
-                return $this->urlGenerator->generate('app_territorial_council_index');
+        $designation = $election->getDesignation();
+
+        if ($designation->isCommitteeType()) {
+            return $this->urlGenerator->generate(
+                'app_committee_show',
+                ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()]
+            );
+        }
+
+        if ($designation->isCopolType()) {
+            return $this->urlGenerator->generate('app_territorial_council_index');
         }
 
         return $this->urlGenerator->generate('homepage');

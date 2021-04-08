@@ -4,7 +4,6 @@ namespace App\Entity\VotingPlatform;
 
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -80,7 +79,7 @@ class ElectionEntity
 
     public function getName(): string
     {
-        if (DesignationTypeEnum::COPOL === $this->election->getDesignationType()) {
+        if ($this->election->getDesignation()->isCopolType()) {
             return $this->territorialCouncil->getName();
         }
 
