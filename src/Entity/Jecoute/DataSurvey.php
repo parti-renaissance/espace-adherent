@@ -130,6 +130,20 @@ class DataSurvey
      */
     private $survey;
 
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(type="geo_point", nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(type="geo_point", nullable=true)
+     */
+    private $longitude;
+
     public function __construct(Survey $survey = null, string $firstName = null, string $lastName = null)
     {
         $this->survey = $survey;
@@ -304,5 +318,25 @@ class DataSurvey
     public function setSurvey(Survey $survey): void
     {
         $this->survey = $survey;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): void
+    {
+        $this->longitude = $longitude;
     }
 }

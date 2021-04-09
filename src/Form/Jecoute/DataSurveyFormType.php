@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -58,6 +59,12 @@ class DataSurveyFormType extends AbstractType
             ->add('agreedToStayInContact', CheckboxType::class)
             ->add('agreedToContactForJoin', CheckboxType::class)
             ->add('agreedToTreatPersonalData', CheckboxType::class)
+            ->add('latitude', NumberType::class, [
+                'required' => false,
+            ])
+            ->add('longitude', NumberType::class, [
+                'required' => false,
+            ])
         ;
     }
 
