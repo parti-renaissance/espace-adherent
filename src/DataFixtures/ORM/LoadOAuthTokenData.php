@@ -53,6 +53,13 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
             '+10 minutes'
         );
 
+        $authCode4 = $this->createAuthorizationCode(
+            'brvwluptdh99jujckkf0qfey6eggc1ivpk202mpyykads56arf37kl8jthb99sgfv9inxye3ywqwaygh',
+            LoadAdherentData::ADHERENT_2_UUID,
+            LoadClientData::CLIENT_11_UUID,
+            '+1 hour'
+        );
+
         $accessToken1 = $this->createAccessToken(
             '491f7926e9c092894c9589a6740ceb402bcd4d2f38973623981b43e8fdacfd6f27bfbe6026e5d853',
             LoadAdherentData::ADHERENT_1_UUID,
@@ -68,6 +75,13 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         );
         $accessToken2->revoke();
 
+        $accessToken3 = $this->createAccessToken(
+            'l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd',
+            LoadAdherentData::ADHERENT_2_UUID,
+            LoadClientData::CLIENT_11_UUID,
+            '+1 hour'
+        );
+
         $refreshToken1 = $this->createRefreshToken(
             $accessToken1,
             'd03c024d9f413ecf96bc70acbdcb79e8ae0598a15793641904c843038f3d1ba017e6c835420efeef',
@@ -81,13 +95,22 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         );
         $refreshToken2->revoke();
 
+        $refreshToken3 = $this->createRefreshToken(
+            $accessToken1,
+            'qemarnrjouueg8ahi2ndp2lv4oci720cs7ld5zg5dubn0mspslaeiw4bnakz6am91p6nqxsefesyu22l',
+            '+1 hour'
+        );
+
         $manager->persist($authCode1);
         $manager->persist($authCode2);
         $manager->persist($authCode3);
+        $manager->persist($authCode4);
         $manager->persist($accessToken1);
         $manager->persist($accessToken2);
+        $manager->persist($accessToken3);
         $manager->persist($refreshToken1);
         $manager->persist($refreshToken2);
+        $manager->persist($refreshToken3);
         $manager->flush();
     }
 

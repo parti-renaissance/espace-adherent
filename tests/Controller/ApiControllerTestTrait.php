@@ -2,6 +2,11 @@
 
 namespace Tests\App\Controller;
 
+use App\Entity\OAuth\AccessToken;
+use App\OAuth\Model\Client;
+use App\OAuth\Model\Scope;
+use League\OAuth2\Server\CryptKey;
+
 /**
  * @method assertArrayHasKey($key, $array, $message = '')
  */
@@ -42,5 +47,32 @@ trait ApiControllerTestTrait
             }
             $this->assertArrayHasKey($key, $item, 'Item '.$k.' of JSON payload does not have '.$key.' key');
         }
+    }
+
+    protected function getJwtAccessTokenByIdentifier(string $identifier, CryptKey $privateKey): string
+    {
+        /** @var AccessToken $accessToken */
+        $accessToken = $this
+            ->getContainer()
+            ->get('doctrine')
+            ->getManager()
+            ->getRepository(AccessToken::class)
+            ->findAccessTokenByIdentifier($identifier)
+        ;
+
+        $client = new Client($accessToken->getClientIdentifier(), []);
+
+        $token = new \App\OAuth\Model\AccessToken();
+        $token->setClient($client);
+        $token->setIdentifier($identifier);
+        $token->setExpiryDateTime($accessToken->getExpiryDateTime());
+        $token->setUserIdentifier($accessToken->getUserIdentifier());
+        $token->setPrivateKey($privateKey);
+
+        foreach ($accessToken->getScopes() as $scope) {
+            $token->addScope(new Scope($scope));
+        }
+
+        return (string) $token;
     }
 }

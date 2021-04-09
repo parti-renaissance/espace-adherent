@@ -519,3 +519,8 @@ cause_follower.adherent.exists: L'utilisateur avec cette adresse e-mail existe d
 cause_follower.exists: Vous avez déjà soutenu cette cause.
 
 The value {{ value }} is not valid.: Cette valeur n'est pas valide.
+
+#
+# InternalApiApplication
+#
+internal_api_application.validation.application_name_length: Le nom de l'application ne peut pas dépasser 200 caractères.

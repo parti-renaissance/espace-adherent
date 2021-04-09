@@ -4,15 +4,14 @@ namespace Tests\App\Controller\OAuth;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Device;
-use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\AuthorizationCode;
 use App\OAuth\Model\Client;
-use App\OAuth\Model\Scope;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -22,6 +21,7 @@ use Tests\App\Controller\ControllerTestTrait;
 class OAuthServerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use ApiControllerTestTrait;
 
     private const AUTH_TOKEN_URI_REGEX = '#^http://client-oauth\.docker:8000/client/receive_authcode\?code=(?P<code>[a-f0-9]+)\&state=bds1775p6f3ks29h2vla20ng5n$#';
     private const ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX = '#\{"token_type":"Bearer","expires_in":(\d{4}),"access_token":"(?P<access_token>[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)","refresh_token":"(?P<refresh_token>[a-f0-9]+)"\}#';
@@ -430,39 +430,12 @@ class OAuthServerControllerTest extends WebTestCase
 
     private function getExpiredJwtAccessToken(): string
     {
-        return $this->getJwtAccessTokenByIdentifier('491f7926e9c092894c9589a6740ceb402bcd4d2f38973623981b43e8fdacfd6f27bfbe6026e5d853');
+        return $this->getJwtAccessTokenByIdentifier('491f7926e9c092894c9589a6740ceb402bcd4d2f38973623981b43e8fdacfd6f27bfbe6026e5d853', $this->privateCryptKey);
     }
 
     private function getRevokedJwtAccessToken(): string
     {
-        return $this->getJwtAccessTokenByIdentifier('4c843038f3d1ba017e6c835420efeefd03c024d9f413ecf96bc70acbdcb79e8ae0598a1579364190');
-    }
-
-    private function getJwtAccessTokenByIdentifier($identifier): string
-    {
-        /** @var AccessToken $accessToken */
-        $accessToken = $this
-            ->getContainer()
-            ->get('doctrine')
-            ->getManager()
-            ->getRepository(AccessToken::class)
-            ->findAccessTokenByIdentifier($identifier)
-        ;
-
-        $client = new Client($accessToken->getClientIdentifier(), []);
-
-        $token = new \App\OAuth\Model\AccessToken();
-        $token->setClient($client);
-        $token->setIdentifier($identifier);
-        $token->setExpiryDateTime($accessToken->getExpiryDateTime());
-        $token->setUserIdentifier($accessToken->getUserIdentifier());
-        $token->setPrivateKey($this->privateCryptKey);
-
-        foreach ($accessToken->getScopes() as $scope) {
-            $token->addScope(new Scope($scope));
-        }
-
-        return (string) $token;
+        return $this->getJwtAccessTokenByIdentifier('4c843038f3d1ba017e6c835420efeefd03c024d9f413ecf96bc70acbdcb79e8ae0598a1579364190', $this->privateCryptKey);
     }
 
     protected function setUp(): void
