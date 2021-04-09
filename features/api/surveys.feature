@@ -311,6 +311,8 @@ Feature:
       "profession":"employees",
       "ageRange": "between_25_39",
       "gender": "male",
+      "latitude": 48.856614,
+      "longitude": 2.3522219,
       "answers":[
         {
           "surveyQuestion":6,
@@ -378,6 +380,8 @@ Feature:
       "profession":"employees",
       "ageRange": "between_25_39",
       "gender": "male",
+      "latitude": 48.856614,
+      "longitude": 2.3522219,
       "answers":[
         {
           "surveyQuestion":1,
@@ -448,6 +452,8 @@ Feature:
       "postalCode":"59",
       "profession":"bonsoir",
       "ageRange": "between_00_00",
+      "latitude": "bad_latitude",
+      "longitude": "bad_longitude",
       "answers":[
         {
           "surveyQuestion":1
@@ -487,6 +493,12 @@ Feature:
           "Cette valeur n'est pas valide."
         ],
         "ageRange":[
+          "Cette valeur n'est pas valide."
+        ],
+        "latitude": [
+          "Cette valeur n'est pas valide."
+        ],
+        "longitude": [
           "Cette valeur n'est pas valide."
         ],
         "answers":{
