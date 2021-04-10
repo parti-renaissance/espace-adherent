@@ -4,6 +4,3 @@ snc_redis:
             type: predis
             alias: default
             dsn: "redis://%env(REDIS_HOST)%"
-    session:
-        client: default
-        ttl: '%env(SESSION_TTL)%'

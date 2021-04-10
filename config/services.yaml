@@ -257,3 +257,8 @@ services:
     App\Producer\MailerProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
 
     Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider: ~
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@snc_redis.default'
+            - {ttl: '%env(SESSION_TTL)%', prefix: 'session'}
