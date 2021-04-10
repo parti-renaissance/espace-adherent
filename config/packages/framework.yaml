@@ -9,7 +9,7 @@ framework:
     trusted_hosts:   ~
     session:
         name:        enmarche
-        handler_id:  snc_redis.session.handler
+        handler_id:  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
     fragments:       ~
     http_method_override: true
     assets: ~
