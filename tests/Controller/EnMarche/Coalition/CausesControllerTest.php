@@ -38,8 +38,8 @@ class CausesControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/causes');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertCount(7, $causes = $crawler->filter('.datagrid table tbody tr'));
-        $causeFields = $causes->eq(1)->filter('td');
+        $this->assertCount(1, $causes = $crawler->filter('.datagrid table tbody tr'));
+        $causeFields = $causes->eq(0)->filter('td');
         $this->assertSame('Cause en attente', $causeFields->eq(1)->text());
         $this->assertStringContainsString('Jacques (Paris 8e)', $causeFields->eq(2)->text());
         $this->assertStringContainsString('jacques.picard@en-marche.fr', $causeFields->eq(2)->text());
