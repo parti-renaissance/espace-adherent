@@ -19,10 +19,10 @@ Vous souhaitez aider le projet ou simplement parler avec nous? Rejoingez nous su
 
 
 Powered by : 
-<div align="center">
-    <a href="http://symfony.com">
+<div>
+  <a href="http://symfony.com">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Symfony2.svg/1280px-Symfony2.svg.png" height=25% width=25% alt="Symfony Logo">
-        </a>
+  </a>
 </div>
 
 
