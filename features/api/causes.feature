@@ -39,6 +39,7 @@ Feature:
         {
           "author": {
             "first_name": "Jacques",
+            "last_name": "Picard",
             "last_name_initial": "P.",
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
           },
@@ -58,6 +59,7 @@ Feature:
         {
           "author": {
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D.",
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697"
           },
@@ -107,6 +109,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 0,
@@ -126,6 +129,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 0,
@@ -164,6 +168,7 @@ Feature:
           "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
+            "last_name": "Picard",
             "last_name_initial": "P."
           },
           "followers_count": 0,
@@ -183,6 +188,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 5,
@@ -202,6 +208,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 0,
@@ -221,6 +228,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 0,
@@ -240,6 +248,7 @@ Feature:
           "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
+            "last_name": "Picard",
             "last_name_initial": "P."
           },
           "followers_count": 0,
@@ -278,6 +287,7 @@ Feature:
           "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
+            "last_name": "Picard",
             "last_name_initial": "P."
           },
           "followers_count": 0,
@@ -314,6 +324,7 @@ Feature:
           "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
+            "last_name": "Picard",
             "last_name_initial": "P."
           },
           "followers_count": 0,
@@ -333,6 +344,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 5,
@@ -351,6 +363,7 @@ Feature:
       {
         "author": {
           "first_name": "Jacques",
+            "last_name": "Picard",
           "last_name_initial": "P.",
           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
         },
@@ -402,6 +415,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 5,
@@ -421,6 +435,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 0,
@@ -459,6 +474,7 @@ Feature:
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
             "first_name": "Michelle",
+            "last_name": "Dufour",
             "last_name_initial": "D."
           },
           "followers_count": 0,
@@ -798,6 +814,7 @@ Feature:
       "author": {
         "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
         "first_name": "Gisele",
+        "last_name": "Berthoux",
         "last_name_initial": "B."
       },
       "followers_count": 1
@@ -832,6 +849,7 @@ Feature:
           "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
+            "last_name": "Picard",
             "last_name_initial": "P."
           },
           "followers_count": 0,
