@@ -35,13 +35,8 @@ Le projet En Marche s'efforce de respecter les meilleures pratiques en matière 
 
 
 
-
-
-
-
 > An English ReadMe is available after the French one.
 
-Ce repository est l'application [Symfony](http://symfony.com) qui propulse la plateforme [en-marche.fr](https://en-marche.fr).
 
 ## Comment puis-je aider ?
 
