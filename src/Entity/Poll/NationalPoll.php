@@ -2,26 +2,12 @@
 
 namespace App\Entity\Poll;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/polls",
- *             "method": "GET",
- *         }
- *     },
- *     attributes={
- *         "normalization_context": {"groups": {"poll_read"}},
- *         "order": {"finishAt": "ASC"}
- *     }
- * )
- *
  * @ORM\Entity
  */
 class NationalPoll extends Poll
