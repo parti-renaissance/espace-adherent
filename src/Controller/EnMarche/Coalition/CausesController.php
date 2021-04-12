@@ -26,18 +26,19 @@ class CausesController extends AbstractController
      */
     public function list(Request $request, CauseRepository $causeRepository): Response
     {
-        $filter = new CauseFilter();
+        $filter = new CauseFilter(Cause::STATUS_PENDING);
 
         $form = $this->createForm(CauseFilterType::class, $filter)->handleRequest($request);
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = new CauseFilter();
+            $filter = new CauseFilter(Cause::STATUS_PENDING);
         }
 
         return $this->render('coalition/causes_list.html.twig', [
             'causes' => $causeRepository->searchByFilter($filter, $request->query->getInt('page', 1)),
             'total_count' => $causeRepository->countCauses(),
             'form' => $form->createView(),
+            'filter' => $filter,
         ]);
     }
 

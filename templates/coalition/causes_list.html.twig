@@ -1,8 +1,31 @@
 {% extends 'coalition/_layout.html.twig' %}
 
 {% block coalition_content %}
-    <div class="datagrid__pre-table">
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Causes</h3>
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            <div class="filter__row">
+                <label class="filter__label">Statut</label>
+                {{ form_widget(form.status, {placeholder: 'Tous les status', attr: {class: 'filter__field' }}) }}
+                {{ form_errors(form.status) }}
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                <a href="" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
     </div>
 
     <div class="datagrid">
@@ -68,6 +91,7 @@
         {% include 'components/_modern_pagination.html.twig' with {
             current_page: causes.currentPage,
             total_pages: causes.lastPage,
+            pagination_route_params: {f: filter.toArray()},
         } %}
     </div>
 {% endblock %}
