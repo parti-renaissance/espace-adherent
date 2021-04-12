@@ -40,7 +40,9 @@
                             </td>
                             <td>
                                 {% if cause.hasImageName %}
-                                    <a href="{{ path('asset_url', { path: cause.getImagePath }) }}" target="_blank">Voir l'image</a>
+                                    <div class="avatar avatar--small avatar--style-01">
+                                        <img src="{{ path('asset_url', { path: cause.getImagePath }) }}" alt="image">
+                                    </div>
                                 {% endif %}
                             </td>
                             <td>{{ cause.coalition }}{{ cause.secondCoalition ? (','~cause.secondCoalition) : ''}}</td>
