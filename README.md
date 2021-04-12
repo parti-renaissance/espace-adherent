@@ -1,9 +1,44 @@
-![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/public/logo/em-logo.svg)
+<div align="center">
+  <img src="https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg">
+</div>
 
-[![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master)
-![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg)
-[![CodeFactor](https://www.codefactor.io/repository/github/enmarche/en-marche.fr/badge)](https://www.codefactor.io/repository/github/enmarche/en-marche.fr)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade)
+
+
+| Build Type | Status |
+| ------ | ------ |
+| Linux | [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master) |
+
+
+Vous souhaitez aider le projet ou simplement parler avec nous? Rejoingez nous sur [Slack](https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw):
+<div align="center">
+  <a href="https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw">
+    <img src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/2019-01_BrandRefresh_Old-to-New-Final.fr-FR.gif" height=25% width=25% alt="Slack Logo">
+  </a>
+</div>
+
+
+
+Powered by : 
+<div align="center">
+    <a href="http://symfony.com">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Symfony2.svg/1280px-Symfony2.svg.png" height=25% width=25% alt="Symfony Logo">
+        </a>
+</div>
+
+
+Le projet En Marche s'efforce de respecter les meilleures pratiques en matière de développement de logiciels open source:
+| Code Quality | Status |
+| ------ | ------ |
+| CodeQL | ![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg) |
+| Code Factor | [![CodeFactor](https://www.codefactor.io/repository/github/enmarche/en-marche.fr/badge)](https://www.codefactor.io/repository/github/enmarche/en-marche.fr) |
+| Codacy | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade) |
+
+
+
+
+
+
+
 > An English ReadMe is available after the French one.
 
 Ce repository est l'application [Symfony](http://symfony.com) qui propulse la plateforme [en-marche.fr](https://en-marche.fr).
@@ -18,7 +53,6 @@ n'existe que par ses membres. Nous serions donc bien évidemment ravis que vous 
 [la documentation](docs).
 * Regardez la [liste de nos projets](https://github.com/EnMarche/en-marche.fr/issues) pour trouver quelque chose qui vous intéresse.
 
-Questions ? Besoin d'aide ? Discutez avec nous sur [le forum du repository](https://github.com/EnMarche/en-marche.fr/discussions) sur GitHub Discussions.
 
 [Remerciez](https://github.com/symfony/thanks) la communauté open-source PHP, qui a rendu ce projet possible, en
 lancant `composer thanks` à la racine du projet, une fois téléchargé.
