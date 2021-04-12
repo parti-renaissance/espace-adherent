@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "pagination_client_items_per_page": true,
- *         "order": {"name": "ASC"},
+ *         "order": {"followersCount": "DESC", "name": "ASC"},
  *         "normalization_context": {
  *             "groups": {"cause_read", "image_owner_exposed"}
  *         },
@@ -182,9 +182,17 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      */
     private $status = self::STATUS_PENDING;
 
-    public function __construct(UuidInterface $uuid = null)
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @SymfonySerializer\Groups({"cause_read", "coalition_read"})
+     */
+    protected $followersCount;
+
+    public function __construct(UuidInterface $uuid = null, int $followersCount = 0)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->followersCount = $followersCount;
 
         $this->followers = new ArrayCollection();
     }
@@ -242,6 +250,19 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"cause_read", "coalition_read"})
+     */
+    public function getFollowersCount(): int
+    {
+        return $this->followersCount;
+    }
+
+    public function setFollowersCount(int $count): void
+    {
+        $this->followersCount = $count;
     }
 
     public function approve(): void

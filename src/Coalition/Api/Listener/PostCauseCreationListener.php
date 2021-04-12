@@ -35,6 +35,8 @@ class PostCauseCreationListener implements EventSubscriberInterface
             return;
         }
 
+        $cause->setFollowersCount(1);
+
         $this->manager->persist($cause->createFollower($cause->getAuthor()));
         $this->manager->flush();
 

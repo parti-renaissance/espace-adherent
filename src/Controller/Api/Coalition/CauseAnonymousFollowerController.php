@@ -3,6 +3,8 @@
 namespace App\Controller\Api\Coalition;
 
 use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
+use App\Coalition\CauseFollowerChangeEvent;
+use App\Coalition\Events;
 use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CauseFollower;
@@ -15,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/causes/{uuid}/follower", name="api_follow_cause_as_anonymous", methods={"PUT"})
@@ -27,7 +30,8 @@ class CauseAnonymousFollowerController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager,
-        MessageNotifier $notifier
+        MessageNotifier $notifier,
+        EventDispatcherInterface $eventDispatcher
     ): Response {
         /** @var CauseFollower $causeFollower */
         $causeFollower = $serializer->deserialize($request->getContent(), CauseFollower::class, JsonEncoder::FORMAT);
@@ -40,6 +44,10 @@ class CauseAnonymousFollowerController extends AbstractController
             $entityManager->flush();
 
             $notifier->sendCauseFollowerAnonymousConfirmationMessage($causeFollower);
+            $eventDispatcher->dispatch(
+                new CauseFollowerChangeEvent($cause),
+                Events::CAUSE_FOLLOWER_ADDED
+            );
 
             return $this->json('OK');
         }
