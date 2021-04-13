@@ -2,8 +2,7 @@
 
 namespace App\Intl;
 
-use Collator;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 
 class UnitedNationsBundle
 {
@@ -18,7 +17,7 @@ class UnitedNationsBundle
             return self::$countries[$locale];
         }
 
-        $intlCountries = Intl::getRegionBundle()->getCountryNames($locale);
+        $intlCountries = Countries::getNames($locale);
         $names = [];
 
         foreach (self::$unitedNationsCodes as $code) {
@@ -26,7 +25,7 @@ class UnitedNationsBundle
         }
 
         // Sort by name
-        (new Collator($locale))->asort($names);
+        (new \Collator($locale))->asort($names);
 
         return self::$countries[$locale] = $names;
     }

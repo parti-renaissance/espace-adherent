@@ -423,7 +423,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent16->setPosition(ActivityPositions::EMPLOYED);
-        $adherent16->setAssessorManagedAreaCodesAsString('93, 59, UK');
+        $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
 
         $adherent17 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_17_UUID,

@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityPostAddressTrait
@@ -47,7 +47,7 @@ trait EntityPostAddressTrait
 
     public function getCountryName(): ?string
     {
-        return Intl::getRegionBundle()->getCountryName($this->postAddress->getCountry());
+        return $this->postAddress->getCountry() ? Countries::getName($this->postAddress->getCountry()) : null;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Twig;
 
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -17,6 +17,6 @@ class CountryExtension extends AbstractExtension
 
     public function getCountryNameByCode(string $countryCode): ?string
     {
-        return Intl::getRegionBundle()->getCountryName($countryCode);
+        return Countries::getName($countryCode);
     }
 }

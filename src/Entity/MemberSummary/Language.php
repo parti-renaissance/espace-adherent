@@ -4,7 +4,7 @@ namespace App\Entity\MemberSummary;
 
 use App\Entity\Summary;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -73,7 +73,7 @@ class Language
 
     public function __toString(): string
     {
-        return sprintf('%s - %s', ucfirst(Intl::getLanguageBundle()->getLanguageName($this->code)), ucfirst($this->level));
+        return sprintf('%s - %s', ucfirst(Languages::getName($this->code)), ucfirst($this->level));
     }
 
     public function getId(): ?int
