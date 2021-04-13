@@ -92,13 +92,14 @@ use Ramsey\Uuid\UuidInterface;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
  */
-class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity
+class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface
 {
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
+    use EntityExposedObjectTrait;
 
     public const CLOSED = 'CLOSED';
     public const WAITING_STATUSES = [
@@ -625,5 +626,22 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         }
 
         return $this->adherentMandates->matching($criteria);
+    }
+
+    public function getNormalizationGroups(): array
+    {
+        return [
+            'event_read',
+        ];
+    }
+
+    public function getExposedRouteName(): string
+    {
+        return 'app_committee_show';
+    }
+
+    public function getExposedRouteParams(): array
+    {
+        return ['slug' => $this->getSlug()];
     }
 }

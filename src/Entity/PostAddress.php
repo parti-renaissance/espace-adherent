@@ -160,39 +160,57 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return new self($country, $zipCode, $cityName, $street, $latitude, $longitude, $region);
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_read"})
+     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
     /**
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_read"})
      */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_read"})
+     */
     public function getCityName(): ?string
     {
         return $this->cityName;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_read"})
+     */
     public function getAddress(): ?string
     {
         return $this->address;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_read"})
+     */
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_read"})
+     */
     public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"event_read"})
+     */
     public function getLongitude(): ?float
     {
         return $this->longitude;

@@ -35,17 +35,24 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
                 "capacity": null,
                 "uuid": "472d1f86-6522-4122-a0f4-abd69d17bb2d",
-                "country": "FR",
-                "address": "60 avenue des Champs-Élysées",
-                "postal_code": "75008",
-                "city_name": "Paris 8e",
-                "latitude": 48.870506,
-                "longitude": 2.313243
+                "post_address": {
+                    "address": "60 avenue des Champs-Élysées",
+                    "postal_code": "75008",
+                    "city": "75008-75108",
+                    "city_name": "Paris 8e",
+                    "country": "FR",
+                    "latitude": 48.870506,
+                    "longitude": 2.313243
+                }
             },
             {
                 "category": {
@@ -57,17 +64,24 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
                 "capacity": null,
                 "uuid": "462d7faf-09d2-4679-989e-287929f50be8",
-                "country": "FR",
-                "address": "60 avenue des Champs-Élysées",
-                "postal_code": "75008",
-                "city_name": "Paris 8e",
-                "latitude": 48.870506,
-                "longitude": 2.313243
+                "post_address": {
+                    "address": "60 avenue des Champs-Élysées",
+                    "postal_code": "75008",
+                    "city": "75008-75108",
+                    "city_name": "Paris 8e",
+                    "country": "FR",
+                    "latitude": 48.870506,
+                    "longitude": 2.313243
+                }
             }
         ]
     }
@@ -99,17 +113,24 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "first_name": "Michel",
+                    "last_name": "VASSEUR"
+                },
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
                 "capacity": null,
                 "uuid": "d16f0ab4-292b-4698-847c-005f58ec3119",
-                "country": "CH",
-                "address": "12 Pilgerweg",
-                "postal_code": "8802",
-                "city_name": "Kilchberg",
-                "latitude": 47.321568,
-                "longitude": 8.549969
+                "post_address": {
+                    "address": "12 Pilgerweg",
+                    "postal_code": "8802",
+                    "city": null,
+                    "city_name": "Kilchberg",
+                    "country": "CH",
+                    "latitude": 47.321568,
+                    "longitude": 8.549969
+                }
             },
             {
                 "category": {
@@ -121,17 +142,24 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule"
+                },
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
                 "capacity": null,
                 "uuid": "d7e72e52-b81a-4adf-b022-d547672ce095",
-                "country": "US",
-                "address": "226 W 52nd St",
-                "postal_code": "10019",
-                "city_name": "New York",
-                "latitude": 40.762527,
-                "longitude": -73.985992
+                "post_address": {
+                    "address": "226 W 52nd St",
+                    "postal_code": "10019",
+                    "city": null,
+                    "city_name": "New York",
+                    "country": "US",
+                    "latitude": 40.762527,
+                    "longitude": -73.985992
+                }
             }
         ]
     }
@@ -163,17 +191,24 @@ Feature:
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "first_name": "Referent75and77",
+                    "last_name": "Referent75and77"
+                },
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
                 "capacity": null,
                 "uuid": "a9d45d86-0333-4767-9853-6e9e7268d778",
-                "country": "FR",
-                "address": "60 avenue des Champs-Élysées",
-                "postal_code": "75008",
-                "city_name": "Paris 8e",
-                "latitude": 48.870506,
-                "longitude": 2.313243
+                "post_address": {
+                    "address": "60 avenue des Champs-Élysées",
+                    "postal_code": "75008",
+                    "city": "75008-75108",
+                    "city_name": "Paris 8e",
+                    "country": "FR",
+                    "latitude": 48.870506,
+                    "longitude": 2.313243
+                }
             }
         ]
     }

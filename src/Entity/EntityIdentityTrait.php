@@ -39,8 +39,6 @@ trait EntityIdentityTrait
      *     "idea_read",
      *     "idea_thread_list_read",
      *     "approach_list_read",
-     *     "event_read",
-     *     "event_list_read",
      *     "coalition_read",
      *     "cause_read",
      *     "zone_read",

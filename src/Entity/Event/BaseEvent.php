@@ -3,6 +3,7 @@
 namespace App\Entity\Event;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
@@ -18,6 +19,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
 use App\Entity\ZoneableEntity;
@@ -146,6 +148,17 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     ];
 
     /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     *
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     *
+     * @ApiProperty(identifier=true)
+     */
+    protected $uuid;
+
+    /**
      * @var Collection|ReferentTag[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
@@ -263,6 +276,8 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * @ORM\JoinColumn(onDelete="RESTRICT")
      *
      * @Assert\NotBlank
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $organizer;
 
@@ -347,6 +362,15 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      */
     private $mode;
 
+    /**
+     * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
+     *
+     * @var PostAddress
+     *
+     * @SymfonySerializer\Groups({"event_read"})
+     */
+    protected $postAddress;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -405,9 +429,6 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         $this->beginAt = $beginAt;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"event_list_read"})
-     */
     public function getLocalBeginAt(): \DateTimeInterface
     {
         return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));

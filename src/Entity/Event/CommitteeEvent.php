@@ -39,6 +39,8 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
+     *
+     * @Groups({"event_read"})
      */
     private $committee;
 
