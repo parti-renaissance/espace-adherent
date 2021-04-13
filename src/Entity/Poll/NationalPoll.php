@@ -19,7 +19,7 @@ class NationalPoll extends Poll
     private $administrator;
 
     public function __construct(
-        Administrator $administrator,
+        Administrator $administrator = null,
         UuidInterface $uuid = null,
         string $question = null,
         \DateTimeInterface $finishAt = null

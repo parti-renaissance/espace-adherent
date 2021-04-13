@@ -118,7 +118,7 @@ class NationalPollAdmin extends AbstractAdmin
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
 
-        $object->setCreatedBy($administrator);
+        $object->setAdministrator($administrator);
     }
 
     /**
