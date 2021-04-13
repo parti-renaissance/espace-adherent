@@ -27,3 +27,9 @@ services:
         factory:
             - Symfony\Component\HttpClient\HttpClient
             - create
+
+    app.http_client.internal_api_proxy:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory:
+            - Symfony\Component\HttpClient\HttpClient
+            - create
