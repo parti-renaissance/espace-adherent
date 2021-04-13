@@ -43,6 +43,8 @@ class DataSurveyAnswerHandler
         $this->manager->flush();
 
         $this->dispatcher->dispatch(new DataSurveyEvent($dataSurvey), SurveyEvents::DATA_SURVEY_ANSWERED);
-        $this->bus->dispatch(new DataSurveyCreateCommand($dataSurvey->getEmailAddress()));
+        if (!$dataSurvey->getEmailAddress()) {
+            $this->bus->dispatch(new DataSurveyCreateCommand($dataSurvey->getEmailAddress()));
+        }
     }
 }
