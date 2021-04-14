@@ -69,13 +69,14 @@ export default class VoteCommitteeWidget extends React.Component {
                         triggerApiCall: false,
                     });
                 } else {
-                    location.reload();
+                    document.location.reload();
                 }
             }
         );
     }
 
     findOldCheckedSwitcher() {
+        // eslint-disable-next-line no-restricted-syntax
         for (const element of findAll(document, `${this.props.switchSelector}:checked`)) {
             if (element.dataset.committeeSlug !== this.props.switcher.dataset.committeeSlug) {
                 return this.getStateFromSwitcher(element);

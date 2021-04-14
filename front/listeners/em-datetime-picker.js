@@ -1,8 +1,8 @@
 import React from 'react';
 import flatpickr from 'flatpickr';
-import { French } from 'flatpickr/dist/l10n/fr.js';
+import { French } from 'flatpickr/dist/l10n/fr';
 
-export default function () {
+export default () => {
     // set french by default
     flatpickr.localize(French);
 
@@ -10,6 +10,6 @@ export default function () {
         const options = JSON.parse(element.dataset.datetimepicker);
         const mobileOptions = { disableMobile: true };
 
-        flatpickr(element, { ...options, ...mobileOptions });
+        flatpickr(element, Object.assign(options, mobileOptions));
     });
-}
+};

@@ -11,11 +11,8 @@ export default class CandidaciesListWidget extends Modal {
         super(props);
 
         this.state = {
-            ...this.state,
-            ...{
-                data: null,
-                isLoaded: false,
-            },
+            data: null,
+            isLoaded: false,
         };
 
         this.contentCallback = this.getModalContent.bind(this);
@@ -51,9 +48,9 @@ export default class CandidaciesListWidget extends Modal {
         this.state.data.candidacies.forEach((candidacy, index) => {
             const template = <div key={index} className={'text--dark b__nudge--bottom-medium l__row'}>
                 <div className='avatar-initials avatar--small avatar--style-01'>
-                    {candidacy.photo ?
-                        <img src={candidacy.photo} alt="photo" /> :
-                        (candidacy.first_name.charAt(0) + candidacy.last_name.charAt(0)).toUpperCase()
+                    {candidacy.photo
+                        ? <img src={candidacy.photo} alt="photo" />
+                        : (candidacy.first_name.charAt(0) + candidacy.last_name.charAt(0)).toUpperCase()
                     }
                 </div>
                 <div className='l__col b__nudge--left-small'>

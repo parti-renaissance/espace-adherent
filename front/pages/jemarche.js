@@ -2,7 +2,7 @@
  * Je Marche
  */
 export default () => {
-    window.openAction = (actionName) => {
+    window.openAction = (element, actionName) => {
         findAll(document, '.action__item').forEach((item) => {
             hide(item);
         });
@@ -12,6 +12,6 @@ export default () => {
         });
 
         dom(`#${actionName}`).style.display = 'flex';
-        addClass(event.currentTarget, 'action__menu__item--active');
+        addClass(element, 'action__menu__item--active');
     };
 };

@@ -95,21 +95,21 @@ export default class UserListDefinitionWidget extends React.Component {
     }
 
     render() {
-        const length = this.state.checked.length;
+        const { length } = this.state.checked;
 
         return (
             <div className="l__row">
                 <div className="pst--relative">
-                    {0 < length ?
-                        <div className={`btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled'
+                    {0 < length
+                        ? <div className={`btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled'
                             : ''}`}
                         onClick={this.getUserListDefinitionsForType}>
                             ({length}) Ajouter un label
                         </div>
                         : ''}
 
-                    { this.state.processing ? <div className="label-list--loader">{this.renderLoader()}</div> :
-                        <div style={{ display: this.state.displayList && 0 < length ? 'block' : 'none' }}
+                    { this.state.processing ? <div className="label-list--loader">{this.renderLoader()}</div>
+                        : <div style={{ display: this.state.displayList && 0 < length ? 'block' : 'none' }}
                             className="label-list">
                             {this.state.membersDataLoaded
                                 ? this.state.userListDefinitions.map((userListDefinition, index) => (
@@ -128,8 +128,8 @@ export default class UserListDefinitionWidget extends React.Component {
                     }
                 </div>
 
-                {0 < length ?
-                    <a href="#"
+                {0 < length
+                    ? <a href="#"
                         className="btn-secondary btn-secondary--black b__nudge--left-small"
                         onClick={this.handleResetClick}>Effacer la sélection
                     </a>
@@ -205,7 +205,7 @@ export default class UserListDefinitionWidget extends React.Component {
             });
         } else {
             this.setState((state) => {
-                const checked = state.checked.filter(value => -1 === changed.indexOf(value));
+                const checked = state.checked.filter((value) => -1 === changed.indexOf(value));
 
                 return { checked };
             });
@@ -226,7 +226,7 @@ export default class UserListDefinitionWidget extends React.Component {
     changeListStatus(event) {
         const listDefinitions = this.state.userListDefinitions;
 
-        const objIndex = listDefinitions.findIndex((uld => uld.code === event.currentTarget.id));
+        const objIndex = listDefinitions.findIndex(((uld) => uld.code === event.currentTarget.id));
         const hasBeenPartial = listDefinitions[objIndex].wasPartial;
 
         if (STATUS_ALL === listDefinitions[objIndex].newStatus) {
@@ -251,14 +251,14 @@ export default class UserListDefinitionWidget extends React.Component {
 
     checkIfCanApply() {
         this.setState({
-            canApply: this.state.userListDefinitions.some(uld => uld.newStatus !== uld.status),
+            canApply: this.state.userListDefinitions.some((uld) => uld.newStatus !== uld.status),
         });
     }
 
     updateMainCheckbox() {
         const checkboxes = Array.from(this.checkboxes);
-        this.mainCheckbox.indeterminate = checkboxes.some(chk => true === $(chk).prop('checked'))
-            && checkboxes.some(chk => false === $(chk).prop('checked'));
+        this.mainCheckbox.indeterminate = checkboxes.some((chk) => true === $(chk).prop('checked'))
+            && checkboxes.some((chk) => false === $(chk).prop('checked'));
     }
 
     getUserListDefinitionsForType() {
@@ -324,7 +324,7 @@ export default class UserListDefinitionWidget extends React.Component {
                 userListDefinition.status = STATUS_NONE;
                 userListDefinition.newStatus = STATUS_NONE;
             } else {
-                const every = this.state.checked.every(r => userListDefinition.ids.includes(r));
+                const every = this.state.checked.every((r) => userListDefinition.ids.includes(r));
 
                 if (every) {
                     userListDefinition.status = STATUS_ALL;
@@ -356,7 +356,6 @@ export default class UserListDefinitionWidget extends React.Component {
                         members[id].not_member_of.push(userListDefinition.id);
                         break;
                     default:
-                        return;
                     }
                 }
             });
@@ -394,7 +393,7 @@ export default class UserListDefinitionWidget extends React.Component {
                         $(tdLabels).html(
                             this.postApplyCallback(
                                 this.state.userListDefinitions.filter(
-                                    uld => uld.newStatus === STATUS_ALL
+                                    (uld) => uld.newStatus === STATUS_ALL
                                             || (uld.status === STATUS_PARTIAL
                                                 && uld.ids && uld.ids.includes(membreId))
                                 )

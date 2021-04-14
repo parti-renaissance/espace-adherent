@@ -57,8 +57,7 @@ export default class CommitteeCandidacyWidget extends React.Component {
                                     </div>
                                 </div>
                             </label>
-                        </div>)
-                    )}
+                        </div>))}
                 </div>
             );
         }
@@ -70,7 +69,7 @@ export default class CommitteeCandidacyWidget extends React.Component {
                         <input type="search" placeholder="Rechercher un membre..."
                             id="member-search"
                             className="em-form__field form form__field"
-                            onKeyPress={event => 'Enter' === event.key && event.preventDefault()}
+                            onKeyPress={(event) => 'Enter' === event.key && event.preventDefault()}
                             onChange={this.handleSearchChange}
                         />
                     </div>
