@@ -705,6 +705,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $provisionalSupervisors;
 
+    /**
+     * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
+     *
+     * @var PostAddress
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
+     */
+    protected $postAddress;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();

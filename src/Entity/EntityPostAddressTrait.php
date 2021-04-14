@@ -14,8 +14,6 @@ trait EntityPostAddressTrait
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
-     *
-     * @SymfonySerializer\Groups({"profile_read"})
      */
     protected $postAddress;
 
@@ -35,10 +33,10 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "public", "committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "public", "committee_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      *
-     * @SymfonySerializer\Groups({"user_profile", "event_read"})
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     public function getCountry(): ?string
     {
@@ -51,10 +49,8 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"committee_read", "citizen_action_read"})
      * @JMS\VirtualProperty
-     *
-     * @SymfonySerializer\Groups({"event_read"})
      */
     public function getAddress(): ?string
     {
@@ -62,11 +58,11 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      *
-     * @SymfonySerializer\Groups({"user_profile", "export", "event_read"})
+     * @SymfonySerializer\Groups({"user_profile", "export"})
      */
     public function getPostalCode(): ?string
     {
@@ -74,11 +70,9 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "committee_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
-     *
-     * @SymfonySerializer\Groups({"event_read"})
      */
     public function getCityName(): ?string
     {
@@ -96,11 +90,9 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"committee_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("latitude")
-     *
-     * @SymfonySerializer\Groups({"event_read"})
      */
     public function getLatitude(): ?float
     {
@@ -108,11 +100,9 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"committee_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("longitude")
-     *
-     * @SymfonySerializer\Groups({"event_read"})
      */
     public function getLongitude(): ?float
     {
