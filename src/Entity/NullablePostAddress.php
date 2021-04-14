@@ -9,7 +9,7 @@ use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
 use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 
 /**
  * @ORM\Embeddable
@@ -222,7 +222,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $parts[] = sprintf('%s %s', $this->postalCode, $this->getCityName());
 
         if (!$this->isFrenchAddress()) {
-            $parts[] = Intl::getRegionBundle()->getCountryName($this->country, $locale);
+            $parts[] = Countries::getName($this->country, $locale);
         }
 
         return implode(', ', array_map('trim', $parts));

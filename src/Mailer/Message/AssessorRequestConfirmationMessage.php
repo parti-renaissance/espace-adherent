@@ -4,7 +4,7 @@ namespace App\Mailer\Message;
 
 use App\Assessor\AssessorRequestCommand;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 
 final class AssessorRequestConfirmationMessage extends Message
 {
@@ -18,9 +18,7 @@ final class AssessorRequestConfirmationMessage extends Message
             [
                 'firstname' => $assessorRequest->getFirstName(),
                 'city_name_candidacy' => (string) $assessorRequest->getAssessorCity(),
-                'country_name_candidacy' => Intl::getRegionBundle()->getCountryName(
-                    $assessorRequest->getAssessorCountry()
-                ),
+                'country_name_candidacy' => Countries::getName($assessorRequest->getAssessorCountry()),
             ]
         );
 

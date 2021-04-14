@@ -4,7 +4,7 @@ namespace App\Mailer\Message;
 
 use App\Entity\AssessorRequest;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 
 final class AssessorRequestAssociateMessage extends Message
 {
@@ -21,7 +21,7 @@ final class AssessorRequestAssociateMessage extends Message
                 'polling_station_name' => $assessorRequest->getVotePlace()->getLabel(),
                 'polling_station_number' => $assessorRequest->getVotePlace()->getCode(),
                 'polling_station_city_name' => $assessorRequest->getVotePlace()->getCity(),
-                'polling_station_country_name' => Intl::getRegionBundle()->getCountryName(
+                'polling_station_country_name' => Countries::getName(
                     $assessorRequest->getVotePlace()->getCountry()
                 ),
             ]

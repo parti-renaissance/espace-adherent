@@ -184,7 +184,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'birthName' => 'Cochet',
             'office' => AssessorOfficeEnum::HOLDER,
             'enabled' => false,
-            'assessorCountry' => 'UK',
+            'assessorCountry' => 'GB',
         ]);
 
         $foreignRequestOutOfManagedArea = AssessorRequestFactory::createFromArray([

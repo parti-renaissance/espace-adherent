@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -155,7 +155,7 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
 
     public function getCountryName(): ?string
     {
-        return $this->country ? Intl::getRegionBundle()->getCountryName($this->country) : null;
+        return $this->country ? Countries::getName($this->country) : null;
     }
 
     public function isFromEvent(): bool

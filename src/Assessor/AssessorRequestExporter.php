@@ -5,7 +5,7 @@ namespace App\Assessor;
 use App\Entity\AssessorRequest;
 use App\Serializer\XlsxEncoder;
 use App\Utils\PhoneNumberUtils;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssessorRequestExporter
@@ -65,9 +65,7 @@ class AssessorRequestExporter
                 'votePlaceCity' => $votePlace->getCity(),
                 'votePlaceName' => $votePlace->getName(),
                 'votePlaceAddress' => $votePlace->getAddress(),
-                'votePlaceCountry' => Intl::getRegionBundle()->getCountryName(
-                    $votePlace->getCountry()
-                ),
+                'votePlaceCountry' => Countries::getName($votePlace->getCountry()),
                 'officeName' => $this->translator->trans($assessorRequest->getOfficeName()),
                 'lastName' => $assessorRequest->getLastName(),
                 'firstName' => $assessorRequest->getFirstName(),
