@@ -91,6 +91,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events/{id}",
  *             "access_control": "object.getAuthor() == user",
  *         },
+ *         "subscribe": {
+ *             "method": "POST",
+ *             "path": "/v3/events/{id}/subscribe",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\EventSubscribeController",
+ *             "requirements": {"id": "%pattern_uuid%"}
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
