@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23d8bedcb6f0a9a7371f3dc56db019b8",
+    "content-hash": "fbfd686e8a70ddedec96f02ba99c68fe",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4051,16 +4051,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.23.0",
+            "version": "v1.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "42f7dfb248318aa152b4491b72279035df0d0900"
+                "reference": "ca3817dae90d7d757381f3f63c9d7df58ca1416f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/42f7dfb248318aa152b4491b72279035df0d0900",
-                "reference": "42f7dfb248318aa152b4491b72279035df0d0900",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/ca3817dae90d7d757381f3f63c9d7df58ca1416f",
+                "reference": "ca3817dae90d7d757381f3f63c9d7df58ca1416f",
                 "shasum": ""
             },
             "require": {
@@ -4098,7 +4098,10 @@
                 "Apache-2.0"
             ],
             "description": "Cloud Storage Client for PHP",
-            "time": "2020-09-08T20:52:20+00:00"
+            "support": {
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.23.1"
+            },
+            "time": "2021-01-13T22:28:48+00:00"
         },
         {
             "name": "google/cloud-vision",
