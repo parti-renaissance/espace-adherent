@@ -46,4 +46,9 @@ class ImageStorage
         // Clears the cache file
         $this->glide->deleteCache($path);
     }
+
+    public function has(string $path): bool
+    {
+        return $this->storage->has($path);
+    }
 }

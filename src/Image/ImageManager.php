@@ -37,7 +37,9 @@ class ImageManager implements ImageManagerInterface
             throw new \RuntimeException('This object does not contain an image.');
         }
 
-        $this->imageStorage->remove($object->getImagePath());
+        if ($this->imageStorage->has($object->getImagePath())) {
+            $this->imageStorage->remove($object->getImagePath());
+        }
 
         $object->setImageName(null);
     }
