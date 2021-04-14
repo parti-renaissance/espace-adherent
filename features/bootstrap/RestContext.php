@@ -118,6 +118,14 @@ class RestContext extends BehatchRestContext
     }
 
     /**
+     * @When I log out
+     */
+    public function iLogOut(): void
+    {
+        $this->accessToken = null;
+    }
+
+    /**
      * @Given I send a :method request to :url with the access token
      */
     public function iSendARequestToWithAccessToken(string $method, string $url): void
