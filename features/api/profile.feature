@@ -80,7 +80,8 @@ Feature:
         ],
         "interests": [],
         "coalition_subscription": false,
-        "cause_subscription": false
+        "cause_subscription": false,
+        "adherent": true
     }
     """
 
