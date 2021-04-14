@@ -46,6 +46,7 @@
         "facebook/graph-sdk": "^5.4",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^2.4",
+        "google/cloud-storage": "^1.23",
         "google/cloud-vision": "^1.2",
         "h4cc/wkhtmltoimage-amd64": "^0.12.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
