@@ -151,7 +151,7 @@
         "steevanb/doctrine-stats": "^1.3",
         "symfony/css-selector": "^3.4",
         "symfony/debug-bundle": "^4.4",
-        "symfony/phpunit-bridge": "^4.4",
+        "symfony/phpunit-bridge": "^5.2",
         "symfony/web-profiler-bundle": "^4.4"
     },
     "scripts": {
