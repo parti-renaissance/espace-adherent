@@ -4,10 +4,12 @@ namespace App\Controller\Api;
 
 use App\Intl\FranceCitiesBundle;
 use App\Intl\VoteOfficeBundle;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IntlController extends AbstractController
@@ -42,5 +44,25 @@ class IntlController extends AbstractController
         }
 
         return new JsonResponse(FranceCitiesBundle::searchCities($search));
+    }
+
+    /**
+     * @Route("/countries", name="api_countries", methods={"GET"})
+     */
+    public function countriesAction(): JsonResponse
+    {
+        $util = PhoneNumberUtil::getInstance();
+
+        $countries = [];
+
+        foreach (Countries::getNames() as $region => $name) {
+            $countries[] = [
+                'name' => $name,
+                'region' => $region,
+                'code' => $util->getCountryCodeForRegion($region),
+            ];
+        }
+
+        return new JsonResponse($countries);
     }
 }
