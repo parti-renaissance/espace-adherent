@@ -375,6 +375,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $adherent = false;
 
