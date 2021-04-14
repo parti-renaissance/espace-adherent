@@ -44,6 +44,8 @@ trait EntityIdentityTrait
      *     "zone_read",
      *     "profile_read",
      *     "poll_read",
+     *     "email_template_read",
+     *     "email_template_list_read",
      * })
      *
      * @ApiProperty(
