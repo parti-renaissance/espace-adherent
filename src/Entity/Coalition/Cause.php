@@ -183,7 +183,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     private $status = self::STATUS_PENDING;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
+     * @ORM\Column(type="integer", options={"unsigned": true})
      *
      * @SymfonySerializer\Groups({"cause_read", "coalition_read"})
      */
@@ -273,6 +273,11 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function refuse(): void
     {
         $this->status = self::STATUS_REFUSED;
+    }
+
+    public function refreshFollowersCount(): void
+    {
+        $this->followersCount = $this->followers->count();
     }
 
     public function isApproved(): bool

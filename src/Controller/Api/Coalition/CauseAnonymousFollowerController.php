@@ -4,7 +4,6 @@ namespace App\Controller\Api\Coalition;
 
 use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
 use App\Coalition\CauseFollowerChangeEvent;
-use App\Coalition\Events;
 use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CauseFollower;
@@ -44,10 +43,7 @@ class CauseAnonymousFollowerController extends AbstractController
             $entityManager->flush();
 
             $notifier->sendCauseFollowerAnonymousConfirmationMessage($causeFollower);
-            $eventDispatcher->dispatch(
-                new CauseFollowerChangeEvent($cause),
-                Events::CAUSE_FOLLOWER_ADDED
-            );
+            $eventDispatcher->dispatch(new CauseFollowerChangeEvent($cause));
 
             return $this->json('OK');
         }

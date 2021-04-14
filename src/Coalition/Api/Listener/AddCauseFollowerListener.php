@@ -4,55 +4,46 @@ namespace App\Coalition\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Coalition\CauseFollowerChangeEvent;
-use App\Coalition\Events;
 use App\Entity\Coalition\Cause;
-use App\Entity\Coalition\CauseFollower;
-use App\Repository\Coalition\CauseFollowerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class AddCauseFollowerListener implements EventSubscriberInterface
 {
     private $entityManager;
-    private $causeFollowerRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, CauseFollowerRepository $causeFollowerRepository)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->causeFollowerRepository = $causeFollowerRepository;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            Events::CAUSE_FOLLOWER_ADDED => 'updateFollowersCount',
+            CauseFollowerChangeEvent::class => 'updateFollowersCount',
             KernelEvents::VIEW => ['updateFollowersCountForApip', EventPriorities::POST_WRITE],
         ];
     }
 
     public function updateFollowersCount(CauseFollowerChangeEvent $event): void
     {
-        $this->updateCount($event->getCause());
+        $event->getCause()->refreshFollowersCount();
+
+        $this->entityManager->flush();
     }
 
     public function updateFollowersCountForApip(ViewEvent $event): void
     {
-        $causeFollower = $event->getControllerResult();
+        $data = $event->getRequest()->attributes->get('data');
+        $operationName = $event->getRequest()->attributes->get('_api_item_operation_name');
 
-        if (!$event->getRequest()->isMethod(Request::METHOD_PUT)
-            || !$causeFollower instanceof CauseFollower) {
+        if ('follow' !== $operationName || !$data instanceof Cause) {
             return;
         }
 
-        $this->updateCount($causeFollower->getCause());
-    }
-
-    private function updateCount(Cause $cause): void
-    {
-        $cause->setFollowersCount($this->causeFollowerRepository->countForCause($cause));
+        $data->refreshFollowersCount();
 
         $this->entityManager->flush();
     }
