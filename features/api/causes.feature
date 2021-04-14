@@ -37,44 +37,44 @@ Feature:
       },
       "items": [
         {
-          "author": {
-            "first_name": "Jacques",
-            "last_name": "Picard",
-            "last_name_initial": "P.",
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
-          },
-          "coalition": {
-            "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
-            "followers_count": 0
-          },
-          "second_coalition": null,
-          "name": "Cause pour l'education",
-          "slug": "cause-pour-leducation",
+          "name": "Cause pour la culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
-        },
-        {
-          "author": {
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D.",
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697"
-          },
           "coalition": {
             "name": "Culture",
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
           "second_coalition": null,
-          "name": "Cause pour la culture",
-          "slug": "cause-pour-la-culture",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "followers_count": 5,
+          "slug": "cause-pour-la-culture",
+          "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+          "author": {
+            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+            "first_name": "Michelle",
+            "last_name": "Dufour",
+            "last_name_initial": "D."
+          },
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+        },
+        {
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -155,28 +155,7 @@ Feature:
       },
       "items": [
         {
-          "name": "Cause pour l'education",
-          "slug": "cause-pour-leducation",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "coalition": {
-            "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
-            "followers_count": 0
-          },
-          "second_coalition": null,
-          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "author": {
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard",
-            "last_name_initial": "P."
-          },
-          "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
-        },
-        {
           "name": "Cause pour la culture",
-          "slug": "cause-pour-la-culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
@@ -184,6 +163,8 @@ Feature:
             "followers_count": 4
           },
           "second_coalition": null,
+          "followers_count": 5,
+          "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -191,12 +172,30 @@ Feature:
             "last_name": "Dufour",
             "last_name_initial": "D."
           },
-          "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+        },
+        {
           "name": "Cause pour la culture 2",
-          "slug": "cause-pour-la-culture-2",
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
@@ -204,6 +203,8 @@ Feature:
             "followers_count": 4
           },
           "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-la-culture-2",
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -211,12 +212,10 @@ Feature:
             "last_name": "Dufour",
             "last_name_initial": "D."
           },
-          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         },
         {
           "name": "Cause pour la culture 3",
-          "slug": "cause-pour-la-culture-3",
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
@@ -224,6 +223,8 @@ Feature:
             "followers_count": 4
           },
           "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-la-culture-3",
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -231,12 +232,10 @@ Feature:
             "last_name": "Dufour",
             "last_name_initial": "D."
           },
-          "followers_count": 0,
           "image_url": null
         },
         {
           "name": "Cause pour la justice",
-          "slug": "cause-pour-la-justice",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Justice",
@@ -244,6 +243,8 @@ Feature:
             "followers_count": 0
           },
           "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-la-justice",
           "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
           "author": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -251,7 +252,6 @@ Feature:
             "last_name": "Picard",
             "last_name_initial": "P."
           },
-          "followers_count": 0,
           "image_url": null
         }
       ]
@@ -311,28 +311,7 @@ Feature:
       },
       "items": [
         {
-          "name": "Cause pour l'education",
-          "slug": "cause-pour-leducation",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "coalition": {
-            "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
-            "followers_count": 0
-          },
-          "second_coalition": null,
-          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "author": {
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard",
-            "last_name_initial": "P."
-          },
-          "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
-        },
-        {
           "name": "Cause pour la culture",
-          "slug": "cause-pour-la-culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
@@ -340,6 +319,8 @@ Feature:
             "followers_count": 4
           },
           "second_coalition": null,
+          "followers_count": 5,
+          "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -347,8 +328,27 @@ Feature:
             "last_name": "Dufour",
             "last_name_initial": "D."
           },
-          "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+        },
+        {
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -494,8 +494,13 @@ Feature:
       | DELETE  | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
 
   Scenario: As a logged-in user I can follow a cause
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
-    When I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
+    When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count | 5 |
+    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+    And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -543,8 +548,13 @@ Feature:
     """
 
   Scenario: As a logged-in user I can unfollow a cause
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
-    When I send a "DELETE" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
+    When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count | 5 |
+    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+    And I send a "DELETE" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 204
 
   Scenario: As a logged-in user I can check if I follow causes
@@ -575,6 +585,12 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a non logged-in user I can follow a cause
+    When I send a "GET" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count | 0 |
+
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
     """
@@ -634,6 +650,11 @@ Feature:
         }
     }
     """
+    When I send a "GET" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count | 1 |
 
   Scenario: As a non logged-in user I can not follow a cause if no all required data
     When I add "Content-Type" header equal to "application/json"

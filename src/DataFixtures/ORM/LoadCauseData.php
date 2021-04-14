@@ -44,6 +44,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-culture'),
             $this->getReference('adherent-1'),
+            5,
             true
         );
         $causeCulture1->addFollower($causeCulture1->createFollower($jacques));
@@ -72,6 +73,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Description de la cause pour la culture 2',
             $this->getReference('coalition-culture'),
             $this->getReference('adherent-1'),
+            0,
             true
         );
 
@@ -89,6 +91,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-education'),
             $this->getReference('adherent-3'),
+            0,
             true
         );
 
@@ -114,6 +117,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-justice'),
             $this->getReference('adherent-3'),
+            0,
             false,
             Cause::STATUS_PENDING
         ));
@@ -133,10 +137,11 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         string $description,
         Coalition $coalition,
         Adherent $author,
+        int $followersCount = 0,
         bool $withImage = false,
         string $status = Cause::STATUS_APPROVED
     ): Cause {
-        $cause = new Cause(Uuid::fromString($uuid));
+        $cause = new Cause(Uuid::fromString($uuid), $followersCount);
         $cause->setCoalition($coalition);
         $cause->setName($name);
         $cause->setDescription($description);
