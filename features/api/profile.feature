@@ -81,6 +81,7 @@ Feature:
         "interests": [],
         "coalition_subscription": false,
         "cause_subscription": false,
+        "coalitions_cgu_accepted": false,
         "adherent": true
     }
     """
@@ -499,6 +500,44 @@ Feature:
     """
     {
       "birthdate": "1988-11-27T00:00:00+01:00"
+    }
+    """
+
+    # Update coalition & cause subscriptions
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "coalition_subscription": true,
+      "cause_subscription": true
+    }
+    """
+    Then the response status code should be 200
+    Then I send a "GET" request to "/api/v3/profile/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "coalition_subscription": true,
+      "cause_subscription": true
+    }
+    """
+
+    # Update coalitions cgu acceptation
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "coalitions_cgu_accepted": true
+    }
+    """
+    Then the response status code should be 200
+    Then I send a "GET" request to "/api/v3/profile/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "coalitions_cgu_accepted": true
     }
     """
 

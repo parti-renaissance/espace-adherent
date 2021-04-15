@@ -658,6 +658,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $causeSubscription = false;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
+     */
+    private $coalitionsCguAccepted = false;
+
+    /**
      * @var CertificationRequest[]|Collection
      *
      * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
@@ -1342,6 +1349,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->activityArea = $adherentProfile->getActivityArea();
         $this->mandates = $adherentProfile->getMandates();
         $this->interests = $adherentProfile->getInterests();
+        $this->coalitionSubscription = $adherentProfile->isCoalitionSubscription();
+        $this->causeSubscription = $adherentProfile->isCauseSubscription();
+        $this->coalitionsCguAccepted = $adherentProfile->isCoalitionsCguAccepted();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -2859,5 +2869,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setCauseSubscription(bool $causeSubscription): void
     {
         $this->causeSubscription = $causeSubscription;
+    }
+
+    public function isCoalitionsCguAccepted(): bool
+    {
+        return $this->coalitionsCguAccepted;
+    }
+
+    public function setCoalitionsCguAccepted(bool $coalitionsCguAccepted): void
+    {
+        $this->coalitionsCguAccepted = $coalitionsCguAccepted;
     }
 }
