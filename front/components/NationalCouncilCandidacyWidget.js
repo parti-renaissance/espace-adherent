@@ -88,14 +88,13 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
 
                                             <div className="text--smallest font-roboto">
                                                 {membership.qualities.map(
-                                                    row => this.transQuality(row.name)
+                                                    (row) => this.transQuality(row.name)
                                                 ).join(', ')}
                                             </div>
                                         </div>
                                     </div>
                                 </label>
-                            </div>)
-                        )}
+                            </div>))}
                     </div>
                 </div>
             );
@@ -115,8 +114,8 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
                         onClick={() => this.setState({ activeMembre: i })}>
                         <h4 className="b__nudge--bottom">Membre {i}</h4>
 
-                        {this.state.activeMemberships[i] ?
-                            <>
+                        {this.state.activeMemberships[i]
+                            ? <>
                                 <input type="hidden" name={`candidacy_quality[invitations][${i - 2}][membership]`}
                                     value={this.state.activeMemberships[i].uuid} />
                                 <div className="l__row identity">
@@ -130,15 +129,15 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
 
                                             <span className={`candidate-gender l__col l__col--center b__nudge--left 
                                             ${!isValidGenders ? 'text--error' : ''}`}>
-                                                {'female' === this.state.activeMemberships[i].adherent.gender ?
-                                                    'F' : 'H' }
+                                                {'female' === this.state.activeMemberships[i].adherent.gender
+                                                    ? 'F' : 'H' }
                                             </span>
                                         </div>
 
                                         <div className={`text--smallest font-roboto 
                                         ${!isValidQualities ? 'text--error' : ''}`}>
                                             {this.state.activeMemberships[i].qualities.map(
-                                                row => <span
+                                                (row) => <span
                                                     key={row.name}
                                                     className={'quality'}>
                                                     {this.transQuality(row.name)}
@@ -200,7 +199,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
     }
 
     loadMemberships() {
-        const quality = this.state.quality;
+        const { quality } = this.state;
         const query = this.state.searchQuery;
 
         this.props.api.getTerritorialCouncilAvailableMemberships(
@@ -263,15 +262,15 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
     isValidQualities() {
         const qualitiesToValidate = _.filter(
             this.props.neededQualities,
-            qualities => -1 === qualities.indexOf(this.state.quality)
+            (qualities) => -1 === qualities.indexOf(this.state.quality)
         );
 
         return this.validateMembers(
-            _.flatMap(this.state.activeMemberships, member => ({
+            _.flatMap(this.state.activeMemberships, (member) => ({
                 uuid: member.uuid,
                 qualities: _.map(member.qualities, 'name'),
             })),
-            qualitiesToValidate,
+            qualitiesToValidate
         );
     }
 
@@ -284,7 +283,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
         const memberToCheck = membersCopy.shift();
 
         if (0 === memberToCheck.qualities.length) {
-            const memberOriginal = _.find(members, member => member.uuid === memberToCheck.uuid);
+            const memberOriginal = _.find(members, (member) => member.uuid === memberToCheck.uuid);
             memberToCheck.qualities = memberOriginal.qualities;
         }
 
@@ -292,8 +291,8 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
             for (const quality of subQualities) {
                 if (-1 !== memberToCheck.qualities.indexOf(quality)) {
                     return this.validateMembers(
-                        _.filter(members, member => member.uuid !== memberToCheck.uuid),
-                        _.filter(qualities, obj => -1 === obj.indexOf(quality))
+                        _.filter(members, (member) => member.uuid !== memberToCheck.uuid),
+                        _.filter(qualities, (obj) => -1 === obj.indexOf(quality))
                     );
                 }
             }
@@ -320,7 +319,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
         });
 
         members.forEach((member) => {
-            member.qualities = _.filter(member.qualities, quality => -1 === qualitiesToDelete.indexOf(quality));
+            member.qualities = _.filter(member.qualities, (quality) => -1 === qualitiesToDelete.indexOf(quality));
         });
 
         return members;
@@ -331,10 +330,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
             const a = {};
             a[state.activeMembre] = membership;
             return {
-                activeMemberships: {
-                    ...state.activeMemberships,
-                    ...a,
-                },
+                activeMemberships: Object.assign(state.activeMemberships, a),
             };
         });
     }
@@ -364,17 +360,17 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
 
     getGenderConfigText() {
         if (0 === this.props.availableGenders.female) {
-            return `${1 === this.props.availableGenders.male ?
-                'un' : 'deux'} homme${1 < this.props.availableGenders.male ? 's' : ''}`;
-        } else if (0 === this.props.availableGenders.male) {
-            return `${1 === this.props.availableGenders.female ?
-                'une' : 'deux'} femme${1 < this.props.availableGenders.female ? 's' : ''}`;
+            return `${1 === this.props.availableGenders.male
+                ? 'un' : 'deux'} homme${1 < this.props.availableGenders.male ? 's' : ''}`;
+        } if (0 === this.props.availableGenders.male) {
+            return `${1 === this.props.availableGenders.female
+                ? 'une' : 'deux'} femme${1 < this.props.availableGenders.female ? 's' : ''}`;
         }
 
-        return `${1 === this.props.availableGenders.male ?
-            'un' : 'deux'} homme${1 < this.props.availableGenders.male ? 's' : ''} /
-            ${1 === this.props.availableGenders.female ?
-        'une' : 'deux'} femme${1 < this.props.availableGenders.female ? 's' : ''}`;
+        return `${1 === this.props.availableGenders.male
+            ? 'un' : 'deux'} homme${1 < this.props.availableGenders.male ? 's' : ''} /
+            ${1 === this.props.availableGenders.female
+        ? 'une' : 'deux'} femme${1 < this.props.availableGenders.female ? 's' : ''}`;
     }
 
     getQualityConfigText() {

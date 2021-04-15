@@ -62,10 +62,10 @@ export default class AdherentCommitteeList extends React.Component {
                     Comité(s) suivi(s) par {this.state.adherent_name} :
                 </div>
 
-                {this.state.error ?
-                    <div className="text-error">{this.state.error}</div> :
+                {this.state.error
+                    ? <div className="text-error">{this.state.error}</div>
 
-                    this.state.committees.map((membership, index) => (
+                    : this.state.committees.map((membership, index) => (
                         <div key={index} className="adherent__committees--item">
                             <div>
                                 <a className="link--no-decor link--blue--dark"
@@ -73,12 +73,12 @@ export default class AdherentCommitteeList extends React.Component {
                                     target="_blank"
                                 >
                                     {membership.committee.name}
-                                    {membership.voting_committee ?
-                                        <span className="b__nudge--left-nano">
+                                    {membership.voting_committee
+                                        ? <span className="b__nudge--left-nano">
                                             <img src={'/images/icons/icn_vote.svg'} alt={'vote icon'}
                                                 title={'Vote dans ce comité'} />
-                                        </span> :
-                                        ''
+                                        </span>
+                                        : ''
                                     }
                                 </a>
                             </div>

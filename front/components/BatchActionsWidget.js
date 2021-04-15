@@ -49,14 +49,14 @@ export default class BatchActionsWidget extends React.Component {
     }
 
     render() {
-        const length = this.state.checked.length;
+        const { length } = this.state.checked;
 
         return (
             <div>
-                { this.state.processing ? <Loader /> :
-                    <div className="l__row">
-                        {0 < length ?
-                            <div className="pst--relative">
+                { this.state.processing ? <Loader />
+                    : <div className="l__row">
+                        {0 < length
+                            ? <div className="pst--relative">
                                 {this.actions.map((action, key) => (
                                     <div key={key}
                                         className="btn-secondary btn-secondary--blue"
@@ -69,8 +69,8 @@ export default class BatchActionsWidget extends React.Component {
                             </div>
                             : ''}
 
-                        {0 < length ?
-                            <a href="#"
+                        {0 < length
+                            ? <a href="#"
                                 className="btn-secondary btn-secondary--black b__nudge--left-small"
                                 onClick={this.handleResetClick}>Effacer la sélection
                             </a>
@@ -117,9 +117,9 @@ export default class BatchActionsWidget extends React.Component {
 
     updateCheckboxState(changed, isChecked) {
         if (isChecked) {
-            this.setState(state => ({ checked: state.checked.concat(changed) }));
+            this.setState((state) => ({ checked: state.checked.concat(changed) }));
         } else {
-            this.setState(state => ({ checked: state.checked.filter(value => -1 === changed.indexOf(value)) }));
+            this.setState((state) => ({ checked: state.checked.filter((value) => -1 === changed.indexOf(value)) }));
         }
     }
 

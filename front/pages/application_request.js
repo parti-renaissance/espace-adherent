@@ -41,7 +41,6 @@ export default (formToDisplay) => {
 
     volunteerZipCodeField.dispatchEvent(new Event('input'));
 
-
     /**
      * Running mate request form
      */
@@ -119,7 +118,7 @@ export default (formToDisplay) => {
             });
         }
     }).hover(
-        event => $(event.currentTarget).siblings().addClass('fade'),
-        event => $(event.currentTarget).siblings().removeClass('fade')
+        (event) => $(event.currentTarget).siblings().addClass('fade'),
+        (event) => $(event.currentTarget).siblings().removeClass('fade')
     );
 };

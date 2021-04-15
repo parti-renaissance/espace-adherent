@@ -66,7 +66,7 @@ export default class AlgoliaSearch extends React.Component {
             return;
         }
 
-        const createResultsHandler = type => (content) => {
+        const createResultsHandler = (type) => (content) => {
             loaded += 1;
             nbHits += content.nbHits;
             hits[type] = content.hits.map((hit) => {
@@ -93,9 +93,7 @@ export default class AlgoliaSearch extends React.Component {
             .concat(hits.proposal)
             .concat(hits.clarification)
             .concat(hits.article)
-            .concat(hits.event)
-        ;
-
+            .concat(hits.event);
         this.setState({
             loading: false,
             hits: aggregated,

@@ -21,8 +21,8 @@ export default (api) => {
         }).catch((err) => {
             element.innerHTML = 'Sauvegarder ce profil';
             /* eslint-disable no-alert */
-            window.alert('Nous n\'arrivons pas à ajouter cette personne à votre liste.\n' +
-                         'Actualisez votre page et réessayez !');
+            window.alert('Nous n\'arrivons pas à ajouter cette personne à votre liste.\n'
+                         + 'Actualisez votre page et réessayez !');
             /* eslint-enable no-alert */
         });
     }
@@ -33,15 +33,15 @@ export default (api) => {
         element.innerHTML = 'Suppression en cours...';
 
         api.deleteBoardMemberOnList(element.dataset.memberid).then((response) => {
-            element.className = element.className.replace('btn-remove-member-list' +
-            'newbtn--green', 'btn-add-member-list');
+            element.className = element.className.replace('btn-remove-member-list'
+            + 'newbtn--green', 'btn-add-member-list');
             reloadIfNeeded(element);
             element.innerHTML = 'Sauvegarder ce profil';
         }).catch((err) => {
             element.innerHTML = 'Profil sauvegardé';
             /* eslint-disable no-alert */
-            window.alert('Nous n\'arrivons pas à supprimer cette personne de votre liste.\n' +
-                         'Actualisez votre page et réessayez !');
+            window.alert('Nous n\'arrivons pas à supprimer cette personne de votre liste.\n'
+                         + 'Actualisez votre page et réessayez !');
             /* eslint-enable no-alert */
         });
     }

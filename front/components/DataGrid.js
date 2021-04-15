@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import noResultImg from './../../public/images/icons/icn_no-result.svg';
+import noResultImg from '../../public/images/icons/icn_no-result.svg';
 
 export default class DataGrid extends React.Component {
     constructor(props) {
@@ -66,7 +66,7 @@ export default class DataGrid extends React.Component {
     }
 
     handleHeaderCheckboxChange(event) {
-        const checked = event.target.checked;
+        const { checked } = event.target;
 
         if (!checked) {
             this.setState({
@@ -96,7 +96,7 @@ export default class DataGrid extends React.Component {
     }
 
     handleCheckboxChange(i, event) {
-        const selected = this.state.selected;
+        const { selected } = this.state;
 
         if (event.target.checked) {
             selected[i] = this._buildResultsCollection()[i];
@@ -147,14 +147,15 @@ export default class DataGrid extends React.Component {
                                 this.props.columns,
                                 this.state.results,
                                 this.state.selected,
-                                currentPage)
+                                currentPage
+                            )
                             }
                         </tbody>
                     </table>
                 </div>
 
-                {1 < pagesCount &&
-                    <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
+                {1 < pagesCount
+                    && <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
                         <ul>
                             <li>
                                 <div className="pager__go-to-page">
@@ -165,7 +166,7 @@ export default class DataGrid extends React.Component {
                                         type="number"
                                         placeholder="5"
                                         className="pager__action"
-                                        onChange={event => this.handlePagerClick(event.target.value)}
+                                        onChange={(event) => this.handlePagerClick(event.target.value)}
                                     />
                                     <span>{currentPage} sur {pagesCount}</span>
                                 </div>
@@ -235,8 +236,8 @@ export default class DataGrid extends React.Component {
                 <th key={`column${columns[i].key}`}
                     style={columns[i].style || null}
                     className={columns[i].className || ''}>
-                    {columns[i].sortable ?
-                        <a
+                    {columns[i].sortable
+                        ? <a
                             href={`?sort=${columns[i].key}&order=${
                                 this.state.sort === columns[i].key && 'd' === this.state.order ? 'a' : 'd'
                             }`}
@@ -302,17 +303,17 @@ export default class DataGrid extends React.Component {
                         links.push(
                             <a
                                 {...(
-                                    'boolean' === typeof link.targetBlank && link.targetBlank ?
-                                        { target: '_blank' } :
-                                        {}
+                                    'boolean' === typeof link.targetBlank && link.targetBlank
+                                        ? { target: '_blank' }
+                                        : {}
                                 )}
                                 {...('string' === typeof link.className ? { className: link.className } : {})}
                                 {...('object' === typeof link.data ? link.data : {})}
                                 {...(
                                     'string' === typeof link.callbackName
-                                    && 'function' === typeof document[link.callbackName] ?
-                                        { onClick: document[link.callbackName] } :
-                                        {}
+                                    && 'function' === typeof document[link.callbackName]
+                                        ? { onClick: document[link.callbackName] }
+                                        : {}
                                 )}
                                 key={`result${i}-column${j}-link${index}`}
                                 href={'undefined' !== typeof link.url ? link.url : '#'}
@@ -374,7 +375,7 @@ export default class DataGrid extends React.Component {
 
     _sortResults() {
         if (this.state.sort) {
-            const sort = this.state.sort;
+            const { sort } = this.state;
             const order = this.state.order || 'd';
 
             this.state.results.sort((a, b) => {

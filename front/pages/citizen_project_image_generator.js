@@ -66,6 +66,5 @@ export const previewHandler = () => {
         }
     };
 
-
     on(imageUpload, 'change', imagePreview);
 };

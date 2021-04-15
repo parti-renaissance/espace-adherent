@@ -41,7 +41,7 @@ export default class MessageStatusLoader extends React.Component {
             this.messageId,
             (data) => {
                 this.setState(
-                    state => ({
+                    (state) => ({
                         synchronized: data.synchronized,
                         recipientCount: data.recipient_count,
                         calls: state.calls + 1,
@@ -55,11 +55,11 @@ export default class MessageStatusLoader extends React.Component {
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                {this.props.sendLocked ?
-                    <p className="text--medium-small">
+                {this.props.sendLocked
+                    ? <p className="text--medium-small">
                             Vous avez atteint la limite d'envoi de mails pour ce mois-ci
-                    </p> :
-                    <p className="text--medium-small">
+                    </p>
+                    : <p className="text--medium-small">
                             Vous allez envoyer un message à&nbsp;
                         <span className="text--bold text--blue--dark">
                             {numberFormat(this.state.recipientCount)}
@@ -83,8 +83,8 @@ export default class MessageStatusLoader extends React.Component {
 
         return <div>
             <p className="text--medium-small">Votre filtre ne correspond à aucun contact !</p>
-            {this.withResetButton ?
-                <p>
+            {this.withResetButton
+                ? <p>
                     <a href="./filtrer" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top">
                         RECHARGER
                     </a>

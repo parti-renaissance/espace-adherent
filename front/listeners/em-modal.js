@@ -2,7 +2,7 @@ import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import Modal from '../components/Modal';
 
-export default function () {
+export default () => {
     findAll(document, '.em-modal--trigger').forEach((element) => {
         on(element, 'click', (event) => {
             event.preventDefault();
@@ -24,4 +24,4 @@ export default function () {
             );
         });
     });
-}
+};

@@ -82,15 +82,15 @@ export default class DonationAmountChooser extends React.Component {
                     maxValue={this.state.abonnement ? maxAbonnementAmount : maxAmount}
                 />
 
-                { this.state.abonnement && this.state.amount > maxAbonnementAmount &&
-                    <div className="amount-chooser__help">
+                { this.state.abonnement && this.state.amount > maxAbonnementAmount
+                    && <div className="amount-chooser__help">
                         Votre don mensuel ne peut dépasser {maxAbonnementAmount} euros.
                         Si vous souhaitez donner plus, vous pourrez compléter avec un don ponctuel.
                     </div>
                 }
 
-                {this.state.amount ?
-                    <div className="donation__amount-chooser__after-taxes">
+                {this.state.amount
+                    ? <div className="donation__amount-chooser__after-taxes">
                         soit <span className="after-taxes-amount">
                             {App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)} €
                         </span> après réduction d’impôt <div className="infos-taxe-reduction">
