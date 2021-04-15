@@ -4,6 +4,7 @@ namespace App\Entity\Coalition;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
@@ -189,12 +190,26 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      */
     protected $followersCount;
 
+    /**
+     * @var QuickAction[]|Collection
+     *
+     * @ApiSubresource
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Coalition\QuickAction", mappedBy="cause", fetch="EXTRA_LAZY", orphanRemoval=true, cascade={"all"})
+     *
+     * @SymfonySerializer\Groups({"cause_update"})
+     *
+     * @Assert\Valid
+     */
+    private $quickActions;
+
     public function __construct(UuidInterface $uuid = null, int $followersCount = 0)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->followersCount = $followersCount;
 
         $this->followers = new ArrayCollection();
+        $this->quickActions = new ArrayCollection();
     }
 
     public function getDescription(): string
@@ -263,6 +278,24 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function setFollowersCount(int $count): void
     {
         $this->followersCount = $count;
+    }
+
+    public function getQuickActions(): Collection
+    {
+        return $this->quickActions;
+    }
+
+    public function addQuickAction(QuickAction $quickAction): void
+    {
+        if (!$this->quickActions->contains($quickAction) && !$quickAction->getCause()) {
+            $quickAction->setCause($this);
+            $this->quickActions->add($quickAction);
+        }
+    }
+
+    public function removeQuickAction(QuickAction $quickAction): void
+    {
+        $this->quickActions->removeElement($quickAction);
     }
 
     public function approve(): void

@@ -66,6 +66,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             false
         ));
+        $this->addReference('cause-culture-1', $causeCulture1);
 
         $causeCulture2 = $this->createCause(
             self::CAUSE_2_UUID,
@@ -94,6 +95,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             0,
             true
         );
+        $this->addReference('cause-education-1', $causeEducation1);
 
         $causeJustice1 = $this->createCause(
             self::CAUSE_5_UUID,
