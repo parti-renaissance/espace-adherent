@@ -16,7 +16,7 @@ trait ApiControllerTestTrait
         string $clientUuid,
         string $clientSecret,
         string $grantType,
-        string $scope,
+        ?string $scope,
         string $username = null,
         string $userPassword = null
     ): ?string {

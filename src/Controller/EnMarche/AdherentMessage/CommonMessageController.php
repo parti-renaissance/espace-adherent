@@ -17,12 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommonMessageController extends AbstractController
 {
-    private $mailchimpCampagnUrl;
+    private $mailchimpCampaignUrl;
     private $mailchimpOrgId;
 
-    public function __construct(string $mailchimpCampagnUrl, string $mailchimpOrgId)
+    public function __construct(string $mailchimpCampaignUrl, string $mailchimpOrgId)
     {
-        $this->mailchimpCampagnUrl = $mailchimpCampagnUrl;
+        $this->mailchimpCampaignUrl = $mailchimpCampaignUrl;
         $this->mailchimpOrgId = $mailchimpOrgId;
     }
 
@@ -69,7 +69,7 @@ class CommonMessageController extends AbstractController
 
         return $this->redirect(sprintf(
             '%s?u=%s&id=%s',
-            $this->mailchimpCampagnUrl,
+            $this->mailchimpCampaignUrl,
             $this->mailchimpOrgId,
             current($message->getMailchimpCampaigns())->getExternalId())
         );
