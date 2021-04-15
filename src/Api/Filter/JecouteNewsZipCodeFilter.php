@@ -1,14 +1,20 @@
 <?php
 
-namespace App\Filter;
+namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\Jecoute\News;
+use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 
-final class ContributorsCountFilter extends AbstractFilter
+final class JecouteNewsZipCodeFilter extends AbstractFilter
 {
+    /**
+     * @var ZoneRepository
+     */
+    private $zoneRepository;
+
     protected function filterProperty(
         string $property,
         $value,
@@ -17,23 +23,22 @@ final class ContributorsCountFilter extends AbstractFilter
         string $resourceClass,
         string $operationName = null
     ): void {
-        if (Idea::class !== $resourceClass
-            || !\array_key_exists($property, $this->properties)
-            || !\in_array($value, ['desc', 'asc'])
+        if (News::class !== $resourceClass
+            || 'zipCode' !== $property
+            || empty($value)
         ) {
             return;
         }
 
-        $alias = $queryBuilder->getRootAliases()[0];
+        $zones = $this->zoneRepository->findByPostalCode($value);
+
+        $rootAlias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
-            ->addSelect('COUNT(adherent) as HIDDEN contributorsCount')
-            ->leftJoin($alias.'.answers', 'answer')
-            ->leftJoin('answer.threads', 'thread')
-            ->leftJoin('thread.comments', 'threadComment')
-            ->leftJoin('threadComment.author', 'adherent')
-            ->groupBy($alias.'.id')
-            ->addOrderBy('contributorsCount', $value)
+            ->leftJoin(sprintf('%s.zone', $rootAlias), 'zone')
+            ->leftJoin('zone.children', 'children')
+            ->where('zone IS NULL OR zone IN (:zones) OR children IN (:zones)')
+            ->setParameter('zones', $zones)
         ;
     }
 
@@ -45,18 +50,23 @@ final class ContributorsCountFilter extends AbstractFilter
 
         $description = [];
         foreach ($this->properties as $property => $strategy) {
-            $description['contributorsCount'] = [
+            $description['zipCode'] = [
                 'property' => $property,
                 'type' => 'string',
                 'required' => false,
                 'swagger' => [
-                    'description' => 'Order by contributors count.',
-                    'name' => 'contributorsCount',
+                    'description' => 'Filter by zipCode.',
+                    'name' => 'zipCode',
                     'type' => 'string',
                 ],
             ];
         }
 
         return $description;
+    }
+
+    public function setZoneRepository(ZoneRepository $zoneRepository): void
+    {
+        $this->zoneRepository = $zoneRepository;
     }
 }

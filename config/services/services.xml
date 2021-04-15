@@ -305,13 +305,13 @@
         </service>
 
         <!-- Filter -->
-        <service id="App\Filter\ContributorsCountFilter">
+        <service id="App\Api\Filter\ContributorsCountFilter">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
             <argument type="collection"><argument key="contributorsCount"/></argument>
         </service>
-        <service id="App\Filter\IdeaStatusFilter">
+        <service id="App\Api\Filter\IdeaStatusFilter">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
@@ -320,7 +320,7 @@
                 <argument type="service" id="App\Repository\IdeasWorkshop\IdeaRepository" />
             </call>
         </service>
-        <service id="App\Filter\JecouteNewsZipCodeFilter">
+        <service id="App\Api\Filter\JecouteNewsZipCodeFilter">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="logger" on-invalid="ignore"/>

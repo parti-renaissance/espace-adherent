@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
+use App\Api\Filter\MySubscribedEventsFilter;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -119,6 +120,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  *
+ * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  *     "mode": "exact",
