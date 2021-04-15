@@ -38,7 +38,7 @@ trait EntityNullablePostAddressTrait
 
     public function getCountryName(): ?string
     {
-        return $this->postAddress ? Countries::getName($this->postAddress->getCountry()) : null;
+        return $this->postAddress && $this->postAddress->getCountry() ? Countries::getName($this->postAddress->getCountry()) : null;
     }
 
     /**

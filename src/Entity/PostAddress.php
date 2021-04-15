@@ -288,7 +288,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         $parts[] = str_replace(',', '', $this->address);
         $parts[] = sprintf('%s %s', $this->postalCode, $this->getCityName());
 
-        if (!$this->isFrenchAddress()) {
+        if (!$this->isFrenchAddress() && $this->country) {
             $parts[] = Countries::getName($this->country, $locale);
         }
 
