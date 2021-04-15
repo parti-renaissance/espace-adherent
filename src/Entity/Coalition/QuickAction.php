@@ -10,15 +10,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
+ *         "pagination_enabled": false,
  *         "normalization_context": {"groups": {"quick_action_read"}},
  *     },
- *     collectionOperations={
- *         "get",
- *         "post",
- *     },
+ *     collectionOperations={"get"},
  *     itemOperations={"get"},
  * )
  *
+ * @ORM\Table(name="cause_quick_action")
  * @ORM\Entity
  */
 class QuickAction
@@ -64,8 +63,6 @@ class QuickAction
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause", inversedBy="quickActions")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @SymfonySerializer\Groups({"quick_action_read"})
      *
      * @Assert\NotNull
      */

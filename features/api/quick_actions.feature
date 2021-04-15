@@ -13,45 +13,27 @@ Feature:
       | LoadQuickActionData   |
 
   Scenario: As a non logged-in user I can see quick actions of the cause
-    Given I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions?page_size=3"
+    Given I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-    {
-      "metadata": {
-        "total_items": 3,
-        "items_per_page": 3,
-        "count": 3,
-        "current_page": 1,
-        "last_page": 1
+    [
+      {
+        "id": "@integer@",
+        "title": "Première action rapide de la culture",
+        "url": "http://culture.fr"
       },
-      "items": [
-        {
-          "id": "@integer@",
-          "title": "Première action rapide de la culture",
-          "url": "http://culture.fr",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        },
-        {
-          "id": "@integer@",
-          "title": "Deuxième action rapide de la culture",
-          "url": "http://test.culture.fr",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        },
-        {
-            "id": 3,
-            "title": "Troisième action rapide de la culture",
-            "url": "http://culture.com",
-            "cause": {
-              "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-            }
-        }
-      ]
-    }
+      {
+        "id": "@integer@",
+        "title": "Deuxième action rapide de la culture",
+        "url": "http://test.culture.fr"
+      },
+      {
+          "id": 3,
+          "title": "Troisième action rapide de la culture",
+          "url": "http://culture.com"
+      }
+    ]
     """
 
   Scenario: As a non logged-in user I see no quick actions of the cause if it has no quick action
@@ -59,58 +41,31 @@ Feature:
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-    {
-      "metadata": {
-        "total_items": 0,
-        "items_per_page": 2,
-        "count": 0,
-        "current_page": 1,
-        "last_page": 1
-      },
-      "items": []
-    }
+    []
     """
 
   Scenario: As a logged-in user I can modify quick actions of the cause
-    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions?page_size=3"
+    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-    {
-      "metadata": {
-        "total_items": 3,
-        "items_per_page": 3,
-        "count": 3,
-        "current_page": 1,
-        "last_page": 1
+    [
+      {
+        "id": 1,
+        "title": "Première action rapide de la culture",
+        "url": "http://culture.fr"
       },
-      "items": [
-        {
-          "id": 1,
-          "title": "Première action rapide de la culture",
-          "url": "http://culture.fr",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        },
-        {
-          "id": 2,
-          "title": "Deuxième action rapide de la culture",
-          "url": "http://test.culture.fr",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        },
-        {
-          "id": 3,
-          "title": "Troisième action rapide de la culture",
-          "url": "http://culture.com",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        }
-      ]
-    }
+      {
+        "id": 2,
+        "title": "Deuxième action rapide de la culture",
+        "url": "http://test.culture.fr"
+      },
+      {
+        "id": 3,
+        "title": "Troisième action rapide de la culture",
+        "url": "http://culture.com"
+      }
+    ]
     """
     When I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
     And I add "Content-Type" header equal to "application/json"
@@ -137,45 +92,27 @@ Feature:
     Then the response status code should be 200
 
     When I log out
-    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions?page_size=3"
+    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-    {
-      "metadata": {
-        "total_items": 3,
-        "items_per_page": 3,
-        "count": 3,
-        "current_page": 1,
-        "last_page": 1
+    [
+      {
+        "id": 1,
+        "title": "Nouveau titre",
+        "url": "http://new.test"
       },
-      "items": [
-        {
-          "id": 1,
-          "title": "Nouveau titre",
-          "url": "http://new.test",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        },
-        {
-          "id": 2,
-          "title": "Nouveau titre 2",
-          "url": "http://test.culture.fr",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        },
-        {
-          "id": 5,
-          "title": "Nouvelle URL",
-          "url": "https://new.url.com",
-          "cause": {
-            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-          }
-        }
-      ]
-    }
+      {
+        "id": 2,
+        "title": "Nouveau titre 2",
+        "url": "http://test.culture.fr"
+      },
+      {
+        "id": 5,
+        "title": "Nouvelle URL",
+        "url": "https://new.url.com"
+      }
+    ]
     """
 
   Scenario: As a logged-in user I can not modify quick actions of the cause with invalid data
@@ -230,8 +167,14 @@ Feature:
     """
 
   Scenario: As a logged-in user I can add quick actions to the cause
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
-    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/quick_actions"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    []
+    """
+    When I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    And I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/017491f9-1953-482e-b491-20418235af1f" with body:
     """
     {
@@ -254,32 +197,17 @@ Feature:
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-    {
-      "metadata": {
-        "total_items": 2,
-        "items_per_page": 2,
-        "count": 2,
-        "current_page": 1,
-        "last_page": 1
+    [
+      {
+        "id": "@integer@",
+        "title": "Action rapide 1",
+        "url": "http://action.fr"
       },
-      "items": [
-        {
-          "id": "@integer@",
-          "title": "Action rapide 1",
-          "url": "http://action.fr",
-          "cause": {
-            "uuid": "017491f9-1953-482e-b491-20418235af1f"
-          }
-        },
-        {
-          "id": "@integer@",
-          "title": "Action rapide 2",
-          "url": "http://action.eu",
-          "cause": {
-            "uuid": "017491f9-1953-482e-b491-20418235af1f"
-          }
-        }
-      ]
-    }
+      {
+        "id": "@integer@",
+        "title": "Action rapide 2",
+        "url": "http://action.eu"
+      }
+    ]
     """
 

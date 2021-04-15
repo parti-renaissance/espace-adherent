@@ -12,7 +12,7 @@ class LoadQuickActionData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'quick_action');
+        AutoIncrementResetter::resetAutoIncrement($manager, 'cause_quick_action');
 
         $causeCulture = $this->getReference('cause-culture-1');
         $causeEducation = $this->getReference('cause-education-1');

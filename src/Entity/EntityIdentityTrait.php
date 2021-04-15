@@ -43,7 +43,6 @@ trait EntityIdentityTrait
      *     "event_list_read",
      *     "coalition_read",
      *     "cause_read",
-     *     "quick_action_read",
      *     "zone_read",
      *     "profile_read",
      *     "poll_read",
