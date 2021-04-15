@@ -26,6 +26,16 @@ app_user_login_check:
     requirements:
         app_domain: "%app_host%|%coalitions_auth_host%"
 
+logout:
+    host: "{app_domain}"
+    path: "/deconnexion"
+    methods: "GET"
+    controller: App\Controller\EnMarche\Security\SecurityController::logoutAction
+    defaults:
+        app_domain: '%app_host%'
+    requirements:
+        app_domain: "%app_host%|%coalitions_auth_host%"
+
 #
 # Assets
 #
