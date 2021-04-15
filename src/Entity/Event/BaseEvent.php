@@ -123,6 +123,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "partial",
  *     "mode": "exact",
  *     "beginAt": "start",
+ *     "finishAt": "strictly_after",
  * })
  */
 abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
