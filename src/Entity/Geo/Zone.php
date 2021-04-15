@@ -32,7 +32,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
+ *     "name": "word_start",
  *     "type": "exact"
  * })
  *
