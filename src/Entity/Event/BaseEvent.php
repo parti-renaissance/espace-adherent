@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Api\Filter\MySubscribedEventsFilter;
+use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -76,6 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
+ *         "order": {"beginAt": "ASC"},
  *         "normalization_context": {
  *             "groups": {"event_read", "image_owner_exposed"}
  *         },
@@ -121,6 +123,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(MySubscribedEventsFilter::class)
+ * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  *     "mode": "exact",
