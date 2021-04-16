@@ -5,6 +5,7 @@ namespace App\Entity\Event;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
@@ -124,11 +125,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
+ * @ApiFilter(DateFilter::class, properties={"finishAt": "strictly_after"})
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  *     "mode": "exact",
  *     "beginAt": "start",
- *     "finishAt": "strictly_after",
  * })
  */
 abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
