@@ -390,6 +390,9 @@ security:
         ROLE_CANDIDATE_DEPARTMENTAL:
             - ROLE_CANDIDATE
 
+        ROLE_CANDIDATE:
+            - ROLE_DATA_CORNER
+
     access_decision_manager:
         strategy: unanimous
 

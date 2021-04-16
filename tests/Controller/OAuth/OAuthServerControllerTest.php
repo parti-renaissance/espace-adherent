@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\OAuth;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Device;
 use App\Entity\OAuth\AuthorizationCode;
 use App\OAuth\Model\Client;
@@ -358,6 +359,44 @@ class OAuthServerControllerTest extends WebTestCase
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect());
         static::assertRegExp(self::AUTH_TOKEN_URI_REGEX, $response->headers->get('Location'));
+    }
+
+    public function testOAuthAuthenticationIsFailedForClientWithRequestedRoles(): void
+    {
+        $authorizeUrl = $this->createAuthorizeUrl([], LoadClientData::CLIENT_12_UUID, null);
+        $this->client->request(Request::METHOD_GET, $authorizeUrl);
+        $response = $this->client->getResponse();
+        static::assertTrue($response->isRedirect('/connexion'));
+
+        $crawler = $this->client->followRedirect();
+        $this->isSuccessful($this->client->getResponse());
+        $this->client->submit($crawler->selectButton('Connexion')->form([
+            '_login_email' => 'carl999@example.fr',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+        ]));
+        static::assertTrue($this->client->getResponse()->isRedirect($authorizeUrl));
+
+        $this->client->followRedirect();
+        static::assertStatusCode(403, $this->client);
+    }
+
+    public function testOAuthAuthenticationIsSuccessfulForClientWithRequestedRoles(): void
+    {
+        $authorizeUrl = $this->createAuthorizeUrl([], LoadClientData::CLIENT_12_UUID, null);
+        $this->client->request(Request::METHOD_GET, $authorizeUrl);
+        $response = $this->client->getResponse();
+        static::assertTrue($response->isRedirect('/connexion'));
+
+        $crawler = $this->client->followRedirect();
+        $this->isSuccessful($this->client->getResponse());
+        $this->client->submit($crawler->selectButton('Connexion')->form([
+            '_login_email' => 'francis.brioul@yahoo.com',
+            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+        ]));
+        static::assertTrue($this->client->getResponse()->isRedirect($authorizeUrl));
+
+        $this->client->followRedirect();
+        static::assertTrue($this->client->getResponse()->isRedirect());
     }
 
     private function findAuthorizationCode(string $identifier): ?AuthorizationCode

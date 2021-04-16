@@ -7,11 +7,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20210409110544 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE

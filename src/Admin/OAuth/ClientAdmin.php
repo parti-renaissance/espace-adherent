@@ -61,6 +61,7 @@ class ClientAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
+                    'show' => [],
                     'edit' => [],
                     'delete' => [
                         'template' => '@SonataAdmin/CRUD/list__action_delete.html.twig',
@@ -74,22 +75,14 @@ class ClientAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Informations')
-                ->add('name', null, [
-                    'label' => 'Nom',
-                ])
-                ->add('description', null, [
-                    'label' => 'Description',
-                ])
+                ->add('name', null, ['label' => 'Nom'])
+                ->add('description', null, ['label' => 'Description'])
                 ->add('redirectUris', 'array', [
                     'label' => 'Adresses de redirection',
                     'template' => 'admin/oauth/client/_show_redirectUris.html.twig',
                 ])
-                ->add('createdAt', 'datetime', [
-                    'label' => 'Date de création',
-                ])
-                ->add('updatedAt', 'datetime', [
-                    'label' => 'Date de modification',
-                ])
+                ->add('createdAt', 'datetime', ['label' => 'Date de création'])
+                ->add('updatedAt', 'datetime', ['label' => 'Date de modification'])
             ->end()
             ->with('Paramètres de connexion')
                 ->add('askUserForAuthorization', 'boolean', [
@@ -103,12 +96,9 @@ class ClientAdmin extends AbstractAdmin
                     'label' => 'Scopes autorisés',
                     'template' => 'admin/oauth/client/_show_scopes.html.twig',
                 ])
-                ->add('uuid', null, [
-                    'label' => 'Consumer Key (API Key)',
-                ])
-                ->add('secret', null, [
-                    'label' => 'Consumer Secret (API Secret)',
-                ])
+                ->add('requestedRoles', null, ['label' => 'Rôles utilisateur nécessaire'])
+                ->add('uuid', null, ['label' => 'Consumer Key (API Key)'])
+                ->add('secret', null, ['label' => 'Consumer Secret (API Secret)'])
             ->end()
         ;
     }
@@ -142,6 +132,12 @@ class ClientAdmin extends AbstractAdmin
                 'allow_delete' => true,
                 'by_reference' => false,
                 'error_bubbling' => false,
+            ])
+            ->add('requestedRoles', CollectionType::class, [
+                'required' => false,
+                'label' => 'Rôles utilisateur nécessaire',
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
         ;
     }
