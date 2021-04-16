@@ -27,7 +27,12 @@ Feature:
         "items": [
             {
                 "category": {
-                    "name": "Atelier du programme"
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
                 },
                 "name": "Événement culturel 1",
                 "slug": "@string@-evenement-culturel-1",
@@ -56,7 +61,12 @@ Feature:
             },
             {
                 "category": {
-                    "name": "Atelier du programme"
+                    "event_group_category": {
+                        "name": "\u00e9v\u00e9nement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
                 },
                 "name": "Événement culturel 2",
                 "slug": "@string@-evenement-culturel-2",
@@ -105,7 +115,12 @@ Feature:
         "items": [
             {
                 "category": {
-                    "name": "Marche"
+                    "name": "Marche",
+                    "slug": "marche",
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    }
                 },
                 "name": "Événement culturel 5",
                 "slug": "@string@-evenement-culturel-5",
@@ -134,7 +149,12 @@ Feature:
             },
             {
                 "category": {
-                    "name": "Atelier du programme"
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme",
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    }
                 },
                 "name": "Événement culturel 3",
                 "slug": "@string@-evenement-culturel-3",
@@ -183,7 +203,12 @@ Feature:
         "items": [
             {
                 "category": {
-                    "name": "Événement innovant"
+                    "name": "Événement innovant",
+                    "slug": "evenement-innovant",
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    }
                 },
                 "name": "Événement culturel 6",
                 "slug": "@string@-evenement-culturel-6",

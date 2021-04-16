@@ -95,7 +95,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "object.getAuthor() == user",
  *         },
  *         "subscribe": {
- *             "method": "POST",
+ *             "method": "POST|DELETE",
  *             "path": "/v3/events/{id}/subscribe",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "defaults": {"_api_receive": false},
@@ -343,7 +343,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *
      * @var BaseEventCategory|null
      *
-     * @SymfonySerializer\Groups({"event_list_read"})
+     * @SymfonySerializer\Groups({"event_list_read", "event_read"})
      */
     protected $category;
 
@@ -631,5 +631,15 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function setMode(?string $mode): void
     {
         $this->mode = $mode;
+    }
+
+    public function getNormalizationGroups(): array
+    {
+        return ['event_read'];
+    }
+
+    public function getExposedRouteParams(): array
+    {
+        return ['slug' => $this->slug];
     }
 }

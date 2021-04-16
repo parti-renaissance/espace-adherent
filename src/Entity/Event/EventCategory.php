@@ -4,6 +4,7 @@ namespace App\Entity\Event;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,6 +28,8 @@ class EventCategory extends BaseEventCategory
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"event_read", "event_list_read"})
      */
     private $eventGroupCategory;
 

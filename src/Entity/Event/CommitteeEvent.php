@@ -5,6 +5,7 @@ namespace App\Entity\Event;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\ExposedObjectInterface;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\PostAddress;
 use App\Entity\Report\ReportableInterface;
@@ -26,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
-class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ReportableInterface
+class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ReportableInterface, ExposedObjectInterface
 {
     use UserDocumentTrait;
 
@@ -222,5 +223,10 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     public function getIndexOptions(): array
     {
         return [];
+    }
+
+    public function getExposedRouteName(): string
+    {
+        return 'app_committee_event_show';
     }
 }

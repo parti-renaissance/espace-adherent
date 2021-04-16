@@ -48,7 +48,7 @@ final class OrderEventsBySubscriptionsFilter extends AbstractContextAwareFilter
     public function getDescription(string $resourceClass): array
     {
         return [
-            'subscriptions' => [
+            self::SUB_PROPERTY_NAME => [
                 'property' => null,
                 'type' => 'string',
                 'required' => false,
