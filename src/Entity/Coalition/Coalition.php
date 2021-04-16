@@ -53,7 +53,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(name="coalition_name_unique", columns="name")
  *     }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Coalition\CoalitionRepository")
  */
 class Coalition implements ExposedImageOwnerInterface, FollowedInterface
 {

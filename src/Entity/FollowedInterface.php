@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-interface FollowedInterface extends ImageOwnerInterface
+interface FollowedInterface
 {
     public function addFollower(FollowerInterface $follower): void;
 
