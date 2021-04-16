@@ -99,7 +99,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     use EntityZoneTrait;
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
-    use EntityExposedObjectTrait;
 
     public const CLOSED = 'CLOSED';
     public const WAITING_STATUSES = [

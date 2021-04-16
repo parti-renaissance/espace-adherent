@@ -43,7 +43,7 @@ final class MySubscribedEventsFilter extends AbstractContextAwareFilter
     public function getDescription(string $resourceClass): array
     {
         return [
-            'subscribedOnly' => [
+            self::PROPERTY_NAME => [
                 'property' => null,
                 'type' => 'string',
                 'required' => false,

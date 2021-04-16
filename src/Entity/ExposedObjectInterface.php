@@ -4,9 +4,9 @@ namespace App\Entity;
 
 interface ExposedObjectInterface
 {
-    public function getNormalizationGroups(): array;
+    public function getId(): ?int;
 
-    public function getUrlParamName(): ?string;
+    public function getNormalizationGroups(): array;
 
     public function getExposedRouteName(): string;
 

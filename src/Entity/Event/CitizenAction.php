@@ -5,6 +5,7 @@ namespace App\Entity\Event;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
+use App\Entity\ExposedObjectInterface;
 use App\Entity\PostAddress;
 use App\Entity\Report\ReportableInterface;
 use App\Event\EventTypeEnum;
@@ -18,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CitizenActionRepository")
  */
-class CitizenAction extends BaseEvent implements ReportableInterface
+class CitizenAction extends BaseEvent implements ReportableInterface, ExposedObjectInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\CitizenActionCategory")
@@ -156,5 +157,10 @@ class CitizenAction extends BaseEvent implements ReportableInterface
         }
 
         return $organizer->getUuidAsString();
+    }
+
+    public function getExposedRouteName(): string
+    {
+        return 'app_citizen_action_event_show';
     }
 }

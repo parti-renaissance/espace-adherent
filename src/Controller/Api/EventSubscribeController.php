@@ -3,10 +3,12 @@
 namespace App\Controller\Api;
 
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,8 +29,22 @@ class EventSubscribeController extends AbstractController
         $this->validator = $validator;
     }
 
-    public function __invoke(BaseEvent $event, UserInterface $adherent): Response
+    public function __invoke(Request $request, BaseEvent $event, UserInterface $adherent): Response
     {
+        if ($request->isMethod(Request::METHOD_DELETE)) {
+            $eventRegistration = $this->entityManager->getRepository(EventRegistration::class)->findOneBy([
+                'event' => $event,
+                'adherentUuid' => $adherent->getUuid(),
+            ]);
+
+            if ($eventRegistration) {
+                $this->entityManager->remove($eventRegistration);
+                $this->entityManager->flush();
+            }
+
+            return $this->json('OK', Response::HTTP_OK);
+        }
+
         $errors = $this->validator->validate($command = new EventRegistrationCommand($event, $adherent));
 
         if ($errors->count()) {
