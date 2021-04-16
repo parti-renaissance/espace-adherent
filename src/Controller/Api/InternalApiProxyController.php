@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -21,18 +22,23 @@ class InternalApiProxyController extends AbstractController
         Request $request,
         InternalApiApplication $internalApiApplication,
         string $path,
-        HttpClientInterface $internalApiProxyClient
+        HttpClientInterface $internalApiProxyClient,
+        UserInterface $user
     ): Response {
-        $subRequestOption = \in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT], true)
-            ? [
-                'headers' => [
-                    'Content-Type' => $request->headers->get('Content-Type'),
-                    'Authorization' => $request->headers->get('Authorization'),
-                ],
-                'body' => $request->getContent(),
-            ]
-            : []
-        ;
+        $subRequestOption = [
+            'headers' => [
+                'X-User-UUID' => $user->getUuid()->toString(),
+            ],
+        ];
+
+        if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT], true)) {
+            // Headers
+            $subRequestOption['headers']['Content-Type'] = $request->headers->get('Content-Type');
+            $subRequestOption['headers']['Authorization'] = $request->headers->get('Authorization');
+
+            //Body
+            $subRequestOption['body'] = $request->getContent();
+        }
 
         $response = $internalApiProxyClient->request(
             $request->getMethod(),
