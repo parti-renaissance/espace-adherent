@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class PostCauseFollowerCreationListener implements EventSubscriberInterface
+class NotificationPostCauseFollowerCreationListener implements EventSubscriberInterface
 {
     private $notifier;
 

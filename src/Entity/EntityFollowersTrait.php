@@ -20,6 +20,15 @@ trait EntityFollowersTrait
         return $this->followers->toArray();
     }
 
+    public function hasFollower(Adherent $adherent): bool
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('adherent', $adherent))
+        ;
+
+        return $this->followers->matching($criteria)->count() > 0;
+    }
+
     public function addFollower(FollowerInterface $follower): void
     {
         if (!$this->followers->contains($follower)) {

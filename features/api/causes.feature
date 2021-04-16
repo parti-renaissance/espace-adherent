@@ -493,12 +493,13 @@ Feature:
       | PUT     | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
       | DELETE  | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
 
-  Scenario: As a logged-in user I can follow a cause
+  Scenario: As a logged-in user I can follow a cause (without CoalitionSubscription)
     When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | followers_count | 5 |
+      | followers_count           | 5 |
+      | coalition.followers_count | 4 |
     When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 200
@@ -546,16 +547,53 @@ Feature:
         }
     }
     """
+    When I log out
+    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count           | 6 |
+      | coalition.followers_count | 4 |
+
+  Scenario: As a logged-in user I can follow a cause (with CoalitionSubscription)
+    When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count           | 5 |
+      | coalition.followers_count | 4 |
+
+    When I am logged with "benjyd@aol.com" via OAuth client "Coalition App"
+    And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
+    Then the response status code should be 200
+
+    When I log out
+    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count           | 6 |
+      | coalition.followers_count | 5 |
 
   Scenario: As a logged-in user I can unfollow a cause
     When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | followers_count | 5 |
-    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+      | followers_count           | 5 |
+      | coalition.followers_count | 4 |
+
+    When I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     And I send a "DELETE" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 204
+
+    When I log out
+    And I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count           | 4 |
+      | coalition.followers_count | 4 |
 
   Scenario: As a logged-in user I can check if I follow causes
     Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
@@ -750,8 +788,14 @@ Feature:
     """
 
   Scenario: As a logged-in user I can create a cause
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
-    When I add "Content-Type" header equal to "application/json"
+    When I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | followers_count | 4 |
+
+    When I am logged with "benjyd@aol.com" via OAuth client "Coalition App"
+    And I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/causes" with body:
     """
     {
@@ -763,11 +807,12 @@ Feature:
     Then the response status code should be 201
     And the response should be in JSON
     And the JSON nodes should match:
-      | name            | Nouvelle cause sur la culture                   |
-      | description     | Description de la nouvelle cause sur la culture |
-      | coalition.uuid  | d5289058-2a35-4cf0-8f2f-a683d97d8315            |
-      | followers_count | 1                                               |
-    And I should have 1 email "CauseCreationConfirmationMessage" for "gisele-berthoux@caramail.com" with payload:
+      | name                      | Nouvelle cause sur la culture                   |
+      | description               | Description de la nouvelle cause sur la culture |
+      | coalition.uuid            | d5289058-2a35-4cf0-8f2f-a683d97d8315            |
+      | followers_count           | 1                                               |
+      | coalition.followers_count | 5                                               |
+    And I should have 1 email "CauseCreationConfirmationMessage" for "benjyd@aol.com" with payload:
     """
     {
         "template_name": "cause-creation-confirmation",
@@ -778,7 +823,7 @@ Feature:
             "global_merge_vars": [
                 {
                     "name": "first_name",
-                    "content": "Gisele"
+                    "content": "Benjamin"
                 },
                 {
                     "name": "cause_name",
@@ -792,9 +837,9 @@ Feature:
             "from_name": "Pour une cause",
             "to": [
                 {
-                    "email": "gisele-berthoux@caramail.com",
+                    "email": "benjyd@aol.com",
                     "type": "to",
-                    "name": "Gisele Berthoux"
+                    "name": "Benjamin Duroc"
                 }
             ]
         }

@@ -37,7 +37,13 @@ class PostCauseCreationListener implements EventSubscriberInterface
 
         $cause->setFollowersCount(1);
 
-        $this->manager->persist($cause->createFollower($cause->getAuthor()));
+        $adherent = $cause->getAuthor();
+        if ($adherent->isCoalitionSubscription() && (!$adherent->isAdherent() || $adherent->isCoalitionsCguAccepted())) {
+            $coalition = $cause->getCoalition();
+            $this->manager->persist($coalition->createFollower($adherent));
+        }
+
+        $this->manager->persist($cause->createFollower($adherent));
         $this->manager->flush();
 
         $this->sendConfirmationEmail($cause);

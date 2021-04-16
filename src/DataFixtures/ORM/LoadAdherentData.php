@@ -200,6 +200,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
         $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
+        $adherent5->setCoalitionsCguAccepted(true);
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
@@ -224,6 +225,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '2017-01-16 18:33:22',
         ]);
         $adherent6->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent6->setCoalitionSubscription(true);
+        $adherent6->setCoalitionsCguAccepted(true);
         $adherent6->addTag($this->getReference('adherent_tag_at001'));
         $adherent6->addTag($this->getReference('adherent_tag_at002'));
         $adherent6->addTag($this->getReference('adherent_tag_at003'));
