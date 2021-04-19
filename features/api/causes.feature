@@ -6,10 +6,10 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadClientData        |
-      | LoadCauseData         |
-      | LoadGeoZoneData       |
+      | LoadAdherentData |
+      | LoadClientData   |
+      | LoadCauseData    |
+      | LoadGeoZoneData  |
 
   Scenario: As a non logged-in user I can get causes statistics
     Given I send a "GET" request to "/api/causes/statistiques"
@@ -382,6 +382,34 @@ Feature:
       }
     """
 
+  Scenario: As a non logged-in user I can get one cause by his slug
+    Given I send a "GET" request to "/api/causes/cause-pour-leducation"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "author": {
+          "first_name": "Jacques",
+            "last_name": "Picard",
+          "last_name_initial": "P.",
+          "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
+        },
+        "coalition": {
+          "name": "Education",
+          "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+          "followers_count": 0
+        },
+        "second_coalition": null,
+        "name": "Cause pour l'education",
+        "slug": "cause-pour-leducation",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+        "followers_count": 0,
+        "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+      }
+    """
+
   Scenario: As a non logged-in user I get a 404 when providing an unknown cause uuid
     Given I send a "GET" request to "/api/causes/70126dd9-4a9e-4dbe-8093-14be4a24b9ed"
     Then the response status code should be 404
@@ -489,9 +517,9 @@ Feature:
     When I send a "<method>" request to "<url>"
     Then the response status code should be 401
     Examples:
-      | method  | url                                                           |
-      | PUT     | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
-      | DELETE  | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
+      | method | url                                                          |
+      | PUT    | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower |
+      | DELETE | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower |
 
   Scenario: As a logged-in user I can follow a cause (without CoalitionSubscription)
     When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
