@@ -97,11 +97,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "subscribe": {
  *             "method": "POST|DELETE",
- *             "path": "/v3/events/{id}/subscribe",
+ *             "path": "/v3/events/{uuid}/subscribe",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\EventSubscribeController",
- *             "requirements": {"id": "%pattern_uuid%"}
+ *             "requirements": {"uuid": "%pattern_uuid%"}
  *         },
  *     },
  *     collectionOperations={
