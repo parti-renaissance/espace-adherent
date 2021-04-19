@@ -145,7 +145,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         ;
 
         if ($quality) {
-            if (CommitteeAdherentMandateTypeEnum::TYPE_DESIGNED_ADHERENT) {
+            if (CommitteeAdherentMandateTypeEnum::TYPE_DESIGNED_ADHERENT === $quality) {
                 // null value for DesignedAdherent mandate
                 $qb->andWhere('m.quality IS NULL');
             } else {
