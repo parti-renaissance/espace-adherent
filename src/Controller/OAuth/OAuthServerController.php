@@ -43,6 +43,11 @@ class OAuthServerController extends AbstractController
             $authRequest->setUser($user->getOAuthUser());
 
             $client = $repository->findClientByUuid(Uuid::fromString($authRequest->getClient()->getIdentifier()));
+
+            if ($client->getRequestedRoles()) {
+                $this->denyAccessUnlessGranted($client->getRequestedRoles());
+            }
+
             $form = $this
                 ->createForm(ConfirmActionType::class)
                 ->handleRequest($this->httpFoundationFactory->createRequest($request))

@@ -89,6 +89,13 @@ class Client implements EntitySoftDeletedInterface
      */
     private $webHooks;
 
+    /**
+     * @var string[]|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $requestedRoles;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $name = '',
@@ -249,5 +256,15 @@ class Client implements EntitySoftDeletedInterface
             $webHook->setClient($this);
             $this->webHooks->add($webHook);
         }
+    }
+
+    public function getRequestedRoles(): ?array
+    {
+        return $this->requestedRoles;
+    }
+
+    public function setRequestedRoles(?array $requestedRoles): void
+    {
+        $this->requestedRoles = $requestedRoles;
     }
 }

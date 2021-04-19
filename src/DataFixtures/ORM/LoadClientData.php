@@ -22,6 +22,7 @@ class LoadClientData extends Fixture
     public const CLIENT_09_UUID = '40bdd6db-e422-4153-819c-9973c09f9297';
     public const CLIENT_10_UUID = '1931b955-560b-41b2-9eb9-c232157f1471';
     public const CLIENT_11_UUID = '138140b3-1dd2-11b2-ad7e-2348ad4fef66';
+    public const CLIENT_12_UUID = '4498e44f-f214-110d-8b76-98a83f9d2b0c';
 
     public function load(ObjectManager $manager)
     {
@@ -156,12 +157,24 @@ class LoadClientData extends Fixture
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
-        $client11->setAskUserForAuthorization(true);
         $client11->addSupportedScope(Scope::WRITE_EVENT);
         $client11->addSupportedScope(Scope::READ_PROFILE);
         $client11->addSupportedScope(Scope::WRITE_PROFILE);
 
         $manager->persist($client11);
+
+        $client12 = new Client(
+            Uuid::fromString(self::CLIENT_12_UUID),
+            'Data-Corner',
+            'Data-Corner',
+            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://localhost:3000/auth']
+        );
+        $client12->setAskUserForAuthorization(false);
+        $client12->setRequestedRoles(['ROLE_DATA_CORNER']);
+
+        $manager->persist($client12);
 
         $manager->flush();
     }
