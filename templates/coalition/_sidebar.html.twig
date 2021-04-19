@@ -2,7 +2,7 @@
     <ul>
         <li class="menu-section">Coalition</li>
 
-        <li class="{{ is_active_route(app.request, 'app_coalition_causes_list') ? 'active' }}">
+        <li class="{{ is_active_route(app.request, 'app_coalition_cause*') ? 'active' }}">
             <a href="{{ path('app_coalition_causes_list') }}">Causes</a>
         </li>
     </ul>

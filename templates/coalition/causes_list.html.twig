@@ -44,6 +44,7 @@
                         <th>Description</th>
                         <th style="width: 120px;">Date de création</th>
                         <th style="width: 90px;">Statut</th>
+                        <th style="width: 90px;">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,10 +75,17 @@
                             </td>
                             <td>{{ cause.createdAt|date('d/m/Y H:i') }}</td>
                             <td><span class="status status__{{ cause.status }}">{{ ('cause.'~cause.status)|trans }}</span></td>
+                            <td>
+                                <a href="{{ path('app_coalition_cause_edit', {'slug': cause.slug}) }}"
+                                   title="Modifier"
+                                   class="promote-host-link text--blue--dark link--no-decor">
+                                    Modifier
+                                </a>
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="8" class="text--center">
+                            <td colspan="9" class="text--center">
                                 <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                 Aucun résultat
                             </td>
