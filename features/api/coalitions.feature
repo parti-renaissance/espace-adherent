@@ -199,3 +199,15 @@ Feature:
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/follower"
     Then the response status code should be 204
+
+  Scenario: As a logged-in user I can get followed coalitions
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+    When I send a "GET" request to "/api/v3/coalitions/followed"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+    ]
+    """
