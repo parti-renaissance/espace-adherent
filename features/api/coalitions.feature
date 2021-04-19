@@ -9,6 +9,7 @@ Feature:
       | LoadAdherentData      |
       | LoadClientData        |
       | LoadCoalitionData     |
+      | LoadCauseData         |
 
   Scenario: As a non logged-in user I can see first page of active coalitions
     Given I add "Accept" header equal to "application/json"
@@ -22,6 +23,8 @@ Feature:
         "description": "Description de la coalition 'Culture'",
         "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
         "followers_count": 4,
+        "cause_followers_count": 5,
+        "youtube_id": "yOuTUbe_",
         "image_url": "http://test.enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
       },
       {
@@ -29,6 +32,8 @@ Feature:
         "description": "Description de la coalition 'Démocratie'",
         "uuid": "09d700f8-8813-4c3c-9bee-ff18d2051bba",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -36,6 +41,8 @@ Feature:
         "description": "Description de la coalition 'Economie'",
         "uuid": "fc7fd104-71e5-4399-a874-f8fe752f846b",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -43,6 +50,8 @@ Feature:
         "description": "Description de la coalition 'Education'",
         "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -50,6 +59,8 @@ Feature:
         "description": "Description de la coalition 'Egalité H\/F'",
         "uuid": "eaa129cf-fcbd-4d7d-8cfa-2268d08527ec",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -57,6 +68,8 @@ Feature:
         "description": "Description de la coalition 'Europe'",
         "uuid": "0654ae09-ea1a-4142-bea4-2e82dc5da998",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -64,6 +77,8 @@ Feature:
         "description": "Description de la coalition 'Inclusion'",
         "uuid": "81e4a680-7ce0-4038-b8fe-6bf755db4c5b",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -71,6 +86,8 @@ Feature:
         "description": "Description de la coalition 'International'",
         "uuid": "429fa3a9-8288-4de5-8ba5-366e6afa366b",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -78,6 +95,8 @@ Feature:
         "description": "Description de la coalition 'Justice'",
         "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -85,6 +104,8 @@ Feature:
         "description": "Description de la coalition 'Numérique'",
         "uuid": "5e500dbe-5227-4b83-8a9c-8c36f3f25265",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -92,6 +113,8 @@ Feature:
         "description": "Description de la coalition 'Puissance publique'",
         "uuid": "bd64b020-cb5b-4dd9-a478-1a1fac619ee1",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -99,6 +122,8 @@ Feature:
         "description": "Description de la coalition 'République'",
         "uuid": "1cbcf3cd-d0e4-4bd7-8d33-a2fa3320791d",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -106,6 +131,8 @@ Feature:
         "description": "Description de la coalition 'Ruralité'",
         "uuid": "fd0990f9-0148-4fed-84e5-4deee0af2d45",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -113,6 +140,8 @@ Feature:
         "description": "Description de la coalition 'Santé'",
         "uuid": "49202478-544e-4b00-9b90-f2945804c920",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -120,6 +149,8 @@ Feature:
         "description": "Description de la coalition 'Sécurité'",
         "uuid": "4b2a1335-362c-4611-bf82-d6c1216db389",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -127,6 +158,8 @@ Feature:
         "description": "Description de la coalition 'Solidarités'",
         "uuid": "9a552cda-2d7a-41b4-aaf0-1bcab14b76f8",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -134,6 +167,8 @@ Feature:
         "description": "Description de la coalition 'Transition écologique'",
         "uuid": "5ce3b33c-75d6-4923-bffb-7385e7d8e15a",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -141,6 +176,8 @@ Feature:
         "description": "Description de la coalition 'Travail'",
         "uuid": "8b4a9add-c7cd-43a0-b4da-8eab51d8f02b",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       },
       {
@@ -148,6 +185,8 @@ Feature:
         "description": "Description de la coalition 'Villes et quartiers'",
         "uuid": "0abb99ea-c6fe-473b-bf88-f31f887a3233",
         "followers_count": 0,
+        "cause_followers_count": 0,
+        "youtube_id": null,
         "image_url": null
       }
     ]
@@ -165,6 +204,8 @@ Feature:
       "description": "Description de la coalition 'Culture'",
       "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
       "followers_count": 4,
+      "cause_followers_count": 5,
+      "youtube_id": "yOuTUbe_",
       "image_url": "http://test.enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
     }
     """
