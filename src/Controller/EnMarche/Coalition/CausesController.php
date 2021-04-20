@@ -27,7 +27,7 @@ class CausesController extends AbstractController
      */
     public function list(Request $request, CauseRepository $causeRepository): Response
     {
-        $filter = new CauseFilter(Cause::STATUS_PENDING);
+        $filter = new CauseFilter();
 
         $form = $this->createForm(CauseFilterType::class, $filter)->handleRequest($request);
 
