@@ -21,7 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Coalition\CauseFollowerRepository")
  * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="cause_follower_unique", columns={"cause_id", "adherent_id"})
+ *     @ORM\UniqueConstraint(name="cause_follower_unique", columns={"cause_id", "adherent_id"}),
+ *     @ORM\UniqueConstraint(name="cause_follower_uuid_unique", columns={"uuid"})
  * })
  *
  * @UniqueEntity(fields={"cause", "adherent"}, errorPath="adherent")

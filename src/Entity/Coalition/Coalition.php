@@ -91,6 +91,17 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
     private $description;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(length=11, nullable=true)
+     *
+     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]{2,11}$/", message="coalition.youtubeid_syntax")
+     *
+     * @SymfonySerializer\Groups({"coalition_read"})
+     */
+    private $youtubeId;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
@@ -136,12 +147,14 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
         UuidInterface $uuid = null,
         string $name = null,
         string $description = null,
+        string $youtubeId = null,
         bool $enabled = true
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
         $this->description = $description;
         $this->enabled = $enabled;
+        $this->youtubeId = $youtubeId;
 
         $this->events = new ArrayCollection();
         $this->followers = new ArrayCollection();
@@ -161,6 +174,16 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getYoutubeId(): ?string
+    {
+        return $this->youtubeId;
+    }
+
+    public function setYoutubeId(?string $youtubeId): void
+    {
+        $this->youtubeId = $youtubeId;
     }
 
     public function getImagePath(): string

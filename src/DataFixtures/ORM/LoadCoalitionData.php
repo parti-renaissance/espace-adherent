@@ -72,17 +72,19 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
         foreach (self::NAMES as $key => $name) {
             if (0 === $key) {
                 $withImage = true;
+                $youtubeId = 'yOuTUbe_';
                 $followers = [$carl, $jacques, $lucie, $gisele];
             } else {
                 $withImage = false;
+                $youtubeId = null;
                 $followers = [];
             }
 
-            $coalition = $this->createCoalition(++$key, $name, true, $withImage, $followers);
+            $coalition = $this->createCoalition(++$key, $name, $youtubeId, true, $withImage, $followers);
             $manager->persist($coalition);
         }
 
-        $disabledCoalition = $this->createCoalition(20, 'Inactive', false);
+        $disabledCoalition = $this->createCoalition(20, 'Inactive', null, false);
         $manager->persist($disabledCoalition);
 
         $manager->flush();
@@ -91,6 +93,7 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
     public function createCoalition(
         int $id,
         string $name,
+        string $youtubeId = null,
         bool $enabled = true,
         bool $withImage = false,
         array $followers = []
@@ -102,6 +105,7 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
             $uuid,
             $name,
             "Description de la coalition '$name'",
+            $youtubeId,
             $enabled
         );
 
