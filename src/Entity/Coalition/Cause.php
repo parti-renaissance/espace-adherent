@@ -13,6 +13,7 @@ use App\Entity\AuthorInterface;
 use App\Entity\EntityFollowersTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
+use App\Entity\Event\CauseEvent;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\FollowedInterface;
 use App\Entity\FollowerInterface;
@@ -206,6 +207,20 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      */
     private $quickActions;
 
+    /**
+     * @var CauseEvent[]|Collection
+     *
+     * @ApiSubresource
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Event\CauseEvent",
+     *     mappedBy="causes",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $events;
+
     public function __construct(UuidInterface $uuid = null, int $followersCount = 0)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -213,6 +228,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
 
         $this->followers = new ArrayCollection();
         $this->quickActions = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getDescription(): string
@@ -299,6 +315,23 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function removeQuickAction(QuickAction $quickAction): void
     {
         $this->quickActions->removeElement($quickAction);
+    }
+
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(CauseEvent $event): void
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+        }
+    }
+
+    public function removeEvent(CauseEvent $event): void
+    {
+        $this->events->removeElement($event);
     }
 
     public function approve(): void

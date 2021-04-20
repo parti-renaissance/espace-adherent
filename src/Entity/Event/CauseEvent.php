@@ -3,16 +3,15 @@
 namespace App\Entity\Event;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Coalition\Coalition;
+use App\Entity\Coalition\Cause;
 use App\Event\EventTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CoalitionEventRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CauseEventRepository")
  *
  * @ApiResource(
  *     attributes={
@@ -24,7 +23,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     itemOperations={"get"},
  * )
  */
-class CoalitionEvent extends BaseEvent
+class CauseEvent extends BaseEvent
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
@@ -34,24 +33,24 @@ class CoalitionEvent extends BaseEvent
     protected $category;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Coalition\Coalition", inversedBy="events")
-     * @ORM\JoinTable(name="event_coalition",
+     * @ORM\ManyToMany(targetEntity="App\Entity\Coalition\Cause", inversedBy="events")
+     * @ORM\JoinTable(name="event_cause",
      *     joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", unique=true)},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="coalition_id", referencedColumnName="id", onDelete="CASCADE")}
+     *     inverseJoinColumns={@ORM\JoinColumn(name="cause_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
-    private $coalitions;
+    private $causes;
 
     public function __construct(UuidInterface $uuid = null)
     {
         parent::__construct($uuid);
 
-        $this->coalitions = new ArrayCollection();
+        $this->causes = new ArrayCollection();
     }
 
     public function getType(): string
     {
-        return EventTypeEnum::TYPE_COALITION;
+        return EventTypeEnum::TYPE_CAUSE;
     }
 
     public function getCategory(): ?EventCategory
@@ -64,23 +63,20 @@ class CoalitionEvent extends BaseEvent
         $this->category = $category;
     }
 
-    /**
-     * @return Coalition[]|Collection
-     */
-    public function getCoalitions(): Collection
+    public function getCause(): ?Cause
     {
-        return $this->coalitions;
+        return $this->causes->count() > 0 ? $this->causes->first() : null;
     }
 
-    public function addCoalition(Coalition $coalition): void
+    public function addCause(Cause $cause): void
     {
-        if (!$this->coalitions->contains($coalition)) {
-            $this->coalitions->add($coalition);
+        if (!$this->causes->contains($cause)) {
+            $this->causes->add($cause);
         }
     }
 
-    public function removeCoalition(Coalition $coalition): void
+    public function removeCause(Cause $cause): void
     {
-        $this->coalitions->removeElement($coalition);
+        $this->causes->removeElement($cause);
     }
 }
