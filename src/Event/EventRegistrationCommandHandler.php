@@ -46,7 +46,7 @@ class EventRegistrationCommandHandler
         ), Events::EVENT_REGISTRATION_CREATED);
 
         if ($event instanceof CommitteeEvent) {
-            $this->dispatcher->dispatch(new EventEvent(
+            $this->dispatcher->dispatch(new CommitteeEventEvent(
                 null,
                 $event,
                 $event->getCommittee()

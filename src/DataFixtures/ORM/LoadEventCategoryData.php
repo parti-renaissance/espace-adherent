@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\EventCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -64,6 +65,8 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'events_categories');
+
         foreach (self::LEGACY_EVENT_CATEGORIES as $reference => $name) {
             $category = new EventCategory($name);
             $category->setEventGroupCategory($this->getReference('event-group-category-0'));

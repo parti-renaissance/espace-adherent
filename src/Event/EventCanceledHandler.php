@@ -46,7 +46,7 @@ class EventCanceledHandler
     private function createDispatchedEvent(BaseEvent $event): Event
     {
         if ($event instanceof CommitteeEvent) {
-            return new EventEvent(
+            return new CommitteeEventEvent(
                 $event->getOrganizer(),
                 $event,
                 $event->getCommittee()

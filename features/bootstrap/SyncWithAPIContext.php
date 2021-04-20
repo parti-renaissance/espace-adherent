@@ -10,7 +10,7 @@ use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;
-use App\Event\EventEvent;
+use App\Event\CommitteeEventEvent;
 use App\Events;
 use App\Membership\UserEvent;
 use Behat\Behat\Context\Context;
@@ -73,7 +73,7 @@ class SyncWithAPIContext implements Context
         /** @var CommitteeEventEntity $committeeEvent */
         $committeeEvent = $this->doctrine->getRepository(CommitteeEventEntity::class)->findOneBy(['name' => $eventName]);
 
-        $this->dispatcher->dispatch(new EventEvent(null, $committeeEvent), $event);
+        $this->dispatcher->dispatch(new CommitteeEventEvent(null, $committeeEvent), $event);
     }
 
     /**

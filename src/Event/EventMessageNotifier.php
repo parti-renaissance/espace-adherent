@@ -35,7 +35,7 @@ class EventMessageNotifier implements EventSubscriberInterface
 
     public function onEventCreated(EventEvent $event): void
     {
-        if (!$committee = $event->getCommittee()) {
+        if (!$event instanceof CommitteeEventEvent || !$committee = $event->getCommittee()) {
             return;
         }
 
@@ -51,7 +51,7 @@ class EventMessageNotifier implements EventSubscriberInterface
 
     public function onEventCancelled(EventEvent $event): void
     {
-        if (!$event->getCommittee()) {
+        if (!$event instanceof CommitteeEventEvent || !$event->getCommittee()) {
             return;
         }
 

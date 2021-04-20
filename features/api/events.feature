@@ -7,11 +7,11 @@ Feature:
   Background:
     Given I freeze the clock to "2018-05-18"
     And the following fixtures are loaded:
-      | LoadUserData          |
-      | LoadAdherentData      |
-      | LoadCommitteeEventData |
-      | LoadCitizenActionData |
-      | LoadClientData        |
+      | LoadUserData            |
+      | LoadAdherentData        |
+      | LoadCommitteeEventData  |
+      | LoadCitizenActionData   |
+      | LoadClientData          |
 
   Scenario: As a non logged-in user I can not get events count in the referent managed zone
     When I am on "/api/statistics/events/count"

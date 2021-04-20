@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
 use App\Event\EventTypeEnum;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
@@ -33,6 +34,8 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 
         unset($data['type']);
 
+        $context['resource_class'] = $eventClass;
+
         return $this->denormalizer->denormalize($data, $eventClass, $format, $context);
     }
 
@@ -46,6 +49,8 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         switch ($eventType) {
             case EventTypeEnum::TYPE_COALITION:
                 return CoalitionEvent::class;
+            case EventTypeEnum::TYPE_CAUSE:
+                return CauseEvent::class;
         }
 
         return null;

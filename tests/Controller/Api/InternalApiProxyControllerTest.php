@@ -61,9 +61,10 @@ class InternalApiProxyControllerTest extends WebTestCase
             'time_zone' => 'Europe/Paris',
             'begin_at' => '2021-01-29 16:30:30',
             'finish_at' => '2021-01-29 16:30:30',
-            'capacity' => 10,
-            'visioUrl' => 'https://en-marche.fr/reunions/123',
-            'interests' => ['agriculture'],
+            'visio_url' => 'https://en-marche.fr/reunions/123',
+            'coalitions' => [
+                'fc7fd104-71e5-4399-a874-f8fe752f846b',
+            ],
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);

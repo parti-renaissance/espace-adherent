@@ -33,7 +33,7 @@ class EventCommandHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new EventEvent(
+        $this->dispatcher->dispatch(new CommitteeEventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()
@@ -44,13 +44,13 @@ class EventCommandHandler
 
     public function handleUpdate(CommitteeEvent $event, EventCommand $command)
     {
-        $this->dispatcher->dispatch(new EventEvent($command->getAuthor(), $event), Events::EVENT_PRE_UPDATE);
+        $this->dispatcher->dispatch(new CommitteeEventEvent($command->getAuthor(), $event), Events::EVENT_PRE_UPDATE);
 
         $this->factory->updateFromEventCommand($event, $command);
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new EventEvent(
+        $this->dispatcher->dispatch(new CommitteeEventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()

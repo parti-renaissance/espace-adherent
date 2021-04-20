@@ -10,10 +10,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CoalitionEventRepository")
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"event_read"}},
@@ -23,6 +22,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     collectionOperations={"get"},
  *     itemOperations={"get"},
  * )
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\CoalitionEventRepository")
  */
 class CoalitionEvent extends BaseEvent
 {
@@ -39,6 +40,10 @@ class CoalitionEvent extends BaseEvent
      *     joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", unique=true)},
      *     inverseJoinColumns={@ORM\JoinColumn(name="coalition_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     *
+     * @Assert\Count(min=1, max=1, exactMessage="coalition_event.coalition.invalid")
+     *
+     * @SymfonySerializer\Groups({"event_write"})
      */
     private $coalitions;
 
