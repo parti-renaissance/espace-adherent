@@ -64,6 +64,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
  *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
+ *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
  *     EventTypeEnum::TYPE_CITIZEN_ACTION: "CitizenAction",
  *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
  *     EventTypeEnum::TYPE_MUNICIPAL: "MunicipalEvent",

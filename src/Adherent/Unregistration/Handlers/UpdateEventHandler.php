@@ -3,6 +3,7 @@
 namespace App\Adherent\Unregistration\Handlers;
 
 use App\Entity\Adherent;
+use App\Repository\CauseEventRepository;
 use App\Repository\CitizenActionRepository;
 use App\Repository\CoalitionEventRepository;
 use App\Repository\EventRepository;
@@ -14,17 +15,20 @@ class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
     private $citizenActionRepository;
     private $institutionalEventRepository;
     private $coalitionEventRepository;
+    private $causeEventRepository;
 
     public function __construct(
         EventRepository $eventRepository,
         CitizenActionRepository $citizenActionRepository,
         InstitutionalEventRepository $institutionalEventRepository,
-        CoalitionEventRepository $coalitionEventRepository
+        CoalitionEventRepository $coalitionEventRepository,
+        CauseEventRepository $causeEventRepository
     ) {
         $this->eventRepository = $eventRepository;
         $this->citizenActionRepository = $citizenActionRepository;
         $this->institutionalEventRepository = $institutionalEventRepository;
         $this->coalitionEventRepository = $coalitionEventRepository;
+        $this->causeEventRepository = $causeEventRepository;
     }
 
     public function supports(Adherent $adherent): bool
@@ -39,6 +43,7 @@ class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
             $this->citizenActionRepository,
             $this->institutionalEventRepository,
             $this->coalitionEventRepository,
+            $this->causeEventRepository,
         ] as $repository) {
             $this->updateEvents($repository, $adherent);
         }
