@@ -25,6 +25,7 @@ class AdherentProfile implements MembershipInterface
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
+     *     groups={"Default", "api_put_validation"}
      * )
      *
      * @SymfonySerializer\Groups({"profile_write"})
@@ -41,13 +42,14 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Default", "api_put_validation"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
      *     allowEmptyString=true,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
+     *     groups={"Default", "api_put_validation"}
      * )
      *
      * @SymfonySerializer\Groups({"uncertified_profile_write"})
@@ -64,6 +66,7 @@ class AdherentProfile implements MembershipInterface
      *     allowEmptyString=true,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
+     *     groups={"Default", "api_put_validation"}
      * )
      *
      * @SymfonySerializer\Groups({"uncertified_profile_write"})
@@ -96,7 +99,7 @@ class AdherentProfile implements MembershipInterface
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Country(message="common.nationality.invalid")
+     * @Assert\Country(message="common.nationality.invalid", groups={"Default", "api_put_validation"})
      *
      * @SymfonySerializer\Groups({"profile_write"})
      */
@@ -130,7 +133,8 @@ class AdherentProfile implements MembershipInterface
      *     min="-120 years",
      *     max="-15 years",
      *     minMessage="adherent.birthdate.maximum_required_age",
-     *     maxMessage="adherent.birthdate.minimum_required_age"
+     *     maxMessage="adherent.birthdate.minimum_required_age",
+     *     groups={"Default", "api_put_validation"}
      * )
      *
      * @SymfonySerializer\Groups({"uncertified_profile_write"})

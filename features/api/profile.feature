@@ -7,6 +7,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadClientData        |
       | LoadOAuthTokenData    |
+      | LoadUserData          |
 
   Scenario: As a non logged-in user I cannot get my profile information
     When I send a "GET" request to "/api/v3/profile/me"
@@ -716,6 +717,67 @@ Feature:
     """
     {
       "email_address": "carl999@example.fr"
+    }
+    """
+
+  Scenario: As a non-adherent logged-in user I can update my profile with different validation rules
+    Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scopes "read:profile write:profile"
+    When I send a "GET" request to "/api/v3/profile/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    Then print last JSON response
+    And the JSON should be equal to:
+    """
+    {
+    "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9699",
+    "first_name": "Simple",
+    "last_name": "User",
+    "certified": false,
+    "gender": null,
+    "custom_gender": null,
+    "email_address": "simple-user@example.ch",
+    "phone": null,
+    "birthdate": null,
+    "position": "employed",
+    "subscription_types": [],
+    "adherent": false,
+    "facebook_page_url": null,
+    "twitter_page_url": null,
+    "linkedin_page_url": null,
+    "telegram_page_url": null,
+    "job": null,
+    "activity_area": null,
+    "nationality": null,
+    "coalition_subscription": false,
+    "cause_subscription": false,
+    "coalitions_cgu_accepted": false,
+    "post_address": {
+      "address": "",
+      "postal_code": "8057",
+      "city": null,
+      "city_name": null,
+      "country": "CH",
+      "region": null
+    },
+    "interests": []
+    }
+    """
+
+    # Update blank last name
+    When I send a "PUT" request to "/api/v3/profile/313bd28f-efc8-57c9-8ab7-2106c8be9699" with body:
+    """
+    {
+      "last_name": ""
+    }
+    """
+    Then the response status code should be 200
+    Then I send a "GET" request to "/api/v3/profile/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "last_name": ""
     }
     """
 
