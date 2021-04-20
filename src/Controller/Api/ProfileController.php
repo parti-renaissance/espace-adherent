@@ -74,7 +74,12 @@ class ProfileController extends AbstractController
             AbstractObjectNormalizer::GROUPS => $groups,
         ]);
 
-        $violations = $validator->validate($adherentProfile);
+        $validationGroups = ['api_put_validation'];
+        if ($adherent->isAdherent()) {
+            $validationGroups[] = 'Default';
+        }
+
+        $violations = $validator->validate($adherentProfile, null, $validationGroups);
 
         if (0 === $violations->count()) {
             $handler->update($adherent, $adherentProfile);
