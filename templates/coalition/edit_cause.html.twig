@@ -1,0 +1,31 @@
+{% extends 'coalition/_layout.html.twig' %}
+
+{% block coalition_content %}
+    <a href="{{ path('app_coalition_causes_list') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+        ⟵ Retour
+    </a>
+
+    <main>
+        <section class="l__wrapper--slim">
+            <h3 class="text--medium">Modifier la cause</h3>
+            {{ form_start(form, {attr: {'class': 'form b__nudge--top-40'}}) }}
+
+            {{ form_errors(form) }}
+
+            <div class="form__row">
+                {{ form_errors(form.name) }}
+                {{ form_label(form.name, 'Objectif') }}
+                {{ form_widget(form.name, { attr: { class: 'form--full' } }) }}
+            </div>
+
+            <div class="form__row b__nudge--top">
+                <button type="submit" class="btn btn--blue">Enregistrer</button>
+                <a href="{{ path('app_coalition_causes_list') }}"
+                   class="btn">
+                    Annuler
+                </a>
+            </div>
+            {{ form_end(form) }}
+        </section>
+    </main>
+{% endblock %}
