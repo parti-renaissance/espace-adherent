@@ -18,9 +18,9 @@ class CauseFilter
      * @var string
      *
      * @Assert\NotBlank
-     * @Assert\Choice(choices={"name"})
+     * @Assert\Choice(choices={"id"})
      */
-    private $sort = 'name';
+    private $sort = 'id';
 
     /**
      * @var string
@@ -28,7 +28,7 @@ class CauseFilter
      * @Assert\NotBlank
      * @Assert\Choice(choices={"a", "d"})
      */
-    private $order = 'a';
+    private $order = 'd';
 
     public function __construct(string $status = null)
     {
