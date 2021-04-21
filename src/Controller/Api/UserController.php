@@ -13,6 +13,7 @@ use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
+use App\OAuth\OAuthTokenGenerator;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Response as PsrResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -106,8 +107,9 @@ class UserController extends AbstractController
         AdherentResetPasswordToken $createPasswordToken,
         AdherentResetPasswordHandler $handler,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
-    ): Response {
+        ValidatorInterface $validator,
+        OAuthTokenGenerator $authTokenGenerator
+    ) {
         if ($createPasswordToken->getUsageDate()) {
             return $this->createBadRequestResponse('Pas de Token de création de mot de passe disponible');
         }
@@ -131,6 +133,12 @@ class UserController extends AbstractController
 
         try {
             $handler->reset($user, $createPasswordToken, $password->getPassword());
+            if ($clientId = $request->query->get('client_id')) {
+                $accessTokenResponse = $authTokenGenerator->generate($request->duplicate(), $user, $clientId, $password->getPassword());
+                if (null !== $accessTokenResponse) {
+                    return $accessTokenResponse;
+                }
+            }
 
             return $this->json('OK');
         } catch (AdherentTokenExpiredException $e) {
