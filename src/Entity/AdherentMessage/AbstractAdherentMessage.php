@@ -67,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ValidAuthorRoleMessageType
  */
-abstract class AbstractAdherentMessage implements AdherentMessageInterface, AuthorInterface
+abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;

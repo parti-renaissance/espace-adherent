@@ -2,6 +2,6 @@
 
 namespace App\Entity;
 
-interface AuthoredItemsCollectionInterface extends AuthoredInterface
+interface AuthoredItemsCollectionInterface extends AuthoredInterface, AuthorInterface
 {
 }
