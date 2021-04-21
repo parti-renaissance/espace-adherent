@@ -13,12 +13,17 @@ class AdherentMessageFactory
         AdherentMessageDataObject $dataObject,
         string $type
     ): AdherentMessageInterface {
+        $className = static::getMessageClassName($type);
+
+        return (new $className(Uuid::uuid4(), $adherent))->updateFromDataObject($dataObject);
+    }
+
+    public static function getMessageClassName(string $type): string
+    {
         if (!isset(AdherentMessageTypeEnum::CLASSES[$type])) {
             throw new \InvalidArgumentException(sprintf('Message type "%s" is undefined', $type));
         }
 
-        $className = AdherentMessageTypeEnum::CLASSES[$type];
-
-        return (new $className(Uuid::uuid4(), $adherent))->updateFromDataObject($dataObject);
+        return AdherentMessageTypeEnum::CLASSES[$type];
     }
 }

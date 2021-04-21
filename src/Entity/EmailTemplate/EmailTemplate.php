@@ -4,8 +4,8 @@ namespace App\Entity\EmailTemplate;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
+use App\Entity\AuthoredItemsCollectionInterface;
 use App\Entity\AuthoredTrait;
-use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -88,12 +88,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="author",
  *         joinColumns={
- *             @ORM\JoinColumn(onDelete="SET NULL")
+ *             @ORM\JoinColumn(onDelete="CASCADE")
  *         }
  *     )
  * })
  */
-class EmailTemplate implements AuthorInterface
+class EmailTemplate implements AuthoredItemsCollectionInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

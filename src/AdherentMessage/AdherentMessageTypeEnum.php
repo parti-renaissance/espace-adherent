@@ -45,4 +45,27 @@ class AdherentMessageTypeEnum extends Enum
         self::CANDIDATE => CandidateAdherentMessage::class,
         self::CANDIDATE_JECOUTE => CandidateJecouteMessage::class,
     ];
+
+    public const ROLES = [
+        DeputyAdherentMessage::class => ['ROLE_DEPUTY', 'ROLE_DELEGATED_DEPUTY'],
+
+        CommitteeAdherentMessage::class => 'ROLE_HOST',
+
+        CitizenProjectAdherentMessage::class => 'ADMINISTRATE_CITIZEN_PROJECT',
+
+        MunicipalChiefAdherentMessage::class => 'ROLE_MUNICIPAL_CHIEF',
+
+        SenatorAdherentMessage::class => ['ROLE_SENATOR', 'ROLE_DELEGATED_SENATOR'],
+
+        LreManagerElectedRepresentativeMessage::class => 'ROLE_LRE',
+
+        ReferentAdherentMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
+        ReferentElectedRepresentativeMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
+        ReferentInstancesMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
+
+        LegislativeCandidateAdherentMessage::class => 'ROLE_LEGISLATIVE_CANDIDATE',
+
+        CandidateAdherentMessage::class => ['ROLE_CANDIDATE', 'ROLE_DELEGATED_CANDIDATE'],
+        CandidateJecouteMessage::class => ['ROLE_CANDIDATE', 'ROLE_DELEGATED_CANDIDATE'],
+    ];
 }

@@ -8,7 +8,9 @@ use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
+use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
+use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +18,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdherentMessageRepository")
@@ -39,17 +42,32 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ApiResource(
  *     shortName="AdherentMessage",
- *     collectionOperations={},
+ *     attributes={
+ *         "access_control": "is_granted('ROLE_MESSAGE_REDACTOR')",
+ *         "normalization_context": {"groups": {"message_read_list"}},
+ *         "denormalization_context": {"groups": {"message_write"}},
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/adherent_messages",
+ *         },
+ *         "post": {
+ *             "path": "/v3/adherent_messages",
+ *         },
+ *     },
  *     itemOperations={
  *         "get": {
- *             "access_control": "is_granted('ROLE_ADHERENT') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "path": "/v3/adherent_messages/{id}",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"message_read"}}
- *         }
+ *             "normalization_context": {"groups": {"message_read"}},
+ *         },
  *     }
  * )
+ *
+ * @ValidAuthorRoleMessageType
  */
-abstract class AbstractAdherentMessage implements AdherentMessageInterface
+abstract class AbstractAdherentMessage implements AdherentMessageInterface, AuthorInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
@@ -58,6 +76,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     *
+     * @Assert\NotBlank
      */
     private $author;
 
@@ -66,7 +86,9 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      *
      * @ORM\Column
      *
-     * @Groups({"message_read"})
+     * @Groups({"message_read", "message_read_list", "message_write"})
+     *
+     * @Assert\NotBlank
      */
     private $label;
 
@@ -74,6 +96,10 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"message_read", "message_read_list", "message_write"})
+     *
+     * @Assert\NotBlank
      */
     private $subject;
 
@@ -81,6 +107,10 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      *
      * @ORM\Column(type="text")
+     *
+     * @Groups({"message_read", "message_write"})
+     *
+     * @Assert\NotBlank
      */
     private $content;
 
@@ -89,7 +119,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      *
      * @ORM\Column
      *
-     * @Groups({"message_read"})
+     * @Groups({"message_read_status", "message_read", "message_read_list"})
      */
     private $status = AdherentMessageStatusEnum::DRAFT;
 
@@ -139,9 +169,9 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $sendToTimeline = false;
 
-    final public function __construct(UuidInterface $uuid, Adherent $author)
+    final public function __construct(UuidInterface $uuid = null, Adherent $author = null)
     {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->author = $author;
         $this->mailchimpCampaigns = new ArrayCollection();
     }
@@ -208,7 +238,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     }
 
     /**
-     * @Groups({"message_read"})
+     * @Groups({"message_read_status", "message_read", "message_read_list"})
      */
     public function isSynchronized(): bool
     {
@@ -256,7 +286,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     }
 
     /**
-     * @Groups({"message_read"})
+     * @Groups({"message_read_status", "message_read", "message_read_list"})
      */
     public function getRecipientCount(): ?int
     {
@@ -273,6 +303,9 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->recipientCount = $recipientCount;
     }
 
+    /**
+     * @Groups("message_read_list")
+     */
     public function getFromName(): ?string
     {
         return $this->author ? $this->author->getFullName() : null;
@@ -340,5 +373,10 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function setSendToTimeline(bool $value): void
     {
         $this->sendToTimeline = $value;
+    }
+
+    public function setAuthor(Adherent $adherent): void
+    {
+        $this->author = $adherent;
     }
 }

@@ -87,7 +87,7 @@ class CommitteeMessageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $message = AdherentMessageFactory::create(
                 $adherent,
-                $command = $form->getData(),
+                $form->getData(),
                 AdherentMessageTypeEnum::COMMITTEE
             );
             $message->setFilter(new CommitteeFilter($committee));
