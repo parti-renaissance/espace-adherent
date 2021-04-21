@@ -242,8 +242,7 @@ class CommitteeMessageController extends AbstractController
      */
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
-        Manager $manager,
-        ObjectManager $entityManager,
+        AdherentMessageManager $manager,
         Committee $committee
     ): Response {
         if (!$message->isSynchronized()) {
@@ -258,10 +257,7 @@ class CommitteeMessageController extends AbstractController
             throw new BadRequestHttpException('This message has already been sent.');
         }
 
-        if ($manager->sendCampaign($message)) {
-            $message->markAsSent();
-            $entityManager->flush();
-
+        if ($manager->send($message)) {
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
 
             return $this->redirectToRoute('app_message_committee_send_success', ['committee_slug' => $committee->getSlug(), 'uuid' => $message->getUuid()->toString()]);
