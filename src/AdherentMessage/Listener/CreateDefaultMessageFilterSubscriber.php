@@ -27,6 +27,7 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
             AdherentMessageTypeEnum::REFERENT,
             AdherentMessageTypeEnum::SENATOR,
             AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE,
+            AdherentMessageTypeEnum::CANDIDATE,
         ], true)) {
             return;
         }
