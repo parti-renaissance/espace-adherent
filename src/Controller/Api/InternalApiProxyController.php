@@ -47,9 +47,9 @@ class InternalApiProxyController extends AbstractController
         );
 
         return new Response(
-            $response->getContent(),
+            $response->getContent(false),
             $response->getStatusCode(),
-            $response->getHeaders()
+            $response->getHeaders(false)
         );
     }
 }
