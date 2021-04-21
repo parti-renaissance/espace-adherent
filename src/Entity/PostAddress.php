@@ -98,11 +98,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     private function __construct(
         ?string $country,
-        string $postalCode = null,
+        ?string $postalCode = null,
         ?string $cityName = null,
-        string $street = null,
-        float $latitude = null,
-        float $longitude = null,
+        ?string $street = null,
+        ?float $latitude = null,
+        ?float $longitude = null,
         ?string $region = null
     ) {
         $this->country = $country;
@@ -125,8 +125,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     public static function createFrenchAddress(
-        string $street,
-        string $cityCode,
+        ?string $street = null,
+        ?string $cityCode = null,
         ?string $region = null,
         float $latitude = null,
         float $longitude = null
