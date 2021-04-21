@@ -247,7 +247,7 @@
         <service id="App\Api\Doctrine\CauseExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\EmailTemplateExtension">
+        <service id="App\Api\Doctrine\AuthoredItemsCollectionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
 
