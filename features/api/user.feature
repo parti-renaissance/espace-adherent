@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-      | LoadUserData          |
+      | LoadClientData     |
+      | LoadOAuthTokenData |
+      | LoadUserData       |
 
   Scenario: As a non logged-in user I cannot get my informations
     When I send a "GET" request to "/api/me"
@@ -124,6 +124,39 @@ Feature:
 
   Scenario: As a non logged-in user I can create my password
     When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-efc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
+    """
+    {
+      "password": "testtest"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      "OK"
+    """
+
+  Scenario: As a non logged-in user I can create my password and logged-in with access token
+    When I send a "POST" request to "/api/profile/mot-de-passe/94173303-dea2-4d97-bc15-86e785d85a0d/b17bcc506c47008faa2e5aa59f20ac1e70ea0911?client_id=1931b955-560b-41b2-9eb9-c232157f1471" with body:
+    """
+    {
+      "password": "testtest"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "token_type": "Bearer",
+      "expires_in": 3600,
+      "access_token": "@string@",
+      "refresh_token": "@string@"
+    }
+    """
+
+  Scenario: As a non logged-in user I can create my password but i can't logged-in with access token when client uuid is wrong
+    When I send a "POST" request to "/api/profile/mot-de-passe/94173303-dea2-4d97-bc15-86e785d85a0d/b17bcc506c47008faa2e5aa59f20ac1e70ea0911?client_id=1931b955-560b-41b2-9eb9-c232157f1472" with body:
     """
     {
       "password": "testtest"
