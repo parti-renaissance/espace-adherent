@@ -203,8 +203,7 @@ class CitizenProjectMessageController extends AbstractController
      */
     public function sendMessageAction(
         CitizenProjectAdherentMessage $message,
-        Manager $manager,
-        ObjectManager $entityManager,
+        AdherentMessageManager $manager,
         CitizenProject $citizenProject
     ): Response {
         if (!$message->isSynchronized()) {
@@ -219,10 +218,7 @@ class CitizenProjectMessageController extends AbstractController
             throw new BadRequestHttpException('This message has already been sent.');
         }
 
-        if ($manager->sendCampaign($message)) {
-            $message->markAsSent();
-            $entityManager->flush();
-
+        if ($manager->send($message)) {
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
         } else {
             $this->addFlash('error', 'adherent_message.campaign_sent_failure');

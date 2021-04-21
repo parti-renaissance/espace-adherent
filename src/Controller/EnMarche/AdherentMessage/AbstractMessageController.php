@@ -223,11 +223,8 @@ abstract class AbstractMessageController extends AbstractController
      *
      * @Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")
      */
-    public function sendMessageAction(
-        AbstractAdherentMessage $message,
-        AdherentMessageManager $manager,
-        ObjectManager $entityManager
-    ): Response {
+    public function sendMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
+    {
         $this->checkAccess();
 
         if (!$message->isSynchronized()) {
@@ -251,9 +248,6 @@ abstract class AbstractMessageController extends AbstractController
         }
 
         if ($manager->send($message, (array) $recipients)) {
-            $message->markAsSent();
-            $entityManager->flush();
-
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
 
             return $this->redirectToMessageRoute('send_success', ['uuid' => $message->getUuid()->toString()]);

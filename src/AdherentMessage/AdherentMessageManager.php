@@ -63,7 +63,16 @@ class AdherentMessageManager
 
     public function send(AdherentMessageInterface $message, array $recipients = []): bool
     {
-        return ($sender = $this->getSender($message)) ? $sender->send($message, $recipients) : false;
+        if (!$sender = $this->getSender($message)) {
+            return false;
+        }
+
+        if ($status = $sender->send($message, $recipients)) {
+            $message->markAsSent();
+            $this->em->flush();
+        }
+
+        return $status;
     }
 
     public function sendTest(AdherentMessageInterface $message, Adherent $user): bool
