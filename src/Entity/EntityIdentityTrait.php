@@ -45,6 +45,7 @@ trait EntityIdentityTrait
      *     "profile_read",
      *     "poll_read",
      *     "email_template_read",
+     *     "email_template_list_read",
      *     "message_read_list",
      * })
      *
