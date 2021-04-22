@@ -18,6 +18,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class InternalApiProxyController extends AbstractController
 {
+    // here, the forbidden headers in lower case
+    private const FORBIDDEN_HEADERS = [
+        'host',
+        'x-user-uuid',
+        'content-length',
+    ];
+
     public function __invoke(
         Request $request,
         InternalApiApplication $internalApiApplication,
@@ -26,16 +33,12 @@ class InternalApiProxyController extends AbstractController
         UserInterface $user
     ): Response {
         $subRequestOption = [
-            'headers' => [
+            'headers' => array_merge($this->getFilteredRequestHeaders($request), [
                 'X-User-UUID' => $user->getUuid()->toString(),
-            ],
+            ]),
         ];
 
         if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT], true)) {
-            // Headers
-            $subRequestOption['headers']['Content-Type'] = $request->headers->get('Content-Type');
-            $subRequestOption['headers']['Authorization'] = $request->headers->get('Authorization');
-
             //Body
             $subRequestOption['body'] = $request->getContent();
         }
@@ -51,5 +54,12 @@ class InternalApiProxyController extends AbstractController
             $response->getStatusCode(),
             $response->getHeaders(false)
         );
+    }
+
+    private function getFilteredRequestHeaders(Request $request): array
+    {
+        return array_filter($request->headers->all(), function ($header) {
+            return !\in_array(strtolower($header), self::FORBIDDEN_HEADERS);
+        }, \ARRAY_FILTER_USE_KEY);
     }
 }
