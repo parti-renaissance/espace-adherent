@@ -1,55 +1,49 @@
 <?php
 
-namespace Tests\App\Security\Voter\Committee;
+namespace Tests\App\Security\Voter;
 
 use App\Documents\DocumentPermissions;
 use App\Entity\Adherent;
+use App\Entity\UserDocument;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\FileUploadVoter;
 use PHPUnit\Framework\MockObject\MockObject;
-use Tests\App\Security\Voter\AbstractAdherentVoterTest;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class FileUploadVoterTest extends AbstractAdherentVoterTest
 {
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, DocumentPermissions::FILE_UPLOAD, 'committee_contact'];
-        yield [false, true, DocumentPermissions::FILE_UPLOAD, 'committee_feed'];
-        yield [false, true, DocumentPermissions::FILE_UPLOAD, 'event'];
-        yield [false, true, DocumentPermissions::FILE_UPLOAD, 'referent'];
-        yield [false, true, DocumentPermissions::FILE_UPLOAD, 'territorial_council_feed'];
+        foreach (UserDocument::ALL_TYPES as $type) {
+            yield [false, true, DocumentPermissions::FILE_UPLOAD, $type];
+        }
     }
 
     public function provideDocumentTypes(): iterable
     {
-        yield ['committee_contact'];
-        yield ['committee_feed'];
-        yield ['event'];
-        yield ['referent'];
-        yield ['territorial_council_feed'];
+        return $this->getUserDocumentTypesDataProvider();
     }
 
     public function provideReferentRights(): iterable
     {
-        yield ['committee_contact', false];
-        yield ['committee_feed', false];
-        yield ['event', true];
-        yield ['referent', true];
-        yield ['territorial_council_feed', false];
+        return $this->getUserDocumentTypesDataProvider([
+            UserDocument::TYPE_REFERENT,
+            UserDocument::TYPE_EVENT,
+        ]);
     }
 
     public function provideHostRights(): iterable
     {
-        yield ['committee_contact', true];
-        yield ['committee_feed', true];
-        yield ['event', true];
-        yield ['referent', false];
-        yield ['referent', false];
+        return $this->getUserDocumentTypesDataProvider([
+            UserDocument::TYPE_COMMITTEE_CONTACT,
+            UserDocument::TYPE_COMMITTEE_FEED,
+            UserDocument::TYPE_EVENT,
+        ]);
     }
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new FileUploadVoter();
+        return new FileUploadVoter($this->createConfiguredMock(AuthorizationCheckerInterface::class, ['isGranted' => false]));
     }
 
     /**
@@ -106,5 +100,12 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         }
 
         return $adherent;
+    }
+
+    private function getUserDocumentTypesDataProvider(array $allowedTypes = []): \Generator
+    {
+        foreach (UserDocument::ALL_TYPES as $type) {
+            yield [$type, \in_array($type, $allowedTypes)];
+        }
     }
 }
