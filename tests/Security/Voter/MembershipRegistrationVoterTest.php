@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Security;
+namespace Tests\App\Security\Voter;
 
 use App\Membership\MembershipRegistrationPermissions;
 use App\Membership\MembershipRegistrationProcess;
