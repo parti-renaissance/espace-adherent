@@ -114,7 +114,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      *
      * @ORM\Column(type="text")
      *
-     * @Groups({"message_read", "message_write"})
+     * @Groups({"message_write"})
      *
      * @Assert\NotBlank
      */
