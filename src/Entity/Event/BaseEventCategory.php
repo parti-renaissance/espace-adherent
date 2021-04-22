@@ -2,6 +2,7 @@
 
 namespace App\Entity\Event;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -16,6 +17,8 @@ abstract class BaseEventCategory
     const DISABLED = 'DISABLED';
 
     /**
+     * @ApiProperty(identifier=false)
+     *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -28,11 +31,13 @@ abstract class BaseEventCategory
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
      */
     protected $name = '';
 
     /**
+     * @ApiProperty(identifier=true)
+     *
      * @var string|null
      *
      * @ORM\Column(length=100, unique=true)
@@ -41,7 +46,7 @@ abstract class BaseEventCategory
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
      */
     protected $slug;
 

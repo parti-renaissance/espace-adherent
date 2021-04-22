@@ -10,8 +10,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
+ *     attributes={
+ *         "pagination_enabled": false,
+ *         "order": {"slug": "ASC"},
+ *         "normalization_context": {
+ *             "groups": {"event_category_read"}
+ *         },
+ *     },
  *     itemOperations={"get"},
- *     collectionOperations={}
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/event_categories",
+ *         },
+ *     }
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\EventCategoryRepository")
