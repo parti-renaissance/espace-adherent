@@ -87,7 +87,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/events/{id}",
- *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "normalization_context": {
  *                 "groups": {"event_read", "image_owner_exposed", "with_user_registration"}
  *             },
@@ -108,7 +107,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/events",
- *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "normalization_context": {
  *                 "groups": {"event_list_read", "image_owner_exposed", "with_user_registration"}
  *             },
