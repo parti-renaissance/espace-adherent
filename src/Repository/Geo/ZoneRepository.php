@@ -27,6 +27,10 @@ class ZoneRepository extends ServiceEntityRepository
             $zone = new Zone($zoneable->getZoneType(), $zoneable->getCode(), $zoneable->getName());
         }
 
+        if (\in_array($zoneable->getZoneType(), [Zone::CITY, Zone::BOROUGH], true)) {
+            $zone->setPostalCode($zoneable->getPostalCode());
+        }
+
         $zone->activate($zoneable->isActive());
         $zone->setName($zoneable->getName());
         $zone->setGeoData($zoneable->getGeoData());

@@ -31,6 +31,9 @@ Feature:
         {
           "uuid": "@uuid@",
           "type": "city",
+          "postal_code": [
+            "92270"
+          ],
           "code": "92009",
           "name": "Bois-Colombes"
         }
@@ -40,10 +43,10 @@ Feature:
 
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/zones" with parameters:
-      | key    | value     |
-      | type[] | country   |
-      | type[] | city      |
-      | name   | Allema    |
+      | key    | value   |
+      | type[] | country |
+      | type[] | city    |
+      | name   | Allema  |
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -60,6 +63,7 @@ Feature:
         {
           "uuid": "@uuid@",
           "type": "country",
+          "postal_code": [],
           "code": "DE",
           "name": "Allemagne"
         }

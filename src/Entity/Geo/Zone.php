@@ -130,6 +130,15 @@ class Zone implements GeoInterface
      */
     private $children;
 
+    /**
+     * @var string[]|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @SymfonySerializer\Groups({"zone_read"})
+     */
+    private $postalCode;
+
     public function __construct(string $type, string $code, string $name, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -261,5 +270,21 @@ class Zone implements GeoInterface
                     return \in_array($zone->getType(), $types);
                 })
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPostalCode(): ?array
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param string[] $postalCode
+     */
+    public function setPostalCode(?array $postalCode): void
+    {
+        $this->postalCode = $postalCode;
     }
 }
