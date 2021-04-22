@@ -36,7 +36,7 @@ class PostEventEditListener implements EventSubscriberInterface
             return;
         }
 
-        $operationName = $viewEvent->getRequest()->attributes->get('_api_collection_operation_name');
+        $operationName = $request->attributes->get('_api_collection_operation_name');
 
         $this->dispatcher->dispatch(
             new EventEvent($event->getAuthor(), $event),

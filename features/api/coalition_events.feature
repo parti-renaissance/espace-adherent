@@ -310,7 +310,7 @@ Feature:
        "time_zone": "Europe/Paris",
        "begin_at": "2022-04-29 16:30:30",
        "finish_at": "2022-04-30 16:30:30",
-       "category": 1,
+       "category": "kiosque",
        "mode": "online",
        "visio_url": "http://visio.fr",
        "post_address": {
@@ -376,7 +376,7 @@ Feature:
       "description": "Nouvelle description",
       "begin_at": "2022-05-15 16:30:30",
       "finish_at": "2022-05-16 16:30:30",
-      "category": 2,
+      "category": "reunion-dequipe",
       "mode": "online",
       "visio_url": "http://visio.fr",
       "post_address": {
@@ -491,7 +491,7 @@ Feature:
        "time_zone": "Europe/Paris",
        "begin_at": "2022-05-29 10:30:30",
        "finish_at": "2022-05-29 16:30:30",
-       "category": 1,
+       "category": "kiosque",
        "mode": "online",
        "visio_url": "http://visio.fr",
        "post_address": {
@@ -558,7 +558,7 @@ Feature:
       "time_zone": "Europe/Paris",
       "begin_at": "2022-05-12 10:30:30",
       "finish_at": "2022-05-12 16:30:30",
-	  "category": 1,
+	  "category": "kiosque",
       "mode": "online",
 	  "visio_url": "http://visio.fr",
 	  "post_address": {
