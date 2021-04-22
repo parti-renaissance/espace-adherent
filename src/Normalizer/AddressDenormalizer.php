@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Intl\FranceCitiesBundle;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -33,7 +33,7 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             }
         }
 
-        /** @var Address $data */
+        /** @var AddressInterface $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
 
         return $data;
@@ -41,6 +41,6 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        return !isset($context[self::ALREADY_CALLED]) && Address::class === $type;
+        return !isset($context[self::ALREADY_CALLED]) && \in_array(AddressInterface::class, class_implements($type));
     }
 }

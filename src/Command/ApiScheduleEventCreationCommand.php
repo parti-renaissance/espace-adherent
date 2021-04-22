@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\SynchronizedEntity;
-use App\Event\EventEvent;
+use App\Event\CommitteeEventEvent;
 use App\Events;
 
 class ApiScheduleEventCreationCommand extends ApiScheduleEntityCreationCommand
@@ -24,6 +24,6 @@ class ApiScheduleEventCreationCommand extends ApiScheduleEntityCreationCommand
 
     protected function scheduleCreation(SynchronizedEntity $event): void
     {
-        $this->dispatcher->dispatch(new EventEvent(null, $event), Events::EVENT_CREATED);
+        $this->dispatcher->dispatch(new CommitteeEventEvent(null, $event), Events::EVENT_CREATED);
     }
 }

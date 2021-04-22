@@ -6,13 +6,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Coalition\Cause;
 use App\Event\EventTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CauseEventRepository")
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"event_read"}},
@@ -22,6 +22,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     collectionOperations={"get"},
  *     itemOperations={"get"},
  * )
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\CauseEventRepository")
  */
 class CauseEvent extends BaseEvent
 {
@@ -38,6 +40,10 @@ class CauseEvent extends BaseEvent
      *     joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", unique=true)},
      *     inverseJoinColumns={@ORM\JoinColumn(name="cause_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     *
+     * @Assert\Count(min=1, max=1, exactMessage="cause_event.cause.invalid")
+     *
+     * @SymfonySerializer\Groups({"event_write"})
      */
     private $causes;
 
@@ -63,9 +69,12 @@ class CauseEvent extends BaseEvent
         $this->category = $category;
     }
 
-    public function getCause(): ?Cause
+    /**
+     * @return Cause[]|Collection
+     */
+    public function getCauses(): Collection
     {
-        return $this->causes->count() > 0 ? $this->causes->first() : null;
+        return $this->causes;
     }
 
     public function addCause(Cause $cause): void

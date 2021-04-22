@@ -343,7 +343,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *
      * @var BaseEventCategory|null
      *
-     * @SymfonySerializer\Groups({"event_list_read", "event_read"})
+     * @SymfonySerializer\Groups({"event_list_read", "event_read", "event_write"})
      */
     protected $category;
 
@@ -381,7 +381,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *
      * @var PostAddress
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
      */
     protected $postAddress;
 
@@ -631,6 +631,16 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function setMode(?string $mode): void
     {
         $this->mode = $mode;
+    }
+
+    public function getVisioUrl(): ?string
+    {
+        return $this->visioUrl;
+    }
+
+    public function setVisioUrl(?string $visioUrl): void
+    {
+        $this->visioUrl = $visioUrl;
     }
 
     public function getNormalizationGroups(): array

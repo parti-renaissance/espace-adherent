@@ -4,7 +4,7 @@ namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Event\BaseEvent;
-use App\Event\EventEvent;
+use App\Event\CommitteeEventEvent;
 use App\Events;
 use App\Form\EventCategoryType;
 use App\Form\UnitedNationsCountryType;
@@ -139,14 +139,14 @@ class EventAdmin extends AbstractAdmin
 
     public function preUpdate($object)
     {
-        $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
+        $this->dispatcher->dispatch(new CommitteeEventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
     }
 
     public function postUpdate($object)
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $event = new EventEvent($object->getOrganizer(), $object);
+        $event = new CommitteeEventEvent($object->getOrganizer(), $object);
 
         $this->dispatcher->dispatch($event, Events::EVENT_UPDATED);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Event\EventListener;
 
+use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use JMS\Serializer\SerializationContext;
@@ -22,22 +23,26 @@ class EventSubscriber implements EventSubscriberInterface
 
     public function publishEventCreated(EventEvent $event): void
     {
-        $this->producer->publish($this->serialize($event), Events::EVENT_CREATED);
+        if ($event instanceof CommitteeEventEvent) {
+            $this->producer->publish($this->serialize($event), Events::EVENT_CREATED);
+        }
     }
 
     public function publishEventUpdated(EventEvent $event): void
     {
-        $this->producer->publish($this->serialize($event), Events::EVENT_UPDATED);
+        if ($event instanceof CommitteeEventEvent) {
+            $this->producer->publish($this->serialize($event), Events::EVENT_UPDATED);
+        }
     }
 
-    public function publishEventDeleted(EventEvent $event): void
+    public function publishEventDeleted(CommitteeEventEvent $event): void
     {
         $body = json_encode(['uuid' => $event->getEvent()->getUuid()->toString()]);
 
         $this->producer->publish($body, Events::EVENT_DELETED);
     }
 
-    public function serialize(EventEvent $event): string
+    public function serialize(CommitteeEventEvent $event): string
     {
         return $this->serializer->serialize(
             $event->getEvent(),

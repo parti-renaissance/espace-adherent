@@ -6,6 +6,7 @@ use App\CitizenAction\CitizenActionEvent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CitizenAction;
 use App\Entity\PostAddress;
+use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Mailer\MailerService;
@@ -50,9 +51,11 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
         ];
     }
 
-    public function onEventPreUpdate(EventEvent $event): void
+    public function onEventPreUpdate(CommitteeEventEvent $event): void
     {
-        $this->doPreUpdate($event->getEvent());
+        if ($event instanceof CommitteeEventEvent) {
+            $this->doPreUpdate($event->getEvent());
+        }
     }
 
     public function onCitizenActionPreUpdate(CitizenActionEvent $event): void
@@ -62,7 +65,9 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     public function onEventPostUpdate(EventEvent $event): void
     {
-        $this->doPostUpdate($event->getEvent());
+        if ($event instanceof CommitteeEventEvent) {
+            $this->doPostUpdate($event->getEvent());
+        }
     }
 
     public function onCitizenActionPostUpdate(CitizenActionEvent $event): void

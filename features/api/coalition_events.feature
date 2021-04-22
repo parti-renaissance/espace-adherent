@@ -6,8 +6,12 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
+      | LoadCauseData           |
       | LoadCoalitionData       |
       | LoadCoalitionEventData  |
+      | LoadCauseEventData      |
+      | LoadAdherentData        |
+      | LoadClientData          |
 
   Scenario: As a non logged-in user I see coalition events
     Given I add "Accept" header equal to "application/json"
@@ -47,6 +51,7 @@ Feature:
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
+                "visio_url": null,
                 "capacity": null,
                 "uuid": "472d1f86-6522-4122-a0f4-abd69d17bb2d",
                 "post_address": {
@@ -81,6 +86,7 @@ Feature:
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
+                "visio_url": null,
                 "capacity": null,
                 "uuid": "462d7faf-09d2-4679-989e-287929f50be8",
                 "post_address": {
@@ -135,6 +141,7 @@ Feature:
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
+                "visio_url": null,
                 "capacity": null,
                 "uuid": "d16f0ab4-292b-4698-847c-005f58ec3119",
                 "post_address": {
@@ -169,6 +176,7 @@ Feature:
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
+                "visio_url": null,
                 "capacity": null,
                 "uuid": "d7e72e52-b81a-4adf-b022-d547672ce095",
                 "post_address": {
@@ -223,6 +231,7 @@ Feature:
                 "participants_count": 0,
                 "status": "SCHEDULED",
                 "mode": null,
+                "visio_url": null,
                 "capacity": null,
                 "uuid": "a9d45d86-0333-4767-9853-6e9e7268d778",
                 "post_address": {
@@ -236,5 +245,368 @@ Feature:
                 }
             }
         ]
+    }
+    """
+
+  Scenario: As a logged-in user I can not create a coalition event with invalid data
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "type":"coalition",
+       "coalitions": [
+           "fc7fd104-71e5-4399-a874-f8fe752f846b",
+           "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+       ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "coalitions: L'événement peut être lié qu'à une seule coalition.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
+      "violations": [
+        {
+          "propertyPath": "coalitions",
+          "message": "L'événement peut être lié qu'à une seule coalition."
+        },
+        {
+          "propertyPath": "name",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "canonical_name",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "description",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "begin_at",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "finish_at",
+          "message": "Cette valeur ne doit pas être vide."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a logged-in user I can create a coalition event
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scopes "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "type": "coalition",
+       "name": "My coalition event",
+       "description": "Description",
+       "time_zone": "Europe/Paris",
+       "begin_at": "2022-04-29 16:30:30",
+       "finish_at": "2022-04-30 16:30:30",
+       "category": 1,
+       "mode": "online",
+       "visio_url": "http://visio.fr",
+       "post_address": {
+          "address": "50 rue de la villette",
+          "postal_code": "69003",
+          "city_name": "Lyon 3e",
+          "country": "FR"
+      },
+       "coalitions": [
+          "fc7fd104-71e5-4399-a874-f8fe752f846b"
+       ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "category": {
+        "event_group_category": {
+          "name": "événement",
+          "slug": "evenement"
+        },
+        "name": "Kiosque",
+        "slug": "kiosque"
+      },
+      "uuid": "@string@",
+      "name": "My coalition event",
+      "slug": "@string@-my-coalition-event",
+      "description": "Description",
+      "time_zone": "Europe/Paris",
+      "begin_at": "2022-04-29T16:30:30+02:00",
+      "finish_at": "2022-04-30T16:30:30+02:00",
+      "organizer": {
+        "first_name": "Gisele",
+        "last_name": "Berthoux"
+      },
+      "participants_count": 0,
+      "status": "SCHEDULED",
+      "capacity": null,
+      "post_address": {
+        "address": "50 rue de la villette",
+        "postal_code": "69003",
+        "city": "69003-69383",
+        "city_name": "Lyon 3e",
+        "country": "FR",
+        "latitude": 45.7596356,
+        "longitude": 4.8614359
+      },
+      "visio_url": "http://visio.fr",
+      "mode": "online",
+      "image_url": null
+    }
+    """
+
+  Scenario: As a logged-in user I can edit a coalition event
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scopes "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d" with body:
+    """
+    {
+      "name": "Nouvel objectif",
+      "description": "Nouvelle description",
+      "begin_at": "2022-05-15 16:30:30",
+      "finish_at": "2022-05-16 16:30:30",
+      "category": 2,
+      "mode": "online",
+      "visio_url": "http://visio.fr",
+      "post_address": {
+        "address": "50 rue de la villette",
+        "postal_code": "69003",
+        "city_name": "Lyon 3e",
+        "country": "FR"
+      }
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "category": {
+        "event_group_category": {
+          "name": "événement",
+          "slug": "evenement"
+        },
+        "name": "Réunion d'équipe",
+        "slug": "reunion-dequipe"
+      },
+      "uuid": "472d1f86-6522-4122-a0f4-abd69d17bb2d",
+      "name": "Nouvel objectif",
+      "slug": "2022-05-15-nouvel-objectif",
+      "description": "Nouvelle description",
+      "time_zone": "Europe\/Paris",
+      "begin_at": "2022-05-15T16:30:30+02:00",
+      "finish_at": "2022-05-16T16:30:30+02:00",
+      "organizer": {
+        "first_name": "Jacques",
+        "last_name": "Picard"
+      },
+      "participants_count": 0,
+      "status": "SCHEDULED",
+      "capacity": null,
+      "post_address": {
+        "address": "50 rue de la villette",
+        "postal_code": "69003",
+        "city": "69003-69383",
+        "city_name": "Lyon 3e",
+        "country": "FR",
+        "latitude": 45.7596356,
+        "longitude": 4.8614359
+      },
+      "visio_url": "http://visio.fr",
+      "mode": "online",
+      "image_url": null
+    }
+    """
+
+  Scenario: As a logged-in user I can not create a cause event with invalid data
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "type":"cause",
+       "causes": [
+           "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+           "017491f9-1953-482e-b491-20418235af1f"
+       ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "causes: L'événement peut être lié qu'à une seule cause.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
+      "violations": [
+        {
+          "propertyPath": "causes",
+          "message": "L'événement peut être lié qu'à une seule cause."
+        },
+        {
+          "propertyPath": "name",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "canonical_name",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "description",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "begin_at",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "finish_at",
+          "message": "Cette valeur ne doit pas être vide."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a logged-in user I can create a cause event
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "type": "cause",
+       "name": "My cause event",
+       "description": "Description",
+       "time_zone": "Europe/Paris",
+       "begin_at": "2022-05-29 10:30:30",
+       "finish_at": "2022-05-29 16:30:30",
+       "category": 1,
+       "mode": "online",
+       "visio_url": "http://visio.fr",
+       "post_address": {
+          "address": "50 rue de la villette",
+          "postal_code": "69003",
+          "city_name": "Lyon 3e",
+          "country": "FR"
+      },
+       "causes": [
+          "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+       ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "category": {
+        "event_group_category": {
+          "name": "événement",
+          "slug": "evenement"
+        },
+        "name": "Kiosque",
+        "slug": "kiosque"
+      },
+      "uuid": "@string@",
+      "name": "My cause event",
+      "slug": "@string@-my-cause-event",
+      "description": "Description",
+      "time_zone": "Europe/Paris",
+      "begin_at": "2022-05-29T10:30:30+02:00",
+      "finish_at": "2022-05-29T16:30:30+02:00",
+      "organizer": {
+        "first_name": "Gisele",
+        "last_name": "Berthoux"
+      },
+      "participants_count": 0,
+      "status": "SCHEDULED",
+      "capacity": null,
+      "post_address": {
+        "address": "50 rue de la villette",
+        "postal_code": "69003",
+        "city": "69003-69383",
+        "city_name": "Lyon 3e",
+        "country": "FR",
+        "latitude": 45.7596356,
+        "longitude": 4.8614359
+      },
+      "visio_url": "http://visio.fr",
+      "mode": "online",
+      "image_url": null
+    }
+    """
+
+  Scenario: As a logged-in user I can edit a cause event
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8" with body:
+    """
+    {
+      "name": "Nouvel objectif",
+      "description": "Nouvelle description",
+      "time_zone": "Europe/Paris",
+      "begin_at": "2022-05-12 10:30:30",
+      "finish_at": "2022-05-12 16:30:30",
+	  "category": 1,
+      "mode": "online",
+	  "visio_url": "http://visio.fr",
+	  "post_address": {
+        "address": "50 rue de la villette",
+        "postal_code": "69003",
+        "city_name": "Lyon 3e",
+        "country": "FR"
+      }
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "category": {
+        "event_group_category": {
+          "name": "événement",
+          "slug": "evenement"
+        },
+        "name": "Kiosque",
+        "slug": "kiosque"
+      },
+      "uuid": "ef62870c-6d42-47b6-91ea-f454d473adf8",
+      "name": "Nouvel objectif",
+      "slug": "2022-05-12-nouvel-objectif",
+      "description": "Nouvelle description",
+      "time_zone": "Europe\/Paris",
+      "begin_at": "2022-05-12T10:30:30+02:00",
+      "finish_at": "2022-05-12T16:30:30+02:00",
+      "organizer": {
+        "first_name": "Jacques",
+        "last_name": "Picard"
+      },
+      "participants_count": 0,
+      "status": "SCHEDULED",
+      "capacity": null,
+      "post_address": {
+        "address": "50 rue de la villette",
+        "postal_code": "69003",
+        "city": "69003-69383",
+        "city_name": "Lyon 3e",
+        "country": "FR",
+        "latitude": 45.7596356,
+        "longitude": 4.8614359
+      },
+      "visio_url": "http://visio.fr",
+      "mode": "online",
+      "image_url": null
     }
     """

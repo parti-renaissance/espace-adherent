@@ -26,7 +26,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_write"})
      */
     private $address;
 
@@ -37,7 +37,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_write"})
      */
     private $postalCode;
 
@@ -47,6 +47,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
+     *
+     * @SymfonySerializer\Groups({"event_write"})
      */
     private $city;
 
@@ -57,7 +59,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_write"})
      */
     private $cityName;
 
@@ -68,14 +70,14 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_write"})
      */
     private $country;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_write"})
      */
     private $region;
 
