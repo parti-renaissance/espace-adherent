@@ -1,12 +1,10 @@
 {% set designation = election.getDesignation() %}
 
 {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COPOL') %}
-    {% set instance_title = 'Conseil territorial' %}
     {% set candidate_button_label = 'Je candidate en binôme' %}
     {% set create_invitation_button_label = 'Je choisis un binôme' %}
     {% set update_invitation_button_label = 'Modifier ma demande de binôme' %}
 {% else %}
-    {% set instance_title = 'Conseil national' %}
     {% set candidate_button_label = 'Je candidate en trinôme' %}
     {% set create_invitation_button_label = 'Je choisis un trinôme' %}
     {% set update_invitation_button_label = 'Modifier ma demande de trinôme' %}
@@ -40,7 +38,7 @@
     {% else %}
         <p class="text--body b__nudge--bottom-large b__nudge--top-0">
         {% if election.isOnlineMode %}
-            Le {{ instance_title }} se tiendra en ligne du <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
+            Le Conseil territorial se tiendra en ligne du <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
             <span class="text--bold">{{ election.meetingEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>. <a href="{{ election.meetingUrl }}" class="link--no-decor text--blue--dark text--normal" target="_blank">Rejoindre la réunion</a>.
         {% else %}
             Le Conseil territorial se tiendra le <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
