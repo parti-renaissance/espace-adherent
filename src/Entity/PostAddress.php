@@ -150,9 +150,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     public static function createForeignAddress(
         string $country,
-        string $zipCode,
+        ?string $zipCode,
         ?string $cityName,
-        string $street,
+        ?string $street,
         ?string $region = null,
         float $latitude = null,
         float $longitude = null
