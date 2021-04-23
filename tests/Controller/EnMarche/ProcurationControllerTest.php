@@ -292,7 +292,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->assertSame("En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale, à savoir les élections départementales de 2021.", $crawler->filter('#procuration_reachable > label')->text());
+        $this->assertSame("En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale.", $crawler->filter('#procuration_reachable > label')->text());
         $this->assertSame("En cochant cette case, j'accepte que LaREM traite mes données dans le cadre de la plateforme de procuration en ligne. *", $crawler->filter('#procuration_authorization > label')->text());
         $this->assertStringContainsString("Les informations marquées d'un astérisque sont obligatoires", $crawler->filter('#procuration_legal_notices')->text());
 
@@ -420,7 +420,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->assertSame("En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale, à savoir les élections départementales de 2021.", $crawler->filter('#procuration_reachable > label')->text());
+        $this->assertSame("En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale.", $crawler->filter('#procuration_reachable > label')->text());
         $this->assertSame("En cochant cette case, je m'engage à voter selon les vœux du mandant. *", $crawler->filter('#procuration_conditions > label')->text());
         $this->assertSame("En cochant cette case, j'accepte que LaREM traite mes données dans le cadre de la plateforme de procuration en ligne. *", $crawler->filter('#procuration_authorization > label')->text());
         $this->assertStringContainsString("Les informations marquées d'un astérisque sont obligatoires", $crawler->filter('#procuration_legal_notices')->text());

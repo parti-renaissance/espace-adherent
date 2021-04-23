@@ -267,7 +267,7 @@ procuration.proposal_conditions.required: Vous devez vous engager à voter selon
 
 procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.
 
-procuration.vote_country.conditions.fr: Attention, vous ne pouvez être mandataire que pour deux procurations dont une seule maximum établie en France selon l'article L.73 du Code électoral.
+procuration.vote_country.conditions.fr: "Attention, vous ne pouvez être mandataire que pour deux procurations. Par exemple : 2 procurations établies en France OU 1 procuration établie en France + 1 établie à l'étranger OU 2 procurations établies à l'étranger."
 procuration.vote_country.conditions.other: Attention, vous ne pouvez être mandataire que pour trois procurations dont une seule maximum établie en France selon l'article L.73 du Code électoral.
 procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
 procuration.state.not_empty: Vous devez remplir l'État/Province si le pays de résidence n'est pas en France.
