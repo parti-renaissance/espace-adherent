@@ -18,7 +18,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         string $operationName = null,
         array $context = []
     ) {
-        if (!is_subclass_of($resourceClass, BaseEvent::class)) {
+        if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
         }
 
@@ -31,7 +31,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         string $resourceClass,
         string $operationName = null
     ) {
-        if (!is_subclass_of($resourceClass, BaseEvent::class)) {
+        if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
         }
 
