@@ -301,3 +301,29 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a logged-in user I can get scheduled and published event
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
+    Then the response status code should be 200
+
+  Scenario: As a logged-in user I can not get cancelled event
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/events/5ba0daee-d9a7-47a8-8dbb-454500284af8"
+    Then the response status code should be 404
+
+  Scenario: As a logged-in user I can not get not published event
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/events/de7f027c-f6c3-439f-b1dd-bf2b110a0fb0"
+    Then the response status code should be 404
+
+  Scenario: As a logged-in user I can get events
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/events"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 26 |

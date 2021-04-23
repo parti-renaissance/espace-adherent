@@ -75,7 +75,7 @@ class EventsControllerTest extends WebTestCase
             'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
             GrantTypeEnum::PASSWORD,
             null,
-            'carl999@example.fr',
+            'gisele-berthoux@caramail.com',
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
@@ -86,7 +86,7 @@ class EventsControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         self::assertSame(1, $response['metadata']['total_items']);
-        self::assertSame('36ab5f85-5feb-4ff7-8218-d2da63045b74', $response['items'][0]['uuid']);
+        self::assertSame('39f25bd2-f866-4c0d-84da-2387898b8db1', $response['items'][0]['uuid']);
     }
 
     public function provideApiEventsCategories()
