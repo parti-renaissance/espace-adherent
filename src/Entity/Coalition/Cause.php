@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
@@ -83,6 +84,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={"coalition.uuid": "exact"})
+ * @ApiFilter(OrTextSearchFilter::class, properties={"name"})
  *
  * @ORM\Table(
  *     uniqueConstraints={
