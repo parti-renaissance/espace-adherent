@@ -65,7 +65,7 @@ class CitizenProjectController extends AbstractController
      *     condition="request.isXmlHttpRequest() and request.query.get('category')",
      *     methods={"GET"}
      * )
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      */
     public function skillsAutocompleteAction(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -96,7 +96,7 @@ class CitizenProjectController extends AbstractController
      *     condition="request.isXmlHttpRequest()",
      *     methods={"GET"}
      * )
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      */
     public function committeeAutocompleteAction(Request $request): Response
     {

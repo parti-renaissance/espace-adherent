@@ -27,7 +27,7 @@ class MembershipController extends AbstractController
         ValidatorInterface $validator,
         MembershipRequestHandler $handler
     ): Response {
-        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             throw $this->createAccessDeniedException('Logged in users can not create account.');
         }
 

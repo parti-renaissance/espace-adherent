@@ -64,7 +64,7 @@ class MembershipController extends AbstractController
         CallbackManager $callbackManager,
         TranslatorInterface $translator
     ): Response {
-        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $callbackManager->redirectToClientIfValid();
         }
 

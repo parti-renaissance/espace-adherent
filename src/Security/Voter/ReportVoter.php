@@ -28,6 +28,6 @@ class ReportVoter extends Voter
             return false;
         }
 
-        return $this->authorizationChecker->isGranted(['IS_AUTHENTICATED_FULLY']);
+        return $this->authorizationChecker->isGranted(['IS_AUTHENTICATED_REMEMBERED']);
     }
 }

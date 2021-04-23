@@ -32,7 +32,7 @@ class CauseController extends AbstractController
 
     /**
      * @Route("/v3/causes/followed", name="api_causes_followed", methods={"POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      */
     public function followed(Request $request, UserInterface $user, CauseRepository $causeRepository): JsonResponse
     {
@@ -51,7 +51,7 @@ class CauseController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY') and cause.getAuthor() === user")")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and cause.getAuthor() === user")")
      */
     public function updateImage(
         Request $request,

@@ -55,7 +55,7 @@ class ReportVoterTest extends TestCase
 
         $this->authorizationChecker->expects($this->once())
             ->method('isGranted')
-            ->with(['IS_AUTHENTICATED_FULLY'])
+            ->with(['IS_AUTHENTICATED_REMEMBERED'])
             ->willReturn(true)
         ;
 
@@ -78,7 +78,7 @@ class ReportVoterTest extends TestCase
 
         $this->authorizationChecker->expects($this->once())
             ->method('isGranted')
-            ->with(['IS_AUTHENTICATED_FULLY'])
+            ->with(['IS_AUTHENTICATED_REMEMBERED'])
             ->willReturn(false)
         ;
 
