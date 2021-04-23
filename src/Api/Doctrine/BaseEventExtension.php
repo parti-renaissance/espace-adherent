@@ -6,10 +6,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInter
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CoalitionEvent;
 use Doctrine\ORM\QueryBuilder;
 
-class CoalitionEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
+class BaseEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
     public function applyToItem(
         QueryBuilder $queryBuilder,
@@ -19,9 +18,11 @@ class CoalitionEventExtension implements QueryItemExtensionInterface, QueryColle
         string $operationName = null,
         array $context = []
     ) {
-        if (CoalitionEvent::class === $resourceClass) {
-            $this->modifyQuery($queryBuilder);
+        if (!is_subclass_of($resourceClass, BaseEvent::class)) {
+            return;
         }
+
+        $this->modifyQuery($queryBuilder);
     }
 
     public function applyToCollection(
@@ -30,19 +31,12 @@ class CoalitionEventExtension implements QueryItemExtensionInterface, QueryColle
         string $resourceClass,
         string $operationName = null
     ) {
-        if (CoalitionEvent::class !== $resourceClass) {
+        if (!is_subclass_of($resourceClass, BaseEvent::class)) {
             return;
         }
 
         $alias = $queryBuilder->getRootAliases()[0];
         $this->modifyQuery($queryBuilder, $alias);
-
-        if ('api_coalitions_events_get_subresource' === $operationName) {
-            $queryBuilder
-                ->andWhere("$alias.finishAt > :now")
-                ->setParameter('now', new \DateTime())
-            ;
-        }
     }
 
     private function modifyQuery(QueryBuilder $queryBuilder, string $alias = null): void

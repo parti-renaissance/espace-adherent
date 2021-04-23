@@ -238,7 +238,7 @@
         <service id="App\Api\Doctrine\CoalitionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\CoalitionEventExtension">
+        <service id="App\Api\Doctrine\BaseEventExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\GeoZoneExtension">
