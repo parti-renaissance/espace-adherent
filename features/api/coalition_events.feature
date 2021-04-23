@@ -673,11 +673,11 @@ Feature:
           },
           "uuid": "ef62870c-6d42-47b6-91ea-f454d473adf8",
           "name": "Événement culturel 1 de la cause culturelle 1",
-          "slug": "2021-04-28-evenement-culturel-1-de-la-cause-culturelle-1",
+          "slug": "@string@-evenement-culturel-1-de-la-cause-culturelle-1",
           "description": "C'est un événement culturel de la cause",
           "time_zone": "Europe\/Paris",
-          "begin_at": "2021-04-28T09:00:00+02:00",
-          "finish_at": "2021-04-28T18:00:00+02:00",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
           "organizer": {
             "first_name": "Jacques",
             "last_name": "Picard"
@@ -708,11 +708,11 @@ Feature:
           },
           "uuid": "19242011-7fbe-47b7-b459-0ca724d4fca2",
           "name": "Événement culturel 2 de la cause culturelle 1",
-          "slug": "2021-04-26-evenement-culturel-2-de-la-cause-culturelle-1",
+          "slug": "@string@-evenement-culturel-2-de-la-cause-culturelle-1",
           "description": "Un autre événement culturel",
           "time_zone": "Europe\/Paris",
-          "begin_at": "2021-04-26T09:00:00+02:00",
-          "finish_at": "2021-04-26T19:00:00+02:00",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
           "organizer": {
             "first_name": "Jacques",
             "last_name": "Picard"
