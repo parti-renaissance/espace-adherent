@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/causes",
- *             "access_control": "is_granted('IS_AUTHENTICATED_FULLY')",
+ *             "access_control": "is_granted('IS_AUTHENTICATED_REMEMBERED')",
  *             "normalization_context": {"groups": {"cause_read"}}
  *         }
  *     },

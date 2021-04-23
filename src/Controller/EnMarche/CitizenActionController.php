@@ -212,7 +212,7 @@ class CitizenActionController extends AbstractController
 
     /**
      * @Route("/participants", name="_list_participants", methods={"GET"})
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      */
     public function listParticipantsAction(
         CitizenAction $citizenAction,

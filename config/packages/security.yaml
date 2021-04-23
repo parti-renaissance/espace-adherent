@@ -480,5 +480,5 @@ security:
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
-        - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
         - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }

@@ -14,7 +14,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * @Route("/v3/internal/{uuid}/{path}", name="api_internal_api_application", requirements={"path": ".+"})
  *
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+ * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
  */
 class InternalApiProxyController extends AbstractController
 {
