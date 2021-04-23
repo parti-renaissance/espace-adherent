@@ -38,6 +38,7 @@ class EventSubscribeController extends AbstractController
             ]);
 
             if ($eventRegistration) {
+                $event->decrementParticipantsCount();
                 $this->entityManager->remove($eventRegistration);
                 $this->entityManager->flush();
             }
@@ -51,6 +52,7 @@ class EventSubscribeController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
+        $event->incrementParticipantsCount();
         $this->entityManager->persist($this->eventRegistrationFactory->createFromCommand($command));
         $this->entityManager->flush();
 
