@@ -103,6 +103,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "controller": "App\Controller\Api\EventSubscribeController",
  *             "requirements": {"uuid": "%pattern_uuid%"}
  *         },
+ *         "update_image": {
+ *             "method": "POST",
+ *             "path": "/v3/events/{uuid}/image",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\EventImageController",
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {

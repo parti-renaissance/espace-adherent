@@ -4,10 +4,9 @@ namespace App\Controller\Api\Coalition;
 
 use App\Api\DTO\ImageContent;
 use App\Entity\Coalition\Cause;
-use App\Image\ImageManager;
+use App\Image\ImageUploadHelper;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Repository\Coalition\CauseRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,15 +50,14 @@ class CauseController extends AbstractController
     }
 
     /**
-     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and cause.getAuthor() === user")")
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and cause.getAuthor() === user")
      */
     public function updateImage(
         Request $request,
         Cause $cause,
-        EntityManagerInterface $entityManager,
-        ImageManager $imageManager,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ImageUploadHelper $imageUploadHelper
     ): JsonResponse {
         /** @var ImageContent $image */
         $image = $serializer->deserialize($request->getContent(), ImageContent::class, JsonEncoder::FORMAT);
@@ -70,14 +68,7 @@ class CauseController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        if ($cause->hasImageName()) {
-            $imageManager->removeImage($cause);
-        }
-
-        $cause->setImage($image->getFile());
-        $imageManager->saveImage($cause);
-
-        $entityManager->flush();
+        $imageUploadHelper->uploadImage($cause, $image);
 
         return $this->json($cause, Response::HTTP_OK, [], ['groups' => ['cause_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]);
     }
