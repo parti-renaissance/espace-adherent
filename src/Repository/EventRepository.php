@@ -230,13 +230,7 @@ class EventRepository extends ServiceEntityRepository
         return $this->configurePaginator(
             $qb,
             $page,
-            $limit,
-            static function (Query $query) {
-                $query
-                    ->useResultCache(true)
-                    ->setResultCacheLifetime(1800)
-                ;
-            }
+            $limit
         );
     }
 
@@ -337,13 +331,7 @@ class EventRepository extends ServiceEntityRepository
                 ->setParameter('groupSlug', $groupSlug)
                 ->orderBy('e.createdAt', 'DESC'),
             $page,
-            $limit,
-            static function (Query $query) {
-                $query
-                    ->useResultCache(true)
-                    ->setResultCacheLifetime(1800)
-                ;
-            }
+            $limit
         );
     }
 
