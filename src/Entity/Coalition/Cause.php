@@ -5,6 +5,7 @@ namespace App\Entity\Coalition;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
@@ -85,6 +86,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(SearchFilter::class, properties={"coalition.uuid": "exact"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"name"})
+ * @ApiFilter(OrderFilter::class, properties={"createdAt", "followersCount"})
  *
  * @ORM\Table(
  *     uniqueConstraints={

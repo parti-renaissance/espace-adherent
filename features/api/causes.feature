@@ -1129,3 +1129,36 @@ Feature:
     }
     """
     Then the response status code should be 403
+
+  Scenario: As a non logged-in user, I can get sorted causes
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/causes?order[followersCount]=asc"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | items[0].name             | Cause pour l'education  |
+      | items[0].followers_count  | 0                       |
+      | items[1].name             | Cause pour la culture 2 |
+      | items[1].followers_count  | 0                       |
+
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/causes?order[followersCount]=desc"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | items[0].name             | Cause pour la culture   |
+      | items[1].followers_count  | 4                       |
+      | items[1].name             | Cause pour l'education  |
+      | items[1].followers_count  | 0                       |
+
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/causes?order[createdAt]=asc"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | items[0].name             | Cause pour la justice   |
+      | items[1].name             | Cause pour l'education  |
+
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/causes?order[createdAt]=desc"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | items[0].name             | Cause pour la culture   |
+      | items[1].name             | Cause pour la culture 2 |

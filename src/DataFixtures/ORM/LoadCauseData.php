@@ -44,6 +44,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-culture'),
             $this->getReference('adherent-1'),
+            '-1 hour',
             5,
             true
         );
@@ -74,6 +75,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Description de la cause pour la culture 2',
             $this->getReference('coalition-culture'),
             $this->getReference('adherent-1'),
+            '-1 day',
             0,
             true
         );
@@ -83,7 +85,8 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause pour la culture 3',
             'Description de la cause pour la culture 3',
             $this->getReference('coalition-culture'),
-            $this->getReference('adherent-1')
+            $this->getReference('adherent-1'),
+            '-3 days'
         );
 
         $causeEducation1 = $this->createCause(
@@ -92,6 +95,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-education'),
             $this->getReference('adherent-3'),
+            '-4 days',
             0,
             true
         );
@@ -102,7 +106,8 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause pour la justice',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-justice'),
-            $this->getReference('adherent-3')
+            $this->getReference('adherent-3'),
+            '-5 days'
         );
 
         $manager->persist($this->createCause(
@@ -110,7 +115,8 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause d\'une coalition désactivée',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-inactive'),
-            $this->getReference('adherent-3')
+            $this->getReference('adherent-3'),
+            '-6 days'
         ));
 
         $manager->persist($this->createCause(
@@ -119,6 +125,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-justice'),
             $this->getReference('adherent-3'),
+            '-7 days',
             0,
             false,
             Cause::STATUS_PENDING
@@ -139,6 +146,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         string $description,
         Coalition $coalition,
         Adherent $author,
+        string $createdAt = 'now',
         int $followersCount = 0,
         bool $withImage = false,
         string $status = Cause::STATUS_APPROVED
@@ -149,6 +157,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         $cause->setDescription($description);
         $cause->setAuthor($author);
         $cause->setStatus($status);
+        $cause->setCreatedAt(new \DateTime($createdAt));
 
         if ($withImage) {
             $cause->setImage(new UploadedFile(
