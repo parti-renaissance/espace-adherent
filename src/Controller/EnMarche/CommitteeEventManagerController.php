@@ -61,7 +61,7 @@ class CommitteeEventManagerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $handler->handleUpdate($event, $command);
-            $this->addFlash('info', 'committee.event.update.success');
+            $this->addFlash('info', 'event.update.success');
 
             return $this->redirectToRoute('app_committee_event_show', [
                 'slug' => $event->getSlug(),
@@ -89,7 +89,7 @@ class CommitteeEventManagerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventCanceledHandler->handle($event);
-            $this->addFlash('info', 'committee.event.cancel.success');
+            $this->addFlash('info', 'event.cancel.success');
 
             return $this->redirectToRoute('app_committee_event_show', [
                 'slug' => $event->getSlug(),

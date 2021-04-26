@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title %}{{ event.name }} - {{ event.cityName }}, {{ event.localBeginAt|date('d/m/Y', false) }}{% endblock %}
-{% block canonical_url url('app_committee_event_show', {'slug': event.slug}) %}
+{% block canonical_url url('app_committee_event_show', {slug: event.slug}) %}
 
 {%- block meta_description -%}
     {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.localBeginAt|localizeddate('full', 'none', null, false) }} à {{ event.localBeginAt|date('G\\hi', false) -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
@@ -27,10 +27,10 @@
         "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
         {% if event.organizer %}
         "organizer": {
-            {% if committee is defined and committee %}
+            {% if event.type == 'committee' and event.getCommittee() %}
             "@type": "Organization",
-            "name": "{{ committee.name }}",
-            "url": "{{ url('app_committee_show', {'slug': committee.slug}) }}"
+            "name": "{{ event.getCommittee().name }}",
+            "url": "{{ url('app_committee_show', {'slug': event.getCommittee().slug}) }}"
             {% else %}
             "@type": "Person",
             "givenName": "{{ event.organizer.firstName }}",
@@ -85,7 +85,8 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url("app_#{event.type}_event_show", {slug: event.slug}) %}
+    {% set event_url = url("app_committee_event_show", {slug: event.slug}) %}
+
     <main>
         <section class="committee__event l__wrapper">
             <a href="{{ path('app_search_events') }}" class="back-to-list icon--with-text text--summary">
@@ -102,12 +103,14 @@
                            href="{{ path("app_committee_event_edit", {slug: event.slug}) }}">
                             {{ 'event.edit'|trans }}
                         </a>
+
                         <a class="b__nudge--right-small link--newblue"
-                           href="{{ path("app_committee_event_cancel", {'slug': event.slug}) }}">
+                           href="{{ path("app_committee_event_cancel", {slug: event.slug}) }}">
                             {{ 'event.cancel'|trans }}
                         </a>
                     {% endif %}
-                    <a href="{{ path("app_#{event.type}_event_members", {slug: event.slug}) }}" class="link--newblue">
+
+                    <a href="{{ path("app_committee_event_members", {slug: event.slug}) }}" class="link--newblue">
                         {{ 'event.manage_participants'|trans }}
                     </a>
                 {% elseif is_granted('REPORT') %}
@@ -133,7 +136,7 @@
         <section class="l__wrapper--slim space--30-0 text--body">
             <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
                 <li>
-                    <a href="{{ path("app_#{event.type}_event_show", {slug: event.slug}) }}">
+                    <a href="{{ path("app_committee_event_show", {slug: event.slug}) }}">
                         À propos
                     </a>
                 </li>
@@ -200,6 +203,5 @@
                 </ul>
             </section>
         {% endif %}
-
     </main>
 {% endblock %}

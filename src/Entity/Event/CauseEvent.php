@@ -27,12 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CauseEvent extends BaseEvent
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
-     *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
-     */
-    protected $category;
+    use DefaultCategoryOwnerTrait;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Coalition\Cause", inversedBy="events")
@@ -57,16 +52,6 @@ class CauseEvent extends BaseEvent
     public function getType(): string
     {
         return EventTypeEnum::TYPE_CAUSE;
-    }
-
-    public function getCategory(): ?EventCategory
-    {
-        return $this->category;
-    }
-
-    public function setCategory(EventCategory $category): void
-    {
-        $this->category = $category;
     }
 
     /**

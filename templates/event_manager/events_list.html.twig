@@ -29,7 +29,7 @@
 {% block event_manager_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Événements</h3>
-        <a href="{{ path("app_#{space_name}_event_manager_events_create") }}" class="btn-secondary btn-secondary--blue">
+        <a href="{{ path("app_#{space_name}_event_manager_create") }}" class="btn-secondary btn-secondary--blue">
             + Créer
         </a>
     </div>
@@ -59,15 +59,15 @@
             <div class="datagrid__table-container">
                 <table class="datagrid__table-manager">
                     <thead>
-                    <tr>
-                        <th>Nom de l'événement</th>
-                        <th style="width: 150px;">Organisateur</th>
-                        <th>Statut</th>
-                        <th style="width: 150px;">Code postal</th>
-                        <th style="width: 150px;">Date</th>
-                        <th style="width: 100px;" class="datagrid__table__col--hide-mobile">Participants</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th>Nom de l'événement</th>
+                            <th style="width: 150px;">Organisateur</th>
+                            <th>Statut</th>
+                            <th style="width: 150px;">Code postal</th>
+                            <th style="width: 150px;">Date</th>
+                            <th style="width: 100px;" class="datagrid__table__col--hide-mobile">Participants</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for event in events %}
@@ -76,7 +76,9 @@
                                 <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}
                             </td>
                             <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
-                            <td>{{ event.status|trans([], 'forms') }}</td>
+                            <td>
+                                <span class="status status__{{ event.isActive ? 1 : 2 }}">{{ event.status|trans([], 'forms') }}</span>
+                            </td>
                             <td>{{ event.country == 'FR' ? event.postalCode : event.postalCode ~ ' (' ~ event.countryName ~ ')' }}</td>
                             <td>{{ event.beginAt|date('d/m/Y H:i') }}</td>
                             <td class="datagrid__table__col--hide-mobile">
@@ -97,11 +99,11 @@
                                     {% set items = [] %}
                                 {% endif %}
 
-                                {% if is_granted('HOST_EVENT', event) %}
+                                {% if is_granted('HOST_EVENT', event) and event.isActive() %}
                                     {% set items = items|merge([
                                         {
                                             label: 'Modifier',
-                                            href: path('app_committee_event_edit', {slug: event.slug}),
+                                            href: path("app_#{space_name}_event_manager_edit", {slug: event.slug}),
                                         },
                                         {
                                             label: 'Écrire aux participants',
@@ -109,9 +111,9 @@
                                         },
                                         {
                                             label: 'Annuler',
-                                            href: path('app_committee_event_cancel', {slug: event.slug}),
+                                            href: path("app_#{space_name}_event_manager_cancel", {slug: event.slug}),
                                             linkAttr: {
-                                                class: 'row-action text--error'
+                                                class: 'row-action text--error em-confirm--trigger'
                                             },
                                         },
                                     ]) %}
@@ -122,7 +124,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="8" class="text--center">
+                            <td colspan="7" class="text--center">
                                 <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                 Aucun résultat
                             </td>

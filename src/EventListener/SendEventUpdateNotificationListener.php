@@ -51,7 +51,7 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
         ];
     }
 
-    public function onEventPreUpdate(CommitteeEventEvent $event): void
+    public function onEventPreUpdate(EventEvent $event): void
     {
         if ($event instanceof CommitteeEventEvent) {
             $this->doPreUpdate($event->getEvent());

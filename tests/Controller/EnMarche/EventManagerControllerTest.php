@@ -83,7 +83,7 @@ class EventManagerControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'committee_event' => [
+            'event_command' => [
                 'name' => 'écologie, débatons-en !',
                 'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
                 'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),

@@ -45,9 +45,4 @@ class EventCommandType extends AbstractType
             ->setAllowedTypes('event_group_category', ['null', EventGroupCategory::class])
         ;
     }
-
-    public function getBlockPrefix()
-    {
-        return 'committee_event';
-    }
 }

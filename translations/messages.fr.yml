@@ -239,8 +239,8 @@ event.capacity: '1 inscrit|%count% inscrits'
 capacity: 'inscrit|inscrits'
 
 committee.event.creation.success: Le nouvel événement a bien été créé et publié sur la page du comité.
-committee.event.update.success: L'événement a bien été modifié.
-committee.event.cancel.success: L'événement a bien été annulé.
+event.update.success: L'événement a bien été modifié.
+event.cancel.success: L'événement a bien été annulé.
 
 committee.event.show.share.download_ical: Ajouter l'événement à votre agenda Apple
 committee.event.show.share.cal_google: Ajouter l'événement à votre agenda Google

@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventInvitation;
 use App\Event\EventInvitationHandler;
@@ -31,18 +32,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @Route("/evenements/{slug}", name="app_committee_event")
  * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
  */
-class CommitteeEventController extends AbstractController
+class EventController extends AbstractController
 {
     /**
      * @Route(name="_show", methods={"GET"})
      */
-    public function showAction(CommitteeEvent $event, EventRepository $eventRepository): Response
+    public function showAction(BaseEvent $event, EventRepository $eventRepository): Response
     {
-        return $this->render('events/show.html.twig', [
+        $params = [
             'event' => $event,
-            'eventsNearby' => $event->isGeocoded() ? $eventRepository->findNearbyOf($event) : null,
-            'committee' => $event->getCommittee(),
-        ]);
+            'eventsNearby' => null,
+            'committee' => null,
+        ];
+
+        if ($event instanceof CommitteeEvent) {
+            $params = array_merge($params, [
+                'eventsNearby' => $event->isGeocoded() ? $eventRepository->findNearbyOf($event) : null,
+                'committee' => $event->getCommittee(),
+            ]);
+        }
+
+        return $this->render('events/show.html.twig', $params);
     }
 
     /**

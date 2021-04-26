@@ -69,27 +69,6 @@ class CitizenAction extends BaseEvent implements ReportableInterface, ExposedObj
         return $this->name ?: '';
     }
 
-    public function update(
-        string $name,
-        CitizenActionCategory $category,
-        string $description,
-        PostAddress $address,
-        \DateTimeInterface $beginAt,
-        \DateTimeInterface $finishAt,
-        string $timeZone
-    ) {
-        $this->setName($name);
-        $this->category = $category;
-        $this->beginAt = $beginAt;
-        $this->finishAt = $finishAt;
-        $this->description = $description;
-        $this->timeZone = $timeZone;
-
-        if (!$this->postAddress->equals($address)) {
-            $this->postAddress = $address;
-        }
-    }
-
     public function getCitizenProject(): CitizenProject
     {
         return $this->citizenProject;
@@ -105,6 +84,11 @@ class CitizenAction extends BaseEvent implements ReportableInterface, ExposedObj
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getCategoryName(): string
+    {
+        return $this->category->getName();
     }
 
     public function getType(): string

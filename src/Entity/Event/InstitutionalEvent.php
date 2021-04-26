@@ -78,32 +78,19 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface, Reporta
         $this->invitations = $invitations;
     }
 
-    public function update(
-        string $name,
-        InstitutionalEventCategory $category,
-        string $description,
-        PostAddress $address,
-        array $invitations,
-        \DateTimeInterface $beginAt,
-        \DateTimeInterface $finishAt,
-        string $timeZone
-    ) {
-        $this->setName($name);
-        $this->category = $category;
-        $this->beginAt = $beginAt;
-        $this->finishAt = $finishAt;
-        $this->description = $description;
-        $this->timeZone = $timeZone;
-        $this->invitations = $invitations;
-
-        if (!$this->postAddress->equals($address)) {
-            $this->postAddress = $address;
-        }
-    }
-
     public function getCategory(): InstitutionalEventCategory
     {
         return $this->category;
+    }
+
+    public function setCategory(InstitutionalEventCategory $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getCategoryName(): string
+    {
+        return $this->category->getName();
     }
 
     public function isReferentEvent(): bool

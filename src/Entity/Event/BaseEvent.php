@@ -41,7 +41,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Event\BaseEventRepository")
  * @ORM\Table(
  *     name="events",
  *     uniqueConstraints={
@@ -62,6 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
+ *     EventTypeEnum::TYPE_DEFAULT: "DefaultEvent",
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
  *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
  *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
@@ -346,15 +347,6 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     protected $capacity;
 
     /**
-     * Mapping to be defined in child classes.
-     *
-     * @var BaseEventCategory|null
-     *
-     * @SymfonySerializer\Groups({"event_list_read", "event_read", "event_write"})
-     */
-    protected $category;
-
-    /**
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
@@ -405,7 +397,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         return $this->name ?: '';
     }
 
-    protected static function canonicalize(string $name)
+    protected static function canonicalize(string $name): string
     {
         return mb_strtolower($name);
     }
@@ -423,11 +415,6 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function getSlug(): ?string
     {
         return $this->slug;
-    }
-
-    public function getCategoryName(): string
-    {
-        return $this->category->getName();
     }
 
     public function getDescription(): string
@@ -584,6 +571,11 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         return $this->capacity;
     }
 
+    public function setCapacity(?int $capacity): void
+    {
+        $this->capacity = $capacity;
+    }
+
     public function isFull(): bool
     {
         if (!$this->capacity) {
@@ -658,5 +650,26 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function getExposedRouteParams(): array
     {
         return ['slug' => $this->slug];
+    }
+
+    public function update(
+        string $name,
+        string $description,
+        PostAddress $address,
+        string $timeZone,
+        \DateTimeInterface $beginAt,
+        \DateTimeInterface $finishAt,
+        int $capacity = null
+    ) {
+        $this->setName($name);
+        $this->capacity = $capacity;
+        $this->timeZone = $timeZone;
+        $this->beginAt = $beginAt;
+        $this->finishAt = $finishAt;
+        $this->description = $description;
+
+        if (!$this->postAddress->equals($address)) {
+            $this->postAddress = $address;
+        }
     }
 }

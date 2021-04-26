@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import Modal from '../components/Modal';
 
 let modal;
@@ -34,17 +34,24 @@ function contentCallback(element) {
 export default () => {
     on(document, 'click', (event) => {
         const element = event.target;
+
         if (!hasClass(element, 'em-confirm--trigger')) {
             return;
         }
+
         event.preventDefault();
-        const modalWrapper = document.createElement('div');
-        modalWrapper.style.display = 'inline-block';
-        element.parentNode.insertBefore(modalWrapper, element);
+
+        let modalWrapper = dom('#modal-wrapper');
+
+        if (!modalWrapper) {
+            modalWrapper = document.createElement('div');
+            element.parentNode.insertBefore(modalWrapper, element);
+        }
+
         modal = render(
             <Modal
                 contentCallback={() => contentCallback(element)}
-                closeCallback={() => { modalWrapper.remove(); }}
+                closeCallback={() => { unmountComponentAtNode(modalWrapper); }}
             />,
             modalWrapper
         );

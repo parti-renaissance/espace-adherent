@@ -30,13 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ReportableInterface, ExposedObjectInterface
 {
     use UserDocumentTrait;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
-     *
-     * @Groups({"event_list_read"})
-     */
-    protected $category;
+    use DefaultCategoryOwnerTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
@@ -118,36 +112,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         return $this->name ?: '';
     }
 
-    public function update(
-        string $name,
-        EventCategory $category,
-        string $description,
-        PostAddress $address,
-        string $timeZone,
-        string $beginAt,
-        string $finishAt,
-        int $capacity = null,
-        bool $isForLegislatives = false
-    ) {
-        $this->setName($name);
-        $this->category = $category;
-        $this->capacity = $capacity;
-        $this->timeZone = $timeZone;
-        $this->beginAt = new \DateTime($beginAt);
-        $this->finishAt = new \DateTime($finishAt);
-        $this->description = $description;
-        $this->isForLegislatives = $isForLegislatives;
-
-        if (!$this->postAddress->equals($address)) {
-            $this->postAddress = $address;
-        }
-    }
-
-    public function getCategory(): EventCategory
-    {
-        return $this->category;
-    }
-
     public function getType(): string
     {
         return $this->type ?? EventTypeEnum::TYPE_COMMITTEE;
@@ -161,6 +125,11 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     public function isForLegislatives()
     {
         return $this->isForLegislatives;
+    }
+
+    public function setIsForLegislatives(bool $isForLegislatives): void
+    {
+        $this->isForLegislatives = $isForLegislatives;
     }
 
     public function getReportType(): string
