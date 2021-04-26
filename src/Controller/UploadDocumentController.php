@@ -20,20 +20,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UploadDocumentController extends AbstractController
 {
     /**
-     * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"})
+     * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"}, defaults={"ckeditor": true})
+     * @Route("/api/v3/upload/{type}", name="api_filebrowser_upload_v3", methods={"POST"})
+     *
      * @Security("is_granted('FILE_UPLOAD', type)")
      */
     public function filebrowserUploadAction(
         string $type,
         Request $request,
         UserDocumentManager $manager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        bool $ckeditor = false
     ): Response {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
         }
 
-        if (!$request->query->has('CKEditorFuncNum') || 0 == $request->files->count()) {
+        if (0 === $request->files->count() || ($ckeditor && !$request->query->has('CKEditorFuncNum'))) {
             throw new BadRequestHttpException("Request parameter 'CKEditorFuncNum' needed.");
         }
 
@@ -44,6 +47,10 @@ class UploadDocumentController extends AbstractController
         } catch (\Exception $e) {
             $url = '';
             $message = $e->getMessage();
+        }
+
+        if (!$ckeditor) {
+            return $this->json(['url' => $url, 'message' => $message], Response::HTTP_OK);
         }
 
         return $this->render('for_filebrowser_ckeditor.html.twig', [
