@@ -166,7 +166,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     /**
      * @var Coalition|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      *
      * @SymfonySerializer\Groups({"cause_read", "cause_write"})

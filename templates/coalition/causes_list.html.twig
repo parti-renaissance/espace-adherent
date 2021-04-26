@@ -28,6 +28,11 @@
         </div>
     </div>
 
+    <div class="b__nudge--bottom datagrid__action--wrapper">
+        <a href="{{ path("app_coalition_causes_list", {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue b__nudge--right-small">Exporter en CSV</a>
+        <a href="{{ path("app_coalition_causes_list", {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
+    </div>
+
     <div class="datagrid">
         <div class="l__row datagrid__action datagrid__action--sticky-scroll actions-wrapper"></div>
 
