@@ -33,6 +33,11 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
             return;
         }
 
+        // Skip National council election
+        if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
+            return;
+        }
+
         $this->closeExistingMandates($election);
 
         $this->openNewMandates($election);
