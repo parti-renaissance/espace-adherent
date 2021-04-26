@@ -122,7 +122,7 @@ class CausesControllerTest extends WebTestCase
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->text());
 
         // with correct data
-        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form(['cause' => [
+        $this->client->submit($crawler->selectButton('Enregistrer')->form(['cause' => [
             '_token' => $crawler->filter('input[name="cause[_token]"]')->attr('value'),
             'name' => 'Cause avec un nouveau objectif',
         ]]));
@@ -137,6 +137,41 @@ class CausesControllerTest extends WebTestCase
             'La cause "Cause avec un nouveau objectif" a bien été modifiée.',
             $crawler->filter('.flash .flash__inner')->eq(0)->text()
         );
+    }
+
+    public function testExportCausesCsvIsForbiddenAsNotCoalitionModerator(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-coalition/causes.csv');
+
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
+    }
+
+    public function testExportCausesCsv(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        ob_start();
+        $this->client->request(Request::METHOD_GET, '/espace-coalition/causes.csv');
+        $responseContent = ob_get_clean();
+
+        $this->isSuccessful($response = $this->client->getResponse());
+
+        self::assertSame('text/csv; charset=UTF-8', $response->headers->get('Content-Type'));
+        self::assertRegExp(
+            '/^attachment; filename="causes--[\d-]{17}.csv"$/',
+            $response->headers->get('Content-Disposition')
+        );
+
+        $this->assertStringContainsString('Id,Statut,Coalition,Zone,Ville,Soutiens,Objectif,Description,Adhérent,Prénom,Nom,Email,Image,Url,"Date de création"', $responseContent);
+        $this->assertStringContainsString('7,Approuvée,Justice,75008,"Paris 8e",0,"Cause pour la justice","Lorem ipsum dolor sit amet, consectetur adipiscing elit.",Oui,Jacques,Picard,jacques.picard@en-marche.fr,,http://coalitions.code/causes/44249b1d-ea10-41e0-b288-5eb74fa886ba,', $responseContent);
+        $this->assertStringContainsString('6,Approuvée,Education,75008,"Paris 8e",0,"Cause pour l\'education","Lorem ipsum dolor sit amet, consectetur adipiscing elit.",Oui,Jacques,Picard,jacques.picard@en-marche.fr,http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png,http://coalitions.code/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8', $responseContent);
+        $this->assertStringContainsString('5,Approuvée,Culture,8057,Zürich,0,"Cause pour la culture 3","Description de la cause pour la culture 3",Oui,Michelle,Dufour,michelle.dufour@example.ch,,http://coalitions.code/causes/5f8a6d40-9e69-4311-a45b-67c00d30ad41', $responseContent);
+        $this->assertStringContainsString('4,Approuvée,Culture,8057,Zürich,0,"Cause pour la culture 2","Description de la cause pour la culture 2",Oui,Michelle,Dufour,michelle.dufour@example.ch,http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png,http://coalitions.code/causes/017491f9-1953-482e-b491-20418235af1f,', $responseContent);
+        $this->assertStringContainsString('3,Approuvée,Culture,8057,Zürich,5,"Cause pour la culture","Lorem ipsum dolor sit amet, consectetur adipiscing elit.",Oui,Michelle,Dufour,michelle.dufour@example.ch,http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png,http://coalitions.code/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2', $responseContent);
+        $this->assertStringContainsString('2,"En attente",Justice,75008,"Paris 8e",0,"Cause en attente","Lorem ipsum dolor sit amet, consectetur adipiscing elit.",Oui,Jacques,Picard,jacques.picard@en-marche.fr,,http://coalitions.code/causes/253b0ed7-7426-15f8-97f9-2bb32d0a4d17,', $responseContent);
+        $this->assertStringContainsString('1,Approuvée,Inactive,75008,"Paris 8e",0,"Cause d\'une coalition désactivée","Lorem ipsum dolor sit amet, consectetur adipiscing elit.",Oui,Jacques,Picard,jacques.picard@en-marche.fr,,http://coalitions.code/causes/13814069-1dd2-11b2-98d6-2fdf8179626a,', $responseContent);
     }
 
     public function providePages(): iterable

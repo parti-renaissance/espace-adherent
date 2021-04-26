@@ -37,6 +37,11 @@ class CauseRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getForExport(CauseFilter $filter): array
+    {
+        return $this->createFilterQueryBuilder($filter)->getQuery()->getResult();
+    }
+
     /**
      * @return Cause[]|PaginatorInterface
      */
@@ -82,6 +87,8 @@ class CauseRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('cause')
+            ->leftJoin('cause.coalition', 'coalition')
+            ->leftJoin('cause.author', 'author')
             ->orderBy('cause.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 

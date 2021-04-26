@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche\Coalition;
 use App\Coalition\Filter\CauseFilter;
 use App\Coalition\MessageNotifier;
 use App\Entity\Coalition\Cause;
+use App\Exporter\CausesExporter;
 use App\Form\Coalition\CauseFilterType;
 use App\Form\Coalition\CauseType;
 use App\Repository\Coalition\CauseRepository;
@@ -23,16 +24,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class CausesController extends AbstractController
 {
     /**
-     * @Route("", name="causes_list", methods={"GET"})
+     * @Route(".{_format}", name="causes_list", methods={"GET"}, defaults={"_format": "html"}, requirements={"_format": "html|csv|xls"})
      */
-    public function list(Request $request, CauseRepository $causeRepository): Response
-    {
+    public function list(
+        Request $request,
+        string $_format,
+        CauseRepository $causeRepository,
+        CausesExporter $exporter
+    ): Response {
         $filter = new CauseFilter();
 
         $form = $this->createForm(CauseFilterType::class, $filter)->handleRequest($request);
 
         if ($form->isSubmitted() && !$form->isValid()) {
             $filter = new CauseFilter(Cause::STATUS_PENDING);
+        }
+
+        if ('html' !== $_format) {
+            return $exporter->getResponse($_format, $filter);
         }
 
         return $this->render('coalition/causes_list.html.twig', [

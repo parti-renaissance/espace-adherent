@@ -84,6 +84,11 @@ class City implements ZoneableInterface
         return $this->postalCode ?: [];
     }
 
+    public function getPostalCodeAsString(): ?string
+    {
+        return implode(', ', $this->postalCode);
+    }
+
     /**
      * @param string[] $postalCode
      */
