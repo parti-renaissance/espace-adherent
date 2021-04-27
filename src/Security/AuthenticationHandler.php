@@ -5,7 +5,6 @@ namespace App\Security;
 use App\Coalition\CoalitionUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 class AuthenticationHandler implements LogoutSuccessHandlerInterface
@@ -14,12 +13,8 @@ class AuthenticationHandler implements LogoutSuccessHandlerInterface
     private $coalitionsAuthHost;
     private $coalitionUrlGenerator;
 
-    public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        string $coalitionsAuthHost,
-        CoalitionUrlGenerator $coalitionUrlGenerator
-    ) {
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(string $coalitionsAuthHost, CoalitionUrlGenerator $coalitionUrlGenerator)
+    {
         $this->coalitionsAuthHost = $coalitionsAuthHost;
         $this->coalitionUrlGenerator = $coalitionUrlGenerator;
     }
@@ -30,6 +25,6 @@ class AuthenticationHandler implements LogoutSuccessHandlerInterface
             return new RedirectResponse($this->coalitionUrlGenerator->generateHomepageLink());
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('homepage'));
+        return new RedirectResponse('/');
     }
 }
