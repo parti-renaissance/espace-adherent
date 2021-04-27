@@ -36,7 +36,7 @@ class NewUserUpdateCoalitionCauseFollowerSubscriber implements EventSubscriberIn
     public static function getSubscribedEvents()
     {
         return [
-            UserEvents::USER_CREATED => 'updateFollower',
+            UserEvents::USER_VALIDATED => 'updateFollower',
         ];
     }
 }

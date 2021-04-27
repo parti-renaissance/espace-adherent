@@ -116,17 +116,6 @@ class MembershipControllerTest extends WebTestCase
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
-        // check follower
-        $this->manager->clear();
-        $follower = $this->getCauseFollowerRepository()->findOneBy(['emailAddress' => 'jean-paul@dupont.tld']);
-
-        $this->assertNull($follower);
-
-        $follower = $this->getCauseFollowerRepository()->findOneBy(['id' => $followerId]);
-
-        $this->assertInstanceOf(CauseFollower::class, $follower);
-        $this->assertSame('jean-paul@dupont.tld', $follower->getAdherent()->getEmailAddress());
-
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
@@ -138,6 +127,17 @@ class MembershipControllerTest extends WebTestCase
 
         // User is automatically logged-in
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        // check follower
+        $this->manager->clear();
+        $follower = $this->getCauseFollowerRepository()->findOneBy(['emailAddress' => 'jean-paul@dupont.tld']);
+
+        $this->assertNull($follower);
+
+        $follower = $this->getCauseFollowerRepository()->findOneBy(['id' => $followerId]);
+
+        $this->assertInstanceOf(CauseFollower::class, $follower);
+        $this->assertSame('jean-paul@dupont.tld', $follower->getAdherent()->getEmailAddress());
 
         // Activate user account twice
         $this->logout($this->client);
