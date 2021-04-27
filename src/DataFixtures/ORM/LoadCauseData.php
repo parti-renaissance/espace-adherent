@@ -62,8 +62,8 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         ));
         $causeCulture1->addFollower($this->createFollowerByEmail(
             $causeCulture1,
-            'adherent-2@en-marche-dev.fr',
-            'Gisele',
+            'jean-paul@dupont.tld',
+            'Jean',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             false
         ));

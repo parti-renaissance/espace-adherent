@@ -11,6 +11,7 @@ use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Administrator;
 use App\Entity\CitizenProject;
 use App\Entity\Coalition\Cause;
+use App\Entity\Coalition\CauseFollower;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
@@ -60,6 +61,7 @@ use App\Repository\AdherentResetPasswordTokenRepository;
 use App\Repository\AdministratorRepository;
 use App\Repository\CitizenActionRepository;
 use App\Repository\CitizenProjectRepository;
+use App\Repository\Coalition\CauseFollowerRepository;
 use App\Repository\Coalition\CauseRepository;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
@@ -409,6 +411,11 @@ trait TestHelperTrait
     public function getCauseRepository(): CauseRepository
     {
         return $this->getRepository(Cause::class);
+    }
+
+    public function getCauseFollowerRepository(): CauseFollowerRepository
+    {
+        return $this->getRepository(CauseFollower::class);
     }
 
     /**
