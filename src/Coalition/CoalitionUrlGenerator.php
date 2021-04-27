@@ -17,6 +17,11 @@ class CoalitionUrlGenerator
         $this->coalitionsHost = $coalitionsHost;
     }
 
+    public function generateHomepageLink(): string
+    {
+        return $this->coalitionsHost;
+    }
+
     public function generateCauseLink(Cause $cause): string
     {
         return sprintf(self::CAUSE_LINK_PATTERN, $this->coalitionsHost, $cause->getUuid()->toString());

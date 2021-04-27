@@ -64,6 +64,9 @@
             <argument key="$coalitionAuthHost" type="string">%coalitions_auth_host%</argument>
             <argument key="$coalitionFrontHost" type="string">%coalitions_host%%</argument>
         </service>
+        <service id="App\Security\AuthenticationHandler">
+            <argument key="$coalitionsAuthHost" type="string">%env(COALITIONS_AUTH_HOST)%</argument>
+        </service>
         <service id="App\Security\UserChecker"/>
         <service id="app.security.user_provider" class="App\Security\UserProvider">
             <argument key="$classOrAlias" type="string">App\Entity\Adherent</argument>
