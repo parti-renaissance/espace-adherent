@@ -1,6 +1,6 @@
 nelmio_cors:
     paths:
-        '^/(deconnexion|api|oauth/v2/token)':
+        '^/(api|oauth/v2/token)':
             allow_credentials: true
             origin_regex: true
             allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
