@@ -9,7 +9,6 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 class AuthenticationHandler implements LogoutSuccessHandlerInterface
 {
-    private $urlGenerator;
     private $coalitionsAuthHost;
     private $coalitionUrlGenerator;
 
