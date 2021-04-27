@@ -3,6 +3,7 @@
 namespace App\Exporter;
 
 use ApiPlatform\Core\Api\UrlGeneratorInterface;
+use App\Coalition\CoalitionUrlGenerator;
 use App\Coalition\Filter\CauseFilter;
 use App\Entity\Adherent;
 use App\Entity\Coalition\Cause;
@@ -16,26 +17,26 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CausesExporter
 {
-    private $coalitionsHost;
     private $exporter;
     private $repository;
     private $cityRepository;
     private $urlGenerator;
+    private $coalitionUrlGenerator;
     private $translator;
 
     public function __construct(
-        string $coalitionsHost,
         SonataExporter $exporter,
         CauseRepository $repository,
         CityRepository $cityRepository,
         UrlGeneratorInterface $urlGenerator,
+        CoalitionUrlGenerator $coalitionUrlGenerator,
         TranslatorInterface $translator
     ) {
-        $this->coalitionsHost = $coalitionsHost;
         $this->exporter = $exporter;
         $this->cityRepository = $cityRepository;
         $this->repository = $repository;
         $this->urlGenerator = $urlGenerator;
+        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
         $this->translator = $translator;
     }
 
@@ -63,13 +64,12 @@ class CausesExporter
                         'Adhérent' => $author->isAdherent() ? 'Oui' : 'Non',
                         'Prénom' => $author->getFirstName(),
                         'Nom' => $author->getLastName(),
-                        'Email' => $author->getEmailAddress(),
                         'Image' => $cause->getImageName() ? $this->urlGenerator->generate(
                             'asset_url',
                             ['path' => $cause->getImagePath()],
                             \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL
                         ) : null,
-                        'Url' => \sprintf('%s/causes/%s', $this->coalitionsHost, $cause->getUuid()),
+                        'Url' => $this->coalitionUrlGenerator->generateCauseLink($cause),
                         'Date de création' => $cause->getCreatedAt()->format('d/m/Y H:i:s'),
                     ];
                 },
