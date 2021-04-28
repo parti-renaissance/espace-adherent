@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * @Route("/v3/internal/{uuid}/{path}", name="api_internal_api_application", requirements={"path": ".+"})
+ * @Route("/v3/internal/{uuid}/{path}", name="api_internal_api_application", requirements={"path": ".+", "uuid": "%pattern_uuid%"})
  *
  * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
  */
