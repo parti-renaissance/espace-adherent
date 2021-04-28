@@ -11,6 +11,7 @@ class MailchimpObjectIdMapping
     private $electedRepresentativeListId;
     private $applicationRequestCandidateListId;
     private $jecouteListId;
+    private $coalitionsListId;
     private $folderIds;
     private $templateIds;
     private $interestIds;
@@ -26,6 +27,7 @@ class MailchimpObjectIdMapping
         string $electedRepresentativeListId,
         string $applicationRequestCandidateListId,
         string $jecouteListId,
+        string $coalitionsListId,
         array $folderIds,
         array $templateIds,
         array $interestIds,
@@ -40,6 +42,7 @@ class MailchimpObjectIdMapping
         $this->electedRepresentativeListId = $electedRepresentativeListId;
         $this->applicationRequestCandidateListId = $applicationRequestCandidateListId;
         $this->jecouteListId = $jecouteListId;
+        $this->coalitionsListId = $coalitionsListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
@@ -103,6 +106,11 @@ class MailchimpObjectIdMapping
     public function getJecouteListId(): string
     {
         return $this->jecouteListId;
+    }
+
+    public function getCoalitionsListId(): string
+    {
+        return $this->coalitionsListId;
     }
 
     public function getListIdByMessageType(string $messageType): string
