@@ -748,7 +748,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $status = self::DISABLED,
         ?string $source = null,
         bool $coalitionSubscription = false,
-        bool $causeSUbscription = false
+        bool $causeSubscription = false
     ): self {
         $adherent = new self();
 
@@ -763,7 +763,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->registeredAt = new \DateTime('now');
         $adherent->source = $source;
         $adherent->coalitionSubscription = $coalitionSubscription;
-        $adherent->causeSubscription = $causeSUbscription;
+        $adherent->causeSubscription = $causeSubscription;
 
         return $adherent;
     }
@@ -788,7 +788,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         array $mandates = null,
         string $nationality = null,
         string $customGender = null
-    ) {
+    ): self {
         $adherent = new self();
 
         $adherent->uuid = $uuid;

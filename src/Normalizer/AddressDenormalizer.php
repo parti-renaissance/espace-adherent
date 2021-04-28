@@ -33,14 +33,11 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             }
         }
 
-        /** @var AddressInterface $data */
-        $data = $this->denormalizer->denormalize($data, $class, $format, $context);
-
-        return $data;
+        return $this->denormalizer->denormalize($data, $class, $format, $context);
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        return !isset($context[self::ALREADY_CALLED]) && \in_array(AddressInterface::class, class_implements($type));
+        return !isset($context[self::ALREADY_CALLED]) && is_a($type, AddressInterface::class, true);
     }
 }
