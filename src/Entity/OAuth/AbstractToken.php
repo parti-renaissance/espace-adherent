@@ -9,7 +9,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractToken
+abstract class AbstractToken implements TokenInterface
 {
     use EntityIdentityTrait;
 

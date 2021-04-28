@@ -7,11 +7,12 @@ use App\OAuth\Model\RefreshToken as InMemoryRefreshToken;
 use App\OAuth\PersistentTokenFactory;
 use App\Repository\OAuth\RefreshTokenRepository;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface as OAuthRefreshTokenRepositoryInterface;
 
 class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
 {
+    use TokenStoreTrait;
+
     private $persistentTokenFactory;
     private $refreshTokenRepository;
 
@@ -42,13 +43,7 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
             return;
         }
 
-        if ($token->isExpired()) {
-            throw OAuthServerException::invalidRefreshToken('Token has expired');
-        }
-
-        if ($token->isRevoked()) {
-            throw OAuthServerException::invalidRefreshToken('Token has been revoked');
-        }
+        $this->checkToken($token);
 
         $token->revoke();
         $this->store($token);
