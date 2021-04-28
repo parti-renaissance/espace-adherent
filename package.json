@@ -38,7 +38,7 @@
     "eslint-watch": "^7.0.0",
     "events": "^3.0.0",
     "extend": "^3.0.2",
-    "file-loader": "^3.0.1",
+    "file-loader": "^6.2.0",
     "flatpickr": "^4.6.6",
     "growl": "^1.10.5",
     "js-base64": "^2.1.9",
