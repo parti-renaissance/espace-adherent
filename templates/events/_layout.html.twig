@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
-                        <a href="{{ path("app_#{event.type}_event_export_ical", {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
+                        <a href="{{ path("app_committee_event_export_ical", {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
                             Apple
                             <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
                         </a>

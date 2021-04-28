@@ -27,7 +27,7 @@ class EventCanceledHandler
         $this->manager = $manager;
     }
 
-    public function handle(BaseEvent $event): BaseEvent
+    public function handle(BaseEvent $event): void
     {
         $event->cancel();
 
@@ -39,8 +39,6 @@ class EventCanceledHandler
                 self::EVENTS_MAPPING[$className],
             );
         }
-
-        return $event;
     }
 
     private function createDispatchedEvent(BaseEvent $event): Event

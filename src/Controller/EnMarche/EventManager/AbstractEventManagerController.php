@@ -6,16 +6,20 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventGroupCategory;
+use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Form\EventCommandType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractEventManagerController extends AbstractController
@@ -28,14 +32,14 @@ abstract class AbstractEventManagerController extends AbstractController
     /**
      * @Route(
      *     path="/evenements",
-     *     name="events",
+     *     name="_events",
      *     defaults={"type": AbstractEventManagerController::EVENTS_TYPE_ALL},
      *     methods={"GET"}
      * )
      *
      * @Route(
      *     path="/mes-evenements",
-     *     name="events_mine",
+     *     name="_events_mine",
      *     defaults={"type": AbstractEventManagerController::EVENTS_TYPE_MINE},
      *     methods={"GET"}
      * )
@@ -52,7 +56,7 @@ abstract class AbstractEventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/evenements/creer", name="events_create", methods={"GET", "POST"})
+     * @Route("/evenements/creer", name="_create", methods={"GET", "POST"})
      */
     public function eventsCreateAction(
         Request $request,
@@ -77,7 +81,7 @@ abstract class AbstractEventManagerController extends AbstractController
             $registrationCommand = new EventRegistrationCommand($event, $user);
             $eventRegistrationCommandHandler->handle($registrationCommand);
 
-            return $this->renderTemplate('event_manager/event_create.html.twig', [
+            return $this->renderTemplate('event_manager/event_create_success.html.twig', [
                 'event' => $event,
             ]);
         }
@@ -85,6 +89,49 @@ abstract class AbstractEventManagerController extends AbstractController
         return $this->renderTemplate('event_manager/event_create.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/evenements/{slug}/modifier", name="_edit", methods={"GET", "POST"})
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
+    {
+        $form = $this
+            ->createForm(EventCommandType::class, $command = EventCommand::createFromEvent($event))
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $handler->handleUpdate($event, $command);
+
+            $this->addFlash('info', 'event.update.success');
+
+            return $this->redirectToEventManagerRoute('edit', [
+                'slug' => $event->getSlug(),
+            ]);
+        }
+
+        return $this->renderTemplate('event_manager/event_edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/evenements/{slug}/annuler", name="_cancel", methods={"GET"})
+     * @Security("is_granted('HOST_EVENT', event)")
+     */
+    public function cancelAction(BaseEvent $event, EventCanceledHandler $eventCanceledHandler): Response
+    {
+        if (!$event->isActive()) {
+            throw new BadRequestHttpException();
+        }
+
+        $eventCanceledHandler->handle($event);
+
+        $this->addFlash('info', 'event.cancel.success');
+
+        return $this->redirectToEventManagerRoute('events_mine');
     }
 
     abstract protected function getSpaceType(): string;
@@ -106,14 +153,14 @@ abstract class AbstractEventManagerController extends AbstractController
         ));
     }
 
-    protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
+    protected function redirectToEventManagerRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_event_manager_{$this->getSpaceType()}_${subName}", $parameters);
+        return $this->redirectToRoute("app_{$this->getSpaceType()}_event_manager_${subName}", $parameters);
     }
 
     protected function getEventClassName(): string
     {
-        return CommitteeEvent::class;
+        return DefaultEvent::class;
     }
 
     protected function getEventGroupCategory(): ?EventGroupCategory

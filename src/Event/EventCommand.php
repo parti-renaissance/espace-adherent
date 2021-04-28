@@ -6,6 +6,7 @@ use App\Address\Address;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Validator\DateRange;
@@ -45,7 +46,7 @@ class EventCommand extends BaseEventCommand
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
         bool $isForLegislatives = false,
-        CommitteeEvent $event = null,
+        BaseEvent $event = null,
         string $timezone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone);
@@ -54,23 +55,22 @@ class EventCommand extends BaseEventCommand
         $this->isForLegislatives = $isForLegislatives;
     }
 
-    public static function createFromEvent(CommitteeEvent $event): self
+    public static function createFromEvent(BaseEvent $event): self
     {
         $command = new self(
             $event->getOrganizer(),
-            $event->getCommittee(),
+            $event instanceof CommitteeEvent ? $event->getCommittee() : null,
             $event->getUuid(),
             self::getAddressModelFromEvent($event),
             $event->getBeginAt(),
             $event->getFinishAt(),
-            $event->isForLegislatives(),
+            $event instanceof CommitteeEvent ? $event->isForLegislatives() : false,
             $event,
             $event->getTimeZone()
         );
 
         $command->category = $event->getCategory();
         $command->capacity = $event->getCapacity();
-        $command->isForLegislatives = $event->isForLegislatives();
 
         return $command;
     }
@@ -102,11 +102,6 @@ class EventCommand extends BaseEventCommand
     public function getCommittee(): ?Committee
     {
         return $this->committee;
-    }
-
-    public function getEvent(): ?CommitteeEvent
-    {
-        return $this->event;
     }
 
     protected function getCategoryClass(): string

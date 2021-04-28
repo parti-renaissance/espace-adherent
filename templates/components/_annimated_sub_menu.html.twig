@@ -1,18 +1,20 @@
-<div class="action-menu-oval">
-    <a href="javascript:void(0);">
-        <span class="oval"></span>
-        <span class="oval"></span>
-        <span class="oval"></span>
-    </a>
-    <div class="action-dropdown-menu--bounce">
-        <div class="action-dropdown-menu--content">
-            {% for item in items %}
-                <a{% if item.href is defined %} href="{{ item.href }}"{% endif %}
-                    {% for attr,value in item.linkAttr|default({class: 'row-action'}) %}
-                        {{ attr }}="{{ value }}"
-                    {% endfor %}
-                >{{ item.label|raw }}</a>
-            {% endfor %}
+{% if items|length > 0 %}
+    <div class="action-menu-oval">
+        <a href="javascript:void(0);">
+            <span class="oval"></span>
+            <span class="oval"></span>
+            <span class="oval"></span>
+        </a>
+        <div class="action-dropdown-menu--bounce">
+            <div class="action-dropdown-menu--content">
+                {% for item in items %}
+                    <a{% if item.href is defined %} href="{{ item.href }}"{% endif %}
+                        {% for attr,value in item.linkAttr|default({class: 'row-action'}) %}
+                            {{ attr }}="{{ value }}"
+                        {% endfor %}
+                    >{{ item.label|raw }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
+{% endif %}

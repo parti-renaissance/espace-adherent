@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Event\EventPermissions;
@@ -20,7 +21,7 @@ class HostEventVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $event)
     {
-        return EventPermissions::HOST === $attribute && $event instanceof CommitteeEvent;
+        return EventPermissions::HOST === $attribute && $event instanceof BaseEvent;
     }
 
     /**
@@ -36,10 +37,14 @@ class HostEventVoter extends AbstractAdherentVoter
             return true;
         }
 
-        if (!$committee = $event->getCommittee()) {
-            return false;
+        if ($event instanceof CommitteeEvent) {
+            if (!$committee = $event->getCommittee()) {
+                return false;
+            }
+
+            return $adherent->isSupervisorOf($committee) || $adherent->isHostOf($committee);
         }
 
-        return $adherent->isSupervisorOf($committee) || $adherent->isHostOf($committee);
+        return false;
     }
 }

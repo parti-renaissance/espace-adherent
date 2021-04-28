@@ -3,6 +3,7 @@
 namespace App\Event;
 
 use App\Entity\CommitteeFeedItem;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -21,40 +22,43 @@ class EventCommandHandler
         $this->manager = $manager;
     }
 
-    public function handle(EventCommand $command, string $eventClass = CommitteeEvent::class): CommitteeEvent
+    public function handle(EventCommand $command, string $eventClass = CommitteeEvent::class): BaseEvent
     {
         $event = $this->factory->createFromEventCommand($command, $eventClass);
 
         $this->manager->persist($event);
 
-        if ($event->getCommittee()) {
-            $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
+        if ($event instanceof CommitteeEvent) {
+            if ($event->getCommittee()) {
+                $this->manager->persist(CommitteeFeedItem::createEvent($event, $command->getAuthor()));
+            }
+            $sfEvent = new CommitteeEventEvent($command->getAuthor(), $event, $command->getCommittee());
+        } else {
+            $sfEvent = new EventEvent($command->getAuthor(), $event);
         }
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new CommitteeEventEvent(
-            $command->getAuthor(),
-            $event,
-            $command->getCommittee()
-        ), Events::EVENT_CREATED);
+        $this->dispatcher->dispatch($sfEvent, Events::EVENT_CREATED);
 
         return $event;
     }
 
-    public function handleUpdate(CommitteeEvent $event, EventCommand $command)
+    public function handleUpdate(BaseEvent $event, EventCommand $command)
     {
-        $this->dispatcher->dispatch(new CommitteeEventEvent($command->getAuthor(), $event), Events::EVENT_PRE_UPDATE);
+        if ($event instanceof CommitteeEvent) {
+            $sfEvent = new CommitteeEventEvent($command->getAuthor(), $event, $command->getCommittee());
+        } else {
+            $sfEvent = new EventEvent($command->getAuthor(), $event);
+        }
+
+        $this->dispatcher->dispatch($sfEvent, Events::EVENT_PRE_UPDATE);
 
         $this->factory->updateFromEventCommand($event, $command);
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new CommitteeEventEvent(
-            $command->getAuthor(),
-            $event,
-            $command->getCommittee()
-        ), Events::EVENT_UPDATED);
+        $this->dispatcher->dispatch($sfEvent, Events::EVENT_UPDATED);
 
         return $event;
     }

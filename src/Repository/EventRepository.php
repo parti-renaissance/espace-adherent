@@ -9,7 +9,6 @@ use App\Entity\District;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
-use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Event\EventTypeEnum;
 use App\Geocoder\Coordinates;
@@ -194,47 +193,6 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Zone[] $zones
-     *
-     * @return CommitteeEvent[]|PaginatorInterface
-     */
-    public function findManagedByPaginator(array $zones, int $page = 1, int $limit = 50): PaginatorInterface
-    {
-        $qb = $this->createQueryBuilder('e')
-            ->select('e', 'a', 'c', 'o')
-            ->addSelect('ref_team', 'board_member')
-            ->leftJoin('e.category', 'a')
-            ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.organizer', 'o')
-            ->leftJoin('o.referentTeamMember', 'ref_team')
-            ->leftJoin('o.boardMember', 'board_member')
-            ->where('e.published = :published')
-            ->orderBy('e.beginAt', 'DESC')
-            ->addOrderBy('e.name', 'ASC')
-            ->setParameter('published', true)
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'e',
-            CommitteeEvent::class,
-            'e2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
-            }
-        );
-
-        return $this->configurePaginator(
-            $qb,
-            $page,
-            $limit
-        );
-    }
-
-    /**
      * @return BaseEvent[]
      */
     public function findAllInDistrict(District $district): array
@@ -311,27 +269,6 @@ class EventRepository extends ServiceEntityRepository
                     ->setResultCacheLifetime(1800)
                 ;
             }
-        );
-    }
-
-    public function findEventsByOrganizerAndGroupCategoryPaginator(
-        Adherent $organizer,
-        string $groupSlug,
-        int $page = 1,
-        int $limit = 50
-    ): PaginatorInterface {
-        return $this->configurePaginator(
-            $this
-                ->createQueryBuilder('e')
-                ->innerJoin('e.category', 'category')
-                ->innerJoin('category.eventGroupCategory', 'groupCategory')
-                ->where('e.organizer = :organizer')
-                ->andWhere('groupCategory.slug = :groupSlug')
-                ->setParameter('organizer', $organizer)
-                ->setParameter('groupSlug', $groupSlug)
-                ->orderBy('e.createdAt', 'DESC'),
-            $page,
-            $limit
         );
     }
 

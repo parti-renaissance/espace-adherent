@@ -224,7 +224,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         // Submit the committee event form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Créer cet événement')->form([
-            'committee_event' => [
+            'event_command' => [
                 'name' => 'F',
                 'description' => 'F',
                 'category' => $eventCategory,
@@ -251,7 +251,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         // Submit the committee form with valid data to create the new committee event
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
-            'committee_event' => [
+            'event_command' => [
                 'name' => " ♻ débat sur l'agriculture écologique ♻ ",
                 'description' => " ♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻ ",
                 'category' => $eventCategory,
@@ -311,7 +311,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
 
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
-            'committee_event' => [
+            'event_command' => [
                 'name' => " ♻ débat sur l'agriculture écologique à Singapore",
                 'description' => " ♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻ ",
                 'category' => $eventCategory,

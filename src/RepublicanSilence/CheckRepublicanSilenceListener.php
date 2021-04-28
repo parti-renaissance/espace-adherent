@@ -19,7 +19,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Referent Space
         'app_referent_managed_users_list' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_referent_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_referent_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_referent_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_message_send' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_message_referent_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
 
@@ -36,15 +36,15 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
         // Deputy Space
         'app_message_deputy_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
-        'app_deputy_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
+        'app_deputy_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
 
         // Municipal Space
-        'app_municipal_chief_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
+        'app_municipal_chief_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
         'app_message_municipal_chief_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
 
         // Senator Space
         'app_message_senator_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
-        'app_senator_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
+        'app_senator_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
 
         // IdeaWorkshop
         'api_ideas_post_collection' => ReferentTagExtractorInterface::NONE, // creation action

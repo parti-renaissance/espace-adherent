@@ -5,8 +5,10 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\PostAddressFactory;
 use App\CitizenAction\CitizenActionCommand;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\InstitutionalEvent;
 use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
@@ -131,26 +133,41 @@ class EventFactory
         return $citizenAction;
     }
 
-    public function createFromEventCommand(EventCommand $command, string $eventClass): CommitteeEvent
+    public function createFromEventCommand(EventCommand $command, string $eventClass): BaseEvent
     {
-        if (!is_a($eventClass, CommitteeEvent::class, true)) {
+        if (!is_a($eventClass, BaseEvent::class, true)) {
             throw new \InvalidArgumentException(sprintf('Invalid Event type: "%s"', $eventClass));
         }
 
-        /** @var CommitteeEvent $event */
-        $event = new $eventClass(
-            $command->getUuid(),
-            $command->getAuthor(),
-            $command->getCommittee(),
-            $command->getName(),
-            $command->getCategory(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt()->format(\DATE_ATOM),
-            $command->getFinishAt()->format(\DATE_ATOM),
-            $command->getCapacity(),
-            $command->isForLegislatives()
-        );
+        switch ($eventClass) {
+            case CommitteeEvent::class:
+                /** @var CommitteeEvent $event */
+                $event = new CommitteeEvent(
+                    $command->getUuid(),
+                    $command->getAuthor(),
+                    $command->getCommittee(),
+                    $command->getName(),
+                    $command->getCategory(),
+                    $command->getDescription(),
+                    $this->createPostAddress($command->getAddress()),
+                    $command->getBeginAt()->format(\DATE_ATOM),
+                    $command->getFinishAt()->format(\DATE_ATOM),
+                    $command->getCapacity(),
+                    $command->isForLegislatives()
+                );
+                break;
+            default:
+                $event = new DefaultEvent($command->getUuid());
+                $event->setAuthor($command->getAuthor());
+                $event->setName($command->getName());
+                $event->setCategory($command->getCategory());
+                $event->setDescription($command->getDescription());
+                $event->setPostAddress($this->createPostAddress($command->getAddress()));
+                $event->setBeginAt($command->getBeginAt());
+                $event->setFinishAt($command->getFinishAt());
+                $event->setCapacity($command->getCapacity());
+        }
+
         $event->setTimeZone($command->getTimeZone());
 
         $this->referentTagManager->assignReferentLocalTags($event);
@@ -185,33 +202,35 @@ class EventFactory
     ): void {
         $institutionalEvent->update(
             $command->getName(),
-            $command->getCategory(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getInvitations(),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->getTimeZone()
-        );
-    }
-
-    public function updateFromEventCommand(CommitteeEvent $event, EventCommand $command): CommitteeEvent
-    {
-        $event->update(
-            $command->getName(),
-            $command->getCategory(),
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
             $command->getTimeZone(),
-            $command->getBeginAt()->format(\DATE_ATOM),
-            $command->getFinishAt()->format(\DATE_ATOM),
-            $command->getCapacity(),
-            $command->isForLegislatives()
+            $command->getBeginAt(),
+            $command->getFinishAt()
         );
 
-        $this->referentTagManager->assignReferentLocalTags($event);
+        $institutionalEvent->setCategory($command->getCategory());
+        $institutionalEvent->setInvitations($command->getInvitations());
+    }
 
-        return $event;
+    public function updateFromEventCommand(BaseEvent $event, EventCommand $command): void
+    {
+        $event->update(
+            $command->getName(),
+            $command->getDescription(),
+            $this->createPostAddress($command->getAddress()),
+            $command->getTimeZone(),
+            $command->getBeginAt(),
+            $command->getFinishAt(),
+            $command->getCapacity()
+        );
+
+        if ($event instanceof CommitteeEvent) {
+            $event->setIsForLegislatives($command->isForLegislatives());
+        }
+
+        $event->setCategory($command->getCategory());
+        $this->referentTagManager->assignReferentLocalTags($event);
     }
 
     public function createFromCitizenActionCommand(CitizenActionCommand $command): CitizenAction
@@ -240,14 +259,14 @@ class EventFactory
     {
         $citizenAction->update(
             $command->getName(),
-            $command->getCategory(),
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
+            $command->getTimeZone(),
             $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->getTimeZone()
+            $command->getFinishAt()
         );
 
+        $citizenAction->setCategory($command->getCategory());
         $this->referentTagManager->assignReferentLocalTags($citizenAction);
     }
 

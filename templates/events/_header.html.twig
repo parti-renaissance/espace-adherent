@@ -71,7 +71,7 @@
                 <i class="fa fa-envelope-o"></i>
             </li>
             <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
-                <a href="{{ path("app_#{event.type}_event_export_ical", {slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
+                <a href="{{ path("app_committee_event_export_ical", {slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}" class="text--white">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
                 </a>

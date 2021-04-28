@@ -91,7 +91,7 @@ class ReferentControllerTest extends WebTestCase
 
         $data = [];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
         $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
@@ -113,19 +113,19 @@ class ReferentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-referent/evenements/creer');
 
         $data = [];
-        $data['committee_event']['name'] = 'premier événement';
-        $data['committee_event']['category'] = $this->getEventCategoryIdForName('Événement innovant');
-        $data['committee_event']['beginAt'] = '2023-06-14 16:15';
-        $data['committee_event']['finishAt'] = '2023-06-15 23:00';
-        $data['committee_event']['address']['address'] = 'Pilgerweg 58';
-        $data['committee_event']['address']['cityName'] = 'Kilchberg';
-        $data['committee_event']['address']['postalCode'] = '8802';
-        $data['committee_event']['address']['country'] = 'CH';
-        $data['committee_event']['description'] = 'Premier événement en Suisse';
-        $data['committee_event']['capacity'] = 100;
-        $data['committee_event']['timeZone'] = 'Europe/Zurich';
+        $data['event_command']['name'] = 'premier événement';
+        $data['event_command']['category'] = $this->getEventCategoryIdForName('Événement innovant');
+        $data['event_command']['beginAt'] = '2023-06-14 16:15';
+        $data['event_command']['finishAt'] = '2023-06-15 23:00';
+        $data['event_command']['address']['address'] = 'Pilgerweg 58';
+        $data['event_command']['address']['cityName'] = 'Kilchberg';
+        $data['event_command']['address']['postalCode'] = '8802';
+        $data['event_command']['address']['country'] = 'CH';
+        $data['event_command']['description'] = 'Premier événement en Suisse';
+        $data['event_command']['capacity'] = 100;
+        $data['event_command']['timeZone'] = 'Europe/Zurich';
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
 
         $this->assertSame('L\'événement « Premier événement » a bien été créé.', $this->client->getCrawler()->filter('.box-success h2')->text());
 

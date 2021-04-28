@@ -24,11 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class InstitutionalEventCommand extends BaseEventCommand
 {
     /**
-     * @var InstitutionalEvent|null
-     */
-    protected $event;
-
-    /**
      * @Assert\Count(
      *     min=1,
      *     max=50,
@@ -69,11 +64,6 @@ class InstitutionalEventCommand extends BaseEventCommand
         $command->category = $event->getCategory();
 
         return $command;
-    }
-
-    public function getEvent(): ?InstitutionalEvent
-    {
-        return $this->event;
     }
 
     /**

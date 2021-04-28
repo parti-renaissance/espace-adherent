@@ -7,13 +7,13 @@ use App\Entity\Adherent;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventManagerSpaceEnum;
 use App\Geo\ManagedZoneProvider;
+use App\Repository\Event\DefaultEventRepository;
 use App\Repository\EventGroupCategoryRepository;
-use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-candidat", name="app_candidate_event_manager_")
+ * @Route(path="/espace-candidat", name="app_candidate_event_manager")
  *
  * @Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")
  */
@@ -29,7 +29,7 @@ class CandidateEventManagerController extends AbstractEventManagerController
     private $eventGroupCategoryRepository;
 
     public function __construct(
-        EventRepository $repository,
+        DefaultEventRepository $repository,
         ManagedZoneProvider $managedZoneProvider,
         EventGroupCategoryRepository $eventGroupCategoryRepository
     ) {
@@ -51,7 +51,7 @@ class CandidateEventManagerController extends AbstractEventManagerController
             return $this->repository->findManagedByPaginator($managedZones, $page);
         }
 
-        return $this->repository->findEventsByOrganizerAndGroupCategoryPaginator($adherent, EventGroupCategory::CAMPAIGN_EVENTS, $page);
+        return $this->repository->findEventsByOrganizerPaginator($adherent, $page, 50, EventGroupCategory::CAMPAIGN_EVENTS);
     }
 
     protected function getEventGroupCategory(): ?EventGroupCategory
