@@ -9708,16 +9708,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.1.4",
+            "version": "4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "4258420f15425a5f128fe5cad454e00ab4a68ae5"
+                "reference": "c1afdc77a95efea6ee40c03c45f57c3c0c80ec22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/4258420f15425a5f128fe5cad454e00ab4a68ae5",
-                "reference": "4258420f15425a5f128fe5cad454e00ab4a68ae5",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/c1afdc77a95efea6ee40c03c45f57c3c0c80ec22",
+                "reference": "c1afdc77a95efea6ee40c03c45f57c3c0c80ec22",
                 "shasum": ""
             },
             "require": {
@@ -9785,7 +9785,12 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2021-01-12T03:39:57+00:00"
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/dav/issues",
+                "source": "https://github.com/fruux/sabre-dav"
+            },
+            "time": "2021-02-12T07:54:23+00:00"
         },
         {
             "name": "sabre/event",
@@ -9846,6 +9851,11 @@
                 "reactor",
                 "signal"
             ],
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/event/issues",
+                "source": "https://github.com/fruux/sabre-event"
+            },
             "time": "2020-10-03T11:02:22+00:00"
         },
         {
@@ -9904,6 +9914,11 @@
             "keywords": [
                 "http"
             ],
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/http/issues",
+                "source": "https://github.com/fruux/sabre-http"
+            },
             "time": "2020-10-03T11:27:32+00:00"
         },
         {
@@ -9956,20 +9971,25 @@
                 "uri",
                 "url"
             ],
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/uri/issues",
+                "source": "https://github.com/fruux/sabre-uri"
+            },
             "time": "2020-10-03T10:33:23+00:00"
         },
         {
             "name": "sabre/vobject",
-            "version": "4.3.3",
+            "version": "4.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/vobject.git",
-                "reference": "58f9f9b46a1080c0130bd86f4df9a568aacb9c79"
+                "reference": "d8a0a9ae215a8acfb51afc29101c7344670b9c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/58f9f9b46a1080c0130bd86f4df9a568aacb9c79",
-                "reference": "58f9f9b46a1080c0130bd86f4df9a568aacb9c79",
+                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/d8a0a9ae215a8acfb51afc29101c7344670b9c83",
+                "reference": "d8a0a9ae215a8acfb51afc29101c7344670b9c83",
                 "shasum": ""
             },
             "require": {
@@ -9978,8 +9998,9 @@
                 "sabre/xml": "^2.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.16.7",
+                "friendsofphp/php-cs-fixer": "~2.17.1",
                 "phpstan/phpstan": "^0.12",
+                "phpunit/php-invoker": "^2.0 || ^3.1",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
             },
             "suggest": {
@@ -10054,7 +10075,12 @@
                 "xCal",
                 "xCard"
             ],
-            "time": "2020-11-09T04:31:38+00:00"
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/vobject/issues",
+                "source": "https://github.com/fruux/sabre-vobject"
+            },
+            "time": "2021-02-12T06:28:04+00:00"
         },
         {
             "name": "sabre/xml",
@@ -10118,6 +10144,11 @@
                 "dom",
                 "xml"
             ],
+            "support": {
+                "forum": "https://groups.google.com/group/sabredav-discuss",
+                "issues": "https://github.com/sabre-io/xml/issues",
+                "source": "https://github.com/fruux/sabre-xml"
+            },
             "time": "2020-10-03T10:08:14+00:00"
         },
         {

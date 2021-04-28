@@ -98,7 +98,7 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
 VERSION\:2\.0
-PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.3\.3\/\/EN
+PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.[0-9]+\.[0-9]+\/\/EN
 CALSCALE\:GREGORIAN
 ORGANIZER\:Jacques PICARD
 BEGIN\:VEVENT
