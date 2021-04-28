@@ -96,26 +96,6 @@ jobs:
                   paths:
                       - ./
 
-    lint:
-        <<: *working_directory
-        <<: *configure_base
-        steps:
-            - *attach_workspace
-            - restore_cache:
-                key: phpstan
-            - *generate_docker_hashes
-            - *authenticate_on_registry
-            - *pull_docker_images
-            - *start_containers
-            - run: |
-                set -x
-
-                make -j2 lint security-check
-            - save_cache:
-                paths:
-                    - ./var/phpstan-tmp
-                key: phpstan
-
     phpunit:
         <<: *working_directory
         <<: *configure_base
@@ -128,8 +108,9 @@ jobs:
             - run: |
                 set -x
 
+                make security-check
                 mkdir -p ./phpunit
-                make tfp-rabbitmq tfp-db
+                make -j2 tfp-rabbitmq tfp-db
 
                 $DOCKER_COMPOSE exec app ./vendor/bin/phpunit -v --log-junit ./phpunit/junit.xml
             - store_test_results:
@@ -190,9 +171,6 @@ workflows:
         jobs:
             - build
 
-            - lint:
-                requires:
-                    - build
             - phpunit:
                 requires:
                     - build
@@ -202,7 +180,6 @@ workflows:
 
             - deployment:
                 requires:
-                    - lint
                     - phpunit
                     - behat
                 filters:
