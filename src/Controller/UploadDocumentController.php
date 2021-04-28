@@ -107,7 +107,11 @@ class UploadDocumentController extends AbstractController
 
         return new SnappyResponse(
             $documentContent,
-            Urlizer::urlize($filename),
+            sprintf(
+                '%s.%s',
+                Urlizer::urlize($document->getFilename()),
+                $document->getExtension()
+            ),
             $document->getMimeType()
         );
     }

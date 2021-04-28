@@ -120,6 +120,11 @@ class UserDocument
         $this->originalName = $originalName;
     }
 
+    public function getFilename(): string
+    {
+        return pathinfo($this->originalName, \PATHINFO_FILENAME);
+    }
+
     public function getExtension(): string
     {
         return $this->extension;
