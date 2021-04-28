@@ -660,7 +660,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
         int $capacity = null
-    ) {
+    ): void {
         $this->setName($name);
         $this->capacity = $capacity;
         $this->timeZone = $timeZone;
