@@ -2,6 +2,8 @@
 
 namespace App\Coalition;
 
+use App\Entity\Adherent;
+use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Coalition\Cause;
 
 class CoalitionUrlGenerator
@@ -9,6 +11,7 @@ class CoalitionUrlGenerator
     private const CAUSE_LINK_PATTERN = '%s/cause/%s';
     private const CAUSE_LIST_LINK_PATTERN = '%s/causes';
     private const CREATE_ACCOUNT_LINK_PATTERN = '%s/inscription';
+    private const CREATE_PASSWORD_LINK_PATTERN = '%s/confirmation/%s/%s';
 
     private $coalitionsHost;
 
@@ -35,5 +38,14 @@ class CoalitionUrlGenerator
     public function generateCreateAccountLink(): string
     {
         return sprintf(self::CREATE_ACCOUNT_LINK_PATTERN, $this->coalitionsHost);
+    }
+
+    public function generateCreatePasswordLink(Adherent $adherent, AdherentResetPasswordToken $token): string
+    {
+        return \sprintf(self::CREATE_PASSWORD_LINK_PATTERN,
+            $this->coalitionsHost,
+            (string) $adherent->getUuid(),
+            (string) $token->getValue()
+        );
     }
 }

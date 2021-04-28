@@ -43,6 +43,8 @@
                     {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
                     {{ form_errors(form._login_password) }}
                     {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+
+                    <a href="{{ path('app_coalition_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
                 </li>
 
                 <li>

@@ -19,6 +19,8 @@ final class UserEvents
     public const USER_SWITCH_TO_ADHERENT = 'user.switch_to_adherent';
     public const USER_EMAIL_UPDATED = 'user.email_updated';
 
+    public const USER_FORGOT_PASSWORD = 'user.forgot_password';
+
     private function __construct()
     {
     }

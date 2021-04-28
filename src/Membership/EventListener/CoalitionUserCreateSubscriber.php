@@ -2,6 +2,7 @@
 
 namespace App\Membership\EventListener;
 
+use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
@@ -16,16 +17,16 @@ class CoalitionUserCreateSubscriber implements EventSubscriberInterface
 {
     private $entityManager;
     private $mailer;
-    private $coalitionsHost;
+    private $coalitionUrlGenerator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         MailerService $transactionalMailer,
-        string $coalitionsHost
+        CoalitionUrlGenerator $coalitionUrlGenerator
     ) {
         $this->entityManager = $entityManager;
         $this->mailer = $transactionalMailer;
-        $this->coalitionsHost = $coalitionsHost;
+        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
     }
 
     public function sendConfirmationEmail(UserEvent $event): void
@@ -51,10 +52,6 @@ class CoalitionUserCreateSubscriber implements EventSubscriberInterface
 
     private function generateCoalitionCreatePasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token)
     {
-        return \sprintf('%s/confirmation/%s/%s',
-            $this->coalitionsHost,
-            (string) $adherent->getUuid(),
-            (string) $token->getValue()
-        );
+        return $this->coalitionUrlGenerator->generateCreatePasswordLink($adherent, $token);
     }
 }
