@@ -650,6 +650,11 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         $this->visioUrl = $visioUrl;
     }
 
+    public function getImagePath(): string
+    {
+        return $this->imageName ? \sprintf('images/events/%s', $this->getImageName()) : '';
+    }
+
     public function getNormalizationGroups(): array
     {
         return ['event_read'];
