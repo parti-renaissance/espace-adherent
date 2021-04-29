@@ -1278,16 +1278,16 @@
         },
         {
             "name": "danhunsaker/flysystem-redis",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/danhunsaker/flysystem-redis.git",
-                "reference": "f1d68dba378861ff38f1292722a6a4fa641d4310"
+                "reference": "7c9dbad771ecda9e5d293658ec276c041a8bbe9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/danhunsaker/flysystem-redis/zipball/f1d68dba378861ff38f1292722a6a4fa641d4310",
-                "reference": "f1d68dba378861ff38f1292722a6a4fa641d4310",
+                "url": "https://api.github.com/repos/danhunsaker/flysystem-redis/zipball/7c9dbad771ecda9e5d293658ec276c041a8bbe9d",
+                "reference": "7c9dbad771ecda9e5d293658ec276c041a8bbe9d",
                 "shasum": ""
             },
             "require": {
@@ -1296,7 +1296,7 @@
                 "predis/predis": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5"
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "extra": {
@@ -1320,7 +1320,11 @@
                 }
             ],
             "description": "A Flysystem adapter for storing files in Redis",
-            "time": "2015-10-26T02:54:19+00:00"
+            "support": {
+                "issues": "https://github.com/danhunsaker/flysystem-redis/issues",
+                "source": "https://github.com/danhunsaker/flysystem-redis/tree/master"
+            },
+            "time": "2018-08-16T09:21:42+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -6384,6 +6388,10 @@
                 "sftp",
                 "storage"
             ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem/issues",
+                "source": "https://github.com/thephpleague/flysystem/tree/1.0.70"
+            },
             "funding": [
                 {
                     "url": "https://offset.earth/frankdejonge",
