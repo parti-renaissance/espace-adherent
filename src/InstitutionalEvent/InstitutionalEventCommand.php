@@ -41,9 +41,10 @@ class InstitutionalEventCommand extends BaseEventCommand
         \DateTimeInterface $finishAt = null,
         InstitutionalEvent $event = null,
         string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
+        ?string $visioUrl = null,
         array $invitations = []
     ) {
-        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone);
+        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone, $visioUrl);
 
         $this->invitations = $invitations;
     }
