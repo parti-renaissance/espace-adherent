@@ -182,11 +182,11 @@ class ProcurationController extends AbstractController
     }
 
     /**
-     * @Route("/ma-demande/{id}/{token}", requirements={"token": "%pattern_uuid%"}, name="app_procuration_my_request", methods={"GET"})
+     * @Route("/ma-demande/{id}/{privateToken}", requirements={"privateToken": "%pattern_uuid%"}, name="app_procuration_my_request", methods={"GET"})
      */
-    public function myRequestAction(ProcurationRequest $request, string $token): Response
+    public function myRequestAction(ProcurationRequest $request, string $privateToken): Response
     {
-        if ($token !== $request->generatePrivateToken()) {
+        if ($privateToken !== $request->generatePrivateToken()) {
             throw $this->createNotFoundException('Invalid token.');
         }
 

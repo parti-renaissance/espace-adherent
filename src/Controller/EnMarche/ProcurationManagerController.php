@@ -162,7 +162,7 @@ class ProcurationManagerController extends AbstractController
 
     /**
      * @Route(
-     *     "/demande/{id}/{action}/{token}",
+     *     "/demande/{id}/{action}/{csrfToken}",
      *     requirements={"id": "\d+", "action": App\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
      *     name="app_procuration_manager_request_transform",
      *     methods={"GET"}
@@ -171,10 +171,10 @@ class ProcurationManagerController extends AbstractController
     public function requestTransformAction(
         int $id,
         string $action,
-        string $token,
+        string $csrfToken,
         ProcurationManager $procurationManager
     ): Response {
-        if (!$this->isCsrfTokenValid('request_action', $token)) {
+        if (!$this->isCsrfTokenValid('request_action', $csrfToken)) {
             throw $this->createNotFoundException('Invalid token.');
         }
 

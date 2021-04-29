@@ -17,12 +17,12 @@
                 Désassocier de {{ request.foundProxy.firstNames }} {{ request.foundProxy.lastName }}
             </a>
         {% elseif request.processed %}
-            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_UNPROCESS', request), token: csrf_token('request_action') }) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_UNPROCESS', request), csrfToken: csrf_token('request_action') }) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "En attente"
             </a>
         {% else %}
-            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_PROCESS', request), token: csrf_token('request_action') }) }}"
+            <a href="{{ path('app_procuration_manager_request_transform', { id: request.id, action: constant('ACTION_PROCESS', request), csrfToken: csrf_token('request_action') }) }}"
                class="btn btn--small procuration-manager__request__process">
                 Marquer "Traitée manuellement"
             </a>

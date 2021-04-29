@@ -47,14 +47,12 @@ class SendWelcomeMailSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $params = [
-            'uuid' => (string) $subscription->getUuid(),
-            'token' => (string) $subscription->getToken(),
-        ];
-
         $activationUrl = $this->urlGenerator->generate(
             'app_newsletter_confirmation',
-            $params,
+            [
+                'uuid' => (string) $subscription->getUuid(),
+                'confirm_token' => (string) $subscription->getToken(),
+            ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
