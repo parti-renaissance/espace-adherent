@@ -1,4 +1,4 @@
-/config/packages/assets_version.yaml
+/config/packages/*/assets_version.yaml
 /app/data/images/
 /app/data/files/
 /app/data/chez-vous/

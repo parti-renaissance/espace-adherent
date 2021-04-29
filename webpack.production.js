@@ -26,9 +26,17 @@ module.exports = merge(common, {
         function symfonyAssetsVersion() {
             this.plugin('done', (stats) => {
                 fs.writeFile(
-                    path.join(__dirname, 'config/packages/', 'assets_version.yaml'),
+                    path.join(__dirname, 'config/packages/prod/', 'assets_version.yaml'),
                     `parameters:\n    assets_hash: ${stats.hash}\n`,
-                    (err) => { if (err) throw err; }
+                    (err) => {
+                        if (err) throw err;
+
+                        fs.copyFile(
+                            path.resolve(__dirname, 'config/packages/prod/assets_version.yaml'),
+                            path.resolve(__dirname, 'config/packages/test/assets_version.yaml'),
+                            (e) => { if (e) throw e; }
+                        );
+                    }
                 );
             });
         },

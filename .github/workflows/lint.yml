@@ -44,7 +44,6 @@ jobs:
                 ${{ runner.os }}-composer-
 
         -   name: Install composer dependencies
-            if: steps.vendor-cache.outputs.cache-hit != 'true'
             run: composer install --prefer-dist --no-progress
 
         # Cache phpstan-tmp dir and run js, php and yaml lint test
