@@ -28,7 +28,7 @@ class CampaignRequestBuilder
             ->setSubject($message->getSubject())
             ->setTitle($this->createCampaignLabel($campaign))
             ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($campaign) : [])
-            ->setFromName(sprintf('%s | La République En Marche !', $message->getFromName()))
+            ->setFromName($message->getFromName())
         ;
     }
 
