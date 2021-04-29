@@ -12,6 +12,8 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface as OAuthAcc
 
 class AccessTokenStore implements OAuthAccessTokenRepository
 {
+    use TokenStoreTrait;
+
     private $persistentTokenFactory;
     private $accessTokenRepository;
 
@@ -53,6 +55,8 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         if (!$token = $this->findAccessToken($tokenId)) {
             return;
         }
+
+        $this->checkToken($token);
 
         $token->revoke();
         $this->store($token);
