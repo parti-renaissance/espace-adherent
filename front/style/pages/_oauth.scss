@@ -204,3 +204,36 @@
     }
 
 }
+
+
+.coalition {
+    background-color: white;
+
+    .oauth {
+        box-shadow: rgb(0, 0, 0 / 10%) 0px 4px 14px 0px;
+        border-radius: 4px;
+
+        &, & input {
+            font-family: Poppins, Roboto,Helvetica,sans-serif;
+            font-weight: 300;
+            color: rgb(34, 34, 34);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-family: Poppins, Roboto,Helvetica,sans-serif;
+            font-weight: 500;
+        }
+
+        .btn {
+            font-size: 20px;
+            border-radius: 4px;
+            background-color: #0029ff;
+            font-weight: 500;
+
+            &:hover {
+                background-color: #001cb2;
+            }
+        }
+    }
+}

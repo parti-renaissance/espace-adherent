@@ -22,12 +22,12 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
     private $coalitionUrlGenerator;
 
     public function __construct(
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator,
         CoalitionUrlGenerator $coalitionUrlGenerator
     ) {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
         $this->coalitionUrlGenerator = $coalitionUrlGenerator;
@@ -73,6 +73,6 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
 
     private function generateCoalitionResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token): string
     {
-        $this->coalitionUrlGenerator->generateCreatePasswordLink($adherent, $token);
+        return $this->coalitionUrlGenerator->generateCreatePasswordLink($adherent, $token);
     }
 }
