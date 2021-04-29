@@ -152,7 +152,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form__error'));
-        $this->assertStringContainsString('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+        $this->assertStringContainsString('Si l\'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
@@ -174,7 +174,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form__error'));
-        $this->assertStringContainsString('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+        $this->assertStringContainsString('Si l\'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }
