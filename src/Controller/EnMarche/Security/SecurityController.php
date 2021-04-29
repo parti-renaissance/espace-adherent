@@ -69,7 +69,13 @@ class SecurityController extends AbstractController
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository
     ): Response {
+        $coalition = $request->attributes->getBoolean('coalition');
+
         if ($this->getUser()) {
+            if ($coalition) {
+                return $this->redirect($this->getParameter('coalitions_host'));
+            }
+
             return $this->redirectToRoute('app_search_events');
         }
 
@@ -88,10 +94,14 @@ class SecurityController extends AbstractController
 
             $this->addFlash('info', 'adherent.reset_password.email_sent');
 
+            if ($coalition) {
+                return $this->redirectToRoute('app_coalition_login');
+            }
+
             return $this->redirectToRoute('app_user_login');
         }
 
-        return $this->render('security/forgot_password.html.twig', [
+        return $this->render($coalition ? 'security/coalition_forgot_password.html.twig' : 'security/forgot_password.html.twig', [
             'legacy' => $request->query->getBoolean('legacy'),
             'form' => $form->createView(),
         ]);

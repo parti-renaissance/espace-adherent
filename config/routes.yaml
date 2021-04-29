@@ -16,6 +16,13 @@ app_coalition_login:
     defaults:
         coalition: true
 
+app_coalition_forgot_password:
+    host: "%coalitions_auth_host%"
+    path: "/mot-de-passe-oublie"
+    controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
+    defaults:
+        coalition: true
+
 app_user_login_check:
     host: "{app_domain}"
     path: "/connexion/check"

@@ -6,28 +6,27 @@ use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
-use App\Mailer\Message\AdherentResetPasswordMessage;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentResetPasswordHandler
 {
-    private $urlGenerator;
     private $mailer;
     private $manager;
     private $encoderFactory;
+    private $dispatcher;
 
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
         MailerService $transactionalMailer,
         ObjectManager $manager,
-        EncoderFactoryInterface $encoderFactory
+        EncoderFactoryInterface $encoderFactory,
+        EventDispatcherInterface $dispatcher
     ) {
-        $this->urlGenerator = $urlGenerator;
         $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->encoderFactory = $encoderFactory;
+        $this->dispatcher = $dispatcher;
     }
 
     public function handle(Adherent $adherent): void
@@ -37,8 +36,7 @@ class AdherentResetPasswordHandler
         $this->manager->persist($resetPasswordToken);
         $this->manager->flush();
 
-        $resetPasswordUrl = $this->generateAdherentResetPasswordUrl($adherent, $resetPasswordToken);
-        $this->mailer->sendMessage(AdherentResetPasswordMessage::createFromAdherent($adherent, $resetPasswordUrl));
+        $this->dispatcher->dispatch(new UserResetPasswordEvent($adherent, $resetPasswordToken), UserEvents::USER_FORGOT_PASSWORD);
     }
 
     public function reset(Adherent $adherent, AdherentResetPasswordToken $token, string $newPassword): void
@@ -56,15 +54,5 @@ class AdherentResetPasswordHandler
         if (null === $adherent->getSource()) {
             $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
         }
-    }
-
-    private function generateAdherentResetPasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token): string
-    {
-        $params = [
-            'adherent_uuid' => (string) $adherent->getUuid(),
-            'reset_password_token' => (string) $token->getValue(),
-        ];
-
-        return $this->urlGenerator->generate('adherent_reset_password', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

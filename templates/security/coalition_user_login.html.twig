@@ -1,4 +1,4 @@
-{% extends 'oauth/base.html.twig' %}
+{% extends 'oauth/base_coalition.html.twig' %}
 
 {% block title 'Connectez-vous avec vos identifiants' %}
 
@@ -8,22 +8,9 @@
 
 {% block em_logo '' %}
 
-{% block stylesheets %}
-    <style type="text/css">
-        body {
-            background-color: #fafafa;
-        }
-        @media (max-width: 650px) {
-            body {
-                background: white;
-            }
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
     <section class="l__inner b__nudge--top">
-        <h1>Connectez-vous avec votre compte</h1>
+        <h1 style="margin-top: 45px">Connectez-vous</h1>
 
         {% if error %}
             <div id="auth-error" class="form__error">
@@ -43,6 +30,8 @@
                     {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
                     {{ form_errors(form._login_password) }}
                     {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+
+                    <a href="{{ path('app_coalition_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
                 </li>
 
                 <li>
@@ -53,6 +42,6 @@
     </section>
 
     <section class="l__inner__footer">
-        <a href="{{ coalitions_host }}/inscription">S’inscrire</a>
+        Pas encore de compte ? <a href="{{ coalitions_host }}/inscription">S’inscrire</a>
     </section>
 {% endblock %}
