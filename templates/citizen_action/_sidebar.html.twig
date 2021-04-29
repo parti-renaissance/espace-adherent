@@ -41,6 +41,14 @@
         <a href="https://www.google.fr/maps/place/'{{ citizen_action.address }},+{{ citizen_action.postalCode }}+{{ citizen_action.cityName }}'" class="link--no-decor text--blue--dark text--normal text--summary">Itinéraire</a>
     </div>
 
+    {% if citizen_action.visioUrl %}
+    <div class="citizen_action__card b__nudge--top-large">
+        <h3>Lien</h3>
+
+        <a href="{{ citizen_action.visioUrl }}" class="link--no-decor text--blue--dark text--normal text--summary">{{ citizen_action.visioUrl }}</a>
+    </div>
+    {% endif %}
+
     <div class="citizen_action__card b__nudge--bottom-large b__nudge--top-large">
         <h3>Organisé par</h3>
         {% if citizen_action.organizer %}

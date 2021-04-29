@@ -45,7 +45,8 @@ class CitizenAction extends BaseEvent implements ReportableInterface, ExposedObj
         \DateTimeInterface $finishAt,
         int $participantsCount = 0,
         array $referentTags = [],
-        string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
+        string $timeZone = GeoCoder::DEFAULT_TIME_ZONE,
+        ?string $visioUrl = null
     ) {
         parent::__construct($uuid);
 
@@ -62,6 +63,7 @@ class CitizenAction extends BaseEvent implements ReportableInterface, ExposedObj
         $this->referentTags = new ArrayCollection($referentTags);
         $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
+        $this->setVisioUrl($visioUrl);
     }
 
     public function __toString(): string

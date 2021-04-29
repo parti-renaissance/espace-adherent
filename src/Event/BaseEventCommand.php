@@ -61,6 +61,11 @@ class BaseEventCommand
      */
     private $address;
 
+    /**
+     * @Assert\Url
+     */
+    private $visioUrl;
+
     protected function __construct(
         ?Adherent $author,
         // Author may be null if unregistered when editing an event
@@ -69,7 +74,8 @@ class BaseEventCommand
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
         BaseEvent $event = null,
-        string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
+        string $timeZone = GeoCoder::DEFAULT_TIME_ZONE,
+        ?string $visioUrl = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
@@ -77,11 +83,13 @@ class BaseEventCommand
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->timeZone = $timeZone;
+        $this->visioUrl = $visioUrl;
 
         if ($event) {
             $this->name = $event->getName();
             $this->description = $event->getDescription();
             $this->timeZone = $event->getTimeZone();
+            $this->visioUrl = $event->getVisioUrl();
         }
     }
 
@@ -174,6 +182,16 @@ class BaseEventCommand
     public function getEvent(): ?BaseEvent
     {
         return $this->event;
+    }
+
+    public function getVisioUrl(): ?string
+    {
+        return $this->visioUrl;
+    }
+
+    public function setVisioUrl(?string $visioUrl): void
+    {
+        $this->visioUrl = $visioUrl;
     }
 
     protected function getCategoryClass(): string

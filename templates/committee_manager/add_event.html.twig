@@ -93,6 +93,12 @@
                 {{ form_widget(form.description, { attr: { class: 'event__description', placeholder: 'Entrez un paragraphe afin de décrire cet événement.', 'rows': '20', 'cols': '70' } }) }}
             </div>
 
+            <div class="form__row" id="committee-event-visiourl-field">
+                {{ form_errors(form.visioUrl) }}
+                {{ form_label(form.visioUrl, 'Lien de la visio ou du live') }}
+                {{ form_widget(form.visioUrl,  { attr: { class: 'form--full committee_event__form__visio_url', placeholder: "Entrez le lien de la visio de l'évènement (facultatif)" } }) }}
+            </div>
+
             <div class="form__row" id="committee-event-capacity-field">
                 {{ form_errors(form.capacity) }}
                 {{ form_label(form.capacity, 'Capacité') }}

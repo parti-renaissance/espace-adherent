@@ -48,6 +48,12 @@
                     </div>
                 </div>
 
+                <div class="form__row" id="cocitizen-action-visiourl-field">
+                    {{ form_errors(citizen_action_form.visioUrl) }}
+                    {{ form_label(citizen_action_form.visioUrl, 'Lien de la visio ou du live', { label_attr: { class: 'text--bold' } }) }}
+                    {{ form_widget(citizen_action_form.visioUrl,  { attr: { class: 'form--full citizen_action__visio_url', placeholder: "Entrez le lien de la visio de l'évènement (facultatif)" } }) }}
+                </div>
+
                 <div class="form__row" id="citizen-action-beginat-field">
                     {{ form_errors(citizen_action_form.beginAt) }}
                     {{ form_label(citizen_action_form.beginAt, 'Début', { label_attr: { class: 'text--bold' } }) }}
