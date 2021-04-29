@@ -1096,10 +1096,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@google/markerclusterer@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@google/markerclusterer/-/markerclusterer-1.0.3.tgz#830b9dbba85fae9537a16d17947b484f9e860c65"
-  integrity sha512-/fRbSPyQKnm43zRnoyMerbiGS3vG3WkZiLgpBF3ovoLO84sKhEAzKMVcyozy/khEHlZoMJ9Axkr0NRVJRAQhcg==
+"@google/markerclusterer@^2.0.9":
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/@google/markerclusterer/-/markerclusterer-2.0.9.tgz#04e50e1bd0ea90e7c21ae487e5890180ce9a5f83"
+  integrity sha512-MMOvRRZTe8MtfLmr+3GmpnvbQPvdta7DhLgeapm3NpdBGe7sr8Gt3TvR/2ckBHttzjKz/dGd4v+GPmM34cC0Sg==
 
 "@mapbox/polylabel@^1.0.2":
   version "1.0.2"
