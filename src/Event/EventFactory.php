@@ -65,6 +65,10 @@ class EventFactory
             $event->setTimeZone($data['time_zone']);
         }
 
+        if (!empty($data['visio_url'])) {
+            $event->setVisioUrl($data['visio_url']);
+        }
+
         $this->referentTagManager->assignReferentLocalTags($event);
 
         foreach ($this->zoneMatcher->match($event->getPostAddressModel()) as $zone) {
@@ -99,6 +103,10 @@ class EventFactory
             $event->setTimeZone($data['time_zone']);
         }
 
+        if (!empty($data['visio_url'])) {
+            $event->setVisioUrl($data['visio_url']);
+        }
+
         $this->referentTagManager->assignReferentLocalTags($event);
 
         return $event;
@@ -126,6 +134,10 @@ class EventFactory
         );
         if (!empty($data['time_zone'])) {
             $citizenAction->setTimeZone($data['time_zone']);
+        }
+
+        if (!empty($data['visio_url'])) {
+            $citizenAction->setVisioUrl($data['visio_url']);
         }
 
         $this->referentTagManager->assignReferentLocalTags($citizenAction);
@@ -169,6 +181,7 @@ class EventFactory
         }
 
         $event->setTimeZone($command->getTimeZone());
+        $event->setVisioUrl($command->getVisioUrl());
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
@@ -190,6 +203,7 @@ class EventFactory
         );
 
         $event->setTimeZone($command->getTimeZone());
+        $event->setVisioUrl($command->getVisioUrl());
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
@@ -206,7 +220,8 @@ class EventFactory
             $this->createPostAddress($command->getAddress()),
             $command->getTimeZone(),
             $command->getBeginAt(),
-            $command->getFinishAt()
+            $command->getFinishAt(),
+            $command->getVisioUrl()
         );
 
         $institutionalEvent->setCategory($command->getCategory());
@@ -222,7 +237,8 @@ class EventFactory
             $command->getTimeZone(),
             $command->getBeginAt(),
             $command->getFinishAt(),
-            $command->getCapacity()
+            $command->getVisioUrl(),
+            $command->getCapacity(),
         );
 
         if ($event instanceof CommitteeEvent) {
@@ -263,7 +279,8 @@ class EventFactory
             $this->createPostAddress($command->getAddress()),
             $command->getTimeZone(),
             $command->getBeginAt(),
-            $command->getFinishAt()
+            $command->getFinishAt(),
+            $command->getVisioUrl()
         );
 
         $citizenAction->setCategory($command->getCategory());

@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -49,6 +50,9 @@ class BaseEventCommandType extends AbstractType
             ->add('capacity', IntegerType::class, [
                 'required' => false,
                 'attr' => ['min' => 1],
+            ])
+            ->add('visioUrl', UrlType::class, [
+                'required' => false,
             ])
         ;
 

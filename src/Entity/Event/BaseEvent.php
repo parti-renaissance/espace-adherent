@@ -664,6 +664,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         string $timeZone,
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
+        ?string $visioUrl = null,
         int $capacity = null
     ): void {
         $this->setName($name);
@@ -672,6 +673,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->description = $description;
+        $this->setVisioUrl($visioUrl);
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
