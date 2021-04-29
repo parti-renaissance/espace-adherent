@@ -149,3 +149,7 @@
 {% if object.isCoalitionModerator %}
     <span class="label label-primary" style="padding: 2px;">Responsable des coalitions</span><br/>
 {% endif %}
+
+{% if object.isApprovedCauseAuthor %}
+    <span class="label label-primary" style="padding: 2px;">Porteur de cause ✊</span><br/>
+{% endif %}

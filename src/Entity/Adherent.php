@@ -14,6 +14,7 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Geo\Zone;
@@ -701,6 +702,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $adherentMandates;
 
     /**
+     * @var Cause[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Coalition\Cause", mappedBy="author", fetch="EXTRA_LAZY")
+     */
+    private $causes;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
@@ -737,6 +745,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->handledThematicCommunities = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
+        $this->causes = new ArrayCollection();
     }
 
     public static function createLight(
@@ -892,10 +901,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CONSULAR';
         }
 
-        if ($this->isAdherentMessageRedactor()) {
-            $roles[] = 'ROLE_MESSAGE_REDACTOR';
-        }
-
         if ($this->hasFormationSpaceAccess()) {
             $roles[] = 'ROLE_FORMATION_SPACE';
         }
@@ -1002,6 +1007,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isCoalitionModerator()) {
             $roles[] = 'ROLE_COALITION_MODERATOR';
+        }
+
+        if ($this->isApprovedCauseAuthor()) {
+            $roles[] = 'ROLE_CAUSE_AUTHOR';
+        }
+
+        // Must be at the end as it uses $roles array
+        if ($this->isAdherentMessageRedactor($roles)) {
+            $roles[] = 'ROLE_MESSAGE_REDACTOR';
         }
 
         return array_merge(\array_unique($roles), $this->roles);
@@ -2290,19 +2304,23 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->emailUnsubscribed = $value;
     }
 
-    public function isAdherentMessageRedactor(): bool
+    private function isAdherentMessageRedactor(array $roles): bool
     {
-        return $this->isReferent()
+        return
+            array_intersect($roles, [
+                'ROLE_REFERENT',
+                'ROLE_DEPUTY',
+                'ROLE_HOST',
+                'ROLE_SUPERVISOR',
+                'ROLE_CITIZEN_PROJECT_ADMINISTRATOR',
+                'ROLE_MUNICIPAL_CHIEF',
+                'ROLE_SENATOR',
+                'ROLE_LEGISLATIVE_CANDIDATE',
+                'ROLE_CAUSE_AUTHOR',
+            ])
             || $this->isDelegatedReferent()
-            || $this->isDeputy()
             || $this->isDelegatedDeputy()
-            || $this->isHost()
-            || $this->isSupervisor()
-            || $this->isCitizenProjectAdministrator()
-            || $this->isMunicipalChief()
-            || $this->isSenator()
             || $this->isDelegatedSenator()
-            || $this->isLegislativeCandidate()
             || $this->isCandidate()
             || $this->isDelegatedCandidate()
         ;
@@ -2880,5 +2898,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setCoalitionsCguAccepted(bool $coalitionsCguAccepted): void
     {
         $this->coalitionsCguAccepted = $coalitionsCguAccepted;
+    }
+
+    public function isApprovedCauseAuthor(): bool
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Cause::STATUS_APPROVED));
+
+        return $this->causes->matching($criteria)->count();
     }
 }
