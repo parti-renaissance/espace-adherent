@@ -1,4 +1,4 @@
-import stackblur from 'stackblur-canvas';
+import { canvasRGB } from 'stackblur-canvas';
 
 /*
  * Progressive background images
@@ -27,7 +27,7 @@ export default () => {
         on(sd, 'load', () => {
             const canvas = imgToCanvas(sd);
 
-            stackblur.canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 10);
+            canvasRGB(canvas, 0, 0, canvas.width, canvas.height, 10);
 
             element.style['background-image'] = `${bgPrefix}url(${canvas.toDataURL('image/png')})`;
 
