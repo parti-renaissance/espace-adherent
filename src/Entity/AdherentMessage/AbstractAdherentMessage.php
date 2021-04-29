@@ -37,6 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE: "LreManagerElectedRepresentativeMessage",
  *     AdherentMessageTypeEnum::CANDIDATE: "CandidateAdherentMessage",
  *     AdherentMessageTypeEnum::CANDIDATE_JECOUTE: "CandidateJecouteMessage",
+ *     AdherentMessageTypeEnum::COALITIONS: "CoalitionsMessage",
  * })
  *
  * @ApiResource(
@@ -314,7 +315,12 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     public function getFromName(): ?string
     {
-        return $this->author ? $this->author->getFullName() : null;
+        return ($this->author ? trim($this->author->getFullName()) : null).$this->getFromNameSuffix();
+    }
+
+    protected function getFromNameSuffix(): string
+    {
+        return ' | La République En Marche !';
     }
 
     public function getSentAt(): ?\DateTimeInterface
