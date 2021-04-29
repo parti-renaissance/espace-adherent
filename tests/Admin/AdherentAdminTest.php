@@ -117,14 +117,15 @@ class AdherentAdminTest extends WebTestCase
         $this->client->followRedirects();
 
         /** @var Adherent $adherent */
-        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_19_UUID);
         $crawler = $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
 
         $navBar = $crawler->filter('ul.dropdown-menu > li');
         $this->assertEquals('Afficher', trim($navBar->getNode(0)->nodeValue));
         $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
-        $this->assertEquals('Exclure cet adhérent ⚠️', trim($navBar->getNode(2)->nodeValue));
-        $this->assertEquals('Annuler la certification', trim($navBar->getNode(3)->nodeValue));
+        $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
+        $this->assertEquals('Exclure cet adhérent ⚠️', trim($navBar->getNode(3)->nodeValue));
+        $this->assertEquals('Certifier cet adhérent', trim($navBar->getNode(4)->nodeValue));
 
         $link = $crawler->selectLink('Exclure cet adhérent ⚠️')->link();
         $crawler = $this->client->click($link);

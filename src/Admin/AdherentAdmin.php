@@ -13,6 +13,7 @@ use App\Entity\BaseGroup;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\CitizenProjectMembership;
+use App\Entity\Coalition\Cause;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -771,6 +772,15 @@ HELP
                     if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
                         $where->add('procurationManagedArea IS NOT NULL AND procurationManagedArea.codes IS NOT NULL');
+                    }
+
+                    // Cause author
+                    if (\in_array(AdherentRoleEnum::CAUSE_AUTHOR, $value['value'], true)) {
+                        $qb
+                            ->leftJoin(sprintf('%s.causes', $alias), 'cause', Expr\Join::WITH, 'cause.status = :cause_approved')
+                            ->setParameter('cause_approved', Cause::STATUS_APPROVED)
+                        ;
+                        $where->add('cause IS NOT NULL');
                     }
 
                     // Assessor Manager

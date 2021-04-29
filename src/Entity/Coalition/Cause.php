@@ -10,7 +10,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
-use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityFollowersTrait;
 use App\Entity\EntityIdentityTrait;
@@ -113,7 +112,6 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     use EntityIdentityTrait;
     use TimestampableEntity;
     use ImageTrait;
-    use AuthoredTrait;
     use EntityFollowersTrait;
 
     public const STATUS_PENDING = 'pending';
@@ -162,6 +160,15 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @ORM\OneToMany(targetEntity="App\Entity\Coalition\CauseFollower", mappedBy="cause", fetch="EXTRA_LAZY", cascade={"all"})
      */
     private $followers;
+
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="causes", fetch="EAGER")
+     *
+     * @SymfonySerializer\Groups({"cause_read"})
+     */
+    private $author;
 
     /**
      * @var Coalition|null
@@ -273,6 +280,11 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function createFollower(Adherent $adherent): FollowerInterface
     {
         return new CauseFollower($this, $adherent);
+    }
+
+    public function getAuthor(): ?Adherent
+    {
+        return $this->author;
     }
 
     public function setAuthor(Adherent $adherent): void
