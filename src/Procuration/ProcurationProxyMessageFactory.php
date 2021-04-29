@@ -42,7 +42,7 @@ class ProcurationProxyMessageFactory
     {
         $url = $this->urlGenerator->generate('app_procuration_my_request', [
             'id' => $request->getId(),
-            'token' => $request->generatePrivateToken(),
+            'privateToken' => $request->generatePrivateToken(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $message = ProcurationProxyFoundMessage::create($request, $url);
@@ -64,7 +64,7 @@ class ProcurationProxyMessageFactory
 
         $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
             'id' => $request->getId(),
-            'token' => $request->generatePrivateToken(),
+            'privateToken' => $request->generatePrivateToken(),
         ]);
 
         $message = ProcurationProxyReminderMessage::create($request, $url);
@@ -73,7 +73,7 @@ class ProcurationProxyMessageFactory
         foreach ($requests as $request) {
             $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
                 'id' => $request->getId(),
-                'token' => $request->generatePrivateToken(),
+                'privateToken' => $request->generatePrivateToken(),
             ]);
 
             $message->addRecipient(

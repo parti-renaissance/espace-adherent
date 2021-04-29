@@ -27,7 +27,7 @@ class ProcurationRequestSerializer
             $token = $processedAt.$request['proposal_id'];
             $exportedRequests[$key]['generatedUrl'] = $this->router->generate('app_procuration_my_request', [
                 'id' => $request['request_id'],
-                'token' => Uuid::uuid5(Uuid::NAMESPACE_OID, $token)->toString(),
+                'privateToken' => Uuid::uuid5(Uuid::NAMESPACE_OID, $token)->toString(),
             ], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $exportedRequests[$key]['request_processedAt'] = $processedAt;
