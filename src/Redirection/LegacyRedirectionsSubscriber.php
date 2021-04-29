@@ -22,7 +22,7 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
 
     public function onKernelException(GetResponseForExceptionEvent $event): void
     {
-        if (!$event->getException() instanceof NotFoundHttpException) {
+        if (!$event->getThrowable() instanceof NotFoundHttpException) {
             return;
         }
 
