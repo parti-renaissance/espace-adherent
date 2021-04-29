@@ -31,7 +31,7 @@
         "algolia/search-bundle": "^4.1",
         "api-platform/core": "2.2.10",
         "beberlei/doctrineextensions": "^1.2",
-        "cakephp/chronos": "^1.1",
+        "cakephp/chronos": "^2.1",
         "cocur/slugify": "^3.0",
         "creof/doctrine2-spatial": "^1.2",
         "csa/guzzle-bundle": "^3.1",

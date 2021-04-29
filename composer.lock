@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbfd686e8a70ddedec96f02ba99c68fe",
+    "content-hash": "70defe8abafdb2c087e4ee43b3ce4302",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -599,32 +599,29 @@
         },
         {
             "name": "cakephp/chronos",
-            "version": "1.1.4",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "85bcaea6a832684b32ef54b2487b0c14a172e9e6"
+                "reference": "1d187c71587c97520c00491f626e0f255144953e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/85bcaea6a832684b32ef54b2487b0c14a172e9e6",
-                "reference": "85bcaea6a832684b32ef54b2487b0c14a172e9e6",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/1d187c71587c97520c00491f626e0f255144953e",
+                "reference": "1d187c71587c97520c00491f626e0f255144953e",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|^7"
+                "php": ">=7.2"
             },
             "require-dev": {
-                "athletic/athletic": "~0.1",
-                "cakephp/cakephp-codesniffer": "~2.3",
-                "phpbench/phpbench": "@dev",
-                "phpstan/phpstan": "^0.6.4",
-                "phpunit/phpunit": "<6.0"
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "phpunit/phpunit": "^8.0 || ^9.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Cake\\Chronos\\": "src"
+                    "Cake\\Chronos\\": "src/"
                 },
                 "files": [
                     "src/carbon_compat.php"
@@ -652,7 +649,12 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-01-13T12:19:50+00:00"
+            "support": {
+                "irc": "irc://irc.freenode.org/cakephp",
+                "issues": "https://github.com/cakephp/chronos/issues",
+                "source": "https://github.com/cakephp/chronos"
+            },
+            "time": "2021-04-07T01:06:46+00:00"
         },
         {
             "name": "cocur/slugify",
