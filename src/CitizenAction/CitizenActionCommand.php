@@ -3,6 +3,7 @@
 namespace App\CitizenAction;
 
 use App\Address\Address;
+use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Event\CitizenAction;
@@ -33,9 +34,11 @@ class CitizenActionCommand extends BaseEventCommand
         Address $address = null,
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
-        CitizenAction $action = null
+        CitizenAction $action = null,
+        string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
+        ?string $visioUrl = null
     ) {
-        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $action);
+        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $action, $timezone, $visioUrl);
 
         $this->citizenProject = $project;
     }

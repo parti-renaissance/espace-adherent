@@ -130,6 +130,16 @@
                             {{- event.inlineFormattedAddress -}}
                         </span>
                     </li>
+                    {% if event.visioUrl %}
+                    <li>
+                        <i class="fa fa-link" aria-hidden="true"></i>
+                        <span class="committee-event-visiourl">
+                            <a class="link--newblue" href="{{- event.visioUrl -}}">
+                                {{- event.visioUrl -}}
+                            </a>
+                        </span>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </section>

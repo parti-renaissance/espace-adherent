@@ -96,6 +96,12 @@
             {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300', placeholder: 'Entrez un paragraphe afin de décrire cette réunion privée.', rows: '20', cols: '70' } }) }}
         </div>
 
+        <div class="form__row" id="institutional_event-visiourl-field">
+            {{ form_errors(form.visioUrl) }}
+            {{ form_label(form.visioUrl, 'Lien de la visio ou du live') }}
+            {{ form_widget(form.visioUrl,  { attr: { class: 'form--full committee_event__form__visio_url', placeholder: "Entrez le lien de la visio de l'évènement (facultatif)" } }) }}
+        </div>
+
         <div class="form__row b__nudge--top-15" id="institutional_event-invitations-field">
             {{ form_label(form.invitations, 'Invitations', { label_attr: { class: 'text--bold' }}) }}
             <p class="text--small text--muted b__nudge--top-0">

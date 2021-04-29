@@ -47,9 +47,10 @@ class EventCommand extends BaseEventCommand
         \DateTimeInterface $finishAt = null,
         bool $isForLegislatives = false,
         BaseEvent $event = null,
-        string $timezone = GeoCoder::DEFAULT_TIME_ZONE
+        string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
+        ?string $visioUrl = null
     ) {
-        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone);
+        parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone, $visioUrl);
 
         $this->committee = $committee;
         $this->isForLegislatives = $isForLegislatives;
@@ -66,7 +67,8 @@ class EventCommand extends BaseEventCommand
             $event->getFinishAt(),
             $event instanceof CommitteeEvent ? $event->isForLegislatives() : false,
             $event,
-            $event->getTimeZone()
+            $event->getTimeZone(),
+            $event->getVisioUrl()
         );
 
         $command->category = $event->getCategory();
