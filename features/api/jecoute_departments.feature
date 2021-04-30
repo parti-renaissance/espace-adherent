@@ -77,6 +77,22 @@ Feature:
     }
     """
 
+    When I send a "GET" request to "/api/jecoute/departments/75116"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "region": {
+            "code": "11",
+            "name": "Île-de-France",
+            "campaign": null
+        },
+        "code": "75",
+        "name": "Paris"
+    }
+    """
+
   Scenario: As an authenticated user I should get a 404 for an unknown postal code
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
     When I send a "GET" request to "/api/jecoute/departments/unknown_code"

@@ -2,6 +2,7 @@
 
 namespace App\Repository\Geo;
 
+use App\Entity\Geo\Borough;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,8 +28,9 @@ final class DepartmentRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('department')
-            ->innerJoin(City::class, 'city', Join::WITH, 'department = city.department')
-            ->andWhere('city.postalCode LIKE :postal_code')
+            ->leftJoin(City::class, 'city', Join::WITH, 'department = city.department')
+            ->leftJoin(Borough::class, 'borough', Join::WITH, 'city = borough.city')
+            ->andWhere('city.postalCode LIKE :postal_code OR borough.postalCode LIKE :postal_code')
             ->setParameter('postal_code', '%'.$postalCode.'%')
             ->innerJoin('department.region', 'region')
             ->getQuery()
