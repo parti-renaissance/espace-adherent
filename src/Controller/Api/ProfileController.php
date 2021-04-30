@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -111,10 +110,8 @@ class ProfileController extends AbstractController
      * @Security("is_granted('UNREGISTER')")
      */
     public function terminateMembershipAction(
-        Request $request,
         MembershipRequestHandler $handler,
         TokenRevocationAuthority $tokenRevocationAuthority,
-        TokenStorageInterface $tokenStorage,
         UserInterface $user
     ): Response {
         $handler->terminateMembership($user, null, false);
