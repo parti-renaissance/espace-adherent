@@ -11,7 +11,6 @@ use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\OAuth\Model\ClientApiUser;
@@ -26,7 +25,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -162,23 +160,6 @@ class UserController extends AbstractController
         } catch (AdherentTokenMismatchException $e) {
             return $this->createBadRequestResponse('Le token ne correspond pas à l\'utilisateur.');
         }
-    }
-
-    /**
-     * @Route("/desadherer", name="app_api_user_terminate_membership", methods={"POST"})
-     * @Security("is_granted('UNREGISTER')")
-     */
-    public function terminateMembershipAction(
-        Request $request,
-        MembershipRequestHandler $handler,
-        TokenStorageInterface $tokenStorage,
-        UserInterface $user
-    ): Response {
-        $handler->terminateMembership($user, null, false);
-        $tokenStorage->setToken(null);
-        $request->getSession()->invalidate();
-
-        return $this->json('OK');
     }
 
     private function createBadRequestResponse(string $msg): JsonResponse
