@@ -64,3 +64,9 @@ services:
     App\Committee\CommitteeManager: ~
 
     Algolia\SearchBundle\SearchService: '@Tests\App\Test\Algolia\DummySearchService'
+
+    App\OAuth\AuthorizationServerFactory:
+        arguments:
+            $privateKey: "%env(SSL_PRIVATE_KEY)%"
+            $encryptionKey: "%env(SSL_ENCRYPTION_KEY)%"
+            $authCodeTtlInterval: 'PT60M'

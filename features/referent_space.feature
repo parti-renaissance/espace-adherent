@@ -20,8 +20,8 @@ Feature:
   Scenario: I can see citizen projects of my managed area
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/projets-citoyens"
+    And I wait 3 second until I see "Un stage pour tous"
     Then I should see 5 "table.managed__list__table tbody tr" elements
-    And I should see "Un stage pour tous"
     And I should see "Le projet citoyen à Dammarie-les-Lys"
     And I should see "En Marche - Projet citoyen"
     And I should see "Massive Open Online Course"
@@ -32,9 +32,9 @@ Feature:
   Scenario: I cannot see running mate or volunteer request for the zones I don't manage
     Given I am logged as "referent-child@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-colistiers"
-    Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
+    Then I wait 3 second until I see "Aucun résultat"
     When I am on "/espace-referent/candidature-benevoles"
-    Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
+    Then I wait 3 second until I see "Aucun résultat"
 
   @javascript
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags

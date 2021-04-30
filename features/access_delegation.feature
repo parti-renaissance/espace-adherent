@@ -15,6 +15,7 @@ Feature:
     @javascript
     Scenario: I can delegate a space to an adherent of my area by searching for its name
         When I go to "/espace-depute/messagerie"
+        And I wait 3 second until I see "J'ai lu et j'accepte"
         And I press "J'ai lu et j'accepte"
         Then I should see "Mon équipe"
 

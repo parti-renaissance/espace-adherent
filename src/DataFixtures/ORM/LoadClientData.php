@@ -117,7 +117,7 @@ class LoadClientData extends Fixture
             'J\'écoute',
             'J\'écoute',
             '4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client8->setAskUserForAuthorization(false);
