@@ -27,6 +27,7 @@ class AuthorizationServerFactory
     private $encryptionKey;
     private $authCodeRepository;
     private $refreshTokenRepository;
+    private $authCodeTtlInterval;
 
     public function __construct(
         AccessTokenRepositoryInterface $accessTokenRepository,
@@ -37,7 +38,8 @@ class AuthorizationServerFactory
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         ScopeRepositoryInterface $scopeRepository,
         string $privateKey,
-        string $encryptionKey
+        string $encryptionKey,
+        string $authCodeTtlInterval = 'PT10M'
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->userRepository = $userRepository;
@@ -48,6 +50,7 @@ class AuthorizationServerFactory
         $this->encryptionKey = $encryptionKey;
         $this->authCodeRepository = $authCodeRepository;
         $this->refreshTokenRepository = $refreshTokenRepository;
+        $this->authCodeTtlInterval = $authCodeTtlInterval;
     }
 
     public function createServer(): AuthorizationServer
@@ -64,7 +67,7 @@ class AuthorizationServerFactory
         $refreshTokenTtl = new \DateInterval('P1M');
 
         $server->enableGrantType(
-            new AuthCodeGrant($this->authCodeRepository, $this->refreshTokenRepository, new \DateInterval('PT10M')),
+            new AuthCodeGrant($this->authCodeRepository, $this->refreshTokenRepository, new \DateInterval($this->authCodeTtlInterval)),
             $accessTokenTtl
         );
 
