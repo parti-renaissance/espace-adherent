@@ -43,9 +43,16 @@ class AccessTokenRepository extends ServiceEntityRepository
     /**
      * @return AccessToken[]
      */
-    public function findAllAccessTokensByUser(Adherent $user): array
+    public function findActiveAccessTokensByUser(Adherent $user): array
     {
-        return $this->findBy(['user' => $user]);
+        return $this
+            ->createQueryBuilder('at')
+            ->where('at.user = :user')
+            ->andWhere('at.revokedAt IS NULL')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function revokeClientTokens(Client $client): void
@@ -57,9 +64,11 @@ class AccessTokenRepository extends ServiceEntityRepository
 
     public function revokeUserTokens(Adherent $user): void
     {
-        foreach ($this->findAllAccessTokensByUser($user) as $accessToken) {
+        foreach ($this->findActiveAccessTokensByUser($user) as $accessToken) {
             $this->revokeToken($accessToken);
         }
+
+        $this->_em->flush();
     }
 
     private function revokeToken(AccessToken $token): void

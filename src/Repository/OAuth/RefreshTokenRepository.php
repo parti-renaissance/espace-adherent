@@ -50,12 +50,13 @@ class RefreshTokenRepository extends ServiceEntityRepository
     /**
      * @return RefreshToken[]
      */
-    public function findAllRefreshTokensByUser(Adherent $user): array
+    public function findActiveRefreshTokensByUser(Adherent $user): array
     {
         return $this
             ->createQueryBuilder('rt')
             ->join('rt.accessToken', 'at')
             ->where('at.user = :user')
+            ->andWhere('rt.revokedAt IS NULL')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
@@ -71,9 +72,11 @@ class RefreshTokenRepository extends ServiceEntityRepository
 
     public function revokeUserTokens(Adherent $user): void
     {
-        foreach ($this->findAllRefreshTokensByUser($user) as $refreshToken) {
+        foreach ($this->findActiveRefreshTokensByUser($user) as $refreshToken) {
             $this->revokeToken($refreshToken);
         }
+
+        $this->_em->flush();
     }
 
     private function revokeToken(RefreshToken $token): void
