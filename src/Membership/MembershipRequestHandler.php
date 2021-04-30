@@ -225,8 +225,11 @@ class MembershipRequestHandler
         return $this->callbackManager->generateUrl('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function terminateMembership(UnregistrationCommand $command, Adherent $adherent, bool $sendMail = true): void
-    {
+    public function terminateMembership(
+        Adherent $adherent,
+        UnregistrationCommand $command = null,
+        bool $sendMail = true
+    ): void {
         $this->unregistrationHandler->handle($adherent, $command);
 
         if ($sendMail) {
