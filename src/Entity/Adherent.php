@@ -32,6 +32,7 @@ use App\Geocoder\GeoPointInterface;
 use App\Membership\ActivityPositions;
 use App\Membership\MembershipInterface;
 use App\Membership\MembershipRequest;
+use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -2868,6 +2869,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setSource(?string $source): void
     {
         $this->source = $source;
+    }
+
+    public function isCoalitionUser(): bool
+    {
+        return MembershipSourceEnum::COALITIONS === $this->source;
     }
 
     public function isCoalitionSubscription(): bool

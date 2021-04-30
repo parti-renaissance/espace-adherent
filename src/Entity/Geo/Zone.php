@@ -280,6 +280,11 @@ class Zone implements GeoInterface
         return $this->postalCode;
     }
 
+    public function getPostalCodeAsString(): string
+    {
+        return implode(', ', $this->getPostalCode());
+    }
+
     /**
      * @param string[] $postalCode
      */

@@ -170,6 +170,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $this->country;
     }
 
+    public function getCountryName(): ?string
+    {
+        return $this->country ? Countries::getName($this->country) : null;
+    }
+
     /**
      * @SymfonySerializer\Groups({"profile_read", "event_read"})
      */

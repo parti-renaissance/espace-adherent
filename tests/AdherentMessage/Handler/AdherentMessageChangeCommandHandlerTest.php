@@ -898,6 +898,10 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'deputy_email' => 7,
                         'senator_email' => 8,
                     ],
+                    [
+                        'cause_subscription' => 1,
+                        'coalition_subscription' => 2,
+                    ],
                     'A',
                     'B',
                     'C',

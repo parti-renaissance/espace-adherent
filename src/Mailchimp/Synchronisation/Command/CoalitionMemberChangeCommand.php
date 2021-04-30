@@ -4,7 +4,7 @@ namespace App\Mailchimp\Synchronisation\Command;
 
 use App\Mailchimp\SynchronizeMessageInterface;
 
-class CoalitionContactChangeCommand implements SynchronizeMessageInterface
+class CoalitionMemberChangeCommand implements SynchronizeMessageInterface
 {
     private $email;
     private $isAdherent;

@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Mailchimp\Synchronisation\Command\CoalitionContactChangeCommand;
+use App\Mailchimp\Synchronisation\Command\CoalitionMemberChangeCommand;
 use App\Repository\AdherentRepository;
 use App\Repository\Coalition\CauseFollowerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,9 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class MailchimpSyncCoalitionsContactsCommand extends Command
+class MailchimpSyncCoalitionsMembersCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:all-coalitions-contacts';
+    protected static $defaultName = 'mailchimp:sync:all-coalitions-members';
 
     private $adherentRepository;
     private $causeFollowerRepository;
@@ -44,7 +44,6 @@ class MailchimpSyncCoalitionsContactsCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('adherents-only', null, InputOption::VALUE_NONE)
-            ->addOption('subscribed-adherents-only', null, InputOption::VALUE_NONE)
             ->addOption('followers-only', null, InputOption::VALUE_NONE)
         ;
     }
@@ -59,11 +58,10 @@ class MailchimpSyncCoalitionsContactsCommand extends Command
         $limit = (int) $input->getOption('limit');
         $onlyFollowers = $input->getOption('followers-only');
         $onlyAdherents = $input->getOption('adherents-only');
-        $onlySubscribedAdherents = $input->getOption('subscribed-adherents-only');
 
         // Adherents
         if (!$onlyFollowers) {
-            $paginator = $this->getAdherentsQueryBuilder($onlySubscribedAdherents);
+            $paginator = $this->getAdherentsQueryBuilder();
 
             $count = $paginator->count();
             $total = $limit && $limit < $count ? $limit : $count;
@@ -99,7 +97,7 @@ class MailchimpSyncCoalitionsContactsCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $contact) {
-                $this->bus->dispatch(new CoalitionContactChangeCommand($contact->getEmailAddress(), $isAdherent));
+                $this->bus->dispatch(new CoalitionMemberChangeCommand($contact->getEmailAddress(), $isAdherent));
 
                 $this->io->progressAdvance();
                 ++$offset;
@@ -116,27 +114,19 @@ class MailchimpSyncCoalitionsContactsCommand extends Command
         $this->io->progressFinish();
     }
 
-    private function getAdherentsQueryBuilder(bool $onlySubscribedAdherents): Paginator
+    private function getAdherentsQueryBuilder(): Paginator
     {
-        if ($onlySubscribedAdherents) {
-            $queryBuilder = $this
-                ->adherentRepository
-                ->createCoalitionSubscribersQueryBuilder()
-            ;
-        } else {
-            $queryBuilder = $this->adherentRepository->createQueryBuilder('adherent');
-        }
-
-        return new Paginator($queryBuilder->getQuery());
+        return new Paginator($this->adherentRepository
+            ->createCoalitionSubscribersQueryBuilder()
+            ->getQuery()
+        );
     }
 
     private function getCauseFollowersQueryBuilder(): Paginator
     {
-        $queryBuilder = $this
-            ->causeFollowerRepository
+        return new Paginator($this->causeFollowerRepository
             ->createSubscribedQueryBuilder()
-        ;
-
-        return new Paginator($queryBuilder->getQuery());
+            ->getQuery()
+        );
     }
 }

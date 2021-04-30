@@ -58,4 +58,9 @@ class CoalitionFollower extends AbstractFollower
     {
         $this->coalition = $coalition;
     }
+
+    public function getEmailAddress(): ?string
+    {
+        return $this->getAdherent() ? $this->getAdherent()->getEmailAddress() : null;
+    }
 }

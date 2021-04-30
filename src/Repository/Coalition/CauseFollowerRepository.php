@@ -32,6 +32,7 @@ class CauseFollowerRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('f')
             ->where('f.emailAddress IS NOT NULL')
+            ->andWhere('f.cguAccepted = :true')
             ->andWhere('(f.causeSubscription = :true OR f.coalitionSubscription = :true)')
             ->setParameter('true', true)
         ;

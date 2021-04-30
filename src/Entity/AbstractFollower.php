@@ -22,6 +22,8 @@ abstract class AbstractFollower implements FollowerInterface
 
     abstract public function getFollowed(): FollowedInterface;
 
+    abstract public function getEmailAddress(): ?string;
+
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;

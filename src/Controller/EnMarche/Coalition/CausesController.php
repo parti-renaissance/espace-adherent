@@ -8,12 +8,14 @@ use App\Entity\Coalition\Cause;
 use App\Exporter\CausesExporter;
 use App\Form\Coalition\CauseFilterType;
 use App\Form\Coalition\CauseType;
+use App\Mailchimp\Synchronisation\Command\CoalitionMemberChangeCommand;
 use App\Repository\Coalition\CauseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -61,7 +63,8 @@ class CausesController extends AbstractController
         Request $request,
         CauseRepository $causeRepository,
         EntityManagerInterface $entityManager,
-        MessageNotifier $notifier
+        MessageNotifier $notifier,
+        MessageBusInterface $bus
     ): Response {
         if (!$ids = (array) $request->request->get('ids')) {
             return $this->json('"ids" not provided', Response::HTTP_BAD_REQUEST);
@@ -84,6 +87,15 @@ class CausesController extends AbstractController
 
                 $cause->refuse();
                 $entityManager->flush();
+            }
+
+            foreach ($cause->getFollowers() as $follower) {
+                $adherent = $follower->getAdherent();
+                $bus->dispatch(
+                    new CoalitionMemberChangeCommand(
+                        $adherent ? $adherent->getEmailAddress() : $follower->getEmailAddress(),
+                        $follower->isAdherent()
+                ));
             }
         }
 
