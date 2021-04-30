@@ -2,6 +2,7 @@
 
 namespace App\Repository\OAuth;
 
+use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -46,12 +47,39 @@ class RefreshTokenRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return RefreshToken[]
+     */
+    public function findAllRefreshTokensByUser(Adherent $user): array
+    {
+        return $this
+            ->createQueryBuilder('rt')
+            ->join('rt.accessToken', 'at')
+            ->where('at.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function revokeClientTokens(Client $client): void
     {
         foreach ($this->findAllRefreshTokensByClient($client) as $refreshToken) {
-            if (!$refreshToken->isRevoked()) {
-                $refreshToken->revoke();
-            }
+            $this->revokeToken($refreshToken);
+        }
+    }
+
+    public function revokeUserTokens(Adherent $user): void
+    {
+        foreach ($this->findAllRefreshTokensByUser($user) as $refreshToken) {
+            $this->revokeToken($refreshToken);
+        }
+    }
+
+    private function revokeToken(RefreshToken $token): void
+    {
+        if (!$token->isRevoked()) {
+            $token->revoke();
         }
     }
 }

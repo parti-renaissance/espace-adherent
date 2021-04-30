@@ -7,6 +7,7 @@ use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Entity\Adherent;
 use App\Membership\MembershipRequestHandler;
+use App\OAuth\TokenRevocationAuthority;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -112,12 +113,12 @@ class ProfileController extends AbstractController
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,
+        TokenRevocationAuthority $tokenRevocationAuthority,
         TokenStorageInterface $tokenStorage,
         UserInterface $user
     ): Response {
         $handler->terminateMembership($user, null, false);
-        $tokenStorage->setToken(null);
-        $request->getSession()->invalidate();
+        $tokenRevocationAuthority->revokeUserTokens($user);
 
         return $this->json('OK');
     }
