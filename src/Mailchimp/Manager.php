@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp;
 
+use App\Coalition\CoalitionContactValueObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -17,6 +18,7 @@ use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
+use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterValueObject;
@@ -165,6 +167,19 @@ class Manager implements LoggerAwareInterface
 
         $this->driver->editMember(
             $requestBuilder->buildMemberRequest($emailAddress),
+            $listId
+        );
+    }
+
+    public function editCoalitionMember(CoalitionContactValueObject $contact): void
+    {
+        $listId = $this->mailchimpObjectIdMapping->getCoalitionsListId();
+        $requestBuilder = $this->requestBuildersLocator->get(CoalitionMemberRequestBuilder::class);
+
+        $result = $this->driver->editMember(
+            $requestBuilder
+                ->updateFromValueObject($contact)
+                ->build($contact->getEmail()),
             $listId
         );
     }

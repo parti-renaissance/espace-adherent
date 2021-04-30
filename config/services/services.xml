@@ -275,6 +275,7 @@
         <service id="app.mailchimp.request_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
                 <argument key="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" type="service" id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" />
+                <argument key="App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder" type="service" id="App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder" />
                 <argument key="App\Mailchimp\Synchronisation\RequestBuilder" type="service" id="App\Mailchimp\Synchronisation\RequestBuilder" />
                 <argument key="App\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="App\Mailchimp\Campaign\CampaignRequestBuilder" />
                 <argument key="App\Mailchimp\Campaign\CampaignContentRequestBuilder" type="service" id="App\Mailchimp\Campaign\CampaignContentRequestBuilder" />
@@ -288,6 +289,7 @@
             <argument type="string">%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_APPLICATION_REQUEST_CANDIDATE_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_JECOUTE_LIST_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_COALITIONS_LIST_ID)%</argument>
             <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
@@ -300,6 +302,7 @@
 
         <service id="App\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
         <service id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
+        <service id="App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder" shared="false"/>
 
         <!-- Swagger -->
         <service id="App\Swagger\SwaggerDecorator"

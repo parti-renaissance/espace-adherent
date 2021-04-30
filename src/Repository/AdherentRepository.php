@@ -1115,6 +1115,14 @@ SQL;
         return $result > 0;
     }
 
+    public function createCoalitionSubscribersQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.coalitionSubscription = :true OR a.causeSubscription = :true')
+            ->setParameter('true', true)
+        ;
+    }
+
     private function createCommitteeSupervisorsQueryBuilder(Committee $committee): QueryBuilder
     {
         return $this->createQueryBuilder('a')
