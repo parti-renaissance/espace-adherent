@@ -1,5 +1,11 @@
 {% extends base_template %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
     <script type="text/javascript">
@@ -26,7 +32,7 @@
             {% endif %}
         </h3>
 
-        {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+        {{ form_start(form, { attr: { class: 'b__nudge--top-40 em-form'} }) }}
         {{ form_errors(form) }}
 
         <div class="form__row" id="institutional_event-name-field">
@@ -96,6 +102,8 @@
             {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300', placeholder: 'Entrez un paragraphe afin de décrire cette réunion privée.', rows: '20', cols: '70' } }) }}
         </div>
 
+        {{ form_row(form.image) }}
+
         <div class="form__row" id="institutional_event-visiourl-field">
             {{ form_errors(form.visioUrl) }}
             {{ form_label(form.visioUrl, 'Lien de la visio ou du live') }}
@@ -131,4 +139,33 @@
 
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function () {
+            var inputFile = dom('#' + '{{ form.image.image.vars.id }}');
+            var inputCroppedImage = dom('#' + '{{ form.image.croppedImage.vars.id }}');
+
+            on(inputFile, 'change', function () {
+                App.runImageCropper(inputFile, inputCroppedImage, { a: 16/9, w: 960, h: 540 });
+            });
+
+            on(dom('.delete-profile-image--trigger'), 'click', function (event) {
+                event.preventDefault();
+
+                inputFile.value = '';
+                dom('#' + '{{ form.image.croppedImage.vars.id }}').value = {{ event is defined and event.id ? -1 : "''" }};
+
+                show(dom('.image-uploader--label'));
+                hide(dom('.image-uploader--preview'));
+            })
+        });
+    </script>
 {% endblock %}

@@ -98,7 +98,13 @@ abstract class AbstractEventManagerController extends AbstractController
     public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
     {
         $form = $this
-            ->createForm(EventCommandType::class, $command = EventCommand::createFromEvent($event))
+            ->createForm(
+                EventCommandType::class,
+                $command = EventCommand::createFromEvent($event),
+                [
+                    'event_image_path' => $event->getImagePath(),
+                ]
+            )
             ->handleRequest($request)
         ;
 
@@ -113,6 +119,7 @@ abstract class AbstractEventManagerController extends AbstractController
         }
 
         return $this->renderTemplate('event_manager/event_edit.html.twig', [
+            'event' => $event,
             'form' => $form->createView(),
         ]);
     }

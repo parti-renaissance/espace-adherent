@@ -9,6 +9,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\BaseEventCategory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class BaseEventCommand
@@ -65,6 +66,10 @@ class BaseEventCommand
      * @Assert\Url
      */
     private $visioUrl;
+
+    private $image;
+
+    private $removeImage = false;
 
     protected function __construct(
         ?Adherent $author,
@@ -192,6 +197,26 @@ class BaseEventCommand
     public function setVisioUrl(?string $visioUrl): void
     {
         $this->visioUrl = $visioUrl;
+    }
+
+    public function getImage(): ?UploadedFile
+    {
+        return $this->image;
+    }
+
+    public function setImage(?UploadedFile $image): void
+    {
+        $this->image = $image;
+    }
+
+    public function isRemoveImage(): bool
+    {
+        return $this->removeImage;
+    }
+
+    public function setRemoveImage(bool $value): void
+    {
+        $this->removeImage = $value;
     }
 
     protected function getCategoryClass(): string

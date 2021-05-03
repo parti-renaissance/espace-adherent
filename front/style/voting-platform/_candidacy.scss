@@ -132,6 +132,12 @@
     color: $blue;
     font-style: italic;
     text-align: center;
+
+    &-rectangle {
+        width: 680px;
+        height: 368px;
+        border-radius: 0;
+    }
 }
 
 .candidate-gender {

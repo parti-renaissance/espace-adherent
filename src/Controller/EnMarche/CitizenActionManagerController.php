@@ -110,7 +110,13 @@ class CitizenActionManagerController extends AbstractController
         CitizenActionCommandHandler $handler
     ): Response {
         $command = CitizenActionCommand::createFromCitizenAction($action);
-        $form = $this->createForm(CitizenActionCommandType::class, $command)
+        $form = $this->createForm(
+            CitizenActionCommandType::class,
+            $command,
+            [
+                'event_image_path' => $action->getImagePath(),
+            ]
+        )
             ->handleRequest($request)
         ;
 
@@ -127,6 +133,7 @@ class CitizenActionManagerController extends AbstractController
         return $this->render('citizen_action_manager/edit.html.twig', [
             'citizen_project' => $project,
             'project_hosts' => $citizenProjectManager->getCitizenProjectAdministrators($project),
+            'event' => $action,
             'citizen_action_form' => $form->createView(),
         ]);
     }

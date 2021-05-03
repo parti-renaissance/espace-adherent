@@ -138,7 +138,7 @@ class CandidatureControllerTest extends WebTestCase
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
 
         $this->client->submit($form, [
-            'territorial_council_candidacy[croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
+            'territorial_council_candidacy[image][croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
             'territorial_council_candidacy[biography]' => 'ma bio',
             'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
         ]);
@@ -214,7 +214,7 @@ class CandidatureControllerTest extends WebTestCase
         self::assertEquals(1, $values['territorial_council_candidacy[isPublicFaithStatement]']);
 
         $this->client->submit($form, [
-            'territorial_council_candidacy[croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
+            'territorial_council_candidacy[image][croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
             'territorial_council_candidacy[biography]' => 'ma bio',
             'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
             'territorial_council_candidacy[isPublicFaithStatement]' => false,

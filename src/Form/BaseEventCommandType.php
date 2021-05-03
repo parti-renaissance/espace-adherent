@@ -54,6 +54,12 @@ class BaseEventCommandType extends AbstractType
             ->add('visioUrl', UrlType::class, [
                 'required' => false,
             ])
+            ->add('image', CroppedImageType::class, [
+                'required' => false,
+                'label' => false,
+                'image_default_path' => $options['event_image_path'],
+                'ratio' => '16:9',
+            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -75,7 +81,11 @@ class BaseEventCommandType extends AbstractType
         $resolver
             ->setDefaults([
                 'event_category_class' => EventCategory::class,
+                'event_image_path' => null,
+                'ratio' => null,
             ])
+            ->setAllowedTypes('event_image_path', ['string', 'null'])
+            ->setAllowedTypes('ratio', ['string', 'null'])
         ;
     }
 

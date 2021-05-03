@@ -81,7 +81,10 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
             ->createForm(
                 InstitutionalEventCommandType::class,
                 $command = InstitutionalEventCommand::createFromInstitutionalEvent($institutionalEvent),
-                ['view' => InstitutionalEventCommandType::EDIT_VIEW]
+                [
+                    'view' => InstitutionalEventCommandType::EDIT_VIEW,
+                    'event_image_path' => $institutionalEvent->getImagePath(),
+                ]
             )
             ->handleRequest($request)
         ;
@@ -95,6 +98,7 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
         }
 
         return $this->renderTemplate('institutional_events/create.html.twig', [
+            'event' => $institutionalEvent,
             'form' => $form->createView(),
         ]);
     }

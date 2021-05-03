@@ -23,8 +23,8 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function () {
-            var inputFile = dom('#' + '{{ form.image.vars.id }}');
-            var inputCroppedImage = dom('#' + '{{ form.croppedImage.vars.id }}');
+            var inputFile = dom('#' + '{{ form.image.image.vars.id }}');
+            var inputCroppedImage = dom('#' + '{{ form.image.croppedImage.vars.id }}');
 
             on(inputFile, 'change', function () {
                 App.runImageCropper(inputFile, inputCroppedImage);
@@ -34,7 +34,7 @@
                 event.preventDefault();
 
                 inputFile.value = '';
-                dom('#' + '{{ form.croppedImage.vars.id }}').value = {{ candidacy.id ? -1 : "''" }};
+                dom('#' + '{{ form.image.croppedImage.vars.id }}').value = {{ candidacy.id ? -1 : "''" }};
 
                 show(dom('.image-uploader--label'));
                 hide(dom('.image-uploader--preview'));

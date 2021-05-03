@@ -272,7 +272,7 @@
             box-sizing: border-box;
             font-family: $font-roboto;
             position: relative;
-            height: 140px;
+            min-height: 140px;
             border: dashed 1px $lines-grey;
             width: 100%;
             display: flex;
