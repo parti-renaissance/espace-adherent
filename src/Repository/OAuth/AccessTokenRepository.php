@@ -2,6 +2,7 @@
 
 namespace App\Repository\OAuth;
 
+use App\Entity\Adherent;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -39,12 +40,41 @@ class AccessTokenRepository extends ServiceEntityRepository
         return $this->findBy(['client' => $client]);
     }
 
+    /**
+     * @return AccessToken[]
+     */
+    public function findActiveAccessTokensByUser(Adherent $user): array
+    {
+        return $this
+            ->createQueryBuilder('at')
+            ->where('at.user = :user')
+            ->andWhere('at.revokedAt IS NULL')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function revokeClientTokens(Client $client): void
     {
         foreach ($this->findAllAccessTokensByClient($client) as $accessToken) {
-            if (!$accessToken->isRevoked()) {
-                $accessToken->revoke();
-            }
+            $this->revokeToken($accessToken);
+        }
+    }
+
+    public function revokeUserTokens(Adherent $user): void
+    {
+        foreach ($this->findActiveAccessTokensByUser($user) as $accessToken) {
+            $this->revokeToken($accessToken);
+        }
+
+        $this->_em->flush();
+    }
+
+    private function revokeToken(AccessToken $token): void
+    {
+        if (!$token->isRevoked()) {
+            $token->revoke();
         }
     }
 }

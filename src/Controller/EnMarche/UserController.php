@@ -164,7 +164,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->terminateMembership($unregistrationCommand, $adherent);
+            $handler->terminateMembership($adherent, $unregistrationCommand);
             $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
 

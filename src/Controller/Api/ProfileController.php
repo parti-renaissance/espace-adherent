@@ -6,10 +6,13 @@ use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Entity\Adherent;
+use App\Membership\MembershipRequestHandler;
+use App\OAuth\TokenRevocationAuthority;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -100,5 +103,20 @@ class ProfileController extends AbstractController
     public function configuration(AdherentProfileConfiguration $adherentProfileConfiguration): JsonResponse
     {
         return new JsonResponse($adherentProfileConfiguration->build());
+    }
+
+    /**
+     * @Route("/unregister", name="_unregister", methods={"POST"})
+     * @Security("is_granted('UNREGISTER')")
+     */
+    public function terminateMembershipAction(
+        MembershipRequestHandler $handler,
+        TokenRevocationAuthority $tokenRevocationAuthority,
+        UserInterface $user
+    ): Response {
+        $handler->terminateMembership($user, null, false);
+        $tokenRevocationAuthority->revokeUserTokens($user);
+
+        return $this->json('OK');
     }
 }
