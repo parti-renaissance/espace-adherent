@@ -4,6 +4,7 @@ namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Mailchimp\Exception\SkippableMessageExceptionInterface;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,20 +37,24 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        foreach ($message->getMailchimpCampaigns() as $mailchimpCampaign) {
-            if ($this->mailchimpManager->editCampaign($mailchimpCampaign)) {
-                if ($filter = $message->getFilter()) {
-                    $filter->setSynchronized(true);
-                }
+        try {
+            foreach ($message->getMailchimpCampaigns() as $mailchimpCampaign) {
+                if ($this->mailchimpManager->editCampaign($mailchimpCampaign)) {
+                    if ($filter = $message->getFilter()) {
+                        $filter->setSynchronized(true);
+                    }
 
-                // Persists Mailchimp campaign ID on creation (first API call)
-                $this->entityManager->flush();
-
-                if ($this->mailchimpManager->editCampaignContent($mailchimpCampaign)) {
-                    $mailchimpCampaign->setSynchronized(true);
+                    // Persists Mailchimp campaign ID on creation (first API call)
                     $this->entityManager->flush();
+
+                    if ($this->mailchimpManager->editCampaignContent($mailchimpCampaign)) {
+                        $mailchimpCampaign->setSynchronized(true);
+                        $this->entityManager->flush();
+                    }
                 }
             }
+        } catch (SkippableMessageExceptionInterface $e) {
+            // skip message if exception
         }
 
         $this->entityManager->clear();
