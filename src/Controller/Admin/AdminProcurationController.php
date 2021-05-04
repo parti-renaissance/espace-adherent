@@ -39,28 +39,28 @@ class AdminProcurationController extends AbstractController
      * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate", methods={"GET", "POST"})
      */
     public function deassociateAction(
-        Request $sfRequest,
-        ProcurationRequest $request,
+        Request $request,
+        ProcurationRequest $procurationRequest,
         ProcurationManager $manager
     ): Response {
-        if (!$request->getFoundProxy()) {
-            return $this->redirectAfterDeassociation($sfRequest);
+        if (!$procurationRequest->getFoundProxy()) {
+            return $this->redirectAfterDeassociation($request);
         }
 
         $form = $this->createForm(FormType::class)
             ->add('submit', SubmitType::class)
-            ->handleRequest($sfRequest)
+            ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->unprocessProcurationRequest($request);
+            $manager->unprocessProcurationRequest($procurationRequest);
 
-            return $this->redirectAfterDeassociation($sfRequest);
+            return $this->redirectAfterDeassociation($request);
         }
 
         return $this->render('admin/procuration/request_deassociate.html.twig', [
             'form' => $form->createView(),
-            'request' => $request,
+            'request' => $procurationRequest,
         ]);
     }
 
