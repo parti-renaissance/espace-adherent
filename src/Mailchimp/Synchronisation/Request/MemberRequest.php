@@ -3,6 +3,7 @@
 namespace App\Mailchimp\Synchronisation\Request;
 
 use App\Entity\Geo\Zone;
+use App\Mailchimp\Exception\ZoneNotSynchronizedException;
 
 class MemberRequest implements MemberRequestInterface
 {
@@ -102,7 +103,7 @@ class MemberRequest implements MemberRequestInterface
             case Zone::COUNTRY:
                 return self::MERGE_FIELD_ZONE_COUNTRY;
             default:
-                throw new \InvalidArgumentException(sprintf('Zone type "%s" is not synchronized with mailchimp.', $zone->getType()));
+                throw new ZoneNotSynchronizedException($zone);
         }
     }
 
