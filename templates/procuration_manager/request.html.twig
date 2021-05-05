@@ -214,6 +214,7 @@
                         {% for matchingProxy in matchingProxies %}
                             {% set score = matchingProxy.score %}
                             {% set proxy = matchingProxy.data %}
+                            {% set reliability = proxy.reliability %}
 
                             <tr>
                                 <td style="border: 0;"></td>
@@ -225,7 +226,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>{{ score }}</td>
+                                <td>
+                                    {{ score }}
+                                    {% if reliability in constant('App\\Entity\\ProcurationProxy::RELIABILITIES') %}
+                                        <br>
+                                        ({{ ('procuration_proxy.reliability_' ~ reliability)|trans }})
+                                    {% endif %}
+                                </td>
                                 <td class="datagrid__table__col--left datagrid__table__col--top">
                                     <em>Email :</em>
                                     <a href="mailto:{{ proxy.emailAddress }}">

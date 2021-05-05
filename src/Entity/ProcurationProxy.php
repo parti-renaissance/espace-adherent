@@ -26,10 +26,17 @@ class ProcurationProxy
     public const ACTION_DISABLE = 'desactiver';
     public const ACTIONS_URI_REGEX = self::ACTION_ENABLE.'|'.self::ACTION_DISABLE;
 
-    private const RELIABILITY_UNKNOWN = 1;
-    private const RELIABILITY_ADHERENT = 4;
-    private const RELIABILITY_ACTIVIST = 6;
-    private const RELIABILITY_REPRESENTATIVE = 8;
+    public const RELIABILITY_UNKNOWN = 1;
+    public const RELIABILITY_ADHERENT = 4;
+    public const RELIABILITY_ACTIVIST = 6;
+    public const RELIABILITY_REPRESENTATIVE = 8;
+
+    public const RELIABILITIES = [
+        self::RELIABILITY_UNKNOWN,
+        self::RELIABILITY_ADHERENT,
+        self::RELIABILITY_ACTIVIST,
+        self::RELIABILITY_REPRESENTATIVE,
+    ];
 
     private const MAX_FRENCH_REQUESTS = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;

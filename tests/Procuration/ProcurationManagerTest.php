@@ -69,18 +69,18 @@ class ProcurationManagerTest extends WebTestCase
         yield ['jeanmichel.gastro@example.es', [
             [
                 'email' => 'jeanmarc.gastro@example.es',
-                'score' => 7,
+                'score' => 6,
             ],
         ]];
 
         yield ['fleurpare@armyspy.com', [
             [
                 'email' => 'jm.carbonneau@example.fr',
-                'score' => 2,
+                'score' => 3,
             ],
             [
                 'email' => 'maxime.michaux@example.fr',
-                'score' => 2,
+                'score' => 3,
             ],
         ]];
 

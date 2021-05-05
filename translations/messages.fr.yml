@@ -1208,3 +1208,11 @@ file.type.external_link: Lien externe
 cause.pending: En attente
 cause.approved: Approuvée
 cause.refused: Refusée
+
+#
+# Procuration
+#
+procuration_proxy.reliability_1: Inconnu
+procuration_proxy.reliability_4: Plutôt fiable
+procuration_proxy.reliability_6: Fiable
+procuration_proxy.reliability_8: Très fiable
