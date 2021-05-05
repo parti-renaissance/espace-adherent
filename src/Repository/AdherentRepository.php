@@ -17,6 +17,7 @@ use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Membership\MembershipSourceEnum;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -1118,8 +1119,11 @@ SQL;
     public function createCoalitionSubscribersQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('a')
-            ->where('a.coalitionsCguAccepted = :true')
-            ->setParameter('true', true)
+            ->where('a.coalitionsCguAccepted = :true OR a.source = :coalitions')
+            ->setParameters([
+                'true' => true,
+                'coalitions' => MembershipSourceEnum::COALITIONS,
+            ])
         ;
     }
 

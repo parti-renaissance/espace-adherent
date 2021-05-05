@@ -107,7 +107,10 @@ class AdherentEventSubscriber implements EventSubscriberInterface
                 $changeFrom['emailAddress'] ?? $adherent->getEmailAddress(),
                 isset($changeFrom['referentTagCodes']) ? (array) $changeFrom['referentTagCodes'] : []
             );
-            $this->dispatch(new CoalitionMemberChangeCommand($adherent->getEmailAddress(), true));
+            $this->dispatch(new CoalitionMemberChangeCommand(
+                $changeFrom['emailAddress'] ?? $adherent->getEmailAddress(),
+                true
+            ));
         }
     }
 
