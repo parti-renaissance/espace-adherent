@@ -6,6 +6,7 @@ use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
@@ -41,6 +42,8 @@ abstract class FilterFactory
                 return static::createCandidateFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
                 return static::createCandidateJecouteFilter($user);
+            case AdherentMessageTypeEnum::COALITIONS:
+                return static::createCoalitionsFilter($user);
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
@@ -141,5 +144,14 @@ abstract class FilterFactory
         }
 
         return new JecouteFilter($user->getCandidateManagedArea()->getZone());
+    }
+
+    private static function createCoalitionsFilter(Adherent $user): CoalitionsFilter
+    {
+        if (!$user->isApprovedCauseAuthor()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a cause author');
+        }
+
+        return new CoalitionsFilter();
     }
 }

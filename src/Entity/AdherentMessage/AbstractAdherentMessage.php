@@ -62,13 +62,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
+ *         "put": {
+ *             "path": "/v3/adherent_messages/{id}",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {"groups": {"message_read"}},
+ *         },
  *         "send": {
  *             "path": "/v3/adherent_messages/{uuid}/send",
  *             "method": "POST",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\AdherentMessage\SendAdherentMessageController"
- *         }
+ *         },
+ *         "update_filter": {
+ *             "path": "/v3/adherent_messages/{uuid}/filter",
+ *             "method": "PUT",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController"
+ *         },
  *     }
  * )
  *
