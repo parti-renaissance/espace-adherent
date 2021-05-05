@@ -155,6 +155,7 @@ class ZoneMatcherCommand extends Command
             ->createQueryBuilder('x')
             ->setFirstResult($offset)
             ->setMaxResults(self::BULK)
+            ->orderBy('x.id', 'DESC')
         ;
 
         if ($id) {

@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
+use App\Api\Filter\EventsZipCodeFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Entity\AddressHolderInterface;
@@ -132,6 +133,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
+ * @ApiFilter(EventsZipCodeFilter::class)
  * @ApiFilter(DateFilter::class, properties={"finishAt": "strictly_after"})
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
