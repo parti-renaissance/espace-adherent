@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use App\Entity\AdherentSegment;
+use Doctrine\ORM\Mapping as ORM;
 
 trait AdherentSegmentAwareFilterTrait
 {

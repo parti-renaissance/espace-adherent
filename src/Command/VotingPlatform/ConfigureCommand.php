@@ -150,7 +150,7 @@ class ConfigureCommand extends Command
 
                 $this->io->progressAdvance();
 
-                $election = $election = $this->createNewElection($designation);
+                $election = $this->createNewElection($designation);
                 $election->getElectionEntity()->setTerritorialCouncil($coTerr);
 
                 if (($poll = $coTerrElection->getElectionPoll()) && $choice = $poll->getTopChoice()) {

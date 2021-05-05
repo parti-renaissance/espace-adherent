@@ -128,6 +128,8 @@ class MailchimpObjectIdMapping
                 return $this->applicationRequestCandidateListId;
             case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
                 return $this->jecouteListId;
+            case AdherentMessageTypeEnum::COALITIONS:
+                return $this->coalitionsListId;
             default:
                 return $this->mainListId;
         }
