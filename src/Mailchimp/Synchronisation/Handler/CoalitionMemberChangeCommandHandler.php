@@ -54,7 +54,7 @@ class CoalitionMemberChangeCommandHandler implements MessageHandlerInterface, Lo
         $this->entityManager->refresh($contact);
 
         // check if it's a coalition user
-        if (($contact instanceof Adherent && !$contact->isCoalitionsCguAccepted())
+        if (($contact instanceof Adherent && (!$contact->isCoalitionsCguAccepted() && !$contact->isCoalitionUser()))
             || ($contact instanceof CauseFollower && !$contact->isCguAccepted())) {
             return;
         }

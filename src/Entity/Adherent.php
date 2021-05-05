@@ -646,6 +646,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @ORM\Column(type="boolean", options={"default": 0})
      *
+     * @JMS\Groups({"adherent_change_diff"})
+     *
      * @SymfonySerializer\Groups({"profile_read"})
      */
     private $coalitionSubscription = false;
@@ -654,6 +656,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @JMS\Groups({"adherent_change_diff"})
      *
      * @SymfonySerializer\Groups({"profile_read"})
      */
