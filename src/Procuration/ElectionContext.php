@@ -36,6 +36,19 @@ class ElectionContext implements \Serializable
         return $this->elections;
     }
 
+    public function getElection(): ?Election
+    {
+        return !empty($this->elections)
+            ? reset($this->elections)
+            : null
+        ;
+    }
+
+    public function setElection(Election $election): void
+    {
+        $this->elections = [$election];
+    }
+
     /**
      * @param Election[]|iterable $elections
      */
