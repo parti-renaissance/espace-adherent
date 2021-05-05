@@ -2,9 +2,11 @@
 
 namespace App\Mailchimp\Synchronisation\Handler;
 
-use App\Coalition\CoalitionContactValueObject;
+use App\Coalition\CoalitionMemberValueObject;
+use App\Entity\Adherent;
+use App\Entity\Coalition\CauseFollower;
 use App\Mailchimp\Manager;
-use App\Mailchimp\Synchronisation\Command\CoalitionContactChangeCommand;
+use App\Mailchimp\Synchronisation\Command\CoalitionMemberChangeCommand;
 use App\Repository\AdherentRepository;
 use App\Repository\Coalition\CauseFollowerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +15,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class CoalitionContactChangeCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+class CoalitionMemberChangeCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -35,7 +37,7 @@ class CoalitionContactChangeCommandHandler implements MessageHandlerInterface, L
         $this->logger = new NullLogger();
     }
 
-    public function __invoke(CoalitionContactChangeCommand $message): void
+    public function __invoke(CoalitionMemberChangeCommand $message): void
     {
         $email = $message->getEmail();
         $contact = $message->isAdherent()
@@ -51,9 +53,15 @@ class CoalitionContactChangeCommandHandler implements MessageHandlerInterface, L
 
         $this->entityManager->refresh($contact);
 
+        // check if it's a coalition user
+        if (($contact instanceof Adherent && !$contact->isCoalitionsCguAccepted())
+            || ($contact instanceof CauseFollower && !$contact->isCguAccepted())) {
+            return;
+        }
+
         $valueObject = $message->isAdherent()
-            ? CoalitionContactValueObject::createFromAdherent($contact)
-            : CoalitionContactValueObject::createFromCauseFollower($contact)
+            ? CoalitionMemberValueObject::createFromAdherent($contact)
+            : CoalitionMemberValueObject::createFromCauseFollower($contact)
         ;
 
         $this->manager->editCoalitionMember($valueObject);

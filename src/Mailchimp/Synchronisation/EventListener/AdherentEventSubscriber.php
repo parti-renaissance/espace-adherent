@@ -13,7 +13,9 @@ use App\Events;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
+use App\Mailchimp\Synchronisation\Command\CoalitionMemberChangeCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveCoalitionMemberCommand;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\TerritorialCouncil\Event\MembershipEvent;
@@ -105,6 +107,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
                 $changeFrom['emailAddress'] ?? $adherent->getEmailAddress(),
                 isset($changeFrom['referentTagCodes']) ? (array) $changeFrom['referentTagCodes'] : []
             );
+            $this->dispatch(new CoalitionMemberChangeCommand($adherent->getEmailAddress(), true));
         }
     }
 
@@ -133,6 +136,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     public function onDelete(UserEvent $event): void
     {
         $this->dispatch(new AdherentDeleteCommand($event->getUser()->getEmailAddress()));
+        $this->dispatch(new RemoveCoalitionMemberCommand($event->getUser()->getEmailAddress()));
     }
 
     public function onUserValidated(UserEvent $event): void

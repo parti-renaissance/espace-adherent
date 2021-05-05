@@ -15,6 +15,7 @@ class MailchimpObjectIdMapping
     private $folderIds;
     private $templateIds;
     private $interestIds;
+    private $coalitionsInterestIds;
     private $memberGroupInterestGroupId;
     private $memberInterestInterestGroupId;
     private $subscriptionTypeInterestGroupId;
@@ -31,6 +32,7 @@ class MailchimpObjectIdMapping
         array $folderIds,
         array $templateIds,
         array $interestIds,
+        array $coalitionsInterestIds,
         string $memberGroupInterestGroupId,
         string $memberInterestInterestGroupId,
         string $subscriptionTypeInterestGroupId,
@@ -46,6 +48,7 @@ class MailchimpObjectIdMapping
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
+        $this->coalitionsInterestIds = $coalitionsInterestIds;
         $this->memberGroupInterestGroupId = $memberGroupInterestGroupId;
         $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
         $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
@@ -66,6 +69,11 @@ class MailchimpObjectIdMapping
     public function getInterestIds(): array
     {
         return $this->interestIds;
+    }
+
+    public function getCoalitionsInterestIds(): array
+    {
+        return $this->coalitionsInterestIds;
     }
 
     public function getMemberGroupInterestGroupId(): string

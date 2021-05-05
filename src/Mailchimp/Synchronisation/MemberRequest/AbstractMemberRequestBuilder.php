@@ -8,6 +8,7 @@ abstract class AbstractMemberRequestBuilder
 {
     private $email;
     private $isSubscribeRequest = true;
+    private $interests;
 
     public function setEmail(string $email): self
     {
@@ -19,6 +20,13 @@ abstract class AbstractMemberRequestBuilder
     public function setIsSubscribeRequest(bool $isSubscribeRequest): self
     {
         $this->isSubscribeRequest = $isSubscribeRequest;
+
+        return $this;
+    }
+
+    public function setInterests(array $interests): self
+    {
+        $this->interests = $interests;
 
         return $this;
     }
@@ -36,6 +44,10 @@ abstract class AbstractMemberRequestBuilder
         }
 
         $request->setMergeFields($this->buildMergeFields());
+
+        if ($this->interests) {
+            $request->setInterests($this->interests);
+        }
 
         return $request;
     }

@@ -101,4 +101,26 @@ class CauseRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function findByFollower(string $email, bool $isAdherent): array
+    {
+        $qb = $this->createQueryBuilder('cause')
+            ->join('cause.followers', 'follower')
+            ->where('cause.status = :approved')
+            ->setParameters([
+                'approved' => Cause::STATUS_APPROVED,
+                'email' => $email,
+            ])
+        ;
+
+        if ($isAdherent) {
+            $qb->join('follower.adherent', 'adherent')
+                ->andWhere('adherent.emailAddress = :email')
+            ;
+        } else {
+            $qb->andWhere('follower.emailAddress = :email');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

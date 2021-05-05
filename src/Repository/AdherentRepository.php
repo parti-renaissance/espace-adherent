@@ -1118,7 +1118,7 @@ SQL;
     public function createCoalitionSubscribersQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('a')
-            ->where('a.coalitionSubscription = :true OR a.causeSubscription = :true')
+            ->where('a.coalitionsCguAccepted = :true')
             ->setParameter('true', true)
         ;
     }

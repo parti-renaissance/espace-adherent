@@ -149,6 +149,9 @@ services:
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
         tags: ['doctrine.event_subscriber']
 
+    App\Coalition\Listener\FollowerChangeSubscriber:
+        tags: ['doctrine.event_subscriber']
+
     App\Normalizer\IdeaAnswerNormalizer:
         arguments:
             - '@api_platform.serializer.normalizer.item'
