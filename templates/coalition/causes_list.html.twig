@@ -42,6 +42,7 @@
                     <thead>
                     <tr>
                         <th width="50" class="space--20"><input type="checkbox" id="items-check-all" /></th>
+                        <th>Id</th>
                         <th>Objectif de la cause</th>
                         <th style="width: 150px;">Porteur(se) de la cause</th>
                         <th style="width: 100px;">Image</th>
@@ -56,6 +57,7 @@
                     {% for cause in causes %}
                         <tr class="event__item">
                             <td><input type="checkbox" name="items[]" value="{{ cause.id }}" /></td>
+                            <td>{{ cause.id }}</td>
                             <td>{{ cause.name }}</td>
                             <td class="adherent-identity">
                                 {% if cause.author %}
@@ -63,7 +65,8 @@
                                         {{ cause.author.firstName }} ({{ cause.author.cityName }})
                                     </div>
                                     <div class="adherent-caracs">
-                                        {{ cause.author.emailAddress }}
+                                        {{ cause.author.emailAddress }}<br />
+                                        {{ cause.author.phone ? cause.author.phone|phone_number_format : '' }}
                                     </div>
                                 {% endif %}
                             </td>

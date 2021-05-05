@@ -41,12 +41,14 @@ class CausesControllerTest extends WebTestCase
 
         $this->assertCount(7, $causes = $crawler->filter('.datagrid table tbody tr'));
         $causeFields = $causes->eq(5)->filter('td');
-        $this->assertSame('Cause en attente', $causeFields->eq(1)->text());
-        $this->assertStringContainsString('Jacques (Paris 8e)', $causeFields->eq(2)->text());
-        $this->assertStringContainsString('jacques.picard@en-marche.fr', $causeFields->eq(2)->text());
-        $this->assertSame('Justice', $causeFields->eq(4)->text());
-        $this->assertSame('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', $causeFields->eq(5)->text(null, true));
-        $this->assertSame('En attente', $causeFields->eq(7)->text());
+        $this->assertSame('2', $causeFields->eq(1)->text());
+        $this->assertSame('Cause en attente', $causeFields->eq(2)->text());
+        $this->assertStringContainsString('Jacques (Paris 8e)', $causeFields->eq(3)->text());
+        $this->assertStringContainsString('jacques.picard@en-marche.fr', $causeFields->eq(3)->text());
+        $this->assertStringContainsString('+33 1 87 26 42 36', $causeFields->eq(3)->text());
+        $this->assertSame('Justice', $causeFields->eq(5)->text());
+        $this->assertSame('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', $causeFields->eq(6)->text(null, true));
+        $this->assertSame('En attente', $causeFields->eq(8)->text());
     }
 
     public function testChangeCauseStatusAsCoalitionModerator(): void
