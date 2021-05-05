@@ -70,7 +70,7 @@ class RestContext extends BehatchRestContext
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
             null,
             $identifier,
-            new \DateTimeImmutable('+10 minutes'),
+            new \DateTimeImmutable('+30 minutes'),
             $clientRepository->findOneBy(['name' => $clientName]),
             $device
         );
@@ -101,7 +101,7 @@ class RestContext extends BehatchRestContext
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
             $adherentRepository->findOneByEmail($email),
             $identifier,
-            new \DateTimeImmutable('+10 minutes'),
+            new \DateTimeImmutable('+30 minutes'),
             $clientRepository->findOneBy(['name' => $clientName])
         );
 
