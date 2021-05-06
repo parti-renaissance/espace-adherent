@@ -117,9 +117,10 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         // I see request potential proxies
-        $proxies = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
+        $proxies = $crawler->filter('.datagrid__table tbody tr');
 
-        $this->assertSame('Jean-Marc Gastro', trim($proxies->first()->text()));
+        $this->assertSame('Jean-Marc Gastro', trim($proxies->first()->filter('td.proxy_name strong')->text()));
+        $this->assertStringContainsString('Plutôt fiable', trim($proxies->eq(1)->text()));
 
         // Associate the request with the proxy
         $linkNode = $crawler->filter('#associate-link-8');

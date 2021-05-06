@@ -349,7 +349,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Bentapair',
             array_merge($presidentialElections->getRounds()->toArray(), $legislativeElections->getRounds()->toArray()),
-            5,
+            ProcurationProxy::RELIABILITY_ADHERENT,
             'Responsable procuration'
         ));
 
@@ -375,7 +375,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
                 $legislativeElections->getRounds()->toArray(),
                 $partialLegislativeElections->getRounds()->toArray()
             ),
-            5,
+            ProcurationProxy::RELIABILITY_ADHERENT,
             'Responsable procuration',
             2
         ));
@@ -398,7 +398,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'École de la République',
             [$partialLegislativeElections->getRounds()->first()],
-            5,
+            ProcurationProxy::RELIABILITY_ADHERENT,
             'Responsable procuration'
         ));
 
@@ -420,7 +420,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'École 42',
             $partialLegislativeElections->getRounds(),
-            5,
+            ProcurationProxy::RELIABILITY_ADHERENT,
             'Responsable procuration'
         ));
 
@@ -442,7 +442,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'London',
             'Lycée international Winston Churchill',
             $partialLegislativeElections->getRounds(),
-            5,
+            ProcurationProxy::RELIABILITY_ADHERENT,
             'Désactivé',
             1,
             1
@@ -466,7 +466,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Camden',
             $partialLegislativeElections->getRounds(),
-            5,
+            ProcurationProxy::RELIABILITY_ADHERENT,
             'Responsable procuration',
             3
         ));
@@ -569,7 +569,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ?string $voteCityName,
         string $voteOffice,
         iterable $electionRounds,
-        int $reliability = 0,
+        int $reliability = ProcurationProxy::RELIABILITY_UNKNOWN,
         string $reliabilityDescription = '',
         int $proxiesCount = 1,
         bool $disabled = false
