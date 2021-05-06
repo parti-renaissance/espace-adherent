@@ -73,7 +73,7 @@ class CandidatureController extends AbstractController
                 TerritorialCouncilCandidacyType::class,
                 $candidacy,
                 [
-                    'event_image_path' => $candidacy->getImagePath(),
+                    'image_path' => $candidacy->getImagePath(),
                 ]
             )
             ->handleRequest($request)
@@ -254,7 +254,7 @@ class CandidatureController extends AbstractController
         $acceptedBy->setIsPublicFaithStatement($invitedBy->isPublicFaithStatement());
 
         $form = $this
-            ->createForm(TerritorialCouncilCandidacyType::class, $acceptedBy, ['event_image_path' => $acceptedBy->getImagePath()])
+            ->createForm(TerritorialCouncilCandidacyType::class, $acceptedBy, ['image_path' => $acceptedBy->getImagePath()])
             ->handleRequest($request)
         ;
 

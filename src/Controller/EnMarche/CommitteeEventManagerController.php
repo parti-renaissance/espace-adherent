@@ -60,7 +60,7 @@ class CommitteeEventManagerController extends AbstractController
             EventCommandType::class,
             $command = EventCommand::createFromEvent($event),
             [
-                'event_image_path' => $event->getImagePath(),
+                'image_path' => $event->getImagePath(),
             ]
         );
         $form->handleRequest($request);

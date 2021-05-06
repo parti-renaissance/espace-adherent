@@ -538,8 +538,8 @@
 
         {{ form_errors(form) }}
 
-        {% if image_default_path %}
-            {% set image_url = path('asset_url', {path: image_default_path}) %}
+        {% if image_path %}
+            {% set image_url = path('asset_url', {path: image_path}) %}
         {% endif %}
 
         <div class="em-form__file">

@@ -18,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CroppedImageType extends AbstractType
 {
+    public const RATIO_16_9 = '16:9';
     private $croppedImageDataTransformer;
 
     public function __construct(CroppedImageDataTransformer $croppedImageDataTransformer)
@@ -41,7 +42,7 @@ class CroppedImageType extends AbstractType
             $data = $event->getData();
 
             if (isset($data['skip'])) {
-                unset($data['croppedImage'], $data['biography'], $data['image']);
+                unset($data['croppedImage'], $data['image']);
             } elseif (!empty($data['croppedImage'])) {
                 if (false !== strpos($data['croppedImage'], 'base64,')) {
                     $imageData = explode('base64,', $data['croppedImage'], 2);
@@ -75,17 +76,17 @@ class CroppedImageType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['image_default_path'] = $options['image_default_path'];
+        $view->vars['image_path'] = $options['image_path'];
         $view->vars['ratio'] = $options['ratio'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'image_default_path' => null,
+            'image_path' => null,
             'ratio' => null,
         ])
-            ->setAllowedTypes('image_default_path', ['string', 'null'])
+            ->setAllowedTypes('image_path', ['string', 'null'])
             ->setAllowedTypes('ratio', ['string', 'null'])
         ;
     }

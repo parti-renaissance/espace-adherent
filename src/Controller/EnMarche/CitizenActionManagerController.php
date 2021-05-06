@@ -114,7 +114,7 @@ class CitizenActionManagerController extends AbstractController
             CitizenActionCommandType::class,
             $command,
             [
-                'event_image_path' => $action->getImagePath(),
+                'image_path' => $action->getImagePath(),
             ]
         )
             ->handleRequest($request)

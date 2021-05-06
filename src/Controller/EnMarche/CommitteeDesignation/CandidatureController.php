@@ -76,7 +76,7 @@ class CandidatureController extends AbstractController
         $isCreation = null === $candidacy->getId();
 
         $form = $this
-            ->createCandidacyForm($candidacy, ['event_image_path' => $candidacy->getImagePath()])
+            ->createCandidacyForm($candidacy, ['image_path' => $candidacy->getImagePath()])
             ->handleRequest($request)
         ;
 

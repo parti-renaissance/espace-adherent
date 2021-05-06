@@ -57,8 +57,8 @@ class BaseEventCommandType extends AbstractType
             ->add('image', CroppedImageType::class, [
                 'required' => false,
                 'label' => false,
-                'image_default_path' => $options['event_image_path'],
-                'ratio' => '16:9',
+                'image_path' => $options['image_path'],
+                'ratio' => CroppedImageType::RATIO_16_9,
             ])
         ;
 
@@ -81,11 +81,9 @@ class BaseEventCommandType extends AbstractType
         $resolver
             ->setDefaults([
                 'event_category_class' => EventCategory::class,
-                'event_image_path' => null,
-                'ratio' => null,
+                'image_path' => null,
             ])
-            ->setAllowedTypes('event_image_path', ['string', 'null'])
-            ->setAllowedTypes('ratio', ['string', 'null'])
+            ->setAllowedTypes('image_path', ['string', 'null'])
         ;
     }
 

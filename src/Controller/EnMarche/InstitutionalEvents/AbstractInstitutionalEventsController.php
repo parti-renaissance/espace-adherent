@@ -83,7 +83,7 @@ abstract class AbstractInstitutionalEventsController extends AbstractController
                 $command = InstitutionalEventCommand::createFromInstitutionalEvent($institutionalEvent),
                 [
                     'view' => InstitutionalEventCommandType::EDIT_VIEW,
-                    'event_image_path' => $institutionalEvent->getImagePath(),
+                    'image_path' => $institutionalEvent->getImagePath(),
                 ]
             )
             ->handleRequest($request)

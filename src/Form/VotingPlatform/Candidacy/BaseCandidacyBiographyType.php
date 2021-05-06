@@ -18,7 +18,7 @@ class BaseCandidacyBiographyType extends AbstractType
             ->add('image', CroppedImageType::class, [
                 'required' => false,
                 'label' => false,
-                'image_default_path' => $options['event_image_path'],
+                'image_path' => $options['image_path'],
             ])
             ->add('biography', DoubleNewlineTextareaType::class, [
                 'required' => false,
@@ -34,9 +34,9 @@ class BaseCandidacyBiographyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => BaseCandidacy::class,
-            'event_image_path' => null,
+            'image_path' => null,
         ])
-            ->setAllowedTypes('event_image_path', ['string', 'null'])
+            ->setAllowedTypes('image_path', ['string', 'null'])
         ;
     }
 }
