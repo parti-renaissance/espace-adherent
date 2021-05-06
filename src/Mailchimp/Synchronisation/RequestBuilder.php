@@ -53,6 +53,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     /** @var Zone|null */
     private $zoneCity;
+    private $zoneCanton;
     private $zoneDepartment;
     private $zoneRegion;
     private $zoneCountry;
@@ -293,6 +294,10 @@ class RequestBuilder implements LoggerAwareInterface
         switch ($zone->getType()) {
             case Zone::CITY:
                 $this->zoneCity = $zone;
+
+                break;
+            case Zone::CANTON:
+                $this->zoneCanton = $zone;
 
                 break;
             case Zone::DEPARTMENT:
