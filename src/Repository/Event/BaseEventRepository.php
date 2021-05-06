@@ -83,6 +83,17 @@ class BaseEventRepository extends AbstractAdherentTokenRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
+    public function findOneActiveBySlug(string $slug): ?BaseEvent
+    {
+        return $this
+            ->createSlugQueryBuilder($slug)
+            ->andWhere('event.status IN (:statuses)')
+            ->setParameter('statuses', CommitteeEvent::ACTIVE_STATUSES)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     protected function createSlugQueryBuilder(string $slug): QueryBuilder
     {
         return $this

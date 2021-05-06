@@ -58,7 +58,7 @@ class EventController extends AbstractController
     /**
      * @Route("/ical", name="_export_ical", methods={"GET"})
      */
-    public function exportIcalAction(CommitteeEvent $event, SerializerInterface $serializer): Response
+    public function exportIcalAction(BaseEvent $event, SerializerInterface $serializer): Response
     {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
 
@@ -76,7 +76,7 @@ class EventController extends AbstractController
      * @Security("is_granted('ROLE_ADHERENT')")
      */
     public function attendAdherentAction(
-        CommitteeEvent $event,
+        BaseEvent $event,
         UserInterface $adherent,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler
@@ -115,7 +115,7 @@ class EventController extends AbstractController
      */
     public function attendAction(
         Request $request,
-        CommitteeEvent $event,
+        BaseEvent $event,
         ?UserInterface $adherent,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
         AnonymousFollowerSession $anonymousFollowerSession
@@ -155,7 +155,6 @@ class EventController extends AbstractController
 
         return $this->render('events/attend.html.twig', [
             'event' => $event,
-            'committee' => $event->getCommittee(),
             'form' => $form->createView(),
         ]);
     }
@@ -170,7 +169,7 @@ class EventController extends AbstractController
      */
     public function attendConfirmationAction(
         Request $request,
-        CommitteeEvent $event,
+        BaseEvent $event,
         EventRegistrationManager $manager
     ): Response {
         try {
@@ -187,7 +186,6 @@ class EventController extends AbstractController
 
         return $this->render('events/attend_confirmation.html.twig', [
             'event' => $event,
-            'committee' => $event->getCommittee(),
             'registration' => $registration,
         ]);
     }
@@ -195,7 +193,7 @@ class EventController extends AbstractController
     /**
      * @Route("/invitation", name="_invite", methods={"GET", "POST"})
      */
-    public function inviteAction(Request $request, CommitteeEvent $event, EventInvitationHandler $handler): Response
+    public function inviteAction(Request $request, BaseEvent $event, EventInvitationHandler $handler): Response
     {
         $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
@@ -228,7 +226,7 @@ class EventController extends AbstractController
     /**
      * @Route("/invitation/merci", name="_invitation_sent", methods={"GET"})
      */
-    public function invitationSentAction(Request $request, CommitteeEvent $event): Response
+    public function invitationSentAction(Request $request, BaseEvent $event): Response
     {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
             return $this->redirectToRoute('app_committee_event_invite', [
@@ -247,10 +245,10 @@ class EventController extends AbstractController
      */
     public function unregistrationAction(
         Request $request,
-        CommitteeEvent $event,
+        BaseEvent $event,
         EventRegistrationManager $eventRegistrationManager
     ): JsonResponse {
-        if (!$this->isCsrfTokenValid('event.unregistration', $token = $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid('event.unregistration', $request->request->get('token'))) {
             throw new BadRequestHttpException('Invalid CSRF protection token to unregister from the citizen action.');
         }
 

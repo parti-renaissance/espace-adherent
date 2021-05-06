@@ -39,14 +39,13 @@
                 {% if is_event_already_participating(event, app.user) %}
                     <button class="btn btn--no-border {{ isFull?' btn--full':''}} unregister-event" data-csrf-token="{{ csrf_token('event.unregistration') }}">Je ne peux plus participer</button>
                 {% elseif not event.full %}
-                    <a class="btn btn--no-border {{ isFull?' btn--full':''}} register-event" href="{{ path("app_#{event.type}_event_attend", {slug: event.slug}) }}">Je veux participer</a>
+                    <a class="btn btn--no-border {{ isFull?' btn--full':''}} register-event" href="{{ path("app_committee_event_attend", {slug: event.slug}) }}">Je veux participer</a>
                 {% else %}
                     <button class="btn btn--no-border{{ isFull?' btn--full':''}} btn--text-blue btn--disabled register-event" disabled="disabled">
                         Je veux participer
                     </button>
-                    <div class="text--white text--center">
-                        L'événement est complet
-                    </div>
+
+                    <div class="text--white text--center">L'événement est complet</div>
                 {% endif %}
             {% endif %}
         {% endif %}

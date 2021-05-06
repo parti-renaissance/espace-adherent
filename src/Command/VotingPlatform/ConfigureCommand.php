@@ -98,6 +98,8 @@ class ConfigureCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function configureCommitteeElections(Designation $designation): void

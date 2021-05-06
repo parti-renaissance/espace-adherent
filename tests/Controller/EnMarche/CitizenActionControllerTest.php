@@ -74,7 +74,7 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $this->assertTrue($this->seeFlashMessage($crawler, 'Votre inscription est confirmée.'));
         $this->assertStringContainsString('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
-        $crawler = $this->client->click($crawler->selectLink('Retour')->link());
+        $crawler = $this->client->click($crawler->filter('.committee-event-registration-confirmation a.btn')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         self::assertSame('2 inscrits', trim($crawler->filter('#members h3')->text()));

@@ -8,13 +8,11 @@ use App\Entity\Committee;
 use App\Entity\ExposedObjectInterface;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\PostAddress;
-use App\Entity\Report\ReportableInterface;
 use App\Entity\SynchronizedEntity;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
 use App\Event\EventTypeEnum;
-use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
-class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ReportableInterface, ExposedObjectInterface
+class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ExposedObjectInterface
 {
     use UserDocumentTrait;
     use DefaultCategoryOwnerTrait;
@@ -130,11 +128,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     public function setIsForLegislatives(bool $isForLegislatives): void
     {
         $this->isForLegislatives = $isForLegislatives;
-    }
-
-    public function getReportType(): string
-    {
-        return ReportType::COMMUNITY_EVENT;
     }
 
     /**

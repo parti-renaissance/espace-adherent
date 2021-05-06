@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventInvite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EventInvitationMessage;
@@ -25,7 +25,7 @@ class EventInvitationHandler
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(EventInvitation $invitation, CommitteeEvent $event)
+    public function handle(EventInvitation $invitation, BaseEvent $event)
     {
         $invite = EventInvite::create($event, $invitation);
 
