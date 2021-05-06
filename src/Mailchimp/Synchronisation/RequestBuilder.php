@@ -291,6 +291,10 @@ class RequestBuilder implements LoggerAwareInterface
 
     private function setZone(Zone $zone): void
     {
+        if (!$zone->isActive()) {
+            return;
+        }
+
         switch ($zone->getType()) {
             case Zone::CITY:
                 $this->zoneCity = $zone;
