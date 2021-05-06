@@ -447,6 +447,10 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCity)] = (string) $this->zoneCity;
         }
 
+        if ($this->zoneCanton) {
+            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCanton)] = (string) $this->zoneCanton;
+        }
+
         if ($this->zoneDepartment) {
             $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneDepartment)] = (string) $this->zoneDepartment;
         }
