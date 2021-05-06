@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
+{% endblock %}
+
+{% block content %}
+    <main class="citizen_action__create l__wrapper">
+        <section class="content ">
+            <header class="space--30-0 l__wrapper--slim">
+            <h1 class="text--large text--center">
+                {% block content_header %}{% endblock %}
+            </h1>
+            </header>
+            <hr/>
+        </section>
+        <section class="l__wrapper--slim">
+            {% block content_body %}
+                <div id="citizen-action-form">
+                {{ form_start(citizen_action_form, { attr: { class: 'b__nudge--top-40 em-form'} }) }}
+                    {{ form_errors(citizen_action_form) }}
+
+                    <div class="form__row" id="citizen-action-name-field">
+                        {{ form_errors(citizen_action_form.name) }}
+                        {{ form_label(citizen_action_form.name, 'Titre de l\'action', { label_attr: { class: 'text--bold' } }) }}
+                        {{ form_widget(citizen_action_form.name, { attr: { class: 'form--full citizen_action__form__name', placeholder: 'Entrez un nom accrocheur et explicite pour votre action (100 caractères max).' } }) }}
+                        <div class="text--gray text--italic">Ex : Nettoyer la plage.</div>
+                    </div>
+
+                    <div class="form__row" id="citizen-action-description-field">
+                        {{ form_errors(citizen_action_form.description) }}
+                        {{ form_label(citizen_action_form.description, 'Comment cela va-t-il se passer ?', { label_attr: { class: 'text--bold' } }) }}
+                        {{ form_widget(citizen_action_form.description, { attr: { class: 'citizen_action__proposed_solution form--full form__field--textarea-120', placeholder: 'Décrivez en un court paragraphe l\'organisation que vous envisagez (1000 caractères max).', rows: '15', cols: '70' } }) }}
+                        <div class="text--gray text--italic">
+                            Ex : Nous souhaitons ramasser le plus de déchêts possible !
+                        </div>
+                    </div>
+
+                    {{ form_row(citizen_action_form.image) }}
+
+                    <div class="form__row" id="cocitizen-action-visiourl-field">
+                        {{ form_errors(citizen_action_form.visioUrl) }}
+                        {{ form_label(citizen_action_form.visioUrl, 'Lien de la visio ou du live', { label_attr: { class: 'text--bold' } }) }}
+                        {{ form_widget(citizen_action_form.visioUrl,  { attr: { class: 'form--full citizen_action__visio_url', placeholder: "Entrez le lien de la visio de l'évènement (facultatif)" } }) }}
+                    </div>
+
+                    <div class="form__row" id="citizen-action-beginat-field">
+                        {{ form_errors(citizen_action_form.beginAt) }}
+                        {{ form_label(citizen_action_form.beginAt, 'Début', { label_attr: { class: 'text--bold' } }) }}
+                        {{ form_widget(citizen_action_form.beginAt, { attr: { class: 'citizen_action__begin_at l__row' } }) }}
+                    </div>
+
+                    <div class="form__row" id="citizen-action-finishat-field">
+                        {{ form_errors(citizen_action_form.finishAt) }}
+                        {{ form_label(citizen_action_form.finishAt, 'Fin', { label_attr: { class: 'text--bold' } }) }}
+                        {{ form_widget(citizen_action_form.finishAt, { attr: { class: 'citizen_action__finish_at l__row' } }) }}
+                        <div class="form__info">Votre action citoyenne ne peut pas durer plus de 3 jours.</div>
+                    </div>
+
+                    <div class="form__row" id="citizen-initiative-description-field">
+                        {{ form_errors(citizen_action_form.category) }}
+                        {{ form_label(citizen_action_form.category, 'Quel thème correspond à votre action ?', { label_attr: { class: 'text--bold' } }) }}
+                        {{ form_widget(citizen_action_form.category, { attr: { class: 'form--full citizen_action__form__category', placeholder: "Choisissez le thème de l'initiative" } }) }}
+                    </div>
+
+                    <div id="citizen-action-address" class="form__row">
+                        {{ form_errors(citizen_action_form.address) }}
+
+                        <div class="form__row citizen_action__form--trunc" id="citizen-action-address-address-field">
+                            {{ form_errors(citizen_action_form.address.address) }}
+                            {{ form_label(citizen_action_form.address.address, 'Adresse', { label_attr: { class: 'text--bold' } }) }}
+                            {{ form_widget(citizen_action_form.address.address, { attr: { class: 'form--full', placeholder: "Si votre initiative ne se déroule pas dans un lieu précis, indiquez l'adresse qui vous semble la plus pertinente." } }) }}
+                            <div class="text--gray text--italic">Ex : 127, rue de Paradis</div>
+                        </div>
+
+                        <div class="citizen_action__address l__row l__row--h-stretch l__mobile--col">
+                            <div class="form__row citizen_action__form__zip_code register__form--third"
+                                 id="citizen-action-address-zipcode-field">
+                                {{ form_errors(citizen_action_form.address.postalCode) }}
+                                {{ form_label(citizen_action_form.address.postalCode, 'Code postal', { label_attr : { class: 'text--bold' }}) }}
+                                {{ form_widget(citizen_action_form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
+                            </div>
+
+                            <div class="form__row citizen_action__form__city register__form--third"
+                                 id="citizen-action-address-city-field">
+                                {{ form_errors(citizen_action_form.address.city) }}
+                                {{ form_errors(citizen_action_form.address.cityName) }}
+                                {{ form_label(citizen_action_form.address.cityName, 'Ville', { label_attr: { class: 'text--bold' } }) }}
+                                {{ form_widget(citizen_action_form.address.city, { attr: { class: 'citizen_action__form__city'} }) }}
+                                {{ form_widget(citizen_action_form.address.cityName, { attr: { class: 'form--full citizen_action__form__city_name', placeholder: 'Ville' } }) }}
+                            </div>
+
+                            <div class="form__row citizen_action__form__country register__form--third"
+                                 id="citizen-action-address-country-field">
+                                {{ form_errors(citizen_action_form.address.country) }}
+                                {{ form_label(citizen_action_form.address.country, 'Pays', { label_attr : { class: 'text--bold' } }) }}
+                                {{ form_widget(citizen_action_form.address.country, { attr: { class: 'form--full', placeholder: 'Choisissez le pays' } }) }}
+                            </div>
+
+                            <div class="form__row citizen_action__form__timezone register__form--third"
+                                 id="citizen-action-address-timezone-field">
+                                {{ form_errors(citizen_action_form.timeZone) }}
+                                {{ form_label(citizen_action_form.timeZone, 'Fuseau horaire', { label_attr : { class: 'text--bold' } }) }}
+                                {{ form_widget(citizen_action_form.timeZone, { attr: { class: 'form--full', placeholder: 'Choisissez le fuseau horaire' } }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if citizen_action.slug is defined %}
+                        <div class="form__row b__nudge--top">
+                            <button type="submit" class="btn btn--blue">Enregistrer</button>
+                            <a href="{{ path('app_citizen_project_show', { slug: citizen_project.slug }) }}"
+                               class="btn">
+                                Annuler
+                            </a>
+                        </div>
+                    {% else %}
+                        {% block citizen_action_submit_button %}{% endblock %}
+                    {% endif %}
+
+                {{ form_end(citizen_action_form) }}
+            </div>
+            {% endblock %}
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.address(citizen_action_form.address) }}
+            App.startDateFieldsSynchronisation(
+                '{{ citizen_action_form.beginAt.vars.full_name|e('js') }}',
+                '{{ citizen_action_form.finishAt.vars.full_name|e('js') }}'
+            );
+            {{ js.init_event_cropperjs(citizen_action_form.image) }}
+        });
+    </script>
+{% endblock %}

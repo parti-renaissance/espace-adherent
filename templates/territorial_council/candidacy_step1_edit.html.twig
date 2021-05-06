@@ -89,24 +89,11 @@
 {% block final_javascripts %}
     {{ parent() }}
 
+    {% import 'javascript.js.twig' as js %}
+
     <script type="text/javascript">
         Kernel.onLoad(function () {
-            var inputFile = dom('#' + '{{ form.image.image.vars.id }}');
-            var inputCroppedImage = dom('#' + '{{ form.image.croppedImage.vars.id }}');
-
-            on(inputFile, 'change', function () {
-                App.runImageCropper(inputFile, inputCroppedImage);
-            });
-
-            on(dom('.delete-profile-image--trigger'), 'click', function (event) {
-                event.preventDefault();
-
-                inputFile.value = '';
-                dom('#' + '{{ form.image.croppedImage.vars.id }}').value = {{ candidacy and candidacy.id ? -1 : "''" }};
-
-                show(dom('.image-uploader--label'));
-                hide(dom('.image-uploader--preview'));
-            })
+            {{ js.init_candidacy_cropperjs(form.image) }}
         });
     </script>
 {% endblock %}
