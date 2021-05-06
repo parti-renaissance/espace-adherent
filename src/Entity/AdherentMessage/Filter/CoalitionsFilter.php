@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     subresourceOperations={},
  * )
  */
-class CoalitionsFilter extends AbstractAdherentMessageFilter implements CampaignAdherentMessageFilterInterface
+class CoalitionsFilter extends AbstractUserFilter
 {
     /**
      * @var Cause|null
@@ -36,6 +36,9 @@ class CoalitionsFilter extends AbstractAdherentMessageFilter implements Campaign
     public function __construct(Cause $cause = null)
     {
         $this->cause = $cause;
+
+        // Add default filter
+        $this->setLastName('Fake');
     }
 
     public function getCause(): ?Cause
