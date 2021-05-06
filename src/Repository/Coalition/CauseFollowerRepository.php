@@ -33,8 +33,19 @@ class CauseFollowerRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('f')
             ->where('f.emailAddress IS NOT NULL')
             ->andWhere('f.cguAccepted = :true')
-            ->andWhere('(f.causeSubscription = :true OR f.coalitionSubscription = :true)')
             ->setParameter('true', true)
+        ;
+    }
+
+    public function findLastOne(string $email): ?CauseFollower
+    {
+        return $this->createQueryBuilder('follower')
+            ->where('follower.emailAddress = :email')
+            ->setParameter('email', $email)
+            ->orderBy('follower.createdAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

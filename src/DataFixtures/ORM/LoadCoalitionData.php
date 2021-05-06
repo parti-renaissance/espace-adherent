@@ -36,9 +36,9 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
     public const NAMES = [
         'Culture',
         'Démocratie',
-        'Economie',
-        'Education',
-        'Egalité H/F',
+        'Économie',
+        'Éducation',
+        'Égalité H/F',
         'Europe',
         'Inclusion',
         'International',

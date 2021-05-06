@@ -42,7 +42,7 @@ class CoalitionMemberChangeCommandHandler implements MessageHandlerInterface, Lo
         $email = $message->getEmail();
         $contact = $message->isAdherent()
             ? $this->adherentRepository->findOneBy(['emailAddress' => $email])
-            : $this->causeFollowerRepository->findOneBy(['emailAddress' => $email])
+            : $this->causeFollowerRepository->findLastOne($email)
         ;
 
         if (!$contact) {

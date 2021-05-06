@@ -65,7 +65,7 @@ class LoadCoalitionEventData extends Fixture implements DependentFixtureInterfac
         $referent75and77 = $this->getReference('adherent-19');
 
         $coalitionCulture = $this->getReference('coalition-culture');
-        $coalitionEconomie = $this->getReference('coalition-economie');
+        $coalitionEconomie = $this->getReference('coalition-économie');
         $coalitionEurope = $this->getReference('coalition-europe');
         $coalitionInternational = $this->getReference('coalition-international');
         $coalitionNumerique = $this->getReference('coalition-numérique');
