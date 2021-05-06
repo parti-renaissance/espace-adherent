@@ -53,6 +53,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     /** @var Zone|null */
     private $zoneCity;
+    private $zoneCanton;
     private $zoneDepartment;
     private $zoneRegion;
     private $zoneCountry;
@@ -295,6 +296,10 @@ class RequestBuilder implements LoggerAwareInterface
                 $this->zoneCity = $zone;
 
                 break;
+            case Zone::CANTON:
+                $this->zoneCanton = $zone;
+
+                break;
             case Zone::DEPARTMENT:
                 $this->zoneDepartment = $zone;
 
@@ -440,6 +445,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->zoneCity) {
             $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCity)] = (string) $this->zoneCity;
+        }
+
+        if ($this->zoneCanton) {
+            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCanton)] = (string) $this->zoneCanton;
         }
 
         if ($this->zoneDepartment) {
