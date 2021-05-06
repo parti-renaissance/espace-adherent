@@ -99,10 +99,10 @@ class ProcurationControllerTest extends WebTestCase
             trim($crawler->filter('.procuration__content h2')->text())
         );
 
-        $this->assertCount(2, $crawler->filter('#election_context_elections > div.form__checkbox > input[type="checkbox"]'));
+        $this->assertCount(2, $crawler->filter('#election_context_election > div.form__radio > input[type="radio"]'));
         $this->assertSame(
             'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise',
-            $crawler->filter('#election_context_elections label')->text()
+            $crawler->filter('#election_context_election label')->text()
         );
 
         $crawler = $this->client->submit($crawler->selectButton('Continuer')->form());
@@ -111,7 +111,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
         $this->assertSame('Vous devez choisir au moins une élection.', $error->text());
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[election]' => 5]));
 
         $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE, $this->client);
         $this->assertTrue(
@@ -142,10 +142,10 @@ class ProcurationControllerTest extends WebTestCase
             'Portez la voix d\'un citoyen de votre ville',
             trim($crawler->filter('.procuration__content h2')->text())
         );
-        $this->assertCount(2, $crawler->filter('#election_context_elections input[type="checkbox"]'));
+        $this->assertCount(2, $crawler->filter('#election_context_election input[type="radio"]'));
         $this->assertSame(
             'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise',
-            $crawler->filter('#election_context_elections label')->text()
+            $crawler->filter('#election_context_election label')->text()
         );
 
         $crawler = $this->client->submit($crawler->selectButton('Continuer')->form());
@@ -154,7 +154,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
         $this->assertSame('Vous devez choisir au moins une élection.', $error->text());
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[election]' => 5]));
 
         $this->assertClientIsRedirectedTo('/procuration/je-propose', $this->client);
         $this->assertTrue(
@@ -700,7 +700,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, "/procuration/choisir/$action");
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[election]' => 5]));
 
         $path = ElectionContext::ACTION_REQUEST === $action ? 'je-demande/'.ProcurationRequest::STEP_URI_VOTE : 'je-propose';
 

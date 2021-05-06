@@ -27,8 +27,8 @@ class ElectionContextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('elections', EntityType::class, [
-                'multiple' => true,
+            ->add('election', EntityType::class, [
+                'multiple' => false,
                 'expanded' => true,
                 'class' => Election::class,
                 'query_builder' => function (ElectionRepository $repository) {
@@ -42,10 +42,10 @@ class ElectionContextType extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['elections'] = [];
+        $view->vars['election'] = [];
 
-        foreach ($view['elections']->vars['choices'] as $choice) {
-            $view->vars['elections'][] = $choice->data->getName();
+        foreach ($view['election']->vars['choices'] as $choice) {
+            $view->vars['election'][] = $choice->data->getName();
         }
     }
 }

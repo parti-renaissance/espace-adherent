@@ -25,11 +25,11 @@
                     {% endif %}
                 </div>
                 <div class="text--body">
-                    <strong>Choisissez les élections qui vous concernent :</strong>
+                    <strong>Choisissez l'élection qui vous concerne :</strong>
                 </div>
                 <div class="form__checkbox b__nudge--top b__nudge--bottom">
-                    {{ form_errors(elections_form.elections) }}
-                    {{ form_widget(elections_form.elections) }}
+                    {{ form_errors(elections_form) }}
+                    {{ form_widget(elections_form.election) }}
                 </div>
 
             </div>
