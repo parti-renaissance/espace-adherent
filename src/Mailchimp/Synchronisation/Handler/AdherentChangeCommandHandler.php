@@ -39,6 +39,11 @@ class AdherentChangeCommandHandler implements MessageHandlerInterface, LoggerAwa
 
         $this->entityManager->refresh($adherent);
 
+        // Avoid sync for Coalitions user
+        if ($adherent->isCoalitionUser()) {
+            return;
+        }
+
         $this->manager->editMember($adherent, $message);
 
         $this->entityManager->clear();
