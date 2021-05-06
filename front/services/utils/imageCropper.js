@@ -8,67 +8,28 @@ let cropper;
 let fileElement;
 let croppedImageElement;
 
-export default (inputFileElement, inputCroppedImageElement) => {
-    fileElement = inputFileElement;
-    croppedImageElement = inputCroppedImageElement;
+function updatePreviewImages(src, circle = false) {
+    const previewContainer = dom('.image-uploader--preview');
 
-    const files = inputFileElement.files;
+    const containerElement = find(previewContainer, '.preview-image--container');
+    containerElement.style.backgroundImage = `url(${src})`;
 
-    if (!files || 1 > files.length) {
-        return;
+    if (false === circle) {
+        addClass(containerElement, 'preview-image--container-rectangle');
     }
-
-    const file = files[0];
-
-    if (URL) {
-        displayCropperModal(URL.createObjectURL(file));
-    } else if (FileReader) {
-        const reader = new FileReader();
-        reader.onload = () => displayCropperModal(reader.result);
-        reader.readAsDataURL(file);
-    }
-};
-
-function displayCropperModal(url) {
-    modal = render(
-        <Modal
-            key={url}
-            contentCallback={() => getModalContent(url)}
-            withClose={false}
-        />,
-        dom('#modal-wrapper')
-    );
-
-    cropper = new Cropper(dom('.image-cropper--container img'), {
-        aspectRatio: 1,
-        viewMode: 2,
-    });
+    show(previewContainer);
+    hide(dom('.image-uploader--label'));
 }
 
-function getModalContent(url) {
-    return (
-        <div>
-            <div className={'image-cropper--container'}>
-                <img src={url} alt={'img'} />
-            </div>
-
-            <div className="b__nudge--top-15 text--center">
-                <a className={'btn'} onClick={handleCancelAction}>Annuler</a>
-                <a className="btn btn--blue b__nudge--left-small" onClick={handleCropAction}>Valider</a>
-            </div>
-        </div>
-    );
-}
-
-function handleCropAction() {
+async function handleCropAction(options) {
     const canvas = cropper.getCroppedCanvas({
-        width: 500,
-        height: 500,
+        width: options.w,
+        height: options.h,
     });
 
-    const dataUrl = canvas.toDataURL();
+    const dataUrl = await canvas.toDataURL();
 
-    updatePreviewImages(dataUrl);
+    updatePreviewImages(dataUrl, options.w === options.h);
 
     croppedImageElement.value = dataUrl;
     fileElement.value = '';
@@ -85,10 +46,55 @@ function handleCancelAction() {
     modal.hideModal();
 }
 
-function updatePreviewImages(src) {
-    const previewContainer = dom('.image-uploader--preview');
+function getModalContent(url, options) {
+    return (
+        <div>
+            <div className={'image-cropper--container'}>
+                <img src={url} alt={'img'} />
+            </div>
 
-    find(previewContainer, '.preview-image--container').style.backgroundImage = `url(${src})`;
-    show(previewContainer);
-    hide(dom('.image-uploader--label'));
+            <div className="b__nudge--top-15 text--center">
+                <a className={'btn'} onClick={handleCancelAction}>Annuler</a>
+                <a className="btn btn--blue b__nudge--left-small" onClick={ () => handleCropAction(options) }>Valider</a>
+            </div>
+        </div>
+    );
 }
+
+function displayCropperModal(url, options) {
+    modal = render(
+        <Modal
+            key={url}
+            contentCallback={() => getModalContent(url, options)}
+            withClose={false}
+        />,
+        dom('#modal-wrapper')
+    );
+
+    cropper = new Cropper(dom('.image-cropper--container img'), {
+        aspectRatio: options.a,
+        viewMode: 2,
+    });
+}
+
+
+export default (inputFileElement, inputCroppedImageElement, options = {}) => {
+    fileElement = inputFileElement;
+    croppedImageElement = inputCroppedImageElement;
+
+    const files = inputFileElement.files;
+
+    if (!files || 1 > files.length) {
+        return;
+    }
+
+    const file = files[0];
+
+    if (URL) {
+        displayCropperModal(URL.createObjectURL(file), options);
+    } else if (FileReader) {
+        const reader = new FileReader();
+        reader.onload = () => displayCropperModal(reader.result, options);
+        reader.readAsDataURL(file);
+    }
+};

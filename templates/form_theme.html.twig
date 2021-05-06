@@ -531,3 +531,41 @@
         });
     </script>
 {% endblock %}
+
+{% block cropped_image_row %}
+    <div class="em-form__group">
+        <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
+
+        {{ form_errors(form) }}
+
+        {% if image_path %}
+            {% set image_url = path('asset_url', {path: image_path}) %}
+        {% endif %}
+
+        <div class="em-form__file">
+            {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
+            {{ form_widget(form.croppedImage) }}
+
+            <div>
+                <div class="image-uploader--label {{ image_url is defined ? 'hidden' }}">
+                    {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark em-form__file--label'}}) }}
+                    <div class="em-form__file--name custom-file-label">Aucun fichier sélectionné</div>
+                </div>
+
+                <div class="image-uploader--preview {{ image_url is not defined ? 'hidden' }}">
+                    <div>
+                        <div class="preview-image--container {% if image_url is defined and (ratio is defined and ratio == '16:9') %}preview-image--container-rectangle{% endif %}" {% if image_url is defined %}style="background-image: url({{ image_url }})"{% endif %}></div>
+                    </div>
+
+                    <div>
+                        <label for="{{ form.image.vars.id }}" style="display: inline">Modifier</label>
+                        <span class="separtor"><strong>·</strong></span>
+                        <a href="#" class="link--no-decor link--blue delete-profile-image--trigger">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
+    </div>
+{% endblock %}

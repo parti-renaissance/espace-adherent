@@ -39,7 +39,7 @@ class CandidatureControllerTest extends WebTestCase
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
 
         $this->client->submit($form, [
-            'committee_supervisor_candidacy[croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
+            'committee_supervisor_candidacy[image][croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
             'committee_supervisor_candidacy[biography]' => 'ma bio',
             'committee_supervisor_candidacy[faithStatement]' => 'ma profession de foi',
         ]);

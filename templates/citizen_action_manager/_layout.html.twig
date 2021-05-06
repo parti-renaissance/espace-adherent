@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
@@ -29,7 +35,7 @@
     <section class="l__wrapper--slim">
         {% block content_body %}
             <div id="citizen-action-form">
-            {{ form_start(citizen_action_form, { attr: { class: 'b__nudge--top-40'} }) }}
+            {{ form_start(citizen_action_form, { attr: { class: 'b__nudge--top-40 em-form'} }) }}
                 {{ form_errors(citizen_action_form) }}
 
                 <div class="form__row" id="citizen-action-name-field">
@@ -47,6 +53,8 @@
                         Ex : Nous souhaitons ramasser le plus de déchêts possible !
                     </div>
                 </div>
+
+                {{ form_row(citizen_action_form.image) }}
 
                 <div class="form__row" id="cocitizen-action-visiourl-field">
                     {{ form_errors(citizen_action_form.visioUrl) }}
@@ -133,4 +141,29 @@
         {% endblock %}
     </section>
 </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function () {
+            var inputFile = dom('#' + '{{ citizen_action_form.image.image.vars.id }}');
+            var inputCroppedImage = dom('#' + '{{ citizen_action_form.image.croppedImage.vars.id }}');
+
+            on(inputFile, 'change', function () {
+                App.runImageCropper(inputFile, inputCroppedImage, { a: 16/9, w: 960, h: 540 });
+            });
+
+            on(dom('.delete-profile-image--trigger'), 'click', function (event) {
+                event.preventDefault();
+
+                inputFile.value = '';
+                dom('#' + '{{ citizen_action_form.image.croppedImage.vars.id }}').value = {{ event is defined and event.id ? -1 : "''" }};
+
+                show(dom('.image-uploader--label'));
+                hide(dom('.image-uploader--preview'));
+            })
+        });
+    </script>
 {% endblock %}

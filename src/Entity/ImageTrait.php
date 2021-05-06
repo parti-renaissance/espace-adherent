@@ -18,6 +18,8 @@ trait ImageTrait
      */
     protected $imageName;
 
+    private $removeImage = false;
+
     public function setImageName(?UploadedFile $image): void
     {
         $this->imageName = null === $image ? null :
@@ -57,5 +59,15 @@ trait ImageTrait
     public function getImagePath(): string
     {
         return $this->getImageName();
+    }
+
+    public function isRemoveImage(): bool
+    {
+        return $this->removeImage;
+    }
+
+    public function setRemoveImage(bool $value): void
+    {
+        $this->removeImage = $value;
     }
 }

@@ -56,7 +56,13 @@ class CommitteeEventManagerController extends AbstractController
      */
     public function editAction(Request $request, CommitteeEvent $event, EventCommandHandler $handler): Response
     {
-        $form = $this->createForm(EventCommandType::class, $command = EventCommand::createFromEvent($event));
+        $form = $this->createForm(
+            EventCommandType::class,
+            $command = EventCommand::createFromEvent($event),
+            [
+                'image_path' => $event->getImagePath(),
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

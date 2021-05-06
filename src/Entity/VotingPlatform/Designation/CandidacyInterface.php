@@ -29,10 +29,6 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function setBiography(?string $biography): void;
 
-    public function isRemoveImage(): bool;
-
-    public function setRemoveImage(bool $value): void;
-
     public function getType(): string;
 
     public function getAdherent(): Adherent;

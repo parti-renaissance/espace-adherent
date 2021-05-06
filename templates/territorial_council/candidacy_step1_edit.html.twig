@@ -41,44 +41,7 @@
 
             {{ form_errors(form) }}
 
-            <div class="em-form__group">
-                <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
-
-                <div class="text--body text--dark b__nudge--bottom-small">
-                    Elle permettra aux autres membres de mieux vous reconnaître.
-                </div>
-
-                {{ form_errors(form.image) }}
-
-                {% if candidacy and candidacy.imageName %}
-                    {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
-                {% endif %}
-
-                <div class="em-form__file">
-                    {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
-
-                    <div>
-                        <div class="image-uploader--label {{ image_url is defined ? 'hidden' }}">
-                            {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark em-form__file--label'}}) }}
-                            <div class="em-form__file--name custom-file-label">Aucun fichier sélectionné</div>
-                        </div>
-
-                        <div class="image-uploader--preview {{ image_url is not defined ? 'hidden' }}">
-                            <div>
-                                <div class="preview-image--container" {% if image_url is defined %}style="background-image: url({{ image_url }})"{% endif %}></div>
-                            </div>
-
-                            <div>
-                                <label for="{{ form.image.vars.id }}">Modifier</label>
-                                <span class="separtor"><strong>·</strong></span>
-                                <a href="#" class="link--no-decor link--blue delete-profile-image--trigger">Supprimer</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
-            </div>
+            {{ form_row(form.image) }}
 
             <div class="em-form__group">
                 {{ form_label(form.biography, 'Ajouter une présentation', {label_attr: {class: 'em-form__label'}}) }}
@@ -123,17 +86,13 @@
     </div>
 {% endblock %}
 
-{% block head_javascripts %}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-{% endblock %}
-
 {% block final_javascripts %}
     {{ parent() }}
 
     <script type="text/javascript">
         Kernel.onLoad(function () {
-            var inputFile = dom('#' + '{{ form.image.vars.id }}');
-            var inputCroppedImage = dom('#' + '{{ form.croppedImage.vars.id }}');
+            var inputFile = dom('#' + '{{ form.image.image.vars.id }}');
+            var inputCroppedImage = dom('#' + '{{ form.image.croppedImage.vars.id }}');
 
             on(inputFile, 'change', function () {
                 App.runImageCropper(inputFile, inputCroppedImage);
@@ -143,7 +102,7 @@
                 event.preventDefault();
 
                 inputFile.value = '';
-                dom('#' + '{{ form.croppedImage.vars.id }}').value = {{ candidacy and candidacy.id ? -1 : "''" }};
+                dom('#' + '{{ form.image.croppedImage.vars.id }}').value = {{ candidacy and candidacy.id ? -1 : "''" }};
 
                 show(dom('.image-uploader--label'));
                 hide(dom('.image-uploader--preview'));

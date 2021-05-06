@@ -59,6 +59,7 @@ class InstitutionalEventCommand extends BaseEventCommand
             $event->getFinishAt(),
             $event,
             $event->getTimeZone(),
+            $event->getVisioUrl(),
             $event->getInvitations()
         );
 

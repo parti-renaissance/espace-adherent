@@ -17,4 +17,8 @@ interface ImageOwnerInterface
     public function setImage(?UploadedFile $image): void;
 
     public function getImagePath(): string;
+
+    public function isRemoveImage(): bool;
+
+    public function setRemoveImage(bool $value): void;
 }

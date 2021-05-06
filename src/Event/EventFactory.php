@@ -12,6 +12,7 @@ use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\InstitutionalEvent;
 use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
+use App\Image\ImageManager;
 use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
@@ -27,14 +28,18 @@ class EventFactory
 
     private $referentTagManager;
 
+    private $imageManager;
+
     public function __construct(
         ReferentTagManager $referentTagManager,
+        ImageManager $imageManager,
         ZoneMatcher $zoneMatcher,
         PostAddressFactory $addressFactory = null
     ) {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
         $this->zoneMatcher = $zoneMatcher;
         $this->referentTagManager = $referentTagManager;
+        $this->imageManager = $imageManager;
     }
 
     public function createFromArray(array $data): CommitteeEvent
@@ -182,8 +187,13 @@ class EventFactory
 
         $event->setTimeZone($command->getTimeZone());
         $event->setVisioUrl($command->getVisioUrl());
+        $event->setImage($command->getImage());
 
         $this->referentTagManager->assignReferentLocalTags($event);
+
+        if ($event->getImage()) {
+            $this->imageManager->saveImage($event);
+        }
 
         return $event;
     }
@@ -204,8 +214,13 @@ class EventFactory
 
         $event->setTimeZone($command->getTimeZone());
         $event->setVisioUrl($command->getVisioUrl());
+        $event->setImage($command->getImage());
 
         $this->referentTagManager->assignReferentLocalTags($event);
+
+        if ($event->getImage()) {
+            $this->imageManager->saveImage($event);
+        }
 
         return $event;
     }
@@ -226,6 +241,14 @@ class EventFactory
 
         $institutionalEvent->setCategory($command->getCategory());
         $institutionalEvent->setInvitations($command->getInvitations());
+        $institutionalEvent->setImage($command->getImage());
+        $institutionalEvent->setRemoveImage($command->isRemoveImage());
+
+        if ($institutionalEvent->isRemoveImage() && $institutionalEvent->hasImageName()) {
+            $this->imageManager->removeImage($institutionalEvent);
+        } elseif ($institutionalEvent->getImage()) {
+            $this->imageManager->saveImage($institutionalEvent);
+        }
     }
 
     public function updateFromEventCommand(BaseEvent $event, EventCommand $command): void
@@ -246,7 +269,15 @@ class EventFactory
         }
 
         $event->setCategory($command->getCategory());
+        $event->setImage($command->getImage());
+        $event->setRemoveImage($command->isRemoveImage());
         $this->referentTagManager->assignReferentLocalTags($event);
+
+        if ($event->isRemoveImage() && $event->hasImageName()) {
+            $this->imageManager->removeImage($event);
+        } elseif ($event->getImage()) {
+            $this->imageManager->saveImage($event);
+        }
     }
 
     public function createFromCitizenActionCommand(CitizenActionCommand $command): CitizenAction
@@ -267,7 +298,13 @@ class EventFactory
             $command->getVisioUrl()
         );
 
+        $citizenAction->setImage($command->getImage());
+
         $this->referentTagManager->assignReferentLocalTags($citizenAction);
+
+        if ($citizenAction->getImage()) {
+            $this->imageManager->saveImage($citizenAction);
+        }
 
         return $citizenAction;
     }
@@ -285,7 +322,15 @@ class EventFactory
         );
 
         $citizenAction->setCategory($command->getCategory());
+        $citizenAction->setImage($command->getImage());
+        $citizenAction->setRemoveImage($command->isRemoveImage());
         $this->referentTagManager->assignReferentLocalTags($citizenAction);
+
+        if ($citizenAction->isRemoveImage() && $citizenAction->hasImageName()) {
+            $this->imageManager->removeImage($citizenAction);
+        } elseif ($citizenAction->getImage()) {
+            $this->imageManager->saveImage($citizenAction);
+        }
     }
 
     private function createPostAddress(Address $address): PostAddress

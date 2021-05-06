@@ -81,8 +81,6 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
      */
     protected $image;
 
-    private $removeImage = false;
-
     /**
      * @var CandidacyInvitationInterface[]|Collection
      */
@@ -154,16 +152,6 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
             sprintf('images/candidacies/profile/%s', $this->getImageName())
             : ''
         ;
-    }
-
-    public function isRemoveImage(): bool
-    {
-        return $this->removeImage;
-    }
-
-    public function setRemoveImage(bool $value): void
-    {
-        $this->removeImage = $value;
     }
 
     public function getFirstName(): string
