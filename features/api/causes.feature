@@ -57,10 +57,10 @@ Feature:
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
-          "name": "Cause pour l'education",
+          "name": "Cause pour l'éducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Education",
+            "name": "Éducation",
             "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
             "followers_count": 0
           },
@@ -175,10 +175,10 @@ Feature:
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
-          "name": "Cause pour l'education",
+          "name": "Cause pour l'éducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Education",
+            "name": "Éducation",
             "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
             "followers_count": 0
           },
@@ -274,11 +274,11 @@ Feature:
       },
       "items": [
         {
-          "name": "Cause pour l'education",
+          "name": "Cause pour l'éducation",
           "slug": "cause-pour-leducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Education",
+            "name": "Éducation",
             "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
             "followers_count": 0
           },
@@ -331,10 +331,10 @@ Feature:
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
-          "name": "Cause pour l'education",
+          "name": "Cause pour l'éducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Education",
+            "name": "Éducation",
             "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
             "followers_count": 0
           },
@@ -368,12 +368,12 @@ Feature:
           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
         },
         "coalition": {
-          "name": "Education",
+          "name": "Éducation",
           "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
           "followers_count": 0
         },
         "second_coalition": null,
-        "name": "Cause pour l'education",
+        "name": "Cause pour l'éducation",
         "slug": "cause-pour-leducation",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
@@ -396,12 +396,12 @@ Feature:
           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
         },
         "coalition": {
-          "name": "Education",
+          "name": "Éducation",
           "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
           "followers_count": 0
         },
         "second_coalition": null,
-        "name": "Cause pour l'education",
+        "name": "Cause pour l'éducation",
         "slug": "cause-pour-leducation",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
@@ -985,10 +985,10 @@ Feature:
       },
       "items": [
         {
-          "name": "Cause pour l'education",
+          "name": "Cause pour l'éducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Education",
+            "name": "Éducation",
             "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
             "followers_count": 0
           },
@@ -1135,7 +1135,7 @@ Feature:
     And I send a "GET" request to "/api/causes?order[followersCount]=asc"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | items[0].name             | Cause pour l'education  |
+      | items[0].name             | Cause pour l'éducation  |
       | items[0].followers_count  | 0                       |
       | items[1].name             | Cause pour la culture 2 |
       | items[1].followers_count  | 0                       |
@@ -1146,7 +1146,7 @@ Feature:
     And the JSON nodes should match:
       | items[0].name             | Cause pour la culture   |
       | items[1].followers_count  | 4                       |
-      | items[1].name             | Cause pour l'education  |
+      | items[1].name             | Cause pour l'éducation  |
       | items[1].followers_count  | 0                       |
 
     When I add "Content-Type" header equal to "application/json"
@@ -1154,7 +1154,7 @@ Feature:
     Then the response status code should be 200
     And the JSON nodes should match:
       | items[0].name             | Cause pour la justice   |
-      | items[1].name             | Cause pour l'education  |
+      | items[1].name             | Cause pour l'éducation  |
 
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/causes?order[createdAt]=desc"

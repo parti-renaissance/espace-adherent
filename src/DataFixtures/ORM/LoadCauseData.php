@@ -91,9 +91,9 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
 
         $causeEducation1 = $this->createCause(
             self::CAUSE_4_UUID,
-            'Cause pour l\'education',
+            'Cause pour l\'éducation',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            $this->getReference('coalition-education'),
+            $this->getReference('coalition-éducation'),
             $this->getReference('adherent-3'),
             '-4 days',
             0,

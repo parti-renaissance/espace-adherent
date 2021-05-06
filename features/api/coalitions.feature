@@ -37,8 +37,8 @@ Feature:
         "image_url": null
       },
       {
-        "name": "Economie",
-        "description": "Description de la coalition 'Economie'",
+        "name": "Économie",
+        "description": "Description de la coalition 'Économie'",
         "uuid": "fc7fd104-71e5-4399-a874-f8fe752f846b",
         "followers_count": 0,
         "cause_followers_count": 0,
@@ -46,8 +46,8 @@ Feature:
         "image_url": null
       },
       {
-        "name": "Education",
-        "description": "Description de la coalition 'Education'",
+        "name": "Éducation",
+        "description": "Description de la coalition 'Éducation'",
         "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
         "followers_count": 0,
         "cause_followers_count": 0,
@@ -55,8 +55,8 @@ Feature:
         "image_url": null
       },
       {
-        "name": "Egalité H\/F",
-        "description": "Description de la coalition 'Egalité H\/F'",
+        "name": "Égalité H/F",
+        "description": "Description de la coalition 'Égalité H/F'",
         "uuid": "eaa129cf-fcbd-4d7d-8cfa-2268d08527ec",
         "followers_count": 0,
         "cause_followers_count": 0,

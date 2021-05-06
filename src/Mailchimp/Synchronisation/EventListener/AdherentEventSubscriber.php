@@ -147,6 +147,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $adherent = $event->getUser();
 
         $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
+        $this->dispatch(new CoalitionMemberChangeCommand($adherent->getEmailAddress(), true));
     }
 
     private function transformToArray(Adherent $adherent): array

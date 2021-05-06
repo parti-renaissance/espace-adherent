@@ -98,10 +98,8 @@ class CoalitionMemberValueObject
         $object->gender = $adherent->getGender();
         $object->source = $adherent->isCoalitionUser() ? ContactSourceEnum::COALITION_USER : ContactSourceEnum::ADHERENT;
         $object->postAddress = $adherent->getPostAddress();
-        if ($adherent->isCoalitionsCguAccepted()) {
-            $object->causeSubscription = $adherent->isCauseSubscription();
-            $object->coalitionSubscription = $adherent->isCoalitionSubscription();
-        }
+        $object->causeSubscription = $adherent->isCauseSubscription();
+        $object->coalitionSubscription = $adherent->isCoalitionSubscription();
 
         return $object;
     }
