@@ -56,6 +56,8 @@ class CloseElectionCommand extends Command
         $this->closeElections();
 
         $this->notifyForEndForCandidacy();
+
+        return 0;
     }
 
     private function closeElections(): void

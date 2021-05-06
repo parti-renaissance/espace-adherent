@@ -26,9 +26,11 @@ use App\Entity\ImageTrait;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
+use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntity;
 use App\Event\EventTypeEnum;
 use App\Geocoder\GeoPointInterface;
+use App\Report\ReportType;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -141,7 +143,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "beginAt": "start",
  * })
  */
-abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -680,5 +682,10 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
         }
+    }
+
+    public function getReportType(): string
+    {
+        return ReportType::COMMUNITY_EVENT;
     }
 }
