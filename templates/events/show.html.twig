@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title %}{{ event.name }} - {{ event.cityName }}, {{ event.localBeginAt|date('d/m/Y', false) }}{% endblock %}
-{% block canonical_url url('app_committee_event_show', {slug: event.slug}) %}
+{% block canonical_url url(generate_event_route_name(event, 'event_show'), {slug: event.slug}) %}
 
 {%- block meta_description -%}
     {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.localBeginAt|localizeddate('full', 'none', null, false) }} à {{ event.localBeginAt|date('G\\hi', false) -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
@@ -85,7 +85,7 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url("app_committee_event_show", {slug: event.slug}) %}
+    {% set event_url = url(generate_event_route_name(event, 'event_show'), {slug: event.slug}) %}
 
     <main>
         <section class="committee__event l__wrapper">
@@ -98,9 +98,9 @@
 
             <div class="b__nudge--top-10 text--body text--small">
                 {% if is_granted('HOST_EVENT', event) %}
-                    {% if event.active %}
+                    {% if event.type == 'committee' and event.active %}
                         <a class="b__nudge--right-small link--newblue"
-                           href="{{ path("app_committee_event_edit", {slug: event.slug}) }}">
+                               href="{{ path("app_committee_event_edit", {slug: event.slug}) }}">
                             {{ 'event.edit'|trans }}
                         </a>
 
@@ -146,7 +146,7 @@
         <section class="l__wrapper--slim space--30-0 text--body">
             <ul id="committee__event__nav" class="list__links list__links--row list__links--default b__nudge--bottom">
                 <li>
-                    <a href="{{ path("app_committee_event_show", {slug: event.slug}) }}">
+                    <a href="{{ path(generate_event_route_name(event, 'event_show'), {slug: event.slug}) }}">
                         À propos
                     </a>
                 </li>
@@ -187,7 +187,7 @@
                     {% for eventNearby in eventsNearby %}
                         <li class="card card--content l__col--bottom">
                             <div class="box-header">
-                                <a href="{{ path('app_committee_event_show', { slug: eventNearby.slug }) }}" class="headline link--no-decor">
+                                <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: eventNearby.slug }) }}" class="headline link--no-decor">
                                     <h2 class="text--normal">{{ eventNearby.name }}</h2>
                                     <h4 class="text--summary text--gray b__nudge--bottom-medium"><i class="fa fa-clock-o" aria-hidden="true"></i> Le {{ eventNearby.localBeginAt|localizeddate('medium', 'none', null, false)|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) }}</h4>
                                     <img class="search-map"

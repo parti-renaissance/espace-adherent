@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\Controller\PrintControllerTrait;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventCanceledHandler;
@@ -112,11 +113,10 @@ class CommitteeEventManagerController extends AbstractController
     /**
      * @Route("/inscrits", name="app_committee_event_members", methods={"GET"})
      */
-    public function membersAction(CommitteeEvent $event): Response
+    public function membersAction(BaseEvent $event): Response
     {
         return $this->render('events/members.html.twig', [
             'event' => $event,
-            'committee' => $event->getCommittee(),
             'registrations' => $this->eventRegistrationRepository->findByEvent($event),
         ]);
     }
@@ -126,7 +126,7 @@ class CommitteeEventManagerController extends AbstractController
      */
     public function exportMembersAction(
         Request $request,
-        CommitteeEvent $event,
+        BaseEvent $event,
         EventRegistrationExporter $exporter
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_EXPORT);
@@ -147,7 +147,7 @@ class CommitteeEventManagerController extends AbstractController
      */
     public function contactMembersAction(
         Request $request,
-        CommitteeEvent $event,
+        BaseEvent $event,
         EventContactMembersCommandHandler $handler
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
@@ -180,7 +180,6 @@ class CommitteeEventManagerController extends AbstractController
 
         return $this->render('events/contact_members.html.twig', [
             'event' => $event,
-            'committee' => $event->getCommittee(),
             'contacts' => $uuids,
             'form' => $form->createView(),
         ]);
@@ -189,7 +188,7 @@ class CommitteeEventManagerController extends AbstractController
     /**
      * @Route("/inscrits/imprimer", name="app_committee_event_print_members", methods={"POST"})
      */
-    public function printMembersAction(Request $request, CommitteeEvent $event): Response
+    public function printMembersAction(Request $request, BaseEvent $event): Response
     {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_PRINT);
 
@@ -208,7 +207,7 @@ class CommitteeEventManagerController extends AbstractController
         );
     }
 
-    private function getRegistrations(Request $request, CommitteeEvent $event, string $action): array
+    private function getRegistrations(Request $request, BaseEvent $event, string $action): array
     {
         if (!\in_array($action, self::ACTIONS)) {
             throw new \InvalidArgumentException("Action '$action' is not allowed.");

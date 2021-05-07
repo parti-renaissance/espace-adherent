@@ -2,7 +2,7 @@
 
 {% block content %}
     <section class="l__wrapper">
-        <a href="{{ path("app_committee_event_show", {slug: event.slug}) }}"
+        <a href="{{ path(generate_event_route_name(event, 'event_show'), {slug: event.slug}) }}"
            class="previous-link icon--with-text text--summary">
             {{ include('components/caret--left.html.twig') }}
             Retour à la page de l'événement
