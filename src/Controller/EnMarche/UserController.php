@@ -151,6 +151,7 @@ class UserController extends AbstractController
         MembershipRequestHandler $handler,
         TokenStorageInterface $tokenStorage
     ): Response {
+        /** @var Adherent $adherent */
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
         $viewFolder = $adherent->isUser() ? 'user' : 'adherent';
@@ -164,7 +165,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->terminateMembership($adherent, $unregistrationCommand);
+            $handler->terminateMembership($adherent, $unregistrationCommand, $adherent->isAdherent());
             $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
 
