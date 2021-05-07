@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Event\EventTypeEnum;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -38,5 +39,16 @@ class EventRuntime implements RuntimeExtensionInterface
         }
 
         return '';
+    }
+
+    public function generateEventRouteName(BaseEvent $event, string $routeSuffix): string
+    {
+        $eventTypeRoute = 'committee';
+
+        if (EventTypeEnum::TYPE_CITIZEN_ACTION === $event->getType()) {
+            $eventTypeRoute = 'citizen_action';
+        }
+
+        return sprintf('app_%s_%s', $eventTypeRoute, $routeSuffix);
     }
 }

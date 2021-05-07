@@ -12,6 +12,7 @@ class EventExtension extends AbstractExtension
     {
         return [
             new TwigFunction('is_event_already_participating', [EventRuntime::class, 'isEventAlreadyParticipating']),
+            new TwigFunction('generate_event_route_name', [EventRuntime::class, 'generateEventRouteName']),
         ];
     }
 

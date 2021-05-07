@@ -44,7 +44,7 @@
 
                     <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
                         <div class="l__row">
-                            <a href="{{ path("app_#{event.type}_event_show", { slug: event.slug }) }}"
+                            <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
                                class="btn btn--blue">
                                 Voir plus
                             </a>
@@ -101,7 +101,7 @@
 
                     <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
                         <div class="l__row">
-                            <a href="{{ path("app_#{event.type}_event_show", { slug: event.slug }) }}"
+                            <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
                                class="btn btn--blue">
                                 Voir plus
                             </a>

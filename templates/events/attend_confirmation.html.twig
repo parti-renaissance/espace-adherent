@@ -9,13 +9,7 @@
                 Votre participation est bien enregistrée !
             </p>
             <div class="text--center">
-                {% if event.getType() == constant('App\\Event\\EventTypeEnum::TYPE_CITIZEN_ACTION') %}
-                    {% set event_url = path("app_citizen_action_event_show", { slug: event.slug }) %}
-                {% else %}
-                    {% set event_url = path("app_committee_event_show", { slug: event.slug }) %}
-                {% endif %}
-
-                <a class="btn" href="{{ event_url }}">Retour</a>
+                <a class="btn" href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}">Retour</a>
             </div>
         </div>
     </section>
