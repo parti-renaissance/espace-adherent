@@ -393,6 +393,9 @@ security:
         ROLE_CANDIDATE:
             - ROLE_DATA_CORNER
 
+        ROLE_REFERENT:
+            - ROLE_JECOUTE_NEWS
+
     access_decision_manager:
         strategy: unanimous
 

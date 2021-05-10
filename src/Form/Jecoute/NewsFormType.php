@@ -18,6 +18,7 @@ class NewsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $isEdition = $options['edit'];
+        $isNotifiable = $options['is_notifiable'];
 
         $builder
             ->add('title', TextType::class, [
@@ -29,28 +30,34 @@ class NewsFormType extends AbstractType
             ->add('externalLink', UrlType::class, [
                 'required' => false,
             ])
-            ->add('notification', CheckboxType::class, [
-                'required' => false,
-                'disabled' => $isEdition,
-            ])
             ->add('zone', EntityType::class, [
                 'class' => Zone::class,
                 'choices' => $options['zones'],
                 'disabled' => $isEdition,
             ])
         ;
+        if ($isNotifiable) {
+            $builder
+                ->add('notification', CheckboxType::class, [
+                    'required' => false,
+                    'disabled' => $isEdition,
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefined(['zones', 'edit'])
+            ->setDefined(['zones', 'edit', 'is_notifiable'])
             ->setAllowedTypes('zones', [Zone::class.'[]'])
             ->setAllowedTypes('edit', 'bool')
+            ->setAllowedTypes('is_notifiable', 'bool')
             ->setDefaults([
                 'data_class' => News::class,
                 'zones' => [],
                 'edit' => false,
+                'is_notifiable' => true,
             ])
         ;
     }

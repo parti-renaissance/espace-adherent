@@ -25,7 +25,7 @@
                 elle apparaitra en notification push sur le téléphone des adhérents.
                 N'en abusez pas, au risque de provoquer du mécontentement et des désinstallations.
             </div>
-            {{ include('jecoute/news/_form.html.twig') }}
+            {{ include('jecoute/news/_form.html.twig', {isNotifiable: isNotifiable}) }}
 
         {{ form_end(form) }}
     </div>

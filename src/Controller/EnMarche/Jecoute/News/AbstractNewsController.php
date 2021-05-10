@@ -6,6 +6,7 @@ use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Form\Jecoute\NewsFormType;
+use App\Jecoute\JecouteSpaceEnum;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\NewsRepository;
@@ -61,8 +62,15 @@ abstract class AbstractNewsController extends AbstractController
             $news->setZone($zones[0]);
         }
 
+        $options = ['zones' => $zones];
+        $isNotifiable = true;
+        if (JecouteSpaceEnum::REFERENT_SPACE === $this->getSpaceName()) {
+            $options['is_notifiable'] = false;
+            $isNotifiable = false;
+        }
+
         $form = $this
-            ->createForm(NewsFormType::class, $news, ['zones' => $zones])
+            ->createForm(NewsFormType::class, $news, $options)
             ->handleRequest($request)
         ;
 
@@ -82,6 +90,7 @@ abstract class AbstractNewsController extends AbstractController
 
         return $this->renderTemplate('jecoute/news/create.html.twig', [
             'form' => $form->createView(),
+            'isNotifiable' => $isNotifiable,
         ]);
     }
 
@@ -99,8 +108,15 @@ abstract class AbstractNewsController extends AbstractController
     {
         $zones = $this->getZones($this->getMainUser($request->getSession()));
 
+        $options = ['zones' => $zones, 'edit' => true];
+        $isNotifiable = true;
+        if (JecouteSpaceEnum::REFERENT_SPACE === $this->getSpaceName()) {
+            $options['is_notifiable'] = false;
+            $isNotifiable = false;
+        }
+
         $form = $this
-            ->createForm(NewsFormType::class, $news, ['zones' => $zones, 'edit' => true])
+            ->createForm(NewsFormType::class, $news, $options)
             ->handleRequest($request)
         ;
 
@@ -114,6 +130,7 @@ abstract class AbstractNewsController extends AbstractController
 
         return $this->renderTemplate('jecoute/news/create.html.twig', [
             'form' => $form->createView(),
+            'isNotifiable' => $isNotifiable,
         ]);
     }
 
@@ -125,7 +142,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ABLE_TO_PUBLISH', news)")
      */
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
@@ -148,7 +165,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ABLE_TO_PUBLISH', news)")
      */
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {

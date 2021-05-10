@@ -22,6 +22,7 @@
     {{ form_errors(form.zone) }}
 </div>
 
+{% if isNotifiable %}
 <div class="em-form__group em-form__group--cgu">
     <div class="form__checkbox">
         {{ form_errors(form.notification) }}
@@ -29,6 +30,7 @@
         {{ form_label(form.notification, 'Envoyer une notification aux marcheurs') }}
     </div>
 </div>
+{% endif %}
 
 <div class="form__row text--center b__nudge--top">
     <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top">Enregistrer l'actualité</button>
