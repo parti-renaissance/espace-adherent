@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.04 AS base
 
 ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
@@ -13,6 +13,7 @@ ENV LANG="en_US.UTF-8" \
 EXPOSE 80
 WORKDIR /app
 
+FROM base AS librairies
 RUN apt-get update -q && \
     apt-get install -qy software-properties-common language-pack-en-base build-essential && \
     export LC_ALL=en_US.UTF-8 && \
@@ -79,6 +80,7 @@ RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gos
     addgroup enmarche && \
     adduser --home=/home/enmarche --shell=/bin/bash --ingroup=enmarche --disabled-password --quiet enmarche
 
+FROM librairies as build
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
 COPY php.ini /etc/php/7.3/cli/conf.d/50-setting.ini
