@@ -6,16 +6,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
 {% endblock %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.address(form.address) }}
-            App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
-        });
-    </script>
-{% endblock %}
-
 {% block institutional_events_content %}
     {% set is_edit_view = form.vars.view == constant('App\\Form\\InstitutionalEventCommandType::EDIT_VIEW') %}
 
@@ -144,24 +134,13 @@
 {% block final_javascripts %}
     {{ parent() }}
 
+    {% import 'javascript.js.twig' as js %}
+
     <script type="text/javascript">
-        Kernel.onLoad(function () {
-            var inputFile = dom('#' + '{{ form.image.image.vars.id }}');
-            var inputCroppedImage = dom('#' + '{{ form.image.croppedImage.vars.id }}');
-
-            on(inputFile, 'change', function () {
-                App.runImageCropper(inputFile, inputCroppedImage, { a: 16/9, w: 960, h: 540 });
-            });
-
-            on(dom('.delete-profile-image--trigger'), 'click', function (event) {
-                event.preventDefault();
-
-                inputFile.value = '';
-                dom('#' + '{{ form.image.croppedImage.vars.id }}').value = {{ event is defined and event.id ? -1 : "''" }};
-
-                show(dom('.image-uploader--label'));
-                hide(dom('.image-uploader--preview'));
-            })
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+            {{ js.init_event_cropperjs(form.image) }}
+            App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
         });
     </script>
 {% endblock %}

@@ -353,7 +353,7 @@ class App {
         });
     }
 
-    runImageCropper(inputFileElement, inputCroppedImageElement, options = { a: 1, w: 500, h: 500 }) {
+    runImageCropper(inputFileElement, inputCroppedImageElement, options = { ratio: 1, width: 500, height: 500 }) {
         System.import('services/utils/imageCropper').catch((error) => { throw error; }).then((module) => {
             module.default(inputFileElement, inputCroppedImageElement, options);
         });

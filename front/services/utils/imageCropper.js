@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Modal from '../../components/Modal';
 import Cropper from 'cropperjs';
+
+import Modal from '../../components/Modal';
 
 let modal;
 let cropper;
@@ -17,19 +18,20 @@ function updatePreviewImages(src, circle = false) {
     if (false === circle) {
         addClass(containerElement, 'preview-image--container-rectangle');
     }
+
     show(previewContainer);
     hide(dom('.image-uploader--label'));
 }
 
 async function handleCropAction(options) {
     const canvas = cropper.getCroppedCanvas({
-        width: options.w,
-        height: options.h,
+        width: options.width,
+        height: options.height,
     });
 
     const dataUrl = await canvas.toDataURL();
 
-    updatePreviewImages(dataUrl, options.w === options.h);
+    updatePreviewImages(dataUrl, options.width === options.height);
 
     croppedImageElement.value = dataUrl;
     fileElement.value = '';
@@ -72,13 +74,13 @@ function displayCropperModal(url, options) {
     );
 
     cropper = new Cropper(dom('.image-cropper--container img'), {
-        aspectRatio: options.a,
+        aspectRatio: options.ratio,
         viewMode: 2,
     });
 }
 
 
-export default (inputFileElement, inputCroppedImageElement, options = {}) => {
+export default (inputFileElement, inputCroppedImageElement, options) => {
     fileElement = inputFileElement;
     croppedImageElement = inputCroppedImageElement;
 

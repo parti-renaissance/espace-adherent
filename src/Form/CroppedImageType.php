@@ -3,9 +3,9 @@
 namespace App\Form;
 
 use App\Entity\ImageOwnerInterface;
-use App\Form\DataTransformer\CroppedImageDataTransformer;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,12 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CroppedImageType extends AbstractType
 {
     public const RATIO_16_9 = '16:9';
-    private $croppedImageDataTransformer;
-
-    public function __construct(CroppedImageDataTransformer $croppedImageDataTransformer)
-    {
-        $this->croppedImageDataTransformer = $croppedImageDataTransformer;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -41,9 +35,7 @@ class CroppedImageType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
             $data = $event->getData();
 
-            if (isset($data['skip'])) {
-                unset($data['croppedImage'], $data['image']);
-            } elseif (!empty($data['croppedImage'])) {
+            if (!empty($data['croppedImage'])) {
                 if (false !== strpos($data['croppedImage'], 'base64,')) {
                     $imageData = explode('base64,', $data['croppedImage'], 2);
                     $content = $imageData[1];
@@ -64,14 +56,25 @@ class CroppedImageType extends AbstractType
                     unset($data['croppedImage'], $data['image']);
                     /** @var ImageOwnerInterface $model */
                     $model = $event->getForm()->getParent()->getData();
-                    $model->setRemoveImage(true);
+                    if (method_exists($model, 'setRemoveImage')) {
+                        $model->setRemoveImage(true);
+                    }
                 }
             }
 
             $event->setData(!empty($data) ? $data : null);
         });
 
-        $builder->addModelTransformer($this->croppedImageDataTransformer);
+        $builder->addModelTransformer(new CallbackTransformer(
+            function () { return null; },
+            function ($value) {
+                if (!empty($value['image']) && $value['image'] instanceof UploadedFile) {
+                    return $value['image'];
+                }
+
+                return null;
+            }
+        ));
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -82,10 +85,11 @@ class CroppedImageType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'image_path' => null,
-            'ratio' => null,
-        ])
+        $resolver
+            ->setDefaults([
+                'image_path' => null,
+                'ratio' => null,
+            ])
             ->setAllowedTypes('image_path', ['string', 'null'])
             ->setAllowedTypes('ratio', ['string', 'null'])
         ;

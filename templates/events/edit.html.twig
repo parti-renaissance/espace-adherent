@@ -8,20 +8,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
 {% endblock %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.address(form.address) }}
-            {{ js.ckeditor('event_command_description', null, constant('App\\Entity\\UserDocument::TYPE_EVENT')) }}
-            App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
-        });
-    </script>
-{% endblock %}
-
 {% block content %}
     {% set event_url = url(generate_event_route_name(event, 'event_show'), {slug: event.slug}) %}
     <main class="committee__event__create">
@@ -141,24 +127,16 @@
 {% block final_javascripts %}
     {{ parent() }}
 
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
-        Kernel.onLoad(function () {
-            var inputFile = dom('#' + '{{ form.image.image.vars.id }}');
-            var inputCroppedImage = dom('#' + '{{ form.image.croppedImage.vars.id }}');
-
-            on(inputFile, 'change', function () {
-                App.runImageCropper(inputFile, inputCroppedImage, { a: 16/9, w: 960, h: 540 });
-            });
-
-            on(dom('.delete-profile-image--trigger'), 'click', function (event) {
-                event.preventDefault();
-
-                inputFile.value = '';
-                dom('#' + '{{ form.image.croppedImage.vars.id }}').value = {{ event is defined and event.id ? -1 : "''" }};
-
-                show(dom('.image-uploader--label'));
-                hide(dom('.image-uploader--preview'));
-            })
+        Kernel.onLoad(function() {
+            {{ js.address(form.address) }}
+            {{ js.ckeditor('event_command_description', null, constant('App\\Entity\\UserDocument::TYPE_EVENT')) }}
+            {{ js.init_event_cropperjs(form.image) }}
+            App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
         });
     </script>
 {% endblock %}
