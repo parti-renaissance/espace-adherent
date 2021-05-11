@@ -181,6 +181,10 @@ class ConfigureCommand extends Command
         // Create candidates groups
         $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
 
+        if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
+            $defaultPoolTitle = $election->getDesignationType();
+        }
+
         $pools = [];
 
         foreach ($candidacies as $candidacy) {
@@ -201,11 +205,13 @@ class ConfigureCommand extends Command
                 }
             }
 
-            if (!isset($pools[$candidacy->getQuality()])) {
-                $pools[$candidacy->getQuality()] = new ElectionPool($candidacy->getQuality() ?? $election->getDesignationType());
+            $poolTitle = $defaultPoolTitle ?? $candidacy->getQuality();
+
+            if (!isset($pools[$poolTitle])) {
+                $pools[$poolTitle] = new ElectionPool($candidacy->getQuality() ?? $election->getDesignationType());
             }
 
-            $pools[$candidacy->getQuality()]->addCandidateGroup($group);
+            $pools[$poolTitle]->addCandidateGroup($group);
         }
 
         foreach ($pools as $pool) {
