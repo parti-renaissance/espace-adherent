@@ -30,6 +30,7 @@ use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\CitizenProject;
 use App\Entity\Coalition\Cause;
+use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
 use App\Entity\District;
 use App\Entity\Geo\Zone;
@@ -39,6 +40,7 @@ use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder;
+use App\Mailchimp\Campaign\ContentSection\CoalitionMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder;
@@ -967,6 +969,11 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         $message = $this->preparedMessage(CoalitionsMessage::class);
         $message->setFilter(new CoalitionsFilter($cause = new Cause()));
+        $cause->setName('Cause name');
+        $cause->setCoalition($this->createConfiguredMock(Coalition::class, [
+            'getName' => 'Coalition name',
+        ]));
+        $cause->setAuthor($this->adherentDummy);
         $cause->setMailchimpId(123);
 
         (new GenericMailchimpCampaignHandler())->handle($message);
@@ -1010,6 +1017,11 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'id' => 9,
                         'sections' => [
                             'content' => 'Content',
+                            'coalition_name' => 'Coalition name',
+                            'cause_name' => 'Cause name',
+                            'author_full_name' => 'Full Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre à Full Name</a>',
                         ],
                     ],
                 ]]],
@@ -1145,6 +1157,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             new BasicMessageSectionBuilder(),
             new DeputyMessageSectionBuilder(),
             new MunicipalChiefMessageSectionBuilder(),
+            new CoalitionMessageSectionBuilder(),
             new CitizenProjectMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://citizen_project_url'])),
         ];
     }
