@@ -1022,7 +1022,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'author_full_name' => 'Full Name',
                             'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                             'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre à Full Name</a>',
-
                         ],
                     ],
                 ]]],
