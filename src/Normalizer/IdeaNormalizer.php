@@ -31,7 +31,7 @@ class IdeaNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('idea_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
+        if (array_intersect(['idea_list_read', 'idea_read'], $context['groups'] ?? [])) {
             $data['votes_count'] = array_merge(
                 $this->ideaRepository->countVotesByType($object),
                 ['total' => $data['votes_count']]
@@ -43,7 +43,7 @@ class IdeaNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $loggedUser = null;
             }
 
-            if (\in_array('idea_list_read', $context['groups'])) {
+            if (\in_array('idea_list_read', $context['groups'] ?? [])) {
                 $countContributors = $this->ideaRepository->countContributors($object, $loggedUser);
                 $data['contributors_count'] = $countContributors['count'];
                 if ($loggedUser) {

@@ -29,7 +29,7 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
         /** @var ExposedImageOwnerInterface $object */
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array(self::NORMALIZATION_GROUP, $context['groups'])) {
+        if (\in_array(self::NORMALIZATION_GROUP, $context['groups'] ?? [])) {
             $data['image_url'] = $object->getImageName() ? $this->urlGenerator->generate(
                 'asset_url',
                 ['path' => $object->getImagePath()],

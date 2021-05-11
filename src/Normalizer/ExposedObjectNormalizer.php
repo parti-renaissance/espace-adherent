@@ -50,7 +50,7 @@ class ExposedObjectNormalizer implements NormalizerInterface, NormalizerAwareInt
                 empty($context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED])
                 || !\in_array($this->generateCacheKey($data), $context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED])
             )
-            && array_intersect($data->getNormalizationGroups(), $context['groups'])
+            && array_intersect($data->getNormalizationGroups(), $context['groups'] ?? [])
         ;
     }
 
