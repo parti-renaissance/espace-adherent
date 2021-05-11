@@ -6,17 +6,9 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
-use App\Repository\Geo\ZoneRepository;
 
 class JecouteConditionBuilder implements SegmentConditionBuilderInterface
 {
-    private $zoneRepository;
-
-    public function __construct(ZoneRepository $zoneRepository)
-    {
-        $this->zoneRepository = $zoneRepository;
-    }
-
     public function support(AdherentMessageFilterInterface $filter): bool
     {
         return $filter instanceof JecouteFilter;

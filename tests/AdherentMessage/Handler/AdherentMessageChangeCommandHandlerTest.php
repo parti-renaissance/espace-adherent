@@ -5,16 +5,23 @@ namespace Tests\App\AdherentMessage\Handler;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\AdherentZoneMailchimpCampaignHandler;
+use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\MunicipalChiefMailchimpCampaignHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CandidateAdherentMessage;
+use App\Entity\AdherentMessage\CandidateJecouteMessage;
 use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
+use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -22,6 +29,7 @@ use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\CitizenProject;
+use App\Entity\Coalition\Cause;
 use App\Entity\Committee;
 use App\Entity\District;
 use App\Entity\Geo\Zone;
@@ -37,21 +45,26 @@ use App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder;
 use App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentGeoZoneConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CitizenProjectConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsNotificationConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactCityConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\JecouteConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToAdherentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToCandidateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToNewsletterConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToAdherentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToCandidateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\ToElectedRepresentativeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionsBuilder;
 use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
@@ -103,16 +116,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
                                     'value' => 456,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -140,7 +153,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         $message = $this->preparedMessage(ReferentAdherentMessage::class);
 
-        $message->setFilter($filter = new ReferentUserFilter([
+        $message->setFilter(new ReferentUserFilter([
             $tag1 = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1')),
             $tag2 = new ReferentTag('Tag2', 'code2', new Zone('mock', 'code1', 'Tag2')),
         ]));
@@ -170,9 +183,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [1],
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [5, 6],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -182,9 +195,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                 ],
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [1],
                                 ],
                             ],
                         ],
@@ -219,9 +232,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [1],
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [5, 6],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -231,9 +244,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                 ],
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [1],
                                 ],
                             ],
                         ],
@@ -266,7 +279,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     public function testDeputyMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(DeputyAdherentMessage::class);
-        $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))));
+        $message->setFilter(new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))));
         $tag->setExternalId(123);
 
         (new AdherentZoneMailchimpCampaignHandler())->handle($message);
@@ -292,9 +305,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [7],
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [5, 6],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -304,9 +317,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                 ],
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [5, 6],
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [7],
                                 ],
                             ],
                         ],
@@ -366,18 +379,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'conditions' => [
                                 [
                                     'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [8],
-                                ],
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 123,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
                                     'op' => 'interestcontains',
                                     'field' => 'interests-A',
                                     'value' => [4, 5, 6],
@@ -387,6 +388,18 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'op' => 'interestnotcontains',
                                     'field' => 'interests-A',
                                     'value' => [2, 3],
+                                ],
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 123,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [8],
                                 ],
                             ],
                         ],
@@ -440,16 +453,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
                                     'value' => 456,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -572,16 +585,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
                                     'value' => 'Annecy (',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -615,16 +628,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
                                     'value' => 'Annecy-le-Vieux (',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -658,16 +671,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
                                     'value' => 'Seynod (',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -701,16 +714,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
                                     'value' => 'Cran-Gevrier (',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -744,16 +757,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
                                     'value' => 'Meythet (',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -787,16 +800,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'match' => 'all',
                             'conditions' => [
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                                [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
                                     'value' => 'Pringy (',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
                                 ],
                             ],
                         ],
@@ -828,6 +841,182 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 new Response(200, [], json_encode(['id' => 'campaign_id5'])),
                 new Response(200, [], json_encode(['id' => 'campaign_id6'])),
                 new Response(200, [], json_encode(['id' => 'campaign_id6']))
+            )
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
+    public function testCandidateMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(CandidateAdherentMessage::class);
+        $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
+
+        (new GenericMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'subject_line' => '[Candidat] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                        'template_id' => 7,
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'ends',
+                                    'field' => 'ZONE_DPT',
+                                    'value' => '(code1)',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                    'template' => [
+                        'id' => 7,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'full_name' => 'Full Name',
+                        ],
+                    ],
+                ]]],
+            )
+            ->willReturn(
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+            )
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
+    public function testCandidateJecouteMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(CandidateJecouteMessage::class);
+        $message->setFilter(new JecouteFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
+
+        (new GenericMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'subject_line' => 'Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                        'template_id' => 8,
+                    ],
+                    'recipients' => [
+                        'list_id' => 'jecoute_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'is',
+                                    'field' => 'CODE_DPT',
+                                    'value' => 'code1',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                    'template' => [
+                        'id' => 8,
+                        'sections' => [
+                            'content' => 'Content',
+                        ],
+                    ],
+                ]]],
+            )
+            ->willReturn(
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+            )
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
+    public function testCoalitionsMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(CoalitionsMessage::class);
+        $message->setFilter(new CoalitionsFilter($cause = new Cause()));
+        $cause->setMailchimpId(123);
+
+        (new GenericMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'subject_line' => '✊ Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'contact@pourunecause.fr',
+                        'from_name' => 'Full Name',
+                        'template_id' => 9,
+                    ],
+                    'recipients' => [
+                        'list_id' => 'coalitions_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 123,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-D',
+                                    'value' => [1],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                    'template' => [
+                        'id' => 9,
+                        'sections' => [
+                            'content' => 'Content',
+                        ],
+                    ],
+                ]]],
+            )
+            ->willReturn(
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
             )
         ;
 
@@ -887,6 +1076,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'citizen_project' => 4,
                         'municipal_chief' => 5,
                         'senator' => 6,
+                        'candidate' => 7,
+                        'candidate_jecoute' => 8,
+                        'coalitions' => 9,
                     ],
                     [
                         'subscribed_emails_referents' => 1,
@@ -905,6 +1097,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'A',
                     'B',
                     'C',
+                    'D',
                     [
                         'running_mate' => 123,
                         'volunteer' => 345,
@@ -916,21 +1109,26 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ]
                 ),
                 new SegmentConditionsBuilder($this->mailchimpMapping, [
-                    new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
-                    new ReferentToAdherentConditionBuilder($this->mailchimpMapping),
-                    new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
-                    new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping),
-                    new MunicipalChiefToCandidateConditionBuilder($this->mailchimpMapping),
-                    new MunicipalChiefToNewsletterConditionBuilder($this->mailchimpMapping),
-                    new AdherentZoneConditionBuilder($this->mailchimpMapping),
-                    new CommitteeConditionBuilder($this->mailchimpMapping),
-                    new CitizenProjectConditionBuilder($this->mailchimpMapping),
-                    new ContactNameConditionBuilder(),
+                    new AdherentGeoZoneConditionBuilder(),
                     new AdherentInterestConditionBuilder($this->mailchimpMapping),
                     new AdherentRegistrationDateConditionBuilder(),
                     new AdherentSegmentConditionBuilder($this->mailchimpMapping),
+                    new AdherentZoneConditionBuilder($this->mailchimpMapping),
+                    new CitizenProjectConditionBuilder($this->mailchimpMapping),
+                    new CoalitionsConditionBuilder($this->mailchimpMapping),
+                    new CoalitionsNotificationConditionBuilder($this->mailchimpMapping),
+                    new CommitteeConditionBuilder($this->mailchimpMapping),
+                    new ContactNameConditionBuilder(),
                     new ContactAgeConditionBuilder(),
                     new ContactCityConditionBuilder(),
+                    new JecouteConditionBuilder(),
+                    new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping),
+                    new MunicipalChiefToCandidateConditionBuilder($this->mailchimpMapping),
+                    new MunicipalChiefToNewsletterConditionBuilder($this->mailchimpMapping),
+                    new ReferentToAdherentConditionBuilder($this->mailchimpMapping),
+                    new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
+                    new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
+                    new ToElectedRepresentativeConditionBuilder($this->mailchimpMapping),
                 ])
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(

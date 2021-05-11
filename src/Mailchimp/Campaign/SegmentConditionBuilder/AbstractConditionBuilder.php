@@ -27,7 +27,7 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
             'op' => $op,
             'field' => sprintf('interests-%s', $groupId),
             'value' => array_values(
-                array_intersect_key($this->mailchimpObjectIdMapping->getInterestIds(), array_fill_keys($interestKeys, true))
+                array_intersect_key($this->getListInterestIds(), array_fill_keys($interestKeys, true))
             ),
         ];
     }
@@ -40,5 +40,10 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
             'field' => 'static_segment',
             'value' => $externalId,
         ];
+    }
+
+    protected function getListInterestIds(): array
+    {
+        return $this->mailchimpObjectIdMapping->getInterestIds();
     }
 }
