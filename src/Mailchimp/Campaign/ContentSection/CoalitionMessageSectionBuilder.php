@@ -7,17 +7,9 @@ use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Utils\StringCleaner;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CoalitionMessageSectionBuilder implements ContentSectionBuilderInterface
 {
-    private $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
-    {
-        $this->urlGenerator = $urlGenerator;
-    }
-
     public function supports(AdherentMessageInterface $message): bool
     {
         return $message instanceof CoalitionsMessage;
