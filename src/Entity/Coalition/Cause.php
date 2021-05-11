@@ -19,6 +19,7 @@ use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\FollowedInterface;
 use App\Entity\FollowerInterface;
 use App\Entity\ImageTrait;
+use App\Entity\StaticSegmentTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -113,6 +114,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     use TimestampableEntity;
     use ImageTrait;
     use EntityFollowersTrait;
+    use StaticSegmentTrait;
 
     public const STATUS_PENDING = 'pending';
     public const STATUS_APPROVED = 'approved';

@@ -8,6 +8,7 @@ use App\Entity\PostAddress;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use App\Mailchimp\Synchronisation\Utils\TagBuilder;
 use App\Repository\Coalition\CauseRepository;
 use App\Repository\Coalition\CoalitionRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -193,7 +194,7 @@ class CoalitionMemberRequestBuilder extends AbstractMemberRequestBuilder
 
         // cause follower
         foreach ($causes as $cause) {
-            $tags[] = 'cause_'.$cause->getId();
+            $tags[] = TagBuilder::createCauseFollowTag($cause->getId());
         }
 
         return $tags;

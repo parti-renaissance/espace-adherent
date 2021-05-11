@@ -304,18 +304,25 @@ class Manager implements LoggerAwareInterface
 
         // Search segment id in existing segments
         if (400 === $response->getStatusCode() && isset($responseData['detail']) && 'Sorry, that tag already exists.' === $responseData['detail']) {
-            $offset = 0;
-            $limit = 1000;
+            return $this->findSegmentId($name, $listId);
+        }
 
-            while ($segments = $this->driver->getSegments($listId, $offset, $limit)) {
-                foreach ($segments as $segment) {
-                    if ($segment['name'] === $name) {
-                        return $segment['id'];
-                    }
+        return null;
+    }
+
+    public function findSegmentId(string $name, string $listId): ?int
+    {
+        $offset = 0;
+        $limit = 1000;
+
+        while ($segments = $this->driver->getSegments($listId, $offset, $limit)) {
+            foreach ($segments as $segment) {
+                if ($segment['name'] === $name) {
+                    return $segment['id'];
                 }
-
-                $offset += \count($segments);
             }
+
+            $offset += \count($segments);
         }
 
         return null;

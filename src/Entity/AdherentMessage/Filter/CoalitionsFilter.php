@@ -36,9 +36,6 @@ class CoalitionsFilter extends AbstractUserFilter
     public function __construct(Cause $cause = null)
     {
         $this->cause = $cause;
-
-        // Add default filter
-        $this->setLastName('Fake');
     }
 
     public function getCause(): ?Cause
