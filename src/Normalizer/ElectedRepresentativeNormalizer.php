@@ -27,7 +27,7 @@ class ElectedRepresentativeNormalizer implements NormalizerInterface, Normalizer
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('elected_representative_change_diff', $context['groups'])) {
+        if (\in_array('elected_representative_change_diff', $context['groups'] ?? [])) {
             $data['activeTagCodes'] = $this->tagsBuilder->buildTags($object);
         }
 

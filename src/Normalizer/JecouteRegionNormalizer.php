@@ -42,7 +42,7 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('jecoute_region_read', $context['groups'])) {
+        if (\in_array('jecoute_region_read', $context['groups'] ?? [])) {
             $data['logo'] = $object->hasLogoUploaded() ? $this->getUrl($object->getLogoPathWithDirectory()) : null;
             $data['banner'] = $object->hasBannerUploaded() ? $this->getUrl($object->getBannerPathWithDirectory()) : null;
         }

@@ -33,7 +33,7 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $regionCampaignData = null;
 
-        if (\in_array('jecoute_department_read', $context['groups'])) {
+        if (\in_array('jecoute_department_read', $context['groups'] ?? [])) {
             if ($regionCampaign = $this->findRegionCampaign($object)) {
                 $regionCampaignData = $this->normalizer->normalize($regionCampaign, $format, ['groups' => ['jecoute_region_read']]);
             }
