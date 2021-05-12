@@ -8,7 +8,7 @@ use App\Repository\Geo\ZoneRepository;
 
 class ReferentNewsPublicationVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'IS_ABLE_TO_PUBLISH';
+    public const PERMISSION = 'IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS';
 
     private $zoneRepository;
 

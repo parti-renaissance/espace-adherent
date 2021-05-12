@@ -63,10 +63,8 @@ abstract class AbstractNewsController extends AbstractController
         }
 
         $options = ['zones' => $zones];
-        $isNotifiable = true;
         if (JecouteSpaceEnum::REFERENT_SPACE === $this->getSpaceName()) {
             $options['is_notifiable'] = false;
-            $isNotifiable = false;
         }
 
         $form = $this
@@ -90,7 +88,6 @@ abstract class AbstractNewsController extends AbstractController
 
         return $this->renderTemplate('jecoute/news/create.html.twig', [
             'form' => $form->createView(),
-            'isNotifiable' => $isNotifiable,
         ]);
     }
 
@@ -109,10 +106,8 @@ abstract class AbstractNewsController extends AbstractController
         $zones = $this->getZones($this->getMainUser($request->getSession()));
 
         $options = ['zones' => $zones, 'edit' => true];
-        $isNotifiable = true;
         if (JecouteSpaceEnum::REFERENT_SPACE === $this->getSpaceName()) {
             $options['is_notifiable'] = false;
-            $isNotifiable = false;
         }
 
         $form = $this
@@ -130,7 +125,6 @@ abstract class AbstractNewsController extends AbstractController
 
         return $this->renderTemplate('jecoute/news/create.html.twig', [
             'form' => $form->createView(),
-            'isNotifiable' => $isNotifiable,
         ]);
     }
 
@@ -142,7 +136,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ABLE_TO_PUBLISH', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
      */
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
@@ -165,7 +159,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ABLE_TO_PUBLISH', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
      */
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {

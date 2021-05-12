@@ -22,7 +22,7 @@
     {{ form_errors(form.zone) }}
 </div>
 
-{% if isNotifiable %}
+{% if form.notification is defined %}
 <div class="em-form__group em-form__group--cgu">
     <div class="form__checkbox">
         {{ form_errors(form.notification) }}
