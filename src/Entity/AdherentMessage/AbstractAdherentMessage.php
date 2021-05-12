@@ -75,6 +75,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\AdherentMessage\SendAdherentMessageController"
  *         },
+ *         "send_test": {
+ *             "path": "/v3/adherent_messages/{uuid}/send-test",
+ *             "method": "POST",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\AdherentMessage\SendTestAdherentMessageController"
+ *         },
  *         "update_filter": {
  *             "path": "/v3/adherent_messages/{uuid}/filter",
  *             "method": "PUT",
