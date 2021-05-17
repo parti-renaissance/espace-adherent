@@ -61,8 +61,13 @@ abstract class AbstractNewsController extends AbstractController
             $news->setZone($zones[0]);
         }
 
+        $options = [
+            'zones' => $zones,
+            'is_notifiable' => $this->isNotifiableNews(),
+        ];
+
         $form = $this
-            ->createForm(NewsFormType::class, $news, ['zones' => $zones])
+            ->createForm(NewsFormType::class, $news, $options)
             ->handleRequest($request)
         ;
 
@@ -99,8 +104,14 @@ abstract class AbstractNewsController extends AbstractController
     {
         $zones = $this->getZones($this->getMainUser($request->getSession()));
 
+        $options = [
+            'zones' => $zones,
+            'edit' => true,
+            'is_notifiable' => $this->isNotifiableNews(),
+        ];
+
         $form = $this
-            ->createForm(NewsFormType::class, $news, ['zones' => $zones, 'edit' => true])
+            ->createForm(NewsFormType::class, $news, $options)
             ->handleRequest($request)
         ;
 
@@ -125,7 +136,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
      */
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
@@ -148,7 +159,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")
      */
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
@@ -166,6 +177,8 @@ abstract class AbstractNewsController extends AbstractController
     abstract protected function getSpaceName(): string;
 
     abstract protected function getZones(Adherent $adherent): array;
+
+    abstract protected function isNotifiableNews(): bool;
 
     /**
      * @return News[]
