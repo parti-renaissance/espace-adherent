@@ -256,7 +256,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
 
     public function getImagePath(): string
     {
-        return $this->imageName ? \sprintf('images/causes/%s', $this->getImageName()) : '';
+        return $this->imageName ? sprintf('images/causes/%s', $this->getImageName()) : '';
     }
 
     public function getCoalition(): ?Coalition

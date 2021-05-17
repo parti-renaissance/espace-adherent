@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadCitizenProjectCategoryData extends Fixture
 {
-    const CITIZEN_PROJECT_CATEGORIES = [
+    public const CITIZEN_PROJECT_CATEGORIES = [
         'CPC001' => 'Nature et Environnement',
         'CPC002' => 'Education, culture et citoyenneté',
         'CPC003' => 'Culture',

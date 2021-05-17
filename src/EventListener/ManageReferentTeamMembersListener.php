@@ -272,7 +272,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         $this->zoneRepository = $this->manager->getRepository(Zone::class);
         $zones = $this->zoneRepository->findForJecouteByReferentTags($currentReferent->getManagedArea()->getTags()->toArray());
         if (\count($zones) > 1) {
-            throw new \InvalidArgumentException(\sprintf('Impossible to find only one geo zone for Jecoute for referent %s with id', $currentReferent->getId()));
+            throw new \InvalidArgumentException(sprintf('Impossible to find only one geo zone for Jecoute for referent %s with id', $currentReferent->getId()));
         }
         $adherent->setJecouteManagedZone(\count($zones) > 0 ? $zones[0] : null);
 

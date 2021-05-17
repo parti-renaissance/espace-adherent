@@ -67,7 +67,7 @@ class AddressType extends AbstractType
                 $inseeCode = FranceCitiesBundle::getCityInseeCode($address->getPostalCode(), $address->getCityName());
 
                 if ($inseeCode) {
-                    $address->setCity(\sprintf('%s-%s', $address->getPostalCode(), $inseeCode));
+                    $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $inseeCode));
                 }
             }
         });

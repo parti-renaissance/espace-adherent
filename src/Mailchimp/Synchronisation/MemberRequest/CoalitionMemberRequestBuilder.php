@@ -94,11 +94,11 @@ class CoalitionMemberRequestBuilder extends AbstractMemberRequestBuilder
             ->setZone($contact->isAdherent()
                 ? (($postAddress = $contact->getPostAddress())
                     ? (PostAddress::FRANCE === $postAddress->getCountry()
-                        ? \sprintf('%s %s', $postAddress->getPostalCode(), $postAddress->getCityName())
-                        : \sprintf('%s %s', $postAddress->getCountry(), $postAddress->getCountryName()))
+                        ? sprintf('%s %s', $postAddress->getPostalCode(), $postAddress->getCityName())
+                        : sprintf('%s %s', $postAddress->getCountry(), $postAddress->getCountryName()))
                     : null)
                 : (($zone = $contact->getZone())
-                    ? \sprintf('%s %s',
+                    ? sprintf('%s %s',
                 $zone->isCountry() ? $zone->getCode() : $zone->getPostalCodeAsString(), $zone->getName())
                     : null)
             )

@@ -108,12 +108,12 @@ class OfficialReportDocument
 
     public function getFilenameForDownload(): ?string
     {
-        return \sprintf('%s_v%d.%s', Urlizer::urlize($this->report->getName()), $this->version, $this->getExtension());
+        return sprintf('%s_v%d.%s', Urlizer::urlize($this->report->getName()), $this->version, $this->getExtension());
     }
 
     public function getFilePathWithDirectory(): string
     {
-        return \sprintf('%s/%s', 'files/territorial_council/official_reports', $this->filename);
+        return sprintf('%s/%s', 'files/territorial_council/official_reports', $this->filename);
     }
 
     public function getExtension(): string

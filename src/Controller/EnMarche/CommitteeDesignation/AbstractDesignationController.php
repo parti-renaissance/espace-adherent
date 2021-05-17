@@ -43,11 +43,12 @@ abstract class AbstractDesignationController extends AbstractController
      * @Route("/{uuid}/{election_round_uuid}", name="_dashboard", methods={"GET"}, defaults={"election_round_uuid": null})
      *
      * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
+     *
+     * @param Committee $committee used in Security notation in concretes classes
      */
     public function dashboardAction(
         Request $request,
         Committee $committee,
-        // used in Security notation in concretes classes
         Election $election,
         ElectionRound $electionRound = null
     ): Response {

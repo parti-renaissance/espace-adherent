@@ -45,7 +45,7 @@ class UniqueTerritorialCouncilMemberValidator extends ConstraintValidator
 
         foreach ($constraint->qualities as $quality) {
             if (!\in_array($quality, UniqueTerritorialCouncilMember::QUALITIES)) {
-                throw new ConstraintDefinitionException(\sprintf('Territorial council quality "%s" can not be validated.', $quality));
+                throw new ConstraintDefinitionException(sprintf('Territorial council quality "%s" can not be validated.', $quality));
             }
 
             if (!$value->getTerritorialCouncilMembership()->hasQuality($quality)) {
@@ -61,7 +61,7 @@ class UniqueTerritorialCouncilMemberValidator extends ConstraintValidator
                     ->buildViolation($constraint->message)
                     ->setParameter(
                         '{{ adherent }}',
-                        \sprintf(
+                        sprintf(
                             '%s (%s)',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress())

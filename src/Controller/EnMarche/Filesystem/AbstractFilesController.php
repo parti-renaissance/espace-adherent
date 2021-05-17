@@ -90,6 +90,6 @@ abstract class AbstractFilesController extends AbstractController
 
     private function getFilenameForDownload(File $file): ?string
     {
-        return \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension());
+        return sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension());
     }
 }

@@ -648,7 +648,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function getImagePath(): string
     {
-        return $this->imageName ? \sprintf('images/events/%s', $this->getImageName()) : '';
+        return $this->imageName ? sprintf('images/events/%s', $this->getImageName()) : '';
     }
 
     public function getNormalizationGroups(): array

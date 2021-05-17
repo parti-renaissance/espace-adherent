@@ -10,13 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class MyEuropeProcessor
 {
-    const STATE_NEEDS_FRIEND_INFO = 'needs_friend_info';
-    const STATE_NEEDS_FRIEND_CASES = 'needs_friend_cases';
-    const STATE_NEEDS_FRIEND_APPRECIATIONS = 'needs_friend_appreciations';
-    const STATE_SUMMARY = 'summary';
-    const STATE_SENT = 'sent';
+    public const STATE_NEEDS_FRIEND_INFO = 'needs_friend_info';
+    public const STATE_NEEDS_FRIEND_CASES = 'needs_friend_cases';
+    public const STATE_NEEDS_FRIEND_APPRECIATIONS = 'needs_friend_appreciations';
+    public const STATE_SUMMARY = 'summary';
+    public const STATE_SENT = 'sent';
 
-    const STATES = [
+    public const STATES = [
         self::STATE_NEEDS_FRIEND_INFO,
         self::STATE_NEEDS_FRIEND_CASES,
         self::STATE_NEEDS_FRIEND_APPRECIATIONS,
@@ -24,12 +24,12 @@ final class MyEuropeProcessor
         self::STATE_SENT,
     ];
 
-    const TRANSITION_FILL_INFO = 'fill_info';
-    const TRANSITION_FILL_CASES = 'fill_cases';
-    const TRANSITION_FILL_APPRECIATIONS = 'fill_appreciations';
-    const TRANSITION_SEND = 'send';
+    public const TRANSITION_FILL_INFO = 'fill_info';
+    public const TRANSITION_FILL_CASES = 'fill_cases';
+    public const TRANSITION_FILL_APPRECIATIONS = 'fill_appreciations';
+    public const TRANSITION_SEND = 'send';
 
-    const TRANSITIONS = [
+    public const TRANSITIONS = [
         self::TRANSITION_FILL_INFO,
         self::TRANSITION_FILL_CASES,
         self::TRANSITION_FILL_APPRECIATIONS,

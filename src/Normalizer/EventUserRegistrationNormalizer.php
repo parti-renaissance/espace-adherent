@@ -14,7 +14,7 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
 {
     use NormalizerAwareTrait;
 
-    const EVENT_USER_REGISTRATION_ALREADY_CALLED = 'event_user_registration_normalizer';
+    public const EVENT_USER_REGISTRATION_ALREADY_CALLED = 'event_user_registration_normalizer';
 
     private $security;
     private $eventRegistrationRepository;

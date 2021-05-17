@@ -272,14 +272,14 @@ class AdminCommitteeController extends AbstractController
         string $action
     ): Response {
         if (!\in_array($action, CommitteeAdherentMandateManager::ACTIONS)) {
-            throw new BadRequestHttpException(\sprintf('Action "%s" is not authorized.', $action));
+            throw new BadRequestHttpException(sprintf('Action "%s" is not authorized.', $action));
         }
 
         if (!$committee->isApproved()) {
             throw new BadRequestHttpException($this->translator->trans('adherent_mandate.committee.committee_not_approved'));
         }
 
-        if (!$this->isCsrfTokenValid(\sprintf('committee.change_mandate.%s', $adherent->getId()), $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid(sprintf('committee.change_mandate.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
@@ -303,7 +303,7 @@ class AdminCommitteeController extends AbstractController
         $msg = '';
         /** @var CommitteeAdherentMandate $activeMandate */
         array_walk($mandates, function (CommitteeAdherentMandate $activeMandate) use (&$msg) {
-            $msg .= \sprintf(
+            $msg .= sprintf(
                 '%s dans le comité "%s", ',
                 CommitteeMandateQualityEnum::SUPERVISOR === $activeMandate->getQuality()
                     ? ($activeMandate->isProvisional() ? 'Animateur provisoire' : 'Animateur')
@@ -319,7 +319,7 @@ class AdminCommitteeController extends AbstractController
 
     private function addFlashMsgForNewMandate(CommitteeAdherentMandate $mandate): void
     {
-        $this->addFlash('sonata_flash_success', \sprintf(
+        $this->addFlash('sonata_flash_success', sprintf(
             '%s est devenu%s %s.',
             $mandate->getAdherent()->getFullName(),
             $mandate->isFemale() ? 'e' : '',
@@ -329,7 +329,7 @@ class AdminCommitteeController extends AbstractController
 
     private function addFlashMsgForClosedMandate(CommitteeAdherentMandate $mandate): void
     {
-        $this->addFlash('sonata_flash_success', \sprintf(
+        $this->addFlash('sonata_flash_success', sprintf(
             '%s n\'est plus %s.',
             $mandate->getAdherent()->getFullName(),
             $this->translator->trans('adherent_mandate.committee.'.$mandate->getType()))

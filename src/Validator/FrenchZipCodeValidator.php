@@ -24,11 +24,11 @@ class FrenchZipCodeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($address, Address::class);
         }
 
-        if (Address::FRANCE !== \strtoupper($address->getCountry())) {
+        if (Address::FRANCE !== strtoupper($address->getCountry())) {
             return;
         }
 
-        if (!\is_numeric($value) || 5 !== \strlen($value)) {
+        if (!is_numeric($value) || 5 !== \strlen($value)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

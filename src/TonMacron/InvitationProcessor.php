@@ -9,14 +9,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class InvitationProcessor
 {
-    const STATE_NEEDS_FRIEND_INFO = 'needs_friend_info';
-    const STATE_NEEDS_FRIEND_PROJECT = 'needs_friend_project';
-    const STATE_NEEDS_FRIEND_INTERESTS = 'needs_friend_interests';
-    const STATE_NEEDS_SELF_REASONS = 'needs_self_reasons';
-    const STATE_SUMMARY = 'summary';
-    const STATE_SENT = 'sent';
+    public const STATE_NEEDS_FRIEND_INFO = 'needs_friend_info';
+    public const STATE_NEEDS_FRIEND_PROJECT = 'needs_friend_project';
+    public const STATE_NEEDS_FRIEND_INTERESTS = 'needs_friend_interests';
+    public const STATE_NEEDS_SELF_REASONS = 'needs_self_reasons';
+    public const STATE_SUMMARY = 'summary';
+    public const STATE_SENT = 'sent';
 
-    const STATES = [
+    public const STATES = [
         self::STATE_NEEDS_FRIEND_INFO,
         self::STATE_NEEDS_FRIEND_PROJECT,
         self::STATE_NEEDS_FRIEND_INTERESTS,
@@ -25,13 +25,13 @@ final class InvitationProcessor
         self::STATE_SENT,
     ];
 
-    const TRANSITION_FILL_INFO = 'fill_info';
-    const TRANSITION_FILL_PROJECT = 'fill_project';
-    const TRANSITION_FILL_INTERESTS = 'fill_interests';
-    const TRANSITION_FILL_REASONS = 'fill_reasons';
-    const TRANSITION_SEND = 'send';
+    public const TRANSITION_FILL_INFO = 'fill_info';
+    public const TRANSITION_FILL_PROJECT = 'fill_project';
+    public const TRANSITION_FILL_INTERESTS = 'fill_interests';
+    public const TRANSITION_FILL_REASONS = 'fill_reasons';
+    public const TRANSITION_SEND = 'send';
 
-    const TRANSITIONS = [
+    public const TRANSITIONS = [
         self::TRANSITION_FILL_INFO,
         self::TRANSITION_FILL_PROJECT,
         self::TRANSITION_FILL_INTERESTS,

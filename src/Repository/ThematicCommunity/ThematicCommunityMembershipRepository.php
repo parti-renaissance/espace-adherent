@@ -111,14 +111,14 @@ class ThematicCommunityMembershipRepository extends ServiceEntityRepository
         if ($lastName = $filter->getLastName()) {
             $qb
                 ->andWhere('LOWER(a.lastName) LIKE :last_name OR LOWER(c.lastName) LIKE :last_name')
-                ->setParameter('last_name', '%'.\mb_strtolower($lastName).'%')
+                ->setParameter('last_name', '%'.mb_strtolower($lastName).'%')
             ;
         }
 
         if ($firstName = $filter->getFirstName()) {
             $qb
                 ->andWhere('LOWER(a.firstName) LIKE :first_name OR LOWER(c.firstName) LIKE :first_name')
-                ->setParameter('first_name', '%'.\mb_strtolower($firstName).'%')
+                ->setParameter('first_name', '%'.mb_strtolower($firstName).'%')
             ;
         }
 

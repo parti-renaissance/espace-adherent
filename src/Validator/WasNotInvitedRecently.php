@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class WasNotInvitedRecently extends Constraint
 {
-    const WAS_INVITED_RECENTLY = 'was_invited_recently';
+    public const WAS_INVITED_RECENTLY = 'was_invited_recently';
 
     protected static $errorNames = [
         self::WAS_INVITED_RECENTLY => 'WAS_INVITED_RECENTLY',

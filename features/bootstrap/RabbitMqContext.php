@@ -12,7 +12,7 @@ class RabbitMqContext implements Context
 {
     use PHPMatcherAssertions;
 
-    const QUEUES = [
+    public const QUEUES = [
         'api_sync',
         'mailer-delayed-campaign',
         'mailer-delayed-transactional',

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UnregisterType extends AbstractType
 {
-    const UNREGISTER_WORD = 'SUPPRESSION';
+    public const UNREGISTER_WORD = 'SUPPRESSION';
 
     public function configureOptions(OptionsResolver $resolver)
     {

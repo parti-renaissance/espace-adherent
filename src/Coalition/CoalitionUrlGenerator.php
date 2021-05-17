@@ -42,7 +42,7 @@ class CoalitionUrlGenerator
 
     public function generateCreatePasswordLink(Adherent $adherent, AdherentResetPasswordToken $token): string
     {
-        return \sprintf(self::CREATE_PASSWORD_LINK_PATTERN,
+        return sprintf(self::CREATE_PASSWORD_LINK_PATTERN,
             $this->coalitionsHost,
             (string) $adherent->getUuid(),
             (string) $token->getValue()

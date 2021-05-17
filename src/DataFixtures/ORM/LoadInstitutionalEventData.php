@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadInstitutionalEventData extends Fixture implements DependentFixtureInterface
 {
-    const INSTITUTIONAL_EVENT_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15e';
+    public const INSTITUTIONAL_EVENT_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15e';
 
     private $eventFactory;
 

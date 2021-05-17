@@ -166,7 +166,7 @@ class PoliticalCommitteeManager
         }
 
         // do nothing if no quality modifications
-        if (\array_values($tcMembership->getQualityNames()) == \array_values($oldTcMembership->getQualityNames())) {
+        if (array_values($tcMembership->getQualityNames()) == array_values($oldTcMembership->getQualityNames())) {
             return;
         }
 
@@ -283,7 +283,7 @@ class PoliticalCommitteeManager
         $tcQualities = $tcMembership->getManagedInAdminQualityNames();
         $pcQualities = $pcMembership->getManagedInAdminQualityNames();
 
-        if (\array_values($pcQualities) == \array_values($tcQualities)) {
+        if (array_values($pcQualities) == array_values($tcQualities)) {
             return;
         }
 

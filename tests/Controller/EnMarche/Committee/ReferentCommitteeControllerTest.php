@@ -295,7 +295,7 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
         $this->authenticateAsAdherent($this->client, $email);
 
         $this->client->request(Request::METHOD_GET,
-            \sprintf('/espace-referent/comites/%s/%s', $committee->getSlug(), $action)
+            sprintf('/espace-referent/comites/%s/%s', $committee->getSlug(), $action)
         );
 
         $this->assertResponseStatusCode($statusCode, $this->client->getResponse());

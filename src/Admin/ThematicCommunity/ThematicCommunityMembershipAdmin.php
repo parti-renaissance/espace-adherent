@@ -473,10 +473,10 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                 $object = $this->getSubject()->getContact();
                 break;
             default:
-                throw new \LogicException(\sprintf('Class "%s" is not a valid membership class.', $class));
+                throw new \LogicException(sprintf('Class "%s" is not a valid membership class.', $class));
         }
 
-        $this->otherMemberships = \array_filter(
+        $this->otherMemberships = array_filter(
             $this->getModelManager()->findBy($class, [$field => $object]),
             function (ThematicCommunityMembership $membership) {
                 return $membership !== $this->getSubject();

@@ -15,11 +15,11 @@ class SocialShare
     use EntityTimestampableTrait;
     use PositionTrait;
 
-    const TYPE_IMAGE = 'image';
-    const TYPE_VIDEO = 'video';
-    const TYPE_PDF = 'pdf';
+    public const TYPE_IMAGE = 'image';
+    public const TYPE_VIDEO = 'video';
+    public const TYPE_PDF = 'pdf';
 
-    const TYPES = [
+    public const TYPES = [
         self::TYPE_IMAGE,
         self::TYPE_VIDEO,
         self::TYPE_PDF,

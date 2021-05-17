@@ -851,10 +851,10 @@ HELP
                         ],
                         $value['value']
                     )) {
-                        $qb->leftJoin(\sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
+                        $qb->leftJoin(sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
                         $where->add('rda.type IN (:delegated_types)');
-                        $qb->setParameter('delegated_types', \array_map(static function ($type) {
-                            return \substr($type, 10); // remove "delegated_" prefix
+                        $qb->setParameter('delegated_types', array_map(static function ($type) {
+                            return substr($type, 10); // remove "delegated_" prefix
                         }, $delegatedTypes));
                     }
 
@@ -904,7 +904,7 @@ HELP
                             $value['value']
                         )) {
                             if (!\in_array('rda', $qb->getAllAliases(), true)) {
-                                $qb->leftJoin(\sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
+                                $qb->leftJoin(sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
                             }
                             $where->add('rda.type = :delegated_candidate');
                             $qb->setParameter('delegated_candidate', DelegatedAccessEnum::TYPE_CANDIDATE);
@@ -1003,7 +1003,7 @@ HELP
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => \array_merge(
+                    'choices' => array_merge(
                         TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS,
                         ['TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT]
                     ),

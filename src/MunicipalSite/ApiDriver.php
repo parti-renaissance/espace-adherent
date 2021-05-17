@@ -32,7 +32,7 @@ class ApiDriver implements LoggerAwareInterface
             return false;
         }
 
-        $data = \json_decode($response->getBody(), true);
+        $data = json_decode($response->getBody(), true);
 
         if (!empty($data['items'])) {
             foreach ($data['items'] as $site) {

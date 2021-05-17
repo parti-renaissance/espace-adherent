@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadMissionTypeData extends Fixture
 {
-    const MISSION_TYPES = [
+    public const MISSION_TYPES = [
         'MT_001' => 'Me former à l\'action politique et citoyenne',
         'MT_002' => 'Faire émerger des idées nouvelles',
         'MT_003' => 'Faire remonter les opinions du terrain',

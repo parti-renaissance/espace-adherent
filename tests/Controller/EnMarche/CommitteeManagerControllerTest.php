@@ -717,7 +717,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
     private function transformToArray(string $encodedData): array
     {
-        $tmpHandle = \tmpfile();
+        $tmpHandle = tmpfile();
         fwrite($tmpHandle, $encodedData);
         $metaDatas = stream_get_meta_data($tmpHandle);
         $tmpFilename = $metaDatas['uri'];

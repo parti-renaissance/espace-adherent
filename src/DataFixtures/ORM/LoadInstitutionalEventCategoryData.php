@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadInstitutionalEventCategoryData extends Fixture
 {
-    const INSTITUTIONAL_EVENT_CATEGORIES = [
+    public const INSTITUTIONAL_EVENT_CATEGORIES = [
         'category-1' => 'Comité politique',
         'category-2' => 'Réunion publique',
         'category-3' => "Réunion de l'équipe départementale",

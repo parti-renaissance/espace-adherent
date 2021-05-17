@@ -308,7 +308,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
             if (null !== $filter->isCertified()) {
                 $qb
-                    ->andWhere(\sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
+                    ->andWhere(sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
                 ;
             }
 

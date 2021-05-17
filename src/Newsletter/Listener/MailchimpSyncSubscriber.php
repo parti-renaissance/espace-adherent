@@ -33,7 +33,7 @@ class MailchimpSyncSubscriber implements EventSubscriberInterface
     public function onSubscribe(NewsletterEvent $event): void
     {
         if (!$event->getNewsletter()->isConfirmed()) {
-            $this->logger->error(\sprintf(
+            $this->logger->error(sprintf(
                 'NewsletterSubscription with id "%d" is not confirmed to proceed a subscription.',
                 $event->getNewsletter()->getId()
             ));

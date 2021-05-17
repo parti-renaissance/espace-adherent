@@ -174,7 +174,7 @@ class ReferentTag
 
     public function getDepartmentCodeFromCirconscriptionName(): ?string
     {
-        return $this->isDistrictTag() ? \substr($this->code, 6, 2) : null;
+        return $this->isDistrictTag() ? substr($this->code, 6, 2) : null;
     }
 
     public function getZone(): Zone

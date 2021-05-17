@@ -4,11 +4,11 @@ namespace App\Redirection\Dynamic;
 
 class RedirectionsProvider
 {
-    const TO_PATH = 'to_path';
-    const TO_ROUTE = 'to_route';
-    const TO_REMOVE_UUID = 'to_remove_uuid';
+    public const TO_PATH = 'to_path';
+    public const TO_ROUTE = 'to_route';
+    public const TO_REMOVE_UUID = 'to_remove_uuid';
 
-    const REDIRECTIONS = [
+    public const REDIRECTIONS = [
         self::TO_PATH => [
             '/articles/tribunes/' => '/articles/opinions/',
         ],

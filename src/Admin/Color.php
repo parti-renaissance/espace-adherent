@@ -4,14 +4,14 @@ namespace App\Admin;
 
 class Color
 {
-    const BLACK = 'black';
-    const BLUE = 'blue';
-    const GREEN = 'green';
-    const PINK = 'pink';
-    const WHITE = 'white';
-    const YELLOW = 'yellow';
+    public const BLACK = 'black';
+    public const BLUE = 'blue';
+    public const GREEN = 'green';
+    public const PINK = 'pink';
+    public const WHITE = 'white';
+    public const YELLOW = 'yellow';
 
-    const ALL = [
+    public const ALL = [
         self::BLACK,
         self::BLUE,
         self::GREEN,
@@ -20,7 +20,7 @@ class Color
         self::YELLOW,
     ];
 
-    const CHOICES = [
+    public const CHOICES = [
         'Blanc' => self::WHITE,
         'Bleu' => self::BLUE,
         'Jaune' => self::YELLOW,

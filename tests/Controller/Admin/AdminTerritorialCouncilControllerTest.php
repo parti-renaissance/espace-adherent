@@ -46,7 +46,7 @@ class AdminTerritorialCouncilControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/territorialcouncil/%s/members/%s/%s-membership', $territorialCouncil->getId(), $adherent->getId(), 'invalid_action')
+            sprintf('/admin/territorialcouncil/%s/members/%s/%s-membership', $territorialCouncil->getId(), $adherent->getId(), 'invalid_action')
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         $this->assertStringContainsString('Action &quot;invalid_action&quot; is not authorized', $this->client->getResponse()->getContent());
@@ -64,7 +64,7 @@ class AdminTerritorialCouncilControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/territorialcouncil/%s/members/%s/%s-membership', $territorialCouncil->getId(), $adherent->getId(), $action)
+            sprintf('/admin/territorialcouncil/%s/members/%s/%s-membership', $territorialCouncil->getId(), $adherent->getId(), $action)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         $this->assertStringContainsString('Invalid Csrf token provided.', $this->client->getResponse()->getContent());

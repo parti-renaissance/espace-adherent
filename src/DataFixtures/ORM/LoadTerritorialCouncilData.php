@@ -15,8 +15,8 @@ class LoadTerritorialCouncilData extends Fixture implements DependentFixtureInte
     public function load(ObjectManager $manager)
     {
         // For french department tags
-        foreach (\range(1, 98) as $department) {
-            $department = \str_pad($department, 2, '0', \STR_PAD_LEFT);
+        foreach (range(1, 98) as $department) {
+            $department = str_pad($department, 2, '0', \STR_PAD_LEFT);
 
             switch ($department) {
                 // for Corsica
@@ -26,8 +26,8 @@ class LoadTerritorialCouncilData extends Fixture implements DependentFixtureInte
                     break;
                 // for Paris
                 case '75':
-                    foreach (\range(1, 20) as $district) {
-                        $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
+                    foreach (range(1, 20) as $district) {
+                        $district = str_pad($district, 2, '0', \STR_PAD_LEFT);
 
                         $this->createTerritorialCouncil($manager, "Conseil territorial de Paris 750$district", "750$district");
                     }
@@ -59,12 +59,12 @@ class LoadTerritorialCouncilData extends Fixture implements DependentFixtureInte
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_2a'));
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_2b'));
         } else {
-            $territorialCouncil->addReferentTag($this->getReference('referent_tag_'.\mb_strtolower($code)));
+            $territorialCouncil->addReferentTag($this->getReference('referent_tag_'.mb_strtolower($code)));
         }
 
         $manager->persist($territorialCouncil);
 
-        $this->addReference('coTerr_'.\mb_strtolower($code), $territorialCouncil);
+        $this->addReference('coTerr_'.mb_strtolower($code), $territorialCouncil);
     }
 
     public function getDependencies(): array

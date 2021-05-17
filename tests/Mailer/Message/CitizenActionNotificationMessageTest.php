@@ -6,7 +6,7 @@ use App\Mailer\Message\CitizenActionNotificationMessage;
 
 class CitizenActionNotificationMessageTest extends AbstractEventMessageTest
 {
-    const ATTEND_EVENT_URL = 'https://test.enmarche.code/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
+    public const ATTEND_EVENT_URL = 'https://test.enmarche.code/comites/59b1314d-dcfb-4a4c-83e1-212841d0bd0f/evenements/2017-01-31-en-marche-lyon/inscription';
 
     public function testCitizenActionNotificationMessage(): void
     {

@@ -27,7 +27,7 @@ class CitizenProjectReferentTagExtractor implements ReferentTagExtractorInterfac
                 ];
 
                 if (PostAddress::FRANCE === $citizenProject->getCountry()) {
-                    $tags[] = \mb_substr($citizenProject->getPostalCode(), 0, 2);
+                    $tags[] = mb_substr($citizenProject->getPostalCode(), 0, 2);
                 }
 
                 return $tags;

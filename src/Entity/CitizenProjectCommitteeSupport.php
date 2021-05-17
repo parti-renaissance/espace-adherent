@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CitizenProjectCommitteeSupport
 {
-    const PENDING = 'PENDING';
-    const APPROVED = 'APPROVED';
+    public const PENDING = 'PENDING';
+    public const APPROVED = 'APPROVED';
 
     /**
      * @ORM\Id

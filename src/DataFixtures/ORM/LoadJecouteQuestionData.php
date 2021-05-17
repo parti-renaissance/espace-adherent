@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadJecouteQuestionData extends Fixture
 {
-    const QUESTIONS = [
+    public const QUESTIONS = [
         'question-1' => [
             'content' => 'Ceci est-il un champ libre ?',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,

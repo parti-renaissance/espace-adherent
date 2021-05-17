@@ -18,8 +18,8 @@ class CommitteeFeedItem implements UserDocumentInterface
     use EntityIdentityTrait;
     use UserDocumentTrait;
 
-    const MESSAGE = 'message';
-    const EVENT = 'event';
+    public const MESSAGE = 'message';
+    public const EVENT = 'event';
 
     /**
      * @ORM\Column(length=18)

@@ -454,7 +454,7 @@ class ReferentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'senateur@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/espace-partage/%s', LoadDelegatedAccessData::ACCESS_UUID_7));
+        $this->client->request(Request::METHOD_GET, sprintf('/espace-partage/%s', LoadDelegatedAccessData::ACCESS_UUID_7));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/espace-referent/utilisateurs', $this->client);

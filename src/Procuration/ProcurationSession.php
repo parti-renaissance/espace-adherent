@@ -53,14 +53,14 @@ class ProcurationSession
             throw new InvalidProcurationFlowException('No election context.');
         }
 
-        return \unserialize($this->session->get(self::ELECTION_CONTEXT_KEY));
+        return unserialize($this->session->get(self::ELECTION_CONTEXT_KEY));
     }
 
     public function setElectionContext(ElectionContext $context)
     {
         // Context has changed, reset
         $this->endRequest();
-        $this->session->set(self::ELECTION_CONTEXT_KEY, \serialize($context));
+        $this->session->set(self::ELECTION_CONTEXT_KEY, serialize($context));
         $this->startRequest();
     }
 }

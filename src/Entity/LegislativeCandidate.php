@@ -20,15 +20,15 @@ class LegislativeCandidate implements EntityMediaInterface
     use EntityPersonNameTrait;
     use EntityMediaTrait;
 
-    const CAREERS = [
+    public const CAREERS = [
         'legislative_candidate.careers.1',
         'legislative_candidate.careers.2',
     ];
 
-    const STATUS_NONE = 'none';
-    const STATUS_LOST = 'lost';
-    const STATUS_QUALIFIED = 'qualified';
-    const STATUS_WON = 'won';
+    public const STATUS_NONE = 'none';
+    public const STATUS_LOST = 'lost';
+    public const STATUS_QUALIFIED = 'qualified';
+    public const STATUS_WON = 'won';
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})

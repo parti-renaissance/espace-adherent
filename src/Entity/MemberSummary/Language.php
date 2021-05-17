@@ -13,13 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Language
 {
-    const LEVEL_LOW = 'connaissance limitée';
-    const LEVEL_BASIC = 'maîtrise basique';
-    const LEVEL_MEDIUM = 'bonne maîtrise';
-    const LEVEL_HIGH = 'maîtrise parfaite';
-    const LEVEL_FLUENT = 'langue maternelle';
+    public const LEVEL_LOW = 'connaissance limitée';
+    public const LEVEL_BASIC = 'maîtrise basique';
+    public const LEVEL_MEDIUM = 'bonne maîtrise';
+    public const LEVEL_HIGH = 'maîtrise parfaite';
+    public const LEVEL_FLUENT = 'langue maternelle';
 
-    const LEVELS = [
+    public const LEVELS = [
         self::LEVEL_LOW,
         self::LEVEL_BASIC,
         self::LEVEL_MEDIUM,
@@ -27,7 +27,7 @@ class Language
         self::LEVEL_FLUENT,
     ];
 
-    const LEVEL_CHOICES = [
+    public const LEVEL_CHOICES = [
         'member_summary.language.level.low' => self::LEVEL_LOW,
         'member_summary.language.level.basic' => self::LEVEL_BASIC,
         'member_summary.language.level.medium' => self::LEVEL_MEDIUM,

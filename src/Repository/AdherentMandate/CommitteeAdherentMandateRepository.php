@@ -119,7 +119,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             ->getScalarResult()
         ;
 
-        return \array_map(static function (array $mandate) {
+        return array_map(static function (array $mandate) {
             return $mandate['id'];
         }, $activeMandates);
     }

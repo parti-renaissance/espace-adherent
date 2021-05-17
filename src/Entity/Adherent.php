@@ -983,7 +983,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
-            $roles[] = 'ROLE_DELEGATED_'.\strtoupper($delegatedAccess->getType());
+            $roles[] = 'ROLE_DELEGATED_'.strtoupper($delegatedAccess->getType());
         }
 
         if ($this->isSenatorialCandidate()) {
@@ -1023,7 +1023,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_MESSAGE_REDACTOR';
         }
 
-        return array_merge(\array_unique($roles), $this->roles);
+        return array_merge(array_unique($roles), $this->roles);
     }
 
     public function addRoles(array $roles): void

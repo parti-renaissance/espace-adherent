@@ -24,7 +24,7 @@ final class ActivityPositions
         self::EXECUTIVE,
     ];
 
-    const CHOICES = [
+    public const CHOICES = [
         'adherent.activity_position.student' => self::STUDENT,
         'adherent.activity_position.retired' => self::RETIRED,
         'adherent.activity_position.employed' => self::EMPLOYED,

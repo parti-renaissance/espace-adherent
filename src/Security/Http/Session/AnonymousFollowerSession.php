@@ -84,7 +84,7 @@ final class AnonymousFollowerSession
         $vars = $request->query->all();
         unset($vars[self::AUTHENTICATION_INTENTION]);
 
-        return $request->getPathInfo().($vars ? '?'.\http_build_query($vars) : '');
+        return $request->getPathInfo().($vars ? '?'.http_build_query($vars) : '');
     }
 
     private function isValidIntention(string $intentionUrl): bool

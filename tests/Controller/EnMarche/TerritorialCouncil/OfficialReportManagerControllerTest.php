@@ -161,7 +161,7 @@ class OfficialReportManagerControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/espace-referent/instances/proces-verbaux/%s/modifier', $report->getUuid()));
+            sprintf('/espace-referent/instances/proces-verbaux/%s/modifier', $report->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -189,7 +189,7 @@ class OfficialReportManagerControllerTest extends WebTestCase
         $report = $this->getOfficialReportRepository()->findOneBy(['name' => 'Test PV 75 1']);
 
         $this->assertEquals(
-            \sprintf('http://%s/espace-referent/instances/proces-verbaux/%s/modifier', $this->hosts['app'], $report->getUuid()),
+            sprintf('http://%s/espace-referent/instances/proces-verbaux/%s/modifier', $this->hosts['app'], $report->getUuid()),
             $this->client->getRequest()->getUri()
         );
         $this->assertStatusCode(Response::HTTP_OK, $this->client);

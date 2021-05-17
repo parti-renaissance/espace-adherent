@@ -298,7 +298,7 @@ class FranceCitiesBundle
     {
         $cityName = iconv('UTF-8', 'ASCII//TRANSLIT', $cityName);
 
-        return \mb_strtolower(str_replace('-', ' ', trim($cityName)));
+        return mb_strtolower(str_replace('-', ' ', trim($cityName)));
     }
 
     public static $countries = [

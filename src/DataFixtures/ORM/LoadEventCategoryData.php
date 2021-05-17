@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
 {
-    const LEGACY_EVENT_CATEGORIES = [
+    public const LEGACY_EVENT_CATEGORIES = [
         'CE001' => 'Kiosque',
         'CE002' => 'Réunion d\'équipe',
         'CE003' => 'Conférence-débat',

@@ -79,6 +79,6 @@ trait EntityZoneTrait
             $zones = array_merge($zones, $zone->getParentsOfType($type));
         }
 
-        return \array_unique($zones);
+        return array_unique($zones);
     }
 }

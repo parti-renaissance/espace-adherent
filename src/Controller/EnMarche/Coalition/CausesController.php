@@ -112,7 +112,7 @@ class CausesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('info', \sprintf('La cause "%s" a bien été modifiée.', $cause->getName()));
+            $this->addFlash('info', sprintf('La cause "%s" a bien été modifiée.', $cause->getName()));
 
             return $this->redirectToRoute('app_coalition_causes_list');
         }

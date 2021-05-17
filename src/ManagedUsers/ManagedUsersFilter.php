@@ -487,12 +487,12 @@ class ManagedUsersFilter
                 'order' => $this->order,
                 'committee' => $this->committee ? $this->committee->getUuidAsString() : null,
                 'includeRoles' => array_keys(
-                    \array_filter($roles, static function ($role) {
+                    array_filter($roles, static function ($role) {
                         return true === $role;
                     })
                 ),
                 'excludeRoles' => array_keys(
-                    \array_filter($roles, static function ($role) {
+                    array_filter($roles, static function ($role) {
                         return false === $role;
                     })
                 ),

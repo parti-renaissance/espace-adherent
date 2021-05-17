@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class File extends BaseFile
 {
-    const PREFIX_PATH = 'files/formations';
+    public const PREFIX_PATH = 'files/formations';
 
     /**
      * @var UploadedFile|null

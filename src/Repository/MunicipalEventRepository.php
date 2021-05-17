@@ -41,7 +41,7 @@ class MunicipalEventRepository extends EventRepository
             ->getArrayResult()
         ;
 
-        return \array_column($results, 'name');
+        return array_column($results, 'name');
     }
 
     public function findCategoriesForPostalCode(array $postalCodes): array
@@ -62,6 +62,6 @@ class MunicipalEventRepository extends EventRepository
             ->getArrayResult()
         ;
 
-        return \array_column($results, 'name');
+        return array_column($results, 'name');
     }
 }

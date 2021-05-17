@@ -11,7 +11,7 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class JsonContains extends FunctionNode
 {
-    const FUNCTION_NAME = 'JSON_CONTAINS';
+    public const FUNCTION_NAME = 'JSON_CONTAINS';
 
     /**
      * @var \Doctrine\ORM\Query\AST\Node

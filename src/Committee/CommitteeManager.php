@@ -489,6 +489,7 @@ class CommitteeManager
             if ($adherent->isSupervisorOf($membership->getCommittee())) {
                 throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($membership->getUuid());
             }
+
             // We can't have more than 2 hosts per committee
             if ($this->countCommitteeHosts($committee = $membership->getCommittee(), true) > 1) {
                 throw CommitteeMembershipException::createNotPromotableHostPrivilegeManyHostsException($membership->getUuid());

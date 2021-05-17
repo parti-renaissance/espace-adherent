@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class GeocoderTest extends TestCase
 {
-    const ADDRESS = '92 bld victor hugo, 92110 clichy, france';
+    public const ADDRESS = '92 bld victor hugo, 92110 clichy, france';
 
     private $adapter;
     private $geocoder;

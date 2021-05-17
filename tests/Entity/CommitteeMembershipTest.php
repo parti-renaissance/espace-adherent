@@ -12,8 +12,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class CommitteeMembershipTest extends TestCase
 {
-    const ADHERENT_UUID = '0f5afdb8-09f6-4522-9e36-f0fd227a8442';
-    const COMMITTEE_UUID = 'ebd9f0c8-4158-4939-8372-28505f6cf892';
+    public const ADHERENT_UUID = '0f5afdb8-09f6-4522-9e36-f0fd227a8442';
+    public const COMMITTEE_UUID = 'ebd9f0c8-4158-4939-8372-28505f6cf892';
 
     public function testCreateHostMembership()
     {

@@ -94,18 +94,18 @@ class TextTypeExtension extends AbstractTypeExtension
     public static function formatTitleCase(string $string): string
     {
         // Here we just ensure the first character is uppercase, the rest is left as is
-        return \mb_strtoupper(\mb_substr($string, 0, 1)).\mb_substr($string, 1);
+        return mb_strtoupper(mb_substr($string, 0, 1)).mb_substr($string, 1);
     }
 
     public static function formatIdentityCase(string $string): string
     {
-        return \preg_replace_callback_array([
+        return preg_replace_callback_array([
             '/(?:^|[\s-])d[eu][\s-]/ui' => function (array $matches) {
-                return \mb_strtolower($matches[0]);
+                return mb_strtolower($matches[0]);
             },
             '/(?:^|[\s-])(d\')(\p{L})/ui' => function (array $matches) {
-                return \mb_strtolower($matches[1]).\ucfirst($matches[2]);
+                return mb_strtolower($matches[1]).ucfirst($matches[2]);
             },
-        ], \mb_convert_case($string, \MB_CASE_TITLE, 'UTF-8'));
+        ], mb_convert_case($string, \MB_CASE_TITLE, 'UTF-8'));
     }
 }

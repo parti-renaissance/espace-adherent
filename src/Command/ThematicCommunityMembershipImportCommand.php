@@ -92,7 +92,7 @@ class ThematicCommunityMembershipImportCommand extends Command
         $filename = $input->getArgument('file');
 
         $content = $this->filesystem->read($filename);
-        $content = \explode("\n", $content);
+        $content = explode("\n", $content);
 
         unset($content[0]); // remove csv headers
 
@@ -101,7 +101,7 @@ class ThematicCommunityMembershipImportCommand extends Command
                 continue;
             }
 
-            $row = \explode(';', $row);
+            $row = explode(';', $row);
 
             $community = $this->communityRepository->findOneBy(['name' => $row[2]]);
 
@@ -139,12 +139,12 @@ class ThematicCommunityMembershipImportCommand extends Command
 
             $membership->setCommunity($community);
             $membership->setJoinedAt(\DateTime::createFromFormat('d/m/Y H:i', $row[1]));
-            $hasJob = 'oui' === \mb_strtolower($row[12]);
+            $hasJob = 'oui' === mb_strtolower($row[12]);
             $membership->setHasJob($hasJob);
             if ($hasJob) {
                 $membership->setJob($row[13]);
             }
-            $hasAssociation = 'Oui' === \mb_strtolower($row[14]);
+            $hasAssociation = 'Oui' === mb_strtolower($row[14]);
             $membership->setAssociation($hasAssociation);
             if ($hasAssociation) {
                 $membership->setAssociationName($row[15]);
@@ -152,7 +152,7 @@ class ThematicCommunityMembershipImportCommand extends Command
             $this->setMotivations($membership, $row[16], $row[17], $row[18]);
             $membership->setStatus($status);
 
-            $this->setUserListDefinitions($membership, \array_filter(\array_map('trim', explode(',', $row[19]))));
+            $this->setUserListDefinitions($membership, array_filter(array_map('trim', explode(',', $row[19]))));
 
             $this->entityManager->persist($membership);
 
@@ -194,7 +194,7 @@ class ThematicCommunityMembershipImportCommand extends Command
         string $thinking,
         string $onSpot
     ): void {
-        $motivations = \array_filter([
+        $motivations = array_filter([
             $information ? ThematicCommunityMembership::MOTIVATION_INFORMATION : null,
             $thinking ? ThematicCommunityMembership::MOTIVATION_THINKING : null,
             $onSpot ? ThematicCommunityMembership::MOTIVATION_ON_SPOT : null,

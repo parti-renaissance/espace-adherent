@@ -11,7 +11,7 @@ use Symfony\Component\Workflow\StateMachine;
 
 final class MyEuropeProcessorHandler
 {
-    const SESSION_KEY = 'my_europe';
+    public const SESSION_KEY = 'my_europe';
 
     private $builder;
     private $manager;

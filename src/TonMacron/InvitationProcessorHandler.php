@@ -11,7 +11,7 @@ use Symfony\Component\Workflow\StateMachine;
 
 final class InvitationProcessorHandler
 {
-    const SESSION_KEY = 'ton_macron.invitation';
+    public const SESSION_KEY = 'ton_macron.invitation';
 
     private $builder;
     private $manager;

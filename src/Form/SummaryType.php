@@ -25,15 +25,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SummaryType extends AbstractType
 {
-    const STEP_PHOTO = 'photo';
-    const STEP_SYNTHESIS = 'synthesis';
-    const STEP_MISSION_WISHES = 'missions';
-    const STEP_MOTIVATION = 'motivation';
-    const STEP_SKILLS = 'skills';
-    const STEP_INTERESTS = 'interests';
-    const STEP_CONTACT = 'contact';
+    public const STEP_PHOTO = 'photo';
+    public const STEP_SYNTHESIS = 'synthesis';
+    public const STEP_MISSION_WISHES = 'missions';
+    public const STEP_MOTIVATION = 'motivation';
+    public const STEP_SKILLS = 'skills';
+    public const STEP_INTERESTS = 'interests';
+    public const STEP_CONTACT = 'contact';
 
-    const STEPS = [
+    public const STEPS = [
         self::STEP_PHOTO,
         self::STEP_SYNTHESIS,
         self::STEP_MISSION_WISHES,

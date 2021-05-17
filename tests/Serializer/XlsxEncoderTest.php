@@ -139,7 +139,7 @@ class XlsxEncoderTest extends TestCase
 
     private function transformToArray(string $encodedData): array
     {
-        $tmpHandle = \tmpfile();
+        $tmpHandle = tmpfile();
         fwrite($tmpHandle, $encodedData);
         $metaData = stream_get_meta_data($tmpHandle);
         $tmpFilename = $metaData['uri'];

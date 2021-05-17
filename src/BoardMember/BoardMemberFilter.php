@@ -6,18 +6,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BoardMemberFilter
 {
-    const PER_PAGE = 50;
+    public const PER_PAGE = 50;
 
-    const PARAMETER_GENDER = 'g';
-    const PARAMETER_AGE_MIN = 'amin';
-    const PARAMETER_AGE_MAX = 'amax';
-    const PARAMETER_FIRST_NAME = 'f';
-    const PARAMETER_LAST_NAME = 'l';
-    const PARAMETER_POSTAL_CODE = 'p';
-    const PARAMETER_AREAS = 'a';
-    const PARAMETER_ROLES = 'r';
-    const PARAMETER_OFFSET = 'o';
-    const PARAMETER_TOKEN = 't';
+    public const PARAMETER_GENDER = 'g';
+    public const PARAMETER_AGE_MIN = 'amin';
+    public const PARAMETER_AGE_MAX = 'amax';
+    public const PARAMETER_FIRST_NAME = 'f';
+    public const PARAMETER_LAST_NAME = 'l';
+    public const PARAMETER_POSTAL_CODE = 'p';
+    public const PARAMETER_AREAS = 'a';
+    public const PARAMETER_ROLES = 'r';
+    public const PARAMETER_OFFSET = 'o';
+    public const PARAMETER_TOKEN = 't';
 
     private $queryGender = '';
     private $queryAgeMinimum = 0;

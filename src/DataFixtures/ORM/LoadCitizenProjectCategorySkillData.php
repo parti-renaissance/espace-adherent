@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadCitizenProjectCategorySkillData extends Fixture implements DependentFixtureInterface
 {
-    const CATEGORY_SKILL_PROVIDER = [
+    public const CATEGORY_SKILL_PROVIDER = [
             'cpc001' => [
                 ['skill' => 'cps001', 'promotion' => true],
                 ['skill' => 'cps002', 'promotion' => true],

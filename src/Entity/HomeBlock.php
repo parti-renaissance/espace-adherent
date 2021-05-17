@@ -15,11 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class HomeBlock
 {
-    const TYPE_ARTICLE = 'article';
-    const TYPE_VIDEO = 'video';
-    const TYPE_BANNER = 'banner';
+    public const TYPE_ARTICLE = 'article';
+    public const TYPE_VIDEO = 'video';
+    public const TYPE_BANNER = 'banner';
 
-    const HEADER_BANNER = 11;
+    public const HEADER_BANNER = 11;
 
     /**
      * @var int

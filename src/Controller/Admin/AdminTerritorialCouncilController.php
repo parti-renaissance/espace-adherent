@@ -36,10 +36,10 @@ class AdminTerritorialCouncilController extends AbstractController
         string $action
     ): Response {
         if (!\in_array($action, PoliticalCommitteeManager::ACTIONS)) {
-            throw new BadRequestHttpException(\sprintf('Action "%s" is not authorized.', $action));
+            throw new BadRequestHttpException(sprintf('Action "%s" is not authorized.', $action));
         }
 
-        if (!$this->isCsrfTokenValid(\sprintf('territorial_council.change_political_committee_membership.%s', $adherent->getId()), $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid(sprintf('territorial_council.change_political_committee_membership.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 

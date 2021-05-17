@@ -199,6 +199,6 @@ class TerritorialCouncilMembershipLog
 
     public function __toString(): string
     {
-        return \sprintf('%s / %s / %s / %s', $this->type, $this->adherent, $this->qualityName, $this->description);
+        return sprintf('%s / %s / %s / %s', $this->type, $this->adherent, $this->qualityName, $this->description);
     }
 }

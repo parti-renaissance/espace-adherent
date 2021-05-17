@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class BaseEventCategory
 {
-    const ENABLED = 'ENABLED';
-    const DISABLED = 'DISABLED';
+    public const ENABLED = 'ENABLED';
+    public const DISABLED = 'DISABLED';
 
     /**
      * @ApiProperty(identifier=false)

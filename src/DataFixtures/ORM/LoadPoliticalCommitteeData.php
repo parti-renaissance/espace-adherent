@@ -12,8 +12,8 @@ class LoadPoliticalCommitteeData extends Fixture implements DependentFixtureInte
 {
     public function load(ObjectManager $manager)
     {
-        foreach (\range(1, 98) as $department) {
-            $department = \str_pad($department, 2, '0', \STR_PAD_LEFT);
+        foreach (range(1, 98) as $department) {
+            $department = str_pad($department, 2, '0', \STR_PAD_LEFT);
 
             switch ($department) {
                 // for Corsica
@@ -23,8 +23,8 @@ class LoadPoliticalCommitteeData extends Fixture implements DependentFixtureInte
                     break;
                 // for Paris
                 case '75':
-                    foreach (\range(1, 20) as $district) {
-                        $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
+                    foreach (range(1, 20) as $district) {
+                        $district = str_pad($district, 2, '0', \STR_PAD_LEFT);
 
                         $this->createPoliticalCommittee($manager, "CoPol de Paris 750$district", "750$district");
                     }
@@ -56,13 +56,13 @@ class LoadPoliticalCommitteeData extends Fixture implements DependentFixtureInte
         string $code,
         bool $isActive = false
     ): void {
-        $territorialCouncil = $this->getReference('coTerr_'.\mb_strtolower($code));
-        $politicalCommittee = new PoliticalCommittee(\sprintf('%s (%s)', $name, $code), $territorialCouncil);
+        $territorialCouncil = $this->getReference('coTerr_'.mb_strtolower($code));
+        $politicalCommittee = new PoliticalCommittee(sprintf('%s (%s)', $name, $code), $territorialCouncil);
         $politicalCommittee->setIsActive($isActive);
 
         $manager->persist($politicalCommittee);
 
-        $this->addReference('coPol_'.\mb_strtolower($code), $politicalCommittee);
+        $this->addReference('coPol_'.mb_strtolower($code), $politicalCommittee);
     }
 
     public function getDependencies()
