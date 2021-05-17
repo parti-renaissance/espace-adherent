@@ -4,11 +4,14 @@ namespace App\Entity\Geo;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Entity\GeoData;
+use App\Entity\GeoPointTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait GeoTrait
 {
+    use GeoPointTrait;
+
     /**
      * @var int|null
      *
