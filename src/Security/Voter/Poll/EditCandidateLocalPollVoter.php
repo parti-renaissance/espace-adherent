@@ -8,9 +8,9 @@ use App\Entity\Poll\LocalPoll;
 use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class EditLocalPollVoter extends AbstractAdherentVoter
+class EditCandidateLocalPollVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'CAN_EDIT_LOCAL_POLL';
+    public const PERMISSION = 'CAN_EDIT_CANDIDATE_LOCAL_POLL';
 
     /** @var SessionInterface */
     private $session;

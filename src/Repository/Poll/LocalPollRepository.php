@@ -5,6 +5,7 @@ namespace App\Repository\Poll;
 use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\LocalPoll;
+use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,13 +19,11 @@ class LocalPollRepository extends AbstractPollRepository
     /**
      * @return LocalPoll[]
      */
-    public function findAllByZonesWithStats(array $zones): array
+    public function findAllByZonesWithStats(array $zones, bool $fetch = false): array
     {
-        return $this
+        $qb = $this
             ->createQueryBuilder('poll')
             ->innerJoin('poll.zone', 'zone')
-            ->innerJoin('zone.parents', 'parent')
-            ->innerJoin('zone.children', 'child')
             ->addSelect('zone')
             ->addSelect(sprintf('(
                 SELECT COUNT(vote_y.id) FROM %s AS vote_y
@@ -36,11 +35,22 @@ class LocalPollRepository extends AbstractPollRepository
                 INNER JOIN vote_n.choice AS choice_n
                 WHERE choice_n.value = :no AND choice_n.poll = poll
             ) AS no_count', Vote::class))
-            ->where('(zone IN (:zones) OR parent IN (:zones) OR child IN (:zones))')
+            ->where('(zone IN (:zones))')
             ->setParameter('zones', $zones)
             ->setParameter('yes', Choice::YES)
             ->setParameter('no', Choice::NO)
             ->orderBy('poll.createdAt', 'DESC')
+        ;
+
+        if ($fetch) {
+            $qb
+                ->leftJoin('zone.parents', 'parent')
+                ->leftJoin('zone.children', 'child')
+                ->orWhere('parent IN (:zones) OR child IN (:zones)')
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;
@@ -59,6 +69,22 @@ class LocalPollRepository extends AbstractPollRepository
             ])
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function unpublishExceptOf(Poll $poll): void
+    {
+        $this->createQueryBuilder('poll')
+            ->update()
+            ->set('poll.published', ':false')
+            ->where('poll != :poll AND poll.zone = :zone')
+            ->setParameters([
+                'poll' => $poll,
+                'false' => 0,
+                'zone' => $poll->getZone(),
+            ])
+            ->getQuery()
+            ->execute()
         ;
     }
 }
