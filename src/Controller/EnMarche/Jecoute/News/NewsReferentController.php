@@ -23,4 +23,9 @@ class NewsReferentController extends AbstractNewsController
     {
         return $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
     }
+
+    protected function isNotifiableNews(): bool
+    {
+        return false;
+    }
 }

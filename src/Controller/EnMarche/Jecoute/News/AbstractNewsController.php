@@ -6,7 +6,6 @@ use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Form\Jecoute\NewsFormType;
-use App\Jecoute\JecouteSpaceEnum;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\NewsRepository;
@@ -62,10 +61,10 @@ abstract class AbstractNewsController extends AbstractController
             $news->setZone($zones[0]);
         }
 
-        $options = ['zones' => $zones];
-        if (JecouteSpaceEnum::REFERENT_SPACE === $this->getSpaceName()) {
-            $options['is_notifiable'] = false;
-        }
+        $options = [
+            'zones' => $zones,
+            'is_notifiable' => $this->isNotifiableNews(),
+        ];
 
         $form = $this
             ->createForm(NewsFormType::class, $news, $options)
@@ -105,10 +104,11 @@ abstract class AbstractNewsController extends AbstractController
     {
         $zones = $this->getZones($this->getMainUser($request->getSession()));
 
-        $options = ['zones' => $zones, 'edit' => true];
-        if (JecouteSpaceEnum::REFERENT_SPACE === $this->getSpaceName()) {
-            $options['is_notifiable'] = false;
-        }
+        $options = [
+            'zones' => $zones,
+            'edit' => true,
+            'is_notifiable' => $this->isNotifiableNews(),
+        ];
 
         $form = $this
             ->createForm(NewsFormType::class, $news, $options)
@@ -177,6 +177,8 @@ abstract class AbstractNewsController extends AbstractController
     abstract protected function getSpaceName(): string;
 
     abstract protected function getZones(Adherent $adherent): array;
+
+    abstract protected function isNotifiableNews(): bool;
 
     /**
      * @return News[]

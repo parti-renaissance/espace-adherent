@@ -19,9 +19,8 @@ class ReferentNewsPublicationVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $zones = $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
-
-        return $adherent->isReferent() && \in_array($subject->getZone(), $zones, true);
+        return $adherent->isReferent()
+            && \in_array($subject->getZone(), $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray()), true);
     }
 
     protected function supports($attribute, $subject)
