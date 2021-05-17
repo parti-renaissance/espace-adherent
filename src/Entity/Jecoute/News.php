@@ -13,6 +13,7 @@ use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
+use App\Jecoute\JecouteSpaceEnum;
 use App\Validator\Jecoute\NewsTarget;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -194,6 +195,13 @@ class News implements AuthoredInterface
      */
     private $published = true;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $space;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -322,5 +330,18 @@ class News implements AuthoredInterface
     public function setAuthor(Adherent $author): void
     {
         $this->author = $author;
+    }
+
+    public function getSpace(): ?string
+    {
+        return $this->space;
+    }
+
+    public function setSpace(?string $space): void
+    {
+        if (null !== $space && !JecouteSpaceEnum::isValid($space)) {
+            throw new \InvalidArgumentException('Invalid space');
+        }
+        $this->space = $space;
     }
 }
