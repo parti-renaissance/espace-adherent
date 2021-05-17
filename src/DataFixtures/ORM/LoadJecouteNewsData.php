@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
+use App\Jecoute\JecouteSpaceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,23 +18,27 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $manager->persist($this->createNews(
+        $news1 = $this->createNews(
             self::NEWS_1_UUID,
             'Nouveau sondage disponible',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
             'global_topic',
             null,
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_59')
-        ));
+        );
+        $news1->setSpace(JecouteSpaceEnum::CANDIDATE_SPACE);
+        $manager->persist($news1);
 
-        $manager->persist($this->createNews(
+        $news2 = $this->createNews(
             self::NEWS_2_UUID,
             'Rassemblement',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
             'global_topic',
             'https://en-marche.fr',
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11')
-        ));
+        );
+        $news2->setSpace(JecouteSpaceEnum::CANDIDATE_SPACE);
+        $manager->persist($news2);
 
         $manager->persist($this->createNews(
             self::NEWS_3_UUID,

@@ -73,6 +73,7 @@ abstract class AbstractNewsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $news->setAuthor($user);
+            $news->setSpace($this->getSpaceName());
             $handler->buildTopic($news);
 
             $manager->persist($news);
