@@ -8,7 +8,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/features/bootstrap')
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
@@ -24,7 +24,6 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
         'PedroTroller/line_break_between_method_arguments' => [ 'max-args' => 20 ],
         'PedroTroller/line_break_between_statements' => true,
-        'PedroTroller/useless_comment' => true,
         'App/doctrine_migration_clean' => true,
         'App/sensio_to_symfony_route' => true,
         'App/method_to_route_annotation' => true,
@@ -35,7 +34,6 @@ return PhpCsFixer\Config::create()
     ->registerCustomFixers([
         new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer,
         new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenStatementsFixer,
-        new PedroTroller\CS\Fixer\Comment\UselessCommentFixer,
         new App\Fixer\DoctrineMigrationCleanFixer,
         new App\Fixer\SensioToSymfonyRouteFixer,
         new App\Fixer\MethodToRouteAnnotationFixer,
