@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
- *         "normalization_context": {"groups": {"event_read"}},
+ *         "normalization_context": {"groups": {"event_read", "image_owner_exposed"}},
  *         "pagination_client_items_per_page": true,
  *         "order": {"beginAt": "DESC"},
  *     },

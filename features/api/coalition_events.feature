@@ -62,6 +62,7 @@ Feature:
             "longitude": 2.313243
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         },
         {
@@ -97,6 +98,7 @@ Feature:
             "longitude": 2.313243
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         }
       ]
@@ -152,6 +154,7 @@ Feature:
             "longitude": 8.549969
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         },
         {
@@ -187,6 +190,7 @@ Feature:
             "longitude": -73.985992
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         }
       ]
@@ -242,6 +246,7 @@ Feature:
             "longitude": 2.313243
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         },
         {
@@ -277,6 +282,7 @@ Feature:
             "longitude": 5.362377
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         }
       ]
@@ -348,6 +354,7 @@ Feature:
        "category": "kiosque",
        "mode": "online",
        "visio_url": "http://visio.fr",
+       "image_url": null,
        "post_address": {
           "address": "50 rue de la villette",
           "postal_code": "69003",
@@ -414,6 +421,7 @@ Feature:
       "category": "reunion-dequipe",
       "mode": "online",
       "visio_url": "http://visio.fr",
+      "image_url": null,
       "post_address": {
         "address": "50 rue de la villette",
         "postal_code": "69003",
@@ -593,10 +601,10 @@ Feature:
       "time_zone": "Europe/Paris",
       "begin_at": "2022-05-12 10:30:30",
       "finish_at": "2022-05-12 16:30:30",
-	  "category": "kiosque",
+      "category": "kiosque",
       "mode": "online",
-	  "visio_url": "http://visio.fr",
-	  "post_address": {
+      "visio_url": "http://visio.fr",
+      "post_address": {
         "address": "50 rue de la villette",
         "postal_code": "69003",
         "city_name": "Lyon 3e",
@@ -695,6 +703,7 @@ Feature:
             "longitude": 2.313243
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         },
         {
@@ -730,6 +739,7 @@ Feature:
             "longitude": 2.313243
           },
           "visio_url": null,
+          "image_url": null,
           "mode": null
         }
       ]
