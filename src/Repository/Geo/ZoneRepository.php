@@ -187,7 +187,7 @@ class ZoneRepository extends ServiceEntityRepository
             ->leftJoin(ReferentTag::class, 'child_tag', Join::WITH, 'child = child_tag.zone')
             ->where($qb->expr()->orX(
                 'child.type = :country AND zone.type = :foreign_district',
-                'zone.type = :department AND zone.code != :paris_dpt',
+                'zone.type = :department',
                 'zone.type = :borough AND zone.name LIKE :paris',
                 'zone.type = :region AND zone.name = :corse'
             ))
@@ -200,7 +200,6 @@ class ZoneRepository extends ServiceEntityRepository
                 'country' => Zone::COUNTRY,
                 'foreign_district' => Zone::FOREIGN_DISTRICT,
                 'paris' => 'Paris %',
-                'paris_dpt' => '75',
                 'corse' => 'Corse',
             ])
             ->getQuery()
