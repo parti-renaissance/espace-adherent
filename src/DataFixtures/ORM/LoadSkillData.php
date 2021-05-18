@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadSkillData extends Fixture
 {
-    const SKILLS = [
+    public const SKILLS = [
         'S001' => 'Software',
         'S002' => 'Analyze',
         'S003' => 'Mathématiques',
@@ -22,7 +22,7 @@ class LoadSkillData extends Fixture
         'S011' => 'Animation d\'une équipe',
     ];
 
-    const SKILL_CI = [
+    public const SKILL_CI = [
         'Agriculture',
         'Elevage',
         'Culture',

@@ -155,7 +155,7 @@ class ProcurationSessionTest extends TestCase
             ->expects($this->once())
             ->method('get')
             ->with('app_procuration_election_context')
-            ->willReturn(\serialize($context))
+            ->willReturn(serialize($context))
         ;
 
         $this->assertEquals($context, $procuration->getElectionContext());

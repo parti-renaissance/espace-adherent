@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class BoardMember
 {
-    const AREA_FRANCE_METROPOLITAN = 'metropolitan';
-    const AREA_OVERSEAS_FRANCE = 'overseas';
-    const AREA_ABROAD = 'abroad';
+    public const AREA_FRANCE_METROPOLITAN = 'metropolitan';
+    public const AREA_OVERSEAS_FRANCE = 'overseas';
+    public const AREA_ABROAD = 'abroad';
 
-    const AREAS_CHOICES = [
+    public const AREAS_CHOICES = [
         'board_member.area.metropolitan' => self::AREA_FRANCE_METROPOLITAN,
         'board_member.area.overseas' => self::AREA_OVERSEAS_FRANCE,
         'board_member.area.abroad' => self::AREA_ABROAD,

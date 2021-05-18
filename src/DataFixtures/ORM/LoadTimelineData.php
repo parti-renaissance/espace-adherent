@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadTimelineData extends Fixture
 {
-    const PROFILES = [
+    public const PROFILES = [
         'TP001' => [
             'title' => [
                 'fr' => 'Chef d\'entreprise',
@@ -84,7 +84,7 @@ class LoadTimelineData extends Fixture
         ],
     ];
 
-    const THEMES = [
+    public const THEMES = [
         'TT001' => [
             'title' => [
                 'fr' => 'Action publique et fonction publique',
@@ -159,7 +159,7 @@ class LoadTimelineData extends Fixture
         ],
     ];
 
-    const MANIFESTOS = [
+    public const MANIFESTOS = [
         'TMA001' => [
             'title' => [
                 'fr' => 'Présidentielle 2017',
@@ -204,7 +204,7 @@ class LoadTimelineData extends Fixture
         ],
     ];
 
-    const MEASURES = [
+    public const MEASURES = [
         'TM001' => [
             'title' => [
                 'fr' => 'Élargir les horaires d’ouverture des services publics',

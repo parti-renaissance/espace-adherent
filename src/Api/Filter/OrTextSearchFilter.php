@@ -8,8 +8,8 @@ use Doctrine\ORM\QueryBuilder;
 
 final class OrTextSearchFilter extends AbstractContextAwareFilter
 {
-    const PROPERTY_SUFFIX = '_contains';
-    const IGNORED_WORDS = ['avec', 'après', 'avant', 'depuis', 'jusque', 'jusqu’à', 'jusqu\'à', 'pendant', 'à côté',
+    public const PROPERTY_SUFFIX = '_contains';
+    public const IGNORED_WORDS = ['avec', 'après', 'avant', 'depuis', 'jusque', 'jusqu’à', 'jusqu\'à', 'pendant', 'à côté',
         'à droite', 'à gauche', 'au-delà', 'au-dessous', 'au-dessus', 'à travers', 'derrière', 'en dehors', 'contre',
         'd\'après', 'd’après', 'en face', 'chez', 'hors', 'loin', 'par', 'près', 'sous', 'sur', 'vers', 'grâce à',
         'malgré', 'pour', 'contre', 'entre', ' sauf', 'excepté', 'par', 'parmi', 'sans', 'selon', 'dans', 'en',

@@ -301,7 +301,7 @@ abstract class ThematicCommunityMembership
         }
 
         if (!empty($roles)) {
-            return \implode(' / ', $roles);
+            return implode(' / ', $roles);
         }
 
         return 'Adhérent';

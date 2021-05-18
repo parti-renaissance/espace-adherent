@@ -4,14 +4,14 @@ namespace App\Summary;
 
 class Contract
 {
-    const INTERNSHIP = 'stage';
-    const PERMANENT = 'CDI';
-    const TEMPORARY = 'CDD';
-    const VOLUNTEERING = 'bénévolat';
-    const ASSIGNMENT = 'mission';
-    const OTHER = 'autre';
+    public const INTERNSHIP = 'stage';
+    public const PERMANENT = 'CDI';
+    public const TEMPORARY = 'CDD';
+    public const VOLUNTEERING = 'bénévolat';
+    public const ASSIGNMENT = 'mission';
+    public const OTHER = 'autre';
 
-    const ALL = [
+    public const ALL = [
         self::INTERNSHIP,
         self::PERMANENT,
         self::TEMPORARY,
@@ -20,7 +20,7 @@ class Contract
         self::OTHER,
     ];
 
-    const CHOICES = [
+    public const CHOICES = [
         'member_summary.contract.internship' => self::INTERNSHIP,
         'member_summary.contract.permanent' => self::PERMANENT,
         'member_summary.contract.temporary' => self::TEMPORARY,

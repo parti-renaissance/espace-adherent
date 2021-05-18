@@ -24,9 +24,9 @@ class TonMacronControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    const INVITATION_PATH = '/pourquoivoterenmarche';
-    const INVITATION_RESTART_PATH = '/pourquoivoterenmarche/recommencer';
-    const INVITATION_SENT_PATH = '/pourquoivoterenmarche/%s/merci';
+    public const INVITATION_PATH = '/pourquoivoterenmarche';
+    public const INVITATION_RESTART_PATH = '/pourquoivoterenmarche/recommencer';
+    public const INVITATION_SENT_PATH = '/pourquoivoterenmarche/%s/merci';
 
     /* @var TonMacronChoiceRepository */
     private $tonMacronChoiceRepository;

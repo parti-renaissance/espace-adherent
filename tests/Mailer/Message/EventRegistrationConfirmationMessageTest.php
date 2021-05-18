@@ -7,7 +7,7 @@ use App\Mailer\Message\EventRegistrationConfirmationMessage;
 
 class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 {
-    const EVENT_LINK = 'http://en-marche.fr/evenements/201/2017-12-27-evenement-a-lyon';
+    public const EVENT_LINK = 'http://en-marche.fr/evenements/201/2017-12-27-evenement-a-lyon';
 
     public function testCreateMessageFromEventRegistration()
     {

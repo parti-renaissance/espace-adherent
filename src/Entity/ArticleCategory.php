@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ArticleCategory
 {
-    const DEFAULT_CATEGORY = 'tout';
+    public const DEFAULT_CATEGORY = 'tout';
 
     /**
      * @var int

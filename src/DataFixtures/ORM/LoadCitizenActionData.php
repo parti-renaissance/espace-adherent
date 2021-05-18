@@ -13,15 +13,15 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadCitizenActionData extends Fixture implements DependentFixtureInterface
 {
-    const CITIZEN_ACTION_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15f';
-    const CITIZEN_ACTION_2_UUID = '36ab5f85-5feb-4ff7-8218-d2da63045b74';
-    const CITIZEN_ACTION_3_UUID = '0389f98c-3e6c-4c92-ba80-19ab4a73e34b';
-    const CITIZEN_ACTION_4_UUID = '39f25bd2-f866-4c0d-84da-2387898b8db1';
-    const CITIZEN_ACTION_5_UUID = '92c8c6c9-928e-4686-8431-2e09254feb77';
-    const CITIZEN_ACTION_6_UUID = '0e533344-47cd-4dc4-909d-59f8cda21006';
-    const CITIZEN_ACTION_7_UUID = 'b5236488-a534-459a-a1a3-6df85b7c5ad9';
-    const CITIZEN_ACTION_8_UUID = 'a02ca3c7-1b07-46cd-81b2-d309258e53f9';
-    const CITIZEN_ACTION_9_UUID = '8d8a8ce7-ba60-4750-a300-bf0356e0ae0f';
+    public const CITIZEN_ACTION_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15f';
+    public const CITIZEN_ACTION_2_UUID = '36ab5f85-5feb-4ff7-8218-d2da63045b74';
+    public const CITIZEN_ACTION_3_UUID = '0389f98c-3e6c-4c92-ba80-19ab4a73e34b';
+    public const CITIZEN_ACTION_4_UUID = '39f25bd2-f866-4c0d-84da-2387898b8db1';
+    public const CITIZEN_ACTION_5_UUID = '92c8c6c9-928e-4686-8431-2e09254feb77';
+    public const CITIZEN_ACTION_6_UUID = '0e533344-47cd-4dc4-909d-59f8cda21006';
+    public const CITIZEN_ACTION_7_UUID = 'b5236488-a534-459a-a1a3-6df85b7c5ad9';
+    public const CITIZEN_ACTION_8_UUID = 'a02ca3c7-1b07-46cd-81b2-d309258e53f9';
+    public const CITIZEN_ACTION_9_UUID = '8d8a8ce7-ba60-4750-a300-bf0356e0ae0f';
 
     private $eventFactory;
     private $registrationFactory;

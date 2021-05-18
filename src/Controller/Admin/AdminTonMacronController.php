@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminTonMacronController extends AbstractController
 {
-    const PER_PAGE = 1000;
+    public const PER_PAGE = 1000;
 
     /**
      * @Route("/export/choices", name="app_admin_tonmacron_export_choices", methods={"GET"})

@@ -263,7 +263,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             ))
             && null === ($committeeMandate = current($committeeMandates))->getQuality()
         ) {
-            return \sprintf(
+            return sprintf(
                 'l\'adhérent a un mandat dans ce conseil territorial, dans le comité "%s".',
                 $committeeMandate->getCommittee()->getName()
             );
@@ -305,10 +305,10 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             $adherent,
             $this->getQualityName(),
             $membership ? $membership->getTerritorialCouncil() : null,
-            $membership ? \array_map(function (TerritorialCouncilQuality $quality) {
+            $membership ? array_map(function (TerritorialCouncilQuality $quality) {
                 return $quality->getName();
             }, $membership->getQualities()->toArray()) : [],
-            $territorialCouncils ? \array_map(function (TerritorialCouncil $territorialCouncil) {
+            $territorialCouncils ? array_map(function (TerritorialCouncil $territorialCouncil) {
                 return $territorialCouncil->getNameCodes();
             }, $territorialCouncils) : []
         );

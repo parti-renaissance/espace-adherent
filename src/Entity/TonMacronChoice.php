@@ -18,18 +18,18 @@ class TonMacronChoice
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
-    const MAIL_INTRODUCTION_KEY = 'S00C01';
-    const MAIL_CONCLUSION_KEY = 'S00C02';
-    const MALE_KEY = 'S00C03';
-    const FEMALE_KEY = 'S00C04';
+    public const MAIL_INTRODUCTION_KEY = 'S00C01';
+    public const MAIL_CONCLUSION_KEY = 'S00C02';
+    public const MALE_KEY = 'S00C03';
+    public const FEMALE_KEY = 'S00C04';
 
-    const STEP_NOT_VISIBLE = 'ton_macron.not_visible';
-    const STEP_FRIEND_PROFESSIONAL_POSITION = 'ton_macron.friend_professional_position';
-    const STEP_FRIEND_PROJECT = 'ton_macron.friend_project';
-    const STEP_FRIEND_INTERESTS = 'ton_macron.friend_interests';
-    const STEP_SELF_REASONS = 'ton_macron.self_reasons';
+    public const STEP_NOT_VISIBLE = 'ton_macron.not_visible';
+    public const STEP_FRIEND_PROFESSIONAL_POSITION = 'ton_macron.friend_professional_position';
+    public const STEP_FRIEND_PROJECT = 'ton_macron.friend_project';
+    public const STEP_FRIEND_INTERESTS = 'ton_macron.friend_interests';
+    public const STEP_SELF_REASONS = 'ton_macron.self_reasons';
 
-    const STEPS = [
+    public const STEPS = [
         self::STEP_NOT_VISIBLE => 0,
         self::STEP_FRIEND_PROFESSIONAL_POSITION => 1,
         self::STEP_FRIEND_PROJECT => 2,

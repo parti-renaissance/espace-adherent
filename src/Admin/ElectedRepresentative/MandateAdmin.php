@@ -54,7 +54,7 @@ class MandateAdmin extends AbstractAdmin
                 'placeholder' => '--',
                 'choices' => LaREMSupportEnum::toArray(),
                 'choice_label' => function ($choice, $key) {
-                    return 'elected_representative.mandate.larem_support.'.\mb_strtolower($key);
+                    return 'elected_representative.mandate.larem_support.'.mb_strtolower($key);
                 },
                 'attr' => ['class' => 'width-135'],
             ])

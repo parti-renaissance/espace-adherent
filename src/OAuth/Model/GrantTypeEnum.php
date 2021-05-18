@@ -13,13 +13,13 @@ use MyCLabs\Enum\Enum;
  */
 final class GrantTypeEnum extends Enum
 {
-    const AUTHORIZATION_CODE = 'authorization_code';
-    const REFRESH_TOKEN = 'refresh_token';
-    const CLIENT_CREDENTIALS = 'client_credentials';
-    const PASSWORD = 'password';
-    const IMPLICIT = 'implicit';
+    public const AUTHORIZATION_CODE = 'authorization_code';
+    public const REFRESH_TOKEN = 'refresh_token';
+    public const CLIENT_CREDENTIALS = 'client_credentials';
+    public const PASSWORD = 'password';
+    public const IMPLICIT = 'implicit';
 
-    const GRANT_TYPES_ENABLED = [
+    public const GRANT_TYPES_ENABLED = [
         self::AUTHORIZATION_CODE,
         self::REFRESH_TOKEN,
         self::CLIENT_CREDENTIALS,

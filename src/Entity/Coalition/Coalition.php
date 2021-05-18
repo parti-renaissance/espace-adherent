@@ -188,7 +188,7 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
 
     public function getImagePath(): string
     {
-        return $this->imageName ? \sprintf('images/coalitions/%s', $this->getImageName()) : '';
+        return $this->imageName ? sprintf('images/coalitions/%s', $this->getImageName()) : '';
     }
 
     public function getEvents(): Collection

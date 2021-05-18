@@ -43,7 +43,7 @@ class ReportControllerTest extends WebTestCase
     {
         yield 'Citizen action' => [
             CitizenActionReport::class,
-            sprintf('/action-citoyenne/%s-projet-citoyen-de-zurich', \date('Y-m-d', strtotime('+3 days'))),
+            sprintf('/action-citoyenne/%s-projet-citoyen-de-zurich', date('Y-m-d', strtotime('+3 days'))),
             LoadCitizenActionData::CITIZEN_ACTION_1_UUID,
         ];
         yield 'Citizen project' => [
@@ -58,7 +58,7 @@ class ReportControllerTest extends WebTestCase
         ];
         yield 'Event' => [
             CommunityEventReport::class,
-            sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', \date('Y-m-d', strtotime('+17 days'))),
+            sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', date('Y-m-d', strtotime('+17 days'))),
             LoadCommitteeEventData::EVENT_5_UUID,
         ];
     }
@@ -127,7 +127,7 @@ class ReportControllerTest extends WebTestCase
 
     private function assertReportUri(Crawler $crawler, $reportClass, $subjectUuid, $subjectUrl): void
     {
-        $reportUri = \sprintf(
+        $reportUri = sprintf(
             'http://%s/report/%s/%s?redirectUrl=%s',
             $this->hosts['app'],
             $this->getUriTypeFromReportCLass($reportClass),
@@ -142,10 +142,10 @@ class ReportControllerTest extends WebTestCase
     {
         $this->assertContains($reportClass, ReportType::LIST);
 
-        $type = \array_search($reportClass, ReportType::LIST, true);
+        $type = array_search($reportClass, ReportType::LIST, true);
 
         $this->assertContains($type, ReportType::URI_MAP);
 
-        return \array_search($type, ReportType::URI_MAP, true);
+        return array_search($type, ReportType::URI_MAP, true);
     }
 }

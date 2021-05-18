@@ -539,7 +539,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $count = $found->count();
 
         if ($count > 1) {
-            throw new CommitteeProvisionalSupervisorException(\sprintf('More than one %s provisional supervisor has been found for committee with UUID "%s".', $this->getUuid(), $gender));
+            throw new CommitteeProvisionalSupervisorException(sprintf('More than one %s provisional supervisor has been found for committee with UUID "%s".', $this->getUuid(), $gender));
         }
 
         return $count > 0 ? $found->first() : null;
@@ -573,7 +573,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $count = $mandates->count();
 
         if ($count > 1) {
-            throw new CommitteeSupervisorException(\sprintf('More than one %s %s supervisor has been found for committee with UUID "%s".', $gender, $isProvisional ? 'provisional' : '', $this->getUuid()));
+            throw new CommitteeSupervisorException(sprintf('More than one %s %s supervisor has been found for committee with UUID "%s".', $gender, $isProvisional ? 'provisional' : '', $this->getUuid()));
         }
 
         return $count > 0 ? $mandates->first() : null;

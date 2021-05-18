@@ -125,7 +125,7 @@ class LoadZoneData extends Fixture implements DependentFixtureInterface
 
         foreach (self::DEPARTMENTS as $code => $name) {
             $zoneDpt = new Zone($this->getReference('zone-category-département'), $name);
-            $zoneDpt->addReferentTag($this->getReference('referent_tag_'.\mb_strtolower($code)));
+            $zoneDpt->addReferentTag($this->getReference('referent_tag_'.mb_strtolower($code)));
 
             $manager->persist($zoneDpt);
             $this->setReference("zone-dpt-$code", $zoneDpt);
@@ -133,7 +133,7 @@ class LoadZoneData extends Fixture implements DependentFixtureInterface
 
         foreach (self::REGIONS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-région'), $name);
-            $code = \str_pad($code, 2, '0', \STR_PAD_LEFT);
+            $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
             $zoneRegion->addReferentTag($this->getReference("referent_tag_$code"));
 
             $manager->persist($zoneRegion);
@@ -142,7 +142,7 @@ class LoadZoneData extends Fixture implements DependentFixtureInterface
 
         foreach (self::DISTRICTS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-circonscription'), $name);
-            $code = \str_pad($code, 2, '0', \STR_PAD_LEFT);
+            $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
             $zoneRegion->addReferentTag($this->getReference("referent_tag_circo_$code"));
 
             $manager->persist($zoneRegion);

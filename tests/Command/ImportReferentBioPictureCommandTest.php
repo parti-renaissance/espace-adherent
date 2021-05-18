@@ -14,11 +14,11 @@ use Tests\App\Controller\ControllerTestTrait;
 class ImportReferentBioPictureCommandTest extends WebTestCase
 {
     use ControllerTestTrait;
-    const VALID_ARCHIVE_NAME = 'correct.zip';
-    const ARCHIVE_WITHOUT_CSV_NAME = 'archive_without_csv.zip';
-    const ARCHIVE_WITH_NOT_REFERENT_IN_DB = 'archive_with_not_referent_in_db.zip';
-    const ARCHIVE_WITH_MISSING_IMAGE_FILE = 'archive_with_missing_image_file.zip';
-    const ARCHIVES_NAME = [
+    public const VALID_ARCHIVE_NAME = 'correct.zip';
+    public const ARCHIVE_WITHOUT_CSV_NAME = 'archive_without_csv.zip';
+    public const ARCHIVE_WITH_NOT_REFERENT_IN_DB = 'archive_with_not_referent_in_db.zip';
+    public const ARCHIVE_WITH_MISSING_IMAGE_FILE = 'archive_with_missing_image_file.zip';
+    public const ARCHIVES_NAME = [
         self::VALID_ARCHIVE_NAME,
         self::ARCHIVE_WITHOUT_CSV_NAME,
         self::ARCHIVE_WITH_NOT_REFERENT_IN_DB,

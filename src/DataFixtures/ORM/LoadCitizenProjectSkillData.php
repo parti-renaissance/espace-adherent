@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadCitizenProjectSkillData extends Fixture
 {
-    const SKILLS = [
+    public const SKILLS = [
         'CPS001' => 'Paysage',
         'CPS002' => 'Jardinage / Botanique',
         'CPS003' => 'Gestion des parcs nationaux',

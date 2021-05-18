@@ -185,7 +185,7 @@ class CandidateFilesControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/espace-candidat/documents/%s', $file->getUuid())
+            sprintf('/espace-candidat/documents/%s', $file->getUuid())
         );
 
         self::assertResponseStatusCode($statusCode, $this->client->getResponse());

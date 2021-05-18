@@ -260,7 +260,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
 
     public function getQualityZonesAsString(): string
     {
-        return implode(', ', \array_map(function (TerritorialCouncilQuality $quality) {
+        return implode(', ', array_map(function (TerritorialCouncilQuality $quality) {
             return $quality->getZone();
         }, $this->qualities->toArray()));
     }

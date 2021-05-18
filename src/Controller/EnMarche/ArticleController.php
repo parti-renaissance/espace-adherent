@@ -16,7 +16,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class ArticleController extends AbstractController
 {
-    const PER_PAGE = 12;
+    public const PER_PAGE = 12;
 
     /**
      * @Route(

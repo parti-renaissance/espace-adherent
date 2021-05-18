@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class NullableAddress implements AddressInterface, GeocodableInterface
 {
-    const FRANCE = 'FR';
+    public const FRANCE = 'FR';
 
     /**
      * @Assert\Length(max=150, maxMessage="common.address.max_length")

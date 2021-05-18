@@ -15,13 +15,13 @@ class SearchParametersFilter
 {
     public const CACHE_KEY_PREFIX = 'search_geocoding_city_';
 
-    const PARAMETER_QUERY = 'q';
-    const PARAMETER_RADIUS = 'r';
-    const PARAMETER_CITY = 'c';
-    const PARAMETER_TYPE = 't';
-    const PARAMETER_OFFSET = 'offset';
-    const PARAMETER_EVENT_CATEGORY = 'ec';
-    const PARAMETER_REFERENT_EVENTS = 're';
+    public const PARAMETER_QUERY = 'q';
+    public const PARAMETER_RADIUS = 'r';
+    public const PARAMETER_CITY = 'c';
+    public const PARAMETER_TYPE = 't';
+    public const PARAMETER_OFFSET = 'offset';
+    public const PARAMETER_EVENT_CATEGORY = 'ec';
+    public const PARAMETER_REFERENT_EVENTS = 're';
 
     public const DEFAULT_QUERY = '';
     public const DEFAULT_TYPE = self::TYPE_COMMITTEES;

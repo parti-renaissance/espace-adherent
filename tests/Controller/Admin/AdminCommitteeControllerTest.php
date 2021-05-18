@@ -41,7 +41,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/members/%d/%s-mandate', $committee->getId(), $adherent->getId(), $action)
+            sprintf('/admin/committee/%d/members/%d/%s-mandate', $committee->getId(), $adherent->getId(), $action)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
     }
@@ -61,7 +61,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/%s', $mandate->getId(), $action)
+            sprintf('/admin/committee/mandates/%s/%s', $mandate->getId(), $action)
         );
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -78,10 +78,10 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(\sprintf('/admin/committee/%d/mandates', $mandate->getCommittee()->getId()), $this->client);
+        $this->assertClientIsRedirectedTo(sprintf('/admin/committee/%d/mandates', $mandate->getCommittee()->getId()), $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -99,7 +99,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -126,7 +126,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -156,7 +156,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -195,7 +195,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -266,7 +266,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -313,7 +313,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+            sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -330,7 +330,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+            sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -344,7 +344,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+            sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -368,7 +368,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+            sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -396,7 +396,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+            sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -432,7 +432,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+            sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -484,10 +484,10 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/close', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/close', $mandate->getId())
         );
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(\sprintf('/admin/committee/%d/mandates', $mandate->getCommittee()->getId()), $this->client);
+        $this->assertClientIsRedirectedTo(sprintf('/admin/committee/%d/mandates', $mandate->getCommittee()->getId()), $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -505,7 +505,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%d/close', $mandate->getId())
+            sprintf('/admin/committee/mandates/%d/close', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

@@ -5,16 +5,17 @@ namespace App\Fixer;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class SensioToSymfonyRouteFixer extends AbstractFixer
 {
-    public function getName()
+    public function getName(): string
     {
         return 'App/'.parent::getName();
     }
 
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Replace Sensio\Bundle\FrameworkExtraBundle\Configuration\Route by Symfony\Component\Routing\Annotation\Route',
@@ -32,22 +33,22 @@ namespace App\Controller;
         );
     }
 
-    public function isRisky()
+    public function isRisky(): bool
     {
         return false;
     }
 
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([\T_USE, \T_DOC_COMMENT]);
     }
 
-    public function supports(\SplFileInfo $file)
+    public function supports(\SplFileInfo $file): bool
     {
         return preg_match('/Controller$/', $file->getBasename('.php'));
     }
 
-    public function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $isAimedRoute = false;
         $hasServiceOption = false;
@@ -88,7 +89,7 @@ namespace App\Controller;
         }
     }
 
-    private function isSensioBundleFrameworkExtraBundleConfigurationRoute(array $tokens)
+    private function isSensioBundleFrameworkExtraBundleConfigurationRoute(array $tokens): bool
     {
         $namespace = implode('',
             array_map(
@@ -102,7 +103,7 @@ namespace App\Controller;
         return 'use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;' === $namespace;
     }
 
-    private function hasServiceOption(string $content)
+    private function hasServiceOption(string $content): bool
     {
         return false !== strpos($content, '@Route') && false !== strpos($content, 'service');
     }

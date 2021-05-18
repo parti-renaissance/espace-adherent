@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminUnregistrationController extends AbstractController
 {
-    const PER_PAGE = 1000;
+    public const PER_PAGE = 1000;
 
     /**
      * @Route("/export", name="app_admin_unregistration_export", methods={"GET"})

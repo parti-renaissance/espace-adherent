@@ -125,7 +125,7 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
             $coalition->addFollower($coalition->createFollower($adherent));
         }
 
-        $this->addReference(\sprintf('coalition-%s', mb_strtolower($name)), $coalition);
+        $this->addReference(sprintf('coalition-%s', mb_strtolower($name)), $coalition);
 
         return $coalition;
     }

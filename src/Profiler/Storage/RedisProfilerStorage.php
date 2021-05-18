@@ -16,8 +16,8 @@ class RedisProfilerStorage implements ProfilerStorageInterface
     private const TOKEN_PREFIX = 'sf_prof_';
     private const INDEX_NAME = 'index';
 
-    const REDIS_SERIALIZER_NONE = 0;
-    const REDIS_SERIALIZER_PHP = 1;
+    public const REDIS_SERIALIZER_NONE = 0;
+    public const REDIS_SERIALIZER_PHP = 1;
 
     /**
      * @var Client

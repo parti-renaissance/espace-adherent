@@ -45,7 +45,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), 'incorrect_status')
+            sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), 'incorrect_status')
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         $this->assertStringContainsString('Status &quot;incorrect_status&quot; is not authorized', $this->client->getResponse()->getContent());
@@ -62,7 +62,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
+            sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         $this->assertStringContainsString($isResolved ? 'Ce log n\'est pas encore résolu.' : 'Ce log est déjà résolu.', $this->client->getResponse()->getContent());
@@ -79,7 +79,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
+            sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
         $this->assertStringContainsString('Invalid Csrf token provided.', $this->client->getResponse()->getContent());

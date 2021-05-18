@@ -174,7 +174,7 @@ class DelegatedAccess
 
     public function getAccesses(): array
     {
-        return $this->accesses ? \array_filter($this->accesses) : [];
+        return $this->accesses ? array_filter($this->accesses) : [];
     }
 
     public function setAccesses(array $accesses): void

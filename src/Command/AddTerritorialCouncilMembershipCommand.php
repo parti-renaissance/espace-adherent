@@ -180,7 +180,7 @@ class AddTerritorialCouncilMembershipCommand extends Command
 
         if (!$terco) {
             $this->io->warning(
-                \sprintf(
+                sprintf(
                     'TerritorialCouncil with referent tag "%s" (code %s) has not been found (%s with email %s).',
                     $zone->getName(),
                     $zone->getCode(),
@@ -194,7 +194,7 @@ class AddTerritorialCouncilMembershipCommand extends Command
 
         if ($member = $this->adherentRepository->findByTerritorialCouncilAndQuality($terco, $qualityName, $adherent)) {
             $this->io->warning(
-                \sprintf(
+                sprintf(
                     'Adherent (%s) cannot be added to TerritorialCouncil "%s" with quality "%s", because Adherent (%s) is already its member with this quality.',
                     $adherent->getEmailAddress(),
                     $terco->getNameCodes(),
@@ -209,7 +209,7 @@ class AddTerritorialCouncilMembershipCommand extends Command
         $quality = new TerritorialCouncilQuality($qualityName, $zone->getName());
         if ($adherent->hasTerritorialCouncilMembership()) {
             if ($adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getId() === $terco->getId()) {
-                $this->io->warning(\sprintf(
+                $this->io->warning(sprintf(
                     'Adherent ("%s") cannot be added as member of TerritorialCouncil "%s", because he is already its member',
                     $adherent->getEmailAddress(),
                     $terco->getNameCodes()
@@ -218,7 +218,7 @@ class AddTerritorialCouncilMembershipCommand extends Command
                 return;
             }
 
-            $this->io->warning(\sprintf(
+            $this->io->warning(sprintf(
                 'Adherent ("%s") cannot be added as member of TerritorialCouncil "%s", because he is already member of "%s".',
                 $adherent->getEmailAddress(),
                 $terco->getNameCodes(),

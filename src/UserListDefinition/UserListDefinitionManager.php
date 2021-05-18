@@ -66,7 +66,7 @@ class UserListDefinitionManager
 
         foreach ($userListDefinitions as $memberId => $lists) {
             if (!$member = $repository->find($memberId)) {
-                throw new UserListDefinitionMemberException(\sprintf('%s with id "%s" has not been found', $objectClass, $memberId));
+                throw new UserListDefinitionMemberException(sprintf('%s with id "%s" has not been found', $objectClass, $memberId));
             }
 
             if ($member instanceof ElectedRepresentative) {
@@ -77,21 +77,21 @@ class UserListDefinitionManager
             foreach ($lists as $status => $userListDefinitionIds) {
                 foreach ($userListDefinitionIds as $userListDefinitionId) {
                     if (!$userListDefinition = $this->userListDefinitionRepository->find($userListDefinitionId)) {
-                        throw new UserListDefinitionException(\sprintf('UserListDefinition with id "%s" has not been found', $userListDefinitionId));
+                        throw new UserListDefinitionException(sprintf('UserListDefinition with id "%s" has not been found', $userListDefinitionId));
                     }
 
                     if (!$this->authorizationChecker->isGranted(
                         UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE,
                         $userListDefinition->getType()
                     )) {
-                        throw new UserListDefinitionException(\sprintf('UserListDefinition type "%s" cannot be managed by connected user', $userListDefinition->getType()));
+                        throw new UserListDefinitionException(sprintf('UserListDefinition type "%s" cannot be managed by connected user', $userListDefinition->getType()));
                     }
 
                     if (!$this->authorizationChecker->isGranted(
                         UserListDefinitionPermissions::ABLE_TO_MANAGE_MEMBER,
                         $member
                     )) {
-                        throw new UserListDefinitionMemberException(\sprintf('Connected user cannot manage %s member', \get_class($member)));
+                        throw new UserListDefinitionMemberException(sprintf('Connected user cannot manage %s member', \get_class($member)));
                     }
 
                     switch ($status) {

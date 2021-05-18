@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportCitizenProjectSkillsCommand extends Command
 {
-    const CITIZEN_PROJECT_SKILLS = [
+    public const CITIZEN_PROJECT_SKILLS = [
         'Juriste (conseil juridique)',
         'Juriste (droit des associations, sociétés…)',
         'Juriste (propriété intellectuelle)',

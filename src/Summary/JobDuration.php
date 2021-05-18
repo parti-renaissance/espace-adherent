@@ -4,17 +4,17 @@ namespace App\Summary;
 
 class JobDuration
 {
-    const PART_TIME = 'temps partiel';
-    const FULL_TIME = 'temps plein';
-    const PUNCTUALLY = 'ponctuellement';
+    public const PART_TIME = 'temps partiel';
+    public const FULL_TIME = 'temps plein';
+    public const PUNCTUALLY = 'ponctuellement';
 
-    const ALL = [
+    public const ALL = [
         self::PART_TIME,
         self::FULL_TIME,
         self::PUNCTUALLY,
     ];
 
-    const CHOICES = [
+    public const CHOICES = [
         'member_summary.job_duration.part_time' => self::PART_TIME,
         'member_summary.job_duration.full_time' => self::FULL_TIME,
         'member_summary.job_duration.punctually' => self::PUNCTUALLY,

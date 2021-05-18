@@ -25,7 +25,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    const TYPES = [
+    public const TYPES = [
         [
             'id' => 2,
             'type' => 'elected_representative',

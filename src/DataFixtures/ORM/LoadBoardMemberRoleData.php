@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadBoardMemberRoleData extends Fixture
 {
-    const BOARD_MEMBER_ROLES = [
+    public const BOARD_MEMBER_ROLES = [
         'adherent' => 'Adhérent(e) membre de la société civile',
         'supervisor' => 'Animateur(trice) de comités locaux',
         'referent' => 'Référent(e) territorial(e)',

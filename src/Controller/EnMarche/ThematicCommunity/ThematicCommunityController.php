@@ -101,7 +101,7 @@ class ThematicCommunityController extends AbstractController
             $success = $this->handler->join($membership);
 
             if ($success) {
-                $this->addFlash('info', \sprintf('Nous vous avons envoyé un email à l\'adresse "%s". Veuillez cliquer sur le lien contenu dans cet email pour confirmer votre inscription à la communauté.', $membership->getEmail()));
+                $this->addFlash('info', sprintf('Nous vous avons envoyé un email à l\'adresse "%s". Veuillez cliquer sur le lien contenu dans cet email pour confirmer votre inscription à la communauté.', $membership->getEmail()));
             } else {
                 $this->addFlash('error', 'Cette adresse email est déjà enregistrée dans cette communauté.');
             }
@@ -135,7 +135,7 @@ class ThematicCommunityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handler->editMembership($membership);
 
-            $this->addFlash('info', \sprintf('Vos préférences pour la communauté %s ont bien été sauvegardées.', $membership->getCommunity()->getName()));
+            $this->addFlash('info', sprintf('Vos préférences pour la communauté %s ont bien été sauvegardées.', $membership->getCommunity()->getName()));
 
             return $this->redirectToRoute('app_thematic_community_index');
         }
@@ -157,7 +157,7 @@ class ThematicCommunityController extends AbstractController
 
         $this->handler->unsubscribe($membership);
 
-        $this->addFlash('info', \sprintf('Vous ne faites plus partie de la communauté %s.', $membership->getCommunity()->getName()));
+        $this->addFlash('info', sprintf('Vous ne faites plus partie de la communauté %s.', $membership->getCommunity()->getName()));
 
         return $this->redirectToRoute('app_thematic_community_index');
     }
@@ -187,7 +187,7 @@ class ThematicCommunityController extends AbstractController
 
         $this->handler->sendConfirmEmail($membership);
 
-        $this->addFlash('info', \sprintf('Un email de confirmation vous a été renvoyé à l\'adresse "%s".', $membership->getEmail()));
+        $this->addFlash('info', sprintf('Un email de confirmation vous a été renvoyé à l\'adresse "%s".', $membership->getEmail()));
 
         return $this->redirectToRoute('app_thematic_community_index');
     }

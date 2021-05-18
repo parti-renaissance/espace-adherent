@@ -29,8 +29,8 @@ class OfficialReportManager
 
         if ($report->getFile() instanceof UploadedFile) {
             $version = $report->getLastVersion() ?: 0;
-            $filename = \sprintf('%s.%s',
-                md5(\sprintf('%s@%s@%s', $report->getUuid(), $report->getFile()->getClientOriginalName(), $version)),
+            $filename = sprintf('%s.%s',
+                md5(sprintf('%s@%s@%s', $report->getUuid(), $report->getFile()->getClientOriginalName(), $version)),
                 $report->getFile()->getClientOriginalExtension()
             );
             $document = new OfficialReportDocument(

@@ -23,7 +23,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
  */
 class BoardMemberController extends AbstractController
 {
-    const TOKEN_ID = 'board_member_search';
+    public const TOKEN_ID = 'board_member_search';
 
     /**
      * @Route("/", name="app_board_member_home", methods={"GET"})

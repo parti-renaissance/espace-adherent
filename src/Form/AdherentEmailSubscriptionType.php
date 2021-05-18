@@ -71,7 +71,7 @@ class AdherentEmailSubscriptionType extends AbstractType
     {
         $subscriptionTypes = $view->children['subscriptionTypes']->vars['choices'];
 
-        $view->children['subscriptionTypes']->vars['choices'] = \array_merge([
+        $view->children['subscriptionTypes']->vars['choices'] = array_merge([
             'subscription_type.group.communication_mobile' => null,
             'subscription_type.group.communication_emails' => null,
             'subscription_type.group.territories_emails' => null,

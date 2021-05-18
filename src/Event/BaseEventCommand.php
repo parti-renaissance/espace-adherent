@@ -71,9 +71,11 @@ class BaseEventCommand
 
     private $removeImage = false;
 
+    /**
+     * @param ?Adherent $author Author may be null if unregistered when editing an event
+     */
     protected function __construct(
         ?Adherent $author,
-        // Author may be null if unregistered when editing an event
         UuidInterface $uuid = null,
         Address $address = null,
         \DateTimeInterface $beginAt = null,

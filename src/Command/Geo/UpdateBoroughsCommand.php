@@ -146,7 +146,7 @@ final class UpdateBoroughsCommand extends Command
 
         $this->io->section('Processing boroughs');
 
-        $this->io->progressStart(\array_sum(array_map('count', self::BOROUGHS)));
+        $this->io->progressStart(array_sum(array_map('count', self::BOROUGHS)));
 
         foreach (self::BOROUGHS as $cityCode => $boroughsPerCity) {
             $city = $this->cityRepository->findOneBy(['code' => $cityCode]);

@@ -19,8 +19,8 @@ use ZipArchive;
 
 class ImportReferentBioPictureCommand extends Command
 {
-    const COMMAND_NAME = 'app:import:referent-bio-picture';
-    const CSV_FILENAME = 'referents_bio_photo.csv';
+    public const COMMAND_NAME = 'app:import:referent-bio-picture';
+    public const CSV_FILENAME = 'referents_bio_photo.csv';
 
     /**
      * @var EntityManagerInterface

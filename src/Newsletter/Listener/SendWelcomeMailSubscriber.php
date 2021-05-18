@@ -39,7 +39,7 @@ class SendWelcomeMailSubscriber implements EventSubscriberInterface
     {
         $subscription = $event->getNewsletter();
         if (null === $subscription->getUuid() || null === $subscription->getToken()) {
-            $this->logger->error(\sprintf(
+            $this->logger->error(sprintf(
                 'NewsletterSubscription with id "%d" has no UUID or token to create a confirmation link.',
                 $subscription->getId()
             ));

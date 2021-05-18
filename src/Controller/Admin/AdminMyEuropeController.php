@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminMyEuropeController extends AbstractController
 {
-    const PER_PAGE = 1000;
+    public const PER_PAGE = 1000;
 
     /**
      * @Route("/export/choices", name="app_admin_myeurope_export_choices", methods={"GET"})

@@ -37,7 +37,7 @@ class ImageAnnotatorClient
 
     public function getWebDetection(string $content): ?WebDetection
     {
-        $key = \md5($content);
+        $key = md5($content);
 
         if (!\array_key_exists($key, $this->webDetections)) {
             $response = $this->client->webDetection($content);
@@ -50,7 +50,7 @@ class ImageAnnotatorClient
 
     public function getFullTextAnnotation(string $content): ?TextAnnotation
     {
-        $key = \md5($content);
+        $key = md5($content);
 
         if (!\array_key_exists($key, $this->textAnnotations)) {
             $response = $this->client->documentTextDetection($content);

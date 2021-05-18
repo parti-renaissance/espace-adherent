@@ -148,7 +148,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
 
     public function getNameCodes(): string
     {
-        return \sprintf('%s (%s)', $this->name, $this->getCodes());
+        return sprintf('%s (%s)', $this->name, $this->getCodes());
     }
 
     public function isActive(): bool

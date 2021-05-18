@@ -193,7 +193,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
             $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
         }
 
-        if (false !== \strpos($filter->getSort(), '.')) {
+        if (false !== strpos($filter->getSort(), '.')) {
             $sort = $filter->getSort();
         } else {
             $sort = 'tcm.'.$filter->getSort();
@@ -285,7 +285,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         if ($cities = $filter->getCities()) {
-            $cities = \array_map(function (Zone $city) {
+            $cities = array_map(function (Zone $city) {
                 return $city->getName();
             }, $cities);
             $qb
@@ -295,7 +295,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         if ($committees = $filter->getCommittees()) {
-            $committees = \array_map(function (Committee $committee) {
+            $committees = array_map(function (Committee $committee) {
                 return $committee->getName();
             }, $committees);
             $qb
@@ -325,7 +325,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         if (null !== $filter->isPoliticalCommitteeMember()) {
             $qb
                 ->leftJoin('adherent.politicalCommitteeMembership', 'pcMembership')
-                ->andWhere(\sprintf(
+                ->andWhere(sprintf(
                     'pcMembership.id %s',
                     $filter->isPoliticalCommitteeMember() ? 'IS NOT NULL' : 'IS NULL')
                 )

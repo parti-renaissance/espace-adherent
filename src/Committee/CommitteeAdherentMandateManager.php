@@ -95,7 +95,7 @@ class CommitteeAdherentMandateManager
         $mandate = $this->mandateRepository->findActiveMandateFor($adherent, $committee);
 
         if (!$mandate) {
-            throw new CommitteeAdherentMandateException(\sprintf('Adherent with id "%s" (%s) has no active mandate in committee "%s"', $adherent->getId(), $adherent->getEmailAddress(), $committee->getName()));
+            throw new CommitteeAdherentMandateException(sprintf('Adherent with id "%s" (%s) has no active mandate in committee "%s"', $adherent->getId(), $adherent->getEmailAddress(), $committee->getName()));
         }
 
         $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_MANUAL);

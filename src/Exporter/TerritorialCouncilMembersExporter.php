@@ -55,7 +55,7 @@ class TerritorialCouncilMembersExporter
 
     private function getQualityNames(TerritorialCouncilMembership $tcMembership): string
     {
-        return implode(', ', \array_map(function (TerritorialCouncilQuality $quality) {
+        return implode(', ', array_map(function (TerritorialCouncilQuality $quality) {
             return $this->translator->trans('territorial_council.membership.quality.'.$quality->getName());
         }, $tcMembership->getQualities()->toArray()));
     }

@@ -56,7 +56,7 @@ class CommitteesControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadCommitteeData::COMMITTEE_6_UUID));
         $this->isSuccessful($response = $this->client->getResponse());
 
-        $data = \json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), true);
 
         $this->assertArrayHasKey('metadata', $data);
 

@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractMailerConsumerTest extends TestCase
 {
-    const CLASS_NAME = 'App\Consumer\AbstractMailerConsumer';
+    public const CLASS_NAME = 'App\Consumer\AbstractMailerConsumer';
 
     /**
      * @var MockObject|ValidatorInterface

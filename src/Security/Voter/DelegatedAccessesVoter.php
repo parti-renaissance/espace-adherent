@@ -34,7 +34,7 @@ class DelegatedAccessesVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return 0 === \strpos($attribute, 'HAS_DELEGATED_ACCESS_');
+        return 0 === strpos($attribute, 'HAS_DELEGATED_ACCESS_');
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

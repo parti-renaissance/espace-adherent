@@ -15,13 +15,13 @@ class JeMarcheReport
 {
     use EntityTimestampableTrait;
 
-    const TYPE_KIOSQUE = 'kiosque';
-    const TYPE_WALK = 'la-marche';
-    const TYPE_DOOR_TO_DOOR = 'porte-a-porte';
-    const TYPE_DINNER = 'diner';
-    const TYPE_CONVERSATION = 'conversation';
-    const TYPE_WORKSHOP = 'atelier';
-    const TYPE_ACTION = 'action-qui-me-ressemble';
+    public const TYPE_KIOSQUE = 'kiosque';
+    public const TYPE_WALK = 'la-marche';
+    public const TYPE_DOOR_TO_DOOR = 'porte-a-porte';
+    public const TYPE_DINNER = 'diner';
+    public const TYPE_CONVERSATION = 'conversation';
+    public const TYPE_WORKSHOP = 'atelier';
+    public const TYPE_ACTION = 'action-qui-me-ressemble';
 
     /**
      * @ORM\Column(type="integer")

@@ -89,7 +89,7 @@ class SummaryAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $value = array_map('trim', explode(',', \mb_strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
 
                     $postalCodeExpression = $qb->expr()->orX();
 
@@ -112,7 +112,7 @@ class SummaryAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere('LOWER(adherent.postAddress.cityName) LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.\mb_strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.mb_strtolower($value['value']).'%');
 
                     return true;
                 },
@@ -129,7 +129,7 @@ class SummaryAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere('LOWER(adherent.postAddress.country) = :country');
-                    $qb->setParameter('country', \mb_strtolower($value['value']));
+                    $qb->setParameter('country', mb_strtolower($value['value']));
 
                     return true;
                 },

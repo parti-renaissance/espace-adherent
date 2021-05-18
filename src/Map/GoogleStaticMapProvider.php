@@ -9,9 +9,9 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class GoogleStaticMapProvider implements StaticMapProviderInterface
 {
-    const MAPS_ZOOM_LEVEL = 15;
-    const MAPS_API_ENDPOINT = '/maps/api/staticmap';
-    const CACHE_KEY_PREFIX = 'maps_static_';
+    public const MAPS_ZOOM_LEVEL = 15;
+    public const MAPS_API_ENDPOINT = '/maps/api/staticmap';
+    public const CACHE_KEY_PREFIX = 'maps_static_';
 
     private $client;
     private $cache;

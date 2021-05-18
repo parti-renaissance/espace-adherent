@@ -20,9 +20,9 @@ class InteractiveControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    const MY_EUROPE_PATH = '/mon-europe';
-    const MY_EUROPE_RESTART_PATH = '/mon-europe/recommencer';
-    const MY_EUROPE_SENT_PATH = '/mon-europe/%s/merci';
+    public const MY_EUROPE_PATH = '/mon-europe';
+    public const MY_EUROPE_RESTART_PATH = '/mon-europe/recommencer';
+    public const MY_EUROPE_SENT_PATH = '/mon-europe/%s/merci';
 
     /* @var MyEuropeChoiceRepository */
     private $MyEuropeChoiceRepository;

@@ -4,7 +4,7 @@ namespace App\Intl;
 
 class VoteOfficeBundle
 {
-    const VOTE_OFFICES = [
+    public const VOTE_OFFICES = [
         'AF' => [ // AFGHANISTAN
             'Kaboul',
         ],

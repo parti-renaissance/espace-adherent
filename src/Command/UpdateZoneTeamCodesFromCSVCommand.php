@@ -67,7 +67,7 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
         foreach ($reader as $index => $row) {
             /** @var Zone $zone */
             if (!$zone = $this->zoneRepository->findOneBy(['code' => $row['code'], 'type' => $row['type']])) {
-                $this->io->warning(\sprintf('Zone with code "%s" and type "%s" does not exist.', $row['code'], $row['type']));
+                $this->io->warning(sprintf('Zone with code "%s" and type "%s" does not exist.', $row['code'], $row['type']));
 
                 continue;
             }

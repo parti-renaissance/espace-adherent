@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class Address extends Constraint
 {
-    const INVALID_ADDRESS = 'invalid_city';
+    public const INVALID_ADDRESS = 'invalid_city';
 
     protected static $errorNames = [
         self::INVALID_ADDRESS => 'INVALID_ADDRESS',

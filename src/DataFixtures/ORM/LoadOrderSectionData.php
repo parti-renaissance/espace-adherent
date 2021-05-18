@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadOrderSectionData extends Fixture
 {
-    const ORDER_SECTION = [
+    public const ORDER_SECTION = [
         'OS001' => 'Articles',
         'OS002' => 'Tribune',
         'OS003' => 'Lexique',

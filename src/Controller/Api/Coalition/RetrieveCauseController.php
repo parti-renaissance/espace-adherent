@@ -25,7 +25,7 @@ class RetrieveCauseController
         }
 
         if (null === $data) {
-            throw new NotFoundHttpException(\sprintf('Cause with id or slug %s not found.', $id));
+            throw new NotFoundHttpException(sprintf('Cause with id or slug %s not found.', $id));
         }
 
         return $data;

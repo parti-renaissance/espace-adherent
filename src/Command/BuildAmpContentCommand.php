@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildAmpContentCommand extends Command
 {
-    const ENTITIES_TO_BUILD = [
+    public const ENTITIES_TO_BUILD = [
         Article::class,
         Proposal::class,
         Clarification::class,

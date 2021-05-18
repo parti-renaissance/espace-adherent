@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadJecouteSuggestedQuestionData extends Fixture
 {
-    const SUGGESTED_QUESTIONS = [
+    public const SUGGESTED_QUESTIONS = [
         'suggested-question-1' => [
             'content' => "Ceci est-il un champ libre d'une question suggérée ?",
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,

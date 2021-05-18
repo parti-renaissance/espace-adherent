@@ -370,7 +370,7 @@ class File
     public function getNameWithExtension(): ?string
     {
         return $this->isFile()
-            ? \sprintf('%s.%s', $this->getName(), $this->getExtension())
+            ? sprintf('%s.%s', $this->getName(), $this->getExtension())
             : ''
         ;
     }
@@ -379,11 +379,11 @@ class File
     {
         switch ($this->type) {
             case FileTypeEnum::FILE:
-                return \sprintf('%s.%s', $this->getName(), $this->getExtension());
+                return sprintf('%s.%s', $this->getName(), $this->getExtension());
             case FileTypeEnum::DIRECTORY:
-                return \sprintf('/%s', $this->getName());
+                return sprintf('/%s', $this->getName());
             case FileTypeEnum::EXTERNAL_LINK:
-                return \sprintf('%s (un lien externe)', $this->getName());
+                return sprintf('%s (un lien externe)', $this->getName());
             default:
                 return null;
         }

@@ -25,7 +25,7 @@ class InternalApiProxyControllerTest extends WebTestCase
 
     public function testGetCausesWithApiProxyReturnDeniedAccessIfNoToken(): void
     {
-        $this->client->request(Request::METHOD_GET, \sprintf('/api/v3/internal/%s/foo/bar', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID));
+        $this->client->request(Request::METHOD_GET, sprintf('/api/v3/internal/%s/foo/bar', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID));
 
         $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
     }
@@ -34,13 +34,13 @@ class InternalApiProxyControllerTest extends WebTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = \sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
+        $url = sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertJson($this->client->getResponse()->getContent());
 
-        $data = \json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('items', $data);
         self::assertCount(2, $data['items']);
     }
@@ -49,7 +49,7 @@ class InternalApiProxyControllerTest extends WebTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = \sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
+        $url = sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
 
         $this->client->request(Request::METHOD_POST, $url, [], [], [
             'CONTENT_TYPE' => 'application/json',

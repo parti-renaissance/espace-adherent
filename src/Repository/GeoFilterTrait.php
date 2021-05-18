@@ -90,7 +90,7 @@ trait GeoFilterTrait
 
                 $codesFilter->add("$referentTagsColumn = :tag_$key");
                 $qb->setParameter("tag_$key", $tag);
-            } elseif (2 === \mb_strlen($code)) {
+            } elseif (2 === mb_strlen($code)) {
                 // Country
                 $codesFilter->add($qb->expr()->eq("${countryColumn}", ":code_$key"));
                 $qb->setParameter("code_$key", $code);

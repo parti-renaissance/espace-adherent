@@ -4,23 +4,23 @@ namespace App\Summary;
 
 class Contribution
 {
-    const VOLUNTEER = 'bénévole';
-    const CONTRACTOR = 'prestataire';
-    const EMPLOYEE = 'salarié';
+    public const VOLUNTEER = 'bénévole';
+    public const CONTRACTOR = 'prestataire';
+    public const EMPLOYEE = 'salarié';
 
-    const ALL = [
+    public const ALL = [
         self::VOLUNTEER,
         self::CONTRACTOR,
         self::EMPLOYEE,
     ];
 
-    const CHOICES = [
+    public const CHOICES = [
         'member_summary.contribution.volunteer' => self::VOLUNTEER,
         'member_summary.contribution.contractor' => self::CONTRACTOR,
         'member_summary.contribution.employee' => self::EMPLOYEE,
     ];
 
-    const MISSION_LABELS = [
+    public const MISSION_LABELS = [
         self::VOLUNTEER => 'Missions de bénévolat',
         self::CONTRACTOR => 'Prestations',
         self::EMPLOYEE => 'Salariat',

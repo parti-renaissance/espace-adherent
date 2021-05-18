@@ -6,7 +6,7 @@ abstract class ColorUtils
 {
     public static function hex2RGBA(string $hexColor, float $opacity = 1.0): array
     {
-        $int = \hexdec(ltrim($hexColor, '#'));
+        $int = hexdec(ltrim($hexColor, '#'));
 
         return [
             0xFF & ($int >> 0x10),

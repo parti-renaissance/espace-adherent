@@ -10,13 +10,13 @@ use Ramsey\Uuid\Uuid;
 
 class EventRegistrationTest extends TestCase
 {
-    const REGISTRATION_UUID = '75aac96a-9cba-4bd8-91f4-414d269ca0b0';
+    public const REGISTRATION_UUID = '75aac96a-9cba-4bd8-91f4-414d269ca0b0';
 
-    const EVENT_1_UUID = 'a103e823-1bd1-406d-81ec-d1f764437d1b';
-    const EVENT_2_UUID = 'd431b756-2428-423c-ab43-1ee25871b77f';
+    public const EVENT_1_UUID = 'a103e823-1bd1-406d-81ec-d1f764437d1b';
+    public const EVENT_2_UUID = 'd431b756-2428-423c-ab43-1ee25871b77f';
 
-    const ADHERENT_1_UUID = '0936205b-35fb-4250-a97e-bfc3a2bcba12';
-    const ADHERENT_2_UUID = '59e4203a-cf4a-4a39-a5f1-768d46c3575e';
+    public const ADHERENT_1_UUID = '0936205b-35fb-4250-a97e-bfc3a2bcba12';
+    public const ADHERENT_2_UUID = '59e4203a-cf4a-4a39-a5f1-768d46c3575e';
 
     public function testCreateEventRegistrationForRegisteredAdherent()
     {
