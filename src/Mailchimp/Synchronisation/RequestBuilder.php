@@ -280,7 +280,9 @@ class RequestBuilder implements LoggerAwareInterface
     {
         foreach ($zones as $zone) {
             $this->setZone($zone);
+        }
 
+        foreach ($zones as $zone) {
             foreach ($zone->getParents() as $parent) {
                 $this->setZone($parent);
             }
@@ -295,30 +297,17 @@ class RequestBuilder implements LoggerAwareInterface
             return;
         }
 
-        switch ($zone->getType()) {
-            case Zone::CITY:
-                $this->zoneCity = $zone;
+        $fieldName = 'zone'.ucfirst($zone->getType());
 
-                break;
-            case Zone::CANTON:
-                $this->zoneCanton = $zone;
-
-                break;
-            case Zone::DEPARTMENT:
-                $this->zoneDepartment = $zone;
-
-                break;
-            case Zone::REGION:
-                $this->zoneRegion = $zone;
-
-                break;
-            case Zone::COUNTRY:
-                $this->zoneCountry = $zone;
-
-                break;
-            default:
-                break;
+        if (!property_exists($this, $fieldName)) {
+            return;
         }
+
+        if (null !== $this->$fieldName) {
+            return;
+        }
+
+        $this->$fieldName = $zone;
     }
 
     private function setZoneCode(Zone $zone): void
