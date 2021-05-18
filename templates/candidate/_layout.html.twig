@@ -36,6 +36,8 @@
             'fileUrl': 'candidate.popup.file_url'|trans
         } %}
     {% endif %}
+
+    {% include 'candidate/_data-corner-modal.html.twig' %}
 {% endblock %}
 
 {% block adherent_space_header_title %}
@@ -55,15 +57,19 @@
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
 
-    {% if not hasCharterAccepted %}
-        {% if js is not defined %}
-            {% import 'javascript.js.twig' as js %}
-        {% endif %}
-
-        <script type="text/javascript">
-            Kernel.onLoad(function() {
-                {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_CANDIDATE')) }}
-            } );
-        </script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
     {% endif %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {% if not hasCharterAccepted %}
+                {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_CANDIDATE')) }}
+            {% endif %}
+
+            {% if is_active_route(app.request, 'app_candidate_managed_users_list') %}
+                dom('#data-corner-modal--trigger').click();
+            {% endif %}
+        } );
+    </script>
 {% endblock %}
