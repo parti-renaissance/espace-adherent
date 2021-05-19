@@ -93,7 +93,7 @@ abstract class AbstractPollController extends AbstractController
      *     methods={"GET|POST"}
      * )
      *
-     * @Security("is_granted('CAN_EDIT_LOCAL_POLL', localPoll)")
+     * @Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', localPoll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', localPoll)")
      */
     public function editLocalPoll(
         Request $request,
@@ -134,7 +134,7 @@ abstract class AbstractPollController extends AbstractController
      * @Route("/{uuid}/depublier", name="unpublish", methods={"GET"}, defaults={"publish": false})
      * @Route("/{uuid}/publier", name="publish", methods={"GET"}, defaults={"publish": true})
      *
-     * @Security("is_granted('CAN_EDIT_LOCAL_POLL', poll)")
+     * @Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', poll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', poll)")
      */
     public function togglePublish(bool $publish, Poll $poll, PollManager $pollManager): Response
     {

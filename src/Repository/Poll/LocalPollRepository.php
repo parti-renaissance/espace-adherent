@@ -20,11 +20,9 @@ class LocalPollRepository extends AbstractPollRepository
      */
     public function findAllByZonesWithStats(array $zones): array
     {
-        return $this
+        $qb = $this
             ->createQueryBuilder('poll')
             ->innerJoin('poll.zone', 'zone')
-            ->innerJoin('zone.parents', 'parent')
-            ->innerJoin('zone.children', 'child')
             ->addSelect('zone')
             ->addSelect(sprintf('(
                 SELECT COUNT(vote_y.id) FROM %s AS vote_y
@@ -36,11 +34,14 @@ class LocalPollRepository extends AbstractPollRepository
                 INNER JOIN vote_n.choice AS choice_n
                 WHERE choice_n.value = :no AND choice_n.poll = poll
             ) AS no_count', Vote::class))
-            ->where('(zone IN (:zones) OR parent IN (:zones) OR child IN (:zones))')
+            ->where('(zone IN (:zones))')
             ->setParameter('zones', $zones)
             ->setParameter('yes', Choice::YES)
             ->setParameter('no', Choice::NO)
             ->orderBy('poll.createdAt', 'DESC')
+        ;
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;
