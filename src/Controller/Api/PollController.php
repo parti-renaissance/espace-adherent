@@ -91,6 +91,10 @@ class PollController extends AbstractController
         }
 
         if (!$poll) {
+            $poll = $localPollRepository->findLastActivePoll();
+        }
+
+        if (!$poll) {
             throw $this->createNotFoundException();
         }
 

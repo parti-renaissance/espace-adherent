@@ -5,7 +5,9 @@ namespace App\Repository\Poll;
 use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\LocalPoll;
+use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
+use Cake\Chronos\Chronos;
 use Doctrine\Persistence\ManagerRegistry;
 
 class LocalPollRepository extends AbstractPollRepository
@@ -61,5 +63,28 @@ class LocalPollRepository extends AbstractPollRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findLastActivePoll(): ?Poll
+    {
+        $qb = $this->createQueryBuilder('poll');
+
+        return $qb
+            ->leftJoin('poll.zone', 'zone')
+            ->where('poll.finishAt > :now')
+            ->andWhere($qb->expr()->orX(
+                'zone.type = :region',
+                'zone.type = :department'
+            ))
+            ->orderBy('poll.finishAt', 'desc')
+            ->setParameters([
+                'now' => new Chronos(),
+                'region' => Zone::REGION,
+                'department' => Zone::DEPARTMENT,
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 }

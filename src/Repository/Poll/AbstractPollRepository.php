@@ -32,4 +32,6 @@ abstract class AbstractPollRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+
+    abstract public function findLastActivePoll(): ?Poll;
 }

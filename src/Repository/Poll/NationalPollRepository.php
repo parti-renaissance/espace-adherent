@@ -3,6 +3,7 @@
 namespace App\Repository\Poll;
 
 use App\Entity\Poll\NationalPoll;
+use App\Entity\Poll\Poll;
 use Cake\Chronos\Chronos;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -13,7 +14,7 @@ class NationalPollRepository extends AbstractPollRepository
         parent::__construct($registry, NationalPoll::class);
     }
 
-    public function findLastActivePoll(): ?NationalPoll
+    public function findLastActivePoll(): ?Poll
     {
         return $this->createQueryBuilder('poll')
             ->where('poll.finishAt > :now')
