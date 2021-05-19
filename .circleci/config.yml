@@ -16,6 +16,7 @@ references:
             enabled: true
             image: circleci/classic:201711-01
 
+
     generate_docker_hashes: &generate_docker_hashes
         run: |
             test -e docker-dev.md5 || find docker/dev -type f -exec md5sum {} \; | sort -k 2 > docker-dev.md5
