@@ -370,4 +370,15 @@ class ZoneRepository extends ServiceEntityRepository
             'type' => $zoneable->getZoneType(),
         ]);
     }
+
+    public function findOneByPostalCode(string $postalCode): ?Zone
+    {
+        return $this->createQueryBuilder('zone')
+            ->where('zone.postalCode LIKE :postal_code')
+            ->setParameter('postal_code', '%'.$postalCode.'%')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
