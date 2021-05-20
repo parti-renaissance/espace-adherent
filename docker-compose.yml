@@ -18,7 +18,7 @@ services:
             - .:/app
 
     db:
-        image: postgis/postgis:13-master
+        image: postgis/postgis:13-3.1-alpine
         environment:
             POSTGRES_DB: enmarche
             POSTGRES_USER: root

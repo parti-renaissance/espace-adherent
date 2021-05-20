@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20210121152520 extends AbstractMigration
 {
     public function up(Schema $schema): void
@@ -17,7 +14,7 @@ final class Version20210121152520 extends AbstractMigration
         $this->addSql('CREATE EXTENSION postgis;');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }
