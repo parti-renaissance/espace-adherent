@@ -4,6 +4,12 @@
         <p class="manager-sidebar__text text--body">Vous êtes <span class="text--black">{{ delegated_access.role|lower }}</span> du candidat <span class="text--black">{{ currentUserOrDelegator }}</span></p>
     {% endif %}
 
+    <div>
+        <a href="https://data-corner.en-marche.fr/" style="border-bottom: none;">
+            <img src="{{ asset("images/gif/sidebar-data-corner.png")}}" style="width: 100%; overflow: hidden;" href="https://data-corner.en-marche.fr/">
+        </a>
+    </div>
+
     {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
         <ul>
             <li class="menu-section">Messagerie</li>
