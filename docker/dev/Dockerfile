@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:xenial-20210416
 
 ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
