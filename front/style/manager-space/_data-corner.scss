@@ -1,0 +1,31 @@
+#data-corner-modal--content {
+    text-align: center;
+    h4 {
+        color: #0049C6;
+        font-style: italic;
+        font-size: 24px;
+        line-height: 36px;
+        font-weight: 300;
+        margin-bottom: 0;
+
+        span {
+            color: black;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 36px;
+        }
+    }
+
+    p {
+        font-family: Poppins, sans-serif;
+    }
+
+    a {
+        font-family: Poppins, sans-serif;   
+        color: #fff;
+        background-color:#0049C6;
+        padding: 8px;
+        border-radius: 6px;
+    }
+}
