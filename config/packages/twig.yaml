@@ -23,6 +23,7 @@ twig:
         coalitions_auth_host:   "%env(COALITIONS_AUTH_HOST)%"
         adherent_interests:     "%adherent_interests%"
         dpt_api_host:           "%env(DPT_API_HOST)%"
+        data_corner_host:       "%env(DATA_CORNER_HOST)%"
         enable_assessor_space:  "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         enable_municipal_space: "%env(bool:ENABLE_MUNICIPAL_SPACE)%"
         enable_facebook_pixel:  "%env(bool:ENABLE_FACEBOOK_PIXEL)%"

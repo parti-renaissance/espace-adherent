@@ -22,6 +22,8 @@
     {% endif %}
 {% endblock %}
 
+{% set has_datacorner_access = is_granted('ROLE_CANDIDATE_REGIONAL_HEADED') %}
+
 {% block manager_sidebar %}
     {{ include('candidate/_sidebar.html.twig') }}
 {% endblock %}
@@ -37,7 +39,9 @@
         } %}
     {% endif %}
 
-    {% include 'candidate/_data-corner-modal.html.twig' %}
+    {% if has_datacorner_access %}
+        {% include 'candidate/_data-corner-modal.html.twig' %}
+    {% endif %}
 {% endblock %}
 
 {% block adherent_space_header_title %}
@@ -67,7 +71,7 @@
                 {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_CANDIDATE')) }}
             {% endif %}
 
-            {% if is_active_route(app.request, 'app_candidate_managed_users_list') %}
+            {% if has_datacorner_access and is_active_route(app.request, 'app_candidate_managed_users_list') %}
                 dom('#data-corner-modal--trigger').click();
             {% endif %}
         } );

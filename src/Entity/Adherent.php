@@ -2606,17 +2606,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isHeadedRegionalCandidate(): bool
     {
-        return $this->candidateManagedArea ? $this->candidateManagedArea->isRegionalZone() : false;
+        return $this->candidateManagedArea && $this->candidateManagedArea->isRegionalZone();
     }
 
     public function isLeaderRegionalCandidate(): bool
     {
-        return $this->candidateManagedArea ? $this->candidateManagedArea->isDepartmentalZone() : false;
+        return $this->candidateManagedArea && $this->candidateManagedArea->isDepartmentalZone();
     }
 
     public function isDepartmentalCandidate(): bool
     {
-        return $this->candidateManagedArea ? $this->candidateManagedArea->isCantonalZone() : false;
+        return $this->candidateManagedArea && $this->candidateManagedArea->isCantonalZone();
     }
 
     public function isCandidate(): bool

@@ -1,30 +1,24 @@
-#data-corner-modal--content {
-    text-align: center;
+#data-corner-modal--content-inner {
+    font-family: Poppins, sans-serif;
+
     h4 {
-        color: #0049C6;
-        font-style: italic;
-        font-size: 24px;
-        line-height: 36px;
-        font-weight: 300;
-        margin-bottom: 0;
+        color: $black;
+        font-size: 48px;
 
         span {
-            color: black;
-            font-weight: 700;
-            font-style: normal;
-            font-size: 24px;
-            line-height: 36px;
+            color: $dataCornerBlue;
+            font-style: italic;
+            font-weight: 300;
         }
     }
 
-    p {
-        font-family: Poppins, sans-serif;
+    img {
+        width: 100%;
     }
 
     a {
-        font-family: Poppins, sans-serif;   
-        color: #fff;
-        background-color:#0049C6;
+        color: $white;
+        background-color: $dataCornerBlue;
         padding: 8px;
         border-radius: 6px;
     }
