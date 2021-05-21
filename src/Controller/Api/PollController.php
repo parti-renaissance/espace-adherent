@@ -93,7 +93,9 @@ class PollController extends AbstractController
                 $region = current($zone->getParentsOfType(Zone::REGION));
                 $department = current($zone->getParentsOfType(Zone::DEPARTMENT));
 
-                $poll = $localPollRepository->findOnePublishedByZone($region, $department, $postalCode);
+                if ($region && $department) {
+                    $poll = $localPollRepository->findOnePublishedByZone($region, $department, $postalCode);
+                }
             }
         }
 

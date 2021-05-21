@@ -375,7 +375,12 @@ class ZoneRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('zone')
             ->where('zone.postalCode LIKE :postal_code')
-            ->setParameter('postal_code', '%'.$postalCode.'%')
+            ->andWhere('zone.type = :city OR zone.type = :borough')
+            ->setParameters([
+                'postal_code' => '%'.$postalCode.'%',
+                'city' => Zone::CITY,
+                'borough' => Zone::BOROUGH,
+            ])
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

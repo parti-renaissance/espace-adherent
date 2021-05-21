@@ -51,14 +51,14 @@ class LocalPollRepository extends AbstractPollRepository
     {
         $qb = $this->createQueryBuilder('poll');
 
-        $result = $qb
+        return $qb
             ->select('poll')
             ->addSelect('
             CASE 
                 WHEN zone.type = :zone_region THEN 1
                 WHEN zone.type = :zone_department THEN 2
                 ELSE 3
-            END AS priority    
+            END AS HIDDEN priority    
             ')
             ->leftJoin('poll.zone', 'zone')
             ->where('poll.published = :true AND poll.finishAt > :now')
@@ -76,14 +76,12 @@ class LocalPollRepository extends AbstractPollRepository
                 'zone_region' => Zone::REGION,
                 'zone_department' => Zone::DEPARTMENT,
                 'zone_borough' => Zone::BOROUGH,
-                'true' => 1,
+                'true' => true,
                 'now' => new \DateTime(),
             ])
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
-
-        return !empty($result) ? $result[0][0] : null;
     }
 }
