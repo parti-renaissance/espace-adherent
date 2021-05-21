@@ -4,6 +4,7 @@
     h4 {
         color: $black;
         font-size: 48px;
+        margin: 32px 0;
 
         span {
             color: $dataCornerBlue;
@@ -12,8 +13,13 @@
         }
     }
 
+    #data-corner-modal-text {
+        margin-bottom: 16px;
+    }
+
     img {
         width: 100%;
+        margin-bottom: 16px;
     }
 
     a {
@@ -21,5 +27,13 @@
         background-color: $dataCornerBlue;
         padding: 8px;
         border-radius: 6px;
+        border-bottom: none;
+        box-shadow: 0 1px 1px 0 rgba(0, 11, 52, 0.12);
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 11, 52, 0.12);
+        -moz-box-shadow: 0 1px 1px 0 rgba(0, 11, 52, 0.12);
+
+        &:hover {
+            background-color: $dataCornerBlueHover;
+        }
     }
 }

@@ -468,7 +468,8 @@
     }
 
     &__menu {
-        padding: 30px 0;
+        // Uncomment next line when button to DataCorner will be removed from sidebar
+        // padding: 30px 0;
 
         ul {
             font-family: $font-roboto;
