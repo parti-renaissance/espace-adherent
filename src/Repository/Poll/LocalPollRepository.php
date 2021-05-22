@@ -47,17 +47,39 @@ class LocalPollRepository extends AbstractPollRepository
         ;
     }
 
-    public function findOnePublishedByZone(Zone $zone): ?LocalPoll
+    public function findOnePublishedByZone(Zone $region, Zone $department, string $postalCode): ?LocalPoll
     {
-        return $this
-            ->createQueryBuilder('poll')
-            ->where('poll.published = :true AND poll.finishAt > :now AND poll.zone = :zone')
-            ->orderBy('poll.finishAt', 'desc')
+        $qb = $this->createQueryBuilder('poll');
+
+        return $qb
+            ->select('poll')
+            ->addSelect('
+            CASE 
+                WHEN zone.type = :zone_region THEN 1
+                WHEN zone.type = :zone_department THEN 2
+                ELSE 3
+            END AS HIDDEN priority    
+            ')
+            ->leftJoin('poll.zone', 'zone')
+            ->where('poll.published = :true AND poll.finishAt > :now')
+            ->andWhere($qb->expr()->orX(
+                'zone.type = :zone_region AND zone = :region',
+                'zone.type = :zone_department AND zone = :department',
+                'zone.type = :zone_borough AND zone.postalCode = :postal_code',
+            ))
+            ->addOrderBy('priority', 'asc')
+            ->addOrderBy('poll.finishAt', 'desc')
             ->setParameters([
-                'zone' => $zone,
-                'true' => 1,
+                'region' => $region,
+                'department' => $department,
+                'postal_code' => $postalCode,
+                'zone_region' => Zone::REGION,
+                'zone_department' => Zone::DEPARTMENT,
+                'zone_borough' => Zone::BOROUGH,
+                'true' => true,
                 'now' => new \DateTime(),
             ])
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
