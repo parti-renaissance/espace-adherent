@@ -125,6 +125,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
         return (int) $this->addAndWhereManagedBy($qb, $manager)
             ->select('COUNT(DISTINCT pr.id)')
+            ->resetDQLPart('orderBy')
             ->getQuery()
             ->getSingleScalarResult()
         ;

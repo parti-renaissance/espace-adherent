@@ -963,7 +963,7 @@ HELP
                     $where = new Expr\Orx();
 
                     foreach ($value['value'] as $mandate) {
-                        $where->add("$alias.mandates LIKE :mandate_".$mandate);
+                        $where->add("ILIKE($alias.mandates, :mandate_".$mandate.') = true');
                         $qb->setParameter('mandate_'.$mandate, "%$mandate%");
                     }
 

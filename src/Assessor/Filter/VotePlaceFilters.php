@@ -61,7 +61,7 @@ class VotePlaceFilters extends AssessorFilters
             } else {
                 $qb
                     ->andWhere("LOWER($alias.city) LIKE :city")
-                    ->setParameter('city', '%'.strtolower($this->getCity()).'%')
+                    ->setParameter('city', '%'.mb_strtolower($this->getCity()).'%')
                 ;
             }
         }
@@ -81,7 +81,7 @@ class VotePlaceFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere("ILIKE($alias.name, :name)")
+                    ->andWhere("ILIKE($alias.name, :name) = true")
                     ->setParameter('name', '%'.$this->getVotePlace().'%')
                 ;
             }

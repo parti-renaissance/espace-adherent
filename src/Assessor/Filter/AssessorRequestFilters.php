@@ -122,8 +122,8 @@ class AssessorRequestFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere('ILIKE(vp.name, :name)')
-                    ->setParameter('name', '%'.strtolower($this->getVotePlace()).'%')
+                    ->andWhere('ILIKE(vp.name, :name) = true')
+                    ->setParameter('name', '%'.mb_strtolower($this->getVotePlace()).'%')
                 ;
             }
         }

@@ -446,12 +446,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         if ($queryFirstName = $filter->getQueryFirstName()) {
-            $qb->andWhere('a.firstName LIKE :firstName');
+            $qb->andWhere('ILIKE(a.firstName, :firstName) = true');
             $qb->setParameter('firstName', '%'.$queryFirstName.'%');
         }
 
         if ($queryLastName = $filter->getQueryLastName()) {
-            $qb->andWhere('a.lastName LIKE :lastName');
+            $qb->andWhere('ILIKE(a.lastName, :lastName) = true');
             $qb->setParameter('lastName', '%'.$queryLastName.'%');
         }
 
@@ -514,7 +514,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $query = $qb
             ->select('a.uuid')
             ->where('LOWER(a.firstName) LIKE :firstName')
-            ->setParameter('firstName', '%'.strtolower($firstName).'%')
+            ->setParameter('firstName', '%'.mb_strtolower($firstName).'%')
             ->getQuery()
         ;
 
@@ -533,7 +533,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $query = $qb
             ->select('a.uuid')
             ->where('LOWER(a.lastName) LIKE :lastName')
-            ->setParameter('lastName', '%'.strtolower($lastName).'%')
+            ->setParameter('lastName', '%'.mb_strtolower($lastName).'%')
             ->getQuery()
         ;
 
@@ -552,7 +552,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $query = $qb
             ->select('a.uuid')
             ->where('LOWER(a.emailAddress) LIKE :emailAddress')
-            ->setParameter('emailAddress', '%'.strtolower($emailAddress).'%')
+            ->setParameter('emailAddress', '%'.mb_strtolower($emailAddress).'%')
             ->getQuery()
         ;
 
@@ -570,7 +570,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if ($name) {
             $qb
                 ->orWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
-                ->setParameter('name', '%'.strtolower($name).'%')
+                ->setParameter('name', '%'.mb_strtolower($name).'%')
             ;
         }
 
@@ -860,10 +860,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 a.address_address AS address,
                 a.address_postal_code AS postal_code,
                 a.address_city_name AS city,
-                IF(
-                    5 = LENGTH(a.address_postal_code),
-                    CAST(SUBSTRING(a.address_postal_code, 4, 2) AS UNSIGNED),
-                    NULL
+                (
+                    CASE 
+                        WHEN 5 = LENGTH(a.address_postal_code)
+                        THEN CAST(SUBSTRING(a.address_postal_code, 4, 2) AS UNSIGNED)
+                    END
                 ) AS district,
                 a.gender,
                 DATE_FORMAT(a.birthdate, '%d/%m/%Y') AS birthdate,
@@ -1040,7 +1041,7 @@ SQL;
             ->setParameters([
                 'zones' => $zones,
                 'status' => Adherent::ENABLED,
-                'name' => '%'.strtolower($name).'%',
+                'name' => '%'.mb_strtolower($name).'%',
                 'dateMax' => new \DateTime('-18 years'),
             ])
             ->setMaxResults($limit)

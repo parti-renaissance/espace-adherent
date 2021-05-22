@@ -23,7 +23,7 @@ class FileRepository extends ServiceEntityRepository
             ->andWhere('f.displayed = true')
             ->andWhere('LOWER(f.name) LIKE :search')
             ->setParameter('directory', FileTypeEnum::DIRECTORY)
-            ->setParameter('search', '%'.$search.'%')
+            ->setParameter('search', '%'.mb_strtolower($search).'%')
             ->setMaxResults(20)
             ->getQuery()
             ->getResult()

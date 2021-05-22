@@ -40,7 +40,7 @@ class PopulateManagedUsersByReferentCommand extends Command
             a.address_country,
             a.first_name,
             a.last_name,
-            TIMESTAMPDIFF(YEAR, a.birthdate, CURDATE()) AS age,
+            EXTRACT(YEAR FROM AGE(a.birthdate, NOW())) AS age,
             a.phone,
             (
                 SELECT STRING_AGG(c.name, '|')

@@ -494,21 +494,21 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
         if (isset($criteria['firstName'])) {
             $qb
-                ->andWhere('a.firstName LIKE :firstName')
+                ->andWhere('ILIKE(a.firstName, :firstName) = true')
                 ->setParameter('firstName', '%'.$criteria['firstName'].'%')
             ;
         }
 
         if (isset($criteria['lastName'])) {
             $qb
-                ->andWhere('a.lastName LIKE :lastName')
+                ->andWhere('ILIKE(a.lastName, :lastName) = true')
                 ->setParameter('lastName', '%'.$criteria['lastName'].'%')
             ;
         }
 
         if (isset($criteria['emailAddress'])) {
             $qb
-                ->andWhere('a.emailAddress LIKE :emailAddress')
+                ->andWhere('ILIKE(a.emailAddress, :emailAddress) = true')
                 ->setParameter('emailAddress', '%'.$criteria['emailAddress'].'%')
             ;
         }
@@ -612,7 +612,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('candidacy IS NULL OR candidacy.status = :candidacy_draft_status')
             ->andWhere('membership.id != :membership_id')
             ->andWhere('adherent.gender = :gender AND adherent.status = :adherent_status')
-            ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
+            ->andWhere('(ILIKE(adherent.firstName, :query) = true OR ILIKE(adherent.lastName, :query) = true)')
             ->andWhere('adherent.certifiedAt IS NOT NULL AND adherent.registeredAt <= :registration_limit_date AND membership.joinedAt <= :limit_date')
             ->setParameters([
                 'query' => sprintf('%s%%', $query),

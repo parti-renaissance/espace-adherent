@@ -133,14 +133,14 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         if ($lastName = $filter->getLastName()) {
             $qb
-                ->andWhere('er.lastName LIKE :last_name')
+                ->andWhere('ILIKE(er.lastName, :last_name) = true')
                 ->setParameter('last_name', '%'.$lastName.'%')
             ;
         }
 
         if ($firstName = $filter->getFirstName()) {
             $qb
-                ->andWhere('er.firstName LIKE :first_name')
+                ->andWhere('ILIKE(er.firstName, :first_name) = true')
                 ->setParameter('first_name', '%'.$firstName.'%')
             ;
         }

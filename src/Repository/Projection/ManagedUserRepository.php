@@ -98,14 +98,14 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if ($lastName = $filter->getLastName()) {
             $qb
-                ->andWhere('u.lastName LIKE :last_name')
+                ->andWhere('ILIKE(u.lastName, :last_name) = true')
                 ->setParameter('last_name', '%'.$lastName.'%')
             ;
         }
 
         if ($firstName = $filter->getFirstName()) {
             $qb
-                ->andWhere('u.firstName LIKE :first_name')
+                ->andWhere('ILIKE(u.firstName, :first_name) = true')
                 ->setParameter('first_name', '%'.$firstName.'%')
             ;
         }
@@ -194,7 +194,10 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (null !== $filter->isCommitteeMember()) {
-            $qb->andWhere(sprintf('u.isCommitteeMember = %s', $filter->isCommitteeMember() ? '1' : '0'));
+            $qb
+                ->andWhere('u.isCommitteeMember = :is_committee_membre')
+                ->setParameter('is_committee_membre', $filter->isCommitteeMember())
+            ;
         }
 
         $typeExpression = $qb->expr()->orX();
@@ -213,7 +216,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (true === $filter->includeCitizenProjectHosts()) {
-            $typeExpression->add('json_length(u.citizenProjectsOrganizer) > 0');
+            $typeExpression->add('u.citizenProjectsOrganizer IS NOT NULL');
         }
 
         $qb->andWhere($typeExpression);
@@ -232,7 +235,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (false === $filter->includeCitizenProjectHosts()) {
-            $qb->andWhere('u.citizenProjectsOrganizer IS NULL OR json_length(u.citizenProjectsOrganizer) = 0');
+            $qb->andWhere('u.citizenProjectsOrganizer IS NULL');
         }
 
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {

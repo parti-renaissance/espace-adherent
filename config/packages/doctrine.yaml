@@ -59,7 +59,7 @@ doctrine:
 
         dql:
             numeric_functions:
-                st_distance_sphere: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistanceSphere
+                st_distancesphere: App\Doctrine\Spatial\STDistanceSphere
                 st_point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STPoint
                 st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STWithin
                 st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText
@@ -69,7 +69,7 @@ doctrine:
                 STRING_TO_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\StringToArray
                 ILIKE: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Ilike
                 UNACCENT: App\Doctrine\Query\Postgresql\Unaccent
-                STRING_AGG: DoctrineExtensions\Query\Postgresql\StringAgg
+                STRING_AGG: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\StringAgg
             datetime_functions:
                 AT_TIME_ZONE: DoctrineExtensions\Query\Postgresql\AtTimeZoneFunction
                 DATE_FORMAT: DoctrineExtensions\Query\Postgresql\DateFormat

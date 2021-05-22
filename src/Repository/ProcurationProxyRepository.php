@@ -63,6 +63,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         return $this->addAndWhereManagedBy($qb, $manager)
             ->select('COUNT(DISTINCT pp.id)')
+            ->resetDQLPart('orderBy')
             ->getQuery()
             ->getSingleScalarResult()
         ;

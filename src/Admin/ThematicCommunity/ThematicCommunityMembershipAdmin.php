@@ -305,7 +305,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     $qb
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
-                        ->andWhere("adherent.$field LIKE :value OR contact.$field LIKE :value")
+                        ->andWhere("ILIKE(adherent.$field, :value) = true OR ILIKE(contact.$field, :value) = true")
                         ->setParameter('value', '%'.$value['value'].'%')
                     ;
 
@@ -324,7 +324,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     $qb
                         ->leftJoin("$alias.contact", 'contact')
                         ->leftJoin("$alias.adherent", 'adherent')
-                        ->andWhere("adherent.$field LIKE :value OR contact.$field LIKE :value")
+                        ->andWhere("ILIKE(adherent.$field, :value) = true OR ILIKE(contact.$field, :value) = true")
                         ->setParameter('value', '%'.$value['value'].'%')
                     ;
 

@@ -24,7 +24,7 @@ class LoadAdherentTagData extends Fixture
         foreach (self::ADHERENT_TAG as $code => $name) {
             $adherentTag = new AdherentTag($name);
             $manager->persist($adherentTag);
-            $this->addReference('adherent_tag_'.strtolower($code), $adherentTag);
+            $this->addReference('adherent_tag_'.mb_strtolower($code), $adherentTag);
         }
 
         $manager->flush();
