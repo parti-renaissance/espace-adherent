@@ -7,7 +7,7 @@ use App\Entity\District;
 use App\Entity\ReferentTag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadDistrictData extends Fixture implements DependentFixtureInterface
 {
