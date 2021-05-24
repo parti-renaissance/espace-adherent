@@ -564,7 +564,7 @@ SQL;
     public function queryCountByMonth(Adherent $referent, int $months = 5): QueryBuilder
     {
         return $this->createQueryBuilder('event')
-            ->select("COUNT(DISTINCT event.id) AS count, DATE_FORMAT(event.beginAt, 'YYYYMM') AS yearmonth")
+            ->select("COUNT(DISTINCT event.id) AS count, TO_CHAR(event.beginAt, 'YYYYMM') AS yearmonth")
             ->innerJoin('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->setParameter('tags', $referent->getManagedArea()->getTags())

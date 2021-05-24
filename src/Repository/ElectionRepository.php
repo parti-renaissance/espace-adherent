@@ -64,7 +64,7 @@ class ElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->addSelect('r')
             ->leftJoin('e.rounds', 'r')
-            ->where("DATE_FORMAT(r.date, 'YYYYMM') = '201403'")
+            ->where("TO_CHAR(r.date, 'YYYYMM') = '201403'")
             ->getQuery()
             ->getOneOrNullResult()
         ;

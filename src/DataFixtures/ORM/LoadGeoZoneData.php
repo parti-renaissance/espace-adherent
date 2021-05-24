@@ -17,6 +17,7 @@ class LoadGeoZoneData extends Fixture
         /** @var Connection $conn */
         $conn = $manager->getConnection();
         $conn->exec(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
+        $conn->exec('UPDATE geo_zone SET uuid = GEN_RANDOM_UUID() WHERE uuid IS NULL');
     }
 
     public static function getZoneReference(EntityManagerInterface $manager, string $reference): ?Zone
@@ -30,7 +31,7 @@ class LoadGeoZoneData extends Fixture
     {
         if (null === static::$zoneCache) {
             $file = fopen(__DIR__.'/../geo/geo-zones.csv', 'rb');
-            $header = $row = fgetcsv($file, 0, ';');
+            $header = fgetcsv($file, 0, ';');
             static::$zoneCache = [];
 
             while ($row = fgetcsv($file, 0, ';')) {

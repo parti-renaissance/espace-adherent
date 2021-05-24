@@ -27,7 +27,7 @@ class UnsubscribeAdherentsCalculator extends AbstractCalculator
         return $this->repository
             ->createQueryBuilder('adherent')
             ->select('COUNT(1) AS total')
-            ->addSelect("DATE_FORMAT(adherent.unregisteredAt, 'YYYYMM') AS date")
+            ->addSelect("TO_CHAR(adherent.unregisteredAt, 'YYYYMM') AS date")
             ->innerJoin('adherent.referentTags', 'tags')
             ->where('adherent.unregisteredAt >= :start_date AND adherent.unregisteredAt <= :end_date')
             ->andWhere('tags.code IN (:tags)')

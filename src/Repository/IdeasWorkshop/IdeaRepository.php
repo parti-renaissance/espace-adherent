@@ -148,7 +148,7 @@ SQL;
             ->andWhere('vote.author = :author')
             ->setParameter('idea', $idea)
             ->setParameter('author', $adherent)
-            ->groupBy('vote.type')
+            ->groupBy('vote.type', 'vote.id')
             ->getQuery()
             ->getArrayResult()
         ;

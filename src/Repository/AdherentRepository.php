@@ -663,7 +663,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->checkReferent($referent);
 
         $query = $this->createQueryBuilder('adherent', 'adherent.gender')
-            ->select("COUNT(DISTINCT adherent.id) AS count, DATE_FORMAT(event.beginAt, 'YYYYMM') as yearmonth")
+            ->select("COUNT(DISTINCT adherent.id) AS count, TO_CHAR(event.beginAt, 'YYYYMM') as yearmonth")
             ->join('adherent.memberships', 'membership')
             ->join('membership.committee', 'committee')
             ->innerJoin('committee.referentTags', 'tag')
@@ -863,11 +863,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 (
                     CASE 
                         WHEN 5 = LENGTH(a.address_postal_code)
-                        THEN CAST(SUBSTRING(a.address_postal_code, 4, 2) AS UNSIGNED)
+                        THEN CAST(SUBSTRING(a.address_postal_code, 4, 2) AS INTEGER)
                     END
                 ) AS district,
                 a.gender,
-                DATE_FORMAT(a.birthdate, '%d/%m/%Y') AS birthdate,
+                TO_CHAR(a.birthdate, 'DD/MM/YYYY') AS birthdate,
                 a.address_latitude AS latitude,
                 a.address_longitude AS longitude,
                 a.interests,

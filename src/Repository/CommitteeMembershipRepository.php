@@ -274,10 +274,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     ): iterable {
         $qb = $this
             ->createCommitteeMembershipsQueryBuilder($committee)
-            ->addSelect('a')
-            ->addSelect("STRING_AGG(st.code, ',') AS HIDDEN st_codes")
-            ->leftJoin('a.subscriptionTypes', 'st')
-            ->groupBy('a.id')
+            ->groupBy('cm.id')
         ;
 
         if ($filter) {
@@ -313,12 +310,13 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             }
 
             if (null !== $filter->isSubscribed()) {
-                $subscriptionCondition = 'st_codes LIKE :subscription_code';
+                $subscriptionCondition = 'STRING_AGG(st.code, \',\') LIKE :subscription_code';
                 if (false === $filter->isSubscribed()) {
-                    $subscriptionCondition = 'st_codes IS NULL OR st_codes NOT LIKE :subscription_code';
+                    $subscriptionCondition = 'STRING_AGG(st.code, \',\') IS NULL OR STRING_AGG(st.code, \',\') NOT LIKE :subscription_code';
                 }
 
                 $qb
+                    ->leftJoin('a.subscriptionTypes', 'st')
                     ->having($subscriptionCondition)
                     ->setParameter('subscription_code', '%'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL.'%')
                 ;
@@ -402,26 +400,29 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder($alias)
-            ->addSelect('CASE WHEN (am.quality = :supervisor AND am.provisional = :false) THEN 1 '
-                .'WHEN (am.quality = :supervisor AND am.provisional = :true) THEN 2 '
-                .'WHEN ('.$alias.'.privilege = :host) THEN 3 '
-                .'WHEN (am.committee IS NOT NULL) THEN 4 '
-                .'ELSE 5 END '
-                .'AS HIDDEN score')
             ->innerJoin($alias.'.adherent', 'a')
-            ->leftJoin(
-                'a.adherentMandates',
-                'am',
-                Join::WITH,
-                $alias.'.committee = am.committee AND am.finishAt IS NULL'
-            )
+            ->addSelect(sprintf('(%s) AS HIDDEN score', $this->getEntityManager()->createQueryBuilder()
+                ->from(CommitteeMembership::class, 'cm2')
+                ->select(
+                    'CASE
+                        WHEN am2.quality = :supervisor AND am2.provisional = false THEN 1
+                        WHEN am2.quality = :supervisor AND am2.provisional = true THEN 2
+                        WHEN cm2.privilege = :host THEN 3
+                        WHEN am2.committee IS NOT NULL THEN 4
+                        ELSE 5
+                    END AS priority')
+                ->where('cm2.id = cm.id')
+                ->innerJoin('cm2.adherent', 'a2')
+                ->leftJoin('a2.adherentMandates', 'am2', Join::WITH, 'am2.committee = cm2.committee AND am2.finishAt IS NULL')
+                ->getDQL()
+            ))
             ->where($alias.'.committee = :committee')
             ->orderBy('score', 'ASC')
-            ->setParameter('committee', $committee)
-            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
-            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
-            ->setParameter('true', true)
-            ->setParameter('false', false)
+            ->setParameters([
+                'committee' => $committee,
+                'host' => CommitteeMembership::COMMITTEE_HOST,
+                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
+            ])
         ;
     }
 

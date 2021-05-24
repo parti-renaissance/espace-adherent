@@ -57,7 +57,7 @@ class CommitteeMemberCalculator extends AbstractCalculator
         return $this->repository
             ->createQueryBuilder('c')
             ->select('SUM(CASE WHEN (c.action = :join_action) THEN 1 ELSE -1 END) AS total')
-            ->addSelect("DATE_FORMAT(c.date, 'YYYYMM') AS date")
+            ->addSelect("TO_CHAR(c.date, 'YYYYMM') AS date")
             ->innerJoin('c.referentTags', 'tags')
             ->where('c.date >= :start_date AND c.date <= :end_date')
             ->andWhere('tags.code IN (:tags)')

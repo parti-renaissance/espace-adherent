@@ -57,6 +57,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
         return (int) $qb
             ->select('COUNT(DISTINCT vp.id)')
+            ->resetDQLPart('orderBy')
             ->getQuery()
             ->getSingleScalarResult()
         ;
