@@ -575,6 +575,9 @@
             "config/packages/misd_phone_number.yaml"
         ]
     },
+    "oro/doctrine-extensions": {
+        "version": "2.0.0"
+    },
     "paragonie/constant_time_encoding": {
         "version": "v2.3.0"
     },

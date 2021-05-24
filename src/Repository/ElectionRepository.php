@@ -41,7 +41,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->addSelect('round')
             ->innerJoin('e.rounds', 'round')
             ->setParameter('now', new \DateTime())
-            ->orderBy('ABS(TIMESTAMPDIFF(SECOND, round.date, :now))', 'ASC')
+            ->orderBy('ABS(SECOND((round.date - CAST(:now AS datetime))))', 'ASC')
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()

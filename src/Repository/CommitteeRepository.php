@@ -828,10 +828,10 @@ class CommitteeRepository extends ServiceEntityRepository
         int $limit = 100
     ): array {
         $qb = $this->createQueryBuilder('committee')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL THEN 1 ELSE 0 END) AS total_designed_adherents')
+            ->addSelect(($having1 = 'SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL THEN 1 ELSE 0 END)').' AS total_designed_adherents')
             ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_designed_adherents_female')
             ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_designed_adherents_male')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false THEN 1 ELSE 0 END) AS total_supervisors')
+            ->addSelect(($having2 = 'SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false THEN 1 ELSE 0 END)').' AS total_supervisors')
             ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_supervisors_female')
             ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_supervisors_male')
             ->leftJoin('committee.adherentMandates', 'mandate', Join::WITH, 'mandate.finishAt IS NULL')
@@ -850,7 +850,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 'now' => new \DateTime(),
                 'd30' => (new \DateTime())->modify('-30 days'),
             ])
-            ->having('total_designed_adherents < 2 OR total_supervisors < 2')
+            ->having("${having1} < 2 OR ${having2} < 2")
         ;
 
         if ($filter->getCommitteeName()) {

@@ -177,7 +177,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
         if ($inseeCodes = $filter->getInseeCodes()) {
             $qb
-                ->andWhere('SUBSTRING_INDEX('.self::ALIAS.'.code, \'_\', 1) IN (:insee_codes)')
+                ->andWhere('SUBSTRING('.self::ALIAS.'.code, POSITION(\'_\' IN '.self::ALIAS.'.code) + 1) IN (:insee_codes)')
                 ->setParameter('insee_codes', $inseeCodes)
             ;
         }

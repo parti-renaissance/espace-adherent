@@ -812,7 +812,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     ): PaginatorInterface {
         $qb = $this
             ->createQueryBuilder('a')
-            ->where("SUBSTRING_INDEX(a.postAddress.city, '-', -1) = ANY_OF(:insee_codes)")
+            ->where("SUBSTRING(a.postAddress.city, 0, POSITION('-' IN a.postAddress.city)) = ANY_OF(:insee_codes)")
             ->andWhere('a.adherent = true')
             ->setParameter('insee_codes', $inseeCodes)
         ;
@@ -1105,7 +1105,7 @@ SQL;
      * Returns whether or not the given adherent is already an host of at least
      * one committee.
      */
-    public function hostCommittee(Adherent $adherent, Committee $committee = null): bool
+    public function hostCommittee(Adherent $adherent, Committee $committee): bool
     {
         $result = (int) $this->createCommitteeHostsQueryBuilder($committee)
             ->select('COUNT(DISTINCT a.id)')
@@ -1143,39 +1143,30 @@ SQL;
     }
 
     private function createCommitteeHostsQueryBuilder(
-        ?Committee $committee = null,
+        Committee $committee,
         bool $withoutSupervisors = false
     ): QueryBuilder {
-        $qb = $this->createQueryBuilder('a');
-
-        $cmCondition = '';
-        $amCondition = '';
-        if ($committee) {
-            $cmCondition = 'cm.committee = :committee AND ';
-            $amCondition = 'am.committee = :committee AND ';
-            $qb->setParameter('committee', $committee);
-        }
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.memberships', 'cm', Join::WITH, 'cm.committee = :committee AND cm.privilege = :privilege')
+            ->setParameters([
+                'privilege' => CommitteeMembership::COMMITTEE_HOST,
+                'committee' => $committee,
+            ])
+        ;
 
         if ($withoutSupervisors) {
-            return $qb
-                ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, $cmCondition.'cm.adherent = a')
-                ->where($cmCondition.'cm.privilege = :privilege')
-                ->addOrderBy('cm.privilege', 'ASC')
-                ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
-            ;
+            return $qb->where('cm IS NOT NULL');
         }
 
         return $qb
-            ->leftJoin('a.adherentMandates', 'am', Join::WITH, $amCondition.'am.adherent = a')
-            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, $cmCondition.'cm.adherent = a')
+            ->leftJoin('a.adherentMandates', 'am', Join::WITH, 'am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
             ->where((new Orx())
-                ->add('cm.privilege = :privilege')
-                ->add('am.quality = :supervisor AND am.finishAt IS NULL')
+                ->add('cm IS NOT NULL')
+                ->add('am IS NOT NULL')
             )
-            ->orderBy('am.quality', 'DESC')
+            ->orderBy('am.quality', 'ASC')
             ->addOrderBy('am.provisional', 'ASC')
             ->addOrderBy('cm.privilege', 'DESC')
-            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
             ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
         ;
     }

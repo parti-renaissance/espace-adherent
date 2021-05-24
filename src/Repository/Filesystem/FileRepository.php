@@ -52,7 +52,7 @@ class FileRepository extends ServiceEntityRepository
         string $order = 'a'
     ): array {
         $qb = $this->createWithPermissionsQueryBuilder($permissions)
-            ->andWhere('file.displayed = 1 ')
+            ->andWhere('file.displayed = true')
             ->orderBy('file.name', 'd' === $order ? 'DESC' : 'ASC')
         ;
 

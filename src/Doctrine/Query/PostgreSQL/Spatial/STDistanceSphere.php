@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Doctrine\Spatial;
+namespace App\Doctrine\Query\PostgreSQL\Spatial;
 
 use CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistanceSphere as BaseSTDistanceSphere;
 
