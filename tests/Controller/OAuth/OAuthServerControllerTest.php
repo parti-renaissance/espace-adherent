@@ -390,7 +390,7 @@ class OAuthServerControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'francis.brioul@yahoo.com',
+            '_login_email' => 'jacques.picard@en-marche.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
         static::assertTrue($this->client->getResponse()->isRedirect($authorizeUrl));
