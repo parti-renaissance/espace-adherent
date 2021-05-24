@@ -12,7 +12,7 @@
     "lint:watch": "npm run lint -- --watch"
   },
   "dependencies": {
-    "@babel/core": "^7.13.14",
+    "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-react": "^7.13.13",
     "@ckeditor/ckeditor5-build-en-marche": "https://github.com/EnMarche/ckeditor5-build-classic#stable",
@@ -53,11 +53,11 @@
     "prop-types": "^15.7.2",
     "randomatic": "^3.0.0",
     "raven-js": "^3.8.0",
-    "react": "^16.5.0",
+    "react": "^17.0.2",
     "react-addons-test-utils": "^15.3.2",
     "react-csv": "^1.0.5",
     "react-data-grid": "^2.0.6",
-    "react-dom": "^16.5.0",
+    "react-dom": "^17.0.2",
     "react-power-select": "^1.0.0-beta.17",
     "reqwest": "^2.0.5",
     "sass-loader": "^10.1.1",
