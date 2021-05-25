@@ -471,6 +471,17 @@
         // Uncomment next line when button to DataCorner will be removed from sidebar
         // padding: 30px 0;
 
+        // Delete img selector and all of its content when link to DataCorner will be removed
+        img {
+            opacity: 1;
+            transition: 0.5s ease;
+            
+            &:hover {
+                opacity: 0.7;
+                transition: 0.5s ease;
+            }
+        }
+
         ul {
             font-family: $font-roboto;
             margin-bottom: 25px;
