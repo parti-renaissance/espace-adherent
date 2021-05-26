@@ -1,3 +1,4 @@
+@javascript
 Feature:
   As a referent
   In order to see adherents, committees, citizen projects of my managed area
@@ -16,7 +17,6 @@ Feature:
       | LoadJecouteDataSurveyData  |
       | LoadJecouteDataAnswerData  |
 
-  @javascript
   Scenario: I can see citizen projects of my managed area
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/projets-citoyens"
@@ -27,8 +27,6 @@ Feature:
     And I should see "Massive Open Online Course"
     And I should see "Formation en ligne ouverte à tous"
 
-  # Municipal space
-  @javascript
   Scenario: I cannot see running mate or volunteer request for the zones I don't manage
     Given I am logged as "referent-child@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-colistiers"
@@ -36,7 +34,6 @@ Feature:
     When I am on "/espace-referent/candidature-benevoles"
     Then I wait 3 second until I see "Aucun résultat"
 
-  @javascript
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-colistiers"
@@ -48,7 +45,6 @@ Feature:
     And I should see "Lille"
     And I should see "Oui"
 
-  @javascript
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-benevoles"
@@ -59,7 +55,6 @@ Feature:
     And I should see "Lille"
     And I should see "Oui"
 
-  @javascript
   Scenario: I can see the local surveys list, edit a survey and show the statistics
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/questionnaires"
@@ -84,7 +79,6 @@ Feature:
     And I should see "66,67 %"
     And I should see "Réponse A"
 
-  @javascript
   Scenario: I can see the national surveys list and show the statistics
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/questionnaires/questionnaires-nationaux"

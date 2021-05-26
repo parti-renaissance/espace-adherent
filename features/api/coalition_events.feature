@@ -4,15 +4,6 @@ Feature:
   As a non logged-in user
   I should be able to access API coalition events
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadCauseData           |
-      | LoadCoalitionData       |
-      | LoadCoalitionEventData  |
-      | LoadCauseEventData      |
-      | LoadAdherentData        |
-      | LoadClientData          |
-
   Scenario: As a non logged-in user I see coalition events
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/events"

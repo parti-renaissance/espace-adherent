@@ -1,4 +1,4 @@
-@surveys
+@javascript
 Feature:
   As a Jecoute manager
   I can manage the local surveys and see the national surveys
@@ -9,7 +9,6 @@ Feature:
       | LoadJecouteDataSurveyData  |
       | LoadJecouteDataAnswerData  |
 
-  @javascript
   Scenario: I can see local surveys and their actions
     Given I am logged as "damien.schmidt@example.ch"
     When I am on "/espace-responsable-des-questionnaires"
@@ -29,7 +28,6 @@ Feature:
     And I should see 1 "table.datagrid__table-manager tr:contains('Un questionnaire de la Région') .action-menu-oval:contains('Statistiques')" elements
     And I should see 1 "table.datagrid__table-manager tr:contains('Un questionnaire de la Région') .action-menu-oval:contains('Télécharger les résultats')" elements
 
-  @javascript
   Scenario: I can create a local survey, edit it and show the statistics page
     # Create
     Given I am logged as "damien.schmidt@example.ch"
@@ -62,7 +60,6 @@ Feature:
     Then I should see "Statistiques : Un questionnaire jecoute manager (modifié)"
     And I should see "Aucune donnée n'est disponible pour le moment."
 
-  @javascript
   Scenario: I can see the national surveys list and see the statistics
     Given I am logged as "damien.schmidt@example.ch"
     When I am on "/espace-responsable-des-questionnaires/questionnaires-nationaux"

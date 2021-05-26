@@ -4,12 +4,6 @@ Feature:
   With a valid oauth token
   I should be able to access a department informations
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadJecouteRegionData |
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-
   Scenario: As a non authenticated user I cannot get the informations of a single department for a given postal code
     When I send a "GET" request to "/api/jecoute/departments/06600"
     Then the response status code should be 401

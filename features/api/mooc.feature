@@ -4,13 +4,6 @@ Feature:
   As a non logged-in user
   I should be able to access API Mooc
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadMoocData        |
-      | LoadMoocChapterData |
-      | LoadMoocVideoData   |
-      | LoadMoocQuizData    |
-
   Scenario: As a non logged-in user I can get the MOOC landing page configuration
     When I am on "/api/mooc"
     Then the response status code should be 200

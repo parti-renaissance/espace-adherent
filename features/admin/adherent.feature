@@ -2,10 +2,7 @@
 Feature: Manage adherent from admin panel
 
   Background:
-    Given the following fixtures are loaded:
-      | LoadAdminData    |
-      | LoadAdherentData |
-    When I am logged as "superadmin@en-marche-dev.fr" admin
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: Display list of adherents
     When I am on "/admin/app/adherent/list"

@@ -3,12 +3,6 @@ Feature:
   As a logged-in user
   I should be able to retrieve and edit my profile information
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-      | LoadUserData          |
-
   Scenario: As a non logged-in user I cannot get my profile information
     When I send a "GET" request to "/api/v3/profile/me"
     Then the response status code should be 401

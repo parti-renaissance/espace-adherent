@@ -2,14 +2,6 @@ Feature:
   In order to use the website
   I should be able to navigate through the nav
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData  |
-      | LoadArticleData   |
-      | LoadCommitteeEventData |
-      | LoadHomeBlockData |
-      | LoadPageData      |
-
   Scenario: The global sitemap displays correctly
     Given I am on "/sitemap.xml"
     Then the response should be in XML

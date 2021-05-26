@@ -6,12 +6,6 @@ Feature:
 
   Background:
     Given I freeze the clock to "2018-04-17"
-    And the following fixtures are loaded:
-      | LoadUserData                       |
-      | LoadAdherentData                   |
-      | LoadEmailSubscriptionHistoryData   |
-      | LoadCommitteeMembershipHistoryData |
-      | LoadClientData                     |
 
   Scenario: As a non logged-in user I can not access the adherents count information
     When I am on "/api/statistics/adherents/count"

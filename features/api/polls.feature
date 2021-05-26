@@ -3,11 +3,6 @@ Feature:
   In order to see polls and vote
   I should be able to access API of polls
 
-  Background:
-  Given the following fixtures are loaded:
-    | LoadClientData |
-    | LoadPollData   |
-
   Scenario: As a non logged-in user I can retrieve polls, vote for it and see the results
   Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
   When I send a "GET" request to "/api/v3/polls"

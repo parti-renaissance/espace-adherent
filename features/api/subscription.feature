@@ -5,8 +5,6 @@ Feature:
   I need to be able to save changes of adherent email subscriptions.
 
   Scenario: The platform save email subscription modification from Webhook
-    Given the following fixtures are loaded:
-      | LoadAdherentData  |
     When I am logged as "jacques.picard@en-marche.fr"
     And I am on "/parametres/mon-compte/preferences-des-emails"
     Then the "Recevoir les e-mails nationaux" checkbox should be checked

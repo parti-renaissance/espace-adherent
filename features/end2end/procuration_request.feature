@@ -1,4 +1,3 @@
-@procurationRequest
 @javascript
 Feature:
   As a non logged user

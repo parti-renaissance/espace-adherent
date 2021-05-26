@@ -4,13 +4,6 @@ Feature:
   As a user
   I should be able to access API threads and thread comments
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData          |
-      | LoadIdeaData              |
-      | LoadIdeaThreadData        |
-      | LoadIdeaThreadCommentData |
-
   Scenario: As a non logged-in user I can see visibled thread comments paginated
     When I send a "GET" request to "/api/ideas-workshop/thread_comments?page=1"
     Then the response status code should be 200

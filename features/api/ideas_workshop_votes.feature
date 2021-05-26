@@ -4,12 +4,6 @@ Feature:
   As a user
   I should be able to access API idea votes and post my vote
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData    |
-      | LoadIdeaData        |
-      | LoadIdeaVoteData    |
-
   Scenario: As a logged-in user I can add my vote to an idea
     When I add "Content-Type" header equal to "application/json"
     And I am logged as "martine.lindt@gmail.com"

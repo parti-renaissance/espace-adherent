@@ -4,8 +4,6 @@ Feature:
   RabbitMQ messages should be published on user events
 
   Scenario Outline: Publish message on user created|updated
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
     Given I clean the "api_sync" queue
     When I dispatch the "<event>" user event with "michelle.dufour@example.ch"
     Then "api_sync" should have 1 message
@@ -18,8 +16,6 @@ Feature:
       | user.updated | user.updated |
 
   Scenario: Publish message on user deleted
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
     Given I clean the "api_sync" queue
     When I dispatch the "user.deleted" user event with "michel.vasseur@example.ch"
     Then "api_sync" should have 1 message
@@ -28,8 +24,6 @@ Feature:
       | user.deleted | {"uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0","subscriptionExternalIds":["123abc","456def"],"city":"Kilchberg","country":"CH","zipCode":"8802","tags":["CH"],"emailAddress":"michel.vasseur@example.ch","firstName":"Michel","lastName":"VASSEUR"} |
 
   Scenario: Publish message on user update subscriptions
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
     Given I clean the "api_sync" queue
     When I dispatch the "user.update_subscriptions" user event with "jacques.picard@en-marche.fr" and email subscriptions
     Then "api_sync" should have 1 message
@@ -38,9 +32,7 @@ Feature:
       | user.update_subscriptions | {"uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda","subscriptions":["123abc"],"unsubscriptions":[]} |
 
   Scenario Outline: Publish message on committee created|updated
-    Given the following fixtures are loaded:
-      | LoadCommitteeData |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "<event>" committee event with "En Marche Paris 8"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
@@ -52,9 +44,7 @@ Feature:
       | committee.updated | committee.updated |
 
   Scenario: Publish message on committee deleted
-    Given the following fixtures are loaded:
-      | LoadCommitteeData |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "committee.deleted" committee event with "En Marche Paris 8"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
@@ -62,11 +52,7 @@ Feature:
       | committee.deleted | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818"} |
 
   Scenario Outline: Publish message on event created|updated
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadEventCategoryData |
-      | LoadCommitteeEventData |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "<event>" event event with "Réunion de réflexion parisienne"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
@@ -78,11 +64,7 @@ Feature:
       | event.updated | event.updated |
 
   Scenario: Publish message on event deleted
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadEventCategoryData |
-      | LoadCommitteeEventData         |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "event.deleted" event event with "Réunion de réflexion parisienne"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
@@ -90,10 +72,7 @@ Feature:
       | event.deleted | {"uuid":"1fc69fd0-2b34-4bd4-a0cc-834480480934"} |
 
   Scenario Outline: Publish message on citizen project created|updated
-    Given the following fixtures are loaded:
-      | LoadAdherentData       |
-      | LoadCitizenProjectData |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "<event>" citizen project event with "Le projet citoyen à Paris 8"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
@@ -105,10 +84,7 @@ Feature:
       | citizen_project.updated | citizen_project.updated |
 
     Scenario: Publish message on citizen project deleted
-      Given the following fixtures are loaded:
-        | LoadAdherentData       |
-        | LoadCitizenProjectData |
-      And I clean the "api_sync" queue
+      Given I clean the "api_sync" queue
       When I dispatch the "citizen_project.deleted" citizen project event with "Le projet citoyen à Paris 8"
       Then "api_sync" should have 1 message
       And "api_sync" should have message below:
@@ -116,12 +92,7 @@ Feature:
         | citizen_project.deleted | {"uuid":"aa364092-3999-4102-930c-f711ef971195"} |
 
   Scenario Outline: Publish message on citizen action created|updated
-    Given the following fixtures are loaded:
-      | LoadAdherentData              |
-      | LoadCitizenProjectData        |
-      | LoadCitizenActionCategoryData |
-      | LoadCitizenActionData         |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "<event>" citizen action event with "Projet citoyen de Zürich"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
@@ -133,12 +104,7 @@ Feature:
       | citizen_action.updated | citizen_action.updated |
 
   Scenario: Publish message on citizen action deleted
-    Given the following fixtures are loaded:
-      | LoadAdherentData              |
-      | LoadCitizenProjectData        |
-      | LoadCitizenActionCategoryData |
-      | LoadCitizenActionData         |
-    And I clean the "api_sync" queue
+    Given I clean the "api_sync" queue
     When I dispatch the "citizen_action.deleted" citizen action event with "Projet citoyen de Zürich"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:

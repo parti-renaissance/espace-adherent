@@ -1,9 +1,5 @@
 Feature: Be able to have some categories not displayed
 
-  Background: I load all articles and categories data
-    Given the following fixtures are loaded:
-    | LoadArticleData |
-
   Scenario: Not display categories and articles linked in /aticles
     Given I am on "/articles"
     Then I should not see "Not displayed"

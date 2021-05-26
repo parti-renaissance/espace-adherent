@@ -4,12 +4,6 @@ Feature:
   As a logged-in user
   I should be able to access API event categories
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadEventCategoryData   |
-      | LoadAdherentData        |
-      | LoadClientData          |
-
   Scenario: As a logged-in user I get event categories
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     And I add "Accept" header equal to "application/json"

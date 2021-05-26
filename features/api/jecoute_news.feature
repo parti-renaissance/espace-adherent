@@ -4,13 +4,6 @@ Feature:
   With a valid oauth token
   I should be able to access to the news
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadGeoZoneData       |
-      | LoadJecouteNewsData   |
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-
   Scenario: As a non authenticated user I cannot get the news list
     When I send a "GET" request to "/api/jecoute/news"
     Then the response status code should be 401

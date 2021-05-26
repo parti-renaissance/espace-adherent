@@ -2,12 +2,7 @@
 Feature: Manage citizen projects from admin pannel
 
   Background:
-    Given the following fixtures are loaded:
-      | LoadAdminData          |
-      | LoadAdherentData       |
-      | LoadTurnkeyProjectData |
-      | LoadCitizenProjectData |
-    When I am logged as "superadmin@en-marche-dev.fr" admin
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: As an administrator I can approve a citizen project
     When I am on "/projets-citoyens/13003-le-projet-citoyen-a-marseille"

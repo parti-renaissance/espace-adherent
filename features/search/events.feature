@@ -1,9 +1,4 @@
 Feature:
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
-      | LoadCommitteeEventData |
-
   Scenario: The search city is based on user's city
 
     When I am on "/evenements"

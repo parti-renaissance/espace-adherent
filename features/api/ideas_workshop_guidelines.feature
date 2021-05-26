@@ -4,11 +4,6 @@ Feature:
   As a user
   I should be able to access API idea guidelines
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadIdeaGuidelineData   |
-      | LoadIdeaQuestionData    |
-
   Scenario: As a non logged-in user I can see all enabled idea guidelines
     When I send a "GET" request to "/api/ideas-workshop/guidelines"
     Then the response status code should be 200

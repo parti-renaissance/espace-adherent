@@ -6,14 +6,6 @@ Feature:
 
   Background:
     Given I freeze the clock to "2018-04-15"
-    And the following fixtures are loaded:
-      | LoadUserData                        |
-      | LoadAdherentData                    |
-      | LoadCommitteeEventData              |
-      | LoadCommitteeMembershipHistoryData  |
-      | LoadClientData                      |
-      | LoadCommitteeData                   |
-      | LoadCommitteeAdherentMandateData    |
 
   Scenario: As a non logged-in user I can not access the committee supervisors count managed by referent information
     When I am on "/api/statistics/committees/count-for-referent-area"

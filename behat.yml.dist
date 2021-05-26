@@ -28,6 +28,7 @@ default:
                 - FeatureContext
                 - DonationContext
     extensions:
+        DAMA\DoctrineTestBundle\Behat\ServiceContainer\DoctrineExtension: ~
         Behat\Symfony2Extension:
             kernel:
                 bootstrap: features/bootstrap/bootstrap.php

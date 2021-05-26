@@ -135,16 +135,16 @@ jobs:
 
                 case $CIRCLE_NODE_INDEX in
                     0)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@api,@republicansilence' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@javascript' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                     1)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@donation,@oauth,@surveys,@admin,@procurationRequest,@committeeVote' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@donation,@oauth,@surveys,@admin,@procurationRequest,@committeeVote,@republicansilence' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                     2)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@registration,@popupchart,@municipalSpace,@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@api,@registration,@popupchart,@municipalSpace,@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                     3)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='~@api&&~@donation&&~@admin&&~@oauth&&~@registration&&~@popupchart&&~@republicansilence&&~@surveys&&~@committeeVote&&~@municipalSpace&&~@procurationRequest&&~@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='~@javascript&&~@api&&~@donation&&~@admin&&~@oauth&&~@registration&&~@popupchart&&~@republicansilence&&~@surveys&&~@committeeVote&&~@municipalSpace&&~@procurationRequest&&~@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                 esac
             - store_test_results:

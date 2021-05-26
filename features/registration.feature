@@ -5,8 +5,6 @@ Feature:
   I can register
 
   Scenario: I can register as an adherent
-    Given the following fixtures are loaded:
-      | LoadCommitteeData |
     When I am on "/adhesion"
     And I fill in the following:
       | adherent_registration[firstName]            | Jean-Pierre         |
@@ -107,9 +105,6 @@ Feature:
     And the response status code should be 200
 
   Scenario: I can register as a user
-    Given the following fixtures are loaded:
-      | LoadReferentTagData      |
-      | LoadSubscriptionTypeData |
     When I am on "/inscription-utilisateur"
     And I fill in the following:
       | Prénom             | Jean-Pierre |
@@ -308,70 +303,6 @@ Feature:
       | user.update_subscriptions | {"uuid":"@string@","subscriptions":["123abc","456def"],"unsubscriptions":[]} |
     And I clean the "api_sync" queue
 
-  @javascript
-  Scenario: I can become adherent with a foreign country
-    Given the following fixtures are loaded:
-      | LoadUserData        |
-      | LoadReferentTagData |
-    And I am logged as "simple-user@example.ch"
-    And I am on "/adhesion"
-    And I fill in the following:
-      | become_adherent[nationality]         | CH                 |
-      | become_adherent[address][country]    | CH                 |
-      | become_adherent[address][address]    | 32 Zeppelinstrasse |
-      | become_adherent[address][postalCode] | 8057               |
-      | become_adherent[gender]              | male               |
-      | become_adherent[phone][number]       | 06 12 34 56 78     |
-      | become_adherent[birthdate][day]      | 1                  |
-      | become_adherent[birthdate][month]    | 1                  |
-      | become_adherent[birthdate][year]     | 1980               |
-    And I click the "field-conditions" element
-    And I click the "field-com-email" element
-    When I press "Je rejoins La République En Marche"
-    Then I should see "Veuillez renseigner une ville."
-
-    Given I fill in the following:
-      | become_adherent[address][cityName] | Zürich |
-    When I press "Je rejoins La République En Marche"
-    Then I should be on "/espace-adherent/accueil"
-    And the adherent "simple-user@example.ch" should have the "CH" referent tag
-    And I should see "Votre compte adhérent est maintenant actif."
-    And "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                                             |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"city":"Zürich","country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
-    And I clean the "api_sync" queue
-
-  @javascript
-  Scenario: I can become adherent with a french address
-    Given the following fixtures are loaded:
-      | LoadUserData        |
-      | LoadReferentTagData |
-    And I am logged as "simple-user@example.ch"
-    And I am on "/adhesion"
-    And I fill in the following:
-      | become_adherent[address][country] | FR                  |
-      | become_adherent[nationality]      | FR                  |
-      | become_adherent[address][address] | 1 rue des alouettes |
-      | become_adherent[gender]           | male                |
-      | become_adherent[phone][number]    | 06 12 34 56 78      |
-      | become_adherent[birthdate][day]   | 1                   |
-      | become_adherent[birthdate][month] | 1                   |
-      | become_adherent[birthdate][year]  | 1980                |
-    And I click the "field-conditions" element
-    When I press "Je rejoins La République En Marche"
-    Then I should be on "/adhesion"
-    And I should see "Veuillez renseigner une ville."
-
-    Given I fill in the following:
-      | become_adherent[address][country]    | FR       |
-      | become_adherent[address][postalCode] | 69001    |
-    And I wait until I see "Lyon" in the "#become_adherent_address_city" element
-    When I press "Je rejoins La République En Marche"
-    Then I should be on "/espace-adherent/accueil"
-    And I should see "Votre compte adhérent est maintenant actif."
-    And the adherent "simple-user@example.ch" should have the "69" referent tag
-
   Scenario: I have great error message when register is misfiled
     Given I am on "/inscription-utilisateur"
     When I fill in the following:
@@ -394,9 +325,7 @@ Feature:
     And I should see "Votre prénom doit comporter au moins 2 caractères."
 
   Scenario: A new user should see personal message to help him to validate his account
-    Given the following fixtures are loaded:
-      | LoadUserData |
-    And I am on "/connexion"
+    Given I am on "/connexion"
     When I fill in the following:
       | E-mail       | simple-user-not-activated@example.ch |
       | Mot de passe | secret!12345                         |
@@ -443,31 +372,3 @@ Feature:
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
-
-  @javascript
-  Scenario: I can become adherent with a custom gender
-    Given the following fixtures are loaded:
-      | LoadUserData        |
-      | LoadReferentTagData |
-    And I am logged as "simple-user@example.ch"
-    And I am on "/adhesion"
-    And I fill in the following:
-      | become_adherent[nationality]         | FR                  |
-      | become_adherent[address][country]    | FR                  |
-      | become_adherent[address][address]    | 1 rue des alouettes |
-      | become_adherent[gender]              | other               |
-      | become_adherent[phone][number]       | 06 12 34 56 78      |
-      | become_adherent[birthdate][day]      | 1                   |
-      | become_adherent[birthdate][month]    | 1                   |
-      | become_adherent[birthdate][year]     | 1980                |
-      | become_adherent[address][country]    | FR                  |
-      | become_adherent[address][postalCode] | 69001               |
-    And I click the "field-conditions" element
-    When I press "Je rejoins La République En Marche"
-    Then I should be on "/adhesion"
-    Given I fill in the following:
-      | become_adherent[customGender] | Etre non binaire |
-    And I wait until I see "Lyon" in the "#become_adherent_address_city" element
-    When I press "Je rejoins La République En Marche"
-    Then I should be on "/espace-adherent/accueil"
-    And I should see "Votre compte adhérent est maintenant actif."

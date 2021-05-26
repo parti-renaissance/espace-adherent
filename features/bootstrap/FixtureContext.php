@@ -24,14 +24,6 @@ class FixtureContext extends RawMinkContext
     }
 
     /**
-     * @BeforeScenario
-     */
-    public function clearDatabase()
-    {
-        $this->purger->purge();
-    }
-
-    /**
      * @Given the following fixtures are loaded:
      */
     public function theFollowingFixturesAreLoaded(TableNode $classnames): void
@@ -46,6 +38,7 @@ class FixtureContext extends RawMinkContext
             throw new InvalidArgumentException(sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures)));
         }
 
+        $this->clearDatabase();
         $this->executor->execute($fixtures);
     }
 
@@ -64,5 +57,10 @@ class FixtureContext extends RawMinkContext
         }
 
         $fixtures[$className] = $fixture;
+    }
+
+    private function clearDatabase(): void
+    {
+        $this->purger->purge();
     }
 }

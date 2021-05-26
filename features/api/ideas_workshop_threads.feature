@@ -4,12 +4,6 @@ Feature:
   As a user
   I should be able to access API threads
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadIdeaAnswerData        |
-      | LoadIdeaThreadData        |
-      | LoadIdeaThreadCommentData |
-
   Scenario: As a non logged-in user I can see visibled threads paginated
     When I send a "GET" request to "/api/ideas-workshop/threads?page=1"
     Then the response status code should be 200

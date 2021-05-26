@@ -4,9 +4,7 @@ Feature:
   I should be able to request them via the API
 
   Scenario:
-    Given the following fixtures are loaded:
-      | LoadClientData |
-    And I add "Accept" header equal to "application/json"
+    Given I add "Accept" header equal to "application/json"
     And I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |

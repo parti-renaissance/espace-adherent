@@ -3,8 +3,6 @@ Feature:
   I should be blocked if I try to login too many time
 
   Scenario: Known user is blocked after 5 attempts
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
     Given I am on "/connexion"
 
     When I fill in the following:
@@ -85,9 +83,7 @@ Feature:
     Then I should see "Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer."
 
   Scenario: Known admin is blocked after 5 attempts
-    Given the following fixtures are loaded:
-      | LoadAdminData |
-    And I am on "/admin/login"
+    Given I am on "/admin/login"
 
     When I fill in the following:
       | _login_email    | superadmin@en-marche-dev.fr |

@@ -4,12 +4,6 @@ Feature:
   As client software developer
   I should be able to access API email templates
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadClientData        |
-      | LoadEmailTemplateData |
-
   Scenario: I can get a logged-in user templates
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/email_templates"

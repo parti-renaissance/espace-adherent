@@ -2,10 +2,7 @@
 Feature: Manage idea from admin panel
 
   Background:
-    Given the following fixtures are loaded:
-      | LoadAdminData |
-      | LoadIdeaData  |
-    When I am logged as "superadmin@en-marche-dev.fr" admin
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: As a super admin, I should have a list of ideas
     When I am on "/admin/app/ideasworkshop-idea/list"

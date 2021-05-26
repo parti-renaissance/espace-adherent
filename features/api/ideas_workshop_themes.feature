@@ -4,10 +4,6 @@ Feature:
   As a user
   I should be able to access API idea themes
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadIdeaThemeData  |
-
   Scenario: As a non logged-in user I can see all enabled themes
     When I send a "GET" request to "/api/ideas-workshop/themes"
     Then the response status code should be 200

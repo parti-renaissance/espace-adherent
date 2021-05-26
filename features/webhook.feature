@@ -4,10 +4,7 @@ Feature: Allow some worker to get the list of configured web hooks
   I want to get access to web hooks config by event name
 
   Background:
-    Given the following fixtures are loaded:
-      | LoadClientData  |
-      | LoadWebHookData |
-    And I add "Accept" header equal to "application/json"
+    Given I add "Accept" header equal to "application/json"
 
   Scenario: Web hook config can be read when oauth client have web_hook scope (web hook does not exist in DB before that call)
     Given I send a "POST" request to "/oauth/v2/token" with parameters:

@@ -4,12 +4,6 @@ Feature:
   As a non logged-in user
   I should be able to access to the surveys configuration and be able to answer to it
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadJecouteSurveyData |
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-
   Scenario: As a non logged-in user I cannot get the surveys
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 401

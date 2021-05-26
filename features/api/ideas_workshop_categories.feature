@@ -4,10 +4,6 @@ Feature:
   As a user
   I should be able to access API idea categories
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadIdeaCategoryData  |
-
   Scenario: As a non logged-in user I can see all enabled categories
     When I send a "GET" request to "/api/ideas-workshop/categories"
     Then the response status code should be 200

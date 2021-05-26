@@ -4,10 +4,6 @@ Feature:
   As a non logged-in user
   I should be able to access API Turnkey projects
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadTurnkeyProjectData  |
-
   Scenario: As a non logged-in user I can get approved turnkey projects count
     When I send a "GET" request to "/api/turnkey-projects/count"
     Then the response status code should be 200

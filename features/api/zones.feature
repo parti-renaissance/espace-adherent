@@ -4,10 +4,6 @@ Feature:
   As a non logged-in user
   I should be able to access API zones
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadGeoZoneData |
-
   Scenario: As a non logged-in user I can filter zones by exact types and partial name
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/zones" with parameters:

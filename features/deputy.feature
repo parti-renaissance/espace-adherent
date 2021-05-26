@@ -2,13 +2,6 @@ Feature:
   As deputy
   I can send messages to the adherents, see committees and events of my district
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadDistrictData      |
-      | LoadEventCategoryData |
-      | LoadCommitteeEventData |
-
   Scenario Outline: As anonymous I can not access deputy space pages.
     Given I go to "<uri>"
     Then the response status code should be 200
@@ -59,13 +52,6 @@ Feature:
     Then I should be on "/espace-depute/utilisateurs/message"
     And I should see 0 ".form__errors" elements
     And I should see "Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer."
-
-  @javascript
-  Scenario: As deputy of 1st Paris district I can see committees.
-    Given I am logged as "deputy@en-marche-dev.fr"
-    When I am on "/espace-depute/comites"
-    And I wait 3 second until I see "En Marche Paris 8"
-    Then I should see 1 "table.managed__list__table tbody tr" elements
 
   Scenario: As deputy of 1st Paris district I can see events.
     Given I am logged as "deputy@en-marche-dev.fr"

@@ -4,10 +4,6 @@ Feature:
   As a non logged-in user
   I should be able to access Ideas Workshop API
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadIdeaConsultationReportData |
-
   Scenario: As a non logged-in user I can see consultation reports
     When I send a "GET" request to "/api/ideas-workshop/consultation_reports"
     Then the response status code should be 200
