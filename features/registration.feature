@@ -336,11 +336,6 @@ Feature:
     Then I should be on "/espace-adherent/accueil"
     And the adherent "simple-user@example.ch" should have the "CH" referent tag
     And I should see "Votre compte adhérent est maintenant actif."
-    And "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                                             |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"city":"Zürich","country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
-    And I clean the "api_sync" queue
 
   @javascript
   Scenario: I can become adherent with a french address

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filter;
+namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter as BaseFilter;
 

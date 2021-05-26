@@ -700,7 +700,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->assertReferent($referent);
 
         $query = $this->createQueryBuilder('adherent')
-            ->select('COUNT(DISTINCT adherent) AS count')
+            ->select('COUNT(DISTINCT adherent.id) AS count')
             ->innerJoin('adherent.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->andWhere('adherent.activatedAt <= :until')

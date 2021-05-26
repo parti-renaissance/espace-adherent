@@ -57,24 +57,24 @@ Feature:
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
-          "name": "Cause pour la culture 2",
-          "slug": "cause-pour-la-culture-2",
-          "description": "Description de la cause pour la culture 2",
+          "name": "Cause pour l'éducation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
-            "followers_count": 4
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
           },
           "second_coalition": null,
-          "uuid": "017491f9-1953-482e-b491-20418235af1f",
-          "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
-          },
           "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -96,6 +96,26 @@ Feature:
       },
       "items": [
         {
+          "name": "Cause pour la culture 2",
+          "description": "Description de la cause pour la culture 2",
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-la-culture-2",
+          "uuid": "017491f9-1953-482e-b491-20418235af1f",
+          "author": {
+            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+            "first_name": "Michelle",
+            "last_name": "Dufour",
+            "last_name_initial": "D."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+        },
+        {
           "name": "Cause pour la culture 3",
           "slug": "cause-pour-la-culture-3",
           "description": "Description de la cause pour la culture 3",
@@ -113,26 +133,6 @@ Feature:
             "last_name_initial": "D."
           },
           "followers_count": 0,
-          "image_url": null
-        },
-        {
-          "name": "Cause pour la justice",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "coalition": {
-            "name": "Justice",
-            "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c",
-            "followers_count": 0
-          },
-          "second_coalition": null,
-          "followers_count": 0,
-          "slug": "cause-pour-la-justice",
-          "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
-          "author": {
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard",
-            "last_name_initial": "P."
-          },
           "image_url": null
         }
       ]
@@ -175,6 +175,26 @@ Feature:
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
+          "name": "Cause pour l'éducation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+        },
+        {
           "name": "Cause pour la culture 2",
           "description": "Description de la cause pour la culture 2",
           "coalition": {
@@ -233,26 +253,6 @@ Feature:
             "last_name_initial": "P."
           },
           "image_url": null
-        },
-        {
-          "name": "Cause pour l'éducation",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "coalition": {
-            "name": "Éducation",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
-            "followers_count": 0
-          },
-          "second_coalition": null,
-          "followers_count": 0,
-          "slug": "cause-pour-leducation",
-          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "author": {
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "first_name": "Jacques",
-            "last_name": "Picard",
-            "last_name_initial": "P."
-          },
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }
@@ -331,24 +331,24 @@ Feature:
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
-          "name": "Cause pour la culture 2",
-          "slug": "cause-pour-la-culture-2",
-          "description": "Description de la cause pour la culture 2",
+          "name": "Cause pour l'éducation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
-            "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
-            "followers_count": 4
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
           },
           "second_coalition": null,
-          "uuid": "017491f9-1953-482e-b491-20418235af1f",
-          "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
-          },
           "followers_count": 0,
-          "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
     }

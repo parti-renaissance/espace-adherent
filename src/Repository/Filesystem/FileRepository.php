@@ -62,9 +62,7 @@ class FileRepository extends ServiceEntityRepository
                 ->setParameter('directory', $directory)
             ;
         } else {
-            $qb
-                ->andWhere('file.parent IS NULL')
-            ;
+            $qb->andWhere('file.parent IS NULL');
         }
 
         return $qb->getQuery()->getResult();
