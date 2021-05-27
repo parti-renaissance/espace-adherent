@@ -3,6 +3,7 @@
 namespace App\Mailchimp\Campaign;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 class MailchimpObjectIdMapping
 {
@@ -64,9 +65,13 @@ class MailchimpObjectIdMapping
         return $this->folderIds[$messageType] ?? null;
     }
 
-    public function getTemplateIdByType(string $messageType): ?int
+    public function getTemplateId(AdherentMessageInterface $message): ?int
     {
-        return $this->templateIds[$messageType] ?? null;
+        if (AdherentMessageInterface::SOURCE_API === $message->getSource()) {
+            $templateId = $this->findTemplateId(sprintf('%s_api', $message->getType()));
+        }
+
+        return $templateId ?? $this->findTemplateId($message->getType());
     }
 
     public function getInterestIds(): array
@@ -151,5 +156,10 @@ class MailchimpObjectIdMapping
     public function getNewsletterTagIds(): array
     {
         return $this->newsletterTagIds;
+    }
+
+    private function findTemplateId(string $key): ?int
+    {
+        return $this->templateIds[$key] ?? null;
     }
 }

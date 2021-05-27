@@ -4,6 +4,7 @@ namespace App\Normalizer;
 
 use App\AdherentMessage\AdherentMessageFactory;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -36,7 +37,12 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
         $context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED] = true;
 
-        return $this->denormalizer->denormalize($data, $messageClass, $format, $context);
+        /** @var AdherentMessageInterface $message */
+        $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context);
+
+        $message->setSource(AdherentMessageInterface::SOURCE_API);
+
+        return $message;
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])

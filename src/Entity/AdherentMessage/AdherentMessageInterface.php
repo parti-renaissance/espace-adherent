@@ -10,6 +10,9 @@ use Ramsey\Uuid\UuidInterface;
 
 interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
 {
+    public const SOURCE_PLATFORM = 'platform';
+    public const SOURCE_API = 'api';
+
     public function getLabel(): ?string;
 
     public function getUuid(): UuidInterface;
@@ -62,4 +65,8 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
     public function markAsSent(): void;
 
     public static function createFromAdherent(Adherent $adherent): self;
+
+    public function getSource(): string;
+
+    public function setSource(string $source): void;
 }
