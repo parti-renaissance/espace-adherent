@@ -24,7 +24,7 @@ class CampaignRequestBuilder
 
         return (new EditCampaignRequest())
             ->setFolderId($this->objectIdMapping->getFolderIdByType($message->getType()))
-            ->setTemplateId($this->objectIdMapping->getTemplateIdByType($message->getType()))
+            ->setTemplateId($this->objectIdMapping->getTemplateId($message))
             ->setSubject($message->getSubject())
             ->setTitle($this->createCampaignLabel($campaign))
             ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($campaign) : [])

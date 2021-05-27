@@ -22,7 +22,7 @@ class CampaignContentRequestBuilder
     public function createContentRequest(AdherentMessageInterface $message): EditCampaignContentRequest
     {
         $request = new EditCampaignContentRequest(
-            $this->objectIdMapping->getTemplateIdByType($message->getType()),
+            $this->objectIdMapping->getTemplateId($message),
             $message->getContent()
         );
 

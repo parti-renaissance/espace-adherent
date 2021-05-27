@@ -209,6 +209,7 @@ class Manager implements LoggerAwareInterface
 
         $this->eventDispatcher->dispatch(new CampaignEvent($campaign), Events::CAMPAIGN_FILTERS_PRE_BUILD);
 
+        /** @var CampaignRequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($campaign);

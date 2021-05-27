@@ -196,6 +196,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $sendToTimeline = false;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(options={"default": self::SOURCE_PLATFORM})
+     */
+    private $source = self::SOURCE_PLATFORM;
+
     final public function __construct(UuidInterface $uuid = null, Adherent $author = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -410,5 +417,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function setAuthor(Adherent $adherent): void
     {
         $this->author = $adherent;
+    }
+
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    public function setSource(string $source): void
+    {
+        $this->source = $source;
     }
 }
