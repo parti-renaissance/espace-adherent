@@ -59,11 +59,12 @@ class SurveyExporter
                 $row = [];
                 $row['ID'] = ++$this->i;
 
+                $author = $dataSurvey->getAuthor();
                 if ($fromAdmin) {
-                    $row['Adherent ID'] = $dataSurvey->getAuthor()->getId();
+                    $row['Adherent ID'] = $author ? $author->getId() : null;
                 }
 
-                $row['Nom Prénom de l\'auteur'] = $dataSurvey->getAuthor();
+                $row['Nom Prénom de l\'auteur'] = (string) $author;
                 $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
                 $row['Nom'] = $allowPersonalData ? $dataSurvey->getFirstName() : null;
                 $row['Prénom'] = $allowPersonalData ? $dataSurvey->getLastName() : null;
