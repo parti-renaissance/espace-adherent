@@ -12,7 +12,7 @@ class FixDefaultSchemaListener implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            ToolEvents::postGenerateSchema,
+//            ToolEvents::postGenerateSchema,
         ];
     }
 
