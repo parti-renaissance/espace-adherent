@@ -5,6 +5,7 @@ namespace App\Repository\Coalition;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -46,10 +47,8 @@ class CoalitionRepository extends ServiceEntityRepository
     public function findByFollower(string $email, bool $isAdherent): array
     {
         $qb = $this->createQueryBuilder('coalition')
-            ->join('coalition.causes', 'cause')
-            ->where('coalition.enabled = :true AND cause.status = :approved')
+            ->where('coalition.enabled = :true')
             ->setParameters([
-                'approved' => Cause::STATUS_APPROVED,
                 'true' => true,
                 'email' => $email,
             ])
@@ -63,8 +62,10 @@ class CoalitionRepository extends ServiceEntityRepository
             ;
         } else {
             $qb
+                ->join('coalition.causes', 'cause', Join::WITH, 'cause.status = :approved')
                 ->join('cause.followers', 'follower')
                 ->andWhere('follower.emailAddress = :email')
+                ->setParameter('approved', Cause::STATUS_APPROVED)
             ;
         }
 
