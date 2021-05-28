@@ -74,7 +74,7 @@
 
             {% if is_granted('ROLE_JECOUTE_REGION') or is_granted('HAS_DELEGATED_ACCESS_JECOUTE_REGION') %}
                 <li class="{{ is_active_route(app.request, 'app_jecoute_candidate_region_edit') ? 'active' }}">
-                    <a href="{{ path('app_jecoute_candidate_region_edit') }}">Campagne</a>
+                    <a href="{{ path('app_jecoute_candidate_region_edit') }}">Personnaliser</a>
                 </li>
             {% endif %}
         </ul>

@@ -3,6 +3,7 @@
 namespace App\Repository\Geo;
 
 use App\Entity\Geo\City;
+use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use App\Entity\ReferentTag;
@@ -379,6 +380,21 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameters([
                 'postal_code' => '%'.$postalCode.'%',
                 'zone_types' => [Zone::CITY, Zone::BOROUGH],
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findGeoZoneByGeoRegion(Region $region): ?Zone
+    {
+        return $this->createQueryBuilder('zone')
+            ->innerJoin(Region::class, 'region', Join::WITH, 'zone.code = region.code')
+            ->where('region.code = :code AND zone.type = :type')
+            ->setParameters([
+                'code' => $region->getCode(),
+                'type' => Zone::REGION,
             ])
             ->setMaxResults(1)
             ->getQuery()

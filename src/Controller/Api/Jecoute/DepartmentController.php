@@ -36,7 +36,13 @@ class DepartmentController extends AbstractController
         }
 
         return new JsonResponse(
-            $serializer->serialize($department, 'json', ['groups' => ['department_read', 'jecoute_department_read']]),
+            $serializer->serialize($department, 'json', [
+                'groups' => [
+                    'department_read',
+                    'jecoute_department_read',
+                ],
+                'postal_code' => $postalCode,
+            ]),
             JsonResponse::HTTP_OK,
             [],
             true

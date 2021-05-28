@@ -391,6 +391,7 @@ jecoute_news.unpublish.success: L'actualité a bien été dépubliée
 
 jecoute_region.create.success: La campagne régionale a été créée avec succès.
 jecoute_region.edit.success: La campagne régionale a été modifiée avec succès.
+jecoute_region.delete.success: La campagne régionale a été supprimée avec succès.
 
 #
 # Polls

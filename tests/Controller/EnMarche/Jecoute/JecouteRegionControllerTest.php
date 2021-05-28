@@ -43,7 +43,7 @@ class JecouteRegionControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
 
-        self::assertCount(1, $link = $crawler->filter('nav.manager-sidebar__menu ul li a:contains("Campagne")'));
+        self::assertCount(1, $link = $crawler->filter('nav.manager-sidebar__menu ul li a:contains("Personnaliser")'));
 
         $crawler = $this->client->click($link->link());
 

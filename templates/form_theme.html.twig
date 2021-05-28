@@ -534,7 +534,7 @@
 
 {% block cropped_image_row %}
     <div class="em-form__group">
-        <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
+        <label for="{{ form.image.vars.id }}" id="label_{{ form.image.vars.id }}" class="em-form__label">{{ label }}</label>
 
         {{ form_errors(form) }}
 
