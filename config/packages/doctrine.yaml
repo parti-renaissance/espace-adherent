@@ -16,27 +16,6 @@ doctrine:
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
             geo_point:      App\Doctrine\DBAL\Types\GeoPointType
             geometry:       CrEOF\Spatial\DBAL\Types\GeometryType
-#            point:          CrEOF\Spatial\DBAL\Types\Geometry\PointType
-#            polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
-#            multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
-#            jsonb:          MartinGeorgiev\Doctrine\DBAL\Types\Jsonb
-#            jsonb[]:        MartinGeorgiev\Doctrine\DBAL\Types\JsonbArray
-#            smallint[]:     MartinGeorgiev\Doctrine\DBAL\Types\SmallIntArray
-#            integer[]:      MartinGeorgiev\Doctrine\DBAL\Types\IntegerArray
-#            bigint[]:       MartinGeorgiev\Doctrine\DBAL\Types\BigIntArray
-#            text[]:         MartinGeorgiev\Doctrine\DBAL\Types\TextArray
-#        mapping_types:
-#            jsonb: jsonb
-#            jsonb[]: jsonb[]
-#            _jsonb: jsonb[]
-#            smallint[]: smallint[]
-#            _int2: smallint[]
-#            integer[]: integer[]
-#            _int4: integer[]
-#            bigint[]: bigint[]
-#            _int8: bigint[]
-#            text[]: text[]
-#            _text: text[]
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
@@ -60,12 +39,10 @@ doctrine:
 
         dql:
             numeric_functions:
-                st_distancesphere: App\Doctrine\Query\PostgreSQL\Spatial\STDistanceSphere
-                st_point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STPoint
-                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STWithin
-                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText
-                second: Oro\ORM\Query\AST\Functions\SimpleFunction
-                cast: Oro\ORM\Query\AST\Functions\Cast
+                ST_DISTANCESPHERE: App\Doctrine\Query\PostgreSQL\Spatial\STDistanceSphere
+                ST_POINT: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STPoint
+                ST_WITHIN: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STWithin
+                ST_GEOMFROMTEXT: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText
             string_functions:
                 IN_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\InArray
                 ANY_OF: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Any
