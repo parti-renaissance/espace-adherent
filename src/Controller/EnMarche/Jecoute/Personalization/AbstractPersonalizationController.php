@@ -80,6 +80,8 @@ abstract class AbstractPersonalizationController extends AbstractController
 
             $this->addFlash('info', $isNew ? 'jecoute_region.create.success' : 'jecoute_region.edit.success');
             $isNew = false;
+
+            return $this->redirectToRegionRoute('edit', ['zone_id' => $zoneId]);
         }
 
         return $this->renderTemplate('jecoute/edit_region.html.twig', [

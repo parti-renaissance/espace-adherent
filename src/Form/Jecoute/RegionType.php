@@ -49,7 +49,6 @@ class RegionType extends AbstractType
                 'required' => false,
             ])
             ->add('logoFile', CroppedImageType::class, [
-                'required' => !$region->hasLogoUploaded(),
                 'attr' => ['accept' => 'image/*'],
                 'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 'label' => 'Logo',
