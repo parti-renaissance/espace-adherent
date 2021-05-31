@@ -63,7 +63,6 @@ abstract class AbstractNewsController extends AbstractController
 
         $options = [
             'zones' => $zones,
-            'is_notifiable' => $this->isNotifiableNews(),
         ];
 
         $form = $this
@@ -108,7 +107,6 @@ abstract class AbstractNewsController extends AbstractController
         $options = [
             'zones' => $zones,
             'edit' => true,
-            'is_notifiable' => $this->isNotifiableNews(),
         ];
 
         $form = $this
@@ -178,8 +176,6 @@ abstract class AbstractNewsController extends AbstractController
     abstract protected function getSpaceName(): string;
 
     abstract protected function getZones(Adherent $adherent): array;
-
-    abstract protected function isNotifiableNews(): bool;
 
     /**
      * @return News[]

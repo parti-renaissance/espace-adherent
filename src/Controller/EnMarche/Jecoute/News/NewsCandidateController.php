@@ -23,9 +23,4 @@ class NewsCandidateController extends AbstractNewsController
     {
         return [$adherent->getCandidateManagedArea()->getZone()];
     }
-
-    protected function isNotifiableNews(): bool
-    {
-        return true;
-    }
 }
