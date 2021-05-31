@@ -11,11 +11,11 @@ final class Version20210526121013 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE jecoute_region DROP FOREIGN KEY FK_4E74226F39192B5C');
         $this->addSql('DROP INDEX UNIQ_4E74226F39192B5C ON jecoute_region');
-        $this->addSql('UPDATE jecoute_region as r
-    INNER JOIN geo_region gr on r.geo_region_id = gr.id
-    INNER JOIN geo_zone gz on gr.code = gz.code
-SET r.geo_region_id = gz.id');
         $this->addSql('ALTER TABLE jecoute_region CHANGE geo_region_id zone_id INT UNSIGNED NOT NULL');
+        $this->addSql('UPDATE jecoute_region as r
+    INNER JOIN geo_region gr on r.zone_id = gr.id
+    INNER JOIN geo_zone gz on gr.code = gz.code
+SET r.zone_id = gz.id');
         $this->addSql('ALTER TABLE
           jecoute_region
         ADD
