@@ -2,7 +2,7 @@
 
 namespace App\Admin\Jecoute;
 
-use App\Entity\Geo\Region as GeoRegion;
+use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use App\Jecoute\RegionManager;
@@ -42,9 +42,9 @@ class RegionAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Informations', ['class' => 'col-md-6'])
-                ->add('geoRegion', EntityType::class, [
-                    'label' => 'Région',
-                    'class' => GeoRegion::class,
+                ->add('zone', EntityType::class, [
+                    'label' => 'Zone',
+                    'class' => Zone::class,
                 ])
                 ->add('subtitle', TextType::class, [
                     'label' => 'Sous-titre',
@@ -88,10 +88,10 @@ class RegionAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('geoRegion.name', null, [
+            ->add('zone.name', null, [
                 'label' => 'Nom',
             ])
-            ->add('geoRegion.code', 'color', [
+            ->add('zone.code', 'color', [
                 'label' => 'Code',
             ])
             ->add('_action', null, [

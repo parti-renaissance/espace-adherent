@@ -533,8 +533,8 @@
 {% endblock %}
 
 {% block cropped_image_row %}
-    <div class="em-form__group">
-        <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
+    <div class="em-form__group em_cropped_image_{{ form.image.vars.id }}_container">
+        <label for="{{ form.image.vars.id }}" id="label_{{ form.image.vars.id }}" class="em-form__label {% if required %}required{% endif %}">{{ label }}</label>
 
         {{ form_errors(form) }}
 
@@ -543,8 +543,8 @@
         {% endif %}
 
         <div class="em-form__file">
-            {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
-            {{ form_widget(form.croppedImage) }}
+            {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*', required: required}}) }}
+            {{ form_widget(form.croppedImage, {attr: {class: 'em-form__cropped--area'}}) }}
 
             <div>
                 <div class="image-uploader--label {{ image_url is defined ? 'hidden' }}">

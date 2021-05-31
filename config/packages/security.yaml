@@ -393,6 +393,7 @@ security:
 
         ROLE_REFERENT:
             - ROLE_JECOUTE_NEWS
+            - ROLE_JECOUTE_REGION
 
     access_decision_manager:
         strategy: unanimous

@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Geo\Region as GeoRegion;
+use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -19,7 +19,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
     {
         $manager->persist($this->createRegion(
             self::REGION_1_UUID,
-            $this->getRegionEntity($manager, 7), // geo_region_28 - Normandie
+            $this->getZoneEntity($manager, 269), // geo_region_28 - Normandie
             'Bienvenue en Normandie',
             'Description de la normandie',
             RegionColorEnum::RED,
@@ -30,7 +30,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
 
         $manager->persist($this->createRegion(
             self::REGION_2_UUID,
-            $this->getRegionEntity($manager, 3), // geo_region_32 - Hauts-de-France
+            $this->getZoneEntity($manager, 265), // geo_region_32 - Hauts-de-France
             'Bienvenue en Hauts-de-France',
             'Description des Hauts-de-France',
             RegionColorEnum::GREEN,
@@ -41,7 +41,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
 
         $manager->persist($this->createRegion(
             self::REGION_3_UUID,
-            $this->getRegionEntity($manager, 4), // geo_region_93 - Provence-Alpes-Côte d'Azur
+            $this->getZoneEntity($manager, 266), // geo_region_93 - Provence-Alpes-Côte d'Azur
             'Bienvenue en PACA',
             'Description PACA',
             RegionColorEnum::BLUE,
@@ -58,7 +58,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
 
     private function createRegion(
         string $uuid,
-        GeoRegion $region,
+        Zone $zone,
         string $subtitle,
         string $description,
         string $primaryColor,
@@ -68,7 +68,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
     ): Region {
         return new Region(
             Uuid::fromString($uuid),
-            $region,
+            $zone,
             $subtitle,
             $description,
             $primaryColor,

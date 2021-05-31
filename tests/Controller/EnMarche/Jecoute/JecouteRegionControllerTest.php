@@ -43,13 +43,13 @@ class JecouteRegionControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
 
-        self::assertCount(1, $link = $crawler->filter('nav.manager-sidebar__menu ul li a:contains("Campagne")'));
+        self::assertCount(1, $link = $crawler->filter('nav.manager-sidebar__menu ul li a:contains("Personnaliser")'));
 
         $crawler = $this->client->click($link->link());
 
         self::assertSame('/espace-candidat/campagne/editer', $this->client->getRequest()->getPathInfo());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('Créer une campagne régionale', $crawler->filter('.jecoute-region h3')->text());
+        self::assertSame('Créer une personnalisation', $crawler->filter('.jecoute-region h3')->text());
 
         $csrfInput = $crawler->filter('form input[id$=__token]')->first();
         $formName = str_replace('__token', '', $csrfInput->attr('id'));
@@ -60,22 +60,16 @@ class JecouteRegionControllerTest extends WebTestCase
         $values['subtitle'] = 'Campagne en Ile-de-France';
         $values['description'] = 'Description de la campagne';
         $values['primaryColor'] = 'purple';
+        $values['logoFile']['croppedImage'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+';
 
-        $files = [
-            'logoFile' => [
-                'error' => ['file' => \UPLOAD_ERR_OK],
-                'name' => ['file' => 'image.jpeg'],
-                'size' => ['file' => 631],
-                'tmp_name' => ['file' => __DIR__.'/../../../Fixtures/image.jpg'],
-                'type' => ['file' => 'image/jpg'],
-            ],
-        ];
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
 
-        $crawler = $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values], $files);
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('La campagne régionale a été créée avec succès.', $crawler->filter('.flash div.flash__inner')->text());
-        self::assertSame('Modifier la campagne régionale', $crawler->filter('.jecoute-region h3')->text());
+        $crawler = $this->client->followRedirect();
+
+        self::assertSame('La personnalisation a été créée avec succès.', $crawler->filter('.flash div.flash__inner')->text());
+        self::assertSame('Modifier la personnalisation', $crawler->filter('.jecoute-region h3')->text());
 
         $csrfInput = $crawler->filter('form input[id$=__token]')->first();
         $formName = str_replace('__token', '', $csrfInput->attr('id'));
@@ -87,10 +81,13 @@ class JecouteRegionControllerTest extends WebTestCase
         $values['description'] = 'Description de la campagne modifiée';
         $values['primaryColor'] = 'green';
 
-        $crawler = $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values], $files);
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('La campagne régionale a été modifiée avec succès.', $crawler->filter('.flash div.flash__inner')->text());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $crawler = $this->client->followRedirect();
+
+        self::assertSame('La personnalisation a été modifiée avec succès.', $crawler->filter('.flash div.flash__inner')->text());
     }
 
     public function provideAdherentsWithNoAccess(): iterable

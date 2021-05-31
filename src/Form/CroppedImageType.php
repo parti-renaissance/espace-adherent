@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\ImageOwnerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -54,10 +53,11 @@ class CroppedImageType extends AbstractType
                     unset($data['croppedImage']);
                 } elseif (-1 == $data['croppedImage']) {
                     unset($data['croppedImage'], $data['image']);
-                    /** @var ImageOwnerInterface $model */
                     $model = $event->getForm()->getParent()->getData();
-                    if (method_exists($model, 'setRemoveImage')) {
-                        $model->setRemoveImage(true);
+                    if (method_exists($model, $methodName = sprintf('setRemove%s', ucfirst($event->getForm()->getName())))
+                        || method_exists($model, $methodName = 'setRemoveImage')
+                    ) {
+                        $model->$methodName(true);
                     }
                 }
             }
@@ -89,6 +89,7 @@ class CroppedImageType extends AbstractType
             ->setDefaults([
                 'image_path' => null,
                 'ratio' => null,
+                'label' => 'Ajouter une photo',
             ])
             ->setAllowedTypes('image_path', ['string', 'null'])
             ->setAllowedTypes('ratio', ['string', 'null'])

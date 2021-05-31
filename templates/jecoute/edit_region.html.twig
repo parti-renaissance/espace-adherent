@@ -1,11 +1,17 @@
-{% extends 'candidate/_layout.html.twig' %}
+{% extends 'jecoute/_layout.html.twig' %}
 
-{% block candidate_content %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
+{% endblock %}
+
+{% block jecoute_content %}
     {% form_theme form with ['jquery.collection.html.twig', 'jecoute/_form_theme.html.twig'] %}
 
     <div class="jecoute-region l__wrapper--slim">
         <div class="form__title b__nudge--bottom-larger">
-            <h3 class="text--medium">{{ is_creation ? 'Créer une' : 'Modifier la' }} campagne régionale</h3>
+            <h3 class="text--medium">{{ is_creation ? 'Créer une' : 'Modifier la' }} personnalisation</h3>
         </div>
 
         {% if not form.vars.valid %}
@@ -13,6 +19,20 @@
         {% endif %}
 
         {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
+
+        {% if form.zone is defined %}
+        <div class="information__modal inf-modl--pale-blue b__nudge--top-50 b__nudge--bottom-large">
+            Vous pouvez modifier ici les informations qui s'afficheront aux utilisateurs de l'application,
+            dans votre zone<br>
+            <br>
+            Si vous gérez plusieurs zones, vous devez personnaliser les informations sur chacune d'elles.
+        </div>
+        <div class="em-form__group em-form__checkbox--inline">
+            <label class="em-form__label required">Zone concernée</label>
+            {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+            {{ form_errors(form.zone) }}
+        </div>
+        {% endif %}
 
         <div class="em-form__group">
             {{ form_errors(form.subtitle) }}
@@ -33,44 +53,29 @@
         </div>
 
         <div class="em-form__group">
-            {{ form_label(form.logoFile, 'Logo', { label_attr: { class: 'em-form__label' } }) }}
-            <div id="form-file">
-                <div class="em-form__file">
-                    {{ form_widget(form.logoFile, { attr: { class: 'em-form__file--area' } }) }}
-                    {{ form_label(form.logoFile, 'Télécharger une image', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
-                    <span class="em-form__file--name">Aucun fichier sélectionné</span>
-                    <span id="bad-file-selected" class="em-form__legend em-form--error visually-hidden">Le fichier séléctionné n'est pas autorisé</span>
-                </div>
-                <div class="em-form__legend">Formats acceptés : tous les formats d'images • Taille max. : 5Mo.</div>
-                {{ form_errors(form.logoFile) }}
-            </div>
+            {{ form_errors(form.externalLink) }}
+            {{ form_label(form.externalLink, 'Lien', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_widget(form.externalLink, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le lien externe (facultatif)' } }) }}
         </div>
 
-        <div class="em-form__group">
-            {{ form_label(form.bannerFile, 'Bannière', { label_attr: { class: 'em-form__label' } }) }}
-            <div id="form-file">
-                <div class="em-form__file">
-                    {{ form_widget(form.bannerFile, { attr: { class: 'em-form__file--area' } }) }}
-                    {{ form_label(form.bannerFile, 'Télécharger une image', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
-                    <span class="em-form__file--name">Aucun fichier sélectionné</span>
-                    <span id="bad-file-selected" class="em-form__legend em-form--error visually-hidden">Le fichier séléctionné n'est pas autorisé</span>
-                </div>
-                <div class="em-form__legend">Formats acceptés : tous les formats d'images • Taille max. : 5Mo.</div>
-                {{ form_errors(form.bannerFile) }}
-            </div>
-        </div>
+        {{ form_row(form.logoFile) }}
 
-        <div class="em-form__group em-form__group--cgu">
-            <div class="form__checkbox">
-                {{ form_errors(form.removeBanner) }}
-                {{ form_widget(form.removeBanner, { attr: { class: 'committee_event__form__name' } }) }}
-                {{ form_label(form.removeBanner, 'Supprimer la bannière ?') }}
-            </div>
-        </div>
+        {{ form_row(form.bannerFile) }}
 
         <div class="form__row text--center b__nudge--top">
             <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top">Enregistrer</button>
         </div>
+        {% if not is_creation %}
+        <div class="form__row text--center b__nudge--top">
+            <a href="{{ path("app_jecoute_#{space_name}_region_delete", {uuid: region.uuid}) }}"
+               class="btn btn--ghosting--grey btn--large-and-full b__nudge--top em-confirm--trigger"
+               data-confirm-content="Vous perderez les paramètres actuels."
+               data-confirm-action="Supprimer la personnalisation"
+            >
+                Supprimer la personnalisation
+            </a>
+        </div>
+        {% endif %}
 
         {{ form_end(form) }}
     </div>
@@ -79,8 +84,15 @@
 {% block final_javascripts %}
     {{ parent() }}
 
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            {{ js.init_cropperjs(form.logoFile, 1, 500, 500) }}
+            {{ js.init_cropperjs(form.bannerFile, 16/9, 960, 540) }}
+
             $('.em-form__file--area').bind('change', (event) => {
                 const $input = $(event.currentTarget);
                 const selectedFileName = $input.val();
@@ -92,6 +104,22 @@
                     $label.html('Modifier la pièce jointe');
                 }
             });
+
+            {% if form.zone is defined %}
+                var zoneSelect = $('#{{ form.zone.vars.id }}');
+
+                zoneSelect.on('change', function () {
+                    var url = window.location.href;
+
+                    if (url.indexOf('?') > -1){
+                        url = window.location.href.replace(window.location.search,'') + '?zone_id='+this.value;
+                    }else{
+                        url += '?zone_id='+this.value;
+                    }
+
+                    window.location.href = url;
+                });
+            {% endif %}
         });
     </script>
 {% endblock %}

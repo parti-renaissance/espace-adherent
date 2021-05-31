@@ -20,7 +20,7 @@ class RegionManager
     {
         $filepath = $region->getBannerPathWithDirectory();
 
-        if ($region->getRemoveBanner() && $this->storage->has($filepath)) {
+        if ($region->getRemoveBannerFile() && $this->storage->has($filepath)) {
             $this->storage->delete($filepath);
             $region->removeBanner();
 

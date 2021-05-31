@@ -91,6 +91,11 @@
                         <a href="{{ path('app_jecoute_news_referent_news_list') }}">Actualités</a>
                     </li>
                 {% endif %}
+                {% if is_granted('ROLE_JECOUTE_REGION') or is_granted('HAS_DELEGATED_ACCESS_JECOUTE_REGION') %}
+                    <li class="{{ is_active_route(app.request, 'app_jecoute_referent_region_edit') ? 'active' }}">
+                        <a href="{{ path('app_jecoute_referent_region_edit') }}">Personnaliser</a>
+                    </li>
+                {% endif %}
             {% endif %}
         </ul>
     {% endif %}

@@ -25,7 +25,7 @@ function contentCallback(element) {
                     Annuler
                 </a>
 
-                <a href={element.href} className={'btn btn--blue'}>Confirmer</a>
+                <a href={element.href} className={'btn btn--blue'}>{element.dataset.confirmAction || 'Confirmer'}</a>
             </div>
         </div>
     );

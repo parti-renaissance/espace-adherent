@@ -2,14 +2,14 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Geo\Region;
+use App\Entity\Geo\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractFixtures extends Fixture
 {
-    protected function getRegionEntity(EntityManagerInterface $manager, int $id): Region
+    protected function getZoneEntity(EntityManagerInterface $manager, int $id): Zone
     {
-        return $manager->getPartialReference(Region::class, $id);
+        return $manager->getPartialReference(Zone::class, $id);
     }
 }

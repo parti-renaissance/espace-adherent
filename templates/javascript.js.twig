@@ -660,20 +660,17 @@ $(document).ready(function() {
 {% endmacro %}
 
 {% macro init_cropperjs(form, ratio, width, height) %}
-    var inputFile = dom('#' + '{{ form.image.vars.id }}');
-    var inputCroppedImage = dom('#' + '{{ form.croppedImage.vars.id }}');
-
-    on(inputFile, 'change', function () {
-        App.runImageCropper(inputFile, inputCroppedImage, { ratio: {{ ratio }}, width: {{ width }}, height: {{ height }} });
+    on(dom('#' + '{{ form.image.vars.id }}'), 'change', function () {
+        App.runImageCropper(dom('.em_cropped_image_' + '{{ form.image.vars.id }}' + '_container'), { ratio: {{ ratio }}, width: {{ width }}, height: {{ height }} });
     });
 
-    on(dom('.delete-profile-image--trigger'), 'click', function (event) {
+    on(find(dom('.em_cropped_image_' + '{{ form.image.vars.id }}' + '_container'), '.delete-profile-image--trigger'), 'click', function (event) {
         event.preventDefault();
 
-        inputFile.value = '';
+        dom('#' + '{{ form.image.vars.id }}').value = '';
         dom('#' + '{{ form.croppedImage.vars.id }}').value = -1;
 
-        show(dom('.image-uploader--label'));
-        hide(dom('.image-uploader--preview'));
+        show(find(dom('.em_cropped_image_' + '{{ form.image.vars.id }}' + '_container'), '.image-uploader--label'));
+        hide(find(dom('.em_cropped_image_' + '{{ form.image.vars.id }}' + '_container'), '.image-uploader--preview'));
     });
 {% endmacro %}

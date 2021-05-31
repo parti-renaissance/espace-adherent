@@ -3,7 +3,7 @@
 namespace App\Entity\Jecoute;
 
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\Geo\Region as GeoRegion;
+use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="jecoute_region")
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\RegionRepository")
  *
- * @UniqueEntity(fields={"geoRegion"})
+ * @UniqueEntity(fields={"zone"})
  */
 class Region
 {
@@ -105,7 +105,7 @@ class Region
      */
     private $bannerFile;
 
-    private $removeBanner = false;
+    private $removeBannerFile = false;
 
     /**
      * @var string|null
@@ -127,18 +127,18 @@ class Region
     private $logoFile;
 
     /**
-     * @var GeoRegion|null
+     * @var Zone|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Geo\Region")
+     * @ORM\OneToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
      */
-    private $geoRegion;
+    private $zone;
 
     public function __construct(
         UuidInterface $uuid = null,
-        GeoRegion $geoRegion = null,
+        Zone $zone = null,
         string $subtitle = null,
         string $description = null,
         string $primaryColor = null,
@@ -147,7 +147,7 @@ class Region
         string $externalLink = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->geoRegion = $geoRegion;
+        $this->zone = $zone;
         $this->subtitle = $subtitle;
         $this->description = $description;
         $this->primaryColor = $primaryColor;
@@ -158,8 +158,8 @@ class Region
 
     public function __toString()
     {
-        if ($this->geoRegion) {
-            return sprintf('%s (%s)', $this->geoRegion->getName(), $this->geoRegion->getCode());
+        if ($this->zone) {
+            return sprintf('%s (%s)', $this->zone->getName(), $this->zone->getCode());
         }
 
         return $this->uuid->toString();
@@ -230,14 +230,14 @@ class Region
         $this->banner = $banner;
     }
 
-    public function getRemoveBanner(): bool
+    public function getRemoveBannerFile(): bool
     {
-        return $this->removeBanner;
+        return $this->removeBannerFile;
     }
 
-    public function setRemoveBanner(bool $removeBanner): void
+    public function setRemoveBannerFile(bool $removeBannerFile): void
     {
-        $this->removeBanner = $removeBanner;
+        $this->removeBannerFile = $removeBannerFile;
     }
 
     public function getBannerPathWithDirectory(): string
@@ -296,13 +296,13 @@ class Region
         $this->externalLink = $externalLink;
     }
 
-    public function getGeoRegion(): ?GeoRegion
+    public function getZone(): ?Zone
     {
-        return $this->geoRegion;
+        return $this->zone;
     }
 
-    public function setGeoRegion(?GeoRegion $geoRegion): void
+    public function setZone(?Zone $zone): void
     {
-        $this->geoRegion = $geoRegion;
+        $this->zone = $zone;
     }
 }

@@ -9,8 +9,8 @@ let cropper;
 let fileElement;
 let croppedImageElement;
 
-function updatePreviewImages(src, circle = false) {
-    const previewContainer = dom('.image-uploader--preview');
+function updatePreviewImages(src, inputContainerElement, circle = false) {
+    const previewContainer = find(inputContainerElement, '.image-uploader--preview');
 
     const containerElement = find(previewContainer, '.preview-image--container');
     containerElement.style.backgroundImage = `url(${src})`;
@@ -20,10 +20,10 @@ function updatePreviewImages(src, circle = false) {
     }
 
     show(previewContainer);
-    hide(dom('.image-uploader--label'));
+    hide(find(inputContainerElement, '.image-uploader--label'));
 }
 
-async function handleCropAction(options) {
+async function handleCropAction(inputContainerElement, options) {
     const canvas = cropper.getCroppedCanvas({
         width: options.width,
         height: options.height,
@@ -31,7 +31,7 @@ async function handleCropAction(options) {
 
     const dataUrl = await canvas.toDataURL();
 
-    updatePreviewImages(dataUrl, options.width === options.height);
+    updatePreviewImages(dataUrl, inputContainerElement, options.width === options.height);
 
     croppedImageElement.value = dataUrl;
     fileElement.value = '';
@@ -48,7 +48,7 @@ function handleCancelAction() {
     modal.hideModal();
 }
 
-function getModalContent(url, options) {
+function getModalContent(url, inputContainerElement, options) {
     return (
         <div>
             <div className={'image-cropper--container'}>
@@ -57,17 +57,17 @@ function getModalContent(url, options) {
 
             <div className="b__nudge--top-15 text--center">
                 <a className={'btn'} onClick={handleCancelAction}>Annuler</a>
-                <a className="btn btn--blue b__nudge--left-small" onClick={ () => handleCropAction(options) }>Valider</a>
+                <a className="btn btn--blue b__nudge--left-small" onClick={ () => handleCropAction(inputContainerElement, options) }>Valider</a>
             </div>
         </div>
     );
 }
 
-function displayCropperModal(url, options) {
+function displayCropperModal(url, inputContainerElement, options) {
     modal = render(
         <Modal
             key={url}
-            contentCallback={() => getModalContent(url, options)}
+            contentCallback={() => getModalContent(url, inputContainerElement, options)}
             withClose={false}
         />,
         dom('#modal-wrapper')
@@ -80,11 +80,11 @@ function displayCropperModal(url, options) {
 }
 
 
-export default (inputFileElement, inputCroppedImageElement, options) => {
-    fileElement = inputFileElement;
-    croppedImageElement = inputCroppedImageElement;
+export default (inputContainerElement, options) => {
+    fileElement = find(inputContainerElement, '.em-form__file--area');
+    croppedImageElement = find(inputContainerElement, '.em-form__cropped--area');
 
-    const files = inputFileElement.files;
+    const files = find(inputContainerElement, '.em-form__file--area').files;
 
     if (!files || 1 > files.length) {
         return;
@@ -93,10 +93,10 @@ export default (inputFileElement, inputCroppedImageElement, options) => {
     const file = files[0];
 
     if (URL) {
-        displayCropperModal(URL.createObjectURL(file), options);
+        displayCropperModal(URL.createObjectURL(file), inputContainerElement, options);
     } else if (FileReader) {
         const reader = new FileReader();
-        reader.onload = () => displayCropperModal(reader.result, options);
+        reader.onload = () => displayCropperModal(reader.result, inputContainerElement, options);
         reader.readAsDataURL(file);
     }
 };
