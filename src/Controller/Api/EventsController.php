@@ -4,7 +4,9 @@ namespace App\Controller\Api;
 
 use App\Api\EventProvider;
 use App\Entity\Adherent;
+use App\Entity\Event\BaseEvent;
 use App\Repository\CommitteeRepository;
+use App\Repository\Event\BaseEventRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
 use App\Statistics\StatisticsParametersFilter;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class EventsController extends AbstractController
 {
@@ -85,5 +88,25 @@ class EventsController extends AbstractController
             'participants' => $eventRegistrationRepository->countEventParticipantsInReferentManagedArea($referent),
             'participants_as_adherent' => $eventRegistrationRepository->countEventParticipantsAsAdherentInReferentManagedArea($referent),
         ]);
+    }
+
+    /**
+     * @Route("/v3/events/registered", name="api_events_registered", methods={"POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+     */
+    public function followed(Request $request, UserInterface $user, BaseEventRepository $eventRepository): JsonResponse
+    {
+        $body = json_decode($request->getContent(), true);
+        $uuids = $body['uuids'] ?? null;
+
+        if (!\is_array($uuids) || empty($uuids)) {
+            throw new BadRequestHttpException('Parameter "uuids" should be an array of uuids.');
+        }
+
+        $events = $eventRepository->findWithRegistrationByUuids($uuids, $user);
+
+        return JsonResponse::create(array_map(function (BaseEvent $event) {
+            return $event->getUuid();
+        }, $events));
     }
 }

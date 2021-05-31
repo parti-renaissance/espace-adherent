@@ -7,15 +7,20 @@ use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
-use App\Repository\AbstractAdherentTokenRepository;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
+use App\Repository\UuidEntityRepositoryTrait;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class BaseEventRepository extends AbstractAdherentTokenRepository
+class BaseEventRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
     use PaginatorTrait;
     use GeoZoneTrait;
 
@@ -91,6 +96,21 @@ class BaseEventRepository extends AbstractAdherentTokenRepository
             ->setParameter('statuses', CommitteeEvent::ACTIVE_STATUSES)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function findWithRegistrationByUuids(array $uuids, UserInterface $user): array
+    {
+        self::validUuids($uuids);
+
+        return $this->createQueryBuilder('event')
+            ->innerJoin(EventRegistration::class, 'registration', Join::WITH, 'registration.event = event')
+            ->andWhere('registration.adherentUuid = :adherent_uuid')
+            ->andWhere('event.uuid IN (:uuids)')
+            ->setParameter('adherent_uuid', $user->getUuidAsString())
+            ->setParameter('uuids', $uuids)
+            ->getQuery()
+            ->getResult()
         ;
     }
 
