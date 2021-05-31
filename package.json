@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
     "@ckeditor/ckeditor5-build-en-marche": "https://github.com/EnMarche/ckeditor5-build-classic#stable",
     "@google/markerclusterer": "^2.0.9",
