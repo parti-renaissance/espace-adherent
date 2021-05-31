@@ -94,7 +94,7 @@ abstract class AbstractPersonalizationController extends AbstractController
     /**
      * @Route(path="/{uuid}/supprimer", name="delete", methods={"GET"})
      */
-    public function deleteJecoutePersonalization(Region $region, EntityManagerInterface $entityManager)
+    public function deleteJecoutePersonalization(Region $region, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($region);
         $entityManager->flush();
