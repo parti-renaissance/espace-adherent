@@ -33,14 +33,14 @@ Feature:
         "items": [
           {
             "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-            "title": "[Candidat] Nouveau sondage disponible",
+            "title": "[Régionales] Nouveau sondage disponible",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": null,
             "created_at": "@string@.isDateTime()"
           },
           {
             "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-            "title": "[Candidat] Rassemblement",
+            "title": "[Régionales] Rassemblement",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": "https://en-marche.fr",
             "created_at": "@string@.isDateTime()"
@@ -67,7 +67,7 @@ Feature:
         "items": [
           {
             "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-            "title": "[Candidat] Nouveau sondage disponible",
+            "title": "[Régionales] Nouveau sondage disponible",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": null,
             "created_at": "@string@.isDateTime()"
@@ -91,7 +91,7 @@ Feature:
         "items": [
           {
             "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-            "title": "[Candidat] Rassemblement",
+            "title": "[Régionales] Rassemblement",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": "https://en-marche.fr",
             "created_at": "@string@.isDateTime()"
@@ -118,7 +118,7 @@ Feature:
         "items": [
           {
             "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-            "title": "[Candidat] Rassemblement",
+            "title": "[Régionales] Rassemblement",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": "https://en-marche.fr",
             "created_at": "@string@.isDateTime()"
@@ -146,7 +146,7 @@ Feature:
         "items": [
           {
             "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-            "title": "[Candidat] Nouveau sondage disponible",
+            "title": "[Régionales] Nouveau sondage disponible",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": null,
             "created_at": "@string@.isDateTime()"
@@ -170,7 +170,7 @@ Feature:
         "items": [
           {
             "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-            "title": "[Candidat] Rassemblement",
+            "title": "[Régionales] Rassemblement",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
             "external_link": "https://en-marche.fr",
             "created_at": "@string@.isDateTime()"
@@ -192,7 +192,7 @@ Feature:
     """
       {
         "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-        "title": "[Candidat] Rassemblement",
+        "title": "[Régionales] Rassemblement",
         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
         "external_link": "https://en-marche.fr",
         "created_at": "@string@.isDateTime()"
