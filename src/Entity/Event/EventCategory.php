@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={"get"},
  *     collectionOperations={
  *         "get": {
- *             "path": "/v3/event_categories",
+ *             "path": "/event_categories",
  *         },
  *     }
  * )
@@ -46,7 +46,7 @@ class EventCategory extends BaseEventCategory
      *
      * @Assert\NotBlank
      *
-     * @Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
     private $eventGroupCategory;
 
