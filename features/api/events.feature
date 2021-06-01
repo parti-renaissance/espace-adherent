@@ -327,3 +327,53 @@ Feature:
     Then the response status code should be 200
     And the JSON nodes should match:
       | metadata.total_items  | 26 |
+
+  Scenario: As a non logged-in user I can not check if I'm registered for events
+    When I send a "POST" request to "/api/v3/events/registered" with body:
+    """
+    {
+      "uuids": [
+        "0389f98c-3e6c-4c92-ba80-19ab4a73e34b",
+        "39f25bd2-f866-4c0d-84da-2387898b8db1",
+        "3f46976e-e76a-476e-86d7-575c6d3bc15f",
+        "44249b1d-ea10-41e0-b288-5eb74fa886ba"
+      ]
+    }
+    """
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user I can not check if I'm registered for events if no uuids
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "POST" request to "/api/v3/events/registered" with body:
+    """
+    {
+      "uuids": []
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | detail  | Parameter "uuids" should be an array of uuids.  |
+
+  Scenario: As a logged-in user I can check if I'm registered for events
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "POST" request to "/api/v3/events/registered" with body:
+    """
+    {
+      "uuids": [
+        "0389f98c-3e6c-4c92-ba80-19ab4a73e34b",
+        "39f25bd2-f866-4c0d-84da-2387898b8db1",
+        "3f46976e-e76a-476e-86d7-575c6d3bc15f",
+        "44249b1d-ea10-41e0-b288-5eb74fa886ba"
+      ]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      "0389f98c-3e6c-4c92-ba80-19ab4a73e34b",
+      "39f25bd2-f866-4c0d-84da-2387898b8db1"
+    ]
+    """
