@@ -429,11 +429,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $mandates;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
-     */
-    private $ideas;
-
-    /**
      * @var Media|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
@@ -741,7 +736,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->memberships = new ArrayCollection();
         $this->citizenProjectMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
-        $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->zones = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();

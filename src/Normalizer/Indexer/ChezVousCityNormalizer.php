@@ -43,7 +43,7 @@ class ChezVousCityNormalizer extends AbstractIndexerNormalizer
                         'oldolfLink' => $type->getOldolfLink(),
                         'eligibilityLink' => $type->getEligibilityLink(),
                         'citizenProjectsLink' => $type->getCitizenProjectsLink(),
-                        'ideasWorkshopLink' => $type->getIdeasWorkshopLink(),
+                        'ideasWorkshopLink' => null,
                         'updatedAt' => $this->formatDate($type->getUpdatedAt(), 'Y/m/d'),
                     ];
                 }

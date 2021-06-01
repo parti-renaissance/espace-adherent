@@ -4,7 +4,6 @@ namespace App\React;
 
 use App\Controller\ReactController;
 use App\React\App\CitizenProjectApp;
-use App\React\App\IdeasWorkshopApp;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -21,7 +20,6 @@ class ReactAppRegistry implements RouteLoaderInterface
     public function __construct()
     {
         $this->apps = [
-            'ideas_workshop' => new IdeasWorkshopApp(),
             'citizen_projects' => new CitizenProjectApp(),
         ];
     }

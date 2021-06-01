@@ -5,15 +5,9 @@ namespace Tests\App\Controller\EnMarche;
 use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadIdeaData;
-use App\DataFixtures\ORM\LoadIdeaThreadCommentData;
-use App\DataFixtures\ORM\LoadIdeaThreadData;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\IdeasWorkshop\Idea;
-use App\Entity\IdeasWorkshop\Thread;
-use App\Entity\IdeasWorkshop\ThreadComment;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\SubscriptionType;
 use App\Entity\TurnkeyProject;
@@ -1151,21 +1145,6 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
         $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
-
-        if (LoadAdherentData::ADHERENT_13_UUID === $uuid) {
-            $draftIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_05_UUID]);
-            $pendingIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_06_UUID]);
-            $finalizedIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_07_UUID]);
-            $thread = $this->getRepository(Thread::class)->findOneBy(['uuid' => LoadIdeaThreadData::THREAD_07_UUID]);
-            $threadComment = $this->getRepository(ThreadComment::class)->findOneBy(['uuid' => LoadIdeaThreadCommentData::THREAD_COMMENT_08_UUID]);
-
-            $this->assertNull($draftIdea);
-            $this->assertNull($pendingIdea);
-            $this->assertNotNull($finalizedIdea);
-            $this->assertNull($finalizedIdea->getAuthor());
-            $this->assertNull($thread);
-            $this->assertNull($threadComment);
-        }
     }
 
     public function provideAdherentCredentials(): array

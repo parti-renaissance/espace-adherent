@@ -124,7 +124,6 @@ class LoadChezVousMeasureTypeData extends Fixture
             $measureType->setOldolfLink($type['oldolfLink']);
             $measureType->setEligibilityLink($type['eligibilityLink']);
             $measureType->setCitizenProjectsLink('https://en-marche.fr/projets-citoyens');
-            $measureType->setIdeasWorkshopLink('https://en-marche.fr/atelier-des-idees/proposer');
 
             $manager->persist($measureType);
             $this->setReference(sprintf('chez-vous-measure-type-%s', $type['code']), $measureType);

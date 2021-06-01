@@ -33,18 +33,11 @@
         <prototype namespace="App\EntityListener\" resource="../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
-        <service id="App\EventListener\RemoveEmojisListener">
-            <tag name="doctrine.event_listener" event="onFlush" />
-        </service>
         <service id="App\EventListener\ManageReferentTeamMembersListener">
             <tag name="doctrine.event_subscriber"/>
         </service>
         <service id="App\Election\Listener\VoteResultBlameableListener">
             <tag name="doctrine.event_subscriber"/>
-        </service>
-        <service id="App\EventSubscriber\ChangeIdeaAuthorCategoryListener">
-            <tag name="doctrine.event_listener" event="preUpdate" lazy="true" />
-            <tag name="doctrine.event_listener" event="postUpdate" lazy="true" />
         </service>
 
         <!-- GeoCoder -->
@@ -223,19 +216,10 @@
         <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\MyIdeaContributionExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
-        <service id="App\Api\Doctrine\IdeaExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
         <service id="App\Api\Doctrine\JecouteNewsExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\MunicipalEventExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
-        <service id="App\Api\Doctrine\ConsultationExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\CoalitionExtension">
@@ -297,21 +281,6 @@
         </service>
 
         <!-- Filter -->
-        <service id="App\Api\Filter\ContributorsCountFilter">
-            <argument type="service" id="doctrine"/>
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="logger" on-invalid="ignore"/>
-            <argument type="collection"><argument key="contributorsCount"/></argument>
-        </service>
-        <service id="App\Api\Filter\IdeaStatusFilter">
-            <argument type="service" id="doctrine"/>
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="logger" on-invalid="ignore"/>
-            <argument type="collection"><argument key="status"/></argument>
-            <call method="setIdeaRepository">
-                <argument type="service" id="App\Repository\IdeasWorkshop\IdeaRepository" />
-            </call>
-        </service>
         <service id="App\Api\Filter\JecouteNewsZipCodeFilter">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="request_stack"/>

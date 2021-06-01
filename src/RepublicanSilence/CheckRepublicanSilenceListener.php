@@ -45,10 +45,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Senator Space
         'app_message_senator_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
         'app_senator_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
-
-        // IdeaWorkshop
-        'api_ideas_post_collection' => ReferentTagExtractorInterface::NONE, // creation action
-        'api_ideas_publish_item' => ReferentTagExtractorInterface::NONE, // publish action
     ];
 
     private $tokenStorage;

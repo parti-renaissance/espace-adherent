@@ -5,9 +5,6 @@ namespace App\Entity\Report;
 use App\Entity\Adherent;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\Report\IdeasWorkshop\IdeaReport;
-use App\Entity\Report\IdeasWorkshop\ThreadCommentReport;
-use App\Entity\Report\IdeasWorkshop\ThreadReport;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -20,9 +17,6 @@ use Ramsey\Uuid\Uuid;
  *     "citizen_action": "CitizenActionReport",
  *     "committee": "CommitteeReport",
  *     "community_event": "CommunityEventReport",
- *     "ideas_workshop_idea": IdeaReport::class,
- *     "ideas_workshop_thread": ThreadReport::class,
- *     "ideas_workshop_thread_comment": ThreadCommentReport::class
  * })
  *
  * @ORM\Table(

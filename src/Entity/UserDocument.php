@@ -26,7 +26,6 @@ class UserDocument
     public const TYPE_COMMITTEE_FEED = 'committee_feed';
     public const TYPE_EVENT = 'event';
     public const TYPE_REFERENT = 'referent';
-    public const TYPE_IDEA_ANSWER = 'idea_answer';
     public const TYPE_ADHERENT_MESSAGE = 'adherent_message';
     public const TYPE_TERRITORIAL_COUNCIL_FEED = 'territorial_council_feed';
 
@@ -35,7 +34,6 @@ class UserDocument
         self::TYPE_COMMITTEE_FEED,
         self::TYPE_EVENT,
         self::TYPE_REFERENT,
-        self::TYPE_IDEA_ANSWER,
         self::TYPE_ADHERENT_MESSAGE,
         self::TYPE_TERRITORIAL_COUNCIL_FEED,
     ];

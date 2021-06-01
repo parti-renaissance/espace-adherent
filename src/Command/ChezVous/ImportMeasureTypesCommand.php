@@ -164,7 +164,6 @@ class ImportMeasureTypesCommand extends Command
             $measureType->setOldolfLink($type['oldolfLink']);
             $measureType->setEligibilityLink($type['eligibilityLink']);
             $measureType->setCitizenProjectsLink('https://en-marche.fr/projets-citoyens');
-            $measureType->setIdeasWorkshopLink('https://en-marche.fr/atelier-des-idees/proposer');
 
             $this->em->persist($measureType);
         }

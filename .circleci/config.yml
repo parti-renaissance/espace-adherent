@@ -48,8 +48,6 @@ jobs:
             - restore_cache:
                 key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
             - restore_cache:
-                key: npm-adi-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/atelier-des-idees/yarn.lock" }}
-            - restore_cache:
                 key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
             - *generate_docker_hashes
@@ -79,17 +77,12 @@ jobs:
                   key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
             - save_cache:
                   paths:
-                      - ./public/apps/atelier-des-idees/node_modules
-                  key: npm-adi-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/atelier-des-idees/yarn.lock" }}
-            - save_cache:
-                  paths:
                       - ./public/apps/projets-citoyens/node_modules
                   key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
             - run: |
                     set -x
                     rm -rf ./public/apps/projets-citoyens/node_modules
-                    rm -rf ./public/apps/atelier-des-idees/node_modules
 
             - persist_to_workspace:
                   root: ./

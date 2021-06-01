@@ -7,8 +7,6 @@ use App\Repository\CitizenProjectMembershipRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\DonationRepository;
 use App\Repository\EventRegistrationRepository;
-use App\Repository\IdeasWorkshop\IdeaRepository;
-use App\Repository\VoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,9 +27,7 @@ class ActivityController extends AbstractController
         CitizenProjectMembershipRepository $citizenProjectMembershipRepository,
         DonationRepository $donationRepository,
         DonationManager $donationManager,
-        EventRegistrationRepository $eventRegistrationRepository,
-        IdeaRepository $ideaRepository,
-        VoteRepository $voteRepository
+        EventRegistrationRepository $eventRegistrationRepository
     ): Response {
         $page = $request->query->getInt('page', 1);
         $type = $request->query->get('type');
@@ -45,9 +41,6 @@ class ActivityController extends AbstractController
             'last_subscription_ended' => $donationRepository->findLastSubscriptionEndedDonationByEmail($user->getEmailAddress()),
             'past_events' => $eventRegistrationRepository->findActivityPastAdherentRegistrations($user, 'past_events' === $type ? $page : 1, self::ITEMS_PER_PAGE),
             'upcoming_events' => $eventRegistrationRepository->findActivityUpcomingAdherentRegistrations($user, 'upcoming_events' === $type ? $page : 1, self::ITEMS_PER_PAGE),
-            'adi_proposals' => $ideaRepository->getIdeasProposalsFromAdherent($user, 'adi_proposals' === $type ? $page : 1, self::ITEMS_PER_PAGE),
-            'adi_contributions' => $ideaRepository->getIdeaContributionsFromAdherent($user, 'adi_contributions' === $type ? $page : 1, self::ITEMS_PER_PAGE),
-            'adi_votes' => $voteRepository->getIdeasVotesFromAdherent($user, 'adi_votes' === $type ? $page : 1, self::ITEMS_PER_PAGE),
             'type' => $type,
         ]);
     }

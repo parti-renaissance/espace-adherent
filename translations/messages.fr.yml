@@ -679,18 +679,6 @@ draft: Brouillon
 sent: Envoyé
 
 #
-# Ideas Workshop
-#
-ideas_workshop.author_category.adherent: Adhérent
-ideas_workshop.author_category.committee: Comité
-ideas_workshop.author_category.qg: QG
-ideas_workshop.author_category.elected: Élu
-ideas_workshop.status.draft: Brouillon
-ideas_workshop.status.pending: En cours
-ideas_workshop.status.unpublished: Dépublié
-ideas_workshop.status.finalized: Finalisé
-
-#
 # Assessor
 #
 assessor.processed.choices: "{1} Vous avez une demande d'assesseur traitée.|[2, Inf[ Vous avez %count% demandes d'assesseur traitées."

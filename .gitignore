@@ -14,7 +14,6 @@
 /public/built/
 /public/js/jquery.collection.js
 /public/select2/
-/public/apps/atelier-des-idees/src/App.css
 /.tmp
 /docker-compose.override.yml
 /gcloud-service-key.json
