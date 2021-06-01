@@ -74,7 +74,7 @@
             <li class="menu-section">Application Mobile</li>
 
             {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_JECOUTE') %}
-                <li class="{{ is_active_route(app.request, 'app_jecoute_referent_*') ? 'active' }}">
+                <li class="{{ is_active_route(app.request, 'app_jecoute_referent_local*') ? 'active' }}">
                     <a href="{{ path('app_jecoute_referent_local_surveys_list') }}">Questionnaires</a>
                 </li>
             {% endif %}
@@ -92,7 +92,7 @@
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_JECOUTE_REGION') or is_granted('HAS_DELEGATED_ACCESS_JECOUTE_REGION') %}
-                    <li class="{{ is_active_route(app.request, 'app_jecoute_referent_region_edit') ? 'active' }}">
+                    <li class="{{ is_active_route(app.request, 'app_jecoute_referent_region_*') ? 'active' }}">
                         <a href="{{ path('app_jecoute_referent_region_edit') }}">Personnaliser</a>
                     </li>
                 {% endif %}
