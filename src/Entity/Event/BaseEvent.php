@@ -95,6 +95,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"event_read", "image_owner_exposed", "with_user_registration"}
  *             },
  *         },
+ *         "get_public": {
+ *             "method": "GET",
+ *             "path": "/events/{id}",
+ *         },
  *         "put": {
  *             "path": "/v3/events/{id}",
  *             "access_control": "object.getAuthor() == user",
@@ -120,6 +124,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events",
  *             "normalization_context": {
  *                 "groups": {"event_list_read", "image_owner_exposed", "with_user_registration"}
+ *             },
+ *         },
+ *         "get_public": {
+ *             "method": "GET",
+ *             "path": "/events",
+ *             "normalization_context": {
+ *                 "groups": {"event_list_read", "image_owner_exposed"}
  *             },
  *         },
  *         "post": {

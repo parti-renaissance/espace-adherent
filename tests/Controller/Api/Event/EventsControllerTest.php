@@ -24,7 +24,7 @@ class EventsControllerTest extends WebTestCase
 
     public function testApiUpcomingEvents()
     {
-        $this->client->request(Request::METHOD_GET, '/api/events');
+        $this->client->request(Request::METHOD_GET, '/api/upcoming-events');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -50,7 +50,7 @@ class EventsControllerTest extends WebTestCase
         $categoryName = LoadEventCategoryData::LEGACY_EVENT_CATEGORIES[$categoryCode];
         $category = $this->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName]);
 
-        $this->client->request(Request::METHOD_GET, '/api/events?type='.$category->getId());
+        $this->client->request(Request::METHOD_GET, '/api/upcoming-events?type='.$category->getId());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

@@ -92,7 +92,7 @@ export default class ReqwestApiClient {
     }
 
     getUpcomingEvents(callback) {
-        let url = '/api/events';
+        let url = '/api/upcoming-events';
         const type = dom('#map-config').getAttribute('data-event-type');
 
         if ('' !== type) {

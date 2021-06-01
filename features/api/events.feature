@@ -328,6 +328,24 @@ Feature:
     And the JSON nodes should match:
       | metadata.total_items  | 26 |
 
+  Scenario: As a non logged-in user I can get scheduled and published event
+    When I send a "GET" request to "/api/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
+    Then the response status code should be 200
+
+  Scenario: As a non logged-in user I can not get cancelled event
+    When I send a "GET" request to "/api/events/5ba0daee-d9a7-47a8-8dbb-454500284af8"
+    Then the response status code should be 404
+
+  Scenario: As a non logged-in user I can not get not published event
+    When I send a "GET" request to "/api/events/de7f027c-f6c3-439f-b1dd-bf2b110a0fb0"
+    Then the response status code should be 404
+
+  Scenario: As a non logged-in user I can get events
+    When I send a "GET" request to "/api/events"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 26 |
+
   Scenario: As a non logged-in user I can not check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
     """
