@@ -2,14 +2,15 @@
 
 namespace App\Admin\Jecoute;
 
-use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use App\Jecoute\RegionManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -17,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-class RegionAdmin extends AbstractAdmin
+abstract class AbstractRegionAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -42,9 +43,22 @@ class RegionAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Informations', ['class' => 'col-md-6'])
-                ->add('zone', EntityType::class, [
+                ->add('zone', ModelAutocompleteType::class, [
+                    'multiple' => false,
                     'label' => 'Zone',
-                    'class' => Zone::class,
+                    'required' => true,
+                    'property' => ['name', 'code'],
+                    'callback' => function (AdminInterface $admin, array $property, $value): void {
+                        $datagrid = $admin->getDatagrid();
+                        $query = $datagrid->getQuery();
+                        $rootAlias = $query->getRootAlias();
+                        $query
+                            ->andWhere($rootAlias.'.type IN (:types)')
+                            ->setParameter('types', $this->getZoneTypes())
+                        ;
+
+                        $datagrid->setValue($property[0], null, $value);
+                    },
                 ])
                 ->add('subtitle', TextType::class, [
                     'label' => 'Sous-titre',
@@ -77,7 +91,7 @@ class RegionAdmin extends AbstractAdmin
                     'label' => 'Bannière',
                     'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 ])
-                ->add('removeBanner', CheckboxType::class, [
+                ->add('removeBannerFile', CheckboxType::class, [
                     'label' => 'Supprimer la bannière ?',
                     'required' => false,
                 ])
@@ -88,8 +102,11 @@ class RegionAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('subtitle', null, [
+                'label' => 'Sous-titre',
+            ])
             ->add('zone.name', null, [
-                'label' => 'Nom',
+                'label' => 'Zone',
             ])
             ->add('zone.code', 'color', [
                 'label' => 'Code',
@@ -133,4 +150,21 @@ class RegionAdmin extends AbstractAdmin
 
         $this->regionManager->removeBanner($region);
     }
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+
+        $rootAlias = current($query->getRootAliases());
+
+        $query
+            ->innerJoin($rootAlias.('.zone'), 'zone')
+            ->andWhere('zone.type IN (:types)')
+            ->setParameter('types', $this->getZoneTypes())
+        ;
+
+        return $query;
+    }
+
+    abstract protected function getZoneTypes(): array;
 }
