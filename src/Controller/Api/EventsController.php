@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class EventsController extends AbstractController
 {
     /**
-     * @Route("/events", name="api_committees_events", methods={"GET"})
+     * @Route("/upcoming-events", name="api_committees_events", methods={"GET"})
      */
     public function getUpcomingCommitteesEventsAction(Request $request, EventProvider $provider): Response
     {
