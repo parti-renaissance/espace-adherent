@@ -30,6 +30,10 @@ Feature:
       },
       "items": [
         {
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -46,6 +50,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
             "last_name": "Picard"
           },
@@ -66,6 +71,10 @@ Feature:
           "mode": null
         },
         {
+           "coalition": {
+             "name": "Culture",
+             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+           },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -82,6 +91,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
             "last_name": "Picard"
           },
@@ -122,6 +132,10 @@ Feature:
       },
       "items": [
         {
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -138,6 +152,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
             "first_name": "Michel",
             "last_name": "VASSEUR"
           },
@@ -158,6 +173,10 @@ Feature:
           "mode": null
         },
         {
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -174,6 +193,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
             "first_name": "Pierre",
             "last_name": "Kiroule"
           },
@@ -214,6 +234,10 @@ Feature:
       },
       "items": [
         {
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -230,6 +254,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf",
             "first_name": "Referent75and77",
             "last_name": "Referent75and77"
           },
@@ -250,6 +275,10 @@ Feature:
           "mode": null
         },
         {
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -266,6 +295,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
             "last_name": "Picard"
           },
@@ -296,10 +326,7 @@ Feature:
     """
     {
        "type":"coalition",
-       "coalitions": [
-           "fc7fd104-71e5-4399-a874-f8fe752f846b",
-           "d5289058-2a35-4cf0-8f2f-a683d97d8315"
-       ]
+       "coalition": "fc7fd104-71e5-4399-a874-f8fe752f846b"
     }
     """
     Then the response status code should be 400
@@ -309,12 +336,8 @@ Feature:
     {
       "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "coalitions: L'événement peut être lié qu'à une seule coalition.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
+      "detail": "name: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
       "violations": [
-        {
-          "propertyPath": "coalitions",
-          "message": "L'événement peut être lié qu'à une seule coalition."
-        },
         {
           "propertyPath": "name",
           "message": "Cette valeur ne doit pas être vide."
@@ -361,9 +384,7 @@ Feature:
           "city_name": "Lyon 3e",
           "country": "FR"
       },
-       "coalitions": [
-          "fc7fd104-71e5-4399-a874-f8fe752f846b"
-       ]
+       "coalition": "fc7fd104-71e5-4399-a874-f8fe752f846b"
     }
     """
     Then the response status code should be 201
@@ -371,6 +392,10 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "coalition": {
+        "name": "Économie",
+        "uuid": "fc7fd104-71e5-4399-a874-f8fe752f846b"
+      },
       "category": {
         "event_group_category": {
           "name": "événement",
@@ -387,6 +412,7 @@ Feature:
       "begin_at": "2022-04-29T16:30:30+02:00",
       "finish_at": "2022-04-30T16:30:30+02:00",
       "organizer": {
+        "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
         "first_name": "Gisele",
         "last_name": "Berthoux"
       },
@@ -435,6 +461,10 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "coalition": {
+        "name": "Culture",
+        "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+      },
       "category": {
         "event_group_category": {
           "name": "événement",
@@ -451,6 +481,7 @@ Feature:
       "begin_at": "2022-05-15T16:30:30+02:00",
       "finish_at": "2022-05-16T16:30:30+02:00",
       "organizer": {
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
         "last_name": "Picard"
       },
@@ -479,10 +510,7 @@ Feature:
     """
     {
        "type":"cause",
-       "causes": [
-           "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-           "017491f9-1953-482e-b491-20418235af1f"
-       ]
+       "cause":"55056e7c-2b5f-4ef6-880e-cde0511f79b2"
     }
     """
     Then the response status code should be 400
@@ -492,12 +520,8 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "causes: L'événement peut être lié qu'à une seule cause.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
+      "detail": "name: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
       "violations": [
-        {
-          "propertyPath": "causes",
-          "message": "L'événement peut être lié qu'à une seule cause."
-        },
         {
           "propertyPath": "name",
           "message": "Cette valeur ne doit pas être vide."
@@ -543,9 +567,7 @@ Feature:
           "city_name": "Lyon 3e",
           "country": "FR"
       },
-       "causes": [
-          "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
-       ]
+       "cause": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
     }
     """
     Then the response status code should be 201
@@ -553,6 +575,15 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "cause": {
+        "name": "Cause pour la culture",
+        "coalition": {
+          "name": "Culture",
+          "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+        },
+        "slug": "cause-pour-la-culture",
+        "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+      },
       "category": {
         "event_group_category": {
           "name": "événement",
@@ -569,6 +600,7 @@ Feature:
       "begin_at": "2022-05-29T10:30:30+02:00",
       "finish_at": "2022-05-29T16:30:30+02:00",
       "organizer": {
+        "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
         "first_name": "Gisele",
         "last_name": "Berthoux"
       },
@@ -617,6 +649,15 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "cause": {
+        "name": "Cause pour la culture",
+        "coalition": {
+          "name": "Culture",
+          "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+        },
+        "slug": "cause-pour-la-culture",
+        "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+      },
       "category": {
         "event_group_category": {
           "name": "événement",
@@ -633,6 +674,7 @@ Feature:
       "begin_at": "2022-05-12T10:30:30+02:00",
       "finish_at": "2022-05-12T16:30:30+02:00",
       "organizer": {
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
         "last_name": "Picard"
       },
@@ -671,6 +713,15 @@ Feature:
       },
       "items": [
         {
+          "cause": {
+            "name": "Cause pour la culture",
+            "coalition": {
+              "name": "Culture",
+              "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            },
+            "slug": "cause-pour-la-culture",
+            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -687,6 +738,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
             "last_name": "Picard"
           },
@@ -707,6 +759,15 @@ Feature:
           "mode": null
         },
         {
+          "cause": {
+            "name": "Cause pour la culture",
+            "coalition": {
+              "name": "Culture",
+              "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            },
+            "slug": "cause-pour-la-culture",
+            "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+          },
           "category": {
             "event_group_category": {
               "name": "événement",
@@ -723,6 +784,7 @@ Feature:
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
             "last_name": "Picard"
           },

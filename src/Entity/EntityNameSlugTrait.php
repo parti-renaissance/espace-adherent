@@ -48,6 +48,8 @@ trait EntityNameSlugTrait
      *     "adherent_committees_modal",
      *     "jecoute_region_read",
      *     "cause_read",
+     *     "event_list_read",
+     *     "event_read",
      * })
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */

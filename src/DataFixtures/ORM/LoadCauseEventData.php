@@ -157,7 +157,7 @@ class LoadCauseEventData extends Fixture implements DependentFixtureInterface
     ): CauseEvent {
         $event = new CauseEvent(Uuid::fromString($uuid));
         $event->setOrganizer($organizer);
-        $event->addCause($cause);
+        $event->setCause($cause);
         $event->setCategory($category);
         $event->setName($name);
         $event->setDescription($description);

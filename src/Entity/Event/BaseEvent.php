@@ -326,7 +326,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("participantsCount")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     protected $participantsCount = 0;
 
@@ -337,7 +337,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read", "event_list_read"})
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     protected $status = self::STATUS_SCHEDULED;
 
@@ -395,7 +395,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @var PostAddress
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      */
     protected $postAddress;
 

@@ -77,7 +77,7 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"coalition_read", "cause_read"})
+     * @SymfonySerializer\Groups({"coalition_read", "cause_read", "event_read", "event_list_read"})
      */
     private $name;
 
@@ -113,9 +113,9 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
      *
      * @ApiSubresource
      *
-     * @ORM\ManyToMany(
+     * @ORM\OneToMany(
      *     targetEntity="App\Entity\Event\CoalitionEvent",
-     *     mappedBy="coalitions",
+     *     mappedBy="coalition",
      *     cascade={"all"},
      *     orphanRemoval=true
      * )

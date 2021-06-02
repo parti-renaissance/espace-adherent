@@ -53,7 +53,7 @@ class CoalitionEventControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertArrayHasKey('violations', $response);
-        $this->assertCount(4, $response['violations']);
+        $this->assertCount(3, $response['violations']);
 
         $this->client->request(Request::METHOD_POST, '/api/v3/events', [], [], [
             'CONTENT_TYPE' => 'application/json',

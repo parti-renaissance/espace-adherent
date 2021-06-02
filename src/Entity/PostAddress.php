@@ -163,7 +163,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     public function getCountry(): ?string
     {
@@ -176,7 +176,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"profile_read", "event_read"})
+     * @SymfonySerializer\Groups({"profile_read", "event_read", "event_list_read"})
      */
     public function getCity(): ?string
     {
@@ -184,7 +184,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     public function getCityName(): ?string
     {
@@ -192,7 +192,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     public function getAddress(): ?string
     {
@@ -200,7 +200,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     public function getPostalCode(): ?string
     {
@@ -208,7 +208,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     public function getLatitude(): ?float
     {
@@ -216,7 +216,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
     public function getLongitude(): ?float
     {
