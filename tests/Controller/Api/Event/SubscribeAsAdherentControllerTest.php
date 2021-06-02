@@ -15,7 +15,7 @@ use Tests\App\Controller\ControllerTestTrait;
  * @group functional
  * @group api
  */
-class EventSubscribeControllerTest extends WebTestCase
+class SubscribeAsAdherentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
