@@ -14,7 +14,7 @@ final class Version20210526121013 extends AbstractMigration
         $this->addSql('ALTER TABLE jecoute_region CHANGE geo_region_id zone_id INT UNSIGNED NOT NULL');
         $this->addSql('UPDATE jecoute_region as r
     INNER JOIN geo_region gr on r.zone_id = gr.id
-    INNER JOIN geo_zone gz on gr.code = gz.code
+    INNER JOIN geo_zone gz on gr.code = gz.code AND gz.type = \'region\'
 SET r.zone_id = gz.id');
         $this->addSql('ALTER TABLE
           jecoute_region
