@@ -42,7 +42,7 @@ class ChezVousCityNormalizer extends AbstractIndexerNormalizer
                         'sourceLabel' => $type->getSourceLabel(),
                         'oldolfLink' => $type->getOldolfLink(),
                         'eligibilityLink' => $type->getEligibilityLink(),
-                        'citizenProjectsLink' => $type->getCitizenProjectsLink(),
+                        'citizenProjectsLink' => null,
                         'ideasWorkshopLink' => null,
                         'updatedAt' => $this->formatDate($type->getUpdatedAt(), 'Y/m/d'),
                     ];
