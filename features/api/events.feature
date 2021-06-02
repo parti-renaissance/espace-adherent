@@ -10,6 +10,8 @@ Feature:
       | LoadUserData            |
       | LoadAdherentData        |
       | LoadCommitteeEventData  |
+      | LoadCoalitionEventData  |
+      | LoadCauseEventData      |
       | LoadCitizenActionData   |
       | LoadClientData          |
 
@@ -326,7 +328,7 @@ Feature:
     And I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 26 |
+      | metadata.total_items  | 42 |
 
   Scenario: As a non logged-in user I can get scheduled and published event
     When I send a "GET" request to "/api/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
@@ -344,7 +346,7 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 26 |
+      | metadata.total_items  | 42 |
 
   Scenario: As a non logged-in user I can not check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
@@ -395,3 +397,16 @@ Feature:
       "39f25bd2-f866-4c0d-84da-2387898b8db1"
     ]
     """
+
+  Scenario: As a non logged-in user I can get only EnMarche or Coalitions events
+    When I send a "GET" request to "/api/events?group_source=en_marche"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items  | 26 |
+
+    When I send a "GET" request to "/api/events?group_source=coalitions"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items  | 16 |
