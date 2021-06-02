@@ -43,7 +43,8 @@ class CausesControllerTest extends WebTestCase
         $causeFields = $causes->eq(5)->filter('td');
         $this->assertSame('2', $causeFields->eq(1)->text());
         $this->assertSame('Cause en attente', $causeFields->eq(2)->text());
-        $this->assertStringContainsString('Jacques (Paris 8e)', $causeFields->eq(3)->text());
+        $this->assertStringContainsString('Jacques Picard', $causeFields->eq(3)->text());
+        $this->assertStringContainsString('(Paris 8e)', $causeFields->eq(3)->text());
         $this->assertStringContainsString('jacques.picard@en-marche.fr', $causeFields->eq(3)->text());
         $this->assertStringContainsString('+33 1 87 26 42 36', $causeFields->eq(3)->text());
         $this->assertSame('Justice', $causeFields->eq(5)->text());

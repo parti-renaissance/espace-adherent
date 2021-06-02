@@ -119,8 +119,7 @@
                                 {% set author = cause.author %}
                                 {% if author %}
                                     <div class="adherent-name">
-                                        {{ author.firstName }}
-                                        {% if author.lastName %} {{ author.lastName }}{% endif %}
+                                        {{ author.firstName }}{% if author.lastName %} {{ author.lastName }}{% endif %}
                                         {% if author.cityName %}
                                             <br>({{ author.cityName }})
                                         {% endif %}
