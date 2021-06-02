@@ -44,7 +44,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "followers_count": 5,
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
@@ -104,7 +108,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -162,7 +170,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "followers_count": 5,
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
@@ -202,7 +214,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "followers_count": 0,
           "slug": "cause-pour-la-culture-2",
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
@@ -318,7 +334,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "followers_count": 5,
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
@@ -438,7 +458,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -458,7 +482,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
             "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
@@ -1049,7 +1077,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "followers_count": 5,
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
@@ -1069,7 +1101,11 @@ Feature:
             "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
             "followers_count": 4
           },
-          "second_coalition": null,
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
           "followers_count": 0,
           "slug": "cause-pour-la-culture-2",
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
