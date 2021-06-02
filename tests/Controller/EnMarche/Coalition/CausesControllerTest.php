@@ -51,6 +51,44 @@ class CausesControllerTest extends WebTestCase
         $this->assertSame('En attente', $causeFields->eq(8)->text());
     }
 
+    /**
+     * @dataProvider getCausesFilterParameters
+     */
+    public function testCausesCanBeFiltered(array $parameters, int $expectedResultCount): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/causes');
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(7, $causes = $crawler->filter('.datagrid table tbody tr'));
+
+        $crawler = $this->client->submit($crawler->selectButton('Filtrer')->form([
+            'f' => $parameters,
+        ]));
+        $this->assertResponseIsSuccessful();
+        $this->assertCount($expectedResultCount, $causes = $crawler->filter('.datagrid table tbody tr'));
+
+        $crawler = $this->client->clickLink('Réinitialiser le filtre');
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(7, $causes = $crawler->filter('.datagrid table tbody tr'));
+    }
+
+    public function getCausesFilterParameters(): iterable
+    {
+        yield [['name' => 'éducation'], 1];
+        yield [['name' => 'cultur'], 3];
+        yield [['primaryCoalition' => 4], 1];
+        yield [['secondaryCoalition' => 4], 2];
+        yield [['authorFirstName' => 'jacq'], 4];
+        yield [['authorLastName' => 'dufou'], 3];
+        yield [['createdAfter' => (new \DateTime('-3 days'))->format('Y-m-d')], 3];
+        yield [['createdBefore' => (new \DateTime('-1 day'))->format('Y-m-d')], 5];
+        yield [[
+            'createdAfter' => (new \DateTime('-3 days'))->format('Y-m-d'),
+            'createdBefore' => (new \DateTime('-1 day'))->format('Y-m-d'),
+        ], 1];
+    }
+
     public function testChangeCauseStatusAsCoalitionModerator(): void
     {
         /** @var Cause $cause */

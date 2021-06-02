@@ -94,8 +94,57 @@ class CauseRepository extends ServiceEntityRepository
 
         if ($filter->getStatus()) {
             $qb
-                ->where('cause.status = :status')
+                ->andWhere('cause.status = :status')
                 ->setParameter('status', $filter->getStatus())
+            ;
+        }
+
+        if ($filter->getPrimaryCoalition()) {
+            $qb
+                ->andWhere('cause.coalition = :primaryCoalition')
+                ->setParameter('primaryCoalition', $filter->getPrimaryCoalition())
+            ;
+        }
+
+        if ($filter->getSecondaryCoalition()) {
+            $qb
+                ->andWhere('cause.secondCoalition = :secondaryCoalition')
+                ->setParameter('secondaryCoalition', $filter->getSecondaryCoalition())
+            ;
+        }
+
+        if ($filter->getName()) {
+            $qb
+                ->andWhere('cause.name LIKE :name')
+                ->setParameter('name', '%'.$filter->getName().'%')
+            ;
+        }
+
+        if ($filter->getAuthorFirstName()) {
+            $qb
+                ->andWhere('author.firstName LIKE :authorFirstName')
+                ->setParameter('authorFirstName', '%'.$filter->getAuthorFirstName().'%')
+            ;
+        }
+
+        if ($filter->getAuthorLastName()) {
+            $qb
+                ->andWhere('author.lastName LIKE :authorLastName')
+                ->setParameter('authorLastName', '%'.$filter->getAuthorLastName().'%')
+            ;
+        }
+
+        if ($filter->getCreatedAfter()) {
+            $qb
+                ->andWhere('cause.createdAt >= :createdAfter')
+                ->setParameter('createdAfter', $filter->getCreatedAfter())
+            ;
+        }
+
+        if ($filter->getCreatedBefore()) {
+            $qb
+                ->andWhere('cause.createdAt <= :createdBefore')
+                ->setParameter('createdBefore', $filter->getCreatedBefore())
             ;
         }
 

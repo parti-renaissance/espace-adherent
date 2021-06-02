@@ -13,15 +13,71 @@
 
             <h4 class="manager__filters__subtitle">Filtrer par</h4>
 
-            <div class="filter__row">
-                <label class="filter__label">Statut</label>
-                {{ form_widget(form.status, {placeholder: 'Tous les status', attr: {class: 'filter__field' }}) }}
-                {{ form_errors(form.status) }}
+            <div class="manager__filters__row">
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Coalition primaire</label>
+                            {{ form_widget(form.primaryCoalition, {placeholder: 'Toutes les Coalitions', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.primaryCoalition) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Coalition secondaire</label>
+                            {{ form_widget(form.secondaryCoalition, {placeholder: 'Toutes les Coalitions', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.secondaryCoalition) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Objectif</label>
+                            {{ form_widget(form.name, {placeholder: 'Objectif', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Prénom du porteur de Cause</label>
+                            {{ form_widget(form.authorFirstName, {placeholder: 'Prénom', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.authorFirstName) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Nom du porteur de Cause</label>
+                            {{ form_widget(form.authorLastName, {placeholder: 'Nom', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.authorLastName) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Statut</label>
+                            {{ form_widget(form.status, {placeholder: 'Tous les status', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.status) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Créée après le</label>
+                            {{ form_widget(form.createdAfter, {placeholder: 'Du', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.createdAfter) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Créée avant le</label>
+                            {{ form_widget(form.createdBefore, {placeholder: 'Au', attr: {class: 'filter__field' }}) }}
+                            {{ form_errors(form.createdBefore) }}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="manager__filters__actions b__nudge--top">
                 <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
-                <a href="" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
+                <a href="{{ path('app_coalition_causes_list') }}" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
             </div>
 
             {{ form_end(form) }}
