@@ -116,13 +116,18 @@
                             <td>{{ cause.id }}</td>
                             <td>{{ cause.name }}</td>
                             <td class="adherent-identity">
-                                {% if cause.author %}
+                                {% set author = cause.author %}
+                                {% if author %}
                                     <div class="adherent-name">
-                                        {{ cause.author.firstName }} ({{ cause.author.cityName }})
+                                        {{ author.firstName }}
+                                        {% if author.lastName %} {{ author.lastName }}{% endif %}
+                                        {% if author.cityName %}
+                                            <br>({{ author.cityName }})
+                                        {% endif %}
                                     </div>
                                     <div class="adherent-caracs">
-                                        {{ cause.author.emailAddress }}<br />
-                                        {{ cause.author.phone ? cause.author.phone|phone_number_format : '' }}
+                                        {{ author.emailAddress }}<br />
+                                        {{ author.phone ? author.phone|phone_number_format : '' }}
                                     </div>
                                 {% endif %}
                             </td>
@@ -133,7 +138,7 @@
                                     </div>
                                 {% endif %}
                             </td>
-                            <td>{{ cause.coalition }}{{ cause.secondCoalition ? (','~cause.secondCoalition) : ''}}</td>
+                            <td>{{ cause.coalition }}{{ cause.secondCoalition ? (', '~cause.secondCoalition) : ''}}</td>
                             <td>
                                 {{ cause.description|length > 1000 ? cause.description|slice(0, 1000) ~ '...' : cause.description }}
                             </td>

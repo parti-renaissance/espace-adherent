@@ -31,22 +31,16 @@ class CauseFilter
 
     /**
      * @var string|null
-     *
-     * @Assert\Type("string")
      */
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\Type("string")
      */
     private $authorFirstName;
 
     /**
      * @var string|null
-     *
-     * @Assert\Type("string")
      */
     private $authorLastName;
 
