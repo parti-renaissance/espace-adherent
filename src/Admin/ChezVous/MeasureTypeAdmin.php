@@ -60,10 +60,6 @@ class MeasureTypeAdmin extends AbstractAdmin
                 'label' => 'Lien vers les projets citoyens (URL)',
                 'required' => false,
             ])
-            ->add('ideasWorkshopLink', UrlType::class, [
-                'label' => 'Lien vers l\'atelier des idées (URL)',
-                'required' => false,
-            ])
         ;
     }
 

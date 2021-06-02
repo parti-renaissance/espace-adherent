@@ -4,7 +4,6 @@ namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\VisibleStatusesInterface;
 use Doctrine\ORM\QueryBuilder;
 
@@ -17,9 +16,7 @@ class VisibleStatusesExtension implements ContextAwareQueryCollectionExtensionIn
         string $operationName = null,
         array $context = []
     ) {
-        if (Idea::class !== $resourceClass || !isset($context['filters']['author.uuid'])) {
-            $this->modifyQuery($queryBuilder, $resourceClass);
-        }
+        $this->modifyQuery($queryBuilder, $resourceClass);
     }
 
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void

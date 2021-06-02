@@ -365,18 +365,6 @@ executive_office_member.deputy_general_delegate.unique: Le membre {{ fullName }}
 executive_office_member.role.unique: Un membre ne peut pas être délégué général et délégué général adjoint en même temps.
 
 #
-# Idea
-#
-idea.name.not_blank: Le nom de l'idée ne doit pas être vide.
-idea.description.not_blank: Pour publier votre idée, sa description ne doit pas être vide.
-idea.theme.min_count: |
-  {1} Pour publier votre idée, vous devez préciser au minimum 1 thème.|
-  ]1,Inf[ Pour publier votre idée, vous devez préciser au minimum {{ limit }} thèmes.
-idea.category.not_blank: Pour publier votre idée, sa catégorie devrait être remplie.
-idea.author.not_null: L'idée doit avoir un autheur.
-idea.question.mandatory: Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires.
-
-#
 # Assessor
 #
 

@@ -14,26 +14,26 @@ class LoadUserDocumentData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $ideaUserDocumentPng = UserDocument::create(
+        $userDocumentPng = UserDocument::create(
             Uuid::fromString(self::USER_DOCUMENT_1_UUID),
-            UserDocument::TYPE_IDEA_ANSWER,
+            UserDocument::TYPE_EVENT,
             'image/png',
-            'idea_document.png',
+            'png_document.png',
             'png',
             '1024'
         );
 
-        $ideaUserDocumentJpeg = UserDocument::create(
+        $userDocumentJpeg = UserDocument::create(
             Uuid::fromString(self::USER_DOCUMENT_2_UUID),
-            UserDocument::TYPE_IDEA_ANSWER,
+            UserDocument::TYPE_EVENT,
             'image/jpeg',
-            'idea_document.jpeg',
+            'jpeg_document.jpeg',
                 'jpeg',
                 '2048'
         );
 
-        $manager->persist($ideaUserDocumentPng);
-        $manager->persist($ideaUserDocumentJpeg);
+        $manager->persist($userDocumentPng);
+        $manager->persist($userDocumentJpeg);
 
         $manager->flush();
     }

@@ -31,6 +31,7 @@ class AdherentController extends AbstractController
         EntityManagerInterface $manager
     ): Response {
         $data = json_decode($request->getContent(), true);
+
         if (!$nickname = $data['nickname'] ?? null) {
             return new JsonResponse('Property "nickname" is required.', Response::HTTP_BAD_REQUEST);
         }

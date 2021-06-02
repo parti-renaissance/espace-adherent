@@ -7,9 +7,6 @@ use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
-use App\Entity\IdeasWorkshop\Idea;
-use App\Entity\IdeasWorkshop\Thread;
-use App\Entity\IdeasWorkshop\ThreadComment;
 use App\Entity\Report\Report;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -22,9 +19,6 @@ class ReportTest extends TestCase
         yield [CitizenProject::class];
         yield [Committee::class];
         yield [CommitteeEvent::class];
-        yield [Idea::class];
-        yield [Thread::class];
-        yield [ThreadComment::class];
     }
 
     /**

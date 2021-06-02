@@ -25,9 +25,6 @@ use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Filesystem\File;
-use App\Entity\IdeasWorkshop\Idea;
-use App\Entity\IdeasWorkshop\Thread;
-use App\Entity\IdeasWorkshop\ThreadComment;
 use App\Entity\Invite;
 use App\Entity\JeMarcheReport;
 use App\Entity\MyEuropeChoice;
@@ -75,7 +72,6 @@ use App\Repository\EmailSubscriptionHistoryRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
-use App\Repository\IdeasWorkshop\IdeaRepository;
 use App\Repository\InstitutionalEventRepository;
 use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
@@ -93,8 +89,6 @@ use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilFeedItemRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
-use App\Repository\ThreadCommentRepository;
-use App\Repository\ThreadRepository;
 use App\Repository\TonMacronChoiceRepository;
 use App\Repository\TonMacronFriendInvitationRepository;
 use App\Repository\TransactionRepository;
@@ -321,21 +315,6 @@ trait TestHelperTrait
     public function getSubscriptionTypeRepository(): SubscriptionTypeRepository
     {
         return $this->getRepository(SubscriptionType::class);
-    }
-
-    public function getIdeaRepository(): IdeaRepository
-    {
-        return $this->getRepository(Idea::class);
-    }
-
-    public function getThreadRepository(): ThreadRepository
-    {
-        return $this->getRepository(Thread::class);
-    }
-
-    public function getThreadCommentRepository(): ThreadCommentRepository
-    {
-        return $this->getRepository(ThreadComment::class);
     }
 
     public function getReferentSpaceAccessInformationRepository(): ReferentSpaceAccessInformationRepository

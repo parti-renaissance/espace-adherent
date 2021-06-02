@@ -152,22 +152,6 @@ services:
     App\Coalition\Listener\FollowerChangeSubscriber:
         tags: ['doctrine.event_subscriber']
 
-    App\Normalizer\IdeaAnswerNormalizer:
-        arguments:
-            - '@api_platform.serializer.normalizer.item'
-            - '@api_platform.metadata.resource.metadata_factory'
-
-    App\Normalizer\IdeaThreadNormalizer:
-        arguments:
-            - '@api_platform.serializer.normalizer.item'
-            - '@api_platform.metadata.resource.metadata_factory'
-
-    App\Normalizer\IdeaAuthorNicknameNormalizer:
-        arguments: ['@api_platform.serializer.normalizer.item']
-
-    App\Normalizer\IdeaThemeNormalizer:
-        arguments: ['@api_platform.serializer.normalizer.item']
-
     App\Normalizer\JecouteAdherentNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 1}]
 

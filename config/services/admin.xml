@@ -649,83 +649,6 @@
             <argument type="service" id="App\TurnkeyProject\TurnkeyProjectManager" />
         </service>
 
-        <!--
-        ######################################################
-        # Idées
-        ######################################################
-        -->
-        <service id="app.admin.ideas_workshop_idea" class="App\Admin\IdeasWorkshopIdeaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Propositions" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Idea</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_thread" class="App\Admin\IdeasWorkshopThreadAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Fils de discussion" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Thread</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_consultation" class="App\Admin\IdeasWorkshopConsultationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Consultation en cours" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Consultation</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_consultation_report" class="App\Admin\IdeasWorkshopConsultationReportAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Rapports de consultations" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\ConsultationReport</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_category" class="App\Admin\IdeasWorkshopCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Echelles" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Category</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_need" class="App\Admin\IdeasWorkshopNeedAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Besoins" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Need</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_theme" class="App\Admin\IdeasWorkshopThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Thèmes" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Theme</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_guideline" class="App\Admin\IdeasWorkshopGuidelineAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Trame (sections)" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Guideline</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_question" class="App\Admin\IdeasWorkshopQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="ADI » Trame (questions)" group="Idées" />
-
-            <argument />
-            <argument>App\Entity\IdeasWorkshop\Question</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.timeline_manifesto" class="App\Admin\TimelineManifestoAdmin">
             <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Programmes" group="Idées" />
 
@@ -924,28 +847,18 @@
         </service>
 
         <service id="app.admin.enabled_filter_configuration_extension" class="App\Admin\Extension\DoctrineEnabledFilterConfigurationAdminExtension">
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_consultation" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_category" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_need" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_theme" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_guideline" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_question" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_thread" />
             <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>
 
         <service id="app.admin.softdeleteable_filter_configuration_extension" class="App\Admin\Extension\DoctrineSoftdeleteableFilterConfigurationAdminExtension">
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_idea" />
-            <tag name="sonata.admin.extension" target="app.admin.ideas_workshop_thread" />
             <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>
 
         <!--
-       ######################################################
-       # Politique
-       ######################################################
-       -->
+        ######################################################
+        # Politique
+        ######################################################
+        -->
 
         <service id="app.admin.application_request_technical_skill" class="App\Admin\ApplicationRequest\TechnicalSkillAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Politique" />

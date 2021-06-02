@@ -277,15 +277,6 @@ Feature:
     """
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "nickname": null,
-        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-        "first_name": "Jacques",
-        "last_name": "Picard"
-    }
-    """
 
   Scenario: As a logged-in user I can set my nickname and use it
     Given I add "Accept" header equal to "application/json"
@@ -300,12 +291,3 @@ Feature:
     """
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "nickname": "ne-w nick_name",
-        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-        "first_name": null,
-        "last_name": null
-    }
-    """
