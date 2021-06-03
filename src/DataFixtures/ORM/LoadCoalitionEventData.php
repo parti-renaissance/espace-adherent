@@ -272,7 +272,7 @@ class LoadCoalitionEventData extends Fixture implements DependentFixtureInterfac
     ): CoalitionEvent {
         $event = new CoalitionEvent(Uuid::fromString($uuid));
         $event->setOrganizer($organizer);
-        $event->addCoalition($coalition);
+        $event->setCoalition($coalition);
         $event->setCategory($category);
         $event->setName($name);
         $event->setDescription($description);

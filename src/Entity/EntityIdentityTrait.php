@@ -47,6 +47,8 @@ trait EntityIdentityTrait
      *     "email_template_read",
      *     "email_template_list_read",
      *     "message_read_list",
+     *     "event_list_read",
+     *     "event_read",
      * })
      *
      * @ApiProperty(

@@ -140,7 +140,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     * @SymfonySerializer\Groups({"cause_read", "cause_write", "event_read", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
@@ -178,7 +178,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     * @SymfonySerializer\Groups({"cause_read", "cause_write", "event_read", "event_list_read"})
      *
      * @Assert\NotBlank
      */
@@ -225,9 +225,9 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      *
      * @ApiSubresource
      *
-     * @ORM\ManyToMany(
+     * @ORM\OneToMany(
      *     targetEntity="App\Entity\Event\CauseEvent",
-     *     mappedBy="causes",
+     *     mappedBy="cause",
      *     cascade={"all"},
      *     orphanRemoval=true
      * )

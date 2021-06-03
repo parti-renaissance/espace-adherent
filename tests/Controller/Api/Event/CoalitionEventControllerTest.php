@@ -68,9 +68,7 @@ class CoalitionEventControllerTest extends WebTestCase
             'capacity' => 10,
             'visio_url' => 'https://en-marche.fr/reunions/123',
             'mode' => BaseEvent::MODE_ONLINE,
-            'coalitions' => [
-                'fc7fd104-71e5-4399-a874-f8fe752f846b',
-            ],
+            'coalition' => 'fc7fd104-71e5-4399-a874-f8fe752f846b',
        ]));
 
         $this->assertResponseStatusCodeSame(201);
