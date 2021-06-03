@@ -14,9 +14,6 @@ class PasswordGrant extends BasePasswordGrant
 {
     use DeviceGrantTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,

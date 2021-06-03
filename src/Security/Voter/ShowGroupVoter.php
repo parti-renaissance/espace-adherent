@@ -2,11 +2,9 @@
 
 namespace App\Security\Voter;
 
-use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
 use App\Entity\BaseGroup;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -14,9 +12,7 @@ class ShowGroupVoter extends AbstractAdherentVoter
 {
     protected function supports($attribute, $group)
     {
-        return CitizenProjectPermissions::SHOW === $attribute && $group instanceof CitizenProject
-            || CommitteePermissions::SHOW === $attribute && $group instanceof Committee
-        ;
+        return CommitteePermissions::SHOW === $attribute && $group instanceof Committee;
     }
 
     /**

@@ -41,7 +41,7 @@ class ProcurationReliabilityProcessorTest extends WebTestCase
         yield ['simple-user@example.ch', 1];
         yield ['michelle.dufour@example.ch', 4];
         yield ['michel.vasseur@example.ch', 4];
-        yield ['coordinatrice-cp@en-marche-dev.fr', 6];
+        yield ['coordinatrice-cp@en-marche-dev.fr', 4];
         yield ['lolodie.dutemps@hotnix.tld', 6];
         yield ['damien.schmidt@example.ch', 6];
         yield ['luciole1989@spambox.fr', 8];

@@ -249,7 +249,7 @@ class EventController extends AbstractController
         EventRegistrationManager $eventRegistrationManager
     ): JsonResponse {
         if (!$this->isCsrfTokenValid('event.unregistration', $request->request->get('token'))) {
-            throw new BadRequestHttpException('Invalid CSRF protection token to unregister from the citizen action.');
+            throw new BadRequestHttpException('Invalid CSRF protection token.');
         }
 
         if (!($adherentEventRegistration = $eventRegistrationManager->searchRegistration($event, $this->getUser()->getEmailAddress(), null))) {

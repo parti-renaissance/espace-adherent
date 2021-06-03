@@ -39,14 +39,6 @@ class AdherentMessageLimitVoter extends AbstractAdherentVoter
                 );
                 break;
 
-            case AdherentMessageTypeEnum::CITIZEN_PROJECT:
-                $number = $this->repository->countTotalCitizenProjectMessage(
-                    $adherent,
-                    $subject->getFilter()->getCitizenProject(),
-                    true
-                );
-                break;
-
             default:
                 $number = $this->repository->countTotalMessage($adherent, $messageType, true);
         }

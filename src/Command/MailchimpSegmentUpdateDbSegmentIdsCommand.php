@@ -2,9 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Repository\CitizenProjectRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -20,7 +18,6 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
     private $referentTagRepository;
     private $committeeRepository;
-    private $citizenProjectRepository;
     private $client;
     private $entityManager;
     private $mailchimpListId;
@@ -30,14 +27,12 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
     public function __construct(
         ReferentTagRepository $referentTagRepository,
         CommitteeRepository $committeeRepository,
-        CitizenProjectRepository $citizenProjectRepository,
         ClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
         $this->referentTagRepository = $referentTagRepository;
         $this->committeeRepository = $committeeRepository;
-        $this->citizenProjectRepository = $citizenProjectRepository;
         $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
         $this->mailchimpListId = $mailchimpListId;
@@ -65,7 +60,6 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         while ($tags = $this->getTags($offset, $limit)) {
             $this->updateReferentTags($tags);
             $this->updateCommittees($tags);
-            $this->updateCitizenProjects($tags);
 
             $offset += $limit;
         }
@@ -114,34 +108,6 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
             foreach ($segments as $tag) {
                 if ($tag['name'] === $committee->getUuid()->toString()) {
                     $committee->setMailchimpId($tag['id']);
-
-                    $this->io->progressAdvance();
-                    break;
-                }
-            }
-        }
-
-        $this->entityManager->flush();
-        $this->entityManager->clear();
-    }
-
-    private function updateCitizenProjects(array $segments): void
-    {
-        $iterator = $this->citizenProjectRepository->createQueryBuilder('cp')
-            ->where('cp.mailchimpId IS NULL')
-            ->andWhere('cp.status = :status')
-            ->setParameter('status', CitizenProject::APPROVED)
-            ->getQuery()
-            ->iterate()
-        ;
-
-        foreach ($iterator as $cp) {
-            /** @var CitizenProject $cp */
-            $cp = current($cp);
-
-            foreach ($segments as $tag) {
-                if ($tag['name'] === $cp->getUuid()->toString()) {
-                    $cp->setMailchimpId($tag['id']);
 
                     $this->io->progressAdvance();
                     break;

@@ -86,7 +86,7 @@ class EventsControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         self::assertSame(1, $response['metadata']['total_items']);
-        self::assertSame('39f25bd2-f866-4c0d-84da-2387898b8db1', $response['items'][0]['uuid']);
+        self::assertSame('1fc69fd0-2b34-4bd4-a0cc-834480480934', $response['items'][0]['uuid']);
     }
 
     public function provideApiEventsCategories()

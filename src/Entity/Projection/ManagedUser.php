@@ -220,16 +220,6 @@ class ManagedUser
     private $supervisorTags;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $citizenProjects;
-
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $citizenProjectsOrganizer;
-
-    /**
      * @var array
      *
      * @ORM\Column(type="simple_array", nullable=true)
@@ -276,8 +266,6 @@ class ManagedUser
         \DateTime $createdAt = null,
         string $gender = null,
         array $supervisorTags = [],
-        array $citizenProjects = null,
-        array $citizenProjectsOrganizer = null,
         UuidInterface $uuid = null,
         int $voteCommitteeId = null,
         \DateTime $certifiedAt = null
@@ -308,8 +296,6 @@ class ManagedUser
         $this->certifiedAt = $certifiedAt;
         $this->gender = $gender;
         $this->supervisorTags = $supervisorTags;
-        $this->citizenProjects = $citizenProjects;
-        $this->citizenProjectsOrganizer = $citizenProjectsOrganizer;
         $this->voteCommitteeId = $voteCommitteeId;
         $this->zones = new ArrayCollection($zones);
     }
@@ -453,16 +439,6 @@ class ManagedUser
         return $this->supervisorTags;
     }
 
-    public function getCitizenProjects(): ?array
-    {
-        return $this->citizenProjects;
-    }
-
-    public function getCitizenProjectsOrganizer(): ?array
-    {
-        return $this->citizenProjectsOrganizer;
-    }
-
     public function getSubscriptionTypes(): array
     {
         return $this->subscriptionTypes;
@@ -499,12 +475,8 @@ class ManagedUser
 
     public function getUserRoleLabels($separator = ' / '): string
     {
-        if ($this->citizenProjectsOrganizer || $this->isCommitteeSupervisor || $this->isCommitteeHost) {
+        if ($this->isCommitteeSupervisor || $this->isCommitteeHost) {
             $roles = [];
-
-            if ($this->citizenProjectsOrganizer) {
-                $roles[] = 'Porteur de projet';
-            }
 
             if ($this->isCommitteeSupervisor) {
                 $roles[] = 'Animateur local';

@@ -56,8 +56,6 @@ class AdherentEmailSubscriptionType extends AbstractType
                         case SubscriptionTypeEnum::CANDIDATE_EMAIL:
                         case SubscriptionTypeEnum::SENATOR_EMAIL:
                             return 'subscription_type.group.territories_emails';
-                        case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL:
-                            return 'subscription_type.group.citizen_project_emails';
                     }
 
                     return null;
@@ -75,7 +73,6 @@ class AdherentEmailSubscriptionType extends AbstractType
             'subscription_type.group.communication_mobile' => null,
             'subscription_type.group.communication_emails' => null,
             'subscription_type.group.territories_emails' => null,
-            'subscription_type.group.citizen_project_emails' => null,
         ], $subscriptionTypes);
     }
 }

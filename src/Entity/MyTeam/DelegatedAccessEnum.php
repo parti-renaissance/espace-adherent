@@ -29,7 +29,6 @@ class DelegatedAccessEnum extends Enum
 
         if (self::TYPE_REFERENT === $type) {
             $accesses[] = DelegatedAccess::ACCESS_JECOUTE;
-            $accesses[] = DelegatedAccess::ACCESS_CITIZEN_PROJECTS;
             $accesses[] = DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES;
             $accesses[] = DelegatedAccess::ACCESS_COMMITTEE;
             $accesses[] = DelegatedAccess::ACCESS_INSTITUTIONAL_EVENTS;
@@ -53,7 +52,6 @@ class DelegatedAccessEnum extends Enum
             DelegatedAccess::ACCESS_MESSAGES => "app_message_{$type}_list",
             DelegatedAccess::ACCESS_EVENTS => "app_{$type}_event_manager_events",
             DelegatedAccess::ACCESS_COMMITTEE => "app_{$type}_committees",
-            DelegatedAccess::ACCESS_CITIZEN_PROJECTS => "app_{$type}_citizen_projects_list",
             DelegatedAccess::ACCESS_POLLS => "app_{$type}_polls_local_list",
             DelegatedAccess::ACCESS_JECOUTE => "app_jecoute_{$type}_local_surveys_list",
             DelegatedAccess::ACCESS_JECOUTE_REGION => 'app_jecoute_candidate_region_edit',
@@ -68,8 +66,6 @@ class DelegatedAccessEnum extends Enum
     {
         return [
             'committee' => 'app_committee_space_dashboard',
-            'citizen_project' => 'app_citizen_project_space_dashboard',
-            'coordinator_citizen_project' => 'app_coordinator_citizen_project',
             'coordinator_committees' => 'app_coordinator_committees',
             'procuration_manager_requests' => 'app_procuration_manager_requests',
             'assessor_manager_requests' => 'app_assessor_manager_requests',

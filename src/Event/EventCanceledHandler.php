@@ -2,9 +2,7 @@
 
 namespace App\Event;
 
-use App\CitizenAction\CitizenActionEvent;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -18,7 +16,6 @@ class EventCanceledHandler
 
     private const EVENTS_MAPPING = [
         CommitteeEvent::class => Events::EVENT_CANCELLED,
-        CitizenAction::class => Events::CITIZEN_ACTION_CANCELLED,
     ];
 
     public function __construct(EventDispatcherInterface $dispatcher, ObjectManager $manager)
@@ -43,14 +40,10 @@ class EventCanceledHandler
 
     private function createDispatchedEvent(BaseEvent $event): Event
     {
-        if ($event instanceof CommitteeEvent) {
-            return new CommitteeEventEvent(
-                $event->getOrganizer(),
-                $event,
-                $event->getCommittee()
-            );
-        }
-
-        return new CitizenActionEvent($event, $event->getOrganizer());
+        return new CommitteeEventEvent(
+            $event->getOrganizer(),
+            $event,
+            $event->getCommittee()
+        );
     }
 }

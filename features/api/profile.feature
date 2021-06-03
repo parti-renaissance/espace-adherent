@@ -71,10 +71,6 @@ Feature:
                 "code": "subscribed_emails_referents"
             },
             {
-                "label": "Recevoir les e-mails de mon porteur de projet",
-                "code": "citizen_project_host_email"
-            },
-            {
                 "label": "Recevoir les e-mails de mon/ma sénateur/trice",
                 "code": "senator_email"
             }
@@ -891,10 +887,6 @@ Feature:
         {
           "code": "subscribed_emails_referents",
           "label": "Recevoir les e-mails de mon/ma référent(e) territorial(e)"
-        },
-        {
-          "code": "citizen_project_host_email",
-          "label": "Recevoir les e-mails de mon porteur de projet"
         },
         {
           "code": "senator_email",

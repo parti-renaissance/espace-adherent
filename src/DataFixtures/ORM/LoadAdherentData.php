@@ -599,7 +599,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'email' => 'coordinatrice-cp@en-marche-dev.fr',
             'gender' => 'female',
             'first_name' => 'Coordinatrice',
-            'last_name' => 'CITIZEN PROJECT',
+            'last_name' => 'CITIZEN PROJECT [OLD]',
             'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', null, 48.8704135, 2.324256),
             'birthdate' => '1989-03-13',
             'position' => 'employed',
@@ -607,7 +607,6 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinatorCP->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $coordinatorCP->setCoordinatorCitizenProjectArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
         $coordinatorCP->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));

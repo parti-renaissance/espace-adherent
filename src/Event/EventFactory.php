@@ -4,9 +4,7 @@ namespace App\Event;
 
 use App\Address\Address;
 use App\Address\PostAddressFactory;
-use App\CitizenAction\CitizenActionCommand;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\InstitutionalEvent;
@@ -20,14 +18,8 @@ use Ramsey\Uuid\Uuid;
 class EventFactory
 {
     private $addressFactory;
-
-    /**
-     * @var ZoneMatcher
-     */
     private $zoneMatcher;
-
     private $referentTagManager;
-
     private $imageManager;
 
     public function __construct(
@@ -115,39 +107,6 @@ class EventFactory
         $this->referentTagManager->assignReferentLocalTags($event);
 
         return $event;
-    }
-
-    public function createCitizenActionFromArray(array $data): CitizenAction
-    {
-        foreach (['uuid', 'organizer', 'citizen_project', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at'] as $key) {
-            if (!\array_key_exists($key, $data)) {
-                throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
-            }
-        }
-
-        $uuid = Uuid::fromString($data['uuid']);
-        $citizenAction = new CitizenAction(
-            $uuid,
-            $data['organizer'],
-            $data['citizen_project'],
-            $data['name'],
-            $data['category'],
-            $data['description'],
-            $data['address'],
-            $data['begin_at'],
-            $data['finish_at']
-        );
-        if (!empty($data['time_zone'])) {
-            $citizenAction->setTimeZone($data['time_zone']);
-        }
-
-        if (!empty($data['visio_url'])) {
-            $citizenAction->setVisioUrl($data['visio_url']);
-        }
-
-        $this->referentTagManager->assignReferentLocalTags($citizenAction);
-
-        return $citizenAction;
     }
 
     public function createFromEventCommand(EventCommand $command, string $eventClass): BaseEvent
@@ -277,59 +236,6 @@ class EventFactory
             $this->imageManager->removeImage($event);
         } elseif ($event->getImage()) {
             $this->imageManager->saveImage($event);
-        }
-    }
-
-    public function createFromCitizenActionCommand(CitizenActionCommand $command): CitizenAction
-    {
-        $citizenAction = new CitizenAction(
-            $command->getUuid(),
-            $command->getAuthor(),
-            $command->getCitizenProject(),
-            $command->getName(),
-            $command->getCategory(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            0,
-            [],
-            $command->getTimeZone(),
-            $command->getVisioUrl()
-        );
-
-        $citizenAction->setImage($command->getImage());
-
-        $this->referentTagManager->assignReferentLocalTags($citizenAction);
-
-        if ($citizenAction->getImage()) {
-            $this->imageManager->saveImage($citizenAction);
-        }
-
-        return $citizenAction;
-    }
-
-    public function updateFromCitizenActionCommand(CitizenActionCommand $command, CitizenAction $citizenAction): void
-    {
-        $citizenAction->update(
-            $command->getName(),
-            $command->getDescription(),
-            $this->createPostAddress($command->getAddress()),
-            $command->getTimeZone(),
-            $command->getBeginAt(),
-            $command->getFinishAt(),
-            $command->getVisioUrl()
-        );
-
-        $citizenAction->setCategory($command->getCategory());
-        $citizenAction->setImage($command->getImage());
-        $citizenAction->setRemoveImage($command->isRemoveImage());
-        $this->referentTagManager->assignReferentLocalTags($citizenAction);
-
-        if ($citizenAction->isRemoveImage() && $citizenAction->hasImageName()) {
-            $this->imageManager->removeImage($citizenAction);
-        } elseif ($citizenAction->getImage()) {
-            $this->imageManager->saveImage($citizenAction);
         }
     }
 

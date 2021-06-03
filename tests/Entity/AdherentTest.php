@@ -5,8 +5,6 @@ namespace Tests\App\Entity;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\BoardMember\BoardMember;
-use App\Entity\CitizenProject;
-use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
@@ -152,16 +150,6 @@ class AdherentTest extends TestCase
         // BoardMember
         $adherent = $this->createAdherent();
         $adherent->setBoardMember(BoardMember::AREA_ABROAD, new ArrayCollection());
-
-        $this->assertFalse($adherent->isBasicAdherent());
-
-        // CitizenProject administrator
-        $adherent = $this->createAdherent();
-        $adherent->join();
-        $cpMemberships = $adherent->getCitizenProjectMemberships();
-        $cpMembership = $this->createMock(CitizenProjectMembership::class);
-        $cpMembership->expects($this->once())->method('canAdministrateCitizenProject')->willReturn(true);
-        $cpMemberships->add($cpMembership);
 
         $this->assertFalse($adherent->isBasicAdherent());
     }

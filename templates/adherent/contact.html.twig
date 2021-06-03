@@ -14,15 +14,10 @@
                     <a href="{{ path('app_committee_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour au comité</a>
-                {% elseif fromType == 'citizen_project' %}
-                    <a href="{{ path('app_citizen_project_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
-                        {{ include('components/caret--left.html.twig') }}
-                        Retour au projet citoyen</a>
                 {% elseif fromType == 'territorial_council' %}
                     <a href="{{ path('app_territorial_council_index') }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour au Conseil territorial</a>
-
                 {% elseif fromType == 'political_committee' %}
                     <a href="{{ path('app_political_committee_index') }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}

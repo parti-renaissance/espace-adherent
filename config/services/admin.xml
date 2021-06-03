@@ -599,65 +599,6 @@
             </call>
         </service>
 
-        <!--
-        ######################################################
-        # CitizenProject
-        ######################################################
-        -->
-
-        <service id="app.admin.citizen_project" class="App\Admin\CitizenProjectAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Projets citoyens" group="Projets citoyens" />
-
-            <argument />
-            <argument>App\Entity\CitizenProject</argument>
-            <argument />
-            <argument type="service" id="App\CitizenProject\CitizenProjectManager" />
-            <argument type="service" id="App\Repository\CitizenProjectRepository" />
-            <argument type="service" id="App\Repository\CitizenProjectMembershipRepository" />
-            <argument type="service" id="App\Repository\AdherentRepository" />
-        </service>
-
-        <service id="app.admin.citizen_project_category" class="App\Admin\CitizenProjectCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories des projets" group="Projets citoyens" />
-
-            <argument />
-            <argument>App\Entity\CitizenProjectCategory</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.citizen_action" class="App\Admin\CitizenActionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Actions citoyennes" group="Projets citoyens" />
-
-            <argument />
-            <argument>App\Entity\Event\CitizenAction</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.citizen_project_skill" class="App\Admin\CitizenProjectSkillAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Compétences" group="Projets citoyens" />
-
-            <argument />
-            <argument>App\Entity\CitizenProjectSkill</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.citizen_action_category" class="App\Admin\CitizenActionCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories des actions " group="Projets citoyens" />
-
-            <argument />
-            <argument>App\Entity\Event\CitizenActionCategory</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.turnkey_project" class="App\Admin\TurnkeyProjectAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Projets clé en main" group="Projets citoyens" />
-
-            <argument />
-            <argument>App\Entity\TurnkeyProject</argument>
-            <argument />
-            <argument type="service" id="App\TurnkeyProject\TurnkeyProjectManager" />
-        </service>
-
         <service id="app.admin.timeline_manifesto" class="App\Admin\TimelineManifestoAdmin">
             <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Programmes" group="Idées" />
 
@@ -841,8 +782,6 @@
         <service id="app.admin.postal_code_filter_extension" class="App\Admin\Extension\PostalCodeFilterAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.committee" />
             <tag name="sonata.admin.extension" target="app.admin.event" />
-            <tag name="sonata.admin.extension" target="app.admin.citizen_project" />
-            <tag name="sonata.admin.extension" target="app.admin.citizen_action" />
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
         </service>
 

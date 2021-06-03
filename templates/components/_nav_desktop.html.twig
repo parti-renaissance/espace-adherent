@@ -129,7 +129,6 @@
 
 {% if is_granted('ROLE_SUPERVISOR') or
     is_granted('ROLE_HOST') or
-    is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or
     is_granted('ROLE_REFERENT') or
     is_granted('ROLE_COREFERENT') or
     is_granted('ROLE_DEPUTY') or
@@ -160,7 +159,6 @@
         (app.user.isReferent or app.user.isCoReferent) +
         app.user.isDeputy +
         app.user.isSenator +
-        app.user.isCoordinatorCitizenProjectSector +
         app.user.isCoordinatorCommitteeSector +
         app.user.isProcurationManager +
         app.user.isAssessorManager +
@@ -174,7 +172,6 @@
         app.user.isSenatorialCandidate +
         app.user.isCandidate +
         app.user.isLre +
-        is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
         app.user.isDelegatedReferent +
         app.user.isDelegatedDeputy +
         app.user.isDelegatedSenator +

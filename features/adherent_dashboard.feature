@@ -6,8 +6,6 @@ Feature:
   Background:
     Given the following fixtures are loaded:
       | LoadAdherentData        |
-      | LoadTurnkeyProjectData  |
-      | LoadCitizenProjectData  |
       | LoadCommitteeEventData  |
 
   # Adherent
@@ -34,10 +32,6 @@ Feature:
     # As an adherent, I should have a committee section
     Then I should see "Les comités dont je fais partie"
     And I should see "En Marche - Suisse"
-
-    # As an adherent, I should have a citizen project section
-    Then I should see "Mes projets citoyens"
-    And I should see "Aucun projet citoyen pour l'instant, renseignez-en ici"
 
     # As an adherent, I should have an activity section
     Then I should see "Activité récente"
@@ -109,11 +103,6 @@ Feature:
     And I should see "En Marche Paris 8"
     And I should see "En Marche Dammarie-les-Lys"
 
-    # As an animator, I should have a citizen project section
-    Then I should see "Mes projets citoyens"
-    And I should see "Le projet citoyen à Paris 8"
-    And I should see "Le projet citoyen à Dammarie-les-Lys"
-
     # As an animator, I should have an activity section
     Then I should see "Activité récente"
     And I should see "A participé à l'événement \"Meeting de Singapour\""
@@ -124,12 +113,6 @@ Feature:
     Given I am logged as "coordinateur@en-marche-dev.fr"
     When I am on "/espace-adherent/tableau-de-bord"
     Then I should see "coordinateur de comité"
-
-  # Coordinator de projet citoyen
-  Scenario: As a cp coordinator, I should have a link to go to my own space
-    Given I am logged as "coordinatrice-cp@en-marche-dev.fr"
-    When I am on "/espace-adherent/tableau-de-bord"
-    Then I should see "coordinateur de projet citoyen"
 
   # Responsable de procuration
   Scenario: As a procuration manager, I should have a link to go to my own space

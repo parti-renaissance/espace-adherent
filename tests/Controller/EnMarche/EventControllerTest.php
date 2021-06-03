@@ -408,7 +408,6 @@ class EventControllerTest extends AbstractEventControllerTest
         $countCategories = \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES);
         $countCategories += \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES_GROUPED);
 
-        ++$countCategories; // add citizen_action
         $this->assertNotContains('Catégorie masquée', $labels);
         self::assertSame($countCategories, $options->count());
         self::assertSame(4, $optgroup->count());

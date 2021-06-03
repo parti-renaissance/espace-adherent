@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\RepublicanSilence;
 use App\Event\EventCanceledHandler;
-use App\Repository\CitizenActionRepository;
 use App\Repository\EventRepository;
 use App\RepublicanSilence\RepublicanSilenceManager;
 use Symfony\Component\Console\Command\Command;
@@ -25,21 +24,19 @@ class RepublicanSilenceCloseEventCommand extends Command
     public function __construct(
         RepublicanSilenceManager $manager,
         EventRepository $eventRepository,
-        CitizenActionRepository $actionRepository,
         EventCanceledHandler $eventCanceledHandler
     ) {
         parent::__construct();
 
         $this->manager = $manager;
         $this->eventRepository = $eventRepository;
-        $this->actionRepository = $actionRepository;
         $this->eventCanceledHandler = $eventCanceledHandler;
     }
 
     protected function configure()
     {
         $this
-            ->setDescription('This command closes each committee event or citizen action when it matches a republican silence criteria')
+            ->setDescription('This command closes each committee or event when it matches a republican silence criteria')
             ->addArgument('interval', InputArgument::OPTIONAL, 'Number of minutes to remove from silence start date for closing the events [x] minutes before (default: 0)', '0')
         ;
     }

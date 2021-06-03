@@ -1,6 +1,0 @@
-{% extends 'base_print.html.twig' %}
-
-{% block content %}
-    <p class="text--bold">Liste des participants</p>
-    {% include 'citizen_action/_participants_list.html.twig' with { participants: participants, is_cp_administrator: true } only %}
-{% endblock %}

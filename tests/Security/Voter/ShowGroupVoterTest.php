@@ -2,11 +2,9 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
 use App\Entity\BaseGroup;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ShowGroupVoter;
@@ -23,17 +21,13 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     public function provideAnonymousCases(): iterable
     {
         // Not approved groups should been shown to anonymous
-        $notApprovedCitizenProject = $this->getGroupMock(CitizenProject::class, false);
         $notApprovedCommittee = $this->getGroupMock(Committee::class, false);
 
-        yield [false, true, CitizenProjectPermissions::SHOW, $notApprovedCitizenProject];
         yield [false, true, CommitteePermissions::SHOW, $notApprovedCommittee];
 
         // Approved groups should be shown to anonymous
-        $approvedCitizenProject = $this->getGroupMock(CitizenProject::class, true);
         $approvedCommittee = $this->getGroupMock(Committee::class, true);
 
-        yield [true, false, CitizenProjectPermissions::SHOW, $approvedCitizenProject];
         yield [true, false, CommitteePermissions::SHOW, $approvedCommittee];
     }
 
@@ -64,8 +58,6 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
 
     public function provideGroupCases(): iterable
     {
-        yield [CitizenProject::class, true, CitizenProjectPermissions::SHOW];
-        yield [CitizenProject::class, false, CitizenProjectPermissions::SHOW];
         yield [Committee::class, true, CommitteePermissions::SHOW];
         yield [Committee::class, false, CommitteePermissions::SHOW];
     }

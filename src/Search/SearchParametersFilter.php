@@ -31,14 +31,10 @@ class SearchParametersFilter
 
     public const TYPE_COMMITTEES = 'committees';
     public const TYPE_EVENTS = 'events';
-    public const TYPE_CITIZEN_PROJECTS = 'citizen_projects';
-    public const TYPE_CITIZEN_ACTIONS = 'citizen_actions';
 
     public const TYPES = [
         self::TYPE_COMMITTEES,
         self::TYPE_EVENTS,
-        self::TYPE_CITIZEN_PROJECTS,
-        self::TYPE_CITIZEN_ACTIONS,
     ];
 
     public const RADIUS_NONE = -1;
@@ -223,10 +219,5 @@ class SearchParametersFilter
     public function isTypeEvents(): bool
     {
         return self::TYPE_EVENTS === $this->getType();
-    }
-
-    public function isTypeCitizenProjects(): bool
-    {
-        return self::TYPE_CITIZEN_PROJECTS === $this->getType();
     }
 }

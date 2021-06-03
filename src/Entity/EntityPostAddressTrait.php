@@ -33,7 +33,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "public", "committee_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "public", "committee_read"})
      * @JMS\VirtualProperty
      *
      * @SymfonySerializer\Groups({"user_profile"})
@@ -49,7 +49,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "citizen_action_read"})
+     * @JMS\Groups({"committee_read"})
      * @JMS\VirtualProperty
      */
     public function getAddress(): ?string
@@ -58,7 +58,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      *
@@ -70,7 +70,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "committee_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "committee_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      */
@@ -90,7 +90,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "citizen_action_read"})
+     * @JMS\Groups({"committee_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("latitude")
      */
@@ -100,7 +100,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read", "citizen_action_read"})
+     * @JMS\Groups({"committee_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("longitude")
      */

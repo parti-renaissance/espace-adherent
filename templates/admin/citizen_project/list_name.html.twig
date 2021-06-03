@@ -1,9 +1,0 @@
-{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
-
-{% block field %}
-    <a href="{{ path('admin_app_citizenproject_edit', { id: object.id }) }}">
-        {{ object.name }}
-    </a>
-    <br />
-    {{ object.subtitle }}
-{% endblock %}

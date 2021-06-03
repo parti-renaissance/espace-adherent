@@ -61,12 +61,6 @@
                 <a href="{{ path('app_referent_committees') }}">Comités</a>
             </li>
         {% endif %}
-
-        {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS') %}
-            <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_list') ? 'active' }}">
-                <a href="{{ path('app_referent_citizen_projects_list') }}">Projets citoyens</a>
-            </li>
-        {% endif %}
     </ul>
 
     {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_JECOUTE') or is_granted('ROLE_JECOUTE_NEWS') %}

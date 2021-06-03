@@ -10,9 +10,6 @@ class ClientCredentialsGrant extends BaseClientCredentialsGrant
 {
     use DeviceGrantTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,

@@ -3,8 +3,6 @@
 namespace App\Command;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
-use App\Entity\CitizenProject;
-use App\Entity\CitizenProjectMembership;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -25,12 +23,10 @@ class MailchimpSyncAllEventsCommand extends Command
     protected static $defaultName = 'mailchimp:sync:all-events';
 
     private const COMMITTEE_TYPE = 'committee';
-    private const CITIZEN_PROJECT_TYPE = 'citizen_project';
     private const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
 
     private static $allTypes = [
         self::COMMITTEE_TYPE,
-        self::CITIZEN_PROJECT_TYPE,
         self::TERRITORIAL_COUNCIL_TYPE,
     ];
 
@@ -119,15 +115,6 @@ class MailchimpSyncAllEventsCommand extends Command
                     ->select('PARTIAL committee.{id, uuid}')
                     ->innerJoin(CommitteeMembership::class, 'membership', Join::WITH, 'membership.committee = committee')
                     ->groupBy('committee')
-                ;
-
-            case self::CITIZEN_PROJECT_TYPE:
-                return $this->entityManager
-                    ->getRepository(CitizenProject::class)
-                    ->createQueryBuilder('cp')
-                    ->select('PARTIAL cp.{id, uuid}')
-                    ->innerJoin(CitizenProjectMembership::class, 'membership', Join::WITH, 'membership.citizenProject = cp')
-                    ->groupBy('cp')
                 ;
 
             case self::TERRITORIAL_COUNCIL_TYPE:

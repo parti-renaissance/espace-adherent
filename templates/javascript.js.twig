@@ -230,47 +230,6 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro citizenProjectSkills(idCategoryListField, idSkillsListField, urlSearch) %}
-$(document).ready(function() {
-    var categoryListField = $('{{ idCategoryListField|e('js') }}');
-    var checkboxes = $('{{ idSkillsListField|e('js') }}');
-    var checkboxesCheckedIds = $.map($("input[name='citizen_project[skills][]']:checked"), function(c){return parseInt(c.value); });
-
-    var updateSkillsField = function () {
-        checkboxes.empty();
-        if (checkboxes.prev('label').is(":visible") && categoryListField.val()) {
-            checkboxes.prev('label').hide();
-            checkboxes.removeClass("hidden");
-        } else {
-            checkboxes.prev('label').show();
-        }
-
-        $.ajax({
-            url: "{{ urlSearch|e('js') }}?category="+categoryListField.val()
-        }).then(function(results) {
-            results.map(function(result) {
-                var $input = $('<input id="citizen_project_skills_'+result['id']+'" name="citizen_project[skills][]" value='+result['id']+' type="checkbox" '+($.inArray(result['id'], checkboxesCheckedIds) >= 0 ? 'checked=checked' : '')+'>');
-                var $label = $('<label class="form form__label" for="citizen_project_skills_'+result['id']+'">'+result['name']+'</label>');
-                var $checkbox = $('<div class="form__checkbox">')
-                    .append($input)
-                    .append($label);
-
-                checkboxes.append($checkbox);
-            });
-        });
-    }
-
-    categoryListField
-        .ready(function () {
-           updateSkillsField();
-        })
-        .change(function() {
-            updateSkillsField();
-        })
-    ;
-});
-{% endmacro %}
-
 {% macro committee(idCommitteesListField, idCommitteeSearchField, urlSearch, disabledCommitteeEnterIds) %}
 $(document).ready(function() {
     var committeeList = $('{{ idCommitteesListField|raw }}');

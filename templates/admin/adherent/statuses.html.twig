@@ -11,10 +11,6 @@
         <span class="label label-primary" style="padding: 2px;">Référent délégué</span><br/>
     {% endif %}
 
-    {% if object.isCoordinatorCitizenProjectSector %}
-        <span class="label label-primary" style="padding: 2px;">REC</span><br/>
-    {% endif %}
-
     {% if object.isCoordinatorCommitteeSector %}
         <span class="label label-primary" style="padding: 2px;">Coordinateur</span><br/>
     {% endif %}
@@ -45,10 +41,6 @@
 
     {% if object.isSupervisor(true) %}
         <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur provisiore</span><br/>
-    {% endif %}
-
-    {% if object.isCitizenProjectAdministrator %}
-        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Porteur de projet ({{ object.citizenProjectMemberships.countCitizenProjectAdministratorMemberships }})</span><br/>
     {% endif %}
 
     {% if object.isBoardMember %}

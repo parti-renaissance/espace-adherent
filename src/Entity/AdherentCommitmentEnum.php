@@ -16,7 +16,6 @@ class AdherentCommitmentEnum extends Enum
     public const IDEAS_SHARE_KNOWLEDGE = 'share_knowledge';
     public const IDEAS_WRITE_BACKGROUND_CONTENT = 'write_background_content';
 
-    public const ACTS_ENGAGE_IN_CITIZEN_PROJECTS = 'engage_in_citizen_projects';
     public const ACTS_REINFORCE_POLITIC_COMMITMENT_NEIGHBORHOODS = 'reinforce_politic_commitment_neighborhoods';
     public const ACTS_REINFORCE_POLITIC_COMMITMENT_RURAL_AREAS = 'reinforce_politic_commitment_rural_areas';
     public const ACTS_FAVOR_WOMEN_POLITIC_COMMITMENT = 'favor_women_politic_commitment';
@@ -44,7 +43,6 @@ class AdherentCommitmentEnum extends Enum
     ];
 
     public const ACTS_ACTIONS = [
-        self::ACTS_ENGAGE_IN_CITIZEN_PROJECTS,
         self::ACTS_REINFORCE_POLITIC_COMMITMENT_NEIGHBORHOODS,
         self::ACTS_REINFORCE_POLITIC_COMMITMENT_RURAL_AREAS,
         self::ACTS_FAVOR_WOMEN_POLITIC_COMMITMENT,

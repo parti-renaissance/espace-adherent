@@ -4,7 +4,6 @@ namespace App\AdherentMessage\Listener;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
-use App\CitizenProject\CitizenProjectWasUpdatedEvent;
 use App\Committee\CommitteeEvent;
 use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,15 +22,7 @@ class CreateStaticSegmentListener implements EventSubscriberInterface
     {
         return [
             Events::COMMITTEE_UPDATED => 'onCommitteeUpdate',
-            Events::CITIZEN_PROJECT_UPDATED => 'onCitizenProjectUpdate',
         ];
-    }
-
-    public function onCitizenProjectUpdate(CitizenProjectWasUpdatedEvent $event): void
-    {
-        if (($citizenProject = $event->getCitizenProject())->isApproved()) {
-            $this->onUpdate($citizenProject);
-        }
     }
 
     public function onCommitteeUpdate(CommitteeEvent $event): void

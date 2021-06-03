@@ -25,9 +25,6 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         $this->accessTokenRepository = $accessTokenRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
         $token = new InMemoryAccessToken();
@@ -39,17 +36,11 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         return $token;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessToken)
     {
         $this->store($this->persistentTokenFactory->createAccessToken($accessToken));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function revokeAccessToken($tokenId)
     {
         if (!$token = $this->findAccessToken($tokenId)) {
@@ -62,9 +53,6 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         $this->store($token);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isAccessTokenRevoked($tokenId)
     {
         if (!$token = $this->findAccessToken($tokenId)) {

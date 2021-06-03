@@ -41,7 +41,6 @@ class ThematicCommunityMembershipFilterType extends AbstractType
                     'role_or_mandat.adherent' => 'adherent',
                     'role_or_mandat.supervisor' => 'supervisor',
                     'role_or_mandat.provisional_supervisor' => 'provisional_supervisor',
-                    'role_or_mandat.citizen_project_admin' => 'citizen_project_admin',
                     'role_or_mandat.referent' => 'referent',
                     'role_or_mandat.contact' => 'contact',
                 ],

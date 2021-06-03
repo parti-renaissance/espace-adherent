@@ -2,10 +2,8 @@
 
 namespace App\Security\Voter;
 
-use App\CitizenAction\CitizenActionPermissions;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventPermissions;
 use App\Repository\EventRegistrationRepository;
@@ -22,16 +20,12 @@ class AttendEventVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $subject)
     {
-        return $subject instanceof CommitteeEvent && \in_array($attribute, EventPermissions::ATTEND, true)
-            || $subject instanceof CitizenAction && \in_array($attribute, CitizenActionPermissions::ATTEND, true)
-        ;
+        return $subject instanceof CommitteeEvent && \in_array($attribute, EventPermissions::ATTEND, true);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if ((EventPermissions::REGISTER === $attribute || CitizenActionPermissions::REGISTER === $attribute)
-            && !$token->getUser()
-        ) {
+        if (EventPermissions::REGISTER === $attribute && !$token->getUser()) {
             // Anonymous are always granted to register, because we cannot check if they already did
             return true;
         }
@@ -46,7 +40,7 @@ class AttendEventVoter extends AbstractAdherentVoter
     {
         $isRegistered = $this->registrationRepository->isAlreadyRegistered($adherent->getEmailAddress(), $subject);
 
-        if (EventPermissions::UNREGISTER === $attribute || CitizenActionPermissions::UNREGISTER === $attribute) {
+        if (EventPermissions::UNREGISTER === $attribute) {
             return $isRegistered;
         }
 

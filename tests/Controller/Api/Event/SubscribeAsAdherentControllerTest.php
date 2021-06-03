@@ -3,8 +3,8 @@
 namespace Tests\App\Controller\Api\Event;
 
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\DataFixtures\ORM\LoadCitizenActionData;
 use App\DataFixtures\ORM\LoadClientData;
+use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\OAuth\Model\GrantTypeEnum;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +31,13 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_POST, sprintf('/api/v3/events/%s/subscribe', LoadCitizenActionData::CITIZEN_ACTION_1_UUID), [], [], [
+        $this->client->request(Request::METHOD_POST, sprintf('/api/v3/events/%s/subscribe', LoadCommitteeEventData::EVENT_1_UUID), [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->client->request(Request::METHOD_POST, sprintf('/api/v3/events/%s/subscribe', LoadCitizenActionData::CITIZEN_ACTION_1_UUID), [], [], [
+        $this->client->request(Request::METHOD_POST, sprintf('/api/v3/events/%s/subscribe', LoadCommitteeEventData::EVENT_1_UUID), [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
 

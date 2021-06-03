@@ -131,44 +131,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    toggleCitizenProjectMembership(committeeSlug, action, token, callback) {
-        const request = this._reqwest({
-            url: `/projets-citoyens/${committeeSlug}/${action}`,
-            type: 'html',
-            method: 'post',
-            data: {
-                token,
-            },
-        });
-
-        request.then((response) => {
-            callback(JSON.parse(response));
-        });
-
-        request.fail(() => {
-            callback(null);
-        });
-    }
-
-    unregisterFromCitizenAction(citizenActionSlug, token, callback) {
-        const request = this._reqwest({
-            url: `/action-citoyenne/${citizenActionSlug}/desinscription`,
-            type: 'html',
-            method: 'post',
-            data: {
-                token,
-            },
-        });
-
-        request.then((response) => {
-            callback(JSON.parse(response));
-        });
-
-        request.fail((response) => {
-            callback(JSON.parse(response));
-        });
-    }
-
     unregisterEvent(eventSlug, token, callback) {
         const request = this._reqwest({
             url: `/evenements/${eventSlug}/desinscription`,
@@ -223,7 +185,7 @@ export default class ReqwestApiClient {
         this._reqwest({
             url: `/api/adherent_messages/${messageId}`,
             type: 'json',
-        }).then(response => callback(response)).fail(response => errorCallback(response));
+        }).then((response) => callback(response)).fail((response) => errorCallback(response));
     }
 
     getAssessorRequests(queryString, page, callback) {
@@ -271,7 +233,7 @@ export default class ReqwestApiClient {
             type: 'json',
             url: `/comites/${slug}/${enabled ? '' : 'ne-plus-'}voter`,
             data: { token },
-        }).then(callback).fail(response => callback(JSON.parse(response.responseText)));
+        }).then(callback).fail((response) => callback(JSON.parse(response.responseText)));
     }
 
     getCommitteeCandidacies(uuid, callback) {
@@ -303,14 +265,14 @@ export default class ReqwestApiClient {
         this._reqwest({
             url: `/api/territorial-council/candidacy/available-memberships?quality=${quality || ''}${query ? `&query=${query}` : ''}`,
             type: 'json',
-        }).then(response => callback(response)).fail(response => errorCallback(JSON.parse(response.response)));
+        }).then((response) => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }
 
     getCommitteeAvailableMemberships({ slug, query }, callback, errorCallback) {
         this._reqwest({
             url: `/api/committee/${slug}/candidacy/available-memberships?${query ? `query=${query}` : ''}`,
             type: 'json',
-        }).then(response => callback(response)).fail(response => errorCallback(JSON.parse(response.response)));
+        }).then((response) => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }
 
     getTerritorialCouncilFeed(territorialCouncilUuid, page, callback) {

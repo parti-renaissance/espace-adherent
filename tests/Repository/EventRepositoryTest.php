@@ -47,7 +47,7 @@ class EventRepositoryTest extends WebTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(8, \count($this->repository->searchAllEvents($search)));
+        $this->assertSame(6, \count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',
@@ -61,19 +61,6 @@ class EventRepositoryTest extends WebTestCase
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
         $this->assertSame(1, \count($this->repository->searchAllEvents($search)));
-
-        $query = [
-            'q' => '',
-            'r' => '150',
-            'c' => 'paris',
-            't' => 'citizen_actions',
-            'offset' => '0',
-            'ec' => 'citizen_actions',
-        ];
-        $request = new Request($query);
-        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
-
-        $this->assertSame(2, \count($this->repository->searchAllEvents($search)));
     }
 
     protected function setUp(): void

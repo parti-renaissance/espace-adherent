@@ -56,10 +56,6 @@ class MeasureTypeAdmin extends AbstractAdmin
                 'label' => 'Lien d\'éligibilité (URL)',
                 'required' => false,
             ])
-            ->add('citizenProjectsLink', UrlType::class, [
-                'label' => 'Lien vers les projets citoyens (URL)',
-                'required' => false,
-            ])
         ;
     }
 

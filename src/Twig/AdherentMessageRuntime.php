@@ -34,17 +34,6 @@ class AdherentMessageRuntime implements RuntimeExtensionInterface
                     true
                 );
 
-            case AdherentMessageTypeEnum::CITIZEN_PROJECT:
-                if (!$request->attributes->has('citizenProject')) {
-                    return 0;
-                }
-
-                return $this->repository->countTotalCitizenProjectMessage(
-                    $adherent,
-                    $request->attributes->get('citizenProject'),
-                    true
-                );
-
             default:
                 return $this->repository->countTotalMessage($adherent, $messageType, true);
         }

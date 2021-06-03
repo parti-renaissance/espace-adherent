@@ -27,7 +27,7 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\Groups({"public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("country")
      */
@@ -42,7 +42,7 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\Groups({"public"})
      * @JMS\VirtualProperty
      */
     public function getAddress(): ?string
@@ -51,7 +51,7 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\Groups({"public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      */
@@ -61,7 +61,7 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\Groups({"public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      */
@@ -81,7 +81,7 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\Groups({"public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("latitude")
      */
@@ -91,7 +91,7 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"public", "citizen_project_read"})
+     * @JMS\Groups({"public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("longitude")
      */

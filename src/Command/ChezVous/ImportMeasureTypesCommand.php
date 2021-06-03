@@ -163,7 +163,6 @@ class ImportMeasureTypesCommand extends Command
             $measureType->setSourceLink($type['sourceLink']);
             $measureType->setOldolfLink($type['oldolfLink']);
             $measureType->setEligibilityLink($type['eligibilityLink']);
-            $measureType->setCitizenProjectsLink('https://en-marche.fr/projets-citoyens');
 
             $this->em->persist($measureType);
         }

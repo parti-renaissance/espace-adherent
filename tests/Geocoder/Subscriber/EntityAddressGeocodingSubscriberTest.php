@@ -2,13 +2,9 @@
 
 namespace Tests\App\Geocoder\Subscriber;
 
-use App\CitizenProject\CitizenProjectWasCreatedEvent;
 use App\Committee\CommitteeEvent;
 use App\Entity\Adherent;
-use App\Entity\CitizenProject;
-use App\Entity\CitizenProjectCategory;
 use App\Entity\Committee;
-use App\Entity\NullablePostAddress;
 use App\Entity\PostAddress;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
@@ -121,51 +117,6 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($committee->getLongitude());
     }
 
-    public function testOnCitizenProjectCreatedSucceeds()
-    {
-        $citizenProject = $this->createCitizenProject('6 rue Neyret');
-
-        $this->assertInstanceOf(GeoPointInterface::class, $citizenProject);
-        $this->assertNull($citizenProject->getLatitude());
-        $this->assertNull($citizenProject->getLongitude());
-
-        $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->updateCoordinates(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
-
-        $this->assertSame(45.7713288, $citizenProject->getLatitude());
-        $this->assertSame(4.8288758, $citizenProject->getLongitude());
-    }
-
-    public function testOnCitizenProjectCreatedWithoutAddressSucceeds()
-    {
-        $citizenProject = $this->createCitizenProject();
-
-        $this->assertInstanceOf(GeoPointInterface::class, $citizenProject);
-        $this->assertNull($citizenProject->getLatitude());
-        $this->assertNull($citizenProject->getLongitude());
-
-        $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->updateCoordinates(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
-
-        $this->assertNull($citizenProject->getLatitude());
-        $this->assertNull($citizenProject->getLongitude());
-    }
-
-    public function testOnCitizenProjectCreatedFailed()
-    {
-        $citizenProject = $this->createCitizenProject('12 rue Jean Paul II');
-
-        $this->assertInstanceOf(GeoPointInterface::class, $citizenProject);
-        $this->assertNull($citizenProject->getLatitude());
-        $this->assertNull($citizenProject->getLongitude());
-
-        $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->updateCoordinates(new CitizenProjectWasCreatedEvent($citizenProject, $this->createAdherent('92 bld Victor Hugo')));
-
-        $this->assertNull($citizenProject->getLatitude());
-        $this->assertNull($citizenProject->getLongitude());
-    }
-
     private function createCommittee(string $address): Committee
     {
         $committee = new Committee(
@@ -179,29 +130,6 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         );
 
         return $committee;
-    }
-
-    private function createCitizenProject(string $address = null, Committee $committee = null): CitizenProject
-    {
-        if (null === $committee) {
-            $committee = $this->createCommittee('63 rue Saint Anne');
-        }
-
-        $citizenProject = new CitizenProject(
-            Uuid::fromString('7eaa4d91-aec7-4b0d-b6f6-50ff6d77c082'),
-            Uuid::fromString('6c77b5f9-52e8-4502-85fd-1f2316c2764b'),
-            'Projet citoyen à Lyon',
-            'Le projet citoyen à Lyon village',
-            $this->createMock(CitizenProjectCategory::class),
-            [$committee],
-            'Problem description',
-            'Proposed solution',
-            'Required means',
-            (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
-            $address ? NullablePostAddress::createFrenchAddress($address, '69001-69381') : null
-        );
-
-        return $citizenProject;
     }
 
     private function createAdherent(string $address): Adherent

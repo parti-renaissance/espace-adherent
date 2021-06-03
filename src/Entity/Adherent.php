@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
-use App\Collection\CitizenProjectMembershipCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
@@ -258,13 +257,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @ORM\OneToOne(targetEntity="App\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
-    private $coordinatorCitizenProjectArea;
-
-    /**
-     * @var CoordinatorManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
-     */
     private $coordinatorCommitteeArea;
 
     /**
@@ -348,13 +340,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent", cascade={"remove"})
      */
     private $memberships;
-
-    /**
-     * @var CitizenProjectMembership[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="CitizenProjectMembership", mappedBy="adherent", cascade={"remove"})
-     */
-    private $citizenProjectMemberships;
 
     /**
      * @var CommitteeFeedItem[]|Collection|iterable
@@ -734,7 +719,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
-        $this->citizenProjectMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->zones = new ArrayCollection();
@@ -908,10 +892,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_COORDINATOR';
         }
 
-        if ($this->isCoordinatorCitizenProjectSector()) {
-            $roles[] = 'ROLE_COORDINATOR_CITIZEN_PROJECT';
-        }
-
         if ($this->isCoordinatorCommitteeSector()) {
             $roles[] = 'ROLE_COORDINATOR_COMMITTEE';
         }
@@ -954,10 +934,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isBoardMember()) {
             $roles[] = 'ROLE_BOARD_MEMBER';
-        }
-
-        if ($this->isCitizenProjectAdministrator()) {
-            $roles[] = 'ROLE_CITIZEN_PROJECT_ADMINISTRATOR';
         }
 
         if ($this->canaryTester) {
@@ -1051,7 +1027,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isJecouteManager()
             || $this->isSupervisor()
             || $this->isHost()
-            || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
             || $this->isDeputy()
             || $this->isDelegatedDeputy()
@@ -1417,40 +1392,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $committee->incrementMembersCount();
 
         return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate);
-    }
-
-    /**
-     * Joins a citizen project as a ADMINISTRATOR privileged person.
-     */
-    public function administrateCitizenProject(
-        CitizenProject $citizenProject,
-        string $subscriptionDate = 'now'
-    ): CitizenProjectMembership {
-        return $this->joinCitizenProject($citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR, $subscriptionDate);
-    }
-
-    /**
-     * Joins a citizen project as a simple FOLLOWER privileged person.
-     */
-    public function followCitizenProject(
-        CitizenProject $citizenProject,
-        string $subscriptionDate = 'now'
-    ): CitizenProjectMembership {
-        return $this->joinCitizenProject($citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER, $subscriptionDate);
-    }
-
-    private function joinCitizenProject(
-        CitizenProject $citizenProject,
-        string $privilege,
-        string $subscriptionDate
-    ): CitizenProjectMembership {
-        $citizenProject->incrementMembersCount();
-
-        $memberShip = CitizenProjectMembership::createForAdherent($citizenProject, $this, $privilege, $subscriptionDate);
-
-        $this->citizenProjectMemberships->add($memberShip);
-
-        return $memberShip;
     }
 
     public function getPostAddress(): PostAddress
@@ -1862,12 +1803,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isCoordinator(): bool
     {
-        return $this->isCoordinatorCommitteeSector() || $this->isCoordinatorCitizenProjectSector();
-    }
-
-    public function isCoordinatorCitizenProjectSector(): bool
-    {
-        return $this->coordinatorCitizenProjectArea && $this->coordinatorCitizenProjectArea->getCodes();
+        return $this->isCoordinatorCommitteeSector();
     }
 
     public function isCoordinatorCommitteeSector(): bool
@@ -1927,44 +1863,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return null;
     }
 
-    /**
-     * @return CitizenProjectMembership[]|CitizenProjectMembershipCollection
-     */
-    public function getCitizenProjectMemberships($withoutRefused = false): CitizenProjectMembershipCollection
-    {
-        if (!$this->citizenProjectMemberships instanceof CitizenProjectMembershipCollection) {
-            $this->citizenProjectMemberships = new CitizenProjectMembershipCollection($this->citizenProjectMemberships->toArray());
-        }
-
-        if ($withoutRefused) {
-            return $this->citizenProjectMemberships->filterRefusedProjects();
-        }
-
-        return $this->citizenProjectMemberships;
-    }
-
-    public function hasLoadedCitizenProjectMemberships(): bool
-    {
-        return $this->isCollectionLoaded($this->citizenProjectMemberships);
-    }
-
-    public function getCitizenProjectMembershipFor(CitizenProject $citizenProject): ?CitizenProjectMembership
-    {
-        foreach ($this->citizenProjectMemberships as $citizenProjectMembership) {
-            if ($citizenProjectMembership->matches($this, $citizenProject)) {
-                return $citizenProjectMembership;
-            }
-        }
-
-        return null;
-    }
-
     public function isBasicAdherent(): bool
     {
         return $this->isAdherent()
             && !$this->isHost()
             && !$this->isSupervisor()
-            && !$this->isCitizenProjectAdministrator()
             && !$this->isReferent()
             && !$this->isBoardMember()
             && !$this->isDeputy()
@@ -1984,20 +1887,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         return $membership->isHostMember();
-    }
-
-    public function isCitizenProjectAdministrator(): bool
-    {
-        return $this->getCitizenProjectMemberships()->countCitizenProjectAdministratorMemberships() >= 1;
-    }
-
-    public function isAdministratorOf(CitizenProject $citizenProject): bool
-    {
-        if (!$membership = $this->getCitizenProjectMembershipFor($citizenProject)) {
-            return false;
-        }
-
-        return $membership->canAdministrateCitizenProject();
     }
 
     public function isSupervisor(bool $isProvisional = null): bool
@@ -2116,21 +2005,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getReferentTagCodes(): array
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->referentTags->toArray());
-    }
-
-    public function hasCitizenProjectHostEmailSubscription(): bool
-    {
-        return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);
-    }
-
-    public function getCoordinatorCitizenProjectArea(): ?CoordinatorManagedArea
-    {
-        return $this->coordinatorCitizenProjectArea;
-    }
-
-    public function setCoordinatorCitizenProjectArea(?CoordinatorManagedArea $coordinatorCitizenProjectArea): void
-    {
-        $this->coordinatorCitizenProjectArea = $coordinatorCitizenProjectArea;
     }
 
     public function getCoordinatorCommitteeArea(): ?CoordinatorManagedArea
@@ -2311,7 +2185,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 'ROLE_DEPUTY',
                 'ROLE_HOST',
                 'ROLE_SUPERVISOR',
-                'ROLE_CITIZEN_PROJECT_ADMINISTRATOR',
                 'ROLE_MUNICIPAL_CHIEF',
                 'ROLE_SENATOR',
                 'ROLE_LEGISLATIVE_CANDIDATE',

@@ -1,9 +1,0 @@
-<div>
-    <select name="{{ constant('PARAMETER_RADIUS', search) }}">
-        {% for option in constant('RADII', search) %}
-            <option value="{{ option }}" {% if constant('DEFAULT_RADIUS', search) == option %}selected="selected"{% endif %}>
-                {{ 'citizen_project.search.filter_radius_citizen_projects'|transchoice(option) }}
-            </option>
-        {% endfor %}
-    </select>
-</div>

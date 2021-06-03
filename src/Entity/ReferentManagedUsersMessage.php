@@ -78,13 +78,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     private $ageMaximum;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $includeCP;
-
-    /**
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="date", nullable=true)
@@ -115,7 +108,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         string $gender,
         int $ageMinimum,
         int $ageMaximum,
-        bool $includeCP,
         array $interests = [],
         int $offset = 0,
         \DateTimeInterface $registeredFrom = null,
@@ -139,7 +131,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->lastName = $lastName;
         $this->ageMinimum = $ageMinimum;
         $this->ageMaximum = $ageMaximum;
-        $this->includeCP = $includeCP;
         $this->registeredFrom = $registeredFrom;
         $this->registeredTo = $registeredTo;
     }
@@ -163,7 +154,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->getQueryGender(),
             $message->getFilter()->getQueryAgeMinimum(),
             $message->getFilter()->getQueryAgeMaximum(),
-            $message->getFilter()->includeCitizenProject(),
             $message->getFilter()->getQueryInterests(),
             0, // offset
             $message->getFilter()->getQueryRegisteredFrom(),
@@ -264,11 +254,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function setAgeMaximum(?int $ageMaximum): void
     {
         $this->ageMaximum = $ageMaximum;
-    }
-
-    public function includeCitizenProject(): bool
-    {
-        return $this->includeCP;
     }
 
     public function getRegisteredFrom(): ?\DateTimeInterface

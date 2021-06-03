@@ -3,7 +3,6 @@
 namespace App\RepublicanSilence;
 
 use App\Exception\InvalidAdherentTypeException;
-use App\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
 use App\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
 use App\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
 use App\RepublicanSilence\TagExtractor\MunicipalChefReferentTagExtractor;
@@ -21,9 +20,6 @@ abstract class ReferentTagExtractorFactory
 
             case ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
                 return new CommitteeReferentTagExtractor();
-
-            case ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR:
-                return new CitizenProjectReferentTagExtractor();
 
             case ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY:
                 return new DistrictReferentTagExtractor();

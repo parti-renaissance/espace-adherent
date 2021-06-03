@@ -4,7 +4,6 @@ namespace App\AdherentMessage;
 
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
-use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
@@ -22,7 +21,6 @@ class AdherentMessageTypeEnum extends Enum
     public const DEPUTY = 'deputy';
     public const REFERENT = 'referent';
     public const COMMITTEE = 'committee';
-    public const CITIZEN_PROJECT = 'citizen_project';
     public const MUNICIPAL_CHIEF = 'municipal_chief';
     public const SENATOR = 'senator';
     public const REFERENT_ELECTED_REPRESENTATIVE = 'referent_elected_representative';
@@ -37,7 +35,6 @@ class AdherentMessageTypeEnum extends Enum
         self::DEPUTY => DeputyAdherentMessage::class,
         self::REFERENT => ReferentAdherentMessage::class,
         self::COMMITTEE => CommitteeAdherentMessage::class,
-        self::CITIZEN_PROJECT => CitizenProjectAdherentMessage::class,
         self::MUNICIPAL_CHIEF => MunicipalChiefAdherentMessage::class,
         self::SENATOR => SenatorAdherentMessage::class,
         self::REFERENT_ELECTED_REPRESENTATIVE => ReferentElectedRepresentativeMessage::class,
@@ -53,8 +50,6 @@ class AdherentMessageTypeEnum extends Enum
         DeputyAdherentMessage::class => ['ROLE_DEPUTY', 'ROLE_DELEGATED_DEPUTY'],
 
         CommitteeAdherentMessage::class => 'ROLE_HOST',
-
-        CitizenProjectAdherentMessage::class => 'ADMINISTRATE_CITIZEN_PROJECT',
 
         MunicipalChiefAdherentMessage::class => 'ROLE_MUNICIPAL_CHIEF',
 

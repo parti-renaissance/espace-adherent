@@ -12,7 +12,6 @@ class FilterRoleType extends AbstractType
         'CommitteeHosts',
         'CommitteeProvisionalSupervisors',
         'CommitteeSupervisors',
-        'CitizenProjectHosts',
     ];
 
     public function configureOptions(OptionsResolver $resolver)

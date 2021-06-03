@@ -3,9 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Report\Report;
 use PHPUnit\Framework\TestCase;
@@ -15,8 +13,6 @@ class ReportTest extends TestCase
 {
     public function provideSubjectClass(): iterable
     {
-        yield [CitizenAction::class];
-        yield [CitizenProject::class];
         yield [Committee::class];
         yield [CommitteeEvent::class];
     }

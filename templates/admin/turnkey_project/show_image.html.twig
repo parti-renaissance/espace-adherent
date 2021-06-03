@@ -1,7 +1,0 @@
-{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
-
-{% block field %}
-    {% if object.imageName is defined and object.imageName is not null %}
-        <img src="{{ asset(object.getAssetImagePath) }}" style="max-width: 400px;" />
-    {% endif %}
-{% endblock %}

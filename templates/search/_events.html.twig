@@ -22,11 +22,7 @@
                         <div class="tag tag--orange">Législatives</div>
                     {% endif %}
 
-                    {% if event.type and event.isCitizenAction %}
-                        <div class="tag tag--orange">Action citoyenne</div>
-                    {% else %}
-                        <div class="tag">{{ event.category }}</div>
-                    {% endif %}
+                    <div class="tag">{{ event.category }}</div>
                 </div>
                 <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
                     <a class="link--no-decor" href="{{ event_url }}">{{ event.name }}</a>

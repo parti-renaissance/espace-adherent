@@ -52,7 +52,6 @@ class SearchControllerTest extends WebTestCase
         yield 'No criteria' => [[]];
         yield 'Search committees' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_COMMITTEES]];
         yield 'Search events' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_EVENTS]];
-        yield 'Search citizen projects' => [[SearchParametersFilter::PARAMETER_TYPE => SearchParametersFilter::TYPE_CITIZEN_PROJECTS]];
     }
 
     public function testListAllEvents()
@@ -77,9 +76,7 @@ class SearchControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $this->assertSame(7, $crawler->filter('div.search__results__row')->count());
-        $this->assertSame(2, $crawler->filter('.search__results__row .search__results__meta span:contains("Jacques Picard")')->count());
-        $this->assertSame(1, $crawler->filter('.search__results__row .search__results__meta span:contains("Referent75and77 Referent75and77")')->count());
+        $this->assertSame(5, $crawler->filter('div.search__results__row')->count());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
 
@@ -90,18 +87,6 @@ class SearchControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/evenements/categorie/inexistante');
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
-    }
-
-    public function testListReferentEvents()
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-
-        $this->assertSame(7, $crawler->filter('div.search__results__row')->count());
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements?re=true');
-
-        $this->assertSame(1, $crawler->filter('div.search__results__row')->count());
-        $this->assertSame(1, $crawler->filter('.search__results__row .search__results__meta span:contains("Referent75and77 Referent75and77")')->count());
     }
 
     public function testListAllCommittee()

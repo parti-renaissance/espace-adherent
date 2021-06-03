@@ -45,17 +45,11 @@ class ReportAdmin extends AbstractAdmin
         $this->reportRepository = $reportRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['list', 'show']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -219,9 +213,6 @@ class ReportAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -269,9 +260,6 @@ class ReportAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper

@@ -70,7 +70,6 @@ class DelegatedAccess
     public const ACCESS_JECOUTE = 'jecoute';
     public const ACCESS_JECOUTE_REGION = 'jecoute_region';
     public const ACCESS_JECOUTE_NEWS = 'jecoute_news';
-    public const ACCESS_CITIZEN_PROJECTS = 'citizen_projects';
     public const ACCESS_ELECTED_REPRESENTATIVES = 'elected_representatives';
     public const ACCESS_FILES = 'files';
     public const ACCESS_INSTITUTIONAL_EVENTS = 'institutional_events';

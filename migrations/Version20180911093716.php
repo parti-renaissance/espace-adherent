@@ -20,7 +20,7 @@ final class Version20180911093716 extends AbstractMigration
             'UPDATE adherents AS a
             INNER JOIN coordinator_managed_areas AS c ON c.adherent_id = a.id AND c.sector = :sector
             SET a.coordinator_citizen_project_area_id = c.id',
-            ['sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR]
+            ['sector' => 'citizen_project']
         );
 
         $this->addSql(

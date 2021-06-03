@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\AdherentProfile;
 
 use App\Donation\DonationManager;
-use App\Repository\CitizenProjectMembershipRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\DonationRepository;
 use App\Repository\EventRegistrationRepository;
@@ -24,7 +23,6 @@ class ActivityController extends AbstractController
         Request $request,
         UserInterface $user,
         CommitteeMembershipRepository $membershipRepository,
-        CitizenProjectMembershipRepository $citizenProjectMembershipRepository,
         DonationRepository $donationRepository,
         DonationManager $donationManager,
         EventRegistrationRepository $eventRegistrationRepository
@@ -34,8 +32,6 @@ class ActivityController extends AbstractController
 
         return $this->render('adherent_profile/activity.html.twig', [
             'committee_memberships' => $membershipRepository->findActivityMemberships($user, 'committees' === $type ? $page : 1, self::ITEMS_PER_PAGE),
-            'citizen_projects_created' => $citizenProjectMembershipRepository->findActivityCitizenProjectMemberships($user, 'citizen_projects_created' === $type ? $page : 1, self::ITEMS_PER_PAGE),
-            'citizen_projects_joined' => $citizenProjectMembershipRepository->findActivityCitizenProjectMembershipsJoined($user, 'citizen_projects_joined' === $type ? $page : 1, self::ITEMS_PER_PAGE),
             'donations_history' => $donationManager->getHistory($user),
             'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($user->getEmailAddress()),
             'last_subscription_ended' => $donationRepository->findLastSubscriptionEndedDonationByEmail($user->getEmailAddress()),

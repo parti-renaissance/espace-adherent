@@ -36,8 +36,6 @@ class UnregisterAdherentsCommand extends Command
 
     private $hosts = [];
 
-    private $citizenProjectAdministrators = [];
-
     private $storage;
 
     private $dispatcher;
@@ -96,13 +94,6 @@ class UnregisterAdherentsCommand extends Command
                 $output->writeln($email);
             }
         }
-
-        if ($this->citizenProjectAdministrators) {
-            $output->writeln('The adherents with following email address are administrators of citizen projects. They are not unregistered :');
-            foreach ($this->citizenProjectAdministrators as $email) {
-                $output->writeln($email);
-            }
-        }
     }
 
     private function parseCSV(string $filename): array
@@ -132,12 +123,6 @@ class UnregisterAdherentsCommand extends Command
 
                 if ($adherent->isHost() || $adherent->isSupervisor()) {
                     $this->hosts[] = $email;
-
-                    continue;
-                }
-
-                if ($adherent->isCitizenProjectAdministrator()) {
-                    $this->citizenProjectAdministrators[] = $email;
 
                     continue;
                 }

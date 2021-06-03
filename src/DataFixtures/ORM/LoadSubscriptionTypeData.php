@@ -59,11 +59,6 @@ class LoadSubscriptionTypeData extends Fixture
                 'externalId' => null,
             ],
             [
-                'label' => 'Recevoir les e-mails de mon porteur de projet',
-                'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL,
-                'externalId' => null,
-            ],
-            [
                 'label' => 'Recevoir les e-mails de mon/ma sénateur/trice',
                 'code' => SubscriptionTypeEnum::SENATOR_EMAIL,
                 'externalId' => null,

@@ -32,8 +32,6 @@ class ManagedUserFactory
             $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at']),
             $data['gender'] ?? null,
             $data['supervisor_tags'] ?? [],
-            $data['citizenProjects'] ?? null,
-            $data['citizenProjectsOrganizer'] ?? null,
             $data['uuid'] ?? null,
             $data['vote_committee_id'] ?? null,
             isset($data['certified_at']) ? new \DateTime($data['certified_at']) : null

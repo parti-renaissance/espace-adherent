@@ -2,12 +2,8 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\DataFixtures\ORM\LoadCitizenActionData;
-use App\DataFixtures\ORM\LoadCitizenProjectData;
 use App\DataFixtures\ORM\LoadCommitteeData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
-use App\Entity\Report\CitizenActionReport;
-use App\Entity\Report\CitizenProjectReport;
 use App\Entity\Report\CommitteeReport;
 use App\Entity\Report\CommunityEventReport;
 use App\Report\ReportType;
@@ -41,16 +37,6 @@ class ReportControllerTest extends WebTestCase
 
     public function provideReportableSubject(): iterable
     {
-        yield 'Citizen action' => [
-            CitizenActionReport::class,
-            sprintf('/action-citoyenne/%s-projet-citoyen-de-zurich', date('Y-m-d', strtotime('+3 days'))),
-            LoadCitizenActionData::CITIZEN_ACTION_1_UUID,
-        ];
-        yield 'Citizen project' => [
-            CitizenProjectReport::class,
-            '/projets-citoyens/75008-le-projet-citoyen-a-paris-8',
-            LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID,
-        ];
         yield 'Committee' => [
             CommitteeReport::class,
             '/comites/en-marche-paris-8',
@@ -91,38 +77,6 @@ class ReportControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo($subjectUrl, $this->client);
         $this->assertSame($initialReportCount + 1, \count($reportRepository->findAll()));
-    }
-
-    public function testAdherentIsRedirectedToWebRootIfRedirectUrlIsNotAValidInternalPath(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/report/projets-citoyens/aa364092-3999-4102-930c-f711ef971195?redirectUrl=http%3A%2F%2Fje-te-hack.com');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Envoyer mon signalement')->form([
-            'report_command' => [
-                'reasons' => [0 => 'intellectual_property', 1 => 'illicit_content'],
-            ],
-        ]));
-        $this->assertClientIsRedirectedTo('/', $this->client);
-    }
-
-    public function testAdherentIsRedirectedWebRootIfNoRedirectUrlIsProvided(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/report/projets-citoyens/aa364092-3999-4102-930c-f711ef971195');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Envoyer mon signalement')->form([
-            'report_command' => [
-                'reasons' => [0 => 'intellectual_property'],
-            ],
-        ]));
-        $this->assertClientIsRedirectedTo('/', $this->client);
     }
 
     private function assertReportUri(Crawler $crawler, $reportClass, $subjectUuid, $subjectUrl): void
