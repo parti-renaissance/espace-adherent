@@ -28,10 +28,14 @@ class SubscribeAsAnonymousControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', LoadCoalitionEventData::EVENT_1_UUID), [], [], [], json_encode([
             'first_name' => 'Joe',
             'last_name' => 'Hey',
-            'email_address' => 'j.hey@en-marche-dev.fr',
+            'email_address' => $email = 'j.hey@en-marche-dev.fr',
         ]));
 
         $this->isSuccessful($this->client->getResponse());
+
+        $registration = $this->getEventRegistrationRepository()->findGuestRegistration(LoadCoalitionEventData::EVENT_1_UUID, $email);
+        $this->assertSame('Joe', $registration->getFirstName());
+        $this->assertSame('Hey', $registration->getLastName());
     }
 
     protected function setUp(): void
