@@ -11,7 +11,7 @@ final class CommitteeNewFollowerMessage extends Message
     public static function create(Committee $committee, array $hosts, Adherent $newFollower, string $hostUrl): self
     {
         if (!$hosts) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one Adherent recipient is required.');
         }
 
         $host = array_shift($hosts);

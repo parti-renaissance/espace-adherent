@@ -16,7 +16,7 @@ final class CommitteeMessageNotificationMessage extends Message
     public static function create(array $recipients, CommitteeFeedItem $feedItem, string $subject): self
     {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one Adherent recipient is required.');
         }
 
         $recipient = array_shift($recipients);

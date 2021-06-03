@@ -3,6 +3,9 @@
 namespace App\Controller\Api\Event;
 
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,7 +45,10 @@ class SubscribeAsAnonymousController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->handler->handle($command, false);
+        $this->handler->handle(
+            $command,
+            $event instanceof CommitteeEvent || $event instanceof CoalitionEvent || $event instanceof CauseEvent
+        );
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

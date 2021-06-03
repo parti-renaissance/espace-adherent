@@ -2,6 +2,8 @@
 
 namespace App\Event;
 
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\EventRegistration;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -31,5 +33,12 @@ class EventRegistrationEvent extends Event
     public function getSendMail(): bool
     {
         return $this->sendMail;
+    }
+
+    public function isForCoalitionsEvent(): bool
+    {
+        $event = $this->registration->getEvent();
+
+        return $event instanceof CoalitionEvent || $event instanceof CauseEvent;
     }
 }

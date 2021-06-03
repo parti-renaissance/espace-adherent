@@ -394,31 +394,68 @@ Feature:
       | items[0].organizer.first_name | Referent75and77                       |
       | items[0].organizer.last_name  | Referent75and77                       |
 
-  Scenario: As a logged-in user i can not delete an event of another adherent
+  Scenario: As a logged-in user I can not delete an event of another adherent
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
     Then the response status code should be 403
 
-  Scenario: As a logged-in user i can delete one of my events
+  Scenario: As a logged-in user I can delete one of my events
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
     Then the response status code should be 204
 
-  Scenario: As a logged-in user i can not cancel an event of another adherent
+  Scenario: As a logged-in user I can not cancel an event of another adherent
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "PUT" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8/cancel"
     Then the response status code should be 403
 
-  Scenario: As a logged-in user i can cancel my event
+  Scenario: As a logged-in user I can cancel my event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "PUT" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8/cancel"
+    When I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8/cancel"
     Then the response status code should be 200
+    And I should have 1 email
+    And I should have 1 email "CoalitionsEventCancellationMessage" for "jacques.picard@en-marche.fr" with payload:
+    """
+    {
+      "template_name": "coalitions-event-cancellation",
+      "template_content": [],
+      "message": {
+        "subject": "✊ Événement annulé",
+        "from_email": "contact@en-marche.fr",
+        "global_merge_vars": [
+          {
+            "name": "event_name",
+            "content": "Événement culturel 1 de la cause culturelle 1"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "jacques.picard@en-marche.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jacques"
+              }
+            ]
+          }
+        ],
+        "from_name": "La République En Marche !",
+        "to": [
+          {
+            "email": "jacques.picard@en-marche.fr",
+            "type": "to",
+            "name": "Jacques"
+          }
+        ]
+      }
+    }
+    """
 
-  Scenario: As logged-in user i can not cancel an already cancelled event
+  Scenario: As logged-in user I can not cancel an already cancelled event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "PUT" request to "/api/v3/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e/cancel"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON nodes should match:
-      | title  | An error occurred |
+      | title   | An error occurred               |
       | detail  | this event is already cancelled |

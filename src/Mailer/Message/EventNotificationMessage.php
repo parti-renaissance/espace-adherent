@@ -23,7 +23,7 @@ final class EventNotificationMessage extends Message
         \Closure $recipientVarsGenerator
     ): self {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipients is required.');
+            throw new \InvalidArgumentException('At least one Adherent recipient is required.');
         }
 
         $recipient = array_shift($recipients);

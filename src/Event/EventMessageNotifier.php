@@ -2,14 +2,21 @@
 
 namespace App\Event;
 
+use App\Coalition\CoalitionUrlGenerator;
 use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Events;
 use App\Mailer\MailerService;
+use App\Mailer\Message\Coalition\CauseEventCreationMessage;
+use App\Mailer\Message\Coalition\CoalitionsEventCancellationMessage;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventNotificationMessage;
+use App\Mailer\Message\Message;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,21 +27,38 @@ class EventMessageNotifier implements EventSubscriberInterface
     private $committeeManager;
     private $registrationRepository;
     private $urlGenerator;
+    private $coalitionUrlGenerator;
 
     public function __construct(
         MailerService $transactionalMailer,
         CommitteeManager $committeeManager,
         EventRegistrationRepository $registrationRepository,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        CoalitionUrlGenerator $coalitionUrlGenerator
     ) {
         $this->mailer = $transactionalMailer;
         $this->committeeManager = $committeeManager;
         $this->registrationRepository = $registrationRepository;
         $this->urlGenerator = $urlGenerator;
+        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
     }
 
     public function onEventCreated(EventEvent $event): void
     {
+        // cause event
+        $eventEvent = $event->getEvent();
+        if ($eventEvent instanceof CauseEvent) {
+            $chunks = array_chunk(
+                $eventEvent->getCause()->getFollowers(),
+                MailerService::PAYLOAD_MAXSIZE
+            );
+
+            foreach ($chunks as $chunk) {
+                $this->mailer->sendMessage($mail = $this->createCauseMessage($chunk, $eventEvent));
+            }
+        }
+
+        // committee event
         if (!$event instanceof CommitteeEventEvent || !$committee = $event->getCommittee()) {
             return;
         }
@@ -51,7 +75,7 @@ class EventMessageNotifier implements EventSubscriberInterface
 
     public function onEventCancelled(EventEvent $event): void
     {
-        if (!$event instanceof CommitteeEventEvent || !$event->getCommittee()) {
+        if (!$event->isCoalitionsEvent() && (!$event instanceof CommitteeEventEvent || !$event->getCommittee())) {
             return;
         }
 
@@ -91,20 +115,31 @@ class EventMessageNotifier implements EventSubscriberInterface
         );
     }
 
-    private function createCancelMessage(
-        array $registered,
-        CommitteeEvent $event,
-        Adherent $host
-    ): EventCancellationMessage {
-        return EventCancellationMessage::create(
-            $registered,
-            $host,
+    private function createCauseMessage(array $followers, CauseEvent $event): CauseEventCreationMessage
+    {
+        return CauseEventCreationMessage::create(
+            $followers,
             $event,
-            $this->generateUrl('app_search_events'),
-            function (EventRegistration $registration) {
-                return EventCancellationMessage::getRecipientVars($registration->getFirstName());
-            }
+            $this->coalitionUrlGenerator->generateCauseEventLink($event),
+            $this->coalitionUrlGenerator->generateCauseLink($event->getCause())
         );
+    }
+
+    private function createCancelMessage(array $registered, BaseEvent $event, Adherent $host): Message
+    {
+        if ($event instanceof CoalitionEvent || $event instanceof CauseEvent) {
+            return CoalitionsEventCancellationMessage::create($registered, $event);
+        } else {
+            return EventCancellationMessage::create(
+                $registered,
+                $host,
+                $event,
+                $this->generateUrl('app_search_events'),
+                function (EventRegistration $registration) {
+                    return EventCancellationMessage::getRecipientVars($registration->getFirstName());
+                }
+            );
+        }
     }
 
     private function generateUrl(string $route, array $params = []): string

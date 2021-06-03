@@ -56,12 +56,13 @@ class AdherentControllerTest extends WebTestCase
 
         // first page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(4, $crawler->filter('#upcoming-events article')->count());
+        $this->assertSame(5, $crawler->filter('#upcoming-events article')->count());
         $titles = $crawler->filter('#upcoming-events h2');
         $this->assertSame('Meeting de New York City', trim($titles->first()->text()));
         $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(1)->text()));
-        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(2)->text()));
-        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->eq(3)->text()));
+        $this->assertSame('Événement culturel 1', trim($titles->eq(2)->text()));
+        $this->assertSame('Événement culturel 1 de la cause culturelle 1', trim($titles->eq(3)->text()));
+        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(4)->text()));
 
         $this->assertSame(5, $crawler->filter('#past-events article')->count());
         $titles = $crawler->filter('#past-events h2');

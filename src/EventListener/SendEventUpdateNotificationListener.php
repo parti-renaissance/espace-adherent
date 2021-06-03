@@ -2,12 +2,16 @@
 
 namespace App\EventListener;
 
+use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\PostAddress;
 use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Mailer\MailerService;
+use App\Mailer\Message\Coalition\CoalitionsEventUpdateMessage;
 use App\Mailer\Message\EventUpdateMessage;
 use App\Repository\EventRegistrationRepository;
 use DateTimeInterface;
@@ -26,15 +30,18 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
     private $registrationRepository;
     private $mailer;
     private $urlGenerator;
+    private $coalitionUrlGenerator;
 
     public function __construct(
         EventRegistrationRepository $registrationRepository,
         MailerService $transactionalMailer,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        CoalitionUrlGenerator $coalitionUrlGenerator
     ) {
         $this->registrationRepository = $registrationRepository;
         $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
+        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -47,14 +54,14 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     public function onEventPreUpdate(EventEvent $event): void
     {
-        if ($event instanceof CommitteeEventEvent) {
+        if ($event instanceof CommitteeEventEvent || $event->isCoalitionsEvent()) {
             $this->doPreUpdate($event->getEvent());
         }
     }
 
     public function onEventPostUpdate(EventEvent $event): void
     {
-        if ($event instanceof CommitteeEventEvent) {
+        if ($event instanceof CommitteeEventEvent || $event->isCoalitionsEvent()) {
             $this->doPostUpdate($event->getEvent());
         }
     }
@@ -85,10 +92,19 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
             if (\count($subscriptions) > 0) {
                 $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
+                $isCoalitionsEvent = $event instanceof CoalitionEvent || $event instanceof CauseEvent;
 
                 foreach ($chunks as $recipient) {
                     $this->mailer->sendMessage(
-                        EventUpdateMessage::create(
+                        $isCoalitionsEvent
+                            ? CoalitionsEventUpdateMessage::create(
+                            $recipient,
+                            $event,
+                            $event instanceof CoalitionEvent
+                                ? $this->coalitionUrlGenerator->generateCoalitionEventLink($event)
+                                : $this->coalitionUrlGenerator->generateCauseEventLink($event),
+                        )
+                        : EventUpdateMessage::create(
                             $recipient,
                             $event->getOrganizer(),
                             $event,
