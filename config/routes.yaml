@@ -160,11 +160,6 @@ map_events:
     methods: GET
     defaults: { _controller: 'App\Controller\EnMarche\MapController:eventsAction' }
 
-react_citizen_projects:
-    host:     "%app_host%"
-    resource: "App\\React\\ReactAppRegistry:loadRoutes"
-    type:     "service"
-
 app_enmarche:
     host:     "%app_host%"
     resource: "../src/Controller/EnMarche"

@@ -47,8 +47,6 @@ jobs:
                 key: composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
             - restore_cache:
                 key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
-            - restore_cache:
-                key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
             - *generate_docker_hashes
             - *authenticate_on_registry
@@ -61,7 +59,7 @@ jobs:
                 make build
 
                 make up
-                make -j2 node_modules assets-prod assets-apps var/public.key
+                make -j2 node_modules assets-prod var/public.key
                 make vendor cc
 
                 gcloud docker -- push $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5
@@ -75,14 +73,6 @@ jobs:
                   paths:
                       - ./node_modules
                   key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
-            - save_cache:
-                  paths:
-                      - ./public/apps/projets-citoyens/node_modules
-                  key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
-
-            - run: |
-                    set -x
-                    rm -rf ./public/apps/projets-citoyens/node_modules
 
             - persist_to_workspace:
                   root: ./

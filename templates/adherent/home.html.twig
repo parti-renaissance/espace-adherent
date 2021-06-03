@@ -150,42 +150,38 @@
             <section class="home__adherent__citizen__projects">
                 <div class="home__flex">
                     {% for citizen_project in citizen_projects %}
-                    <div class="search__citizen_project__box">
-                        {% if citizen_project.imageName %}
-                             <div class="search__citizen_project__image">
-                                <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
-                            </div>
-                        {% endif %}
-                        <div class="search__citizen_project__meta">
-                            <h3 class="text--medium-small">
-                                {{ citizen_project.name }}
-                            </h3>
-                            <div class="text--gray b__nudge--top-5">{{ citizen_project.subtitle }}</div>
-                            <div class="text--small text--gray b__nudge--top-10">
-                                Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
-                                {{ citizen_project.cityName }}
-                            </div>
+                        <div class="search__citizen_project__box">
+                            {% if citizen_project.imageName %}
+                                 <div class="search__citizen_project__image">
+                                    <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
+                                </div>
+                            {% endif %}
+                            <div class="search__citizen_project__meta">
+                                <h3 class="text--medium-small">
+                                    {{ citizen_project.name }}
+                                </h3>
+                                <div class="text--gray b__nudge--top-5">{{ citizen_project.subtitle }}</div>
+                                <div class="text--small text--gray b__nudge--top-10">
+                                    Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
+                                    {{ citizen_project.cityName }}
+                                </div>
 
-                            <div class="text--gray text--small b__nudge--top-50">
-                                {% if citizen_project.skills|length > 0 %}
-                                Aidez-nous en :
-                                <ul class="search__citizen_project__skills">
-                                    {% for skill in citizen_project.skills %}
-                                        <li>{{ skill }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
+                                <div class="text--gray text--small b__nudge--top-50">
+                                    {% if citizen_project.skills|length > 0 %}
+                                    Aidez-nous en :
+                                    <ul class="search__citizen_project__skills">
+                                        {% for skill in citizen_project.skills %}
+                                            <li>{{ skill }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
                             </div>
+                            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
+                            class="search__citizen_project__box__link"></a>
                         </div>
-                        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
-                        class="search__citizen_project__box__link"></a>
-                    </div>
                     {% endfor %}
                 </div>
-                <div class="text--center">
-                    <a href="{{ path('react_app_citizen_projects_home') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les projets</a>
-                </div>
-
             </section>
 
             <div class="separator"></div>
