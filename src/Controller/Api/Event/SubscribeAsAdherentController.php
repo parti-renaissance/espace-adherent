@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Event;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EventSubscribeController extends AbstractController
+class SubscribeAsAdherentController extends AbstractController
 {
     private $entityManager;
     private $eventRegistrationFactory;

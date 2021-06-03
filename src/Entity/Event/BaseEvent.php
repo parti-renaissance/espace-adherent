@@ -109,7 +109,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events/{uuid}/subscribe",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\EventSubscribeController",
+ *             "controller": "App\Controller\Api\Event\SubscribeAsAdherentController",
+ *             "requirements": {"uuid": "%pattern_uuid%"}
+ *         },
+ *         "subscribe_anonymous": {
+ *             "method": "POST",
+ *             "path": "/events/{uuid}/subscribe",
+ *             "access_control": "is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Event\SubscribeAsAnonymousController",
  *             "requirements": {"uuid": "%pattern_uuid%"}
  *         },
  *         "update_image": {

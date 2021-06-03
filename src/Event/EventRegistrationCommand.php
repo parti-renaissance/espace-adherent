@@ -8,6 +8,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\EventRegistration;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,18 +27,24 @@ class EventRegistrationCommand
     private $adherent;
 
     /**
+     * @Groups({"event_registration_write"})
+     *
      * @Assert\NotBlank
      * @Assert\Length(min=2, max=50)
      */
     private $firstName;
 
     /**
+     * @Groups({"event_registration_write"})
+     *
      * @Assert\NotBlank
      * @Assert\Length(min=2, max=50)
      */
     private $lastName;
 
     /**
+     * @Groups({"event_registration_write"})
+     *
      * @Assert\NotBlank
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
