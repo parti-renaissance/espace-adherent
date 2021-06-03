@@ -53,7 +53,7 @@ class CoalitionEventControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertArrayHasKey('violations', $response);
-        $this->assertCount(3, $response['violations']);
+        $this->assertCount(4, $response['violations']);
 
         $this->client->request(Request::METHOD_POST, '/api/v3/events', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -68,9 +68,7 @@ class CoalitionEventControllerTest extends WebTestCase
             'capacity' => 10,
             'visio_url' => 'https://en-marche.fr/reunions/123',
             'mode' => BaseEvent::MODE_ONLINE,
-            'coalitions' => [
-                'fc7fd104-71e5-4399-a874-f8fe752f846b',
-            ],
+            'coalition' => 'fc7fd104-71e5-4399-a874-f8fe752f846b',
        ]));
 
         $this->assertResponseStatusCodeSame(201);

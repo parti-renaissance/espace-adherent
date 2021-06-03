@@ -325,8 +325,7 @@ Feature:
     And I send a "POST" request to "/api/v3/events" with body:
     """
     {
-       "type":"coalition",
-       "coalition": "fc7fd104-71e5-4399-a874-f8fe752f846b"
+       "type":"coalition"
     }
     """
     Then the response status code should be 400
@@ -336,8 +335,12 @@ Feature:
     {
       "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "name: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
+      "detail": "coalition: Cette valeur ne doit pas être vide.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
       "violations": [
+        {
+          "propertyPath": "coalition",
+          "message": "Cette valeur ne doit pas être vide."
+        },
         {
           "propertyPath": "name",
           "message": "Cette valeur ne doit pas être vide."
@@ -509,8 +512,7 @@ Feature:
     And I send a "POST" request to "/api/v3/events" with body:
     """
     {
-       "type":"cause",
-       "cause":"55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+       "type":"cause"
     }
     """
     Then the response status code should be 400
@@ -520,8 +522,12 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "name: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
+      "detail": "cause: Cette valeur ne doit pas être vide.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
       "violations": [
+        {
+          "propertyPath": "cause",
+          "message": "Cette valeur ne doit pas être vide."
+        },
         {
           "propertyPath": "name",
           "message": "Cette valeur ne doit pas être vide."

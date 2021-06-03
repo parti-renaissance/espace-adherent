@@ -7,6 +7,7 @@ use App\Entity\Coalition\Cause;
 use App\Event\EventTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -27,6 +28,8 @@ class CauseEvent extends BaseEvent
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause", inversedBy="events")
+     *
+     * @Assert\NotBlank
      *
      * @SymfonySerializer\Groups({"event_write", "event_read", "event_list_read"})
      */
