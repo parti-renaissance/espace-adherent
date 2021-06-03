@@ -64,7 +64,6 @@
         "league/oauth2-server": "^8.2",
         "lexik/jwt-authentication-bundle": "^2.6",
         "lexik/paybox-bundle": "^2.1",
-        "lullabot/amp": "^2.0",
         "myclabs/php-enum": "^1.5",
         "nelmio/cors-bundle": "^1.5",
         "ninsuo/symfony-collection": "^2.1",

@@ -15,7 +15,6 @@ class ArticleFactory
         $article->setMedia($data['media']);
         $article->setDisplayMedia($data['displayMedia'] ?? false);
         $article->setContent($data['content']);
-        $article->setAmpContent($data['amp_content'] ?? '');
         $article->setPublished($data['published'] ?? true);
         $article->setPublishedAt($data['publishedAt'] ?? new \DateTime());
         $article->setCategory($data['category']);

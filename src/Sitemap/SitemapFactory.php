@@ -75,28 +75,7 @@ class SitemapFactory
                 $sitemapIndex->add($this->generateUrl('app_sitemap', ['type' => self::TYPE_EVENTS, 'page' => $i]), null);
             }
 
-            // AMP
-            $sitemapIndex->add($this->generateUrl('amp_sitemap'), null);
-
             $index->set((string) $sitemapIndex);
-            $index->expiresAfter(self::EXPIRATION_TIME);
-
-            $this->cache->save($index);
-        }
-
-        return $index->get();
-    }
-
-    public function createAmpSitemap(): string
-    {
-        $index = $this->cache->getItem('sitemap_amp');
-
-        if (!$index->isHit()) {
-            $sitemap = new Sitemap();
-            $this->addAmpArticles($sitemap);
-            $this->addAmpOrderArticles($sitemap);
-
-            $index->set((string) $sitemap);
             $index->expiresAfter(self::EXPIRATION_TIME);
 
             $this->cache->save($index);
@@ -318,37 +297,6 @@ class SitemapFactory
                     'articleSlug' => $article->getSlug(),
                     'categorySlug' => $article->getCategory()->getSlug(),
                 ]),
-                $article->getUpdatedAt()->format(\DATE_ATOM),
-                ChangeFrequency::WEEKLY,
-                0.6
-            );
-        }
-    }
-
-    private function addAmpArticles(Sitemap $sitemap): void
-    {
-        $articles = $this->manager->getRepository(Article::class)->findAllPublished();
-
-        foreach ($articles as $article) {
-            $sitemap->add(
-                $this->generateUrl('amp_article_view', [
-                    'articleSlug' => $article->getSlug(),
-                    'categorySlug' => $article->getCategory()->getSlug(),
-                ]),
-                $article->getUpdatedAt()->format(\DATE_ATOM),
-                ChangeFrequency::WEEKLY,
-                0.6
-            );
-        }
-    }
-
-    private function addAmpOrderArticles(Sitemap $sitemap): void
-    {
-        $articles = $this->manager->getRepository(OrderArticle::class)->findAllPublished();
-
-        foreach ($articles as $article) {
-            $sitemap->add(
-                $this->generateUrl('amp_explainer_article_show', ['slug' => $article->getSlug()]),
                 $article->getUpdatedAt()->format(\DATE_ATOM),
                 ChangeFrequency::WEEKLY,
                 0.6

@@ -51,7 +51,6 @@ class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
             'publishedAt' => $faker->dateTimeThisDecade,
             'sections' => [$this->getReference('os001'), $this->getReference('os004')],
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($this->orderArticleFactory->createFromArray([
@@ -65,7 +64,6 @@ class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
             'publishedAt' => $faker->dateTimeThisDecade,
             'sections' => [$this->getReference('os001')],
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->flush();

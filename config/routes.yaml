@@ -171,14 +171,6 @@ app_enmarche:
     type:     "annotation"
 
 #
-# AMP pages
-#
-app_enmarche_amp:
-    host:     "%amp_host%"
-    resource: "../src/Controller/Amp"
-    type:     "annotation"
-
-#
 # Legislatives app
 #
 app_legislatives:

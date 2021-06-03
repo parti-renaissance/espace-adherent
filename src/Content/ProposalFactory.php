@@ -16,7 +16,6 @@ class ProposalFactory
         $proposal->setMedia($data['media']);
         $proposal->setDisplayMedia($data['displayMedia'] ?? false);
         $proposal->setContent($data['content']);
-        $proposal->setAmpContent($data['amp_content'] ?? '');
         $proposal->setPublished($data['published'] ?? true);
         $proposal->setKeywords($data['keywords'] ?? '');
 

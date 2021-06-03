@@ -7,8 +7,6 @@
 
 {% block canonical_url url('app_explainer_article_show', {'slug': article.slug}) %}
 
-{% block amp_link %}<link rel="amphtml" href="{{ url('amp_explainer_article_show', {'slug': article.slug}) }}" />{% endblock %}
-
 {% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
 
 {% block content %}

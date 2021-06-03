@@ -16,7 +16,6 @@ parameters:
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
     app_host:                             "%env(APP_HOST)%"
-    amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     coalitions_host:                      "%env(COALITIONS_HOST)%"
     coalitions_auth_host:                 "%env(COALITIONS_AUTH_HOST)%"

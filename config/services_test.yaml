@@ -4,7 +4,6 @@ imports:
 parameters:
     timeline_max_messages: 10
     app_host: "test.%env(APP_HOST)%"
-    amp_host: "test.%env(AMP_HOST)%"
     legislatives_host: "test.legislatives.%app_host%"
     ssl_encryption_key: "%env(SSL_ENCRYPTION_KEY)%"
     ssl_private_key: "%env(SSL_PRIVATE_KEY)%"

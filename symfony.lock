@@ -494,23 +494,14 @@
     "liip/functional-test-bundle": {
         "version": "4.2.0"
     },
-    "lullabot/amp": {
-        "version": "2.0.0"
-    },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
-    },
-    "marc1706/fast-image-size": {
-        "version": "v1.1.6"
     },
     "markbaker/complex": {
         "version": "1.4.7"
     },
     "markbaker/matrix": {
         "version": "1.2.0"
-    },
-    "masterminds/html5": {
-        "version": "2.7.4"
     },
     "maxmind-db/reader": {
         "version": "v1.3.0"
@@ -700,9 +691,6 @@
     "psr/simple-cache": {
         "version": "1.0.1"
     },
-    "querypath/querypath": {
-        "version": "3.0.5"
-    },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
@@ -726,9 +714,6 @@
     },
     "rize/uri-template": {
         "version": "0.3.2"
-    },
-    "sabberworm/php-css-parser": {
-        "version": "8.3.1"
     },
     "sabre/dav": {
         "version": "3.2.2"

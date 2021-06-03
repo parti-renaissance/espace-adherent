@@ -41,19 +41,11 @@ class ArticleAdminTest extends WebTestCase
     public function testEditSlugToTriggerRedirectionListener(): void
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr', 'superadmin');
-        $ampClient = $this->makeClient(['HTTP_HOST' => $this->hosts['amp']]);
 
         /** @var Article $article */
         $article = $this->manager->getRepository(Article::class)->findOneBySlug('outre-mer');
 
         $this->client->request(
-            Request::METHOD_GET,
-            sprintf('/articles/%s/%s', $article->getCategory()->getSlug(), $article->getSlug())
-        );
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $ampClient->request(
             Request::METHOD_GET,
             sprintf('/articles/%s/%s', $article->getCategory()->getSlug(), $article->getSlug())
         );
@@ -77,13 +69,6 @@ class ArticleAdminTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
         $this->client->request(
-            Request::METHOD_GET,
-            sprintf('/articles/%s/%s', $article->getCategory()->getSlug(), $article->getSlug())
-        );
-
-        $this->assertClientIsRedirectedTo('/articles/actualites/outre-mer-new', $this->client, false, true);
-
-        $ampClient->request(
             Request::METHOD_GET,
             sprintf('/articles/%s/%s', $article->getCategory()->getSlug(), $article->getSlug())
         );

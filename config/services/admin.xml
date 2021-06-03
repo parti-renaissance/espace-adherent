@@ -829,15 +829,6 @@
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
         </service>
 
-        <service id="app.admin.amp_synchronised_extension" class="App\Admin\Extension\AmpSynchronisedAdminExtension">
-            <argument type="service" id="App\Form\EventListener\AmpSynchronisedListener" />
-
-            <tag name="sonata.admin.extension" target="app.admin.article" />
-            <tag name="sonata.admin.extension" target="app.admin.page" />
-            <tag name="sonata.admin.extension" target="app.admin.proposal" />
-            <tag name="sonata.admin.extension" target="app.admin.order_article" />
-        </service>
-
         <service id="app.admin.postal_code_filter_extension" class="App\Admin\Extension\PostalCodeFilterAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.committee" />
             <tag name="sonata.admin.extension" target="app.admin.event" />

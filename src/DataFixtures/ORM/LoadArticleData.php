@@ -62,7 +62,6 @@ class LoadArticleData extends Fixture
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
@@ -75,7 +74,6 @@ class LoadArticleData extends Fixture
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $opinionsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
@@ -88,7 +86,6 @@ class LoadArticleData extends Fixture
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
@@ -101,7 +98,6 @@ class LoadArticleData extends Fixture
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $speechCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
@@ -114,7 +110,6 @@ class LoadArticleData extends Fixture
             'publishedAt' => $faker->dateTimeThisDecade,
             'category' => $noDisplayCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
-            'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
         // A lot of articles for listing
@@ -130,7 +125,6 @@ class LoadArticleData extends Fixture
                     'publishedAt' => $faker->dateTimeThisDecade,
                     'category' => $category,
                     'content' => file_get_contents(__DIR__.'/../content.md'),
-                    'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
                 ]));
             }
         }
