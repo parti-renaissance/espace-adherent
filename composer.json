@@ -70,7 +70,7 @@
         "nyholm/psr7": "^1.4",
         "odolbeau/phone-number-bundle": "^3.3",
         "php-amqplib/rabbitmq-bundle": "^1.12",
-        "phpdocumentor/reflection-docblock": "^3.0 || ^4.0",
+        "phpdocumentor/reflection-docblock": "^5.2.2",
         "phpoffice/phpspreadsheet": "^1.16",
         "pixassociates/sortable-behavior-bundle": "^1.5",
         "predis/predis": "^1.1.0",
