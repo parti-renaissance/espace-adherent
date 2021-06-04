@@ -42,7 +42,7 @@
 
                                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                                     <a class="link--no-decor"
-                                       href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}">
+                                       href="{{ path('app_committee_event_show', { slug: event.slug }) }}">
                                         {{ event.name }}
                                     </a>
                                 </h2>
@@ -73,7 +73,7 @@
                                     </div>
                                 {% endif %}
 
-                                <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
+                                <a href="{{ path('app_committee_event_show', { slug: event.slug }) }}"
                                    class="btn" target="_blank" rel="noopener noreferrer">
                                     En savoir plus
                                 </a>
@@ -89,7 +89,7 @@
                              title="Carte d'accès à l'événement {{ event.name }}"
                              alt="{{ event.inlineFormattedAddress }}" />
 
-                        <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
+                        <a href="{{ path('app_committee_event_show', { slug: event.slug }) }}"
                            class="search__results__row__link link--no-decor" target="_blank" rel="noopener noreferrer">
                             En savoir plus
                         </a>

@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    {% set event_url = url(generate_event_route_name(event, 'event_show'), {slug: event.slug}) %}
+    {% set event_url = url('app_committee_event_show', {slug: event.slug}) %}
     <main class="committee__event__create">
         <section class="committee__event l__wrapper">
             <div class="committee__event__header">
@@ -38,7 +38,7 @@
                             L'événement à été annulé
                         </div>
                     {% else %}
-                        <a class="btn btn--no-border btn--full" href="{{ path(generate_event_route_name(event, 'event_attend'), {slug: event.slug}) }}">Je veux participer</a>
+                        <a class="btn btn--no-border btn--full" href="{{ path('app_committee_event_attend', {slug: event.slug}) }}">Je veux participer</a>
                     {% endif %}
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
@@ -64,7 +64,7 @@
                     </ul>
                 </div>
             </div>
-            <a href="{{ path(generate_event_route_name(event, 'event_show'), {slug: event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
+            <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" class="back-to-list icon--with-text b__nudge--top-15">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à l'événement
             </a>

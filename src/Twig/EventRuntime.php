@@ -39,11 +39,4 @@ class EventRuntime implements RuntimeExtensionInterface
 
         return '';
     }
-
-    public function generateEventRouteName(BaseEvent $event, string $routeSuffix): string
-    {
-        $eventTypeRoute = 'committee';
-
-        return sprintf('app_%s_%s', $eventTypeRoute, $routeSuffix);
-    }
 }
