@@ -22,6 +22,7 @@ trait EntityPersonNameTrait
      *     "cause_read",
      *     "profile_read",
      *     "event_read",
+     *     "event_list_read",
      * })
      *
      * @JMS\Groups({"adherent_change_diff", "public"})
@@ -42,6 +43,7 @@ trait EntityPersonNameTrait
      *     "profile_read",
      *     "cause_read",
      *     "event_read",
+     *     "event_list_read",
      * })
      *
      * @JMS\Groups({"adherent_change_diff", "public"})

@@ -409,4 +409,7 @@ Feature:
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | metadata.total_items  | 16 |
+      | metadata.total_items          | 16                                    |
+      | items[0].organizer.uuid       | 2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf  |
+      | items[0].organizer.first_name | Referent75and77                       |
+      | items[0].organizer.last_name  | Referent75and77                       |
