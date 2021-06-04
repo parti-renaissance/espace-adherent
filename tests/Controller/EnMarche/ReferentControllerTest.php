@@ -350,7 +350,7 @@ class ReferentControllerTest extends WebTestCase
         // exclude
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = [];
-        $form['f[excludeRoles]'] = ['CitizenProjectHosts', 'CommitteeSupervisors', 'CommitteeHosts'];
+        $form['f[excludeRoles]'] = ['CommitteeSupervisors', 'CommitteeHosts'];
 
         $this->client->submit($form);
 
@@ -387,16 +387,6 @@ class ReferentControllerTest extends WebTestCase
         $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->eq(1)->text());
         $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item--adherent')->text());
 
-        // filter adherents in CP
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[isCommitteeMember]'] = '';
-        $form['f[includeRoles]'] = ['CitizenProjectHosts'];
-        $form['f[excludeRoles]'] = [];
-
-        $this->client->submit($form);
-
-        $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
-
         // filter certified adherents
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['f[includeRoles]'] = [];
@@ -404,10 +394,9 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($form);
 
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
         $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('Dufour', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
     }
 
     public function testReferentCanCreateAdherentMessageSuccessfully(): void
@@ -474,7 +463,6 @@ class ReferentControllerTest extends WebTestCase
             ['/espace-referent/elus'],
             ['/espace-referent/evenements'],
             ['/espace-referent/comites'],
-            ['/espace-referent/projets-citoyens'],
             ['/espace-referent/evenements/creer'],
         ];
     }

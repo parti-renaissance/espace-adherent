@@ -39,8 +39,6 @@ class ProcurationReliabilityProcessor
         if (
             $adherent->isHost()
             || $adherent->isSupervisor()
-            || $adherent->isCitizenProjectAdministrator()
-            || $adherent->isCoordinatorCitizenProjectSector()
             || $adherent->isJecouteManager()
             || $adherent->isAssessorManager()
             || $adherent->isProcurationManager()

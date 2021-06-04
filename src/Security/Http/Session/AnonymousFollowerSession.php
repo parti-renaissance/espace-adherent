@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Marks a registration process starting as anonymous for any event or group,
- * including events, committees and citizen related subjects.
+ * including events and committees related subjects.
  *
  * The goal is to be able to redirect after login or account creation back to
  * the subject process (i.e following a committee).

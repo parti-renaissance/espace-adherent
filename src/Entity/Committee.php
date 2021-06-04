@@ -133,13 +133,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $twitterNickname;
 
     /**
-     * @var CitizenProjectCommitteeSupport|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\CitizenProjectCommitteeSupport", mappedBy="committee")
-     */
-    private $citizenProjectSupports;
-
-    /**
      * Is also used to block address modification.
      *
      * @ORM\Column(type="boolean", options={"default": false})
@@ -189,7 +182,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         string $approvedAt = null,
         string $createdAt = 'now',
         int $membersCount = 0,
-        array $citizenProjects = [],
         array $referentTags = []
     ) {
         parent::__construct(
@@ -206,16 +198,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
         $this->description = $description;
         $this->postAddress = $address;
-        $this->citizenProjectSupports = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
         $this->zones = new ArrayCollection();
         $this->committeeElections = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
-
-        foreach ($citizenProjects as $citizenProject) {
-            $this->addSupportOnCitizenProject($citizenProject);
-        }
 
         foreach ($referentTags as $referentTag) {
             $this->addReferentTag($referentTag);
@@ -394,40 +381,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private function createLink(string $url, string $label): Link
     {
         return new Link($url, $label);
-    }
-
-    public function getCitizenProjectSupports(): Collection
-    {
-        return $this->citizenProjectSupports;
-    }
-
-    public function setSupportOnCitizenProjects(iterable $citizenProjects): void
-    {
-        foreach ($citizenProjects as $citizenProject) {
-            $this->addSupportOnCitizenProject($citizenProject);
-        }
-    }
-
-    public function addSupportOnCitizenProject(CitizenProject $citizenProject): void
-    {
-        foreach ($this->citizenProjectSupports as $citizenProjectSupport) {
-            if ($citizenProject === $citizenProjectSupport->getCitizenProject()) {
-                return;
-            }
-        }
-
-        $this->citizenProjectSupports->add(new CitizenProjectCommitteeSupport($citizenProject, $this, CitizenProjectCommitteeSupport::APPROVED, 'now', 'now'));
-    }
-
-    public function removeSupportOnCitizenProject(CitizenProject $citizenProject): void
-    {
-        foreach ($this->citizenProjectSupports as $citizenProjectSupport) {
-            if ($citizenProject === $citizenProjectSupport->getCitizenProject()) {
-                $this->citizenProjectSupports->removeElement($citizenProjectSupport);
-
-                return;
-            }
-        }
     }
 
     public function getReportType(): string

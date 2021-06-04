@@ -135,16 +135,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block _citizen_project_committees_entry_row %}
-    {% spaceless %}
-        <div class="summary-committee">
-            <span class="committee-remove">X</span>
-            <span class="committee-value">&nbsp;{% if value is not empty and value.name is defined %}{{ value['name'] }}{% endif %}</span>
-            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty and value.uuid is defined %}value="{{ value['uuid'] }}" {% endif %}/>
-        </div>
-    {% endspaceless %}
-{% endblock %}
-
 {% block character_count -%}
     {% if with_character_count is defined and with_character_count and attr.maxlength is defined %}
         {% set maxlength = attr.maxlength %}
@@ -169,35 +159,6 @@
     {%- set label_attr = label_attr|merge({style: "cursor: pointer; background-color: " ~ label ~ "; width: 27px; height: 27px;"}) -%}
     {%- set label = " " -%}
     {{- block('form_label') -}}
-{% endblock %}
-
-{% block _citizen_project_media_backgroundImage_label %}
-    {%- set label_attr = label_attr|merge({style: "cursor: pointer;"}) -%}
-    {% if not compound -%}
-        {% set label_attr = label_attr|merge({'for': id}) %}
-    {%- endif -%}
-    {% if required -%}
-        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-    {%- endif -%}
-    {% if label is empty -%}
-        {%- if label_format is not empty -%}
-            {% set label = label_format|replace({
-                '%name%': name,
-                '%id%': id,
-            }) %}
-        {%- else -%}
-            {% set label = name|humanize %}
-        {%- endif -%}
-    {%- endif -%}
-    <label{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
-        {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
-        <div class="l__row l__row--wrap l__row--center l__row--pack-center image-preview" id="image-thumbnail">
-            <span class="text--blue--dark text--center" style="flex-basis: 100%;">
-              Sélectionner une photo sur votre ordinateur
-            </span>
-            <span class="text--center text--summary text--muted" style="flex-basis: 100%;">Minimum 1 200px de largeur</span>
-        </div>
-    </label>
 {% endblock %}
 
 {%- block checkbox_row -%}

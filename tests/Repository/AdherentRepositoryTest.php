@@ -6,7 +6,6 @@ use App\BoardMember\BoardMemberFilter;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\Adherent;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\ReferentTag;
 use App\Repository\AdherentRepository;
@@ -160,46 +159,6 @@ class AdherentRepositoryTest extends WebTestCase
         $this->assertCount(2, $referents);
         $this->assertSame('referent@en-marche-dev.fr', $referents[0]->getEmailAddress());
         $this->assertSame('referent-75-77@en-marche-dev.fr', $referents[1]->getEmailAddress());
-    }
-
-    public function testFindCoordinatorsByCitizenProject()
-    {
-        // Foreign Citizen Project with Coordinator
-        $citizenProject = $this->createMock(CitizenProject::class);
-        $citizenProject->expects(static::any())->method('getCountry')->willReturn('US');
-
-        $coordinators = $this->adherentRepository->findCoordinatorsByCitizenProject($citizenProject);
-
-        $this->assertNotEmpty($coordinators);
-        $this->assertCount(1, $coordinators);
-
-        $coordinator = $coordinators->first();
-
-        $this->assertSame('Coordinatrice CITIZEN PROJECT', $coordinator->getFullName());
-        $this->assertSame('coordinatrice-cp@en-marche-dev.fr', $coordinator->getEmailAddress());
-
-        // Citizen Project with no Coordinator
-        $citizenProject = $this->createMock(CitizenProject::class);
-        $citizenProject->expects(static::any())->method('getCountry')->willReturn('FR');
-        $citizenProject->expects(static::any())->method('getPostalCode')->willReturn('59000');
-
-        $coordinators = $this->adherentRepository->findCoordinatorsByCitizenProject($citizenProject);
-
-        $this->assertEmpty($coordinators);
-
-        // Departemental Citizen Project with Coordinator
-        $citizenProject = $this->createMock(CitizenProject::class);
-        $citizenProject->expects(static::any())->method('getCountry')->willReturn('FR');
-        $citizenProject->expects(static::any())->method('getPostalCode')->willReturn('77500');
-
-        $coordinators = $this->adherentRepository->findCoordinatorsByCitizenProject($citizenProject);
-
-        $this->assertCount(1, $coordinators);
-
-        $coordinator = $coordinators->first();
-
-        $this->assertSame('Coordinatrice CITIZEN PROJECT', $coordinator->getFullName());
-        $this->assertSame('coordinatrice-cp@en-marche-dev.fr', $coordinator->getEmailAddress());
     }
 
     public function testFindCommitteeHostMembersList()

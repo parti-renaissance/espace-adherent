@@ -83,11 +83,6 @@ class ManagedUsersFilter
     private $includeCommitteeHosts;
 
     /**
-     * @var bool
-     */
-    private $includeCitizenProjectHosts;
-
-    /**
      * @var Zone[]
      *
      * @Assert\Expression(
@@ -311,18 +306,8 @@ class ManagedUsersFilter
         $this->includeCommitteeHosts = $value;
     }
 
-    public function includeCitizenProjectHosts(): ?bool
-    {
-        return $this->includeCitizenProjectHosts;
-    }
-
-    public function setIncludeCitizenProjectHosts(?bool $value): void
-    {
-        $this->includeCitizenProjectHosts = $value;
-    }
-
     /**
-     * @return Zones[]
+     * @return Zone[]
      */
     public function getManagedZones(): array
     {
@@ -460,7 +445,6 @@ class ManagedUsersFilter
             'CommitteeSupervisors' => $this->includeCommitteeSupervisors,
             'CommitteeProvisionalSupervisors' => $this->includeCommitteeProvisionalSupervisors,
             'CommitteeHosts' => $this->includeCommitteeHosts,
-            'CitizenProjectHosts' => $this->includeCitizenProjectHosts,
         ];
 
         return array_merge(

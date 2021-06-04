@@ -2,9 +2,6 @@
 
 namespace App\Controller\EnMarche;
 
-use App\CitizenProject\CitizenProjectCreationCommand;
-use App\CitizenProject\CitizenProjectCreationCommandHandler;
-use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
@@ -12,16 +9,13 @@ use App\Committee\CommitteePermissions;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent;
-use App\Entity\TurnkeyProject;
 use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
 use App\Exception\EventRegistrationException;
 use App\Exception\InvalidUuidException;
 use App\Form\AdherentInterestsFormType;
-use App\Form\CitizenProjectCommandType;
 use App\Form\ContactMessageType;
 use App\Form\CreateCommitteeCommandType;
 use App\Geocoder\Exception\GeocodingException;
@@ -34,10 +28,8 @@ use App\Repository\EventRepository;
 use App\Repository\SummaryRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
-use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,7 +58,7 @@ class AdherentController extends AbstractController
         $searchParametersFilter->setMaxResults(3);
         $searchParametersFilter->setRadius(SearchParametersFilter::RADIUS_150);
         $params = [];
-        $searchParams = [SearchParametersFilter::TYPE_EVENTS, SearchParametersFilter::TYPE_COMMITTEES, SearchParametersFilter::TYPE_CITIZEN_PROJECTS];
+        $searchParams = [SearchParametersFilter::TYPE_EVENTS, SearchParametersFilter::TYPE_COMMITTEES];
 
         foreach ($searchParams as $type) {
             try {
@@ -169,49 +161,6 @@ class AdherentController extends AbstractController
     }
 
     /**
-     * This action enables an adherent to create a citizen project.
-     *
-     * @Route("/creer-mon-projet-citoyen/{slug}", defaults={"slug": null}, name="app_adherent_create_citizen_project", methods={"GET", "POST"})
-     * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
-     */
-    public function createCitizenProjectAction(
-        Request $request,
-        CitizenProjectCreationCommandHandler $handler,
-        AnonymousFollowerSession $anonymousFollowerSession,
-        TurnkeyProject $turnkeyProject = null
-    ): Response {
-        if ($this->isGranted('IS_ANONYMOUS') && $authentication = $anonymousFollowerSession->start($request)) {
-            return $authentication;
-        }
-
-        $this->denyAccessUnlessGranted(CitizenProjectPermissions::CREATE);
-
-        if ($turnkeyProject) {
-            $command = CitizenProjectCreationCommand::createFromAdherentAndTurnkeyProject($user = $this->getUser(), $turnkeyProject);
-        } else {
-            $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
-        }
-
-        if ($name = $request->query->get('name', false)) {
-            $command->name = $name;
-        }
-        $form = $this->createForm(CitizenProjectCommandType::class, $command, ['from_turnkey_project' => $turnkeyProject ? true : false]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $handler->handle($command);
-            $this->addFlash('info', 'citizen_project.creation.success');
-
-            return $this->redirectToRoute('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]);
-        }
-
-        return $this->render('adherent/create_citizen_project.html.twig', [
-            'form' => $form->createView(),
-            'adherent' => $user,
-        ]);
-    }
-
-    /**
      * @Route("/mes-comites", name="app_adherent_committees", methods={"GET"})
      */
     public function committeesAction(CommitteeManager $manager, UserInterface $adherent): Response
@@ -255,8 +204,6 @@ class AdherentController extends AbstractController
             if ($fromType && $fromId) {
                 if ('committee' === $fromType) {
                     $from = $entityManager->getRepository(Committee::class)->findOneByUuid($fromId);
-                } elseif ('citizen_project' === $fromType) {
-                    $from = $entityManager->getRepository(CitizenProject::class)->findOneByUuid($fromId);
                 } elseif ('territorial_council' === $fromType || 'political_committee' === $fromType) {
                     $from = true;
                 } else {
@@ -279,12 +226,6 @@ class AdherentController extends AbstractController
 
                 if ($from instanceof Committee) {
                     return $this->redirectToRoute('app_committee_show', [
-                        'slug' => $from->getSlug(),
-                    ]);
-                }
-
-                if ($from instanceof CitizenProject) {
-                    return $this->redirectToRoute('app_citizen_project_show', [
                         'slug' => $from->getSlug(),
                     ]);
                 }

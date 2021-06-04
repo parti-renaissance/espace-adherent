@@ -71,8 +71,6 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return static
      */
     public static function generate(Adherent $adherent, string $lifetime = '+1 day'): AdherentExpirableTokenInterface
@@ -110,9 +108,6 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $adherentUuid);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValue(): SHA1
     {
         if (!$this->value instanceof SHA1) {
@@ -122,17 +117,11 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         return $this->value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAdherentUuid(): UuidInterface
     {
         return $this->adherentUuid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsageDate()
     {
         if ($this->usedAt instanceof \DateTime) {

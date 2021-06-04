@@ -5,11 +5,9 @@ namespace App\DataFixtures\ORM;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
@@ -53,7 +51,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         return [
             LoadCommitteeData::class,
-            LoadCitizenProjectData::class,
         ];
     }
 
@@ -63,7 +60,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
             CommitteeAdherentMessage::class,
             ReferentAdherentMessage::class,
             DeputyAdherentMessage::class,
-            CitizenProjectAdherentMessage::class,
         ];
     }
 
@@ -92,8 +88,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
                         ->getManagedDistrict()
                         ->getReferentTag()
                 );
-            case CitizenProjectAdherentMessage::class:
-                return new CitizenProjectFilter($this->getReference('citizen-project-3'));
         }
 
         return null;

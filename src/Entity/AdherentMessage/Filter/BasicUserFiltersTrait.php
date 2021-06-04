@@ -43,13 +43,6 @@ trait BasicUserFiltersTrait
     private $includeCommitteeHosts;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $includeCitizenProjectHosts;
-
-    /**
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
@@ -104,16 +97,6 @@ trait BasicUserFiltersTrait
     public function setIncludeCommitteeHosts(?bool $value): void
     {
         $this->includeCommitteeHosts = $value;
-    }
-
-    public function includeCitizenProjectHosts(): ?bool
-    {
-        return $this->includeCitizenProjectHosts;
-    }
-
-    public function setIncludeCitizenProjectHosts(?bool $value): void
-    {
-        $this->includeCitizenProjectHosts = $value;
     }
 
     public function getCommittee(): ?Committee

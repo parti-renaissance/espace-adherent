@@ -48,7 +48,6 @@
         {% if has_role_adherent %}
             {% if is_granted('ROLE_SUPERVISOR') or
                 is_granted('ROLE_HOST') or
-                is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or
                 is_granted('ROLE_REFERENT') or
                 is_granted('ROLE_COREFERENT') or
                 is_granted('ROLE_DEPUTY') or
@@ -71,7 +70,6 @@
                     (app.user.isReferent or app.user.isCoReferent) +
                     app.user.isDeputy +
                     app.user.isSenator +
-                    app.user.isCoordinatorCitizenProjectSector +
                     app.user.isCoordinatorCommitteeSector +
                     app.user.isProcurationManager +
                     app.user.isAssessorManager +
@@ -81,8 +79,7 @@
                     app.user.isAssessor +
                     app.user.isMunicipalManager +
                     app.user.isElectionResultsReporter +
-                    app.user.isCoalitionModerator +
-                    is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR')
+                    app.user.isCoalitionModerator
                 %}
                 <div class="em-nav__menu em-nav__menu--mobile">
                     <div class="b__nudge--bottom">
@@ -119,7 +116,6 @@
                         {% endif %}
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
-                        <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'citizen-projects'}) }}">Mes projets citoyens</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'adi'}) }}">Mon atelier des idées</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
                     </ul>

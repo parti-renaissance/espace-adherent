@@ -107,9 +107,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
-            'citizenProjects' => [
-                '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
-            ],
             'certified_at' => '2018-06-02 10:20:45',
         ]);
 
@@ -144,12 +141,6 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'supervisor_tags' => [
                 '77',
-            ],
-            'citizenProjects' => [
-                '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
-            ],
-            'citizenProjectsOrganizer' => [
-                '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
             ],
         ]);
 

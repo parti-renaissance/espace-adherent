@@ -8,14 +8,6 @@
             <bind key="$environment">%kernel.environment%</bind>
         </defaults>
 
-        <!-- CitizenProject -->
-        <service id="App\MediaGenerator\Pdf\CitizenProjectTractGenerator" public="true">
-            <argument type="service" id="knp_snappy.pdf"/>
-        </service>
-        <service id="App\MediaGenerator\Image\CitizenProjectCoverGenerator" public="true">
-            <argument type="service" id="knp_snappy.image"/>
-        </service>
-
         <!-- Assessor -->
         <service id="App\Assessor\AssessorRequestHandler">
             <argument type="service" id="state_machine.assessor_request" />
@@ -76,9 +68,6 @@
         </service>
 
         <!-- Serializer -->
-        <service id="App\Serializer\CitizenProjectSerializerSubscriber">
-            <tag name="jms_serializer.event_subscriber" />
-        </service>
         <service id="App\Serializer\MoocSerializerSubscriber">
             <tag name="jms_serializer.event_subscriber" />
         </service>
@@ -116,16 +105,6 @@
 
         <!-- Event subscriber -->
         <service id="App\Event\EventListener\EventSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-
-        <!-- CitizenProject subscriber -->
-        <service id="App\CitizenProject\EventListener\CitizenProjectSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-
-        <!-- CitizenAction subscriber -->
-        <service id="App\CitizenAction\EventListener\CitizenActionSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
 

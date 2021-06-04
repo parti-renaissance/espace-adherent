@@ -3,7 +3,6 @@
 namespace App\Serializer;
 
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\MunicipalEvent;
 use JMS\Serializer\GraphNavigator;
@@ -11,9 +10,6 @@ use JMS\Serializer\Handler\SubscribingHandlerInterface;
 
 class EventICalHandler implements SubscribingHandlerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribingMethods(): array
     {
         return [
@@ -25,12 +21,6 @@ class EventICalHandler implements SubscribingHandlerInterface
             ],
             [
                 'type' => MunicipalEvent::class,
-                'format' => 'ical',
-                'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
-                'method' => 'serialize',
-            ],
-            [
-                'type' => CitizenAction::class,
                 'format' => 'ical',
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
                 'method' => 'serialize',

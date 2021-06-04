@@ -32,7 +32,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @ORM\Column(length=20)
      *
-     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
+     * @JMS\Groups({"public", "committee_read"})
      */
     protected $status;
 
@@ -40,9 +40,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * The timestamp when an administrator approved this group.
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @JMS\Groups({"citizen_project_read"})
-     * @JMS\SerializedName("approvedAt")
      */
     protected $approvedAt;
 
@@ -70,7 +67,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
+     * @JMS\Groups({"public", "committee_read"})
      * @JMS\SerializedName("membersCount")
      */
     protected $membersCount;
@@ -197,7 +194,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
+     * @JMS\Groups({"public", "committee_read"})
      */
     public function getUuidAsString(): string
     {

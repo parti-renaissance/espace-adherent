@@ -159,7 +159,7 @@ class EventManagerControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
-        $this->assertEquals(2, \count($crawler->filter('tbody > tr')), 'There should be 2 members in the list.');
+        $this->assertCount(3, $crawler->filter('tbody > tr'));
     }
 
     public function testOrganizerCanExportRegistrationsWithWrongUuids()

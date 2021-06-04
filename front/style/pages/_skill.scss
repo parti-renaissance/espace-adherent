@@ -1,0 +1,27 @@
+.skill-remove,
+.committee-remove {
+    font-size: $text--size-xs;
+    position: relative;
+    bottom: 1px;
+    margin-right: 5px;
+}
+
+.summary-skill,
+.summary-committee {
+    background-color: $purple;
+    color: white;
+    display: inline;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: $text--size-smallest;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+    border: 1px solid $purple;
+
+    &:hover {
+        transition: all 0.5s;
+        background-color: white;
+        color: $purple;
+    }
+}

@@ -296,10 +296,6 @@ abstract class ThematicCommunityMembership
             $roles[] = 'Animateur local';
         }
 
-        if ($this->adherent->isCitizenProjectAdministrator()) {
-            $roles[] = 'Porteur de projets citoyens';
-        }
-
         if (!empty($roles)) {
             return implode(' / ', $roles);
         }

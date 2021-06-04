@@ -18,9 +18,6 @@ class JecouteDeviceNormalizer extends DeviceNormalizer
         $this->dataSurveyRepository = $dataSurveyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($object, $format = null, array $context = [])
     {
         $data = parent::normalize($object, $format, $context);

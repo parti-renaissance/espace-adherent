@@ -24,9 +24,6 @@ class RedirectionsSubscriber implements EventSubscriberInterface
         $this->handlers = $handlers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [

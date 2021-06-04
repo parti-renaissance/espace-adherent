@@ -135,24 +135,6 @@ committee.description.max_length: Votre texte de description est trop long. Il d
 adherent_mandate.adherent.empty: L'adhérent du mandat ne doit pas être vide.
 
 #
-# CitizenProject
-#
-citizen_project.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
-citizen_project.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
-
-citizen_project.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
-citizen_project.emoji.max_length: Vous devez coller un emoji.
-
-citizen_project.action.invalid_finish_date: La date de fin de votre action ne peut pas dépasser le {{ limit }}.
-
-#
-# TurnkeyProject
-#
-turnkey_projects.pinned.unique: Le projet clé en main {{ name }} est deja épinglé.
-turnkey_project.files.min_count: Un projet clé en main doit contenir au minimum 1 fichier.
-turnkey_project_file.valid_mimetypes: Seuls les fichiers PDF, Word et Powerpoint sont autorisés.
-
-#
 # Donation
 #
 donation.subscription.not_unique: Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez <a href="{{ profile_url }}">vous rendre sur votre profil</a> pour l’annuler ou <a href="{{ donation_url }}">faire un nouveau don unique</a>.

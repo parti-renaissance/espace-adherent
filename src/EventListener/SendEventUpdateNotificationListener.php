@@ -2,15 +2,12 @@
 
 namespace App\EventListener;
 
-use App\CitizenAction\CitizenActionEvent;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CitizenAction;
 use App\Entity\PostAddress;
 use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\CitizenActionUpdateMessage;
 use App\Mailer\Message\EventUpdateMessage;
 use App\Repository\EventRegistrationRepository;
 use DateTimeInterface;
@@ -45,9 +42,6 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
         return [
             Events::EVENT_PRE_UPDATE => 'onEventPreUpdate',
             Events::EVENT_UPDATED => 'onEventPostUpdate',
-
-            Events::CITIZEN_ACTION_PRE_UPDATE => 'onCitizenActionPreUpdate',
-            Events::CITIZEN_ACTION_UPDATED => 'onCitizenActionPostUpdate',
         ];
     }
 
@@ -58,21 +52,11 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
         }
     }
 
-    public function onCitizenActionPreUpdate(CitizenActionEvent $event): void
-    {
-        $this->doPreUpdate($event->getCitizenAction());
-    }
-
     public function onEventPostUpdate(EventEvent $event): void
     {
         if ($event instanceof CommitteeEventEvent) {
             $this->doPostUpdate($event->getEvent());
         }
-    }
-
-    public function onCitizenActionPostUpdate(CitizenActionEvent $event): void
-    {
-        $this->doPostUpdate($event->getCitizenAction());
     }
 
     private function matchChanges(BaseEvent $event): bool
@@ -102,24 +86,14 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
             if (\count($subscriptions) > 0) {
                 $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
 
-                if ($event instanceof CitizenAction) {
-                    $messageClass = CitizenActionUpdateMessage::class;
-                    $eventRoute = 'app_citizen_action_event_show';
-                    $icalEventRoute = 'app_citizen_action_event_export_ical';
-                } else {
-                    $messageClass = EventUpdateMessage::class;
-                    $eventRoute = 'app_committee_event_show';
-                    $icalEventRoute = 'app_committee_event_export_ical';
-                }
-
                 foreach ($chunks as $recipient) {
                     $this->mailer->sendMessage(
-                        $messageClass::create(
+                        EventUpdateMessage::create(
                             $recipient,
                             $event->getOrganizer(),
                             $event,
-                            $this->urlGenerator->generate($eventRoute, ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
-                            $this->urlGenerator->generate($icalEventRoute, ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+                            $this->urlGenerator->generate('app_committee_event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+                            $this->urlGenerator->generate('app_committee_event_export_ical', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
                         )
                     );
                 }

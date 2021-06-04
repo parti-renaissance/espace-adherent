@@ -5,11 +5,9 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
-use App\Coordinator\CoordinatorManagedAreaUtils;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BoardMember\BoardMember;
-use App\Entity\CitizenProject;
 use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -173,12 +171,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this
             ->createQueryBuilder('a')
             ->addSelect('pma')
-            ->addSelect('ccpa')
             ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('c')
-            ->addSelect('cpm')
-            ->addSelect('cp')
             ->addSelect('bm')
             ->addSelect('ama')
             ->addSelect('jma')
@@ -196,7 +191,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin('a.procurationManagedArea', 'pma')
             ->leftJoin('a.assessorManagedArea', 'ama')
             ->leftJoin('a.jecouteManagedArea', 'jma')
-            ->leftJoin('a.coordinatorCitizenProjectArea', 'ccpa')
             ->leftJoin('a.coordinatorCommitteeArea', 'cca')
             ->leftJoin('a.municipalChiefManagedArea', 'mca')
             ->leftJoin('a.referentTeamMember', 'rtm')
@@ -204,8 +198,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin('ma.tags', 'ref_tags')
             ->leftJoin('a.memberships', 'cm')
             ->leftJoin('cm.committee', 'c')
-            ->leftJoin('a.citizenProjectMemberships', 'cpm')
-            ->leftJoin('cpm.citizenProject', 'cp')
             ->leftJoin('a.boardMember', 'bm')
             ->leftJoin('a.receivedDelegatedAccesses', 'rda')
             ->leftJoin('a.senatorialCandidateManagedArea', 'scma')
@@ -336,21 +328,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
-    public function findCoordinatorsByCitizenProject(CitizenProject $citizenProject): AdherentCollection
-    {
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->innerJoin('a.coordinatorCitizenProjectArea', 'ccpa')
-            ->where('ccpa.codes IS NOT NULL')
-            ->andWhere('FIND_IN_SET(:code, ccpa.codes) > 0')
-            ->andWhere('LENGTH(ccpa.codes) > 0')
-            ->orderBy('LOWER(ccpa.codes)', 'ASC')
-            ->setParameter('code', CoordinatorManagedAreaUtils::getCodeFromCitizenProject($citizenProject))
-        ;
-
-        return new AdherentCollection($qb->getQuery()->getResult());
-    }
-
     /**
      * Finds the list of adherents managed by the given referent.
      *
@@ -402,13 +379,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('a')
             ->addSelect('bm')
             ->addSelect('ap')
-            ->addSelect('ccpa')
             ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('bmr')
             ->innerJoin('a.boardMember', 'bm')
             ->leftJoin('a.procurationManagedArea', 'ap')
-            ->leftJoin('a.coordinatorCitizenProjectArea', 'ccpa')
             ->leftJoin('a.coordinatorCommitteeArea', 'cca')
             ->leftJoin('a.memberships', 'cm')
             ->innerJoin('bm.roles', 'bmr')
@@ -739,10 +714,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->join('adherent.subscriptionTypes', 'subscriptionType')
             ->where('tag = :tag')
             ->andWhere('adherent.status = :status')
-            ->andWhere('subscriptionType.code = :citizen_project_subscription_type')
+            ->andWhere('subscriptionType.code = :subscription_type')
             ->setParameter('tag', $district->getReferentTag())
             ->setParameter('status', Adherent::ENABLED)
-            ->setParameter('citizen_project_subscription_type', SubscriptionTypeEnum::DEPUTY_EMAIL)
+            ->setParameter('subscription_type', SubscriptionTypeEnum::DEPUTY_EMAIL)
         ;
     }
 

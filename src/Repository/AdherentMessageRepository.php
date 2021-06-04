@@ -8,11 +8,8 @@ use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
-use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -94,22 +91,6 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return $this->configurePaginator($queryBuilder, $page);
     }
 
-    /**
-     * @return CitizenProjectAdherentMessage[]|PaginatorInterface
-     */
-    public function findAllCitizenProjectMessage(
-        Adherent $adherent,
-        CitizenProject $citizenProject,
-        string $status = null,
-        int $page = 1
-    ): PaginatorInterface {
-        $queryBuilder = $this->createListQueryBuilder($adherent, AdherentMessageTypeEnum::CITIZEN_PROJECT, $status);
-
-        $this->withCitizenProject($queryBuilder, $citizenProject);
-
-        return $this->configurePaginator($queryBuilder, $page);
-    }
-
     public function countTotalMessage(Adherent $adherent, string $type, bool $currentMonthOnly = false): int
     {
         return (int) $this
@@ -117,22 +98,6 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
-    }
-
-    public function countTotalCitizenProjectMessage(
-        Adherent $adherent,
-        CitizenProject $citizenProject,
-        bool $currentMonthOnly = false
-    ): int {
-        $queryBuilder = $this->createCountQueryBuilder(
-            $adherent,
-            AdherentMessageTypeEnum::CITIZEN_PROJECT,
-            $currentMonthOnly
-        );
-
-        $this->withCitizenProject($queryBuilder, $citizenProject);
-
-        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
     public function countTotalCommitteeMessage(
@@ -180,20 +145,6 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $queryBuilder
             ->andWhere("$alias.status = :status")
             ->setParameter('status', $status)
-        ;
-
-        return $this;
-    }
-
-    private function withCitizenProject(
-        QueryBuilder $queryBuilder,
-        CitizenProject $citizenProject,
-        string $alias = 'message'
-    ): self {
-        $queryBuilder
-            ->innerJoin(CitizenProjectFilter::class, 'filter', Join::WITH, "$alias.filter = filter")
-            ->andWhere('filter.citizenProject = :citizen_project')
-            ->setParameter('citizen_project', $citizenProject)
         ;
 
         return $this;

@@ -43,14 +43,6 @@ class CoordinatorControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    public function testCoordinatorCitizenProjectBackendIsAccessibleForCoordinator()
-    {
-        $this->authenticateAsAdherent($this->client, 'coordinatrice-cp@en-marche-dev.fr');
-
-        $this->client->request(Request::METHOD_GET, '/espace-coordinateur/projet-citoyen/list');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
     public function testPreAcceptCommitteeWithSuccess()
     {
         $this->authenticateAsAdherent($this->client, 'coordinateur@en-marche-dev.fr');
@@ -119,7 +111,6 @@ class CoordinatorControllerTest extends WebTestCase
     {
         return [
             ['/espace-coordinateur/comites/list'],
-            ['/espace-coordinateur/projet-citoyen/list'],
         ];
     }
 

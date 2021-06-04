@@ -4,7 +4,6 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\EntityPostAddressTrait;
 use App\Geocoder\Exception\GeocodingException;
-use App\Repository\CitizenActionCategoryRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\EventCategoryRepository;
 use App\Repository\EventGroupCategoryRepository;
@@ -41,16 +40,12 @@ class SearchController extends AbstractController
         Request $request,
         EventGroupCategoryRepository $eventGroupCategoryRepository,
         EventCategoryRepository $eventCategoryRepository,
-        CitizenActionCategoryRepository $citizenActionCategoryRepository,
         string $slug = null
     ): Response {
         if ($slug) {
             if ($category = $eventCategoryRepository->findOneBySlug($slug)) {
                 $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
                 $request->query->set(SearchParametersFilter::PARAMETER_EVENT_CATEGORY, $category->getId());
-            } elseif ($citizenActionCategoryRepository->findOneBySlug($slug)) {
-                $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_CITIZEN_ACTIONS);
-                $request->query->set(SearchParametersFilter::PARAMETER_EVENT_CATEGORY, SearchParametersFilter::TYPE_CITIZEN_ACTIONS);
             } else {
                 return $this->redirectToRoute('app_search_events');
             }
@@ -102,14 +97,6 @@ class SearchController extends AbstractController
             'results' => $results ?? [],
             'errors' => $errors ?? [],
         ]);
-    }
-
-    /**
-     * @Route("/recherche/projets-citoyens", name="app_search_citizen_projects", methods={"GET"})
-     */
-    public function searchCitizenProjectsAction(): Response
-    {
-        return $this->redirectToRoute('react_app_citizen_projects_search', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 
     /**

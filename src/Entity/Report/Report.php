@@ -13,8 +13,6 @@ use Ramsey\Uuid\Uuid;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "citizen_project": "CitizenProjectReport",
- *     "citizen_action": "CitizenActionReport",
  *     "committee": "CommitteeReport",
  *     "community_event": "CommunityEventReport",
  * })

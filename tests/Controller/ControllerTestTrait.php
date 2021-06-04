@@ -104,17 +104,6 @@ trait ControllerTestTrait
         $this->isSuccessful($this->client->getResponse());
     }
 
-    protected function seeDefaultCitizenProjectImage(): bool
-    {
-        try {
-            $styleText = $this->client->getCrawler()->filter('.citizen-project--bkg')->attr('style');
-
-            return "background-image:url('/assets/images/citizen_projects/default.png')" === $styleText;
-        } catch (\InvalidArgumentException $e) {
-            return false;
-        }
-    }
-
     protected function getFirstPrefixForm(Form $form): ?string
     {
         foreach ($form->all() as $field) {

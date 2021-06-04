@@ -34,9 +34,6 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
         $this->store($this->persistentTokenFactory->createRefreshToken($refreshToken));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function revokeRefreshToken($tokenId)
     {
         if (!$token = $this->findRefreshToken($tokenId)) {
@@ -49,9 +46,6 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
         $this->store($token);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRefreshTokenRevoked($tokenId)
     {
         if (!$token = $this->findRefreshToken($tokenId)) {

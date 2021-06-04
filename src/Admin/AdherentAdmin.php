@@ -12,7 +12,6 @@ use App\Entity\AdherentTag;
 use App\Entity\BaseGroup;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
-use App\Entity\CitizenProjectMembership;
 use App\Entity\Coalition\Cause;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -236,9 +235,6 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('assessorManagedAreaCodesAsString', null, [
                     'label' => 'Responsable assesseurs',
                 ])
-                ->add('coordinatorCitizenProjectArea', null, [
-                    'label' => 'coordinator.label.codes.cp',
-                ])
                 ->add('municipalChiefManagedArea', null, [
                     'label' => 'Candidat Municipales 2020 🇫🇷',
                     'required' => false,
@@ -404,10 +400,6 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('managedArea', ReferentManagedAreaType::class, [
                     'label' => false,
                     'required' => false,
-                ])
-                ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
-                    'label' => 'coordinator.label.codes.cp',
-                    'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
                 ])
                 ->add('lreArea', LreAreaType::class, [
                     'label' => 'La république ensemble',
@@ -762,12 +754,6 @@ HELP
                         $where->add('coordinatorCommitteeArea IS NOT NULL');
                     }
 
-                    // REC
-                    if (\in_array(AdherentRoleEnum::REC, $value['value'], true)) {
-                        $qb->leftJoin(sprintf('%s.coordinatorCitizenProjectArea', $alias), 'coordinatorCitizenProjectArea');
-                        $where->add('coordinatorCitizenProjectArea IS NOT NULL');
-                    }
-
                     // Procuration Manager
                     if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
@@ -822,13 +808,6 @@ HELP
                     // User
                     if (\in_array(AdherentRoleEnum::USER, $value['value'], true)) {
                         $where->add(sprintf('%s.adherent = 0', $alias));
-                    }
-
-                    // Citizen project holder
-                    if (\in_array(AdherentRoleEnum::CITIZEN_PROJECT_HOLDER, $value['value'], true)) {
-                        $qb->leftJoin(sprintf('%s.citizenProjectMemberships', $alias), 'cpms');
-                        $where->add('cpms.privilege = :cp_privilege');
-                        $qb->setParameter('cp_privilege', CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
                     }
 
                     // Municipal chief

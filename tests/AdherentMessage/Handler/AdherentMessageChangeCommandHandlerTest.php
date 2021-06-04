@@ -12,13 +12,11 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
-use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
@@ -28,7 +26,6 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
-use App\Entity\CitizenProject;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
@@ -39,7 +36,6 @@ use App\Entity\ReferentTag;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CoalitionMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
@@ -52,7 +48,6 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuil
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\CitizenProjectConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsNotificationConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
@@ -351,7 +346,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         $message = $this->preparedMessage(SenatorAdherentMessage::class);
         $filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))); // 5 and 6 are included by default
-        $filter->setIncludeCitizenProjectHosts(false); // exclude 2
         $filter->setIncludeCommitteeSupervisors(false); // exclude 3
         $filter->setIncludeCommitteeHosts(true); // include 4
 
@@ -389,7 +383,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestnotcontains',
                                     'field' => 'interests-A',
-                                    'value' => [2, 3],
+                                    'value' => [3],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -414,68 +408,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'content' => 'Content',
                             'first_name' => 'First Name',
                             'full_name' => 'Full Name',
-                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        ],
-                    ],
-                ]]]
-            )
-            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    public function testCitizenProjectMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(CitizenProjectAdherentMessage::class);
-        $message->setFilter($filter = new CitizenProjectFilter());
-        $filter->setCitizenProject($this->createConfiguredMock(CitizenProject::class, [
-            'getName' => 'CP name',
-            'getMailchimpId' => 456,
-        ]));
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->withConsecutive(
-                ['POST', '/3.0/campaigns', ['json' => [
-                    'type' => 'regular',
-                    'settings' => [
-                        'folder_id' => '4',
-                        'template_id' => 4,
-                        'subject_line' => '[Projet citoyen] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
-                    ],
-                    'recipients' => [
-                        'list_id' => 'main_list_id',
-                        'segment_opts' => [
-                            'match' => 'all',
-                            'conditions' => [
-                                [
-                                    'condition_type' => 'StaticSegment',
-                                    'op' => 'static_is',
-                                    'field' => 'static_segment',
-                                    'value' => 456,
-                                ],
-                                [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontainsall',
-                                    'field' => 'interests-C',
-                                    'value' => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]]],
-                ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                    'template' => [
-                        'id' => 4,
-                        'sections' => [
-                            'content' => 'Content',
-                            'citizen_project_link' => '<a target="_blank" href="https://citizen_project_url" title="Voir le projet citoyen">CP name</a>',
                             'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                             'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
@@ -1077,7 +1009,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'referent' => 1,
                         'deputy' => 2,
                         'committee' => 3,
-                        'citizen_project' => 4,
                         'municipal_chief' => 5,
                         'senator' => 6,
                     ],
@@ -1085,7 +1016,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'referent' => 1,
                         'deputy' => 2,
                         'committee' => 3,
-                        'citizen_project' => 4,
                         'municipal_chief' => 5,
                         'senator' => 6,
                         'candidate' => 7,
@@ -1094,7 +1024,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ],
                     [
                         'subscribed_emails_referents' => 1,
-                        'CITIZEN_PROJECT_HOST' => 2,
                         'COMMITTEE_SUPERVISOR' => 3,
                         'COMMITTEE_HOST' => 4,
                         'COMMITTEE_FOLLOWER' => 5,
@@ -1126,7 +1055,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     new AdherentRegistrationDateConditionBuilder(),
                     new AdherentSegmentConditionBuilder($this->mailchimpMapping),
                     new AdherentZoneConditionBuilder($this->mailchimpMapping),
-                    new CitizenProjectConditionBuilder($this->mailchimpMapping),
                     new CoalitionsConditionBuilder($this->mailchimpMapping),
                     new CoalitionsNotificationConditionBuilder($this->mailchimpMapping),
                     new CommitteeConditionBuilder($this->mailchimpMapping),
@@ -1158,7 +1086,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             new DeputyMessageSectionBuilder(),
             new MunicipalChiefMessageSectionBuilder(),
             new CoalitionMessageSectionBuilder(),
-            new CitizenProjectMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://citizen_project_url'])),
         ];
     }
 

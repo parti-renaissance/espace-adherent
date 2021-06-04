@@ -6,15 +6,12 @@ use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
 use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\SubscriptionType;
-use App\Entity\TurnkeyProject;
 use App\Entity\Unregistration;
 use App\Mailer\Message\AdherentContactMessage;
 use App\Mailer\Message\AdherentTerminateMembershipMessage;
-use App\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\EmailRepository;
@@ -59,13 +56,12 @@ class AdherentControllerTest extends WebTestCase
 
         // first page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(5, $crawler->filter('#upcoming-events article')->count());
+        $this->assertSame(4, $crawler->filter('#upcoming-events article')->count());
         $titles = $crawler->filter('#upcoming-events h2');
         $this->assertSame('Meeting de New York City', trim($titles->first()->text()));
-        $this->assertSame('Projet citoyen #3', trim($titles->eq(1)->text()));
-        $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(2)->text()));
-        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(3)->text()));
-        $this->assertSame('Projet citoyen Paris-18', trim($titles->eq(4)->text()));
+        $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(1)->text()));
+        $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(2)->text()));
+        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->eq(3)->text()));
 
         $this->assertSame(5, $crawler->filter('#past-events article')->count());
         $titles = $crawler->filter('#past-events h2');
@@ -74,13 +70,6 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Événement à Paris 1', trim($titles->eq(2)->text()));
         $this->assertSame('Événement à Paris 2', trim($titles->eq(3)->text()));
         $this->assertSame('Marche Parisienne', trim($titles->eq(4)->text()));
-
-        // second page
-        $crawler = $this->client->click($crawler->filter('#upcoming-events .listing__paginator .link--no-decor')->link());
-        $titles = $crawler->filter('#upcoming-events h2');
-        self::assertEquals('http://test.enmarche.code/parametres/mes-activites?page=2&type=upcoming_events#events', $crawler->getUri());
-        $this->assertSame(1, $crawler->filter('#upcoming-events article')->count());
-        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->first()->text()));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites?page=2&type=past_events#events');
         self::assertEquals('http://test.enmarche.code/parametres/mes-activites?page=2&type=past_events#events', $crawler->getUri());
@@ -168,7 +157,7 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(7, $histories73Subscriptions);
+        $this->assertCount(6, $histories73Subscriptions);
         $this->assertCount(0, $histories73Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
@@ -310,9 +299,9 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(7, $histories73Subscriptions);
-        $this->assertCount(7, $histories73Unsubscriptions);
-        $this->assertCount(7, $histories06Subscriptions);
+        $this->assertCount(6, $histories73Subscriptions);
+        $this->assertCount(6, $histories73Unsubscriptions);
+        $this->assertCount(6, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
@@ -439,7 +428,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[subscriptionTypes][]"]');
 
-        $this->assertCount(9, $subscriptions);
+        $this->assertCount(8, $subscriptions);
 
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
@@ -478,16 +467,12 @@ class AdherentControllerTest extends WebTestCase
         $histories = $this->findEmailSubscriptionHistoryByAdherent($adherent);
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
-        $historiesCitizenProjectHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);
 
-        $this->assertCount(11, $histories);
+        $this->assertCount(9, $histories);
         $this->assertCount(1, $historiesHost);
         $this->assertCount(1, $historiesReferents);
-        $this->assertCount(2, $historiesCitizenProjectHost);
         self::assertSame('subscribe', $historiesHost[0]->getAction());
         self::assertSame('subscribe', $historiesReferents[0]->getAction());
-        self::assertSame('unsubscribe', $historiesCitizenProjectHost[0]->getAction());
-        self::assertSame('subscribe', $historiesCitizenProjectHost[1]->getAction());
         $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
@@ -513,7 +498,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(14, $histories);
+        $this->assertCount(12, $histories);
         $this->assertCount(2, $historiesHost);
         $this->assertCount(2, $historiesReferents);
         self::assertSame('unsubscribe', $historiesHost[0]->getAction());
@@ -541,7 +526,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(17, $histories);
+        $this->assertCount(15, $histories);
         $this->assertCount(3, $historiesHost);
         $this->assertCount(3, $historiesReferents);
         self::assertSame('subscribe', $historiesHost[0]->getAction());
@@ -602,231 +587,6 @@ class AdherentControllerTest extends WebTestCase
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function testAnonymousUserCannotCreateCitizenProject(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
-    /**
-     * @dataProvider provideAdherentsAllowedToCreateCitizenProject
-     */
-    public function testAdherentThatCanCreateNewCitizenProject(string $emailAddress): void
-    {
-        $this->authenticateAsAdherent($this->client, $emailAddress);
-
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    /**
-     * @dataProvider provideAdherentsNotAllowedToCreateCitizenProject
-     */
-    public function testAdherentThatCanNotCreateNewCitizenProject(string $emailAddress): void
-    {
-        $this->authenticateAsAdherent($this->client, $emailAddress);
-
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
-    }
-
-    public function testCreateCitizenProjectFailed(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-
-        $data = [];
-        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
-
-        $errors = $this->client->getCrawler()->filter('.form__errors');
-
-        $this->assertSame(9, $errors->count());
-
-        $this->assertSame(
-            'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Cette valeur ne doit pas être nulle.',
-            $this->client->getCrawler()->filter('#field-category > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-problem-description > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-proposed-solution > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Cette valeur ne doit pas être vide.',
-            $this->client->getCrawler()->filter('#field-required-means > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Le numéro de téléphone est obligatoire.',
-            $this->client->getCrawler()->filter('#citizen-project-phone > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Veuillez cocher cette case pour continuer',
-            $this->client->getCrawler()->filter('#field-cgu > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Veuillez cocher cette case pour continuer',
-            $this->client->getCrawler()->filter('#field-data-processing > .form__errors > li')->text()
-        );
-
-        $data = [];
-        $data['citizen_project']['name'] = 'P';
-        $data['citizen_project']['subtitle'] = 'test';
-        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
-
-        $this->assertSame(9, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertSame(
-            'Vous devez saisir au moins 2 caractères.',
-            $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
-        );
-        $this->assertSame(
-            'Vous devez saisir au moins 5 caractères.',
-            $this->client->getCrawler()->filter('#field-subtitle > .form__errors > li')->text()
-        );
-    }
-
-    public function testCreateCitizenProjectSuccessful(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen');
-
-        $categoryValue = $crawler->filter('#citizen_project_category option:contains("Culture")')->attr('value');
-        $this->assertSame(0, $crawler->filter('#citizen_project_district')->count());
-
-        $data = [];
-        $data['citizen_project']['name'] = 'mon Projet Citoyen';
-        $data['citizen_project']['subtitle'] = 'mon premier projet citoyen';
-        $data['citizen_project']['category'] = $categoryValue;
-        $data['citizen_project']['problem_description'] = 'Le problème local.';
-        $data['citizen_project']['proposed_solution'] = 'Ma solution.';
-        $data['citizen_project']['required_means'] = 'Mes actions.';
-        $data['citizen_project']['address']['postalCode'] = '8802';
-        $data['citizen_project']['address']['cityName'] = 'Kilchberg';
-        $data['citizen_project']['address']['country'] = 'CH';
-        $data['citizen_project']['phone']['country'] = 'CH';
-        $data['citizen_project']['phone']['number'] = '31 359 21 11';
-        $data['citizen_project']['cgu'] = true;
-        $data['citizen_project']['data_processing'] = true;
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
-
-        $this->client->followRedirect();
-        $this->isSuccessful($this->client->getResponse());
-        $this->assertTrue($this->seeDefaultCitizenProjectImage());
-
-        /** @var CitizenProject $citizenProject */
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['name' => 'Mon Projet Citoyen']);
-
-        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-        $this->assertSame('Mon Projet Citoyen', $citizenProject->getName());
-        $this->assertSame('Mon premier projet citoyen', $citizenProject->getSubtitle());
-        $this->assertCountMails(1, CitizenProjectCreationConfirmationMessage::class, 'carl999@example.fr');
-    }
-
-    public function testAdherentCanCreateNewCitizenProjectEventTurnkeyProjectDoesNotExist(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen/wrong-turn-key');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    public function testCreateTwoCitizenProjectFromTheSameTurnkeyProjectSuccessful(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $turnkeyProject = $this->getTurnkeyProjectRepository()->findOneBy(['slug' => 'art-s-connection']);
-        $this->assertInstanceOf(TurnkeyProject::class, $turnkeyProject);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen/art-s-connection');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $this->assertSame('Art\'s connection', $crawler->filter('#citizen_project_name_text')->text());
-        $this->assertSame('Ateliers de rencontre autour de l\'art', $crawler->filter('#citizen_project_subtitle_text')->text());
-        $this->assertSame('Culture', $crawler->filter('#citizen_project_category_text')->text());
-        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description_text')->text());
-        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution_text')->text());
-        $this->assertSame(1, $crawler->filter('#citizen_project_district')->count());
-
-        $form = $this->client->getCrawler()->selectButton('Proposer mon projet')->form();
-        $form->setValues([
-            'citizen_project[required_means]' => 'Mes actions.',
-            'citizen_project[phone][number]' => '6 55 66 77 66',
-            'citizen_project[phone][country]' => 'FR',
-            'citizen_project[cgu]' => true,
-            'citizen_project[data_processing]' => true,
-        ]);
-
-        $this->client->submit($form);
-
-        /** @var CitizenProject $citizenProject */
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['slug' => '73100-arts-connection']);
-
-        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-        $this->assertSame('Art\'s connection', $citizenProject->getName());
-        $this->assertSame('Ateliers de rencontre autour de l\'art', $citizenProject->getSubtitle());
-        $this->assertSame('Culture', $citizenProject->getCategory()->getName());
-        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $citizenProject->getProblemDescription());
-        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
-        $this->assertSame('Mes actions.', $citizenProject->getRequiredMeans());
-        $this->assertSame('Mouxy', $citizenProject->getDistrict());
-        $this->assertSame($turnkeyProject->getId(), $citizenProject->getTurnkeyProject()->getId());
-
-        $this->logout($this->client);
-
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-projet-citoyen/art-s-connection');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $this->assertSame('Art\'s connection', $crawler->filter('#citizen_project_name_text')->text());
-        $this->assertSame('Ateliers de rencontre autour de l\'art', $crawler->filter('#citizen_project_subtitle_text')->text());
-        $this->assertSame('Culture', $crawler->filter('#citizen_project_category_text')->text());
-        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $crawler->filter('#citizen_project_problem_description_text')->text());
-        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $crawler->filter('#citizen_project_proposed_solution_text')->text());
-
-        $form = $crawler->selectButton('Proposer mon projet')->form();
-        $form->setValues([
-            'citizen_project[required_means]' => 'Mes actions aussi.',
-            'citizen_project[phone][number]' => '6 22 33 44 55',
-            'citizen_project[phone][country]' => 'FR',
-            'citizen_project[district]' => 'Mon quartier',
-            'citizen_project[cgu]' => true,
-            'citizen_project[data_processing]' => true,
-        ]);
-
-        $this->client->submit($form);
-
-        /** @var CitizenProject $citizenProject */
-        $citizenProject = $this->getCitizenProjectRepository()->findOneBy(['slug' => '77000-arts-connection']);
-
-        $this->assertSame(0, $this->client->getCrawler()->filter('.form__errors')->count());
-        $this->assertInstanceOf(CitizenProject::class, $citizenProject);
-        $this->assertSame('Art\'s connection', $citizenProject->getName());
-        $this->assertSame('Ateliers de rencontre autour de l\'art', $citizenProject->getSubtitle());
-        $this->assertSame('Culture', $citizenProject->getCategory()->getName());
-        $this->assertSame('Les lieux et espaces de culture sont rarement accessibles à tous et donnent peu l\'occasion de tisser du lien social.', $citizenProject->getProblemDescription());
-        $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
-        $this->assertSame('Mes actions aussi.', $citizenProject->getRequiredMeans());
-        $this->assertSame('Mon quartier', $citizenProject->getDistrict());
-        $this->assertSame($turnkeyProject->getId(), $citizenProject->getTurnkeyProject()->getId());
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'referent@en-marche-dev.fr'));
     }
 
     /**
@@ -1152,33 +912,6 @@ class AdherentControllerTest extends WebTestCase
         return [
             'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],
             'adherent 2' => ['cedric.lebon@en-marche-dev.fr', LoadAdherentData::ADHERENT_19_UUID, 'en-marche-comite-de-evry', 6],
-        ];
-    }
-
-    public function provideAdherentsAllowedToCreateCitizenProject(): array
-    {
-        return [
-            'Adherent without citizen project' => [
-                'carl999@example.fr',
-            ],
-            'Citizen project admin with an approved and a refused committee' => [
-                'jacques.picard@en-marche.fr',
-            ],
-            'Citizen project admin with 3 approved committees' => [
-                'francis.brioul@yahoo.com',
-            ],
-        ];
-    }
-
-    public function provideAdherentsNotAllowedToCreateCitizenProject(): array
-    {
-        return [
-            'Adherent with a pending citizen project' => [
-                'benjyd@aol.com',
-            ],
-            'Adherent with a pre-approved citizen project' => [
-                'kiroule.p@blabla.tld',
-            ],
         ];
     }
 

@@ -3,11 +3,6 @@
         <a href="{{ path('app_access_delegation_unset', {type: 'committee'}) }}">Espace comité</a>
     </li>
 {% endif %}
-{% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
-    <li>
-        <a href="{{ path('app_access_delegation_unset', {type: 'citizen_project'}) }}">Espace porteur de projet</a>
-    </li>
-{% endif %}
 {% if app.user.isReferent %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'referent'}) }}">Espace référent</a>
@@ -43,12 +38,6 @@
             <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace sénateur partagé ({{ delegated_access.delegator.senatorArea.departmentTag.code }})</a>
         </li>
     {% endfor %}
-{% endif %}
-{% if app.user.isCoordinatorCitizenProjectSector %}
-    <li>
-        <a href="{{ path('app_access_delegation_unset', {type: 'coordinator_citizen_project', s: constant('App\\Entity\\CitizenProject::PENDING')}) }}"> Espace responsable engagement citoyen
-        </a>
-    </li>
 {% endif %}
 {% if app.user.isCoordinatorCommitteeSector %}
     <li>

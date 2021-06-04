@@ -61,16 +61,6 @@
             <call method="addProvider">
                 <argument type="service" id="App\Search\EventSearchResultsProvider"/>
             </call>
-
-            <call method="addProvider">
-                <argument type="service" id="App\Search\CitizenActionSearchResultsProvider"/>
-            </call>
-
-            <call method="addProvider">
-                <argument type="service" id="App\Search\CitizenProjectSearchResultsProvider"/>
-            </call>
         </service>
-
-        <service id="App\Search\CitizenActionSearchResultsProvider" parent="App\Search\EventSearchResultsProvider" public="false"/>
     </services>
 </container>

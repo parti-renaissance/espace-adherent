@@ -28,169 +28,117 @@
                     </div>
                 </div>
         </section>
+
         <div class=" l__wrapper">
+            {% if committees is defined %}
+                <h3 class="home__adherent__title">Rejoignez un comité autour de {{app.user.cityname}}</h3>
 
-        {% if committees is defined %}
-            <h3 class="home__adherent__title">Rejoignez un comité autour de {{app.user.cityname}}</h3>
-
-            <section class="home__adherent__committees">
-                <div class="home__flex">
-                    {% for committee in committees %}
-                        <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
-                            class="search__committee__box">
-                            <div class="search__results__meta">
-                                <h2 class="text--medium text--normal">{{ committee.name }}</h2>
-                                <div class="text--body text--bold">{{ committee.cityName }}</div>
-                            </div>
-                            <div class="search__results__cta">
-                                <span class="btn btn--blue">En savoir plus</span>
-                                <div class="text--body icon--with-text l__row--center">
-                                    {{ include('components/participants.html.twig') }}
-                                    {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                <section class="home__adherent__committees">
+                    <div class="home__flex">
+                        {% for committee in committees %}
+                            <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
+                                class="search__committee__box">
+                                <div class="search__results__meta">
+                                    <h2 class="text--medium text--normal">{{ committee.name }}</h2>
+                                    <div class="text--body text--bold">{{ committee.cityName }}</div>
                                 </div>
-                            </div>
-                        </a>
-                    {% endfor %}
-                </div>
-                <div class="text--center">
-                    <a href="{{ path('app_search_committees') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les comités</a>
-                </div>
-            </section>
-
-            <div class="separator"></div>
-        {% endif %}
-
-        {% if events is defined %}
-            <h3 class="home__adherent__title">Participez à un événement autour de {{app.user.cityname}}</h3>
-
-            <section class="home__adherent__event">
-                {% for event in events %}
-                    {% if date is not defined or date != event.beginAt|date('Ymd') %}
-                        {% set date = event.beginAt|date('Ymd') %}
-
-                        <div class="text--body text--bold text--smallest text--uppercase b__nudge--bottom-medium b__nudge--top-large text--gray">
-                        {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'cccc d MMMM') }}
-                        </div>
-                    {% endif %}
-
-                <div class="search__results__row l__row l__row--h-stretch l__row--top">
-                    <div class="search__results__date text--body text--bold text--smallest text--uppercase">
-                        {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'ccc d') }}<br/>
-                        {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}
+                                <div class="search__results__cta">
+                                    <span class="btn btn--blue">En savoir plus</span>
+                                    <div class="text--body icon--with-text l__row--center">
+                                        {{ include('components/participants.html.twig') }}
+                                        {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
                     </div>
-                    <div class="search__results__info l__col l__col--v-stretch l__col--left">
-                        <div class="search__results__meta">
-                            <div class="search__results__tag">
-                                {% if event.isForLegislatives %}
-                                    <div class="tag tag--orange">Législatives</div>
-                                {% endif %}
-
-                                {% if event.type and event.isCitizenAction %}
-                                    <div class="tag tag--orange">Action citoyenne</div>
-                                {% else %}
-                                    <div class="tag">{{ event.category }}</div>
-                                {% endif %}
-                            </div>
-
-                            <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
-                                <a class="link--no-decor" href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}">
-                                    {{ event.name }}
-                                </a>
-                            </h2>
-                            <div class="text--body text--gray">Organisé par
-                                {% if event.committee %}
-                                    <span class="text--bold">{{ event.committee.name }}</span>
-                                {% elseif event.organizer and event.organizer.isReferent %}
-                                    <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})
-                                {% elseif event.organizer %}
-                                    <span class="text--bold">{{ event.organizer.fullName }}</span>
-                                {% endif %}
-                                    à {{ event.cityName }}
-                            </div>
-                        </div>
-                        <div class="search__results__cta">
-                            {% if event.finished %}
-                                <div class="text--body search__results__cta__text">
-                                    Cet événement est terminé
-                                </div>
-                            {% elseif event.cancelled %}
-                                <div class="text--body b__nudge--right">
-                                    Cet événement est annulé
-                                </div>
-                            {% elseif not event.full %}
-                                <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
-                                   class="btn btn--blue" target="_blank" rel="noopener noreferrer">
-                                    Participer
-                                </a>
-                            {% else %}
-                                <div class="text--body search__results__cta__text">
-                                    Événement complet
-                                </div>
-                            {% endif %}
-                            <div class="text--body text--gray icon--with-text l__row--center">
-                                {{ 'event.participants_count'|transchoice(event.participantsCount) }}
-                            </div>
-                        </div>
+                    <div class="text--center">
+                        <a href="{{ path('app_search_committees') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les comités</a>
                     </div>
-                    <img class="search-map" src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}" title="Carte d'accès à l'événement {{ event.name }}"
-                    alt="{{ event.inlineFormattedAddress }}" />
-                </div>
-                {% endfor %}
-                <div class="text--center">
-                    <a href="{{ path('app_search_events') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les événements</a>
-                </div>
-            </section>
+                </section>
 
-            <div class="separator"></div>
-        {% endif %}
+                <div class="separator"></div>
+            {% endif %}
 
-        {% if citizen_projects is defined %}
-            <h3 class="home__adherent__title">Rejoignez un projet autour de {{app.user.cityname}}</h3>
+            {% if events is defined %}
+                <h3 class="home__adherent__title">Participez à un événement autour de {{app.user.cityname}}</h3>
 
-            <section class="home__adherent__citizen__projects">
-                <div class="home__flex">
-                    {% for citizen_project in citizen_projects %}
-                    <div class="search__citizen_project__box">
-                        {% if citizen_project.imageName %}
-                             <div class="search__citizen_project__image">
-                                <img src="{{ asset(citizen_project.getAssetImagePath) }}" />
+                <section class="home__adherent__event">
+                    {% for event in events %}
+                        {% if date is not defined or date != event.beginAt|date('Ymd') %}
+                            {% set date = event.beginAt|date('Ymd') %}
+
+                            <div class="text--body text--bold text--smallest text--uppercase b__nudge--bottom-medium b__nudge--top-large text--gray">
+                            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'cccc d MMMM') }}
                             </div>
                         {% endif %}
-                        <div class="search__citizen_project__meta">
-                            <h3 class="text--medium-small">
-                                {{ citizen_project.name }}
-                            </h3>
-                            <div class="text--gray b__nudge--top-5">{{ citizen_project.subtitle }}</div>
-                            <div class="text--small text--gray b__nudge--top-10">
-                                Par <span class="text--dark">{{ citizen_project.creator ? citizen_project.creator.fullName : 'un anonyme' }}</span> à
-                                {{ citizen_project.cityName }}
-                            </div>
 
-                            <div class="text--gray text--small b__nudge--top-50">
-                                {% if citizen_project.skills|length > 0 %}
-                                Aidez-nous en :
-                                <ul class="search__citizen_project__skills">
-                                    {% for skill in citizen_project.skills %}
-                                        <li>{{ skill }}</li>
-                                    {% endfor %}
-                                </ul>
+                    <div class="search__results__row l__row l__row--h-stretch l__row--top">
+                        <div class="search__results__date text--body text--bold text--smallest text--uppercase">
+                            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'ccc d') }}<br/>
+                            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}
+                        </div>
+                        <div class="search__results__info l__col l__col--v-stretch l__col--left">
+                            <div class="search__results__meta">
+                                <div class="search__results__tag">
+                                    {% if event.isForLegislatives %}
+                                        <div class="tag tag--orange">Législatives</div>
+                                    {% endif %}
+
+                                    <div class="tag">{{ event.category }}</div>
+                                </div>
+
+                                <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
+                                    <a class="link--no-decor" href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}">
+                                        {{ event.name }}
+                                    </a>
+                                </h2>
+                                <div class="text--body text--gray">Organisé par
+                                    {% if event.committee %}
+                                        <span class="text--bold">{{ event.committee.name }}</span>
+                                    {% elseif event.organizer and event.organizer.isReferent %}
+                                        <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})
+                                    {% elseif event.organizer %}
+                                        <span class="text--bold">{{ event.organizer.fullName }}</span>
+                                    {% endif %}
+                                        à {{ event.cityName }}
+                                </div>
+                            </div>
+                            <div class="search__results__cta">
+                                {% if event.finished %}
+                                    <div class="text--body search__results__cta__text">
+                                        Cet événement est terminé
+                                    </div>
+                                {% elseif event.cancelled %}
+                                    <div class="text--body b__nudge--right">
+                                        Cet événement est annulé
+                                    </div>
+                                {% elseif not event.full %}
+                                    <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
+                                       class="btn btn--blue" target="_blank" rel="noopener noreferrer">
+                                        Participer
+                                    </a>
+                                {% else %}
+                                    <div class="text--body search__results__cta__text">
+                                        Événement complet
+                                    </div>
                                 {% endif %}
+                                <div class="text--body text--gray icon--with-text l__row--center">
+                                    {{ 'event.participants_count'|transchoice(event.participantsCount) }}
+                                </div>
                             </div>
                         </div>
-                        <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
-                        class="search__citizen_project__box__link"></a>
+                        <img class="search-map" src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}" title="Carte d'accès à l'événement {{ event.name }}"
+                        alt="{{ event.inlineFormattedAddress }}" />
                     </div>
                     {% endfor %}
-                </div>
-                <div class="text--center">
-                    <a href="{{ path('react_app_citizen_projects_home') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les projets</a>
-                </div>
+                    <div class="text--center">
+                        <a href="{{ path('app_search_events') }}" class="btn btn--blue btn--medium btn__adherent">Voir tous les événements</a>
+                    </div>
+                </section>
 
-            </section>
-
-            <div class="separator"></div>
-        {% endif %}
-
+                <div class="separator"></div>
+            {% endif %}
         </div>
     </main>
 {% endblock %}

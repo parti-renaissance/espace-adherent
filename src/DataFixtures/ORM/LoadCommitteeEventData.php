@@ -444,6 +444,7 @@ class LoadCommitteeEventData extends Fixture implements DependentFixtureInterfac
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $coordinator)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $adherent4)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-5'))));
         // Registrations of not connected users
         $eventRegistration1 = new EventRegistrationCommand($event10);
         $eventRegistration1->setFirstName('Marie');

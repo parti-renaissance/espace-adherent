@@ -520,10 +520,8 @@ class RequestBuilder implements LoggerAwareInterface
                         Manager::INTEREST_KEY_COMMITTEE_HOST => !($memberships = $adherent->getMemberships())->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
                         Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = !$memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->isEmpty(),
                         Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,
-                        Manager::INTEREST_KEY_CP_HOST => $adherent->isCitizenProjectAdministrator(),
                         Manager::INTEREST_KEY_REFERENT => $adherent->isReferent(),
                         Manager::INTEREST_KEY_DEPUTY => $adherent->isDeputy(),
-                        Manager::INTEREST_KEY_REC => $adherent->isCoordinatorCitizenProjectSector(),
                         Manager::INTEREST_KEY_COORDINATOR => $adherent->isCoordinatorCommitteeSector(),
                         Manager::INTEREST_KEY_PROCURATION_MANAGER => $adherent->isProcurationManager(),
                         Manager::INTEREST_KEY_ASSESSOR_MANAGER => $adherent->isAssessorManager(),
@@ -553,10 +551,6 @@ class RequestBuilder implements LoggerAwareInterface
 
         foreach ($adherent->getMemberships()->getMembershipsForApprovedCommittees() as $committeeMembership) {
             $tags[] = $committeeMembership->getCommitteeUuid();
-        }
-
-        foreach ($adherent->getCitizenProjectMemberships() as $cpMembership) {
-            $tags[] = $cpMembership->getCitizenProjectUuid();
         }
 
         if ($adherent->hasTerritorialCouncilMembership()) {

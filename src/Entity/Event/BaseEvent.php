@@ -70,7 +70,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
  *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
  *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
- *     EventTypeEnum::TYPE_CITIZEN_ACTION: "CitizenAction",
  *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
  *     EventTypeEnum::TYPE_MUNICIPAL: "MunicipalEvent",
  * })
@@ -242,7 +241,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=100)
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
@@ -271,7 +270,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read", "event_list_read"})
+     * @JMS\Groups({"public", "event_read", "event_list_read"})
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
@@ -294,7 +293,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=50)
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      * @JMS\SerializedName("timeZone")
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
@@ -309,7 +308,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      * @JMS\SerializedName("beginAt")
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
@@ -323,7 +322,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      * @JMS\SerializedName("finishAt")
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
@@ -349,7 +348,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      * @JMS\SerializedName("participantsCount")
      *
      * @SymfonySerializer\Groups({"event_read", "event_list_read"})
@@ -361,7 +360,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=20)
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read", "event_list_read"})
+     * @JMS\Groups({"public", "event_read", "event_list_read"})
      *
      * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
@@ -379,7 +378,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
@@ -628,11 +627,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     abstract public function getType(): string;
 
-    public function isCitizenAction(): bool
-    {
-        return EventTypeEnum::TYPE_CITIZEN_ACTION === $this->getType();
-    }
-
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->uuid);
@@ -641,7 +635,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read"})
      */
     public function getUuidAsString(): string
     {

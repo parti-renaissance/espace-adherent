@@ -6,7 +6,6 @@
             <div class="search__bar__options__types">
                 <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
                     <option value=""{% if not search.eventCategory %} selected="selected"{% endif %}>Tous les événements</option>
-                    <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
                     {% for category_group in event_categories %}
                         <optgroup label="{{ category_group.name }}">
                             {% for category in category_group.eventCategories %}
@@ -22,11 +21,7 @@
             </div>
         {% endif %}
 
-        {% if search.isTypeCitizenProjects %}
-            {{ include('search/_filters_radius_citizen_projects.html.twig') }}
-        {% else %}
-            {{ include('search/_filters_radius.html.twig') }}
-        {% endif %}
+        {{ include('search/_filters_radius.html.twig') }}
 
         <div>
             <form>

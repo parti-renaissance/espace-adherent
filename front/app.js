@@ -229,13 +229,6 @@ class App {
         });
     }
 
-    runCitizenProjectImageGenerator() {
-        System.import('pages/citizen_project_image_generator').catch((error) => { throw error; }).then((module) => {
-            module.default();
-            module.previewHandler();
-        });
-    }
-
     runManageParticipants() {
         System.import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
             module.default();
@@ -270,7 +263,7 @@ class App {
                 checkboxSelector,
                 mainCheckboxSelector,
                 actions,
-                this.get('api'),
+                this.get('api')
             );
         });
     }
@@ -371,9 +364,26 @@ class App {
         });
     }
 
-    runNationalCouncilCandidacy(qualityFieldSelector, submitButtonSelector, wrapperSelector, messages, availableGenders, neededQualities, invitations) {
+    runNationalCouncilCandidacy(
+        qualityFieldSelector,
+        submitButtonSelector,
+        wrapperSelector,
+        messages,
+        availableGenders,
+        neededQualities,
+        invitations
+    ) {
         System.import('pages/national_council_candidacy').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'), qualityFieldSelector, submitButtonSelector, wrapperSelector, messages, availableGenders, neededQualities, invitations);
+            module.default(
+                this.get('api'),
+                qualityFieldSelector,
+                submitButtonSelector,
+                wrapperSelector,
+                messages,
+                availableGenders,
+                neededQualities,
+                invitations
+            );
         });
     }
 

@@ -5,7 +5,6 @@ namespace App\Repository\ThematicCommunity;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
-use App\Entity\CitizenProjectMembership;
 use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Repository\PaginatorTrait;
@@ -79,12 +78,6 @@ class ThematicCommunityMembershipRepository extends ServiceEntityRepository
                         ->andWhere('am.committee IS NOT NULL AND am.quality = :supervisor AND am.finishAt IS NULL AND am.provisional = :provisional')
                         ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
                         ->setParameter('provisional', 'supervisor' === $role ? false : true)
-                    ;
-                    break;
-                case 'citizen_project_admin':
-                    $qb->innerJoin('a.citizenProjectMemberships', 'cpm')
-                        ->andWhere('cpm.privilege = :administrator')
-                        ->setParameter('administrator', CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR)
                     ;
                     break;
                 case 'adherent':

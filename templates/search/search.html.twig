@@ -52,11 +52,8 @@
 
             var waitQueue;
             function fetchResults() {
-                if (eventCategory && eventCategory.value === '{{ constant("TYPE_CITIZEN_ACTIONS", search) }}') {
-                    type = '{{ constant("TYPE_CITIZEN_ACTIONS", search) }}';
-                } else {
-                    type = dom("[name='t']").value;
-                }
+                type = dom("[name='t']").value;
+
                 // setTimeout avoids sending all HTTP request while the user is typing
                 clearTimeout(waitQueue);
                 waitQueue = setTimeout(function() {

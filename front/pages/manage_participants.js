@@ -1,5 +1,5 @@
 /*
- * Manage the participants of event/citizen action
+ * Manage the participants of event
  */
 export default () => {
     const allCheckboxes = dom('#members-check-all');

@@ -20,9 +20,6 @@ class SentryHandler extends RavenHandler
         Logger::EMERGENCY => Raven_Client::FATAL,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleBatch(array $records)
     {
         $level = $this->level;
@@ -70,9 +67,6 @@ class SentryHandler extends RavenHandler
         $this->handle($this->processRecord($main));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultBatchFormatter()
     {
         return new NormalizerFormatter();

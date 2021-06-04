@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\PostAddress;
@@ -91,25 +90,5 @@ abstract class AbstractEventMessageTest extends TestCase
         }
 
         return $mock;
-    }
-
-    protected function createCitizenActionMock(
-        string $name,
-        string $beginAt,
-        string $street,
-        string $cityCode,
-        string $timeZone = 'Europe/Paris'
-    ): CitizenAction {
-        $citizenAction = $this->getMockBuilder(CitizenAction::class)->disableOriginalConstructor()->getMock();
-        $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
-
-        $citizenAction->expects(static::any())->method('getName')->willReturn($name);
-        $citizenAction->expects(static::any())->method('getBeginAt')->willReturn(new \DateTime($beginAt));
-        $citizenAction->expects(static::any())->method('getTimeZone')->willReturn($timeZone);
-        $localeBeginAt = new \DateTime($beginAt);
-        $citizenAction->expects(static::any())->method('getLocalBeginAt')->willReturn($localeBeginAt->setTimezone(new \DateTimeZone($timeZone)));
-        $citizenAction->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
-
-        return $citizenAction;
     }
 }

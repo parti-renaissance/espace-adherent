@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
@@ -22,12 +21,10 @@ class MailchimpSyncAllMembershipsCommand extends Command
     protected static $defaultName = 'mailchimp:sync:all-memberships';
 
     private const COMMITTEE_TYPE = 'committee';
-    private const CITIZEN_PROJECT_TYPE = 'citizen_project';
     private const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
 
     private static $allTypes = [
         self::COMMITTEE_TYPE,
-        self::CITIZEN_PROJECT_TYPE,
         self::TERRITORIAL_COUNCIL_TYPE,
     ];
 
@@ -84,13 +81,12 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $offset = 0;
 
         do {
-            /** @var CommitteeMembership|CitizenProjectMembership|TerritorialCouncilMembership $membership */
+            /** @var CommitteeMembership|TerritorialCouncilMembership $membership */
             foreach ($paginator->getIterator() as $membership) {
                 $object = null;
 
                 switch ($type) {
                     case self::COMMITTEE_TYPE: $object = $membership->getCommittee(); break;
-                    case self::CITIZEN_PROJECT_TYPE: $object = $membership->getCitizenProject(); break;
                     case self::TERRITORIAL_COUNCIL_TYPE: $object = $membership->getTerritorialCouncil(); break;
                 }
 
@@ -135,16 +131,6 @@ class MailchimpSyncAllMembershipsCommand extends Command
                     ->addSelect('PARTIAL adherent.{id, uuid}')
                     ->innerJoin('membership.adherent', 'adherent')
                     ->innerJoin('membership.committee', 'object')
-                ;
-                break;
-
-            case self::CITIZEN_PROJECT_TYPE:
-                $qb = $this->entityManager
-                    ->getRepository(CitizenProjectMembership::class)
-                    ->createQueryBuilder('membership')
-                    ->addSelect('PARTIAL adherent.{id, uuid}')
-                    ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('membership.citizenProject', 'object')
                 ;
                 break;
 

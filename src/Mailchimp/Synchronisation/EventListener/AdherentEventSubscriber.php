@@ -4,7 +4,6 @@ namespace App\Mailchimp\Synchronisation\EventListener;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
-use App\CitizenProject\CitizenProjectFollowerChangeEvent;
 use App\Committee\Event\CommitteeEventInterface;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Entity\Adherent;
@@ -54,10 +53,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
             Events::COMMITTEE_NEW_FOLLOWER => 'onCommitteePrivilegeChange',
-            UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onCitizenProjectPrivilegeChange',
-
-            Events::CITIZEN_PROJECT_FOLLOWER_ADDED => 'onCitizenProjectMembershipCreation',
-            Events::CITIZEN_PROJECT_FOLLOWER_REMOVED => 'onCitizenProjectMembershipDeletion',
 
             TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE => 'onTerritorialCouncilMembershipCreation',
             TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE => 'onTerritorialCouncilMembershipDeletion',
@@ -67,21 +62,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     public function onBeforeUpdate(UserEvent $event): void
     {
         $this->before = $this->transformToArray($event->getUser());
-    }
-
-    public function onCitizenProjectMembershipCreation(CitizenProjectFollowerChangeEvent $event): void
-    {
-        $this->dispatchAddAdherentToStaticSegmentCommand($event->getFollower(), $event->getCitizenProject());
-    }
-
-    public function onCitizenProjectMembershipDeletion(CitizenProjectFollowerChangeEvent $event): void
-    {
-        $this->dispatchRemoveAdherentFromStaticSegmentCommand($event->getFollower(), $event->getCitizenProject());
-    }
-
-    public function onTerritorialCouncilMembershipCreation(MembershipEvent $event): void
-    {
-        $this->dispatchAddAdherentToStaticSegmentCommand($event->getAdherent(), $event->getTerritorialCouncil());
     }
 
     public function onTerritorialCouncilMembershipDeletion(MembershipEvent $event): void
@@ -112,11 +92,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
                 true
             ));
         }
-    }
-
-    public function onCitizenProjectPrivilegeChange(UserEvent $event): void
-    {
-        $this->dispatchAdherentChangeCommand($event->getUser()->getUuid(), $event->getUser()->getEmailAddress());
     }
 
     public function onCommitteePrivilegeChange(CommitteeEventInterface $event): void

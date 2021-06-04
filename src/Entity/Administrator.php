@@ -76,9 +76,6 @@ class Administrator implements UserInterface, TwoFactorInterface
         return $this->emailAddress ?: '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRoles()
     {
         return $this->roles;
@@ -99,17 +96,11 @@ class Administrator implements UserInterface, TwoFactorInterface
         $this->roles = $roles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt()
     {
         return;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsername()
     {
         return $this->emailAddress;

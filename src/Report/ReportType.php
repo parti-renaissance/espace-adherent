@@ -2,47 +2,31 @@
 
 namespace App\Report;
 
-use App\Entity\Report\CitizenActionReport;
-use App\Entity\Report\CitizenProjectReport;
 use App\Entity\Report\CommitteeReport;
 use App\Entity\Report\CommunityEventReport;
 use App\Entity\Report\ReportableInterface;
 
 final class ReportType
 {
-    public const CITIZEN_ACTION = 'citizen_action';
-    public const CITIZEN_PROJECT = 'citizen_project';
     public const COMMITTEE = 'committee';
     public const COMMUNITY_EVENT = 'community_event';
 
     public const LIST = [
-        self::CITIZEN_PROJECT => CitizenProjectReport::class,
-        self::CITIZEN_ACTION => CitizenActionReport::class,
         self::COMMITTEE => CommitteeReport::class,
         self::COMMUNITY_EVENT => CommunityEventReport::class,
     ];
 
     public const SEARCHABLE_BY_NAME = [
-        self::CITIZEN_PROJECT => CitizenProjectReport::class,
-        self::CITIZEN_ACTION => CitizenActionReport::class,
         self::COMMITTEE => CommitteeReport::class,
         self::COMMUNITY_EVENT => CommunityEventReport::class,
     ];
 
-    public const CITIZEN_ACTION_URI = 'actions-citoyennes';
-    public const CITIZEN_PROJECT_URI = 'projets-citoyens';
     public const COMMITTEE_URI = 'comites';
     public const COMMUNITY_EVENT_URI = 'evenements';
 
-    public const TYPES_URI_PATTERN = self::CITIZEN_ACTION_URI
-                                     .'|'.self::CITIZEN_PROJECT_URI
-                                     .'|'.self::COMMITTEE_URI
-                                     .'|'.self::COMMUNITY_EVENT_URI
-    ;
+    public const TYPES_URI_PATTERN = self::COMMITTEE_URI.'|'.self::COMMUNITY_EVENT_URI;
 
     public const URI_MAP = [
-        self::CITIZEN_ACTION_URI => self::CITIZEN_ACTION,
-        self::CITIZEN_PROJECT_URI => self::CITIZEN_PROJECT,
         self::COMMITTEE_URI => self::COMMITTEE,
         self::COMMUNITY_EVENT_URI => self::COMMUNITY_EVENT,
     ];

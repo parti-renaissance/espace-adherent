@@ -20,12 +20,9 @@ class AdherentRoleEnum extends Enum
     public const COMMITTEE_PROVISIONAL_SUPERVISOR = 'committee_provisional_supervisor';
     public const COMMITTEE_HOST = 'committee_host';
 
-    public const CITIZEN_PROJECT_HOLDER = 'citizen_project_holder';
-
     public const BOARD_MEMBER = 'board_member';
 
     public const COORDINATOR = 'coordinator';
-    public const REC = 'rec';
 
     public const PROCURATION_MANAGER = 'procuration_manager';
     public const ASSESSOR_MANAGER = 'assessor_manager';

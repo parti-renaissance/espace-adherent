@@ -2,8 +2,6 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\CitizenAction\CitizenActionPermissions;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventPermissions;
 use App\Repository\EventRegistrationRepository;
@@ -39,7 +37,6 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
 
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, CitizenActionPermissions::UNREGISTER, $this->createMock(CitizenAction::class)];
         yield [false, true, EventPermissions::UNREGISTER, $this->createMock(CommitteeEvent::class)];
     }
 
@@ -67,11 +64,8 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
 
     public function provideRegisteredEventCases(): iterable
     {
-        $action = $this->createMock(CitizenAction::class);
         $event = $this->createMock(CommitteeEvent::class);
 
-        yield [true, CitizenActionPermissions::UNREGISTER, $action];
-        yield [false, CitizenActionPermissions::UNREGISTER, $action];
         yield [true, EventPermissions::UNREGISTER, $event];
         yield [false, EventPermissions::UNREGISTER, $event];
     }

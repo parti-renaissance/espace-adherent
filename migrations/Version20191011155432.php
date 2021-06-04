@@ -49,7 +49,7 @@ final class Version20191011155432 extends AbstractMigration
         $this->addSql(sprintf(
             "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
             'Recevoir les e-mails de mon porteur de projet',
-            SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL
+            'citizen_project_host_email'
         ));
     }
 
@@ -94,7 +94,7 @@ final class Version20191011155432 extends AbstractMigration
         $this->addSql(sprintf(
             "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
             'Recevoir les e-mails de votre porteur de projet',
-            SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL
+            'citizen_project_host_email'
         ));
     }
 }

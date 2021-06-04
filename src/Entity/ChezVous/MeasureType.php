@@ -87,15 +87,6 @@ class MeasureType
      */
     private $eligibilityLink;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url
-     */
-    private $citizenProjectsLink;
-
     public function __construct(string $code, string $label)
     {
         $this->code = $code;
@@ -181,15 +172,5 @@ class MeasureType
     public function setEligibilityLink(?string $eligibilityLink): void
     {
         $this->eligibilityLink = $eligibilityLink;
-    }
-
-    public function getCitizenProjectsLink(): ?string
-    {
-        return $this->citizenProjectsLink;
-    }
-
-    public function setCitizenProjectsLink(?string $citizenProjectsLink): void
-    {
-        $this->citizenProjectsLink = $citizenProjectsLink;
     }
 }

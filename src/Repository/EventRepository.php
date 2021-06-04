@@ -135,7 +135,7 @@ class EventRepository extends ServiceEntityRepository
             return [];
         }
 
-        $qb = $this
+        return $this
             ->createQueryBuilder('event')
             ->addSelect('adherent')
             ->join('event.organizer', 'adherent')
@@ -146,35 +146,17 @@ class EventRepository extends ServiceEntityRepository
                 'end_date' => $endDate,
                 'status' => BaseEvent::STATUS_SCHEDULED,
             ])
+            ->leftJoin('event.committee', 'committee')
+            ->leftJoin('committee.referentTags', 'committeeReferentTags')
+            ->leftJoin('adherent.referentTags', 'adherentReferentTags')
+            ->andWhere((new Orx())
+                ->add('committee IS NOT NULL AND committeeReferentTags IN (:tags)')
+                ->add('committee IS NULL AND adherentReferentTags IN (:tags)')
+            )
+            ->setParameter('tags', $referentTags)
+            ->getQuery()
+            ->getResult()
         ;
-
-        if (CommitteeEvent::class === $this->getEntityName()) {
-            $qb
-                ->leftJoin('event.committee', 'committee')
-                ->leftJoin('committee.referentTags', 'committeeReferentTags')
-                ->leftJoin('adherent.referentTags', 'adherentReferentTags')
-                ->andWhere((new Orx())
-                    ->add('committee IS NOT NULL AND committeeReferentTags IN (:tags)')
-                    ->add('committee IS NULL AND adherentReferentTags IN (:tags)')
-                )
-                ->setParameter('tags', $referentTags)
-            ;
-        } else {
-            // Use ReferentTag on CP when it will be added
-            $qb
-                ->join('event.citizenProject', 'citizenProject')
-                ->andWhere(
-                    (new Orx())
-                        ->add('SUBSTRING(citizenProject.postAddress.postalCode, 1, 2) IN (:tags)')
-                        ->add('citizenProject.postAddress.postalCode IN (:tags)')
-                        ->add('citizenProject.postAddress.cityName IN (:tags)')
-                        ->add('citizenProject.postAddress.country IN (:tags)')
-                )
-                ->setParameter('tags', array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $referentTags))
-            ;
-        }
-
-        return $qb->getQuery()->getResult();
     }
 
     protected function createSlugQueryBuilder(string $slug): QueryBuilder
@@ -364,7 +346,7 @@ class EventRepository extends ServiceEntityRepository
         }
 
         if ($search->getReferentEvents()) {
-            $qb->andWhere('n.committee IS NULL AND n.citizenProject IS NULL');
+            $qb->andWhere('n.committee IS NULL');
         }
 
         return $qb
@@ -406,19 +388,17 @@ FROM events
 LEFT JOIN adherents ON adherents.id = events.organizer_id
 LEFT JOIN committees ON committees.id = events.committee_id
 LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id AND events.type IN (:base_event_types)
-LEFT JOIN citizen_action_categories AS citizen_action_category ON citizen_action_category.id = events.category_id AND events.type = :citizen_action_event_type
 WHERE (events.address_latitude IS NOT NULL 
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
     AND events.begin_at > :today 
     AND events.published = :published
     AND events.status = :scheduled
-    AND (event_category.id IS NOT NULL OR citizen_action_category.id IS NOT NULL)
+    AND event_category.id IS NOT NULL
     )
     __filter_query__ 
     __filter_category__
     __filter_referent_events__
-    __filter_type__ 
 ORDER BY events.begin_at ASC, distance ASC 
 LIMIT :max_results 
 OFFSET :first_result
@@ -426,32 +406,19 @@ SQL;
 
         if (!empty($searchQuery = $search->getQuery())) {
             $filterQuery = 'AND events.name like :query';
-        } else {
-            $filterQuery = '';
         }
 
-        $category = $search->getEventCategory();
-        if ($category && SearchParametersFilter::TYPE_CITIZEN_ACTIONS !== $category) {
+        if ($category = $search->getEventCategory()) {
             $filterCategory = 'AND events.category_id = :category';
-        } else {
-            $filterCategory = '';
         }
 
         if ($search->getReferentEvents()) {
-            $filterReferentEvents = 'AND events.committee_id IS NULL AND events.citizen_project_id IS NULL';
-        } else {
-            $filterReferentEvents = '';
-        }
-
-        if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
-            $type = 'AND events.type = :type';
-        } else {
-            $type = '';
+            $filterReferentEvents = 'AND events.committee_id IS NULL';
         }
 
         $sql = preg_replace(
-            ['/__filter_query__/', '/__filter_category__/', '/__filter_referent_events__/', '/__filter_type__/'],
-            [$filterQuery, $filterCategory, $filterReferentEvents, $type],
+            ['/__filter_query__/', '/__filter_category__/', '/__filter_referent_events__/'],
+            [$filterQuery ?? '', $filterCategory ?? '', $filterReferentEvents ?? ''],
             $sql
         );
 
@@ -471,16 +438,11 @@ SQL;
             $query->setParameter('category', $category);
         }
 
-        if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
-            $query->setParameter('type', EventTypeEnum::TYPE_CITIZEN_ACTION);
-        }
-
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);
         $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
         $query->setParameter('base_event_types', [EventTypeEnum::TYPE_COMMITTEE, EventTypeEnum::TYPE_DEFAULT]);
-        $query->setParameter('citizen_action_event_type', EventTypeEnum::TYPE_CITIZEN_ACTION);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
 

@@ -66,9 +66,6 @@ class CommitteeAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDatagrid()
     {
         if (!$this->cachedDatagrid) {

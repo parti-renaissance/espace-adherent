@@ -212,10 +212,6 @@ class ManagedUserRepository extends ServiceEntityRepository
             $typeExpression->add('u.isCommitteeProvisionalSupervisor = 1');
         }
 
-        if (true === $filter->includeCitizenProjectHosts()) {
-            $typeExpression->add('json_length(u.citizenProjectsOrganizer) > 0');
-        }
-
         $qb->andWhere($typeExpression);
 
         // excludes
@@ -229,10 +225,6 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (false === $filter->includeCommitteeProvisionalSupervisors()) {
             $qb->andWhere('u.isCommitteeProvisionalSupervisor = 0');
-        }
-
-        if (false === $filter->includeCitizenProjectHosts()) {
-            $qb->andWhere('u.citizenProjectsOrganizer IS NULL OR json_length(u.citizenProjectsOrganizer) = 0');
         }
 
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {

@@ -63,9 +63,6 @@ class ElectionContext implements \Serializable
         $this->elections = $elections;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize()
     {
         return serialize(array_map(function (Election $election) {
@@ -73,9 +70,6 @@ class ElectionContext implements \Serializable
         }, $this->elections instanceof Collection ? $this->elections->toArray() : $this->elections));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unserialize($serialized)
     {
         $this->cachedElectionIds = unserialize($serialized);

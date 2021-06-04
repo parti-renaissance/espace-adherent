@@ -1,17 +1,10 @@
 <?php
 
-use App\CitizenAction\CitizenActionEvent;
-use App\CitizenProject\CitizenProjectEvent;
-use App\CitizenProject\CitizenProjectWasCreatedEvent;
-use App\CitizenProject\CitizenProjectWasUpdatedEvent;
 use App\Committee\CommitteeEvent;
 use App\Entity\Adherent;
-use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;
 use App\Event\CommitteeEventEvent;
-use App\Events;
 use App\Membership\UserEvent;
 use Behat\Behat\Context\Context;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -74,46 +67,5 @@ class SyncWithAPIContext implements Context
         $committeeEvent = $this->doctrine->getRepository(CommitteeEventEntity::class)->findOneBy(['name' => $eventName]);
 
         $this->dispatcher->dispatch(new CommitteeEventEvent(null, $committeeEvent), $event);
-    }
-
-    /**
-     * @When I dispatch the :event citizen project event with :citizenProjectName
-     */
-    public function iDispatchCitizenProjectEvent(string $event, string $citizenProjectName): void
-    {
-        /** @var CitizenProject $citizenProject */
-        $citizenProject = $this->doctrine->getRepository(CitizenProject::class)->findOneBy(['name' => $citizenProjectName]);
-
-        switch ($event) {
-            case Events::CITIZEN_PROJECT_CREATED:
-                $creator = $this->doctrine->getRepository(Adherent::class)->findOneByUuid($citizenProject->getCreatedBy());
-
-                $citizenProjectEvent = new CitizenProjectWasCreatedEvent($citizenProject, $creator);
-
-                break;
-            case Events::CITIZEN_PROJECT_UPDATED:
-                $citizenProjectEvent = new CitizenProjectWasUpdatedEvent($citizenProject);
-
-                break;
-            case Events::CITIZEN_PROJECT_DELETED:
-                $citizenProjectEvent = new CitizenProjectEvent($citizenProject);
-
-                break;
-            default:
-                throw new \Exception("The event \"$event\" is not implemented for testing.");
-        }
-
-        $this->dispatcher->dispatch($citizenProjectEvent, $event);
-    }
-
-    /**
-     * @When I dispatch the :event citizen action event with :citizenActionName
-     */
-    public function iDispatchCitizenActionEvent(string $event, string $citizenActionName): void
-    {
-        /** @var CitizenAction $citizenAction */
-        $citizenAction = $this->doctrine->getRepository(CitizenAction::class)->findOneBy(['name' => $citizenActionName]);
-
-        $this->dispatcher->dispatch(new CitizenActionEvent($citizenAction), $event);
     }
 }

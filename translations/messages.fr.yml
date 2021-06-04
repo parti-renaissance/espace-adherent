@@ -24,7 +24,6 @@ common.ordinal_number_feminine: '1ère|%count%ème'
 common.ordinal_number_masculine: '1er|%count%ème'
 common.optional: optionnel
 common.committees_count: "%count% comité|%count% comités"
-common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
 common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 common.all: Tous
@@ -104,7 +103,6 @@ jecoute_manager: Responsable des questionnaires
 assessors_manager: Responsable assesseurs
 assessor: Assesseur
 user: utilisateur
-citizen_project_holder: porteur de projet
 municipal_chief: Candidat Municipales 2020 🇫🇷
 municipal_manager: Responsable communal
 municipal_manager_supervisor: Responsable attribution
@@ -125,7 +123,6 @@ coalition_moderator: Responsables des coalitions
 role_or_mandat.adherent: Adhérent
 role_or_mandat.supervisor: Animateur local
 role_or_mandat.provisional_supervisor: Animateur local provisoire
-role_or_mandat.citizen_project_admin: Porteur de projets citoyens
 role_or_mandat.referent: Référent
 role_or_mandat.contact: Contact
 
@@ -201,10 +198,8 @@ dashboard.shortcut.contact: 🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
 dashboard.shortcut.procuration_manager_space: 🐼 Espace responsable procuration
 dashboard.shortcut.assessor_manager_space: 🐼 Espace responsable assesseur
 dashboard.shortcut.committee_coordinator_space: 🐸 Espace coordinateur de comité
-dashboard.shortcut.citizen_project_coordinator_space_space: 🐨 Espace coordinateur de projet citoyen
 dashboard.my_skills: Mes compétences
 dashboard.my_committes: Les comités dont je fais partie
-dashboard.my_citizen_projects: Mes projets citoyens
 dashboard.recent_activity: Activité récente
 dashboard.events.participantsCount: |
     {0} inscrit|
@@ -216,7 +211,6 @@ dashboard.emails.recipent: |
     {1} destinataire|
     ]1,Inf[ destinataires
 dashboard.skills.empty: Aucune compétence pour l'instant, renseignez-en <a href="%url%">ici</a>
-dashboard.citizen_project.empty: Aucun projet citoyen pour l'instant, renseignez-en <a href="%url%">ici</a>
 dashboard.activity.empty: Aucune activitée pour l'instant
 dashboard.interests.empty: Aucun intérèt pour l'instant, renseignez-en <a href="%url%">ici</a>
 dashboard.committies.empty: Aucun comité pour l'instant, ajoutez-en <a href="%url%">ici</a>
@@ -266,28 +260,6 @@ my_committees: Mes comités
 committee_host.popup.title: Charte de bonne utilisation des outils numériques
 committee_host.popup.subtitle: à l'usage des animateurs, animateurs provisoires et co-animateurs
 committee_host.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_referents_animateurs.pdf
-
-#
-# CitizenProject
-#
-citizen_project.creation.success: Votre projet citoyen est en attente de validation par nos équipes, qui vérifient qu'il entre bien en adéquation avec la Charte des Projets Citoyens.
-citizen_project.update.success: Les informations du projet citoyen ont été mises à jour avec succès.
-citizen_project.contact_actors.none: Vous n'avez sélectionné aucun acteur à contacter.
-citizen_project.contact_actors.success: Félicitations, votre message a bien été envoyé aux acteurs sélectionnés.
-citizen_project.actors_count: '%count% acteur|%count% acteurs'
-my_citizen_projects: Mes projets citoyens
-
-#
-# CitizenAction
-#
-citizen_action.creation.success: Votre action citoyenne a bien été créée.
-citizen_action.update.success: Votre action citoyenne a bien été mise à jour.
-citizen_action.participants_count: '%count% inscrit|%count% inscrits'
-citizen_action.registration.success: Votre inscription est confirmée.
-citizen_action.cancel.success: L'action citoyenne a bien été annulée.
-citizen_action.contact.none: Vous n'avez sélectionné aucun inscrit à contacter.
-citizen_action.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
-citizen_action.export.none: Aucun inscrit à l'initiative citoyenne n'a été trouvé.
 
 #
 # Summary
@@ -513,43 +485,6 @@ interactive.form.friend_email: E-mail de votre ami
 interactive.form.submit_send: Envoyer
 
 #
-# Citizen Project
-#
-citizen_project.administrators_count: "%count% porteur du projet|%count% porteurs du projet"
-citizen_project.committees: Comité en soutien|Comités en soutien
-citizen_project.search.filter_radius_citizen_projects: "{-1} Tous les projets citoyens|[1,Inf[ Dans un rayon de %count% Km"
-citizen_project.edit_project: Modifier ce projet
-citizen_project.create_image: Créer des images de promotion
-citizen_project.waiting_for_approval: |
-    Votre projet citoyen est en attente de validation par les équipes d'En Marche !
-    Vous serez alerté(e) par e-mail quand il sera validé.
-citizen_project.create_citizen_action: Créer une action citoyenne
-citizen_project.about: À propos
-citizen_project.show_more: Voir plus
-citizen_project.our_project: Notre projet
-citizen_project.show_less: Voir moins
-citizen_project.my_kit: Mon kit
-citizen_project.our_field_action: Nos actions terrain
-citizen_project.thread: Fil de discussion
-citizen_project.action_to_launch: Les actions à lancer
-citizen_project.the_problem: Le problème
-citizen_project.denied: |
-    En l'état, votre projet citoyen n'a pas été validé par nos équipes.
-    Vous pouvez à tout moment modifier ce projet ou en proposer un nouveau.
-    Pour plus d'informations, reportez-vous à <a class="link--blue" href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf">la Charte des Projets Citoyens</a>.
-citizen_project.list.title: Titre
-citizen_project.list.organisator: Organisateur
-citizen_project.list.members: Membres
-citizen_project.list.support_committees: Comités en soutien
-citizen_project.list.place: Lieu
-citizen_project.list.local_problem: Problème local adressé
-citizen_project.list.problem_answer: Réponse au problème
-citizen_project.list.roadmap: Feuille de route
-citizen_project.list.comment: Commentaire
-citizen_project.list.status: Statut
-citizen_project.created_at: Créé le %date% à %time%
-
-#
 # Errors
 #
 recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
@@ -558,9 +493,7 @@ recaptcha.error: Une erreur s'est produite, pouvez-vous réessayer ?
 # Coordinator
 #
 coordinator.sector.committee: Secteur - Comités
-coordinator.sector.citizen_project: Secteur - Projets citoyens
 coordinator.label.codes: Responsable procurations
-coordinator.label.codes.cp: REC
 coordinator.label.codes.committee: Codes des zones gérées dans le secteur "Comité"
 coordinator.placeholder.sector: Veuillez choisir un secteur
 
@@ -624,7 +557,6 @@ senator.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_
 subscription_type.group.communication_mobile: SMS/MMS
 subscription_type.group.communication_emails: Informations nationales
 subscription_type.group.territories_emails: Informations locales
-subscription_type.group.citizen_project_emails: Informations spécifiques
 
 #
 # Actualités
@@ -674,7 +606,6 @@ adherent_message.limit.senator: sénateurs
 adherent_message.filter.role.CommitteeHosts: 'Co-animateurs de comités locaux'
 adherent_message.filter.role.CommitteeProvisionalSupervisors: 'Animateurs provisoire de comités locaux'
 adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locaux'
-adherent_message.filter.role.CitizenProjectHosts: 'Porteurs de projets citoyens'
 draft: Brouillon
 sent: Envoyé
 
@@ -946,7 +877,6 @@ delegated_access.form.access.polls: Question du jour
 delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.jecoute_region: Campagne
 delegated_access.form.access.jecoute_news: Actualités
-delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
 delegated_access.form.access.institutional_events: Mes réunions privées
@@ -1062,7 +992,6 @@ adherent_commitment.debateAndProposeIdeasActions.be_consulted_on_reforms: Etre c
 adherent_commitment.debateAndProposeIdeasActions.share_knowledge: Proposer des idées ou intervenir sur la base de mon expérience ou expertise
 adherent_commitment.debateAndProposeIdeasActions.write_background_content: 'Rédiger des contenus de fond (ex : note, argumentaire)'
 
-adherent_commitment.actForTerritoryActions.engage_in_citizen_projects: M'engager dans des projets citoyens concrets
 adherent_commitment.actForTerritoryActions.reinforce_politic_commitment_neighborhoods: Renforcer l'engagement politique dans les quartiers
 adherent_commitment.actForTerritoryActions.reinforce_politic_commitment_rural_areas: Renforcer l'engagement politique dans les territoires ruraux
 adherent_commitment.actForTerritoryActions.favor_women_politic_commitment: Favoriser l’engagement politique des femmes

@@ -2,7 +2,6 @@
 
 namespace Tests\App\Serializer;
 
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\MunicipalEvent;
 use App\Serializer\EventICalHandler;
@@ -28,7 +27,7 @@ class EventIcalHandlerTest extends TestCase
     {
         $result = EventICalHandler::getSubscribingMethods();
 
-        $this->assertCount(3, $result);
+        $this->assertCount(2, $result);
 
         $this->assertEquals(CommitteeEvent::class, $result[0]['type']);
         $this->assertEquals('ical', $result[0]['format']);
@@ -39,11 +38,6 @@ class EventIcalHandlerTest extends TestCase
         $this->assertEquals('ical', $result[1]['format']);
         $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[1]['direction']);
         $this->assertEquals('serialize', $result[1]['method']);
-
-        $this->assertEquals(CitizenAction::class, $result[2]['type']);
-        $this->assertEquals('ical', $result[2]['format']);
-        $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[2]['direction']);
-        $this->assertEquals('serialize', $result[2]['method']);
     }
 
     /**

@@ -9,7 +9,6 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Administrator;
-use App\Entity\CitizenProject;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CauseFollower;
 use App\Entity\Committee;
@@ -20,7 +19,6 @@ use App\Entity\Donator;
 use App\Entity\DonatorIdentifier;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email;
-use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Event\InstitutionalEvent;
@@ -48,7 +46,6 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
 use App\Entity\TonMacronChoice;
 use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
-use App\Entity\TurnkeyProject;
 use App\Entity\UserListDefinition;
 use App\Membership\ActivityPositions;
 use App\Repository\AdherentActivationTokenRepository;
@@ -56,8 +53,6 @@ use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\AdherentResetPasswordTokenRepository;
 use App\Repository\AdministratorRepository;
-use App\Repository\CitizenActionRepository;
-use App\Repository\CitizenProjectRepository;
 use App\Repository\Coalition\CauseFollowerRepository;
 use App\Repository\Coalition\CauseRepository;
 use App\Repository\CommitteeFeedItemRepository;
@@ -92,7 +87,6 @@ use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\TonMacronChoiceRepository;
 use App\Repository\TonMacronFriendInvitationRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\TurnkeyProjectRepository;
 use App\Repository\UserListDefinitionRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -180,21 +174,6 @@ trait TestHelperTrait
     public function getCommitteeRepository(): CommitteeRepository
     {
         return $this->getRepository(Committee::class);
-    }
-
-    public function getCitizenProjectRepository(): CitizenProjectRepository
-    {
-        return $this->getRepository(CitizenProject::class);
-    }
-
-    public function getTurnkeyProjectRepository(): TurnkeyProjectRepository
-    {
-        return $this->getRepository(TurnkeyProject::class);
-    }
-
-    public function getCitizenActionRepository(): CitizenActionRepository
-    {
-        return $this->getRepository(CitizenAction::class);
     }
 
     public function getEventRepository(): EventRepository
@@ -380,11 +359,6 @@ trait TestHelperTrait
     public function getCommitteeMandateRepository(): CommitteeAdherentMandateRepository
     {
         return $this->getRepository(CommitteeAdherentMandate::class);
-    }
-
-    protected function getCitizenProject(string $uuid): ?CitizenProject
-    {
-        return $this->getCitizenProjectRepository()->findOneByUuid($uuid);
     }
 
     public function getCauseRepository(): CauseRepository
