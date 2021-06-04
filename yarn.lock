@@ -6619,10 +6619,10 @@ react-csv@^1.0.5:
   resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.1.2.tgz#6cb47e625f51878d24bb68a120efb45a30ad243a"
   integrity sha512-pTOTYntW+gQWzCxyEGfS5ZeOfQw4Mu3B+DJd4jrJKNuAWFQ+EEyF2Earfg0+FVEkPwMr62OLtbYCHmc6vQWj2w==
 
-react-data-grid@^2.0.6:
-  version "2.0.80"
-  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-2.0.80.tgz#e6ee6eb33ac9421ec8bd7ddb760f43537f6a1c1d"
-  integrity sha1-5u5uszrJQh7IvX3bdg9DU39qHB0=
+react-data-grid@^3.0.11:
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-3.0.11.tgz#06329d1548a29de43b314dc51016f972ca34750a"
+  integrity sha1-BjKdFUiineQ7MU3FEBb5cso0dQo=
 
 react-dom@^17.0.2:
   version "17.0.2"
