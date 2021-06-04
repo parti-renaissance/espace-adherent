@@ -143,7 +143,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             },
  *         },
  *         "post": {
- *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "access_control": "is_granted('ROLE_USER')",
  *             "path": "/v3/events",
  *             "validation_groups": {"Default", "api_put_validation"},
  *             "denormalization_context": {
