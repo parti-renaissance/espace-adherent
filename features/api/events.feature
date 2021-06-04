@@ -413,3 +413,13 @@ Feature:
       | items[0].organizer.uuid       | 2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf  |
       | items[0].organizer.first_name | Referent75and77                       |
       | items[0].organizer.last_name  | Referent75and77                       |
+
+  Scenario: As a logged-in user i can not delete an event of another adherent
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+    When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user i can delete one of my events
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
+    Then the response status code should be 204

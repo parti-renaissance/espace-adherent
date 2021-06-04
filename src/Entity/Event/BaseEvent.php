@@ -104,6 +104,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events/{id}",
  *             "access_control": "object.getAuthor() == user",
  *         },
+ *         "delete": {
+ *             "path": "/v3/events/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getAuthor() == user",
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Event.",
+ *                         "example": "de7982c4-3729-4f9d-9587-376df25354c3",
+ *                     },
+ *                 },
+ *             },
+ *         },
  *         "subscribe": {
  *             "method": "POST|DELETE",
  *             "path": "/v3/events/{uuid}/subscribe",
