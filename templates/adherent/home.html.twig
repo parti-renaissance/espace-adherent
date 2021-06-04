@@ -89,7 +89,7 @@
                                 </div>
 
                                 <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
-                                    <a class="link--no-decor" href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}">
+                                    <a class="link--no-decor" href="{{ path('app_committee_event_show', { slug: event.slug }) }}">
                                         {{ event.name }}
                                     </a>
                                 </h2>
@@ -114,7 +114,7 @@
                                         Cet événement est annulé
                                     </div>
                                 {% elseif not event.full %}
-                                    <a href="{{ path(generate_event_route_name(event, 'event_show'), { slug: event.slug }) }}"
+                                    <a href="{{ path('app_committee_event_show', { slug: event.slug }) }}"
                                        class="btn btn--blue" target="_blank" rel="noopener noreferrer">
                                         Participer
                                     </a>
