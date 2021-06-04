@@ -4,7 +4,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behatch\Context\JsonContext as BehatchJsonContext;
 use Coduo\PHPMatcher\PHPUnit\PHPMatcherAssertions;
-use PHPUnit\Framework\Assert;
+use Tests\App\Test\Helper\PHPUnitHelper;
 
 class JsonContext extends BehatchJsonContext
 {
@@ -57,6 +57,6 @@ class JsonContext extends BehatchJsonContext
     public function theJsonIsASupersetOf(PyStringNode $content)
     {
         $actual = json_decode($this->httpCallResultPool->getResult()->getValue(), true);
-        Assert::assertArraySubset(json_decode($content->getRaw(), true), $actual);
+        PHPUnitHelper::assertArraySubset(json_decode($content->getRaw(), true), $actual);
     }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
@@ -70,13 +71,13 @@ class CommitteesControllerTest extends WebTestCase
 
         self::assertCount(2, $data['candidacies']);
 
-        self::assertArraySubset([
+        PHPUnitHelper::assertArraySubset([
             'gender' => 'male',
             'first_name' => 'Bob',
             'last_name' => 'Assesseur',
         ], $data['candidacies'][0]);
 
-        self::assertArraySubset([
+        PHPUnitHelper::assertArraySubset([
             'photo' => null,
             'gender' => 'male',
             'first_name' => 'Carl',

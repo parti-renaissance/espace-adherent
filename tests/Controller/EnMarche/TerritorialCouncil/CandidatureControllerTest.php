@@ -11,6 +11,7 @@ use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Mandrill\MailAssertTrait;
+use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
@@ -95,7 +96,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $values = $form->getValues();
 
-        $this->assertArraySubset([
+        PHPUnitHelper::assertArraySubset([
             'territorial_council_candidacy[biography]' => 'Voluptas ea rerum eligendi rerum ipsum optio iusto qui. Harum minima labore tempore odio doloribus sint nihil veniam. Sint voluptas et ea cum ipsa aut. Odio ut sequi at optio mollitia asperiores voluptas.',
             'territorial_council_candidacy[faithStatement]' => 'Eum earum explicabo assumenda nesciunt hic ea. Veniam magni assumenda ab fugiat dolores consequatur voluptatem. Recusandae explicabo quia voluptatem magnam.',
         ], $values);
