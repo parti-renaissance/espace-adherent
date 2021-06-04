@@ -234,13 +234,10 @@ trait ControllerTestTrait
         $this->hosts = [
             'scheme' => static::$container->getParameter('router.request_context.scheme'),
             'app' => static::$container->getParameter('app_host'),
-            'amp' => static::$container->getParameter('amp_host'),
             'legislatives' => static::$container->getParameter('legislatives_host'),
         ];
 
         $this->client = $this->makeClient(['HTTP_HOST' => $this->hosts[$host]]);
-
-//        static::$container = $this->getContainer();
         $this->manager = static::$container->get('doctrine.orm.entity_manager');
 
         // delete all scheduled emails

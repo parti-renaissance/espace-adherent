@@ -22,7 +22,7 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up config/packages/assets_version.yaml db rabbitmq-fabric public/built assets-amp var/public.key perm  ## Install and start the project
+start: build up config/packages/assets_version.yaml db rabbitmq-fabric public/built var/public.key perm  ## Install and start the project
 
 start-mac: build up config/packages/assets_version.yaml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
 
@@ -112,9 +112,6 @@ assets: node_modules                                                            
 assets-prod: node_modules                                                                              ## Build the production version of the assets
 	$(EXEC) yarn build-prod
 
-assets-amp: node_modules                                                                               ## Build the production version of the AMP CSS
-	$(EXEC) yarn build-amp
-
 assets-apps: node_modules                                                                              ## Build the production version of the React apps
 	$(EXEC) yarn build-apps
 
@@ -143,7 +140,7 @@ tu: vendor config/packages/assets_version.yaml                                  
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
 
-tfp: assets-amp assets-prod assets-apps vendor perm tfp-rabbitmq tfp-db                                ## Prepare the PHP functional tests
+tfp: assets-prod assets-apps vendor perm tfp-rabbitmq tfp-db                                           ## Prepare the PHP functional tests
 
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true

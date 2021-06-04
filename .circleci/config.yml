@@ -61,7 +61,7 @@ jobs:
                 make build
 
                 make up
-                make -j2 node_modules assets-prod assets-amp assets-apps var/public.key
+                make -j2 node_modules assets-prod assets-apps var/public.key
                 make vendor cc
 
                 gcloud docker -- push $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5

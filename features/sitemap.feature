@@ -13,13 +13,12 @@ Feature:
   Scenario: The global sitemap displays correctly
     Given I am on "/sitemap.xml"
     Then the response should be in XML
-    And the XML element "//sitemapindex" should have 6 element
+    And the XML element "//sitemapindex" should have 5 element
     And the XML element "//sitemap[1]/loc" should be equal to "http://test.enmarche.code/sitemap_main_1.xml"
     And the XML element "//sitemap[2]/loc" should be equal to "http://test.enmarche.code/sitemap_content_1.xml"
     And the XML element "//sitemap[3]/loc" should be equal to "http://test.enmarche.code/sitemap_images_1.xml"
     And the XML element "//sitemap[4]/loc" should be equal to "http://test.enmarche.code/sitemap_committees_1.xml"
     And the XML element "//sitemap[5]/loc" should be equal to "http://test.enmarche.code/sitemap_events_1.xml"
-    And the XML element "//sitemap[6]/loc" should be equal to "http://test.m.enmarche.code/sitemap.xml"
 
   Scenario: The main sitemap displays correctly
     Given I am on "/sitemap_main_1.xml"

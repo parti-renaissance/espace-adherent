@@ -64,13 +64,6 @@ trait EntityContentTrait
      */
     private $content;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $ampContent;
-
     public function __toString(): string
     {
         return $this->title ?: '';
@@ -124,16 +117,6 @@ trait EntityContentTrait
     public function setContent(?string $content): void
     {
         $this->content = $content;
-    }
-
-    public function getAmpContent(): ?string
-    {
-        return $this->ampContent;
-    }
-
-    public function setAmpContent(?string $ampContent): void
-    {
-        $this->ampContent = $ampContent;
     }
 
     public function getKeywords(): ?string

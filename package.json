@@ -1,7 +1,6 @@
 {
   "name": "enmarche_fr",
   "scripts": {
-    "build-amp": "node_modules/.bin/node-sass --output-style compressed front/style/amp.scss > templates/amp/style.css.twig",
     "build-prod": "node_modules/.bin/webpack --config webpack.production.js",
     "build-apps": "bin/build-react-apps.js",
     "build-dev": "node_modules/.bin/webpack --config webpack.development.js",

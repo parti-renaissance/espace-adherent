@@ -23,8 +23,4 @@ interface EntityContentInterface
     public function getContent(): ?string;
 
     public function setContent(?string $content): void;
-
-    public function getAmpContent(): ?string;
-
-    public function setAmpContent(?string $ampContent): void;
 }

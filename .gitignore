@@ -4,7 +4,6 @@
 /app/data/chez-vous/
 /app/data/timeline/
 /app/data/user_documents/
-/templates/amp/style.css.twig
 /templates/jquery.collection.html.twig
 /build/
 /var/
