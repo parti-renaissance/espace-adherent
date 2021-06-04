@@ -11,6 +11,7 @@ Feature:
       | LoadCoalitionEventData  |
       | LoadCauseEventData      |
       | LoadAdherentData        |
+      | LoadUserData            |
       | LoadClientData          |
 
   Scenario: As a non logged-in user I see coalition events
@@ -319,7 +320,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can not create a coalition event with invalid data
+  Scenario: As a logged-in adherent I can not create a coalition event with invalid data
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
@@ -333,7 +334,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
       "detail": "coalition: Cette valeur ne doit pas être vide.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: Cette valeur ne doit pas être vide.\nfinish_at: Cette valeur ne doit pas être vide.",
       "violations": [
@@ -365,7 +366,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can create a coalition event
+  Scenario: As a logged-in adherent I can create a coalition event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scopes "write:event"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
@@ -437,6 +438,34 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can create a coalition event
+    Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scopes "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "type": "coalition",
+       "name": "My coalition event",
+       "description": "Description",
+       "time_zone": "Europe/Paris",
+       "begin_at": "2022-04-29 16:30:30",
+       "finish_at": "2022-04-30 16:30:30",
+       "category": "kiosque",
+       "mode": "online",
+       "visio_url": "http://visio.fr",
+       "image_url": null,
+       "post_address": {
+          "address": "50 rue de la villette",
+          "postal_code": "69003",
+          "city_name": "Lyon 3e",
+          "country": "FR"
+      },
+       "coalition": "fc7fd104-71e5-4399-a874-f8fe752f846b"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+
   Scenario: As a logged-in user I can edit a coalition event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scopes "write:event"
     When I add "Content-Type" header equal to "application/json"
@@ -480,7 +509,7 @@ Feature:
       "name": "Nouvel objectif",
       "slug": "2022-05-15-nouvel-objectif",
       "description": "Nouvelle description",
-      "time_zone": "Europe\/Paris",
+      "time_zone": "Europe/Paris",
       "begin_at": "2022-05-15T16:30:30+02:00",
       "finish_at": "2022-05-16T16:30:30+02:00",
       "organizer": {
@@ -552,7 +581,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can create a cause event
+  Scenario: As a logged-in adherent I can create a cause event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
@@ -628,6 +657,33 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can create a cause event
+    Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "type": "cause",
+       "name": "My cause event",
+       "description": "Description",
+       "time_zone": "Europe/Paris",
+       "begin_at": "2022-05-29 10:30:30",
+       "finish_at": "2022-05-29 16:30:30",
+       "category": "kiosque",
+       "mode": "online",
+       "visio_url": "http://visio.fr",
+       "post_address": {
+          "address": "50 rue de la villette",
+          "postal_code": "69003",
+          "city_name": "Lyon 3e",
+          "country": "FR"
+      },
+       "cause": "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+
   Scenario: As a logged-in user I can edit a cause event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scope "write:event"
     When I add "Content-Type" header equal to "application/json"
@@ -676,7 +732,7 @@ Feature:
       "name": "Nouvel objectif",
       "slug": "2022-05-12-nouvel-objectif",
       "description": "Nouvelle description",
-      "time_zone": "Europe\/Paris",
+      "time_zone": "Europe/Paris",
       "begin_at": "2022-05-12T10:30:30+02:00",
       "finish_at": "2022-05-12T16:30:30+02:00",
       "organizer": {
@@ -740,7 +796,7 @@ Feature:
           "name": "Événement culturel 1 de la cause culturelle 1",
           "slug": "@string@-evenement-culturel-1-de-la-cause-culturelle-1",
           "description": "C'est un événement culturel de la cause",
-          "time_zone": "Europe\/Paris",
+          "time_zone": "Europe/Paris",
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
@@ -786,7 +842,7 @@ Feature:
           "name": "Événement culturel 2 de la cause culturelle 1",
           "slug": "@string@-evenement-culturel-2-de-la-cause-culturelle-1",
           "description": "Un autre événement culturel",
-          "time_zone": "Europe\/Paris",
+          "time_zone": "Europe/Paris",
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
           "organizer": {
