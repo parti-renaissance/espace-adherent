@@ -142,6 +142,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\EventImageController",
  *         },
+ *         "cancel": {
+ *             "path": "/v3/events/{uuid}/cancel",
+ *             "method": "PUT",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Event\CancelEventController",
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {

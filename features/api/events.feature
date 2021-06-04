@@ -403,3 +403,22 @@ Feature:
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
     Then the response status code should be 204
+
+  Scenario: As a logged-in user i can not cancel an event of another adherent
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+    When I send a "PUT" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8/cancel"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user i can cancel my event
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "PUT" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8/cancel"
+    Then the response status code should be 200
+
+  Scenario: As logged-in user i can not cancel an already cancelled event
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "PUT" request to "/api/v3/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e/cancel"
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | title  | An error occurred |
+      | detail  | this event is already cancelled |
