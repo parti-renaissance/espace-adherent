@@ -70,6 +70,7 @@ export default class AdherentCommitteeList extends React.Component {
                             <div>
                                 <a className="link--no-decor link--blue--dark"
                                     href={`/comites/${membership.committee.slug}`}
+                                    rel="noopener noreferrer"
                                     target="_blank"
                                 >
                                     {membership.committee.name}
