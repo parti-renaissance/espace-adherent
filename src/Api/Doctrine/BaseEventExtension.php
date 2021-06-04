@@ -22,7 +22,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
-        $this->modifyQuery($queryBuilder);
+        $this->modifyQuery($queryBuilder, BaseEvent::STATUSES);
     }
 
     public function applyToCollection(
@@ -36,10 +36,10 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         }
 
         $alias = $queryBuilder->getRootAliases()[0];
-        $this->modifyQuery($queryBuilder, $alias);
+        $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $alias);
     }
 
-    private function modifyQuery(QueryBuilder $queryBuilder, string $alias = null): void
+    private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, string $alias = null): void
     {
         if (!$alias) {
             $alias = $queryBuilder->getRootAliases()[0];
@@ -49,7 +49,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             ->andWhere("$alias.published = :true")
             ->andWhere("$alias.status IN (:statuses)")
             ->setParameter('true', true)
-            ->setParameter('statuses', BaseEvent::ACTIVE_STATUSES)
+            ->setParameter('statuses', $statuses)
         ;
     }
 }
