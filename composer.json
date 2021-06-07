@@ -106,7 +106,7 @@
         "symfony/monolog-bundle": "^3.6",
         "symfony/property-info": "^4.4",
         "symfony/proxy-manager-bridge": "^4.4",
-        "symfony/psr-http-message-bridge": "^1.0",
+        "symfony/psr-http-message-bridge": "^2.1",
         "symfony/routing": "^4.4",
         "symfony/security": "^4.4",
         "symfony/security-bundle": "^4.4",
