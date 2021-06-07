@@ -122,7 +122,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "subscribe": {
  *             "method": "POST|DELETE",
  *             "path": "/v3/events/{uuid}/subscribe",
- *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "access_control": "is_granted('ROLE_USER')",
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Event\SubscribeAsAdherentController",
  *             "requirements": {"uuid": "%pattern_uuid%"}
