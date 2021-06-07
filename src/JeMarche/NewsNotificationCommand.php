@@ -5,7 +5,7 @@ namespace App\JeMarche;
 use App\Messenger\Message\AsynchronousMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class NotificationCommand implements AsynchronousMessageInterface
+class NewsNotificationCommand implements AsynchronousMessageInterface
 {
     private $uuid;
 

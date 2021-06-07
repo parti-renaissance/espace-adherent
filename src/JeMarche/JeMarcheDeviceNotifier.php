@@ -14,8 +14,8 @@ class JeMarcheDeviceNotifier
         $this->bus = $bus;
     }
 
-    public function sendNotification(News $news): void
+    public function sendNewsNotification(News $news): void
     {
-        $this->bus->dispatch(new NotificationCommand($news->getUuid()));
+        $this->bus->dispatch(new NewsNotificationCommand($news->getUuid()));
     }
 }
