@@ -99,7 +99,7 @@
         "symfony/http-client": "^4.4",
         "symfony/http-foundation": "^4.4",
         "symfony/http-kernel": "^4.4",
-        "symfony/inflector": "^4.4",
+        "symfony/inflector": "^5.3",
         "symfony/intl": "^4.4",
         "symfony/messenger": "^4.4",
         "symfony/monolog-bridge": "^4.4",
