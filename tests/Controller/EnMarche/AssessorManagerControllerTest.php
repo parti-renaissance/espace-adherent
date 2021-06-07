@@ -11,6 +11,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
@@ -594,7 +595,7 @@ class AssessorManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $lines = $this->transformToArray($this->client->getResponse()->getContent());
 
-        $this->assertArraySubset(
+        PHPUnitHelper::assertArraySubset(
             [
                 'Ville du bureau de vote',
                 'Nom du bureau vote',
@@ -618,7 +619,7 @@ class AssessorManagerControllerTest extends WebTestCase
             $lines[0]
         );
 
-        $this->assertArraySubset(
+        PHPUnitHelper::assertArraySubset(
             [
                 'Saint-Denis',
                 'Ecole Maternelle La Source',
@@ -632,7 +633,7 @@ class AssessorManagerControllerTest extends WebTestCase
                 '04/02/1992',
                 'Paris',
                 '70 Rue Saint-Martin',
-                '93008',
+                93008,
                 'Paris',
                 '93008_0005',
                 'Bobigny',

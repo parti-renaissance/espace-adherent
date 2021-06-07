@@ -6,6 +6,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
@@ -26,7 +27,7 @@ class StatsControllerTest extends WebTestCase
 
         $data = \GuzzleHttp\json_decode($content, true);
 
-        $this->assertArraySubset([
+        PHPUnitHelper::assertArraySubset([
             'userCount' => 63,
             'eventCount' => 20,
             'committeeCount' => 13,

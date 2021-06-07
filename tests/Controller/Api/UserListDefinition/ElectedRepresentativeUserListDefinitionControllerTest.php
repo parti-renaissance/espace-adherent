@@ -8,6 +8,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
@@ -91,7 +92,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
 
         $this->assertCount(2, $data);
         $this->assertArrayHasKey(0, $data);
-        $this->assertArraySubset([
+        PHPUnitHelper::assertArraySubset([
             'id' => 4,
             'type' => 'elected_representative',
             'code' => 'instances_member',
