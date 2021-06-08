@@ -31,10 +31,10 @@ class DeviceSubscriber implements EventSubscriberInterface
     public function preDeserialize(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        $route = $request->attributes->get('_route');
+        $operationName = $request->attributes->get('_api_item_operation_name');
         $device = $request->get('data');
 
-        if (!\in_array($route, ['api_devices_put_item']) || !$device instanceof Device) {
+        if ('put' !== $operationName || !$device instanceof Device) {
             return;
         }
 
