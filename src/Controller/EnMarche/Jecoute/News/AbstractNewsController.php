@@ -98,7 +98,7 @@ abstract class AbstractNewsController extends AbstractController
      *     methods={"GET|POST"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', news)")
+     * @Security("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)")
      */
     public function jecouteNewsEditAction(Request $request, News $news, ObjectManager $manager): Response
     {
