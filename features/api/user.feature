@@ -51,6 +51,7 @@ Feature:
       {
         "uuid": "@string@",
         "device_uuid": "dd4SOCS-4UlCtO-gZiQGDA",
+        "postal_code": null,
         "surveys": {
           "total": 0,
           "last_month": 0

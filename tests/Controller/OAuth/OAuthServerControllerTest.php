@@ -67,7 +67,7 @@ class OAuthServerControllerTest extends WebTestCase
 
     public function testRequestAccessTokenWithDeviceId(): void
     {
-        self::assertCount(0, $this->deviceRepository->findAll());
+        self::assertCount(2, $this->deviceRepository->findAll());
 
         // 1st request with refresh token must be successful and create a device in database
         $this->client->request('POST', '/oauth/v2/token', [
@@ -79,8 +79,10 @@ class OAuthServerControllerTest extends WebTestCase
         ]);
 
         $this->isSuccessful($this->client->getResponse());
-        self::assertCount(1, $devices = $this->deviceRepository->findAll());
-        self::assertSame('dd4SOCS-4UlCtO-gZiQGDA', $devices[0]->getIdentifier());
+        self::assertCount(3, $devices = $this->deviceRepository->findAll());
+
+        $newDevice = $this->deviceRepository->findOneBy(['deviceUuid' => 'dd4SOCS-4UlCtO-gZiQGDA']);
+        self::assertSame('dd4SOCS-4UlCtO-gZiQGDA', $newDevice->getIdentifier());
 
         // 2nd request must be successful and not create a second device in database
         $this->client->request('POST', '/oauth/v2/token', [
@@ -92,7 +94,7 @@ class OAuthServerControllerTest extends WebTestCase
         ]);
 
         $this->isSuccessful($this->client->getResponse());
-        self::assertCount(1, $this->deviceRepository->findAll());
+        self::assertCount(3, $this->deviceRepository->findAll());
     }
 
     public function testRequestAccessTokenWithValidAndInvalidRefreshToken(): void

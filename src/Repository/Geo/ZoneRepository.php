@@ -375,10 +375,11 @@ class ZoneRepository extends ServiceEntityRepository
     public function findOneByPostalCode(string $postalCode): ?Zone
     {
         return $this->createQueryBuilder('zone')
-            ->where('zone.postalCode LIKE :postal_code')
+            ->where('zone.postalCode LIKE :postal_code_1 or zone.postalCode LIKE :postal_code_2')
             ->andWhere('zone.type IN (:zone_types)')
             ->setParameters([
-                'postal_code' => '%'.$postalCode.'%',
+                'postal_code_1' => $postalCode.'%',
+                'postal_code_2' => '%,'.$postalCode.'%',
                 'zone_types' => [Zone::CITY, Zone::BOROUGH],
             ])
             ->setMaxResults(1)
