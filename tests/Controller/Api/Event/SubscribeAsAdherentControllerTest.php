@@ -23,8 +23,11 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
     use ApiControllerTestTrait;
 
     /** @dataProvider provideEvents */
-    public function testConnectedUserCanSubscribeAndUnsubscribeOnEvent(string $eventUuid, string $userEmail)
-    {
+    public function testConnectedUserCanSubscribeAndUnsubscribeOnEvent(
+        string $eventUuid,
+        string $userEmail,
+        string $messageClass
+    ) {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_11_UUID,
             'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
@@ -39,6 +42,7 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
         ]);
 
         $this->isSuccessful($this->client->getResponse());
+        $this->assertCountMails(1, $messageClass, $userEmail);
 
         $this->client->request(Request::METHOD_POST, sprintf('/api/v3/events/%s/subscribe', $eventUuid), [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
@@ -55,12 +59,12 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
 
     public function provideEvents(): iterable
     {
-        yield [LoadCoalitionEventData::EVENT_1_UUID, 'simple-user@example.ch'];
-        yield [LoadCauseEventData::EVENT_1_UUID, 'simple-user@example.ch'];
-        yield [LoadCommitteeEventData::EVENT_1_UUID, 'simple-user@example.ch'];
-        yield [LoadCoalitionEventData::EVENT_1_UUID, 'carl999@example.fr'];
-        yield [LoadCauseEventData::EVENT_1_UUID, 'carl999@example.fr'];
-        yield [LoadCommitteeEventData::EVENT_1_UUID, 'carl999@example.fr'];
+        yield [LoadCoalitionEventData::EVENT_1_UUID, 'simple-user@example.ch', 'CoalitionsEventRegistrationConfirmationMessage'];
+        yield [LoadCauseEventData::EVENT_1_UUID, 'simple-user@example.ch', 'CoalitionsEventRegistrationConfirmationMessage'];
+        yield [LoadCommitteeEventData::EVENT_1_UUID, 'simple-user@example.ch', 'EventRegistrationConfirmationMessage'];
+        yield [LoadCoalitionEventData::EVENT_1_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
+        yield [LoadCauseEventData::EVENT_1_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
+        yield [LoadCommitteeEventData::EVENT_1_UUID, 'carl999@example.fr', 'EventRegistrationConfirmationMessage'];
     }
 
     protected function setUp(): void

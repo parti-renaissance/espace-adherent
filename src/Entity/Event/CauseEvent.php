@@ -49,4 +49,19 @@ class CauseEvent extends BaseEvent
     {
         $this->cause = $cause;
     }
+
+    public function isCoalitionsEvent(): bool
+    {
+        return true;
+    }
+
+    public function needNotifyForRegistration(): bool
+    {
+        return true;
+    }
+
+    public function needNotifyForCancellation(): bool
+    {
+        return true;
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;
@@ -35,5 +37,10 @@ class EventEvent extends Event implements GeocodableEntityEventInterface
     public function getGeocodableEntity(): GeocodableInterface
     {
         return $this->event;
+    }
+
+    public function isCoalitionsEvent(): bool
+    {
+        return $this->event instanceof CauseEvent || $this->event instanceof CoalitionEvent;
     }
 }

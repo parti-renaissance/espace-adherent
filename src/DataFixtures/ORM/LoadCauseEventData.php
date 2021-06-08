@@ -8,6 +8,7 @@ use App\Entity\Event\CauseEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
 use App\Event\EventFactory;
+use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -58,6 +59,7 @@ class LoadCauseEventData extends Fixture implements DependentFixtureInterface
             (new Chronos('+6 days'))->format('Y-m-d').' 09:00:00',
             (new Chronos('+6 days'))->format('Y-m-d').' 18:00:00'
         );
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCulture1, $adherent3)));
 
         $eventCulture2 = $this->createEvent(
             self::EVENT_2_UUID,

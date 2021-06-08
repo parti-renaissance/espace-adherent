@@ -42,7 +42,10 @@ class SubscribeAsAnonymousController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->handler->handle($command, false);
+        $this->handler->handle(
+            $command,
+            $event->needNotifyForRegistration()
+        );
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

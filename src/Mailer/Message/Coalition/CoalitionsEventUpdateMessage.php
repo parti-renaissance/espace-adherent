@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Coalition;
 
-use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class EventUpdateMessage extends Message
+final class CoalitionsEventUpdateMessage extends AbstractCoalitionMessage
 {
-    public static function create(
-        array $recipients,
-        Adherent $host,
-        CommitteeEvent $event,
-        string $eventUrl,
-        string $icalEventUrl
-    ): self {
+    public static function create(array $recipients, BaseEvent $event, string $eventUrl): Message
+    {
         if (!$recipients) {
-            throw new \InvalidArgumentException('At least one Adherent recipient is required.');
+            throw new \InvalidArgumentException('At least one recipient is required.');
         }
 
         $recipient = array_shift($recipients);
@@ -28,26 +23,25 @@ final class EventUpdateMessage extends Message
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
-            $recipient->getFirstName().' '.$recipient->getLastName(),
-            'Un événement auquel vous participez a été mis à jour',
-            static::getTemplateVars($event, $eventUrl, $icalEventUrl),
-            static::getRecipientVars($recipient),
-            $host->getEmailAddress()
+            $recipient->getFirstName(),
+            '✊ Un événement a été modifié',
+            static::getTemplateVars($event, $eventUrl),
+            static::getRecipientVars($recipient)
         );
 
         /* @var EventRegistration[] $recipients */
         foreach ($recipients as $recipient) {
             $message->addRecipient(
                 $recipient->getEmailAddress(),
-                $recipient->getFirstName().' '.$recipient->getLastName(),
+                $recipient->getFirstName(),
                 static::getRecipientVars($recipient)
             );
         }
 
-        return $message;
+        return self::updateSenderInfo($message);
     }
 
-    private static function getTemplateVars(CommitteeEvent $event, string $eventUrl, string $icalEventUrl): array
+    private static function getTemplateVars(BaseEvent $event, string $eventUrl): array
     {
         return [
             'event_name' => self::escape($event->getName()),
@@ -59,7 +53,7 @@ final class EventUpdateMessage extends Message
                 static::formatDate($event->getLocalBeginAt(), 'mm')
             ),
             'event_address' => $event->getInlineFormattedAddress(),
-            'calendar_url' => $icalEventUrl,
+            'event_visio_url' => $event->getVisioUrl(),
         ];
     }
 

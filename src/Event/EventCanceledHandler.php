@@ -14,10 +14,6 @@ class EventCanceledHandler
     private $dispatcher;
     private $manager;
 
-    private const EVENTS_MAPPING = [
-        CommitteeEvent::class => Events::EVENT_CANCELLED,
-    ];
-
     public function __construct(EventDispatcherInterface $dispatcher, ObjectManager $manager)
     {
         $this->dispatcher = $dispatcher;
@@ -30,20 +26,19 @@ class EventCanceledHandler
 
         $this->manager->flush();
 
-        if (\array_key_exists($className = \get_class($event), self::EVENTS_MAPPING)) {
+        if ($event->needNotifyForCancellation()) {
             $this->dispatcher->dispatch(
                 $this->createDispatchedEvent($event),
-                self::EVENTS_MAPPING[$className],
+                Events::EVENT_CANCELLED,
             );
         }
     }
 
     private function createDispatchedEvent(BaseEvent $event): Event
     {
-        return new CommitteeEventEvent(
-            $event->getOrganizer(),
-            $event,
-            $event->getCommittee()
-        );
+        return $event instanceof CommitteeEvent
+            ? new CommitteeEventEvent($event->getOrganizer(), $event, $event->getCommittee())
+            : new EventEvent($event->getOrganizer(), $event)
+        ;
     }
 }

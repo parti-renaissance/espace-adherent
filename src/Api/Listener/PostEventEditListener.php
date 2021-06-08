@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Coalition\Api\Listener;
+namespace App\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Event\BaseEvent;
@@ -23,10 +23,10 @@ class PostEventEditListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [KernelEvents::VIEW => ['updateAddressRelatedData', EventPriorities::POST_WRITE]];
+        return [KernelEvents::VIEW => ['onEventChange', EventPriorities::POST_WRITE]];
     }
 
-    public function updateAddressRelatedData(ViewEvent $viewEvent): void
+    public function onEventChange(ViewEvent $viewEvent): void
     {
         /** @var BaseEvent $event */
         $event = $viewEvent->getControllerResult();

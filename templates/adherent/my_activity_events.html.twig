@@ -51,8 +51,12 @@
                                     {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
 
-                                {% if event.committee %}
+                                {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
+                                {% elseif event is instanceof('App\\Entity\\Event\\CauseEvent') and event.cause %}
+                                    <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ event.cause.name }}</span></div>
+                                {% elseif event is instanceof('App\\Entity\\Event\\CoalitionEvent') and event.coalition %}
+                                    <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ event.coalition.name }}</span></div>
                                 {% elseif event.organizer %}
                                     <div class="text--body">Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span></div>
                                 {% endif %}

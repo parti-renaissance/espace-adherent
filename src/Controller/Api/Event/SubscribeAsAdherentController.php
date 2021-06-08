@@ -5,28 +5,34 @@ namespace App\Controller\Api\Event;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationEvent;
 use App\Event\EventRegistrationFactory;
+use App\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SubscribeAsAdherentController extends AbstractController
 {
     private $entityManager;
     private $eventRegistrationFactory;
     private $validator;
+    private $dispatcher;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         EventRegistrationFactory $eventRegistrationFactory,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->entityManager = $entityManager;
         $this->eventRegistrationFactory = $eventRegistrationFactory;
         $this->validator = $validator;
+        $this->dispatcher = $dispatcher;
     }
 
     public function __invoke(Request $request, BaseEvent $event, UserInterface $adherent): Response
@@ -53,8 +59,14 @@ class SubscribeAsAdherentController extends AbstractController
         }
 
         $event->incrementParticipantsCount();
-        $this->entityManager->persist($this->eventRegistrationFactory->createFromCommand($command));
+        $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new EventRegistrationEvent(
+            $registration,
+            $event->getSlug(),
+            true
+        ), Events::EVENT_REGISTRATION_CREATED);
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

@@ -49,4 +49,19 @@ class CoalitionEvent extends BaseEvent
     {
         $this->coalition = $coalition;
     }
+
+    public function isCoalitionsEvent(): bool
+    {
+        return true;
+    }
+
+    public function needNotifyForRegistration(): bool
+    {
+        return true;
+    }
+
+    public function needNotifyForCancellation(): bool
+    {
+        return true;
+    }
 }

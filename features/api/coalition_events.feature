@@ -437,6 +437,7 @@ Feature:
       "image_url": null
     }
     """
+    And I should have 0 email
 
   Scenario: As a logged-in user I can create a coalition event
     Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scopes "write:event"
@@ -656,6 +657,131 @@ Feature:
       "image_url": null
     }
     """
+    And I should have 1 email
+    And I should have 1 email "CauseEventCreationMessage" for "jacques.picard@en-marche.fr" with payload:
+    """
+    {
+      "template_name": "cause-event-creation",
+      "template_content": [],
+      "message": {
+        "subject": "✊ Nouvel événement sur une cause que vous soutenez",
+        "from_email": "contact@pourunecause.fr",
+        "global_merge_vars": [
+          {
+            "name": "cause_name",
+            "content": "Cause pour la culture"
+          },
+          {
+            "name": "cause_link",
+            "content": "http://coalitions.code/cause/55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+          },
+          {
+            "name": "event_name",
+            "content": "My cause event"
+          },
+          {
+            "name": "event_description",
+            "content": "My cause event"
+          },
+          {
+            "name": "event_link",
+            "content": "http://coalitions.code/cause/cause-pour-la-culture?eventId=@uuid@"
+          },
+          {
+            "name": "event_date",
+            "content": "dimanche 29 mai 2022"
+          },
+          {
+            "name": "event_hour",
+            "content": "10h30"
+          },
+          {
+            "name": "event_address",
+            "content": "50 rue de la villette, 69003 Lyon 3e"
+          },
+          {
+            "name": "event_visio_url",
+            "content": "http://visio.fr"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "jacques.picard@en-marche.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jacques"
+              }
+            ]
+          },
+          {
+            "rcpt": "carl999@example.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Carl"
+              }
+            ]
+          },
+          {
+            "rcpt": "referent@en-marche-dev.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Referent"
+              }
+            ]
+          },
+          {
+            "rcpt": "adherent@en-marche-dev.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Follower"
+              }
+            ]
+          },
+          {
+            "rcpt": "jean-paul@dupont.tld",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jean"
+              }
+            ]
+          }
+        ],
+        "from_name": "Pour une cause",
+        "to": [
+          {
+            "email": "jacques.picard@en-marche.fr",
+            "type": "to",
+            "name": "Jacques"
+          },
+          {
+            "email": "carl999@example.fr",
+            "type": "to",
+            "name": "Carl"
+          },
+          {
+            "email": "referent@en-marche-dev.fr",
+            "type": "to",
+            "name": "Referent"
+          },
+          {
+            "email": "adherent@en-marche-dev.fr",
+            "type": "to",
+            "name": "Follower"
+          },
+          {
+            "email": "jean-paul@dupont.tld",
+            "type": "to",
+            "name": "Jean"
+          }
+        ]
+      }
+    }
+    """
 
   Scenario: As a logged-in user I can create a cause event
     Given I am logged with "simple-user@example.ch" via OAuth client "Coalition App" with scope "write:event"
@@ -755,6 +881,63 @@ Feature:
       "visio_url": "http://visio.fr",
       "mode": "online",
       "image_url": null
+    }
+    """
+    And I should have 1 email
+    And I should have 1 email "CoalitionsEventUpdateMessage" for "jacques.picard@en-marche.fr" with payload:
+    """
+    {
+      "template_name": "coalitions-event-update",
+      "template_content": [],
+      "message": {
+        "subject": "✊ Un événement a été modifié",
+        "from_email": "contact@pourunecause.fr",
+        "global_merge_vars": [
+          {
+            "name": "event_name",
+            "content": "Nouvel objectif"
+          },
+          {
+            "name": "event_url",
+            "content": "http://coalitions.code/cause/cause-pour-la-culture?eventId=ef62870c-6d42-47b6-91ea-f454d473adf8"
+          },
+          {
+            "name": "event_date",
+            "content": "jeudi 12 mai 2022"
+          },
+          {
+            "name": "event_hour",
+            "content": "10h30"
+          },
+          {
+            "name": "event_address",
+            "content": "50 rue de la villette, 69003 Lyon 3e"
+          },
+          {
+            "name": "event_visio_url",
+            "content": "http://visio.fr"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "jacques.picard@en-marche.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jacques"
+              }
+            ]
+          }
+        ],
+        "from_name": "Pour une cause",
+        "to": [
+          {
+            "email": "jacques.picard@en-marche.fr",
+            "type": "to",
+            "name": "Jacques"
+          }
+        ]
+      }
     }
     """
 

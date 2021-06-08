@@ -8,6 +8,7 @@ use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
 use App\Event\EventFactory;
+use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -81,6 +82,7 @@ class LoadCoalitionEventData extends Fixture implements DependentFixtureInterfac
             (new Chronos('+5 days'))->format('Y-m-d').' 10:30:00',
             (new Chronos('+5 days'))->format('Y-m-d').' 18:00:00'
         );
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCulture1, $adherent3)));
 
         $eventCulture2 = $this->createEvent(
             self::EVENT_7_UUID,

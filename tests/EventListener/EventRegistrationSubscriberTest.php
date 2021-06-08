@@ -2,6 +2,7 @@
 
 namespace Tests\App\EventListener;
 
+use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
@@ -21,15 +22,15 @@ class EventRegistrationSubscriberTest extends TestCase
 
     /** @var MailerService */
     private $mailer;
-
     private $urlGenerator;
+    private $coalitionUrlGenerator;
 
     /**
      * @dataProvider provideEventRegistrationCreated
      */
     public function testSendRegistrationEmail(?EventRegistration $registration, bool $sendMail)
     {
-        $eventSubscriber = new EventRegistrationSubscriber($this->mailer, $this->urlGenerator);
+        $eventSubscriber = new EventRegistrationSubscriber($this->mailer, $this->urlGenerator, $this->coalitionUrlGenerator);
 
         $eventRegistrationEvent = new EventRegistrationEvent(
             $registration,
@@ -91,12 +92,14 @@ class EventRegistrationSubscriberTest extends TestCase
 
         $this->mailer = $this->createMock(MailerService::class);
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $this->coalitionUrlGenerator = $this->createMock(CoalitionUrlGenerator::class);
     }
 
     protected function tearDown(): void
     {
         $this->mailer = null;
         $this->urlGenerator = null;
+        $this->coalitionUrlGenerator = null;
 
         parent::tearDown();
     }

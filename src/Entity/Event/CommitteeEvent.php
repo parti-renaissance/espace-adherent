@@ -191,4 +191,14 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     {
         return 'app_committee_event_show';
     }
+
+    public function needNotifyForRegistration(): bool
+    {
+        return true;
+    }
+
+    public function needNotifyForCancellation(): bool
+    {
+        return true;
+    }
 }
