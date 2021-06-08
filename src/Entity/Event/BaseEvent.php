@@ -726,4 +726,19 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     {
         return ReportType::COMMUNITY_EVENT;
     }
+
+    public function isCoalitionsEvent(): bool
+    {
+        return false;
+    }
+
+    public function needNotifyForRegistration(): bool
+    {
+        return false;
+    }
+
+    public function needNotifyForCancellation(): bool
+    {
+        return false;
+    }
 }

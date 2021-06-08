@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Coalition\Api\Listener;
+namespace App\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Event\BaseEvent;

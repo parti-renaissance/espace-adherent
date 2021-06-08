@@ -40,21 +40,23 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
 
         $registration = $event->getRegistration();
         $registrationEvent = $registration->getEvent();
-        $this->mailer->sendMessage(
-            $event->isForCoalitionsEvent()
-            ? CoalitionsEventRegistrationConfirmationMessage::create(
+        if ($registrationEvent->isCoalitionsEvent()) {
+            $message = CoalitionsEventRegistrationConfirmationMessage::create(
                 $registration,
                 $registrationEvent instanceof CoalitionEvent
-                        ? $this->coalitionUrlGenerator->generateCoalitionEventLink($registrationEvent)
-                        : $this->coalitionUrlGenerator->generateCauseEventLink($registrationEvent)
-            )
-            : EventRegistrationConfirmationMessage::createFromRegistration(
+                    ? $this->coalitionUrlGenerator->generateCoalitionEventLink($registrationEvent)
+                    : $this->coalitionUrlGenerator->generateCauseEventLink($registrationEvent)
+            );
+        } else {
+            $message = EventRegistrationConfirmationMessage::createFromRegistration(
                 $registration,
                 $this->generateUrl('app_committee_event_show', [
                     'slug' => $event->getSlug(),
                 ])
-            )
-        );
+            );
+        }
+
+        $this->mailer->sendMessage($message);
     }
 
     private function generateUrl(string $route, array $params = []): string

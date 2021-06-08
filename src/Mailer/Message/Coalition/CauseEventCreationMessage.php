@@ -4,11 +4,12 @@ namespace App\Mailer\Message\Coalition;
 
 use App\Entity\Coalition\CauseFollower;
 use App\Entity\Event\CauseEvent;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
 final class CauseEventCreationMessage extends AbstractCoalitionMessage
 {
-    public static function create(array $recipients, CauseEvent $event, string $eventLink, string $causeLink): self
+    public static function create(array $recipients, CauseEvent $event, string $eventLink, string $causeLink): Message
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one recipients is required.');
@@ -39,7 +40,7 @@ final class CauseEventCreationMessage extends AbstractCoalitionMessage
             );
         }
 
-        return $message;
+        return self::updateSenderInfo($message);
     }
 
     private static function getTemplateVars(CauseEvent $event, string $eventLink, string $causeLink): array

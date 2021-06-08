@@ -4,7 +4,6 @@ namespace App\EventListener;
 
 use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\PostAddress;
 use App\Event\CommitteeEventEvent;
@@ -92,11 +91,10 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
             if (\count($subscriptions) > 0) {
                 $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
-                $isCoalitionsEvent = $event instanceof CoalitionEvent || $event instanceof CauseEvent;
 
                 foreach ($chunks as $recipient) {
                     $this->mailer->sendMessage(
-                        $isCoalitionsEvent
+                        $event->isCoalitionsEvent()
                             ? CoalitionsEventUpdateMessage::create(
                             $recipient,
                             $event,

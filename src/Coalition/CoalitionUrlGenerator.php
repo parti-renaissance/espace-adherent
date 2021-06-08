@@ -57,7 +57,8 @@ class CoalitionUrlGenerator
     {
         return sprintf(
             self::CAUSE_EVENT_LINK_PATTERN,
-            $this->coalitionsHost, $event->getCause()->getSlug(),
+            $this->coalitionsHost,
+            $event->getCause()->getSlug(),
             $event->getUuid()->toString()
         );
     }

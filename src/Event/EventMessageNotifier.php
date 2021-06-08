@@ -7,7 +7,6 @@ use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CauseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
 use App\Events;
@@ -127,7 +126,7 @@ class EventMessageNotifier implements EventSubscriberInterface
 
     private function createCancelMessage(array $registered, BaseEvent $event, Adherent $host): Message
     {
-        if ($event instanceof CoalitionEvent || $event instanceof CauseEvent) {
+        if ($event->isCoalitionsEvent()) {
             return CoalitionsEventCancellationMessage::create($registered, $event);
         } else {
             return EventCancellationMessage::create(

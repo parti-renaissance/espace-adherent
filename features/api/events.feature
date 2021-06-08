@@ -421,7 +421,7 @@ Feature:
       "template_content": [],
       "message": {
         "subject": "✊ Événement annulé",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "contact@pourunecause.fr",
         "global_merge_vars": [
           {
             "name": "event_name",
@@ -439,7 +439,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Pour une cause",
         "to": [
           {
             "email": "jacques.picard@en-marche.fr",

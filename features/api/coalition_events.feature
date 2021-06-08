@@ -665,7 +665,7 @@ Feature:
       "template_content": [],
       "message": {
         "subject": "✊ Nouvel événement sur une cause que vous soutenez",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "contact@pourunecause.fr",
         "global_merge_vars": [
           {
             "name": "cause_name",
@@ -751,7 +751,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Pour une cause",
         "to": [
           {
             "email": "jacques.picard@en-marche.fr",
@@ -891,7 +891,7 @@ Feature:
       "template_content": [],
       "message": {
         "subject": "✊ Un événement a été modifié",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "contact@pourunecause.fr",
         "global_merge_vars": [
           {
             "name": "event_name",
@@ -929,7 +929,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Pour une cause",
         "to": [
           {
             "email": "jacques.picard@en-marche.fr",
