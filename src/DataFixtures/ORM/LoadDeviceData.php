@@ -4,10 +4,11 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Device;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDeviceData extends Fixture
+class LoadDeviceData extends Fixture implements DependentFixtureInterface
 {
     public const DEVICE_1_UUID = '64a85323-fade-4d05-9db0-e06825fc5e61';
     public const DEVICE_2_UUID = '2d5f91ce-547f-44e0-b5f2-037c7a5a99ec';
@@ -24,8 +25,9 @@ class LoadDeviceData extends Fixture
         $device2 = $this->createDevice(
             self::DEVICE_2_UUID,
             'device_2',
-            '92270'
+            '92002'
         );
+        $device2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
 
         $this->setReference('device-2', $device2);
 
@@ -42,5 +44,12 @@ class LoadDeviceData extends Fixture
         $device->login();
 
         return $device;
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadGeoZoneData::class,
+        ];
     }
 }

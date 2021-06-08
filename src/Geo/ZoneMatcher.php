@@ -87,8 +87,9 @@ class ZoneMatcher
 
         $cities = $this->em->getRepository(City::class)
             ->createQueryBuilder('c')
-            ->where('c.postalCode LIKE :postal_code')
-            ->setParameter(':postal_code', "%{$postalCode}%")
+            ->where('c.postalCode LIKE :postal_code_1 or c.postalCode LIKE :postal_code_2')
+            ->setParameter('postal_code_1', $postalCode.'%')
+            ->setParameter('postal_code_2', '%,'.$postalCode.'%')
             ->getQuery()
             ->getResult()
         ;

@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\PushToken;
-use App\Firebase\PushTokenSourceEnum;
+use App\PushToken\PushTokenSourceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

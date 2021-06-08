@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Firebase;
+namespace App\PushToken;
 
 use MyCLabs\Enum\Enum;
 
