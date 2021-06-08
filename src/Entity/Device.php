@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -44,6 +45,7 @@ class Device
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use EntityZoneTrait;
 
     /**
      * @var UuidInterface
@@ -90,6 +92,8 @@ class Device
         $this->uuid = $uuid;
         $this->deviceUuid = $deviceUuid;
         $this->postalCode = $postalCode;
+
+        $this->zones = new ArrayCollection();
     }
 
     public function getLastLoggedAt(): ?\DateTimeInterface
