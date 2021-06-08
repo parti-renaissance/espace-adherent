@@ -97,6 +97,7 @@ class PushToken
      *
      * @SymfonySerializer\Groups({"push_token_write"})
      *
+     * @Assert\NotBlank
      * @Assert\Choice(choices=PushTokenSourceEnum::ALL)
      */
     private $source;
@@ -115,14 +116,22 @@ class PushToken
         $this->source = $source;
     }
 
-    public static function createForAdherent(Adherent $adherent, string $identifier, string $source): self
-    {
-        return new self(Uuid::uuid4(), $adherent, null, $identifier, $source);
+    public static function createForAdherent(
+        UuidInterface $uuid,
+        Adherent $adherent,
+        string $identifier,
+        string $source
+    ): self {
+        return new self($uuid, $adherent, null, $identifier, $source);
     }
 
-    public static function createForDevice(Device $device, string $identifier, string $source): self
-    {
-        return new self(Uuid::uuid4(), null, $device, $identifier, $source);
+    public static function createForDevice(
+        UuidInterface $uuid,
+        Device $device,
+        string $identifier,
+        string $source
+    ): self {
+        return new self($uuid, null, $device, $identifier, $source);
     }
 
     public function getAdherent(): ?Adherent

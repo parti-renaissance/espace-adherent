@@ -24,12 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/device/{id}",
  *             "requirements": {"id": "[\w-]+"},
- *             "access_control": "is_granted('IS_DEVICE_AUTHENTICATED') and object.equals(user.getDevice())"
+ *             "access_control": "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
  *         },
  *         "put": {
  *             "path": "/v3/device/{id}",
  *             "requirements": {"id": "[\w-]+"},
- *             "access_control": "is_granted('IS_DEVICE_AUTHENTICATED') and object.equals(user.getDevice())"
+ *             "access_control": "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
  *         },
  *     }
  * )
