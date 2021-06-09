@@ -14,6 +14,10 @@
 
             <article class="l__wrapper--slim b__nudge--bottom-huge">
                 {{ page.content|markdown }}
+
+                {% if cookiebot_cbid %}
+                    <script id="CookieDeclaration" src="https://consent.cookiebot.com/{{ cookiebot_cbid }}/cd.js" type="text/javascript" async></script>
+                {% endif %}
             </article>
         </section>
     </main>
