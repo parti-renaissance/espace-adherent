@@ -24,6 +24,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
     public const CAUSE_5_UUID = '44249b1d-ea10-41e0-b288-5eb74fa886ba';
     public const CAUSE_6_UUID = '13814069-1dd2-11b2-98d6-2fdf8179626a';
     public const CAUSE_7_UUID = '253b0ed7-7426-15f8-97f9-2bb32d0a4d17';
+    public const CAUSE_8_UUID = '227a2360-f4b3-4e3f-8f85-5b1700300ca9';
 
     private $imageManager;
 
@@ -131,6 +132,18 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             0,
             false,
             Cause::STATUS_PENDING
+        ));
+
+        $manager->persist($this->createCause(
+            self::CAUSE_8_UUID,
+            'Cause refusée',
+            'Pellentesque aliquam neque nec volutpat ultricies.',
+            $this->getReference('coalition-culture'),
+            $this->getReference('adherent-3'),
+            '-2 days',
+            0,
+            false,
+            Cause::STATUS_REFUSED
         ));
 
         $manager->persist($causeCulture1);

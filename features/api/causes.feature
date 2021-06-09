@@ -430,6 +430,10 @@ Feature:
       }
     """
 
+  Scenario: As a non logged-in user I can not get a refused cause
+    Given I send a "GET" request to "/api/causes/227a2360-f4b3-4e3f-8f85-5b1700300ca9"
+    Then the response status code should be 404
+
   Scenario: As a non logged-in user I get a 404 when providing an unknown cause uuid
     Given I send a "GET" request to "/api/causes/70126dd9-4a9e-4dbe-8093-14be4a24b9ed"
     Then the response status code should be 404
