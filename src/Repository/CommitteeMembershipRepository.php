@@ -14,6 +14,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
+use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Subscription\SubscriptionTypeEnum;
@@ -170,26 +171,52 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function findForHostEmail(Committee $committee): AdherentCollection
     {
         return $this->createAdherentCollection(
-            $this->createQueryBuilder('cm')
-                ->select('cm', 'adherent')
-                ->leftJoin('cm.adherent', 'adherent')
-                ->leftJoin('adherent.adherentMandates', 'am')
-                ->leftJoin('adherent.subscriptionTypes', 'st')
-                ->where('cm.committee = :committee')
-                ->andWhere((new Orx())
-                    ->add('cm.privilege = :host')
-                    ->add('am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
-                    ->add('st.code = :subscription_code')
-                )
+            $this->createHostQueryBuilder($committee)
                 ->orderBy('am.quality', 'DESC')
                 ->addOrderBy('cm.privilege', 'DESC')
                 ->addOrderBy('cm.joinedAt', 'ASC')
-                ->setParameter('committee', $committee)
-                ->setParameter('subscription_code', SubscriptionTypeEnum::LOCAL_HOST_EMAIL)
-                ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
-                ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
                 ->getQuery()
         );
+    }
+
+    public function findPushTokenIdentifiers(Committee $committee): array
+    {
+        $tokens = $this->createHostQueryBuilder($committee, false)
+            ->select('DISTINCT(token.identifier)')
+            ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map('current', $tokens);
+    }
+
+    private function createHostQueryBuilder(Committee $committee, bool $withSubscriptionType = true): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('cm')
+            ->select('cm', 'adherent')
+            ->leftJoin('cm.adherent', 'adherent')
+            ->leftJoin('adherent.adherentMandates', 'am')
+            ->leftJoin('adherent.subscriptionTypes', 'st')
+            ->where('cm.committee = :committee')
+        ;
+
+        $conditions = (new Orx())
+            ->add('cm.privilege = :host')
+            ->add('am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
+        ;
+
+        if ($withSubscriptionType) {
+            $conditions->add('st.code = :subscription_code');
+            $qb->setParameter('subscription_code', SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
+        }
+
+        return $qb
+            ->andWhere($conditions)
+            ->setParameter('committee', $committee)
+            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
+            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
+        ;
     }
 
     /**

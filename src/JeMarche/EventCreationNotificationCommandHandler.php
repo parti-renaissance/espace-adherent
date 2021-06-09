@@ -7,6 +7,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Geo\Zone;
 use App\Firebase\JeMarcheMessaging;
+use App\Repository\CommitteeMembershipRepository;
 use App\Repository\EventRepository;
 use App\Repository\PushTokenRepository;
 use Ramsey\Uuid\UuidInterface;
@@ -16,15 +17,18 @@ class EventCreationNotificationCommandHandler implements MessageHandlerInterface
 {
     private $eventRepository;
     private $pushTokenRepository;
+    private $committeeMembershipRepository;
     private $messaging;
 
     public function __construct(
         EventRepository $eventRepository,
         PushTokenRepository $pushTokenRepository,
+        CommitteeMembershipRepository $committeeMembershipRepository,
         JeMarcheMessaging $messaging
     ) {
         $this->eventRepository = $eventRepository;
         $this->pushTokenRepository = $pushTokenRepository;
+        $this->committeeMembershipRepository = $committeeMembershipRepository;
         $this->messaging = $messaging;
     }
 
@@ -37,7 +41,7 @@ class EventCreationNotificationCommandHandler implements MessageHandlerInterface
         }
 
         if ($event instanceof CommitteeEvent) {
-            $tokens = [];
+            $tokens = $this->committeeMembershipRepository->findPushTokenIdentifiers($event->getCommittee());
 
             $this->messaging->sendNotificationToDevices(
                 $tokens,
