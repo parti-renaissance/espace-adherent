@@ -7,28 +7,24 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Geo\Zone;
 use App\Firebase\JeMarcheMessaging;
-use App\Repository\CommitteeMembershipRepository;
+use App\PushToken\PushTokenManager;
 use App\Repository\EventRepository;
-use App\Repository\PushTokenRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class EventCreationNotificationCommandHandler implements MessageHandlerInterface
 {
     private $eventRepository;
-    private $pushTokenRepository;
-    private $committeeMembershipRepository;
+    private $pushTokenManager;
     private $messaging;
 
     public function __construct(
         EventRepository $eventRepository,
-        PushTokenRepository $pushTokenRepository,
-        CommitteeMembershipRepository $committeeMembershipRepository,
+        PushTokenManager $pushTokenManager,
         JeMarcheMessaging $messaging
     ) {
         $this->eventRepository = $eventRepository;
-        $this->pushTokenRepository = $pushTokenRepository;
-        $this->committeeMembershipRepository = $committeeMembershipRepository;
+        $this->pushTokenManager = $pushTokenManager;
         $this->messaging = $messaging;
     }
 
@@ -40,24 +36,24 @@ class EventCreationNotificationCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        if ($event instanceof CommitteeEvent) {
-            $tokens = $this->committeeMembershipRepository->findPushTokenIdentifiers($event->getCommittee());
+        $tokens = $this->pushTokenManager->findIdentifiersForEventCreation($event);
 
+        if (empty($tokens)) {
+            return;
+        }
+
+        if ($event instanceof CommitteeEvent) {
             $this->messaging->sendNotificationToDevices(
                 $tokens,
                 'Nouvel événement dans votre comité',
                 $this->buildNotificationBody($event)
             );
         } elseif ($event instanceof DefaultEvent) {
-            if ($zone = $this->findZoneToNotify($event)) {
-                $tokens = $this->pushTokenRepository->findIdentifiersForZones([$zone]);
-
-                $this->messaging->sendNotificationToDevices(
-                    $tokens,
-                    sprintf('Nouvel événement dans le %s', $zone->getCode()),
-                    $this->buildNotificationBody($event)
-                );
-            }
+            $this->messaging->sendNotificationToDevices(
+                $tokens,
+                sprintf('Nouvel événement dans le %s', $zone->getCode()),
+                $this->buildNotificationBody($event)
+            );
         }
     }
 
