@@ -55,10 +55,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "method": "GET",
  *             "path": "/causes/{id}",
  *             "requirements": {"id": "[\w-]+"},
- *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Coalition\RetrieveCauseController",
  *         },
  *         "put": {
