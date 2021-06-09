@@ -78,8 +78,8 @@ class ChangeCommitteeVoteVoter extends Voter
 
     private function isPreviousAdmin(TokenInterface $token)
     {
-        foreach ($token->getRoles() as $role) {
-            if ('ROLE_PREVIOUS_ADMIN' === $role->getRole()) {
+        foreach ($token->getRoleNames() as $role) {
+            if ('ROLE_PREVIOUS_ADMIN' === $role) {
                 return true;
             }
         }
