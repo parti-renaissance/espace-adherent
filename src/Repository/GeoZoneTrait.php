@@ -23,6 +23,38 @@ trait GeoZoneTrait
             return $queryBuilder;
         }
 
+        $zoneQueryBuilder = $this->createGeoZonesQueryBuilder(
+            $zones,
+            $queryBuilder,
+            $entityClass,
+            $entityClassAlias,
+            $zoneRelation,
+            $zoneRelationAlias,
+            $queryModifier,
+            $withParents,
+            $zoneParentAlias
+        );
+
+        $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $zoneQueryBuilder->getDQL()));
+
+        return $queryBuilder;
+    }
+
+    public function createGeoZonesQueryBuilder(
+        array $zones,
+        QueryBuilder $queryBuilder,
+        string $entityClass,
+        string $entityClassAlias,
+        string $zoneRelation,
+        string $zoneRelationAlias,
+        callable $queryModifier = null,
+        bool $withParents = true,
+        string $zoneParentAlias = 'zone_parent'
+    ): QueryBuilder {
+        if (!$zones) {
+            return $queryBuilder;
+        }
+
         $zoneQueryBuilder = $queryBuilder
             ->getEntityManager()
             ->createQueryBuilder()
@@ -60,8 +92,6 @@ trait GeoZoneTrait
             $queryModifier($zoneQueryBuilder, $entityClassAlias);
         }
 
-        $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $zoneQueryBuilder->getDQL()));
-
-        return $queryBuilder;
+        return $zoneQueryBuilder;
     }
 }
