@@ -8,6 +8,11 @@
     <li>
         <a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a>
     </li>
+    {% if cookiebot_cbid %}
+        <li>
+            <a href="javascript: Cookiebot.renew()">Modifier mes Cookies</a>
+        </li>
+    {% endif %}
     <li>
         <a href="{{ path('app_static_page', { slug: 'politique-protection-donnees' }) }}" rel="noopener noreferrer" target="_blank">Politique de Protection des Données</a>
     </li>
