@@ -241,9 +241,5 @@
         </script>
 
         {% block final_javascripts '' %}
-
-        {% if not app.debug %}
-            {% block chatbot_javascripts include('bot/_javascript.html.twig') %}
-        {% endif %}
     </body>
 </html>
