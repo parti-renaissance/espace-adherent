@@ -57,6 +57,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/causes/{id}",
  *             "requirements": {"id": "[\w-]+"},
+ *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Coalition\RetrieveCauseController",
  *         },
  *         "put": {

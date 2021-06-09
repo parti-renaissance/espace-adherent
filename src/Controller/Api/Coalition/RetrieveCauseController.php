@@ -24,7 +24,7 @@ class RetrieveCauseController
             $data = $this->causeRepository->findOneByUuid($id);
         }
 
-        if (null === $data) {
+        if (null === $data || !$data->isApproved()) {
             throw new NotFoundHttpException(sprintf('Cause with id or slug %s not found.', $id));
         }
 
