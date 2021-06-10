@@ -5,6 +5,7 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\PostAddressFactory;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\InstitutionalEvent;
@@ -131,6 +132,19 @@ class EventFactory
                     $command->getCapacity(),
                     $command->isForLegislatives()
                 );
+                break;
+            case CoalitionEvent::class:
+                /** @var CoalitionEvent $event */
+                $event = new CoalitionEvent($command->getUuid());
+                $event->setCoalition($command->getCoalition());
+                $event->setAuthor($command->getAuthor());
+                $event->setName($command->getName());
+                $event->setCategory($command->getCategory());
+                $event->setDescription($command->getDescription());
+                $event->setPostAddress($this->createPostAddress($command->getAddress()));
+                $event->setBeginAt($command->getBeginAt());
+                $event->setFinishAt($command->getFinishAt());
+                $event->setCapacity($command->getCapacity());
                 break;
             default:
                 $event = new DefaultEvent($command->getUuid());

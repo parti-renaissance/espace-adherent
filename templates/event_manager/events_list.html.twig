@@ -3,7 +3,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+            {% if share_by_email %}
                 findAll(document, '.share-by-email').forEach(function (event) {
                     event.addEventListener('click', function (e) {
                         e.preventDefault();
@@ -85,7 +85,7 @@
                                 {{ event.participantsCount }}
                             </td>
                             <td>
-                                {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+                                {% if share_by_email %}
                                     {% set items = [
                                         {
                                             label: 'Partager par e-mail',

@@ -7,6 +7,7 @@ use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCanceledHandler;
@@ -52,6 +53,7 @@ abstract class AbstractEventManagerController extends AbstractController
                 $type,
                 $request->query->getInt('page', 1)
             ),
+            'share_by_email' => $this->shareByEmail(),
         ]);
     }
 
@@ -71,7 +73,10 @@ abstract class AbstractEventManagerController extends AbstractController
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
         $form = $this
-            ->createForm(EventCommandType::class, $command, ['event_group_category' => $this->getEventGroupCategory()])
+            ->createForm(EventCommandType::class, $command, [
+                'event_group_category' => $this->getEventGroupCategory(),
+                'coalition' => CoalitionEvent::class === $this->getEventClassName(),
+            ])
             ->handleRequest($request)
         ;
 
@@ -79,10 +84,11 @@ abstract class AbstractEventManagerController extends AbstractController
             $event = $eventCommandHandler->handle($command, $this->getEventClassName());
 
             $registrationCommand = new EventRegistrationCommand($event, $user);
-            $eventRegistrationCommandHandler->handle($registrationCommand);
+            $eventRegistrationCommandHandler->handle($registrationCommand, !$event->isCoalitionsEvent());
 
             return $this->renderTemplate('event_manager/event_create_success.html.twig', [
                 'event' => $event,
+                'share_by_email' => $this->shareByEmail(),
             ]);
         }
 
@@ -103,6 +109,7 @@ abstract class AbstractEventManagerController extends AbstractController
                 $command = EventCommand::createFromEvent($event),
                 [
                     'image_path' => $event->getImagePath(),
+                    'coalition' => CoalitionEvent::class === $this->getEventClassName(),
                 ]
             )
             ->handleRequest($request)
@@ -173,5 +180,10 @@ abstract class AbstractEventManagerController extends AbstractController
     protected function getEventGroupCategory(): ?EventGroupCategory
     {
         return null;
+    }
+
+    protected function shareByEmail(): bool
+    {
+        return true;
     }
 }

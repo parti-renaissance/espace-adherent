@@ -6,6 +6,7 @@ use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -70,5 +71,13 @@ class CoalitionRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findEnabled(): QueryBuilder
+    {
+        return $this->createQueryBuilder('coalition')
+            ->where('coalition.enabled = :true')
+            ->setParameter('true', true)
+        ;
     }
 }

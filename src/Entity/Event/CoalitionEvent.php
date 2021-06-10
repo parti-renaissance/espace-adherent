@@ -45,7 +45,7 @@ class CoalitionEvent extends BaseEvent
         return $this->coalition;
     }
 
-    public function setCoalition(Coalition $coalition): void
+    public function setCoalition(?Coalition $coalition): void
     {
         $this->coalition = $coalition;
     }

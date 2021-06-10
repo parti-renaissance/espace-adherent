@@ -11,4 +11,5 @@ class EventManagerSpaceEnum extends Enum
     public const DEPUTY = 'deputy';
     public const SENATOR = 'senator';
     public const CANDIDATE = 'candidate';
+    public const COALITION_MODERATOR = 'coalition_moderator';
 }

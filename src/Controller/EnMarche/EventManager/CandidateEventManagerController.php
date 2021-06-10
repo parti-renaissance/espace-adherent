@@ -58,4 +58,9 @@ class CandidateEventManagerController extends AbstractEventManagerController
     {
         return $this->eventGroupCategoryRepository->findOneBy(['slug' => EventGroupCategory::CAMPAIGN_EVENTS]);
     }
+
+    protected function shareByEmail(): bool
+    {
+        return false;
+    }
 }
