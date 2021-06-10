@@ -155,7 +155,6 @@ class SummaryType extends AbstractType
 
             case self::STEP_INTERESTS:
                 $builder
-                    ->add('member_interests', MemberInterestsChoiceType::class)
                     ->add('personal_data_collection', AcceptPersonalDataCollectType::class)
                 ;
 
