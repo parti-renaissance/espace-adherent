@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\MyCausesFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
@@ -47,6 +48,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/causes",
  *         },
+ *         "mine": {
+ *             "method": "GET",
+ *             "path": "/v3/causes",
+ *         },
  *         "post": {
  *             "path": "/v3/causes",
  *             "access_control": "is_granted('IS_AUTHENTICATED_REMEMBERED')",
@@ -86,6 +91,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={"coalition.uuid": "exact"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"name"})
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "followersCount"})
+ * @ApiFilter(MyCausesFilter::class)
  *
  * @ORM\Table(
  *     uniqueConstraints={
