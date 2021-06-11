@@ -44,7 +44,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause pour la culture',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-culture'),
-            $this->getReference('adherent-1'),
+            $this->getReference('adherent-2'),
             '-1 hour',
             5,
             true
@@ -76,7 +76,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause pour la culture 2',
             'Description de la cause pour la culture 2',
             $this->getReference('coalition-culture'),
-            $this->getReference('adherent-1'),
+            $this->getReference('adherent-2'),
             '-1 day',
             0,
             true
@@ -88,7 +88,7 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause pour la culture 3',
             'Description de la cause pour la culture 3',
             $this->getReference('coalition-culture'),
-            $this->getReference('adherent-1'),
+            $this->getReference('adherent-2'),
             '-3 days'
         );
 

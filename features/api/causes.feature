@@ -53,10 +53,10 @@ Feature:
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
@@ -115,10 +115,10 @@ Feature:
           },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
@@ -135,10 +135,10 @@ Feature:
           "second_coalition": null,
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "followers_count": 0,
           "image_url": null
@@ -179,10 +179,10 @@ Feature:
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
@@ -223,10 +223,10 @@ Feature:
           "slug": "cause-pour-la-culture-2",
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         },
@@ -243,10 +243,10 @@ Feature:
           "slug": "cause-pour-la-culture-3",
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": null
         },
@@ -343,10 +343,10 @@ Feature:
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
@@ -469,10 +469,10 @@ Feature:
           },
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
@@ -493,10 +493,10 @@ Feature:
           },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
@@ -532,10 +532,10 @@ Feature:
           "second_coalition": null,
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "followers_count": 0,
           "image_url": null
@@ -585,7 +585,7 @@ Feature:
                 },
                 {
                     "name": "author_first_name",
-                    "content": "Michelle"
+                    "content": "Carl"
                 },
                 {
                     "name": "cause_name",
@@ -722,7 +722,7 @@ Feature:
                 },
                 {
                     "name": "author_first_name",
-                    "content": "Michelle"
+                    "content": "Carl"
                 },
                 {
                     "name": "cause_name",
@@ -1090,10 +1090,10 @@ Feature:
           "slug": "cause-pour-la-culture",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
@@ -1114,10 +1114,10 @@ Feature:
           "slug": "cause-pour-la-culture-2",
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         }
@@ -1126,7 +1126,7 @@ Feature:
     """
 
   Scenario: As a logged in cause author, I should be able to edit my cause description
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
     """
@@ -1143,7 +1143,7 @@ Feature:
     """
 
   Scenario: As a logged in cause author, i should not be able to edit my cause name
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
     """
@@ -1160,7 +1160,7 @@ Feature:
     """
 
   Scenario: As a logged user, i should not be allowed to edit a cause i did not authored
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8" with body:
     """
@@ -1263,10 +1263,10 @@ Feature:
           "name": "Cause pour la culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "author": {
-            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-            "first_name": "Michelle",
-            "last_name": "Dufour",
-            "last_name_initial": "D."
+            "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+            "first_name": "Carl",
+            "last_name": "Mirabeau",
+            "last_name_initial": "M."
           },
           "coalition": {
             "name": "Culture",

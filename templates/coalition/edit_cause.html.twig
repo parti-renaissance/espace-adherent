@@ -1,5 +1,10 @@
 {% extends 'coalition/_layout.html.twig' %}
 
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+{% endblock %}
+
 {% block coalition_content %}
     <a href="{{ path('app_coalition_causes_list') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
@@ -16,6 +21,45 @@
                 {{ form_errors(form.name) }}
                 {{ form_label(form.name, 'Objectif') }}
                 {{ form_widget(form.name, { attr: { class: 'form--full' } }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_errors(form.description) }}
+                {{ form_label(form.description, 'Description') }}
+                {{ form_widget(form.description, {
+                    attr: {
+                        class: 'form--full',
+                        placeholder: 'Entrez un paragraphe afin de décrire cette cause (Max 10 000 caractères)',
+                        maxlength: 10000,
+                    }
+                }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_errors(form.coalition) }}
+                {{ form_label(form.coalition, 'Coalition principale') }}
+                {{ form_widget(form.coalition, {
+                    attr: { class: 'form--full' },
+                    placeholder: 'Choisissez la coalition principale'
+                }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_errors(form.secondCoalition) }}
+                {{ form_label(form.secondCoalition, 'Coalition secondaire') }}
+                {{ form_widget(form.secondCoalition, {
+                    attr: { class: 'form--full' },
+                    placeholder: 'Choisissez la coalition sécondaire'
+                }) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_errors(form.author) }}
+                {{ form_label(form.author, 'Porteur') }}
+                {{ form_widget(form.author, {attr: {
+                    class: 'form--full form form__field',
+                    placeholder: 'Saisissez minimum 3 lettres pour chercher un utilisateur'
+                }, }) }}
             </div>
 
             <div class="form__row b__nudge--top">

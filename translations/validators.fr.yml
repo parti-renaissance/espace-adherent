@@ -490,6 +490,7 @@ cause_follower.exists: Vous avez déjà soutenu cette cause.
 coalition.youtubeid_syntax: La syntaxe est incorrecte, l'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-".
 coalition_event.coalition.invalid: L'événement peut être lié qu'à une seule coalition.
 cause_event.cause.invalid: L'événement peut être lié qu'à une seule cause.
+coalition.user.invalid: L'utilisateur n'est pas un utilisateur Coalitions actif.
 
 The value {{ value }} is not valid.: Cette valeur n'est pas valide.
 

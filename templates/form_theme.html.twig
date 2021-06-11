@@ -530,3 +530,58 @@
         <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
     </div>
 {% endblock %}
+
+{% block _cause_author_widget -%}
+    <div class="form__row">
+        {% if form.vars.adherent is defined %}
+            {% set adherent = form.vars.adherent %}
+            {% set user = adherent.isAdherent ? (adherent.isFemale ? 'adhérente' : 'adhérent') : (adherent.isFemale ? 'utilisatrice' : 'utilisateur') %}
+            {% set label = adherent.firstName~' '~adherent.lastName~', '~user~' depuis le '~adherent.registeredAt|date('d/m/Y') %}
+        {% endif %}
+        <input type="text"
+               value="{{ label ?? '' }}"
+               id="{{ form.vars.id }}_autocomplete"
+               class="{{ attr.class is defined ? attr.class }}"
+               placeholder="{{ attr.placeholder is defined ? attr.placeholder }}"
+        />
+    </div>
+    {{ block('hidden_widget') }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#{{ id }}_autocomplete').change(function() {
+                if ($(this).val() === '') {
+                    $('#{{ id }}').val('');
+                }
+            });
+
+            $('#{{ id }}_autocomplete').autocomplete({
+                source: function(request, response) {
+                    var term = request.term.trim();
+
+                    $.get("{{ path('app_coalition_author_autocomplete')|raw }}?search=" + term, function(data) {
+                        response($.map(data, function(m) {
+                            var adherent = m.is_adherent ? (m.is_female ? 'adhérente' : 'adhérent') : (m.is_female ? 'utilisatrice' : 'utilisateur');
+                            return {
+                                label: m.first_name+' '+m.last_name+', '+adherent+' depuis le '+m.registered_at,
+                                value: m.uuid
+                            };
+                        }));
+                    });
+                },
+                minLength: 3,
+                select: function( event, ui ) {
+                    $(this).val(ui.item.label);
+                    $('#{{ id }}').val(ui.item.value);
+
+                    return false;
+                },
+                messages: {
+                    noResults: '',
+                    results: function () {
+                    },
+                },
+            });
+        });
+    </script>
+{% endblock %}
