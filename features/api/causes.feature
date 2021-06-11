@@ -1202,3 +1202,87 @@ Feature:
     And the JSON nodes should match:
       | items[0].name             | Cause pour la culture   |
       | items[1].name             | Cause pour la culture 2 |
+
+  Scenario: As a logged-in user I can check if I follow causes
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "GET" request to "/api/v3/causes?onlyMine&page_size=10"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 3,
+        "items_per_page": 10,
+        "count": 3,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "name": "Cause pour l'éducation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-leducation",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+        },
+        {
+          "name": "Cause pour la justice",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "last_name_initial": "P."
+          },
+          "coalition": {
+            "name": "Justice",
+            "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c",
+            "followers_count": 0
+          },
+          "second_coalition": null,
+          "followers_count": 0,
+          "slug": "cause-pour-la-justice",
+          "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
+          "image_url": null
+        },
+        {
+          "name": "Cause pour la culture",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "author": {
+            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+            "first_name": "Michelle",
+            "last_name": "Dufour",
+            "last_name_initial": "D."
+          },
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
+          },
+          "second_coalition": {
+            "name": "Éducation",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
+          },
+          "followers_count": 5,
+          "slug": "cause-pour-la-culture",
+          "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+        }
+      ]
+    }
+    """
