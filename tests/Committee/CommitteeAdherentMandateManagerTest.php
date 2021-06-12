@@ -7,7 +7,7 @@ use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BaseGroup;
@@ -92,19 +92,18 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $activeMandate = new CommitteeAdherentMandate(
             $this->createAdherent(),
             Genders::FEMALE,
-            $this->createCommittee(),
             new \DateTime()
         );
+        $activeMandate->setCommittee($this->createCommittee());
 
         $adherent = $this->createAdherent(Genders::FEMALE);
         $committee = $this->createCommittee();
         $mandate = new CommitteeAdherentMandate(
             new Adherent(),
             Genders::FEMALE,
-            $this->createCommittee(),
-            new \DateTime()
+            new \DateTime('2020-07-07')
         );
-        $mandate->setBeginAt(new \DateTime('2020-07-07'));
+        $mandate->setCommittee($this->createCommittee());
 
         $this->translator
             ->expects($this->once())
@@ -153,8 +152,8 @@ class CommitteeAdherentMandateManagerTest extends TestCase
 
         $adherent = $this->createAdherent($gender);
         $committee = $this->createCommittee();
-        $mandate = new CommitteeAdherentMandate(new Adherent(), $gender, $committee, new \DateTime());
-        $mandate->setBeginAt(new \DateTime('2020-07-07'));
+        $mandate = new CommitteeAdherentMandate(new Adherent(), $gender, new \DateTime('2020-07-07'));
+        $mandate->setCommittee($committee);
         $committee->addAdherentMandate($mandate);
 
         $this->translator
@@ -213,7 +212,8 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $adherent = $this->createAdherent($gender);
         $committee = $this->createCommittee();
-        $mandate = new CommitteeAdherentMandate($adherent, $gender, $committee, new \DateTime('2020-08-26 10:10:10'));
+        $mandate = new CommitteeAdherentMandate($adherent, $gender, new \DateTime('2020-08-26 10:10:10'));
+        $mandate->setCommittee($committee);
 
         $this->assertNull($mandate->getFinishAt());
 
@@ -366,7 +366,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->mandateManager->replaceMandate($mandate, $command);
 
         $this->assertNotNull($mandate->getFinishAt());
-        $this->assertSame(AbstractAdherentMandate::REASON_REPLACED, $mandate->getReason());
+        $this->assertSame(AdherentMandateInterface::REASON_REPLACED, $mandate->getReason());
     }
 
     public function testCanCreateMandateFromCommand(): void
@@ -408,7 +408,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
 
     private function createAdherent(string $gender = Genders::MALE, string $birthday = null): Adherent
     {
-        return $adherent = Adherent::create(
+        return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
             'd.dupont@test.com',
             'password',
@@ -437,11 +437,9 @@ class CommitteeAdherentMandateManagerTest extends TestCase
 
     private function createMandate(string $gender, Committee $committee = null): CommitteeAdherentMandate
     {
-        return new CommitteeAdherentMandate(
-            $this->createAdherent($gender),
-            $gender,
+        return CommitteeAdherentMandate::createForCommittee(
             $committee ?? $this->createCommittee(),
-            new \DateTime()
+            $this->createAdherent($gender)
         );
     }
 

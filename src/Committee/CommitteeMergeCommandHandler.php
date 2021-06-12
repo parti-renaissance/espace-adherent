@@ -3,7 +3,7 @@
 namespace App\Committee;
 
 use App\Committee\Event\CommitteeMergeEvent;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacyInvitation;
@@ -99,7 +99,7 @@ class CommitteeMergeCommandHandler
                 $administrator
             ));
 
-            $this->mandateRepository->closeCommitteeMandate($sourceCommittee, AbstractAdherentMandate::REASON_COMMITTEE_MERGE);
+            $this->mandateRepository->closeMandates($sourceCommittee, AdherentMandateInterface::REASON_COMMITTEE_MERGE);
 
             $this->em->flush();
 

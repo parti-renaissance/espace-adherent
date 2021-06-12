@@ -20,15 +20,15 @@ services:
         resource: ../../src/Mailchimp/
 
     App\Mailchimp\Webhook\WebhookHandler:
-        arguments: [!tagged 'app.mailchimp.webhook_handler']
+        arguments: [!tagged_iterator 'app.mailchimp.webhook_handler']
 
     App\Mailchimp\Campaign\SegmentConditionsBuilder:
         arguments:
-            $builders: !tagged 'app.mailchimp.campaign.segment_condition_builder'
+            $builders: !tagged_iterator 'app.mailchimp.campaign.segment_condition_builder'
 
     App\Mailchimp\Campaign\CampaignContentRequestBuilder:
         arguments:
-            $builders: !tagged 'app.mailchimp.campaign.content_builder'
+            $builders: !tagged_iterator 'app.mailchimp.campaign.content_builder'
 
     App\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
         tags:

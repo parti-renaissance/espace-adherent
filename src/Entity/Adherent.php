@@ -8,7 +8,7 @@ use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
@@ -680,7 +680,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $handledThematicCommunities;
 
     /**
-     * @var AbstractAdherentMandate[]|Collection
+     * @var AdherentMandateInterface[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate", mappedBy="adherent", fetch="EXTRA_LAZY")
      */
@@ -1896,7 +1896,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isSupervisorOf(Committee $committee, bool $isProvisional = null): bool
     {
-        return $this->adherentMandates->filter(static function (AbstractAdherentMandate $mandate) use ($committee, $isProvisional) {
+        return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($committee, $isProvisional) {
             return $mandate instanceof CommitteeAdherentMandate
                 && $mandate->getCommittee() === $committee
                 && null === $mandate->getFinishAt()
@@ -2669,7 +2669,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         return $this->adherentMandates
             ->matching($criteria)
-            ->filter(function (AbstractAdherentMandate $mandate) {
+            ->filter(function (AdherentMandateInterface $mandate) {
                 return $mandate instanceof CommitteeAdherentMandate;
             })
             ->toArray()
@@ -2678,7 +2678,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function findTerritorialCouncilMandates(?string $quality = null, bool $active = false): array
     {
-        return $this->adherentMandates->filter(function (AbstractAdherentMandate $mandate) use ($quality, $active) {
+        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {
             return $mandate instanceof TerritorialCouncilAdherentMandate
                 && (null === $quality || $mandate->getQuality() === $quality)
                 && (false === $active || null === $mandate->getFinishAt())
@@ -2721,7 +2721,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getSupervisorMandates(bool $isProvisional = null, string $gender = null): Collection
     {
-        return $this->adherentMandates->filter(static function (AbstractAdherentMandate $mandate) use ($gender, $isProvisional) {
+        return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($gender, $isProvisional) {
             return $mandate instanceof CommitteeAdherentMandate
                 && null !== $mandate->getCommittee()
                 && CommitteeMandateQualityEnum::SUPERVISOR === $mandate->getQuality()

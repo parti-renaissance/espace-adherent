@@ -6,7 +6,7 @@ use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\ValueObject\Genders;
@@ -239,7 +239,7 @@ class AdminCommitteeControllerTest extends WebTestCase
         ]);
 
         $this->assertNotNull($mandate->getFinishAt());
-        $this->assertSame(AbstractAdherentMandate::REASON_REPLACED, $mandate->getReason());
+        $this->assertSame(AdherentMandateInterface::REASON_REPLACED, $mandate->getReason());
         $this->assertNotNull($newMandate);
         $this->assertTrue($newMandate->isProvisional());
         $this->assertSame(CommitteeMandateQualityEnum::SUPERVISOR, $newMandate->getQuality());
@@ -299,7 +299,7 @@ class AdminCommitteeControllerTest extends WebTestCase
         ]);
 
         $this->assertNotNull($mandate->getFinishAt());
-        $this->assertSame(AbstractAdherentMandate::REASON_REPLACED, $mandate->getReason());
+        $this->assertSame(AdherentMandateInterface::REASON_REPLACED, $mandate->getReason());
         $this->assertNotNull($newMandate);
         $this->assertTrue($newMandate->isProvisional());
         $this->assertSame(CommitteeMandateQualityEnum::SUPERVISOR, $newMandate->getQuality());
@@ -529,7 +529,7 @@ class AdminCommitteeControllerTest extends WebTestCase
         ]);
 
         $this->assertNotNull($mandate->getFinishAt());
-        $this->assertSame(AbstractAdherentMandate::REASON_MANUAL, $mandate->getReason());
+        $this->assertSame(AdherentMandateInterface::REASON_MANUAL, $mandate->getReason());
     }
 
     public function provideActions(): iterable

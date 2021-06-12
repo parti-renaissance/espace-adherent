@@ -17,53 +17,48 @@ class LoadTerritorialCouncilAdherentMandateData extends Fixture implements Depen
         /** @var TerritorialCouncil $coTerrParis */
         $coTerrParis = $this->getReference('coTerr_75');
 
-        $adherentMandate = new TerritorialCouncilAdherentMandate(
+        $manager->persist(TerritorialCouncilAdherentMandate::create(
+            $coTerrParis,
             $this->getReference('adherent-3'),
-            $coTerrParis,
-            TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+            new \DateTime('2020-06-06'),
             Genders::MALE,
-            new \DateTime('2020-06-06')
-        );
-        $manager->persist($adherentMandate);
+            TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+        ));
 
-        $adherentMandate = new TerritorialCouncilAdherentMandate(
+        $manager->persist(TerritorialCouncilAdherentMandate::create(
+            $coTerrParis,
             $this->getReference('adherent-5'),
-            $coTerrParis,
-            TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR,
+            new \DateTime('2020-02-02'),
             Genders::FEMALE,
-            new \DateTime('2020-02-02')
-        );
-        $manager->persist($adherentMandate);
+            TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR
+        ));
 
-        $adherentMandate = new TerritorialCouncilAdherentMandate(
-            $this->getReference('adherent-19'),
+        $manager->persist(TerritorialCouncilAdherentMandate::create(
             $coTerrParis,
-            TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+            $this->getReference('adherent-19'),
+            new \DateTime('2020-02-02'),
             Genders::FEMALE,
-            new \DateTime('2020-02-02')
-        );
-        $manager->persist($adherentMandate);
+            TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR
+        ));
 
         /** @var TerritorialCouncil $coTerr92 */
         $coTerr92 = $this->getReference('coTerr_92');
 
-        $adherentMandate = new TerritorialCouncilAdherentMandate(
+        $manager->persist(TerritorialCouncilAdherentMandate::create(
+            $coTerr92,
             $this->getReference('adherent-2'),
-            $coTerr92,
-            TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            new \DateTime('2020-02-02'),
             Genders::FEMALE,
-            new \DateTime('2020-02-02')
-        );
-        $manager->persist($adherentMandate);
+            TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT
+        ));
 
-        $adherentMandate = new TerritorialCouncilAdherentMandate(
-            $this->getReference('municipal-manager-1'),
+        $manager->persist(TerritorialCouncilAdherentMandate::create(
             $coTerr92,
-            TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+            $this->getReference('municipal-manager-1'),
+            new \DateTime('2020-02-02'),
             Genders::FEMALE,
-            new \DateTime('2020-02-02')
-        );
-        $manager->persist($adherentMandate);
+            TerritorialCouncilQualityEnum::CITY_COUNCILOR
+        ));
 
         $manager->flush();
     }

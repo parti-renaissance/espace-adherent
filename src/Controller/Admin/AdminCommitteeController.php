@@ -8,7 +8,7 @@ use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
@@ -213,7 +213,7 @@ class AdminCommitteeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('allow')->isClicked()) {
-                $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_MANUAL);
+                $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_MANUAL);
 
                 $entityManager->flush();
 

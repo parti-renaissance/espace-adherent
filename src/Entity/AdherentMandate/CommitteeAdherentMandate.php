@@ -13,32 +13,34 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommitteeAdherentMandate extends AbstractAdherentMandate
 {
-    public function __construct(
-        Adherent $adherent,
-        string $gender,
-        Committee $committee,
-        \DateTime $beginAt,
-        string $quality = null,
-        bool $provisional = false,
-        \DateTime $finishAt = null
-    ) {
-        parent::__construct($adherent, $gender, $beginAt, $finishAt);
-
-        $this->committee = $committee;
-        $this->quality = $quality;
-        $this->provisional = $provisional;
-    }
-
     public static function createFromCommand(CommitteeAdherentMandateCommand $command): self
     {
-        return new CommitteeAdherentMandate(
+        $mandate = new self(
             $command->getAdherent(),
             $command->getGender(),
-            $command->getCommittee(),
             new \DateTime(),
+            null,
             $command->getQuality(),
             $command->isProvisional()
         );
+
+        $mandate->setCommittee($command->getCommittee());
+
+        return $mandate;
+    }
+
+    public static function createForCommittee(
+        Committee $committee,
+        Adherent $adherent,
+        \DateTime $beginDate = null,
+        \DateTime $finishDate = null,
+        string $quality = null,
+        bool $isProvisional = false
+    ): self {
+        $mandate = new self($adherent, $adherent->getGender(), $beginDate ?? new \DateTime(), $finishDate, $quality, $isProvisional);
+        $mandate->setCommittee($committee);
+
+        return $mandate;
     }
 
     public function isProvisional(): bool
