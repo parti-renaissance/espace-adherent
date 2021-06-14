@@ -1,13 +1,12 @@
 <?php
 
-namespace App\JeMarche;
+namespace App\Messenger\Message;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class EventCreationNotificationCommand implements AsynchronousMessageInterface
+abstract class AbstractUuidAsynchronousMessage implements AsynchronousMessageInterface
 {
-    private $uuid;
+    protected $uuid;
 
     public function __construct(UuidInterface $uuid)
     {
