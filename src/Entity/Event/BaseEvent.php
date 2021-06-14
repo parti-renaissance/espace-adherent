@@ -381,6 +381,13 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     protected $published = true;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    protected $reminded = false;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
@@ -740,5 +747,15 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function needNotifyForCancellation(): bool
     {
         return false;
+    }
+
+    public function isReminded(): bool
+    {
+        return $this->reminded;
+    }
+
+    public function setReminded(bool $reminded): void
+    {
+        $this->reminded = $reminded;
     }
 }

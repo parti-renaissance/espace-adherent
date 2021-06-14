@@ -2,11 +2,13 @@
 
 namespace App\JeMarche;
 
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Jecoute\News;
 use App\JeMarche\Command\CommitteeEventCreationNotificationCommand;
 use App\JeMarche\Command\DefaultEventCreationNotificationCommand;
+use App\JeMarche\Command\EventReminderNotificationCommand;
 use App\JeMarche\Command\NewsCreatedNotificationCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -32,5 +34,10 @@ class JeMarcheDeviceNotifier
     public function sendCommitteeEventCreatedNotification(CommitteeEvent $event): void
     {
         $this->bus->dispatch(new CommitteeEventCreationNotificationCommand($event->getUuid()));
+    }
+
+    public function sendEventReminder(BaseEvent $event): void
+    {
+        $this->bus->dispatch(new EventReminderNotificationCommand($event->getUuid()));
     }
 }

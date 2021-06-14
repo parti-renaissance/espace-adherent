@@ -2,9 +2,11 @@
 
 namespace App\Firebase;
 
+use App\Entity\Notification as NotificationEntity;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Kreait\Firebase\Messaging as BaseMessaging;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -14,14 +16,21 @@ abstract class AbstractMessaging
     private const MULTICAST_MAX_TOKENS = 500;
 
     private $messaging;
+    private $entityManager;
 
-    public function __construct(BaseMessaging $messaging)
+    public function __construct(BaseMessaging $messaging, EntityManagerInterface $entityManager)
     {
         $this->messaging = $messaging;
+        $this->entityManager = $entityManager;
     }
 
     public function send(NotificationInterface $notification): void
     {
+        $notificationEntity = NotificationEntity::create($notification);
+
+        $this->entityManager->persist($notificationEntity);
+        $this->entityManager->flush();
+
         if ($notification instanceof TopicNotificationInterface) {
             $this->sendToTopic($notification);
         } elseif ($notification instanceof MulticastNotificationInterface) {
@@ -29,6 +38,9 @@ abstract class AbstractMessaging
         } else {
             throw new \InvalidArgumentException(sprintf('%s" is neither a topic nor a multicast notification.', \get_class($notification)));
         }
+
+        $notificationEntity->setDelivered();
+        $this->entityManager->flush();
     }
 
     private function sendToTopic(TopicNotificationInterface $notification): void
