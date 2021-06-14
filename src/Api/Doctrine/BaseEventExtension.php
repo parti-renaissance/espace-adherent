@@ -6,6 +6,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInter
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Event\BaseEvent;
+use App\Event\EventTypeEnum;
 use Doctrine\ORM\QueryBuilder;
 
 class BaseEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
@@ -48,8 +49,10 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         $queryBuilder
             ->andWhere("$alias.published = :true")
             ->andWhere("$alias.status IN (:statuses)")
+            ->andWhere("$alias NOT INSTANCE OF :institutional")
             ->setParameter('true', true)
             ->setParameter('statuses', $statuses)
+            ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
         ;
     }
 }
