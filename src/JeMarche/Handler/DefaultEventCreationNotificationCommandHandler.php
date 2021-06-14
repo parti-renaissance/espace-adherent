@@ -38,6 +38,10 @@ class DefaultEventCreationNotificationCommandHandler implements MessageHandlerIn
 
         $zone = $this->findZoneToNotify($event);
 
+        if (!$zone) {
+            return;
+        }
+
         $this->messaging->send(
             DefaultEventCreatedNotification::create(
                 $this->topicBuilder->buildTopic($zone),
