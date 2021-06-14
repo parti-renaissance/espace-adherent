@@ -7,7 +7,7 @@ use App\Entity\Event\CommitteeEvent;
 use App\Firebase\JeMarcheMessaging;
 use App\JeMarche\Command\CommitteeEventCreationNotificationCommand;
 use App\JeMarche\Notification\CommitteeEventCreatedNotification;
-use App\PushToken\PushTokenManager;
+use App\Repository\CommitteeMembershipRepository;
 use App\Repository\EventRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -15,16 +15,16 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 class CommitteeEventCreationNotificationCommandHandler implements MessageHandlerInterface
 {
     private $eventRepository;
-    private $pushTokenManager;
+    private $committeeMembershipRepository;
     private $messaging;
 
     public function __construct(
         EventRepository $eventRepository,
-        PushTokenManager $pushTokenManager,
+        CommitteeMembershipRepository $committeeMembershipRepository,
         JeMarcheMessaging $messaging
     ) {
         $this->eventRepository = $eventRepository;
-        $this->pushTokenManager = $pushTokenManager;
+        $this->committeeMembershipRepository = $committeeMembershipRepository;
         $this->messaging = $messaging;
     }
 
@@ -36,7 +36,7 @@ class CommitteeEventCreationNotificationCommandHandler implements MessageHandler
             return;
         }
 
-        $tokens = $this->pushTokenManager->findIdentifiersForEventCreation($event);
+        $tokens = $this->committeeMembershipRepository->findPushTokenIdentifiers($event->getCommittee());
 
         if (empty($tokens)) {
             return;
