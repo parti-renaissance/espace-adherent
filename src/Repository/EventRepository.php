@@ -665,4 +665,32 @@ SQL;
             ->getResult()
         ;
     }
+
+    public function findEventsToRemind(
+        \DateTimeInterface $startAfter,
+        \DateTimeInterface $startBefore,
+        string $mode = null
+    ): array {
+        $qb = $this
+            ->createQueryBuilder('event')
+            ->andWhere('event.beginAt >= :start_after')
+            ->andWhere('event.beginAt < :start_before')
+            ->setParameters([
+                'start_after' => $startAfter,
+                'start_before' => $startBefore,
+            ])
+        ;
+
+        if ($mode) {
+            $qb
+                ->andWhere('event.mode = :mode')
+                ->setParameter('mode', $mode)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
