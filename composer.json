@@ -88,7 +88,7 @@
         "suin/php-rss-writer": "^1.5",
         "superbalist/flysystem-google-storage": "^7.2",
         "symfony/asset": "^4.4",
-        "symfony/cache": "^4.4",
+        "symfony/cache": "^5.3",
         "symfony/config": "^4.4",
         "symfony/dependency-injection": "^4.4",
         "symfony/doctrine-bridge": "^4.4",
