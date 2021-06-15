@@ -150,6 +150,10 @@ class CommitteeEventManagerController extends AbstractController
         BaseEvent $event,
         EventContactMembersCommandHandler $handler
     ): Response {
+        if ($event->isCoalitionsEvent()) {
+            throw $this->createNotFoundException();
+        }
+
         $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
 
         if (!$registrations) {

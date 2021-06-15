@@ -5,8 +5,10 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
+use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Validator\DateRange;
@@ -38,9 +40,15 @@ class EventCommand extends BaseEventCommand
      */
     private $committee;
 
+    /**
+     * @var Coalition|null
+     */
+    private $coalition;
+
     public function __construct(
         ?Adherent $author,
         Committee $committee = null,
+        Coalition $coalition = null,
         UuidInterface $uuid = null,
         Address $address = null,
         \DateTimeInterface $beginAt = null,
@@ -53,6 +61,7 @@ class EventCommand extends BaseEventCommand
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone, $visioUrl);
 
         $this->committee = $committee;
+        $this->coalition = $coalition;
         $this->isForLegislatives = $isForLegislatives;
     }
 
@@ -61,6 +70,7 @@ class EventCommand extends BaseEventCommand
         $command = new self(
             $event->getOrganizer(),
             $event instanceof CommitteeEvent ? $event->getCommittee() : null,
+            $event instanceof CoalitionEvent ? $event->getCoalition() : null,
             $event->getUuid(),
             self::getAddressModelFromEvent($event),
             $event->getBeginAt(),
@@ -104,6 +114,16 @@ class EventCommand extends BaseEventCommand
     public function getCommittee(): ?Committee
     {
         return $this->committee;
+    }
+
+    public function getCoalition(): ?Coalition
+    {
+        return $this->coalition;
+    }
+
+    public function setCoalition(?Coalition $coalition): void
+    {
+        $this->coalition = $coalition;
     }
 
     protected function getCategoryClass(): string

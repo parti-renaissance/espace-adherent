@@ -6,7 +6,7 @@
 
         <h2 class="text--medium b__nudge--bottom-larger">L'événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_committee_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</h2>
 
-        {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+        {% if share_by_email %}
             {% if event.status == constant('STATUS_SCHEDULED', event) %}
                 <p class="alert alert--tips b__nudge--bottom-20">
                     Votre événement est en ligne mais pas encore diffusé.<br/> Partagez-le par message en cliquant ci-dessous.

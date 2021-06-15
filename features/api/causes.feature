@@ -1203,7 +1203,7 @@ Feature:
       | items[0].name             | Cause pour la culture   |
       | items[1].name             | Cause pour la culture 2 |
 
-  Scenario: As a logged-in user I can check if I follow causes
+  Scenario: As a logged-in user I can get only causes created and followed by me
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "GET" request to "/api/v3/causes?onlyMine&page_size=10"
     Then the response status code should be 200

@@ -26,6 +26,7 @@ class EventDateTimeZoneTransformerTest extends TestCase
             null,
             null,
             null,
+            null,
             new \DateTime($begintAt),
             new \DateTime($finishAt),
             false,
@@ -51,6 +52,7 @@ class EventDateTimeZoneTransformerTest extends TestCase
         $adherent = new Adherent();
         $baseEventCommand = new EventCommand(
             $adherent,
+            null,
             null,
             null,
             null,

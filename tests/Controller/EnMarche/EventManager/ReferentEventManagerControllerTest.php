@@ -10,7 +10,7 @@ class ReferentEventManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    public function testListElectedRepresentatives()
+    public function testListEvents(): void
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 

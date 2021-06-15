@@ -5,5 +5,9 @@
         <li class="{{ is_active_route(app.request, 'app_coalition_cause*') ? 'active' }}">
             <a href="{{ path('app_coalition_causes_list') }}">Causes</a>
         </li>
+
+        <li class="{{ is_active_route(app.request, 'app_coalition_moderator_event_manager*') ? 'active' }}">
+            <a href="{{ path('app_coalition_moderator_event_manager_events') }}">Événements</a>
+        </li>
     </ul>
 </nav>

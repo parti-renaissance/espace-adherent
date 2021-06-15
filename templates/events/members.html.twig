@@ -76,11 +76,13 @@
                 </h2>
                 <div class="committee__members__nav">
                     <div>
-                        <form method="post" action="{{ path("app_committee_event_contact_members", { slug: event.slug }) }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('event.contact_members') }}" id="members-contact-token" />
-                            <input type="hidden" name="contacts" value="" id="members-contact-selection" />
-                            <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
-                        </form>
+                        {% if not event.isCoalitionsEvent %}
+                            <form method="post" action="{{ path("app_committee_event_contact_members", { slug: event.slug }) }}">
+                                <input type="hidden" name="token" value="{{ csrf_token('event.contact_members') }}" id="members-contact-token" />
+                                <input type="hidden" name="contacts" value="" id="members-contact-selection" />
+                                <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
+                            </form>
+                        {% endif %}
                         <form method="post" action="{{ path("app_committee_event_export_members", { slug: event.slug }) }}">
                             <input type="hidden" name="token" value="{{ csrf_token('event.export_members') }}" id="members-export-token" />
                             <input type="hidden" name="exports" value="" id="members-export-selection" />
