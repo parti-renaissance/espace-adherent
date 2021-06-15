@@ -137,27 +137,19 @@ class EventFactory
                 /** @var CoalitionEvent $event */
                 $event = new CoalitionEvent($command->getUuid());
                 $event->setCoalition($command->getCoalition());
-                $event->setAuthor($command->getAuthor());
-                $event->setName($command->getName());
-                $event->setCategory($command->getCategory());
-                $event->setDescription($command->getDescription());
-                $event->setPostAddress($this->createPostAddress($command->getAddress()));
-                $event->setBeginAt($command->getBeginAt());
-                $event->setFinishAt($command->getFinishAt());
-                $event->setCapacity($command->getCapacity());
                 break;
             default:
                 $event = new DefaultEvent($command->getUuid());
-                $event->setAuthor($command->getAuthor());
-                $event->setName($command->getName());
-                $event->setCategory($command->getCategory());
-                $event->setDescription($command->getDescription());
-                $event->setPostAddress($this->createPostAddress($command->getAddress()));
-                $event->setBeginAt($command->getBeginAt());
-                $event->setFinishAt($command->getFinishAt());
-                $event->setCapacity($command->getCapacity());
         }
 
+        $event->setAuthor($command->getAuthor());
+        $event->setName($command->getName());
+        $event->setCategory($command->getCategory());
+        $event->setDescription($command->getDescription());
+        $event->setPostAddress($this->createPostAddress($command->getAddress()));
+        $event->setBeginAt($command->getBeginAt());
+        $event->setFinishAt($command->getFinishAt());
+        $event->setCapacity($command->getCapacity());
         $event->setTimeZone($command->getTimeZone());
         $event->setVisioUrl($command->getVisioUrl());
         $event->setImage($command->getImage());

@@ -93,7 +93,7 @@
             {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300 b__nudge--top-15', placeholder: 'Entrez un paragraphe afin de décrire cet événement.', rows: '20', cols: '70' } }) }}
         </div>
 
-        {% if not form.vars.coalition %}
+        {% if form.image is defined %}
             {{ form_row(form.image) }}
         {% endif %}
 
@@ -103,7 +103,7 @@
             {{ form_widget(form.visioUrl,  { attr: { class: 'form--full committee_event__form__visio_url', placeholder: "Entrez le lien de la visio de l'évènement (facultatif)" } }) }}
         </div>
 
-        {% if not form.vars.coalition %}
+        {% if form.capacity is defined %}
             <div class="form__row" id="event-capacity-field">
                 {{ form_errors(form.capacity) }}
                 {{ form_label(form.capacity, 'Capacité') }}
@@ -131,9 +131,9 @@
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 {{ js.address(form.address) }}
-                {% if not form.vars.coalition %}
+                {% if form.vars.form_type_class != 'App\\Form\\Coalition\\CoalitionEventType' %}
                     {{ js.ckeditor('event_command_description', null, constant('App\\Entity\\UserDocument::TYPE_EVENT')) }}
-                {{ js.init_event_cropperjs(form.image) }}
+                    {{ js.init_event_cropperjs(form.image) }}
                 {% endif %}
                 App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
             });

@@ -19,7 +19,7 @@ class CoalitionEventRepository extends EventRepository
     /**
      * @return CoalitionEvent[]|PaginatorInterface
      */
-    public function findManaged(int $page = 1, int $limit = 50): PaginatorInterface
+    public function findAllPublished(int $page = 1, int $limit = 50): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('event')
             ->select('event', 'organizer')

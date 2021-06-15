@@ -15,6 +15,7 @@ use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
+use App\Form\Coalition\CoalitionEventType;
 use App\Form\EventCommandType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -73,10 +74,13 @@ abstract class AbstractEventManagerController extends AbstractController
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
         $form = $this
-            ->createForm(EventCommandType::class, $command, [
-                'event_group_category' => $this->getEventGroupCategory(),
-                'coalition' => CoalitionEvent::class === $this->getEventClassName(),
-            ])
+            ->createForm(
+                CoalitionEvent::class === $this->getEventClassName() ? CoalitionEventType::class : EventCommandType::class,
+                $command,
+                [
+                    'event_group_category' => $this->getEventGroupCategory(),
+                ]
+            )
             ->handleRequest($request)
         ;
 

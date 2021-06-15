@@ -64,17 +64,17 @@ class CoalitionEventManagerControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-coalition/evenements/creer');
 
         $data = [];
-        $data['event_command']['name'] = 'Nouveau événement des coalitions';
-        $data['event_command']['category'] = $this->getEventCategoryIdForName('Événement innovant');
-        $data['event_command']['coalition'] = $this->getCoalitionRepository()->findOneBy(['uuid' => LoadCoalitionData::COALITION_1_UUID])->getId();
-        $data['event_command']['beginAt'] = '2023-06-14 16:15';
-        $data['event_command']['finishAt'] = '2023-06-15 23:00';
-        $data['event_command']['address']['address'] = '92 boulevard victor hugo';
-        $data['event_command']['address']['cityName'] = 'clichy';
-        $data['event_command']['address']['postalCode'] = '92110';
-        $data['event_command']['address']['country'] = 'FR';
-        $data['event_command']['description'] = 'Nouveau événement';
-        $data['event_command']['timeZone'] = 'Europe/Paris';
+        $data['coalition_event']['name'] = 'Nouveau événement des coalitions';
+        $data['coalition_event']['category'] = $this->getEventCategoryIdForName('Événement innovant');
+        $data['coalition_event']['coalition'] = $this->getCoalitionRepository()->findOneBy(['uuid' => LoadCoalitionData::COALITION_1_UUID])->getId();
+        $data['coalition_event']['beginAt'] = '2023-06-14 16:15';
+        $data['coalition_event']['finishAt'] = '2023-06-15 23:00';
+        $data['coalition_event']['address']['address'] = '92 boulevard victor hugo';
+        $data['coalition_event']['address']['cityName'] = 'clichy';
+        $data['coalition_event']['address']['postalCode'] = '92110';
+        $data['coalition_event']['address']['country'] = 'FR';
+        $data['coalition_event']['description'] = 'Nouveau événement';
+        $data['coalition_event']['timeZone'] = 'Europe/Paris';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
 

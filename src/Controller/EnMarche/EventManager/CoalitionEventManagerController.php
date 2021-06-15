@@ -32,7 +32,7 @@ class CoalitionEventManagerController extends AbstractEventManagerController
     protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManaged($page);
+            return $this->repository->findAllPublished($page);
         }
 
         return $this->repository->findEventsByOrganizerPaginator($adherent, $page);
