@@ -19,7 +19,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-coalition/causes", name="app_coalition_", methods={"GET"})
+ * @Route(path="/espace-coalition/causes", name="app_coalition_")
  *
  * @Security("is_granted('ROLE_COALITION_MODERATOR')")
  */

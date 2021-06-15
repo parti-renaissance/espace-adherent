@@ -67,7 +67,7 @@ Feature:
       }
     ]
     """
-    When I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    When I am logged with "carl999@example.fr" via OAuth client "Coalition App"
     And I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
     """
@@ -116,7 +116,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can not modify quick actions of the cause with invalid data
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2" with body:
     """
@@ -173,7 +173,7 @@ Feature:
     """
     []
     """
-    When I am logged with "michelle.dufour@example.ch" via OAuth client "Coalition App"
+    When I am logged with "carl999@example.fr" via OAuth client "Coalition App"
     And I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/causes/017491f9-1953-482e-b491-20418235af1f" with body:
     """

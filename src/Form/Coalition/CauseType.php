@@ -3,6 +3,8 @@
 namespace App\Form\Coalition;
 
 use App\Entity\Coalition\Cause;
+use App\Form\AdherentUuidType;
+use App\Form\PurifiedTextareaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +18,16 @@ class CauseType extends AbstractType
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
             ])
+            ->add('description', PurifiedTextareaType::class, [
+                'required' => false,
+                'filter_emojis' => true,
+                'with_character_count' => true,
+            ])
+            ->add('coalition', EnabledCoalitionEntityType::class)
+            ->add('secondCoalition', EnabledCoalitionEntityType::class, [
+                'required' => false,
+            ])
+            ->add('author', AdherentUuidType::class)
         ;
     }
 

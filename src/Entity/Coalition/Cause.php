@@ -21,6 +21,7 @@ use App\Entity\FollowedInterface;
 use App\Entity\FollowerInterface;
 use App\Entity\ImageTrait;
 use App\Entity\StaticSegmentTrait;
+use App\Validator\Coalition\EnabledCoalitionUser as AssertEnabledCoalitionUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -158,6 +159,8 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @ORM\Column(type="text", nullable=true)
      *
      * @SymfonySerializer\Groups({"cause_read", "cause_write", "cause_update"})
+     *
+     * @Assert\Length(max=10000)
      */
     private $description;
 
@@ -174,6 +177,9 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="causes", fetch="EAGER")
      *
      * @SymfonySerializer\Groups({"cause_read"})
+     *
+     * @Assert\NotBlank
+     * @AssertEnabledCoalitionUser
      */
     private $author;
 
@@ -269,7 +275,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
         return $this->coalition;
     }
 
-    public function setCoalition(Coalition $coalition): void
+    public function setCoalition(?Coalition $coalition): void
     {
         $this->coalition = $coalition;
     }
@@ -294,7 +300,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
         return $this->author;
     }
 
-    public function setAuthor(Adherent $adherent): void
+    public function setAuthor(?Adherent $adherent): void
     {
         $this->author = $adherent;
     }

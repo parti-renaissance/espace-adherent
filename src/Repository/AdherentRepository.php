@@ -1102,6 +1102,41 @@ SQL;
         ;
     }
 
+    public function findEnabledCoalitionUsers(string $search, int $limit = 20): array
+    {
+        return $this->createEnabledCoalitionUserQueryBuilder()
+            ->andWhere('(a.firstName LIKE :search OR a.lastName LIKE :search)')
+            ->setParameter('search', '%'.$search.'%')
+            ->addOrderBy('a.firstName', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findEnabledCoalitionUserByUuid(string $uuid): ?Adherent
+    {
+        return $this->createEnabledCoalitionUserQueryBuilder()
+            ->andWhere('a.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function createEnabledCoalitionUserQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.status = :status')
+            ->andWhere('(a.source = :coalitions OR a.adherent = :true)')
+            ->setParameters([
+                'true' => true,
+                'status' => Adherent::ENABLED,
+                'coalitions' => MembershipSourceEnum::COALITIONS,
+            ])
+        ;
+    }
+
     private function createCommitteeSupervisorsQueryBuilder(Committee $committee): QueryBuilder
     {
         return $this->createQueryBuilder('a')
