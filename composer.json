@@ -117,7 +117,7 @@
         "symfony/twig-bridge": "^4.4",
         "symfony/twig-bundle": "^4.4",
         "symfony/validator": "^4.4",
-        "symfony/workflow": "^4.4",
+        "symfony/workflow": "^5.3",
         "symfony/yaml": "^4.4",
         "tackk/cartographer": "^1.1",
         "tetranz/select2entity-bundle": "^2.10",
