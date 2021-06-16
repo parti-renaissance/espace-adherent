@@ -107,9 +107,14 @@ class CausesController extends AbstractController
      */
     public function editAction(Request $request, Cause $cause, EntityManagerInterface $entityManager): Response
     {
+        $actualAuthor = $cause->getAuthor();
         $form = $this->createForm(CauseType::class, $cause)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($actualAuthor !== ($newAuthor = $cause->getAuthor()) && !$cause->hasFollower($newAuthor)) {
+                $entityManager->persist($cause->createFollower($newAuthor));
+            }
+
             $entityManager->flush();
 
             $this->addFlash('info', sprintf('La cause "%s" a bien été modifiée.', $cause->getName()));

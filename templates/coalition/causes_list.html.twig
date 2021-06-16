@@ -114,7 +114,7 @@
                         <tr class="event__item">
                             <td><input type="checkbox" name="items[]" value="{{ cause.id }}" /></td>
                             <td>{{ cause.id }}</td>
-                            <td>{{ cause.name }}</td>
+                            <td><a href="{{ cause_link(cause) }}" target="_blank">{{ cause.name }}</a></td>
                             <td class="adherent-identity">
                                 {% set author = cause.author %}
                                 {% if author %}

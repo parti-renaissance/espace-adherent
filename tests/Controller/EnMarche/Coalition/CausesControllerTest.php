@@ -193,7 +193,15 @@ class CausesControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/causes');
+
+        /** @var Cause $cause */
+        $cause = $this->getCauseRepository()->findOneBy([
+            'id' => $crawler->filter('table.datagrid__table-manager tbody tr td')->eq(1)->text(),
+        ]);
+        $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_5_UUID);
+
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertFalse($cause->hasFollower($adherent));
 
         $crawler = $this->client->click($crawler->selectLink('Modifier')->link());
 
@@ -228,6 +236,7 @@ class CausesControllerTest extends WebTestCase
         $this->assertSame('Culture, Démocratie', $fields->eq(5)->text());
         $this->assertSame('Nouvelle description.', $fields->eq(6)->text(null, true));
         $this->assertSame('Gisele Berthoux (Clichy)', $fields->eq(3)->filter('.adherent-name')->text(null, true));
+        $this->assertTrue($cause->hasFollower($adherent));
     }
 
     public function testExportCausesCsvIsForbiddenAsNotCoalitionModerator(): void
