@@ -20,19 +20,19 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $jacques = $this->getReference('adherent-3');
+        $adherent77 = $this->getReference('adherent-7');
 
         $pushToken1 = $this->createPushTokenForAdherent(
             self::PUSH_TOKEN_1_UUID,
-            $jacques,
-            'token-jacques-jemarche-1',
+            $adherent77,
+            'token-francis-jemarche-1',
             PushTokenSourceEnum::JE_MARCHE
         );
 
         $pushToken2 = $this->createPushTokenForAdherent(
             self::PUSH_TOKEN_2_UUID,
-            $jacques,
-            'token-jacques-jemarche-2',
+            $adherent77,
+            'token-francis-jemarche-2',
             PushTokenSourceEnum::JE_MARCHE
         );
 

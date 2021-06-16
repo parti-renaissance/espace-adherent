@@ -1,15 +1,17 @@
 <?php
 
-namespace App\JeMarche;
+namespace App\JeMarche\Handler;
 
 use App\Entity\Jecoute\News;
 use App\Firebase\JeMarcheMessaging;
 use App\Jecoute\NewsTitlePrefix;
+use App\JeMarche\Command\NewsCreatedNotificationCommand;
+use App\JeMarche\Notification\NewsCreatedNotification;
 use App\Repository\Jecoute\NewsRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class NotificationCommandHandler implements MessageHandlerInterface
+class NewsCreatedNotificationCommandHandler implements MessageHandlerInterface
 {
     private $newsRepository;
     private $messaging;
@@ -25,7 +27,7 @@ class NotificationCommandHandler implements MessageHandlerInterface
         $this->newsTitlePrefix = $newsTitlePrefix;
     }
 
-    public function __invoke(NotificationCommand $command): void
+    public function __invoke(NewsCreatedNotificationCommand $command): void
     {
         $news = $this->getNews($command->getUuid());
 
@@ -34,7 +36,8 @@ class NotificationCommandHandler implements MessageHandlerInterface
         }
 
         $title = $this->newsTitlePrefix->prefixTitle($news);
-        $this->messaging->sendNotification($news->getTopic(), $title, $news->getText());
+
+        $this->messaging->send(NewsCreatedNotification::create($news, $title));
     }
 
     private function getNews(UuidInterface $uuid): ?News

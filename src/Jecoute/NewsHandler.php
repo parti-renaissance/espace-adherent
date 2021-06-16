@@ -40,7 +40,7 @@ class NewsHandler
             return;
         }
 
-        $this->deviceNotifier->sendNotification($news);
+        $this->deviceNotifier->sendNewsNotification($news);
     }
 
     public function publish(News $news): void
