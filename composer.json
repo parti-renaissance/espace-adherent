@@ -120,7 +120,7 @@
         "symfony/workflow": "^4.4",
         "symfony/yaml": "^4.4",
         "tackk/cartographer": "^1.1",
-        "tetranz/select2entity-bundle": "^2.10",
+        "tetranz/select2entity-bundle": "^3.1",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.13",
         "webmozart/assert": "^1.3",
