@@ -79,6 +79,8 @@ services:
             tags: ['messenger.message_handler']
         App\Redirection\Dynamic\RedirectToInterface:
             tags: ['app.redirection.handler']
+        App\VotingPlatform\AdherentMandate\Factory\AdherentMandateFactoryInterface:
+            tags: [ 'app.voting_platform.mandate_factory' ]
 
     # Imports
     App\:
@@ -113,29 +115,28 @@ services:
 
     App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
         arguments:
-            $handlers: !tagged 'app.adherent.unregistration.handler'
+            $handlers: !tagged_iterator 'app.adherent.unregistration.handler'
 
     App\Adherent\Certification\CertificationRequestProcessCommandHandler:
         arguments:
-            $handlers: !tagged 'app.adherent.certification_request.handler'
+            $handlers: !tagged_iterator 'app.adherent.certification_request.handler'
 
     App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
         arguments:
-            $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
+            $handlers: !tagged_iterator 'app.adherent.territorial_council_membership.handler'
 
     App\Redirection\Dynamic\RedirectionsSubscriber:
-        arguments:
-            $handlers: !tagged 'app.redirection.handler'
+        arguments: [!tagged_iterator 'app.redirection.handler']
 
     App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
-        arguments: [ !tagged 'app.adherent_message.mailchimp.campaign.handler' ]
+        arguments: [!tagged_iterator 'app.adherent_message.mailchimp.campaign.handler']
 
     App\AdherentMessage\Listener\UpdateTransactionalAdherentMessageDataListener:
-        arguments: [ !tagged 'app.adherent_message.transaction.message_modifier' ]
+        arguments: [!tagged_iterator 'app.adherent_message.transaction.message_modifier']
 
     App\AdherentMessage\AdherentMessageManager:
         arguments:
-            $senders: !tagged 'app.adherent_message.sender'
+            $senders: !tagged_iterator 'app.adherent_message.sender'
 
     App\AdherentMessage\MessageLimiter:
         arguments:
@@ -249,3 +250,6 @@ services:
         arguments:
             - '@snc_redis.default'
             - {ttl: '%env(SESSION_TTL)%', prefix: 'session'}
+
+    App\VotingPlatform\AdherentMandate\AdherentMandateFactory:
+        arguments: [!tagged_iterator 'app.voting_platform.mandate_factory']

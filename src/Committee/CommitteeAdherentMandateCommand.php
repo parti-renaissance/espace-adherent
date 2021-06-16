@@ -56,7 +56,7 @@ class CommitteeAdherentMandateCommand
         $dto = new self($mandate->getCommittee());
         $dto->gender = $mandate->getGender();
         $dto->quality = $mandate->getQuality();
-        $dto->provisional = (bool) $mandate->isSupervisor();
+        $dto->provisional = $mandate->isSupervisor();
         $dto->beginAt = new \DateTime();
 
         return $dto;

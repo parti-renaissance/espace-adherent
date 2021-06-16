@@ -33,11 +33,8 @@ class TerritorialCouncilAdherentMandateRepository extends ServiceEntityRepositor
         ;
     }
 
-    public function closeTerritorialCouncilMandate(
-        TerritorialCouncil $territorialCouncil,
-        \DateTime $finishAt,
-        array $qualities
-    ): void {
+    public function closeMandates(TerritorialCouncil $territorialCouncil, \DateTime $finishAt, array $qualities): void
+    {
         $this->createQueryBuilder('m')
             ->update()
             ->where('m.territorialCouncil = :territorial_council')

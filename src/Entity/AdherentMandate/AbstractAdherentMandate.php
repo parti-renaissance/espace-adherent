@@ -19,16 +19,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({
  *     "committee": "App\Entity\AdherentMandate\CommitteeAdherentMandate",
  *     "territorial_council": "App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate",
+ *     "national_council": "App\Entity\AdherentMandate\NationalCouncilAdherentMandate",
  * })
  */
-abstract class AbstractAdherentMandate
+abstract class AbstractAdherentMandate implements AdherentMandateInterface
 {
     use EntityIdentityTrait;
-
-    public const REASON_ELECTION = 'election';
-    public const REASON_COMMITTEE_MERGE = 'committee_merge';
-    public const REASON_MANUAL = 'manual';
-    public const REASON_REPLACED = 'replaced';
 
     /**
      * @var Adherent
@@ -106,13 +102,21 @@ abstract class AbstractAdherentMandate
      */
     public $provisional = false;
 
-    public function __construct(Adherent $adherent, string $gender, \DateTime $beginAt, \DateTime $finishAt = null)
-    {
+    final public function __construct(
+        Adherent $adherent,
+        ?string $gender,
+        \DateTime $beginAt,
+        \DateTime $finishAt = null,
+        string $quality = null,
+        bool $isProvisional = false
+    ) {
         $this->uuid = Uuid::uuid4();
         $this->adherent = $adherent;
         $this->gender = $gender ?? $adherent->getGender();
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
+        $this->quality = $quality;
+        $this->provisional = $isProvisional;
     }
 
     public function getId(): ?int

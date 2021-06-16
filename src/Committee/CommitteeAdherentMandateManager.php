@@ -4,7 +4,7 @@ namespace App\Committee;
 
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
@@ -83,8 +83,7 @@ class CommitteeAdherentMandateManager
             );
         }
 
-        $mandate = new CommitteeAdherentMandate($adherent, $adherent->getGender(), $committee, new \DateTime());
-        $committee->addAdherentMandate($mandate);
+        $committee->addAdherentMandate($mandate = CommitteeAdherentMandate::createForCommittee($committee, $adherent));
 
         $this->entityManager->persist($mandate);
         $this->entityManager->flush();
@@ -98,7 +97,7 @@ class CommitteeAdherentMandateManager
             throw new CommitteeAdherentMandateException(sprintf('Adherent with id "%s" (%s) has no active mandate in committee "%s"', $adherent->getId(), $adherent->getEmailAddress(), $committee->getName()));
         }
 
-        $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_MANUAL);
+        $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_MANUAL);
 
         $this->entityManager->flush();
     }
@@ -115,7 +114,7 @@ class CommitteeAdherentMandateManager
             $this->committeeManager->followCommittee($adherent, $committee);
         }
 
-        $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_REPLACED);
+        $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_REPLACED);
 
         $this->entityManager->persist($newMandate);
         $this->entityManager->flush();
@@ -157,16 +156,14 @@ class CommitteeAdherentMandateManager
             $existingMandate->end($now, 'switch_mandate');
         }
 
-        $mandate = new CommitteeAdherentMandate(
-            $adherent,
-            $adherent->getGender(),
+        $committee->addAdherentMandate($mandate = CommitteeAdherentMandate::createForCommittee(
             $committee,
+            $adherent,
             $now,
+            null,
             CommitteeMandateQualityEnum::SUPERVISOR,
             true
-        );
-
-        $committee->addAdherentMandate($mandate);
+        ));
 
         $this->entityManager->persist($mandate);
         $this->entityManager->flush();

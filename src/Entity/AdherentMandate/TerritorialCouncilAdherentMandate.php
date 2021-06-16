@@ -27,22 +27,19 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isAdditionallyElected;
+    private $isAdditionallyElected = false;
 
-    public function __construct(
+    public static function create(
+        TerritorialCouncil $coTerrParis,
         Adherent $adherent,
-        TerritorialCouncil $territorialCouncil,
-        string $quality,
-        string $gender,
-        \DateTime $beginAt,
-        \DateTime $finishAt = null,
-        bool $isAdditionallyElected = false
-    ) {
-        parent::__construct($adherent, $gender, $beginAt, $finishAt);
+        \DateTime $date = null,
+        string $gender = null,
+        string $quality = null
+    ): self {
+        $mandate = new self($adherent, $gender ?? $adherent->getGender(), $date ?? new \DateTime(), null, $quality);
+        $mandate->setTerritorialCouncil($coTerrParis);
 
-        $this->territorialCouncil = $territorialCouncil;
-        $this->quality = $quality;
-        $this->isAdditionallyElected = $isAdditionallyElected;
+        return $mandate;
     }
 
     public function isAdditionallyElected(): bool

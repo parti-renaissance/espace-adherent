@@ -4,7 +4,7 @@ namespace Tests\App\Adherent\Handler;
 
 use App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler;
 use App\Entity\Adherent;
-use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
@@ -519,7 +519,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                 $this->uuid = $uuid;
             }
 
-            public function addAdherentMandate(AbstractAdherentMandate $mandate): void
+            public function addAdherentMandate(AdherentMandateInterface $mandate): void
             {
                 if (!$this->adherentMandates->contains($mandate)) {
                     $this->adherentMandates->add($mandate);
@@ -601,8 +601,6 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
 
             $this->adherent->setTerritorialCouncilMembership($tcMembership);
         }
-
-        $this->adherent;
     }
 
     private function createHandler(array $data): AdherentUpdateTerritorialCouncilMembershipsCommandHandler
@@ -699,9 +697,9 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                     $committeeMandate = new CommitteeAdherentMandate(
                         $this->adherent,
                         Genders::MALE,
-                        $committee,
                         new \DateTime('-1 day'),
                     );
+                    $committeeMandate->setCommittee($committee);
 
                     $committeeMandateRepository->expects($this->any())
                         ->method('findActiveCommitteeMandates')
@@ -709,12 +707,12 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                         ->willReturn([$committeeMandate])
                     ;
                 } elseif (\in_array($qualityName, TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE, true)) {
-                    $tcMandate = new TerritorialCouncilAdherentMandate(
-                        $this->adherent,
+                    $tcMandate = TerritorialCouncilAdherentMandate::create(
                         $this->actualTC ?? $this->newTC,
-                        $qualityName,
+                        $this->adherent,
+                        new \DateTime('-1 day'),
                         Genders::MALE,
-                        new \DateTime('-1 day')
+                        $qualityName
                     );
                     $tcMandateRepository->expects($this->any())
                         ->method('findActiveMandateWithQuality')
@@ -750,12 +748,12 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                 $committeeAdherentMandate = new CommitteeAdherentMandate(
                     $this->adherent,
                     Genders::MALE,
-                    $committee,
                     new \DateTime('-2 days'),
+                    null,
                     CommitteeMandateQualityEnum::SUPERVISOR,
-                    false,
-                    null
+                    false
                 );
+                $committeeAdherentMandate->setCommittee($committee);
                 $this->adherent->addAdherentMandate($committeeAdherentMandate);
 
                 $tcRepository->expects($this->once())

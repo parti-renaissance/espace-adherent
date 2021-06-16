@@ -124,7 +124,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         }, $activeMandates);
     }
 
-    public function closeCommitteeMandate(
+    public function closeMandates(
         Committee $committee,
         string $reason,
         \DateTime $finishAt = null,
