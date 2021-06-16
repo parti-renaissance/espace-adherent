@@ -254,6 +254,20 @@ class EventRepository extends ServiceEntityRepository
         );
     }
 
+    public function findAllPublished(int $page = 1, int $limit = 50): PaginatorInterface
+    {
+        $qb = $this->createQueryBuilder('event')
+            ->select('event', 'organizer')
+            ->leftJoin('event.organizer', 'organizer')
+            ->where('event.published = :published')
+            ->orderBy('event.beginAt', 'DESC')
+            ->addOrderBy('event.name', 'ASC')
+            ->setParameter('published', true)
+        ;
+
+        return $this->configurePaginator($qb, $page, $limit);
+    }
+
     private function createUpcomingEventsQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('e');

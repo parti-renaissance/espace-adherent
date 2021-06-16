@@ -16,9 +16,18 @@ class CoalitionEventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/evenements');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/evenements-de-coalitions');
 
         $this->assertCount(13, $crawler->filter('tbody tr.event__item'));
+    }
+
+    public function testListCauseEvents(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-coalition/evenements-de-causes');
+
+        $this->assertCount(6, $crawler->filter('tbody tr.event__item'));
     }
 
     public function testListMyCoalitionEvents(): void
@@ -81,6 +90,24 @@ class CoalitionEventManagerControllerTest extends WebTestCase
         $this->assertSame('L\'événement « Nouveau événement des coalitions » a bien été créé.', $this->client->getCrawler()->filter('.box-success h2')->text());
 
         $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'jacques.picard@en-marche.fr');
+    }
+
+    public function canAccessCoalitionEventEditEventPage(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $this->client->request('GET', '/espace-coalition/evenements/'.date('Y-m-d', strtotime('+17 days')).'-evenement-economique/modifier');
+
+        $this->isSuccessful($this->client->getResponse());
+    }
+
+    public function canAccessCauseEventEditEventPage(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $this->client->request('GET', '/espace-coalition/evenements/'.date('Y-m-d', strtotime('+2 days')).'-evenement-culturel-1-de-la-cause-culturelle-1/modifier');
+
+        $this->isSuccessful($this->client->getResponse());
     }
 
     protected function setUp(): void
