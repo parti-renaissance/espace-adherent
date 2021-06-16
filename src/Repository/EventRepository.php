@@ -675,9 +675,11 @@ SQL;
             ->createQueryBuilder('event')
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')
+            ->andWhere('event.reminded = :false')
             ->setParameters([
                 'start_after' => $startAfter,
                 'start_before' => $startBefore,
+                'false' => false,
             ])
         ;
 
