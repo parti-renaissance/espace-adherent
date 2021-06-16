@@ -7,6 +7,7 @@ use App\Event\EventReminderHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RemindEventCommand extends Command
@@ -27,9 +28,9 @@ class RemindEventCommand extends Command
         $this
             ->setDescription('This command finds upcoming events and send reminders')
             ->addArgument('mode', InputArgument::REQUIRED, 'Events mode to filter ("online" or "meeting")')
-            ->addArgument('online-start-after', InputArgument::OPTIONAL, 'Minimum number of minutes before the online events begin')
-            ->addArgument('online-start-before', InputArgument::OPTIONAL, 'Maximum number of minutes before the online events begin')
-            ->addArgument('meeting-delay', InputArgument::OPTIONAL, 'Number of days before reminder is sent to meeting events.')
+            ->addOption('online-start-after', 'a', InputOption::VALUE_OPTIONAL, 'Minimum number of minutes before the online events begin', 30)
+            ->addOption('online-start-before', 'b', InputOption::VALUE_OPTIONAL, 'Maximum number of minutes before the online events begin', 90)
+            ->addOption('meeting-delay', 'd', InputOption::VALUE_OPTIONAL, 'Number of days before reminder is sent to meeting events.', 1)
         ;
     }
 
@@ -38,11 +39,11 @@ class RemindEventCommand extends Command
         $mode = $input->getArgument('mode');
 
         if (BaseEvent::MODE_MEETING === $mode) {
-            $startAfter = (new \DateTime())->modify(sprintf('+%d days', (int) $input->getArgument('meeting-delay')))->setTime(0, 0, 0);
+            $startAfter = (new \DateTime())->modify(sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
             $startBefore = (clone $startAfter)->modify('+1 day');
         } elseif (BaseEvent::MODE_ONLINE === $mode) {
-            $startAfter = (new \DateTime())->modify(sprintf('+%d minutes', (int) $input->getArgument('online-start-after')));
-            $startBefore = (new \DateTime())->modify(sprintf('+%d minutes', (int) $input->getArgument('online-start-before')));
+            $startAfter = (new \DateTime())->modify(sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
+            $startBefore = (new \DateTime())->modify(sprintf('+%d minutes', (int) $input->getOption('online-start-before')));
         } else {
             throw new \InvalidArgumentException(sprintf('Event mode "%s" is not defined.', $mode));
         }
