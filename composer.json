@@ -102,7 +102,7 @@
         "symfony/inflector": "^4.4",
         "symfony/intl": "^4.4",
         "symfony/messenger": "^4.4",
-        "symfony/monolog-bridge": "^4.4",
+        "symfony/monolog-bridge": "^5.2",
         "symfony/monolog-bundle": "^3.6",
         "symfony/property-info": "^4.4",
         "symfony/proxy-manager-bridge": "^4.4",
