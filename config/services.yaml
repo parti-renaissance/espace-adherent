@@ -68,11 +68,11 @@ services:
         App\Adherent\Certification\Handlers\CertificationRequestHandlerInterface:
             tags: ['app.adherent.certification_request.handler']
         App\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
-            tags: [ 'app.adherent_message.mailchimp.campaign.handler' ]
+            tags: ['app.adherent_message.mailchimp.campaign.handler']
         App\AdherentMessage\TransactionalMessage\MessageModifier\MessageModifierInterface:
-            tags: [ 'app.adherent_message.transaction.message_modifier' ]
+            tags: ['app.adherent_message.transaction.message_modifier']
         App\AdherentMessage\Sender\SenderInterface:
-            tags: [ 'app.adherent_message.sender' ]
+            tags: ['app.adherent_message.sender']
         App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface:
             tags: ['app.adherent.territorial_council_membership.handler']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
@@ -80,7 +80,9 @@ services:
         App\Redirection\Dynamic\RedirectToInterface:
             tags: ['app.redirection.handler']
         App\VotingPlatform\AdherentMandate\Factory\AdherentMandateFactoryInterface:
-            tags: [ 'app.voting_platform.mandate_factory' ]
+            tags: ['app.voting_platform.mandate_factory']
+        App\Instance\InstanceQualityUpdater\QualityUpdaterInterface:
+            tags: ['app.instance.quality_updater']
 
     # Imports
     App\:
@@ -253,3 +255,7 @@ services:
 
     App\VotingPlatform\AdherentMandate\AdherentMandateFactory:
         arguments: [!tagged_iterator 'app.voting_platform.mandate_factory']
+
+    App\Instance\Handler\UpdateInstanceQualitiesCommandHandler:
+        arguments:
+            $qualityUpdaters: !tagged_iterator 'app.instance.quality_updater'

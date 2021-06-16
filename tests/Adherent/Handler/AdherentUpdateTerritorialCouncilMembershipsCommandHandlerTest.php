@@ -57,6 +57,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -611,13 +613,15 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager->expects($this->once())->method('refresh')->with($this->adherent);
         $entityManager->expects($this->any())->method('flush');
-        $entityManager->expects($this->once())->method('clear');
 
         $handlers = $this->prepareHandlers($data, $entityManager);
+        $busMock = $this->createMock(MessageBusInterface::class);
+        $busMock->method('dispatch')->willReturn(new Envelope(new \stdClass()));
 
         return new AdherentUpdateTerritorialCouncilMembershipsCommandHandler(
             $adherentRepository,
             $entityManager,
+            $busMock,
             $handlers
         );
     }

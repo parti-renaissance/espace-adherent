@@ -2,12 +2,14 @@
 
 namespace App\Adherent\Handler;
 
+use App\Instance\Command\UpdateInstanceQualitiesCommand;
 use App\Repository\AdherentRepository;
 use App\TerritorialCouncil\Command\AdherentUpdateTerritorialCouncilMembershipsCommand;
 use App\TerritorialCouncil\Handlers\AbstractTerritorialCouncilHandler;
 use App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements MessageHandlerInterface
 {
@@ -17,15 +19,18 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
     private $handlers;
     private $adherentRepository;
     private $entityManager;
+    private $bus;
 
     public function __construct(
         AdherentRepository $adherentRepository,
         EntityManagerInterface $entityManager,
+        MessageBusInterface $bus,
         iterable $handlers
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;
         $this->handlers = $handlers;
+        $this->bus = $bus;
     }
 
     public function __invoke(AdherentUpdateTerritorialCouncilMembershipsCommand $command): void
@@ -49,7 +54,8 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
         }
 
         $this->entityManager->flush();
-        $this->entityManager->clear();
+
+        $this->bus->dispatch(new UpdateInstanceQualitiesCommand($adherent));
     }
 
     /**
