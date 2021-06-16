@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
+use App\Entity\PushToken;
 use App\Statistics\StatisticsParametersFilter;
 use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
@@ -247,6 +248,19 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
             ->groupBy('yearmonth')
         ;
+    }
+
+    public function findPushTokenIdentifiers(BaseEvent $event): array
+    {
+        $tokens = $this->createEventRegistrationQueryBuilder($event->getUuidAsString())
+            ->select('DISTINCT(token.identifier)')
+            ->innerJoin('r.adherent', 'adherent')
+            ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map('current', $tokens);
     }
 
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder
