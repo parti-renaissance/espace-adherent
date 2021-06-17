@@ -53,6 +53,7 @@ final class CoalitionsEventUpdateMessage extends AbstractCoalitionMessage
                 static::formatDate($event->getLocalBeginAt(), 'mm')
             ),
             'event_address' => $event->getInlineFormattedAddress(),
+            'event_online' => $event->isOnline(),
             'event_visio_url' => $event->getVisioUrl(),
         ];
     }
