@@ -1,5 +1,4 @@
 .tabs-nav {
-
     ul {
         display: flex;
         flex-direction: row;
@@ -23,7 +22,6 @@
             }
 
             &.active {
-
                 .tabs-nav__item {
                     color: $black;
                     font-weight: bold;

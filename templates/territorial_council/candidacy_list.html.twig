@@ -5,7 +5,7 @@
 {% block page_title 'Candidats aux élections' %}
 
 {% block sub_content %}
-    <section class="territorial-council__candidacies">
+    <section class="instance-page__candidacies">
         <h2 class="b__nudge--bottom-larger">Candidats aux élections</h2>
 
         <div class="b__nudge--bottom-larger">
@@ -22,7 +22,7 @@
                     {% endif %}
                 {% endif %}
 
-                <div class="territorial-council__candidacies l__row l__row--wrap">
+                <div class="instance-page__candidacies l__row l__row--wrap">
                     {% if candidacy.hasOtherCandidacies() %}
                         {% set candidacies_sub_array = candidacy.getCandidaciesGroup().getCandidacies()|sort((a, b) => b.isFemale <=> a.isFemale) %}
                     {% else %}
@@ -32,13 +32,13 @@
                     {% for cand in candidacies_sub_array %}
                         {{ cand.take() }}
 
-                        <div class="territorial-council__candidate">
+                        <div class="instance-page__candidate">
                             {{ helper.display_candidate_identity(cand, '<span class="candidate-gender l__col l__col--center">' ~ (cand.isFemale ? 'F' : 'H') ~ '</span>') }}
                         </div>
                     {% endfor %}
 
                     <div>
-                        <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
+                        <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger instance-page__biography"
                            data-content-element="#candidate-biography-content-{{ candidacy.uuid }}"
                            data-modal-side="right"
                         > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>

@@ -60,12 +60,12 @@ class AdherentInstanceQuality
     public function __construct(
         Adherent $adherent,
         InstanceQuality $instanceQuality,
-        \DateTime $date,
+        \DateTime $date = null,
         UuidInterface $uuid = null
     ) {
         $this->adherent = $adherent;
         $this->instanceQuality = $instanceQuality;
-        $this->date = $date;
+        $this->date = $date ?? new \DateTime();
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
@@ -87,5 +87,10 @@ class AdherentInstanceQuality
     public function setZone(?Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function hasNationalCouncilScope(): bool
+    {
+        return $this->instanceQuality->hasNationalCouncilScope();
     }
 }

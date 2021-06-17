@@ -13,7 +13,8 @@ class LoadInstanceQualityData extends Fixture
     public function load(ObjectManager $manager)
     {
         foreach (InstanceQualityEnum::toArray() as $quality) {
-            $manager->persist(new InstanceQuality($quality, [InstanceQualityScopeEnum::NATIONAL_COUNCIL]));
+            $manager->persist($object = new InstanceQuality($quality, [InstanceQualityScopeEnum::NATIONAL_COUNCIL]));
+            $this->setReference('instance-quality-'.$quality, $object);
         }
 
         $manager->flush();

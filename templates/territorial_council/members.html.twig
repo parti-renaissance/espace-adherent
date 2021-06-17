@@ -3,14 +3,14 @@
 {% block page_title 'Les membres du Conseil territorial' %}
 
 {% block sub_content %}
-    <section class="territorial-council__members">
+    <section class="instance-page__members">
         <h2 class="b__nudge--bottom-larger">Les membres du Conseil territorial</h2>
 
         <div>
             {% for membership in territorial_council.memberships %}
                 {% set adherent = membership.adherent %}
 
-                <div class="territorial-council__member">
+                <div class="instance-page__member">
                     {% include 'components/_member_identity_box.html.twig' with {
                         initials: adherent.initials,
                         full_name: adherent.fullName

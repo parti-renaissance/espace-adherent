@@ -38,13 +38,13 @@ class TerritorialCouncilControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Voir')->link());
 
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
-        $members = $crawler->filter('.territorial-council__members .territorial-council__member');
+        $members = $crawler->filter('.instance-page__members .instance-page__member');
         self::assertCount(8, $members);
         self::assertStringContainsString('Jacques Picard', $members->first()->text());
         self::assertStringContainsString('Lucie Olivera', $members->eq(1)->text());
         self::assertStringContainsString('Gisele Berthoux', $members->eq(2)->text());
 
-        self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Conseil territorial")'));
+        self::assertCount(1, $crawler->filter('.instance-page__aside h5:contains("Président du Conseil territorial")'));
     }
 
     public function testSeeMessages()
@@ -55,8 +55,8 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $messages = $crawler->filter('.territorial-council__feed__item');
-        $buttons = $crawler->filter('.territorial-council__feed__item .list__links--row');
+        $messages = $crawler->filter('.instance-page__feed__item');
+        $buttons = $crawler->filter('.instance-page__feed__item .list__links--row');
 
         self::assertCount(10, $messages);
         self::assertCount(0, $buttons);
@@ -70,8 +70,8 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $messages = $crawler->filter('.territorial-council__feed__item');
-        $buttons = $crawler->filter('.territorial-council__feed__item .list__links--row');
+        $messages = $crawler->filter('.instance-page__feed__item');
+        $buttons = $crawler->filter('.instance-page__feed__item .list__links--row');
 
         self::assertCount(10, $messages);
         self::assertCount(10, $buttons);

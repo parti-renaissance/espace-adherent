@@ -1,12 +1,12 @@
-<aside class="territorial-council__aside l__wrapper--aside">
+<aside class="instance-page__aside l__wrapper--aside">
     {% set president = territorial_council.memberships.president %}
     {% if president %}
         {% set president = president.adherent %}
 
-        <div id="territorial-council-referent" class="territorial-council__aside--section">
+        <div id="territorial-council-referent" class="instance-page__aside--section">
             <h5>Président du Conseil territorial</h5>
 
-            <div class="territorial-council__host l__row l__row--top text--body b__nudge--bottom">
+            <div class="instance-page__host l__row l__row--top text--body b__nudge--bottom">
                 {% include 'components/_member_identity_box.html.twig' with {
                     initials: president.initials,
                     full_name: president.fullName,
@@ -20,7 +20,7 @@
         </div>
     {% endif %}
 
-    <div class="territorial-council__aside--section">
+    <div class="instance-page__aside--section">
         <h5>FAQ des désignations</h5>
         <p class="text--body text--dark b__nudge--bottom">
             Pour en savoir plus sur les modalités de candidatures, <a href="{{ path("app_territorial_council#{route_part}_faq", route_params) }}" class="link--no-decor text--blue--dark">rendez-vous sur cette page</a>.
