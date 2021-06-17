@@ -80,7 +80,6 @@ class LocalPollRepository extends AbstractPollRepository
             ->setParameters([
                 'region' => $region,
                 'department' => $department,
-                'postal_code' => $postalCode,
                 'zone_region' => Zone::REGION,
                 'zone_department' => Zone::DEPARTMENT,
                 'zone_borough' => Zone::BOROUGH,
