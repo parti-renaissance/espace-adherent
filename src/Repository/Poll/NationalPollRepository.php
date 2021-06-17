@@ -6,7 +6,7 @@ use App\Entity\Poll\NationalPoll;
 use Cake\Chronos\Chronos;
 use Doctrine\Persistence\ManagerRegistry;
 
-class NationalPollRepository extends AbstractPollRepository
+class NationalPollRepository extends PollRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

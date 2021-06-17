@@ -5,9 +5,15 @@ namespace App\Repository\Poll;
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Poll;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-abstract class AbstractPollRepository extends ServiceEntityRepository
+class PollRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Poll::class);
+    }
+
     public function unpublishExceptOf(Poll $poll): void
     {
         $qb = $this->createQueryBuilder('poll')

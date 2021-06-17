@@ -3,13 +3,14 @@
 namespace App\JeMarche\Handler;
 
 use App\Entity\Poll\LocalPoll;
+use App\Entity\Poll\NationalPoll;
 use App\Entity\Poll\Poll;
 use App\Firebase\JeMarcheMessaging;
 use App\JeMarche\Command\PollCreatedNotificationCommand;
 use App\JeMarche\Notification\PollCreatedNotification;
 use App\JeMarche\NotificationTopicBuilder;
 use App\Poll\PollManager;
-use App\Repository\Poll\AbstractPollRepository;
+use App\Repository\Poll\PollRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -21,7 +22,7 @@ class PollCreatedNotificationCommandHandler implements MessageHandlerInterface
     private $topicBuilder;
 
     public function __construct(
-        AbstractPollRepository $pollRepository,
+        PollRepository $pollRepository,
         PollManager $pollManager,
         JeMarcheMessaging $messaging,
         NotificationTopicBuilder $topicBuilder
@@ -43,7 +44,7 @@ class PollCreatedNotificationCommandHandler implements MessageHandlerInterface
         if ($poll instanceof LocalPoll) {
             $activePoll = $this->pollManager->findActivePollByZone($poll->getZone());
 
-            if (!$activePoll || !$activePoll->equals($poll)) {
+            if (!$activePoll || $activePoll instanceof NationalPoll || !$activePoll->equals($poll)) {
                 return;
             }
         }

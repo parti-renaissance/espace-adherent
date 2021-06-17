@@ -9,7 +9,7 @@ use App\Entity\Poll\Vote;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
-class LocalPollRepository extends AbstractPollRepository
+class LocalPollRepository extends PollRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
