@@ -700,6 +700,10 @@ Feature:
             "content": "50 rue de la villette, 69003 Lyon 3e"
           },
           {
+            "name": "event_online",
+            "content": true
+          },
+          {
             "name": "event_visio_url",
             "content": "http://visio.fr"
           }
@@ -912,6 +916,10 @@ Feature:
           {
             "name": "event_address",
             "content": "50 rue de la villette, 69003 Lyon 3e"
+          },
+          {
+            "name": "event_online",
+            "content": true
           },
           {
             "name": "event_visio_url",

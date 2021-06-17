@@ -681,6 +681,11 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->mode = $mode;
     }
 
+    public function isOnline(): bool
+    {
+        return BaseEvent::MODE_ONLINE === $this->mode;
+    }
+
     public function getVisioUrl(): ?string
     {
         return $this->visioUrl;
