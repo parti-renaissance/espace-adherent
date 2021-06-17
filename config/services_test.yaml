@@ -69,3 +69,6 @@ services:
             $privateKey: "%env(SSL_PRIVATE_KEY)%"
             $encryptionKey: "%env(SSL_ENCRYPTION_KEY)%"
             $authCodeTtlInterval: 'PT60M'
+
+    Kreait\Firebase\Messaging:
+        class: 'Tests\App\Test\Firebase\DummyMessaging'
