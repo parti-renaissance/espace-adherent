@@ -111,8 +111,6 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
     /**
      * @var CoalitionEvent[]|Collection
      *
-     * @ApiSubresource
-     *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Event\CoalitionEvent",
      *     mappedBy="coalition",

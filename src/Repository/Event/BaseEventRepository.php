@@ -4,16 +4,21 @@ namespace App\Repository\Event;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
+use App\Entity\Coalition\Coalition;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
+use App\Event\EventTypeEnum;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -112,6 +117,46 @@ class BaseEventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findEventsForCoalition(Coalition $coalition, int $page = 1, int $limit = 30): PaginatorInterface
+    {
+        $subCoalitionEventsQuery = $this->getEntityManager()->createQueryBuilder()
+            ->from(CoalitionEvent::class, 'coe')
+            ->select('coe.id')
+            ->where('coe.coalition = :coalition')
+            ->getDQL()
+        ;
+
+        $subCauseEventsQuety = $this->getEntityManager()->createQueryBuilder()
+            ->from(CauseEvent::class, 'cae')
+            ->select('cae.id')
+            ->leftJoin('cae.cause', 'cause')
+            ->where('cause.coalition = :coalition')
+            ->getDQL()
+        ;
+
+        $qb = $this->createQueryBuilder('e')
+            ->addSelect('IF(e INSTANCE OF :coalition_type, IF(e.beginAt > :now, 3, 1), IF(e.beginAt > :now, 2, 0)) as HIDDEN custom_order')
+            ->leftJoin('e.organizer', 'organizer')
+            ->andWhere((new Orx())
+                ->add(sprintf('e.id IN (%s)', $subCoalitionEventsQuery))
+                ->add(sprintf('e.id IN (%s)', $subCauseEventsQuety))
+            )
+            ->andWhere('e.published = :true')
+            ->andWhere('e.status IN (:statuses)')
+            ->setParameters([
+                'true' => true,
+                'statuses' => BaseEvent::ACTIVE_STATUSES,
+                'coalition' => $coalition,
+                'coalition_type' => EventTypeEnum::TYPE_COALITION,
+                'now' => new \DateTime('now'),
+            ])
+            ->orderBy('custom_order', 'DESC')
+            ->addOrderBy('e.beginAt', 'DESC')
+        ;
+
+        return $this->configurePaginator($qb, $page, $limit);
     }
 
     protected function createSlugQueryBuilder(string $slug): QueryBuilder
