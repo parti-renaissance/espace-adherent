@@ -6,6 +6,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Vote;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
 class LocalPollRepository extends AbstractPollRepository
@@ -47,11 +48,9 @@ class LocalPollRepository extends AbstractPollRepository
         ;
     }
 
-    public function findOnePublishedByZone(Zone $region, Zone $department, string $postalCode): ?LocalPoll
+    public function findOnePublishedByZone(Zone $region, Zone $department, string $postalCode = null): ?LocalPoll
     {
-        $qb = $this->createQueryBuilder('poll');
-
-        return $qb
+        $qb = $this->createQueryBuilder('poll')
             ->select('poll')
             ->addSelect('
             CASE 
@@ -62,11 +61,20 @@ class LocalPollRepository extends AbstractPollRepository
             ')
             ->leftJoin('poll.zone', 'zone')
             ->where('poll.published = :true AND poll.finishAt > :now')
-            ->andWhere($qb->expr()->orX(
-                'zone.type = :zone_region AND zone = :region',
-                'zone.type = :zone_department AND zone = :department',
-                'zone.type = :zone_borough AND zone.postalCode = :postal_code',
-            ))
+        ;
+
+        $conditions = (new Orx())
+            ->add('zone.type = :zone_region AND zone = :region')
+            ->add('zone.type = :zone_department AND zone = :department')
+        ;
+
+        if ($postalCode) {
+            $conditions->add('zone.type = :zone_borough AND zone.postalCode = :postal_code');
+            $qb->setParameter('postal_code', $postalCode);
+        }
+
+        return $qb
+            ->andWhere($conditions)
             ->addOrderBy('priority', 'asc')
             ->addOrderBy('poll.finishAt', 'desc')
             ->setParameters([

@@ -184,4 +184,9 @@ abstract class Poll
 
         return $result;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
+    }
 }

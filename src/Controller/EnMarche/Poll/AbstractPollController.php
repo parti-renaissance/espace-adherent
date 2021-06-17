@@ -48,12 +48,8 @@ abstract class AbstractPollController extends AbstractController
      *     methods={"GET|POST"},
      * )
      */
-    public function createLocalPoll(
-        Request $request,
-        UserInterface $user,
-        EntityManagerInterface $manager,
-        PollManager $pollManager
-    ): Response {
+    public function createLocalPoll(Request $request, UserInterface $user, PollManager $pollManager): Response
+    {
         /** @var Adherent $user */
         $localPoll = new LocalPoll($user);
         $zones = $this->getZones($this->getMainUser($request->getSession()));
@@ -67,8 +63,7 @@ abstract class AbstractPollController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($localPoll);
-            $manager->flush();
+            $pollManager->save($localPoll);
 
             if ($localPoll->isPublished()) {
                 $pollManager->publish($localPoll);

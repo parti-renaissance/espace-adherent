@@ -4,13 +4,10 @@ namespace App\Controller\Api;
 
 use App\Entity\Adherent;
 use App\Entity\Device;
-use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\Vote;
-use App\Repository\Geo\ZoneRepository;
+use App\Poll\PollManager;
 use App\Repository\Poll\ChoiceRepository;
-use App\Repository\Poll\LocalPollRepository;
-use App\Repository\Poll\NationalPollRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -79,25 +76,9 @@ class PollController extends AbstractController
      *
      * @throws NotFoundHttpException If no poll to return
      */
-    public function getPollByPostalCode(
-        ?string $postalCode,
-        NationalPollRepository $nationalPollRepository,
-        LocalPollRepository $localPollRepository,
-        ZoneRepository $zoneRepository
-    ): JsonResponse {
-        $poll = $nationalPollRepository->findLastActivePoll();
-
-        if (!$poll && $postalCode) {
-            $zone = $zoneRepository->findOneByPostalCode($postalCode);
-            if (null !== $zone) {
-                $region = current($zone->getParentsOfType(Zone::REGION));
-                $department = current($zone->getParentsOfType(Zone::DEPARTMENT));
-
-                if ($region && $department) {
-                    $poll = $localPollRepository->findOnePublishedByZone($region, $department, $postalCode);
-                }
-            }
-        }
+    public function getPollByPostalCode(?string $postalCode, PollManager $pollManager): JsonResponse
+    {
+        $poll = $pollManager->findActivePoll($postalCode);
 
         if (!$poll) {
             throw $this->createNotFoundException();
