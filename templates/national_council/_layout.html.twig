@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Conseil national' %}
+
+{% block content %}
+    <main class="instance-page instance--national-council">
+        <header class="instance-page__header">
+            <div class="l__wrapper instance-page__header__content">
+                <div class="text--white instance-page__header__titles">
+                    <div class="text--uppercase text--small b__nudge--bottom">Instance</div>
+                    <div class="instance-page__name">
+                        <h1 id="instance-page-name" class="text--large">Conseil national</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
+            {% block council_content %}
+                <div class="instance-page__main l__wrapper--main l__wrapper--main-left">
+                    {% block sub_content %}{% endblock %}
+                </div>
+
+                <aside class="instance-page__aside l__wrapper--aside">
+                    <div class="instance-page__aside--section">
+                        <h5>Liste des membres du conseil</h5>
+                        <p class="text--body text--dark b__nudge--bottom">
+                            Pour connaître la liste des membres du Conseil national.<br/>
+                            <a href="#" class="btn newbtn--blue-dark b__nudge--top">Voir</a>
+                        </p>
+                    </div>
+
+                    <div class="instance-page__aside--section">
+                        <h5>Une question ?</h5>
+                        <p class="text--body text--dark b__nudge--bottom">
+                            Contactez<br/>
+                            <a href="mailto:conseil.national@en-marche.fr" class="link--no-decor link--blue--dark">conseil.national@en-marche.fr</a>.
+                        </p>
+                    </div>
+                </aside>
+            {% endblock %}
+        </div>
+    </main>
+{% endblock %}

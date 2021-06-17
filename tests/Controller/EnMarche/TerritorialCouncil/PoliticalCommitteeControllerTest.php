@@ -64,7 +64,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Voir')->link());
         self::assertEquals('http://test.enmarche.code/comite-politique', $crawler->getUri());
 
-        self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Comité politique")'));
+        self::assertCount(1, $crawler->filter('.instance-page__aside h5:contains("Président du Comité politique")'));
     }
 
     public function testSeeMessages()
@@ -75,8 +75,8 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $messages = $crawler->filter('.territorial-council__feed__item');
-        $buttons = $crawler->filter('.territorial-council__feed__item .list__links--row');
+        $messages = $crawler->filter('.instance-page__feed__item');
+        $buttons = $crawler->filter('.instance-page__feed__item .list__links--row');
 
         self::assertCount(10, $messages);
         self::assertCount(0, $buttons);
@@ -90,8 +90,8 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $messages = $crawler->filter('.territorial-council__feed__item');
-        $buttons = $crawler->filter('.territorial-council__feed__item .list__links--row');
+        $messages = $crawler->filter('.instance-page__feed__item');
+        $buttons = $crawler->filter('.instance-page__feed__item .list__links--row');
 
         self::assertCount(10, $messages);
         self::assertCount(10, $buttons);

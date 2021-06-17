@@ -39,7 +39,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $this->assertResponseStatusCode(200, $response = $this->client->getResponse());
-        $this->assertStringContainsString('Conseil territorial de Paris', $crawler->filter('.territorial-council__infos li')->first()->text());
+        $this->assertStringContainsString('Conseil territorial de Paris', $crawler->filter('.instance-page__infos li')->first()->text());
 
         /** @var Designation $designation */
         $designation = $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getCurrentDesignation();

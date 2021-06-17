@@ -4,6 +4,7 @@ namespace App\Entity\Instance;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Instance\InstanceQualityScopeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -45,5 +46,10 @@ class InstanceQuality
     public function equals(self $quality): bool
     {
         return $this->id === $quality->getId();
+    }
+
+    public function hasNationalCouncilScope(): bool
+    {
+        return \in_array(InstanceQualityScopeEnum::NATIONAL_COUNCIL, $this->scopes);
     }
 }

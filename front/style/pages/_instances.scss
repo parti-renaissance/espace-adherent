@@ -1,8 +1,7 @@
-.territorial-council {
+.instance-page {
     padding-bottom: 100px;
 
     &__header {
-        background-color: $green--territory;
         padding: 60px 0;
         margin-bottom: 70px;
 
@@ -33,6 +32,18 @@
                 margin: 0 5% 0 0;
                 text-align: left;
             }
+        }
+    }
+
+    &.instance--territorial-council {
+        .instance-page__header {
+            background-color: $green--territory;
+        }
+    }
+
+    &.instance--national-council {
+        .instance-page__header {
+            background-color: $blue--dark;
         }
     }
 

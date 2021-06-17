@@ -998,6 +998,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CAUSE_AUTHOR';
         }
 
+        if ($this->hasNationalCouncilQualities()) {
+            $roles[] = 'ROLE_NATIONAL_COUNCIL_MEMBER';
+        }
+
         // Must be at the end as it uses $roles array
         if ($this->isAdherentMessageRedactor($roles)) {
             $roles[] = 'ROLE_MESSAGE_REDACTOR';
@@ -2810,6 +2814,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
             $this->instanceQualities->removeElement($adherentInstanceQuality);
         }
+    }
+
+    public function hasNationalCouncilQualities(): bool
+    {
+        return 0 < $this->instanceQualities->filter(function (AdherentInstanceQuality $adherentQuality) {
+            return $adherentQuality->hasNationalCouncilScope();
+        })->count();
     }
 
     private function findInstanceQuality(InstanceQuality $quality): ?AdherentInstanceQuality
