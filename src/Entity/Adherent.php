@@ -17,6 +17,8 @@ use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Geo\Zone;
+use App\Entity\Instance\AdherentInstanceQuality;
+use App\Entity\Instance\InstanceQuality;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
@@ -326,6 +328,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @JMS\Groups({"adherent_change_diff"})
      */
     private $territorialCouncilMembership;
+
+    /**
+     * @var AdherentInstanceQuality[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Instance\AdherentInstanceQuality", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     */
+    private $instanceQualities;
 
     /**
      * @var PoliticalCommitteeMembership|null
@@ -729,6 +738,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->adherentMandates = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
         $this->causes = new ArrayCollection();
+        $this->instanceQualities = new ArrayCollection();
     }
 
     public static function createLight(
@@ -2782,5 +2792,34 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Cause::STATUS_APPROVED));
 
         return $this->causes->matching($criteria)->count();
+    }
+
+    public function addInstanceQuality(InstanceQuality $quality, \DateTime $data = null): AdherentInstanceQuality
+    {
+        if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
+            return $adherentInstanceQuality;
+        }
+
+        $this->instanceQualities->add($adherentInstanceQuality = new AdherentInstanceQuality($this, $quality, $data ?? new \DateTime()));
+
+        return $adherentInstanceQuality;
+    }
+
+    public function removeInstanceQuality(InstanceQuality $quality): void
+    {
+        if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
+            $this->instanceQualities->removeElement($adherentInstanceQuality);
+        }
+    }
+
+    private function findInstanceQuality(InstanceQuality $quality): ?AdherentInstanceQuality
+    {
+        foreach ($this->instanceQualities as $adherentInstanceQuality) {
+            if ($adherentInstanceQuality->getInstanceQuality()->equals($quality)) {
+                return $adherentInstanceQuality;
+            }
+        }
+
+        return null;
     }
 }
