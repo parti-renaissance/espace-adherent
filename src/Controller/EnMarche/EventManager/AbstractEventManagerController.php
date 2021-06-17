@@ -109,11 +109,10 @@ abstract class AbstractEventManagerController extends AbstractController
     {
         $form = $this
             ->createForm(
-                EventCommandType::class,
+                CoalitionEvent::class === $this->getEventClassName() ? CoalitionEventType::class : EventCommandType::class,
                 $command = EventCommand::createFromEvent($event),
                 [
                     'image_path' => $event->getImagePath(),
-                    'coalition' => CoalitionEvent::class === $this->getEventClassName(),
                 ]
             )
             ->handleRequest($request)

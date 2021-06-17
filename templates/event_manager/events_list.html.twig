@@ -37,10 +37,26 @@
     {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
         <div class="datagrid__table__tabs">
             <div class="datagrid__table__tabs__items">
-                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}
-                    <h3>Tous les événements</h3>
+                {% if is_granted('ROLE_COALITION_MODERATOR') %}
+                    {% if is_active_route(app.request, "app_#{space_name}_event_manager_coalition_events") %}
+                        <h3>Événements de coalitions</h3>
+                    {% else %}
+                        <h3><a href="{{ path("app_#{space_name}_event_manager_coalition_events") }}">Événements de coalitions</a></h3>
+                    {% endif %}
+
+                    <span class="separator"></span>
+
+                    {% if is_active_route(app.request, "app_#{space_name}_event_manager_cause_events") %}
+                        <h3>Événements de causes</h3>
+                    {% else %}
+                        <h3><a href="{{ path("app_#{space_name}_event_manager_cause_events") }}">Événements de causes</a></h3>
+                    {% endif %}
                 {% else %}
-                    <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
+                    {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}
+                        <h3>Tous les événements</h3>
+                    {% else %}
+                        <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
+                    {% endif %}
                 {% endif %}
 
                 <span class="separator"></span>
@@ -73,7 +89,13 @@
                     {% for event in events %}
                         <tr class="event__item">
                             <td>
-                                <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}
+                                {% if event is instanceof('App\\Entity\\Event\\CoalitionEvent') %}
+                                    <a href="{{ coalition_event_link(event) }}" target="_blank">{{ event.name }}</a>
+                                {% elseif event is instanceof('App\\Entity\\Event\\CauseEvent') %}
+                                    <a href="{{ cause_event_link(event) }}" target="_blank">{{ event.name }}</a>
+                                {% else %}
+                                    <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}</a>
+                                {% endif %}
                             </td>
                             <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
                             <td>
@@ -99,7 +121,8 @@
                                     {% set items = [] %}
                                 {% endif %}
 
-                                {% if is_granted('HOST_EVENT', event) and event.isActive() %}
+                                {% if (is_granted('HOST_EVENT', event) and event.isActive())
+                                    or (event.isCoalitionsEvent and is_granted('ROLE_COALITION_MODERATOR')) %}
                                     {% set items = items|merge([
                                         {
                                             label: 'Modifier',
