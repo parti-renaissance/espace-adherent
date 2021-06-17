@@ -78,6 +78,7 @@ class ImportDonationsCommand extends Command
         'malaisie' => 'MY',
         'malte' => 'MT',
         'maroc' => 'MA',
+        'martinique' => 'MQ',
         'monaco' => 'MC',
         'nicaragua' => 'NI',
         'nouvelle caledonie' => 'NC',
@@ -88,6 +89,7 @@ class ImportDonationsCommand extends Command
         'portugal' => 'PT',
         'republique tcheque' => 'CZ',
         'rep. tcheque' => 'CZ',
+        'republique-tcheque' => 'CZ',
         'royaume-uni' => 'GB',
         'royaume uni' => 'GB',
         'uk' => 'GB',
@@ -100,13 +102,17 @@ class ImportDonationsCommand extends Command
     ];
 
     private const NATIONALITY_MAP = [
+        'algerienne' => 'DZ',
         'francaise' => 'FR',
         'française' => 'FR',
         'belge' => 'BE',
         'americaine' => 'US',
+        'canadienne' => 'CA',
         'allemande' => 'DE',
         'irlandaise' => 'IE',
+        'marocaine' => 'MA',
         'neerlandaise' => 'NL',
+        'suisse' => 'CH',
     ];
 
     /**
