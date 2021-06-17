@@ -46,7 +46,7 @@ class PollManager
             $zone = $this->zoneRepository->findOneByPostalCode($postalCode);
 
             if ($zone) {
-                $poll = $this->findActivePollByZone($zone);
+                $poll = $this->findActivePollByZone($zone, $postalCode);
 
                 if ($poll) {
                     return $poll;

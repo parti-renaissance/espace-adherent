@@ -73,22 +73,22 @@ class LocalPollRepository extends ServiceEntityRepository
 
         if ($postalCode) {
             $conditions->add('zone.type = :zone_borough AND zone.postalCode = :postal_code');
-            $qb->setParameter('postal_code', $postalCode);
+            $qb
+                ->setParameter('zone_borough', Zone::BOROUGH)
+                ->setParameter('postal_code', $postalCode)
+            ;
         }
 
         return $qb
             ->andWhere($conditions)
             ->addOrderBy('priority', 'asc')
             ->addOrderBy('poll.finishAt', 'desc')
-            ->setParameters([
-                'region' => $region,
-                'department' => $department,
-                'zone_region' => Zone::REGION,
-                'zone_department' => Zone::DEPARTMENT,
-                'zone_borough' => Zone::BOROUGH,
-                'true' => true,
-                'now' => new \DateTime(),
-            ])
+            ->setParameter('region', $region)
+            ->setParameter('department', $department)
+            ->setParameter('zone_region', Zone::REGION)
+            ->setParameter('zone_department', Zone::DEPARTMENT)
+            ->setParameter('true', true)
+            ->setParameter('now', new \DateTime())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
