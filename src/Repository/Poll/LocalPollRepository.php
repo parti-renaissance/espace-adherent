@@ -6,11 +6,14 @@ use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Vote;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
-class LocalPollRepository extends PollRepository
+class LocalPollRepository extends ServiceEntityRepository
 {
+    use UnpublishPollTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LocalPoll::class);
