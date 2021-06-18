@@ -111,7 +111,7 @@
                 <div class="b__nudge--bottom">
                     <span class="head">Activités</span>
                     <ul class="items">
-                        {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') %}
+                        {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') or is_granted('ROLE_NATIONAL_COUNCIL_MEMBER') %}
                             <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
                         {% endif %}
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
