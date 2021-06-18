@@ -8,8 +8,8 @@ use App\Firebase\JeMarcheMessaging;
 use App\JeMarche\Command\DefaultEventCreationNotificationCommand;
 use App\JeMarche\Notification\DefaultEventCreatedNotification;
 use App\JeMarche\NotificationTopicBuilder;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\Event\BaseEventRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
