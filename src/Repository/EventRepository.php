@@ -687,6 +687,7 @@ SQL;
     ): array {
         $qb = $this
             ->createQueryBuilder('event')
+            ->andWhere('event.type IN (:types)')
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')
             ->andWhere('event.reminded = :false')
@@ -694,6 +695,12 @@ SQL;
                 'start_after' => $startAfter,
                 'start_before' => $startBefore,
                 'false' => false,
+                'types' => [
+                    EventTypeEnum::TYPE_DEFAULT,
+                    EventTypeEnum::TYPE_COMMITTEE,
+                    EventTypeEnum::TYPE_INSTITUTIONAL,
+                    EventTypeEnum::TYPE_MUNICIPAL,
+                ],
             ])
         ;
 
