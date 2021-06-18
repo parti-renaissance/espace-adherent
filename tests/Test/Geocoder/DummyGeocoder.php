@@ -131,29 +131,33 @@ class DummyGeocoder implements Geocoder
         ],
     ];
 
-    public function geocode(string $address): Collection
+    public function geocode(string $value): Collection
     {
-        $address = mb_strtolower($address);
-        if (empty(static::$coordinates[$address])) {
-            throw GeocodingException::create($address);
+        $value = mb_strtolower($value);
+        if (empty(static::$coordinates[$value])) {
+            throw GeocodingException::create($value);
         }
 
-        return new AddressCollection([Address::createFromArray(static::$coordinates[$address])]);
+        return new AddressCollection([Address::createFromArray(static::$coordinates[$value])]);
     }
 
     public function reverse(float $latitude, float $longitude): Collection
     {
+        return new AddressCollection();
     }
 
     public function geocodeQuery(GeocodeQuery $query): Collection
     {
+        return new AddressCollection();
     }
 
     public function reverseQuery(ReverseQuery $query): Collection
     {
+        return new AddressCollection();
     }
 
     public function getName(): string
     {
+        return 'geocoder';
     }
 }

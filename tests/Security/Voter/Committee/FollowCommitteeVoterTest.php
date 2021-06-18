@@ -153,7 +153,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return CommitteeMembership|\MockObject|null
+     * @return CommitteeMembership|MockObject|null
      */
     private function getMembershipMock(
         ?bool $isFollower,

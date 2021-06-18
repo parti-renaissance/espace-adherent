@@ -2,9 +2,9 @@
 
 namespace Tests\App\Controller\Legislatives;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -17,7 +17,7 @@ class HomeControllerTest extends WebTestCase
 
     public function testLegislativesCandidatesDirectory()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, $this->hosts['scheme'].'://'.$this->hosts['legislatives']);
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -83,13 +83,6 @@ class HomeControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->kill();
-
-        parent::tearDown();
+        $this->client->setServerParameter('HTTP_HOST', $this->getParameter('legislatives_host'));
     }
 }
