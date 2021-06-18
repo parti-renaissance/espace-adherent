@@ -46,7 +46,7 @@ class NotificationTopicBuilder
             case Zone::DEPARTMENT:
                 return sprintf('%s_%s', self::PREFIX_TARGET_DEPARTMENT, $zone->getCode());
             case Zone::BOROUGH:
-                return sprintf('%s_%s', self::PREFIX_TARGET_BOROUGH, $zone->getPostalCode());
+                return sprintf('%s_%s', self::PREFIX_TARGET_BOROUGH, current($zone->getPostalCode()));
             default:
                 throw new \InvalidArgumentException('Can not target Zone of type "%s".', $zone->getType());
         }
