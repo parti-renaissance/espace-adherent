@@ -254,7 +254,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     {
         $tokens = $this->createEventRegistrationQueryBuilder($event->getUuidAsString())
             ->select('DISTINCT(token.identifier)')
-            ->innerJoin('r.adherent', 'adherent')
+            ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'r.adherentUuid = adherent')
             ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
             ->getQuery()
             ->getArrayResult()
