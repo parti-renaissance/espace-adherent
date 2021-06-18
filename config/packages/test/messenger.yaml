@@ -9,4 +9,4 @@ framework:
             sync: 'sync://'
 
         routing:
-            App\Messenger\Message\AsynchronousMessageInterface: sync
+            App\Messenger\Message\AbstractUuidAsynchronousMessage: sync
