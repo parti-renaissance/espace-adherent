@@ -40,6 +40,20 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Senator Space
         'app_message_senator_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
         'app_senator_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
+
+        // Candidate Space
+        'app_candidate_*' => ReferentTagExtractorInterface::NONE,
+        'app_jecoute_candidate_*' => ReferentTagExtractorInterface::NONE,
+        'app_jecoute_news_candidate_*' => ReferentTagExtractorInterface::NONE,
+
+        // Procuration Space
+        'app_procuration_manager_*' => ReferentTagExtractorInterface::NONE,
+
+        // LRE Space
+        'app_lre_*' => ReferentTagExtractorInterface::NONE,
+
+        // All message actions
+        'app_message_*' => ReferentTagExtractorInterface::NONE,
     ];
 
     private $tokenStorage;
@@ -116,15 +130,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     private function supportUser($user): bool
     {
-        return $user instanceof Adherent
-            && (
-                $user->isHost()
-                || $user->isSupervisor()
-                || $user->isReferent()
-                || $user->isDeputy()
-                || $user->isMunicipalChief()
-                || $user->isSenator()
-            );
+        return $user instanceof Adherent;
     }
 
     private function getSlug(Request $request, string $type): ?string
