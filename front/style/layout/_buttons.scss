@@ -418,6 +418,12 @@ button.btn {
         padding: 17px 0;
     }
 
+    &--blue-dark {
+        color: $white;
+        background-color: $blue--dark;
+        border-color: $blue--dark;
+    }
+
     &--no-border {
         border-color: white;
 
