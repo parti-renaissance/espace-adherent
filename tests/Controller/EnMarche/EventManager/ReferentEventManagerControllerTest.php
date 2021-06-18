@@ -63,6 +63,7 @@ class ReferentEventManagerControllerTest extends WebTestCase
         self::assertSame('staging_jemarche_department_92', $notification->getTopic());
         self::assertEmpty($notification->getTokens());
         self::assertNotEmpty($notification);
+        self::assertNotNull($notification->getDelivered());
     }
 
     protected function setUp(): void
