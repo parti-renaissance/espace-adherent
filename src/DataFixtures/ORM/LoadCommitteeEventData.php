@@ -7,6 +7,7 @@ use App\Committee\Feed\CommitteeFeedManager;
 use App\Committee\Feed\CommitteeMessage;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent as EntityEvent;
 use App\Entity\PostAddress;
 use App\Event\EventFactory;
@@ -148,6 +149,7 @@ class LoadCommitteeEventData extends Fixture implements DependentFixtureInterfac
             'capacity' => 50,
         ]);
         $event3->incrementParticipantsCount();
+        $event3->setMode(BaseEvent::MODE_MEETING);
 
         $event4 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_4_UUID,
@@ -251,6 +253,7 @@ class LoadCommitteeEventData extends Fixture implements DependentFixtureInterfac
         ]);
         $event10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event10->incrementParticipantsCount();
+        $event10->setMode(BaseEvent::MODE_MEETING);
 
         $event11 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_11_UUID,

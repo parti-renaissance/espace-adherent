@@ -8,12 +8,15 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventRegistration;
+use App\Entity\Event\InstitutionalEvent;
+use App\Entity\Event\MunicipalEvent;
 use App\Entity\Geo\Zone;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -126,6 +129,42 @@ class BaseEventRepository extends ServiceEntityRepository
                 'published' => true,
                 'slug' => $slug,
             ])
+        ;
+    }
+
+    public function findEventsToRemind(
+        \DateTimeInterface $startAfter,
+        \DateTimeInterface $startBefore,
+        string $mode = null
+    ): array {
+        $qb = $this
+            ->createQueryBuilder('event')
+            ->andWhere((new Orx())
+                ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
+                ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
+                ->add(sprintf('event INSTANCE OF %s', InstitutionalEvent::class))
+                ->add(sprintf('event INSTANCE OF %s', MunicipalEvent::class))
+            )
+            ->andWhere('event.beginAt >= :start_after')
+            ->andWhere('event.beginAt < :start_before')
+            ->andWhere('event.reminded = :false')
+            ->setParameters([
+                'start_after' => $startAfter,
+                'start_before' => $startBefore,
+                'false' => false,
+            ])
+        ;
+
+        if ($mode) {
+            $qb
+                ->andWhere('event.mode = :mode')
+                ->setParameter('mode', $mode)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
         ;
     }
 }
