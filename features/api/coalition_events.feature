@@ -681,7 +681,7 @@ Feature:
           },
           {
             "name": "event_description",
-            "content": "My cause event"
+            "content": "Description"
           },
           {
             "name": "event_link",
