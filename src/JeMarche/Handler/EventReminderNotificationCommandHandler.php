@@ -5,7 +5,7 @@ namespace App\JeMarche\Handler;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventReminderHandler;
 use App\JeMarche\Command\EventReminderNotificationCommand;
-use App\Repository\EventRepository;
+use App\Repository\Event\BaseEventRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -14,7 +14,7 @@ class EventReminderNotificationCommandHandler implements MessageHandlerInterface
     private $eventRepository;
     private $eventReminderHandler;
 
-    public function __construct(EventRepository $eventRepository, EventReminderHandler $eventReminderHandler)
+    public function __construct(BaseEventRepository $eventRepository, EventReminderHandler $eventReminderHandler)
     {
         $this->eventRepository = $eventRepository;
         $this->eventReminderHandler = $eventReminderHandler;

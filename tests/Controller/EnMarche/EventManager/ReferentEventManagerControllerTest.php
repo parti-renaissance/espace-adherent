@@ -57,7 +57,7 @@ class ReferentEventManagerControllerTest extends WebTestCase
         $notification = current($notifications);
 
         self::assertSame('DefaultEventCreatedNotification', $notification->getNotificationClass());
-        self::assertSame('Nouvel événement dans le 92', $notification->getTitle());
+        self::assertSame('Hauts-de-Seine, nouvel événement', $notification->getTitle());
         self::assertStringStartsWith('My new referent event • ', $notification->getBody());
         self::assertStringEndsWith(' • 92 boulevard victor hugo, 92110 Clichy', $notification->getBody());
         self::assertSame('staging_jemarche_department_92', $notification->getTopic());

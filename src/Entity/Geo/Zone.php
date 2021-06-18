@@ -184,6 +184,11 @@ class Zone implements GeoInterface
         return Zone::BOROUGH === $this->type;
     }
 
+    public function isDepartment(): bool
+    {
+        return Zone::DEPARTMENT === $this->type;
+    }
+
     public function isRegion(): bool
     {
         return Zone::REGION === $this->type;

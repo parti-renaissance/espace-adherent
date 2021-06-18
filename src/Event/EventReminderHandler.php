@@ -7,7 +7,7 @@ use App\Firebase\JeMarcheMessaging;
 use App\JeMarche\JeMarcheDeviceNotifier;
 use App\JeMarche\Notification\EventReminderNotification;
 use App\PushToken\PushTokenManager;
-use App\Repository\EventRepository;
+use App\Repository\Event\BaseEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EventReminderHandler
@@ -22,7 +22,7 @@ class EventReminderHandler
         JeMarcheDeviceNotifier $deviceNotifier,
         JeMarcheMessaging $messaging,
         PushTokenManager $pushTokenManager,
-        EventRepository $eventRepository,
+        BaseEventRepository $eventRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->deviceNotifier = $deviceNotifier;

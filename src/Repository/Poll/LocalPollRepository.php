@@ -51,7 +51,7 @@ class LocalPollRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOnePublishedByZone(Zone $region, Zone $department, string $postalCode = null): ?LocalPoll
+    public function findOnePublishedByZone(Zone $region, Zone $department = null, string $postalCode = null): ?LocalPoll
     {
         $qb = $this->createQueryBuilder('poll')
             ->select('poll')
@@ -68,8 +68,12 @@ class LocalPollRepository extends ServiceEntityRepository
 
         $conditions = (new Orx())
             ->add('zone.type = :zone_region AND zone = :region')
-            ->add('zone.type = :zone_department AND zone = :department')
         ;
+
+        if ($department) {
+            $conditions->add('zone.type = :zone_department AND zone = :department');
+            $qb->setParameter('department', $department);
+        }
 
         if ($postalCode) {
             $conditions->add('zone.type = :zone_borough AND zone.postalCode = :postal_code');
@@ -84,7 +88,6 @@ class LocalPollRepository extends ServiceEntityRepository
             ->addOrderBy('priority', 'asc')
             ->addOrderBy('poll.finishAt', 'desc')
             ->setParameter('region', $region)
-            ->setParameter('department', $department)
             ->setParameter('zone_region', Zone::REGION)
             ->setParameter('zone_department', Zone::DEPARTMENT)
             ->setParameter('true', true)

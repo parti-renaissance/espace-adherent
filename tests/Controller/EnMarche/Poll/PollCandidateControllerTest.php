@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use App\Entity\Notification;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,9 @@ use Tests\App\Controller\ControllerTestTrait;
 class PollCandidateControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+
+    /** @var \Doctrine\Common\Persistence\ObjectRepository */
+    private $notificationRepository;
 
     /**
      * @dataProvider providePages
@@ -131,6 +135,9 @@ class PollCandidateControllerTest extends WebTestCase
      */
     public function testCreatePollSuccessful(string $email, string $spaceLinkName): void
     {
+        $notifications = $this->notificationRepository->findAll();
+        self::assertEmpty($notifications);
+
         $this->authenticateAsAdherentWithChoosingSpace($email, $spaceLinkName);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat/question-du-jour/creer');
@@ -141,7 +148,6 @@ class PollCandidateControllerTest extends WebTestCase
         $data['poll']['published'] = 1;
 
         $this->client->submit($crawler->selectButton('Enregistrer')->form(), $data);
-
         $this->assertClientIsRedirectedTo('/espace-candidat/question-du-jour', $this->client);
 
         $crawler = $this->client->followRedirect();
@@ -149,6 +155,17 @@ class PollCandidateControllerTest extends WebTestCase
         $this->assertStatusCode(200, $this->client);
         $this->assertSame(0, $crawler->filter('.form__errors > li')->count());
         $this->assertSame('La question du jour a bien été enregistrée.', $crawler->filter('.flash--info')->text(null, true));
+
+        $notifications = $this->notificationRepository->findAll();
+        self::assertCount(1, $notifications);
+
+        /** @var Notification $notification */
+        $notification = current($notifications);
+        self::assertSame('PollCreatedNotification', $notification->getNotificationClass());
+        self::assertSame('Ma question "Test"', $notification->getTitle());
+        self::assertSame('Cliquez pour répondre à cette question du jour.', $notification->getBody());
+        self::assertSame('staging_jemarche_region_11', $notification->getTopic());
+        self::assertEmpty($notification->getTokens());
     }
 
     /**
@@ -265,10 +282,13 @@ class PollCandidateControllerTest extends WebTestCase
         $this->init();
 
         $this->disableRepublicanSilence();
+        $this->notificationRepository = $this->getRepository(Notification::class);
     }
 
     protected function tearDown(): void
     {
+        $this->notificationRepository = null;
+
         $this->kill();
 
         parent::tearDown();

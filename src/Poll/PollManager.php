@@ -59,10 +59,21 @@ class PollManager
 
     public function findActivePollByZone(Zone $zone, string $postalCode = null): ?LocalPoll
     {
-        $region = current($zone->getParentsOfType(Zone::REGION));
-        $department = current($zone->getParentsOfType(Zone::DEPARTMENT));
+        if ($zone->isRegion()) {
+            $region = $zone;
+        } else {
+            $regions = $zone->getParentsOfType(Zone::REGION);
+            $region = !empty($regions) ? current($regions) : null;
+        }
 
-        if ($region && $department) {
+        if ($region) {
+            if ($zone->isDepartment()) {
+                $department = $zone;
+            } else {
+                $departments = $zone->getParentsOfType(Zone::DEPARTMENT);
+                $department = !empty($departments) ? current($departments) : null;
+            }
+
             $poll = $this->localPollRepository->findOnePublishedByZone($region, $department, $postalCode);
 
             if ($poll) {

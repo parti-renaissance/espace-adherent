@@ -9,12 +9,16 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RemindEventCommand extends Command
 {
     protected static $defaultName = 'app:events:remind';
 
     private $handler;
+
+    /** @var SymfonyStyle */
+    private $io;
 
     public function __construct(EventReminderHandler $handler)
     {
@@ -34,6 +38,11 @@ class RemindEventCommand extends Command
         ;
     }
 
+    public function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $mode = $input->getArgument('mode');
@@ -48,8 +57,16 @@ class RemindEventCommand extends Command
             throw new \InvalidArgumentException(sprintf('Event mode "%s" is not defined.', $mode));
         }
 
-        foreach ($this->handler->findEventsToRemind($startAfter, $startBefore, $mode) as $event) {
+        $events = $this->handler->findEventsToRemind($startAfter, $startBefore, $mode);
+
+        $this->io->progressStart($total = \count($events));
+
+        foreach ($events as $event) {
             $this->handler->scheduleReminder($event);
+            $this->io->progressAdvance();
         }
+
+        $this->io->progressFinish();
+        $this->io->success("$total events has been reminded.");
     }
 }
