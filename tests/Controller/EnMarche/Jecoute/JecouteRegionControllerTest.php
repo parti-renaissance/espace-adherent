@@ -109,6 +109,8 @@ class JecouteRegionControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init();
+
+        $this->disableRepublicanSilence();
     }
 
     protected function tearDown(): void
