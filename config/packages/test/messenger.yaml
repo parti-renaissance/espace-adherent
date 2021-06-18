@@ -4,3 +4,9 @@ framework:
             messenger.bus.default:
                 middleware:
                     - 'App\Messenger\RecorderMiddleware'
+
+        transports:
+            sync: 'sync://'
+
+        routing:
+            App\Messenger\Message\AbstractUuidAsynchronousMessage: sync

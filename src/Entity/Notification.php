@@ -126,6 +126,11 @@ class Notification
         return $this->tokens;
     }
 
+    public function getDelivered(): ?\DateTimeInterface
+    {
+        return $this->deliveredAt;
+    }
+
     public function setDelivered(): void
     {
         $this->deliveredAt = new \DateTime();
