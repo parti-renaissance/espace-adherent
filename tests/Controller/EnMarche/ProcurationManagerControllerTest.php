@@ -385,6 +385,6 @@ class ProcurationManagerControllerTest extends WebTestCase
         );
 
         $this->assertCount(1, $message);
-        $this->assertRegExp("/^$regexp\$/", trim($message->text()));
+        $this->assertMatchesRegularExpression("/^$regexp\$/", trim($message->text()));
     }
 }
