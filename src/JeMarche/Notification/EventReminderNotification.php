@@ -15,7 +15,7 @@ class EventReminderNotification extends AbstractMulticastNotification
         );
 
         if (!empty($event->getAddress())) {
-            $body .= sprintf('• %s', $event->getInlineFormattedAddress());
+            $body .= sprintf(' • %s', $event->getInlineFormattedAddress());
         }
 
         return new self(
