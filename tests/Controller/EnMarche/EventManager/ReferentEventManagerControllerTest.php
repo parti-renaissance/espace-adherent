@@ -62,7 +62,6 @@ class ReferentEventManagerControllerTest extends WebTestCase
         self::assertStringEndsWith(' • 92 boulevard victor hugo, 92110 Clichy', $notification->getBody());
         self::assertSame('staging_jemarche_department_92', $notification->getTopic());
         self::assertEmpty($notification->getTokens());
-        self::assertNotEmpty($notification);
         self::assertNotNull($notification->getDelivered());
     }
 
