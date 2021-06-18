@@ -63,8 +63,10 @@ class RemindEventCommand extends Command
 
         foreach ($events as $event) {
             $this->handler->scheduleReminder($event);
+            $this->io->progressAdvance();
         }
 
-        $this->io->writeln("$total events has been reminded.");
+        $this->io->progressFinish();
+        $this->io->success("$total events has been reminded.");
     }
 }

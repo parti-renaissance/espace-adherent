@@ -63,7 +63,7 @@ class PollManager
             $region = $zone;
         } else {
             $regions = $zone->getParentsOfType(Zone::REGION);
-            $region = !empty($regions) ? current($regions): null;
+            $region = !empty($regions) ? current($regions) : null;
         }
 
         if ($region) {
@@ -71,7 +71,7 @@ class PollManager
                 $department = $zone;
             } else {
                 $departments = $zone->getParentsOfType(Zone::DEPARTMENT);
-                $department = !empty($departments) ? current($departments): null;
+                $department = !empty($departments) ? current($departments) : null;
             }
 
             $poll = $this->localPollRepository->findOnePublishedByZone($region, $department, $postalCode);
