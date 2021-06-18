@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_COALITION_MODERATOR')")
  */
-class CoalitionAuthorAucompleteController extends AbstractController
+class CoalitionAuthorAutocompleteController extends AbstractController
 {
     public function __invoke(Request $request, AdherentRepository $adherentRepository): JsonResponse
     {
