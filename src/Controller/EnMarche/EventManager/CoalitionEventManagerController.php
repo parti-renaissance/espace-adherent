@@ -8,7 +8,6 @@ use App\Entity\Event\CoalitionEvent;
 use App\Event\EventManagerSpaceEnum;
 use App\Repository\CauseEventRepository;
 use App\Repository\CoalitionEventRepository;
-use App\Repository\Event\BaseEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,16 +23,13 @@ class CoalitionEventManagerController extends AbstractEventManagerController
     public const EVENTS_TYPE_CAUSE = 'cause';
     public const EVENTS_TYPE_COALITION = 'coalition';
 
-    private $baseEventRepository;
     private $causeEventRepository;
     private $coalitionEventRepository;
 
     public function __construct(
-        BaseEventRepository $baseEventRepository,
         CauseEventRepository $causeEventRepository,
         CoalitionEventRepository $coalitionEventRepository
     ) {
-        $this->baseEventRepository = $baseEventRepository;
         $this->causeEventRepository = $causeEventRepository;
         $this->coalitionEventRepository = $coalitionEventRepository;
     }
