@@ -49,7 +49,7 @@ final class CauseEventCreationMessage extends AbstractCoalitionMessage
             'cause_name' => self::escape($event->getCause()->getName()),
             'cause_link' => $causeLink,
             'event_name' => self::escape($event->getName()),
-            'event_description' => self::escape($event->getName()),
+            'event_description' => self::escape($event->getDescription()),
             'event_link' => $eventLink,
             'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
             'event_hour' => sprintf(
