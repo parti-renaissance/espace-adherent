@@ -11,7 +11,7 @@ updates:
     #open-pull-requests-limit: 0
     labels:
       - "docker"
-      - "dependencies"    
+      - "dependencies"
 
   - package-ecosystem: "composer"
     directory: "/"
@@ -20,6 +20,9 @@ updates:
     # Increase the version requirements for Composer
     # only when required
     versioning-strategy: increase-if-necessary
+    ignore:
+      - dependency-name: "symfony/*"
+        update-types: ["version-update:semver-major"]
     labels:
       - "composer"
       - "dependencies"
