@@ -96,7 +96,7 @@
         "symfony/event-dispatcher": "^4.4",
         "symfony/expression-language": "^4.4",
         "symfony/flex": "^1.11",
-        "symfony/http-client": "^4.4",
+        "symfony/http-client": "^5.3",
         "symfony/http-foundation": "^4.4",
         "symfony/http-kernel": "^4.4",
         "symfony/inflector": "^4.4",
