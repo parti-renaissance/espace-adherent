@@ -1102,12 +1102,22 @@ SQL;
         ;
     }
 
-    public function findEnabledCoalitionUsers(string $search, int $limit = 20): array
+    public function findEnabledCoalitionUsers(string $search, int $limit = 30): array
     {
-        return $this->createEnabledCoalitionUserQueryBuilder()
-            ->andWhere('(a.firstName LIKE :search OR a.lastName LIKE :search)')
-            ->setParameter('search', '%'.$search.'%')
-            ->addOrderBy('a.firstName', 'ASC')
+        $qb = $this->createEnabledCoalitionUserQueryBuilder();
+
+        $values = array_filter(explode(' ', $search));
+        $searchExpression = $qb->expr()->orX();
+
+        foreach ($values as $key => $text) {
+            $searchExpression->add("a.firstName LIKE :value_$key");
+            $searchExpression->add("a.lastName LIKE :value_$key");
+            $qb->setParameter("value_$key", "%$text%");
+        }
+
+        return $qb
+            ->andWhere($searchExpression)
+            ->orderBy('a.firstName', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

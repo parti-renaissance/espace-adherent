@@ -20,7 +20,7 @@ final class CauseFollowerConfirmationMessage extends AbstractCoalitionMessage
             'L\'aventure débute maintenant !',
             [
                 'first_name' => self::escape($adherent->getFirstName()),
-                'author_first_name' => self::escape($cause->getAuthor()->getFirstName()),
+                'author_first_name' => self::escape($cause->getAuthor() ? $cause->getAuthor()->getFirstName() : ''),
                 'cause_name' => self::escape($cause->getName()),
                 'cause_link' => $causeLink,
             ]
