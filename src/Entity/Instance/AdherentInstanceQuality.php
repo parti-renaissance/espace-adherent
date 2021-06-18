@@ -24,7 +24,7 @@ class AdherentInstanceQuality
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="instanceQualities")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $adherent;
 
