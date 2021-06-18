@@ -6,10 +6,14 @@ use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Vote;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
-class LocalPollRepository extends AbstractPollRepository
+class LocalPollRepository extends ServiceEntityRepository
 {
+    use UnpublishPollTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LocalPoll::class);
@@ -47,11 +51,9 @@ class LocalPollRepository extends AbstractPollRepository
         ;
     }
 
-    public function findOnePublishedByZone(Zone $region, Zone $department, string $postalCode): ?LocalPoll
+    public function findOnePublishedByZone(Zone $region, Zone $department, string $postalCode = null): ?LocalPoll
     {
-        $qb = $this->createQueryBuilder('poll');
-
-        return $qb
+        $qb = $this->createQueryBuilder('poll')
             ->select('poll')
             ->addSelect('
             CASE 
@@ -62,23 +64,31 @@ class LocalPollRepository extends AbstractPollRepository
             ')
             ->leftJoin('poll.zone', 'zone')
             ->where('poll.published = :true AND poll.finishAt > :now')
-            ->andWhere($qb->expr()->orX(
-                'zone.type = :zone_region AND zone = :region',
-                'zone.type = :zone_department AND zone = :department',
-                'zone.type = :zone_borough AND zone.postalCode = :postal_code',
-            ))
+        ;
+
+        $conditions = (new Orx())
+            ->add('zone.type = :zone_region AND zone = :region')
+            ->add('zone.type = :zone_department AND zone = :department')
+        ;
+
+        if ($postalCode) {
+            $conditions->add('zone.type = :zone_borough AND zone.postalCode = :postal_code');
+            $qb
+                ->setParameter('zone_borough', Zone::BOROUGH)
+                ->setParameter('postal_code', $postalCode)
+            ;
+        }
+
+        return $qb
+            ->andWhere($conditions)
             ->addOrderBy('priority', 'asc')
             ->addOrderBy('poll.finishAt', 'desc')
-            ->setParameters([
-                'region' => $region,
-                'department' => $department,
-                'postal_code' => $postalCode,
-                'zone_region' => Zone::REGION,
-                'zone_department' => Zone::DEPARTMENT,
-                'zone_borough' => Zone::BOROUGH,
-                'true' => true,
-                'now' => new \DateTime(),
-            ])
+            ->setParameter('region', $region)
+            ->setParameter('department', $department)
+            ->setParameter('zone_region', Zone::REGION)
+            ->setParameter('zone_department', Zone::DEPARTMENT)
+            ->setParameter('true', true)
+            ->setParameter('now', new \DateTime())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

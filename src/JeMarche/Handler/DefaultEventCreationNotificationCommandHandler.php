@@ -9,20 +9,24 @@ use App\JeMarche\Command\DefaultEventCreationNotificationCommand;
 use App\JeMarche\Notification\DefaultEventCreatedNotification;
 use App\JeMarche\NotificationTopicBuilder;
 use App\Repository\EventRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class DefaultEventCreationNotificationCommandHandler implements MessageHandlerInterface
 {
+    private $entityManager;
     private $eventRepository;
     private $messaging;
     private $topicBuilder;
 
     public function __construct(
+        EntityManagerInterface $entityManager,
         EventRepository $eventRepository,
         JeMarcheMessaging $messaging,
         NotificationTopicBuilder $topicBuilder
     ) {
+        $this->entityManager = $entityManager;
         $this->eventRepository = $eventRepository;
         $this->messaging = $messaging;
         $this->topicBuilder = $topicBuilder;
@@ -35,6 +39,8 @@ class DefaultEventCreationNotificationCommandHandler implements MessageHandlerIn
         if (!$event || !$event instanceof DefaultEvent) {
             return;
         }
+
+        $this->entityManager->refresh($event);
 
         $zone = $this->findZoneToNotify($event);
 
@@ -55,12 +61,12 @@ class DefaultEventCreationNotificationCommandHandler implements MessageHandlerIn
     {
         $boroughs = $event->getZonesOfType(Zone::BOROUGH);
         if (!empty($boroughs)) {
-            return $boroughs[0];
+            return current($boroughs);
         }
 
         $departments = $event->getParentZonesOfType(Zone::DEPARTMENT);
         if (!empty($departments)) {
-            return $departments[0];
+            return current($departments);
         }
 
         return null;

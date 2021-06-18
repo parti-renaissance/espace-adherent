@@ -4,10 +4,13 @@ namespace App\Repository\Poll;
 
 use App\Entity\Poll\NationalPoll;
 use Cake\Chronos\Chronos;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class NationalPollRepository extends AbstractPollRepository
+class NationalPollRepository extends ServiceEntityRepository
 {
+    use UnpublishPollTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, NationalPoll::class);

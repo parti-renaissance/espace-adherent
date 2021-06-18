@@ -14,6 +14,7 @@ class NotificationTopicBuilder
     private const TARGET_GLOBAL = 'global';
     private const PREFIX_TARGET_REGION = 'region';
     private const PREFIX_TARGET_DEPARTMENT = 'department';
+    private const PREFIX_TARGET_BOROUGH = 'borough';
 
     private $environment;
     private $canaryMode;
@@ -35,11 +36,17 @@ class NotificationTopicBuilder
             return self::TARGET_GLOBAL;
         }
 
+        if ($zone->isCity()) {
+            $zone = current($zone->getParentsOfType(Zone::DEPARTMENT));
+        }
+
         switch ($zone->getType()) {
             case Zone::REGION:
                 return sprintf('%s_%s', self::PREFIX_TARGET_REGION, $zone->getCode());
             case Zone::DEPARTMENT:
                 return sprintf('%s_%s', self::PREFIX_TARGET_DEPARTMENT, $zone->getCode());
+            case Zone::BOROUGH:
+                return sprintf('%s_%s', self::PREFIX_TARGET_BOROUGH, $zone->getPostalCode());
             default:
                 throw new \InvalidArgumentException('Can not target Zone of type "%s".', $zone->getType());
         }

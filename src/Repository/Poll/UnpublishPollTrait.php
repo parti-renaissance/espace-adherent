@@ -4,9 +4,8 @@ namespace App\Repository\Poll;
 
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Poll;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-abstract class AbstractPollRepository extends ServiceEntityRepository
+trait UnpublishPollTrait
 {
     public function unpublishExceptOf(Poll $poll): void
     {

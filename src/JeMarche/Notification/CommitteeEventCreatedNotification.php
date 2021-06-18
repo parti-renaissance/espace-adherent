@@ -10,7 +10,7 @@ class CommitteeEventCreatedNotification extends AbstractMulticastNotification
     public static function create(array $tokens, CommitteeEvent $event): self
     {
         return new self(
-            'Nouvel événement dans votre comité',
+            sprintf('Nouvel événement dans votre comité %s', $event->getCommittee()->getName()),
             sprintf('%s • %s • %s',
                 $event->getName(),
                 self::formatDate($event->getBeginAt(), 'EEEE d MMMM y à HH\'h\'mm'),
