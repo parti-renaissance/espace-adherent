@@ -69,6 +69,7 @@ services:
             $privateKey: "%env(SSL_PRIVATE_KEY)%"
             $encryptionKey: "%env(SSL_ENCRYPTION_KEY)%"
             $authCodeTtlInterval: 'PT60M'
+            $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
             $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
 
     Kreait\Firebase\Messaging:
