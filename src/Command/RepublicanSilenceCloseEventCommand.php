@@ -17,7 +17,6 @@ class RepublicanSilenceCloseEventCommand extends Command
 
     private $manager;
     private $eventRepository;
-    private $actionRepository;
     private $eventCanceledHandler;
     private $interval;
 
@@ -50,7 +49,6 @@ class RepublicanSilenceCloseEventCommand extends Command
     {
         foreach ($this->getSilences() as $silence) {
             $this->closeEvents($silence);
-            $this->closeActions($silence);
         }
     }
 
@@ -72,19 +70,6 @@ class RepublicanSilenceCloseEventCommand extends Command
 
         foreach ($events as $event) {
             $this->eventCanceledHandler->handle($event);
-        }
-    }
-
-    private function closeActions(RepublicanSilence $silence): void
-    {
-        $actions = $this->actionRepository->findStartedEventBetweenDatesForTags(
-            (clone $silence->getBeginAt())->modify(sprintf('-%d minutes', $this->interval)),
-            $silence->getFinishAt(),
-            $silence->getReferentTags()->toArray()
-        );
-
-        foreach ($actions as $action) {
-            $this->eventCanceledHandler->handle($action);
         }
     }
 }
