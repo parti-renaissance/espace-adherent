@@ -64,6 +64,11 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $this->before = $this->transformToArray($event->getUser());
     }
 
+    public function onTerritorialCouncilMembershipCreation(MembershipEvent $event): void
+    {
+        $this->dispatchAddAdherentToStaticSegmentCommand($event->getAdherent(), $event->getTerritorialCouncil());
+    }
+
     public function onTerritorialCouncilMembershipDeletion(MembershipEvent $event): void
     {
         $this->dispatchRemoveAdherentFromStaticSegmentCommand($event->getAdherent(), $event->getTerritorialCouncil());
