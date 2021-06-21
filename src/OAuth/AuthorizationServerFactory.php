@@ -27,6 +27,7 @@ class AuthorizationServerFactory
     private $encryptionKey;
     private $authCodeRepository;
     private $refreshTokenRepository;
+    private $refreshTokenTtlInterval;
     private $authCodeTtlInterval;
 
     public function __construct(
@@ -39,6 +40,7 @@ class AuthorizationServerFactory
         ScopeRepositoryInterface $scopeRepository,
         string $privateKey,
         string $encryptionKey,
+        string $refreshTokenTtlInterval,
         string $authCodeTtlInterval = 'PT10M'
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
@@ -50,6 +52,7 @@ class AuthorizationServerFactory
         $this->encryptionKey = $encryptionKey;
         $this->authCodeRepository = $authCodeRepository;
         $this->refreshTokenRepository = $refreshTokenRepository;
+        $this->refreshTokenTtlInterval = $refreshTokenTtlInterval;
         $this->authCodeTtlInterval = $authCodeTtlInterval;
     }
 
@@ -64,13 +67,9 @@ class AuthorizationServerFactory
         );
 
         $accessTokenTtl = new \DateInterval('PT1H');
-        $refreshTokenTtl = new \DateInterval('P1M');
+        $refreshTokenTtl = new \DateInterval($this->refreshTokenTtlInterval);
 
-        $server->enableGrantType(
-            new AuthCodeGrant($this->authCodeRepository, $this->refreshTokenRepository, new \DateInterval($this->authCodeTtlInterval)),
-            $accessTokenTtl
-        );
-
+        $server->enableGrantType($this->createAuthCodeGrant(), $accessTokenTtl);
         $server->enableGrantType($this->createClientCredetialsGrant(), $accessTokenTtl);
         $server->enableGrantType($this->createRefreshTokenGrant($refreshTokenTtl), $accessTokenTtl);
         $server->enableGrantType($this->createPasswordGrant($refreshTokenTtl), $accessTokenTtl);
@@ -101,5 +100,14 @@ class AuthorizationServerFactory
         $grant->setRefreshTokenTTL($refreshTokenTtl);
 
         return $grant;
+    }
+
+    private function createAuthCodeGrant(): GrantTypeInterface
+    {
+        return new AuthCodeGrant(
+            $this->authCodeRepository,
+            $this->refreshTokenRepository,
+            new \DateInterval($this->authCodeTtlInterval)
+        );
     }
 }
