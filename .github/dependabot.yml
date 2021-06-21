@@ -37,3 +37,9 @@ updates:
     labels:
       - "npm"
       - "dependencies"
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
