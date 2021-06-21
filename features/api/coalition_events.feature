@@ -824,7 +824,7 @@ Feature:
        "finish_at": "2022-04-30 16:30:30",
        "category": "kiosque",
        "mode": "online",
-       "visio_url": "http://visio.fr",
+       "visio_url": "visio.fr",
        "image_url": null,
        "post_address": {
           "address": "50 rue de la villette",
@@ -876,7 +876,7 @@ Feature:
         "latitude": 45.7596356,
         "longitude": 4.8614359
       },
-      "visio_url": "http://visio.fr",
+      "visio_url": "https://visio.fr",
       "mode": "online",
       "image_url": null
     }
@@ -1040,7 +1040,7 @@ Feature:
        "finish_at": "2022-05-29 16:30:30",
        "category": "kiosque",
        "mode": "online",
-       "visio_url": "http://visio.fr",
+       "visio_url": "visio.fr",
        "post_address": {
           "address": "50 rue de la villette",
           "postal_code": "69003",
@@ -1096,7 +1096,7 @@ Feature:
         "latitude": 45.7596356,
         "longitude": 4.8614359
       },
-      "visio_url": "http://visio.fr",
+      "visio_url": "https://visio.fr",
       "mode": "online",
       "image_url": null
     }
@@ -1149,7 +1149,7 @@ Feature:
           },
           {
             "name": "event_visio_url",
-            "content": "http://visio.fr"
+            "content": "https://visio.fr"
           }
         ],
         "merge_vars": [
