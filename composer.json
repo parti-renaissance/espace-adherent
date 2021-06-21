@@ -79,7 +79,7 @@
         "scheb/two-factor-bundle": "^4.11",
         "scienta/doctrine-json-functions": "^4.3",
         "sensio/framework-extra-bundle": "^4.0",
-        "sentry/sentry": "^1.6",
+        "sentry/sentry": "^3.3",
         "snc/redis-bundle": "^3.2",
         "sonata-project/admin-bundle": "^3.49",
         "sonata-project/doctrine-orm-admin-bundle": "^3.0",
