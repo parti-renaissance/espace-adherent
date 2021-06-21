@@ -8,7 +8,6 @@ use App\DataFixtures\ORM\LoadDelegatedAccessData;
 use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentManagedUsersMessage;
-use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use App\Mailer\Message\InstitutionalEventInvitationMessage;
 use App\Repository\ReferentManagedUsersMessageRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -135,8 +134,6 @@ class ReferentControllerTest extends WebTestCase
             'Votre événement est en ligne mais pas encore diffusé. Partagez-le par message en cliquant ci-dessous.',
             trim($this->client->getCrawler()->filter('.box-success .alert--tips')->text())
         );
-
-        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'referent@en-marche-dev.fr');
     }
 
     public function testCreateInstitutionalEventSuccessful()

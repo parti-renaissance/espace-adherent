@@ -6,7 +6,6 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Device;
 use App\Entity\OAuth\AuthorizationCode;
-use App\OAuth\Model\Client;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
 use Liip\FunctionalTestBundle\Test\WebTestCase;

@@ -13,7 +13,6 @@ use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
-use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Form\Coalition\CoalitionEventType;
 use App\Form\EventCommandType;
@@ -86,9 +85,6 @@ abstract class AbstractEventManagerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event = $eventCommandHandler->handle($command, $this->getEventClassName());
-
-            $registrationCommand = new EventRegistrationCommand($event, $user);
-            $eventRegistrationCommandHandler->handle($registrationCommand, !$event->isCoalitionsEvent());
 
             return $this->renderTemplate('event_manager/event_create_success.html.twig', [
                 'event' => $event,

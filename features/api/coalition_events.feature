@@ -420,7 +420,7 @@ Feature:
         "first_name": "Gisele",
         "last_name": "Berthoux"
       },
-      "participants_count": 0,
+      "participants_count": 1,
       "status": "SCHEDULED",
       "capacity": null,
       "post_address": {
@@ -640,7 +640,7 @@ Feature:
         "first_name": "Gisele",
         "last_name": "Berthoux"
       },
-      "participants_count": 0,
+      "participants_count": 1,
       "status": "SCHEDULED",
       "capacity": null,
       "post_address": {
