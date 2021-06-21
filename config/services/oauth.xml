@@ -13,6 +13,7 @@
         <service id="App\OAuth\AuthorizationServerFactory">
             <argument key="$privateKey">%env(SSL_PRIVATE_KEY)%</argument>
             <argument key="$encryptionKey">%env(SSL_ENCRYPTION_KEY)%</argument>
+            <argument key="$accessTokenTtlInterval">%env(ACCESS_TOKEN_TTL_INTERVAL)%</argument>
             <argument key="$refreshTokenTtlInterval">%env(REFRESH_TOKEN_TTL_INTERVAL)%</argument>
         </service>
 
