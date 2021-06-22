@@ -7,7 +7,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 
 trait TokenStoreTrait
 {
-    protected function checkToken(TokenInterface $token): void
+    protected function checkIfTokenIsAlreadyRevoked(TokenInterface $token): void
     {
         if ($token->isRevoked()) {
             throw OAuthServerException::invalidRefreshToken('Token has already been revoked');
