@@ -363,6 +363,21 @@ security:
             - ROLE_JECOUTE_REGION
             - ROLE_DATA_CORNER
 
+        ROLE_DELEGATED_REFERENT:
+            - ROLE_DATA_CORNER
+
+        ROLE_DEPUTY:
+            - ROLE_DATA_CORNER
+
+        ROLE_DELEGATED_DEPUTY:
+            - ROLE_DATA_CORNER
+
+        ROLE_SENATOR:
+            - ROLE_DATA_CORNER
+
+        ROLE_DELEGATED_SENATOR:
+            - ROLE_DATA_CORNER
+
     access_decision_manager:
         strategy: unanimous
 
