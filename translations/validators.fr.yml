@@ -13,11 +13,11 @@
 common.gender.not_blank: Veuillez renseigner un genre.
 common.gender.invalid_choice: Ce sexe n'est pas valide.
 
-common.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
-common.first_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+common.first_name.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
+common.first_name.max_length: Votre prénom ne peut pas dépasser {{ limit }} caractères.
 
-common.last_name.min_length: Votre prénom doit comporter au moins 2 caractères.
-common.last_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+common.last_name.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
+common.last_name.max_length: Votre prénom ne peut pas dépasser {{ limit }} caractères.
 
 common.email.invalid: Ceci n'est pas une adresse e-mail valide.
 common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.

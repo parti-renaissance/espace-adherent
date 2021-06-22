@@ -54,7 +54,7 @@ class MembershipRequest implements MembershipInterface
      * @var string
      *
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
      *     allowEmptyString=false,
      *     minMessage="common.last_name.min_length",
