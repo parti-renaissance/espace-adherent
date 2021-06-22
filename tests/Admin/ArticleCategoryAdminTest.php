@@ -21,10 +21,10 @@ class ArticleCategoryAdminTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->getUrl('admin_app_articlecategory_create'));
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $form = $crawler->selectButton('btn_create_and_edit')->form();
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-//        $this->assertValidationErrors(['data.name', 'data.slug'], $this->client->getContainer());
+        self::assertCount(1, $crawler->filter('div[id*="_slug"].has-error'));
     }
 
     public function testCreateCategoryWithoutCTASuccess()
@@ -83,9 +83,9 @@ class ArticleCategoryAdminTest extends WebTestCase
             $prefix.'[ctaLink]' => 'not a link',
             $prefix.'[ctaLabel]' => 'Google link',
         ]);
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-//        $this->assertValidationErrors(['data.ctaLink'], $this->client->getContainer());
+        self::assertCount(1, $crawler->filter('div[id*="_ctaLink"].has-error'));
     }
 }

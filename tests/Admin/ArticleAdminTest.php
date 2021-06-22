@@ -23,19 +23,15 @@ class ArticleAdminTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/article/create');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $form = $crawler->selectButton('btn_create_and_edit')->form();
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-//        $this->assertValidationErrors(
-//            [
-//                'data.title',
-//                'data.description',
-//                'data.content',
-//                'data.slug',
-//                'data.media',
-//            ],
-//            $this->client->getContainer()
-//        );
+
+        self::assertCount(1, $crawler->filter('div[id*="_title"].has-error'));
+        self::assertCount(1, $crawler->filter('div[id*="_description"].has-error'));
+        self::assertCount(1, $crawler->filter('div[id*="_content"].has-error'));
+        self::assertCount(1, $crawler->filter('div[id*="_slug"].has-error'));
+        self::assertCount(1, $crawler->filter('div[id*="_media"].has-error'));
     }
 
     public function testEditSlugToTriggerRedirectionListener(): void

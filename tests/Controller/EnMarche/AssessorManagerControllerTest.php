@@ -561,7 +561,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         } elseif (self::SUBJECT_VOTE_PLACE === $subject) {
             $message = $crawler->filter('.assessor_vote_places_total_count');
         } else {
-            throw new \InvalidArgumentException(sprintf('Expected one of "%s, but got "%s".', implode('", "', self::SUBJECTS), $subject));
+            throw new \InvalidArgumentException(sprintf('Expected one of "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
         }
 
         $regexp = sprintf(

@@ -55,9 +55,7 @@ class MembershipControllerTest extends WebTestCase
         $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-//        $this->assertValidationErrors(['data.emailAddress'], $this->client->getContainer());
-        $errors = $crawler->filter('.form__error');
-        $this->assertSame('Cette adresse e-mail existe déjà.', $errors->text());
+        $this->assertSame('Cette adresse e-mail existe déjà.', $crawler->filter('.form__error')->text());
     }
 
     /**
