@@ -9,12 +9,8 @@ trait TokenStoreTrait
 {
     protected function checkToken(TokenInterface $token): void
     {
-        if ($token->isExpired()) {
-            throw OAuthServerException::invalidRefreshToken('Token has expired');
-        }
-
         if ($token->isRevoked()) {
-            throw OAuthServerException::invalidRefreshToken('Token has been revoked');
+            throw OAuthServerException::invalidRefreshToken('Token has already been revoked');
         }
     }
 }
