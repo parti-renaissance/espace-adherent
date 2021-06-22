@@ -104,7 +104,7 @@
         </service>
 
         <!-- Event subscriber -->
-        <service id="App\Event\EventListener\EventSubscriber">
+        <service id="App\Event\EventListener\ApiSyncEventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
 

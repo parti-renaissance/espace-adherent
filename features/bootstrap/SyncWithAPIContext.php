@@ -66,6 +66,6 @@ class SyncWithAPIContext implements Context
         /** @var CommitteeEventEntity $committeeEvent */
         $committeeEvent = $this->doctrine->getRepository(CommitteeEventEntity::class)->findOneBy(['name' => $eventName]);
 
-        $this->dispatcher->dispatch(new CommitteeEventEvent(null, $committeeEvent), $event);
+        $this->dispatcher->dispatch(new CommitteeEventEvent($committeeEvent->getAuthor(), $committeeEvent), $event);
     }
 }

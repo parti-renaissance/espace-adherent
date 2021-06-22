@@ -12,8 +12,6 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
-use App\Event\EventRegistrationCommand;
-use App\Event\EventRegistrationCommandHandler;
 use App\Exception\CommitteeMembershipException;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
@@ -85,8 +83,7 @@ class CommitteeManagerController extends AbstractController
         Request $request,
         Committee $committee,
         GeoCoder $geoCoder,
-        EventCommandHandler $eventCommandHandler,
-        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+        EventCommandHandler $eventCommandHandler
     ): Response {
         $command = new EventCommand($this->getUser(), $committee);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
@@ -98,7 +95,6 @@ class CommitteeManagerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event = $eventCommandHandler->handle($command);
-            $eventRegistrationCommandHandler->handle(new EventRegistrationCommand($event, $this->getUser()));
 
             $this->addFlash('info', 'committee.event.creation.success');
 

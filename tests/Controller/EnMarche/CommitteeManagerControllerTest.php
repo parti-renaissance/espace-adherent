@@ -276,6 +276,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
         $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
         $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
+        $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
@@ -291,8 +292,6 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('Mercredi 2 mars 2022, 9h30', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $crawler->filter('.committee-event-description')->text());
-
-        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
     }
 
     public function testCommitteeHostCanPublishNewEventWithTimeZone()
@@ -337,6 +336,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
         $this->assertCountMails(1, EventNotificationMessage::class, 'luciole1989@spambox.fr');
         $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
+        $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
@@ -352,8 +352,6 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('Mercredi 2 mars 2022, 9h30 UTC +08:00', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $crawler->filter('.committee-event-description')->text());
-
-        $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
     }
 
     public function testAuthenticatedCommitteeHostCanPostMessages()

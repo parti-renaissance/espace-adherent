@@ -10,7 +10,7 @@ use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class EventSubscriber implements EventSubscriberInterface
+class ApiSyncEventSubscriber implements EventSubscriberInterface
 {
     private $producer;
     private $serializer;

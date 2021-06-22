@@ -77,6 +77,32 @@ Feature:
         "city":null
       },
       {
+        "id":2,
+        "type":"national",
+        "questions":[
+          {
+            "id":8,
+            "type":"unique_choice",
+            "content":"La question du 2eme questionnaire national ?",
+            "choices":[
+              {
+                "id":9,
+                "content":"Réponse nationale E"
+              },
+              {
+                "id":10,
+                "content":"Réponse nationale F"
+              },
+              {
+                "id":11,
+                "content":"Réponse nationale G"
+              }
+            ]
+          }
+        ],
+        "name":"Le deuxième questionnaire national"
+      },
+      {
         "id":1,
         "type": "national",
         "questions":[
@@ -113,32 +139,6 @@ Feature:
           }
         ],
         "name":"Questionnaire national numéro 1"
-      },
-      {
-        "id":2,
-        "type":"national",
-        "questions":[
-          {
-            "id":8,
-            "type":"unique_choice",
-            "content":"La question du 2eme questionnaire national ?",
-            "choices":[
-              {
-                "id":9,
-                "content":"Réponse nationale E"
-              },
-              {
-                "id":10,
-                "content":"Réponse nationale F"
-              },
-              {
-                "id":11,
-                "content":"Réponse nationale G"
-              }
-            ]
-          }
-        ],
-        "name":"Le deuxième questionnaire national"
       }
     ]
     """
@@ -226,6 +226,32 @@ Feature:
         "city":null
       },
       {
+        "id":2,
+        "type":"national",
+        "questions":[
+          {
+            "id":8,
+            "type":"unique_choice",
+            "content":"La question du 2eme questionnaire national ?",
+            "choices":[
+              {
+                "id":9,
+                "content":"Réponse nationale E"
+              },
+              {
+                "id":10,
+                "content":"Réponse nationale F"
+              },
+              {
+                "id":11,
+                "content":"Réponse nationale G"
+              }
+            ]
+          }
+        ],
+        "name":"Le deuxième questionnaire national"
+      },
+      {
         "id":1,
         "type": "national",
         "questions":[
@@ -262,32 +288,6 @@ Feature:
           }
         ],
         "name":"Questionnaire national numéro 1"
-      },
-      {
-        "id":2,
-        "type":"national",
-        "questions":[
-          {
-            "id":8,
-            "type":"unique_choice",
-            "content":"La question du 2eme questionnaire national ?",
-            "choices":[
-              {
-                "id":9,
-                "content":"Réponse nationale E"
-              },
-              {
-                "id":10,
-                "content":"Réponse nationale F"
-              },
-              {
-                "id":11,
-                "content":"Réponse nationale G"
-              }
-            ]
-          }
-        ],
-        "name":"Le deuxième questionnaire national"
       }
     ]
     """
