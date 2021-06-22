@@ -34,8 +34,8 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 
         unset($data['type']);
 
-        $visioUrl = $data['visio_url'] ?? null;
-        if (\is_string($visioUrl) && !preg_match('~^[\w+.-]+://~', $visioUrl)) {
+        $visioUrl = $data['visio_url'] ?? '';
+        if ('' !== $visioUrl && !preg_match('~^[\w+.-]+://~', $visioUrl)) {
             $data['visio_url'] = 'https://'.$visioUrl;
         }
 
