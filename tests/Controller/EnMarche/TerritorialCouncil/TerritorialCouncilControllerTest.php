@@ -35,7 +35,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Mes instances')->link());
         self::assertEquals('http://test.enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
 
-        $crawler = $this->client->click($crawler->selectLink('Voir')->link());
+        $crawler = $this->client->click($crawler->filter('.adherent-profile__section')->first()->selectLink('Voir')->last()->link());
 
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
         $members = $crawler->filter('.instance-page__members .instance-page__member');

@@ -120,7 +120,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
             $labels[] = 'Candidat Municipales 2020';
         }
 
-        if ($adherent->isTerritorialCouncilMember()) {
+        if ($adherent->isTerritorialCouncilMember() || $adherent->hasNationalCouncilQualities()) {
             $labels[] = 'Membre des instances';
         }
 

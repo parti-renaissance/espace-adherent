@@ -13,4 +13,5 @@ final class InstanceQualityEnum extends Enum
     public const DEPARTMENT_COUNCIL_PRESIDENT = 'department_council_president';
     public const TERRITORIAL_COUNCIL_PRESIDENT = 'territorial_council_president';
     public const GOVERNMENT_MEMBER = 'government_member';
+    public const QUATUOR_MEMBER = 'quatuor_member';
 }

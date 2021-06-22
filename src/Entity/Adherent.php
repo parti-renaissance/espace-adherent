@@ -11,6 +11,7 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\Cause;
@@ -2688,6 +2689,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             })
             ->toArray()
         ;
+    }
+
+    /**
+     * @return NationalCouncilAdherentMandate[]
+     */
+    public function findNationalCouncilMandates(bool $active): array
+    {
+        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($active) {
+            return $mandate instanceof NationalCouncilAdherentMandate
+                && (false === $active || null === $mandate->getFinishAt())
+            ;
+        })->toArray();
     }
 
     public function findTerritorialCouncilMandates(?string $quality = null, bool $active = false): array
