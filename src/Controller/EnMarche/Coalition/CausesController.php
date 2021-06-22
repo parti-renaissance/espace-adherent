@@ -113,6 +113,8 @@ class CausesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($actualAuthor !== ($newAuthor = $cause->getAuthor()) && !$cause->hasFollower($newAuthor)) {
                 $entityManager->persist($cause->createFollower($newAuthor));
+                $entityManager->flush();
+                $cause->refreshFollowersCount();
             }
 
             $entityManager->flush();
