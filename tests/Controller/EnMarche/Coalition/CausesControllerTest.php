@@ -202,6 +202,7 @@ class CausesControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertFalse($cause->hasFollower($adherent));
+        $this->assertSame(0, $cause->getFollowersCount());
 
         $crawler = $this->client->click($crawler->selectLink('Modifier')->link());
 
