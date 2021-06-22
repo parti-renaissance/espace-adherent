@@ -1,45 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block javascripts %}
-    <!-- Accordeon nav -->
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-          findAll(document, '.accordion--title').forEach(function(section) {
-            section.addEventListener('click', function(e) {
-              var accordion = e.target.closest('.accordion');
-              var visible = accordion.classList.contains('opened');
-
-              var contents = findAll(accordion.closest('.accordion-container'), '.accordion');
-              contents.forEach(function(content) {
-                content.classList.remove('opened');
-              });
-
-              if (!visible) {
-                accordion.classList.add('opened');
-              }
-            });
-          });
-
-          findAll(document, '.js--tabs').forEach(function(tab) {
-            tab.addEventListener('click', function(e) {
-              e.preventDefault();
-
-              var target = dom(tab.dataset.target);
-
-              findAll(tab.closest('ul'), '.js--tabs').forEach(function(t) {
-                t.parentNode.classList.remove('active');
-              });
-              tab.parentNode.classList.add('active');
-
-              findAll(target.closest('section'), '.js--tabs-content').forEach(function (content) {
-                content.style.display = 'none';
-              });
-              target.style.display = 'block';
-            });
-          });
-        });
-    </script>
-{% endblock %}
+{% set is_instance_member = is_granted('TERRITORIAL_COUNCIL_MEMBER') or is_granted('ROLE_NATIONAL_COUNCIL_MEMBER') or is_granted('POLITICAL_COMMITTEE_MEMBER') %}
 
 {% block flash_message %}
     {% for label, messages in app.flashes %}
@@ -131,7 +92,7 @@
                                 <span class="trigger-container"></span>
                             </div>
                             <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
-                                {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') %}
+                                {% if is_instance_member %}
                                     <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
                                 {% endif %}
                                 <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
@@ -162,4 +123,45 @@
             </div>
         </div>
     </main>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Accordeon nav -->
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            findAll(document, '.accordion--title').forEach(function(section) {
+                section.addEventListener('click', function(e) {
+                    var accordion = e.target.closest('.accordion');
+                    var visible = accordion.classList.contains('opened');
+
+                    var contents = findAll(accordion.closest('.accordion-container'), '.accordion');
+                    contents.forEach(function(content) {
+                        content.classList.remove('opened');
+                    });
+
+                    if (!visible) {
+                        accordion.classList.add('opened');
+                    }
+                });
+            });
+
+            findAll(document, '.js--tabs').forEach(function(tab) {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    var target = dom(tab.dataset.target);
+
+                    findAll(tab.closest('ul'), '.js--tabs').forEach(function(t) {
+                        t.parentNode.classList.remove('active');
+                    });
+                    tab.parentNode.classList.add('active');
+
+                    findAll(target.closest('section'), '.js--tabs-content').forEach(function (content) {
+                        content.style.display = 'none';
+                    });
+                    target.style.display = 'block';
+                });
+            });
+        });
+    </script>
 {% endblock %}

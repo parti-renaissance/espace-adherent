@@ -5,8 +5,10 @@
 {% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
 
 {% block adherent_profile_content %}
-    {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') %}
+    {% if is_instance_member %}
         <section class="adherent-profile__section b__nudge--bottom-50" id="instances">
+            <h1 class="text--medium-large">Mes instances</h1>
+
             {% include('adherent_profile/activity/_instances.html.twig') %}
         </section>
     {% endif %}
