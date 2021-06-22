@@ -15,13 +15,10 @@ use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
 use App\Exception\EventRegistrationException;
 use App\Exception\InvalidUuidException;
-use App\Form\AdherentInterestsFormType;
 use App\Form\ContactMessageType;
 use App\Form\CreateCommitteeCommandType;
 use App\Geocoder\Exception\GeocodingException;
 use App\Membership\MemberActivityTracker;
-use App\Membership\UserEvent;
-use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
 use App\Repository\EventRepository;
@@ -36,7 +33,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -100,35 +96,6 @@ class AdherentController extends AbstractController
                         'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getManagedArea()),
                 ]
                 : null,
-        ]);
-    }
-
-    /**
-     * This action enables an adherent to pin his/her interests.
-     *
-     * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests", methods={"GET", "POST"})
-     */
-    public function pinInterestsAction(
-        EntityManagerInterface $manager,
-        Request $request,
-        EventDispatcherInterface $dispatcher
-    ): Response {
-        $form = $this
-            ->createForm(AdherentInterestsFormType::class, $adherent = $this->getUser())
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->flush();
-            $this->addFlash('info', 'adherent.update_interests.success');
-
-            $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATE_INTERESTS);
-
-            return $this->redirectToRoute('app_adherent_pin_interests');
-        }
-
-        return $this->render('adherent/pin_interests.html.twig', [
-            'form' => $form->createView(),
         ]);
     }
 
