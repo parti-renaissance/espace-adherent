@@ -38,7 +38,7 @@ final class LegislativeCampaignContactMessage
     private $firstName;
 
     /**
-     * @Assert\Length(min=2, max=50, allowEmptyString=false)
+     * @Assert\Length(min=1, max=50, allowEmptyString=false)
      */
     private $lastName;
 

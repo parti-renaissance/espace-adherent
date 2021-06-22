@@ -48,7 +48,7 @@ class Donator
      *
      * @Assert\NotBlank
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
      * )
      */

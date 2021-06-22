@@ -27,7 +27,7 @@ class FormControllerTest extends WebTestCase
             urlencode(AdherentRegistrationType::class),
             [
                 'adherent_registration' => [
-                    'firstName' => '123',
+                    'firstName' => '1',
                     'lastName' => 't',
                     'emailAddress' => [
                         'first' => 'toto@too.fr',
@@ -41,7 +41,7 @@ class FormControllerTest extends WebTestCase
             ],
             [
                 'children' => [
-                    'lastName' => [
+                    'firstName' => [
                         'errors' => [
                             'Votre prénom doit comporter au moins 2 caractères.',
                         ],
@@ -87,7 +87,7 @@ class FormControllerTest extends WebTestCase
             urlencode(UserRegistrationType::class),
             [
                 'user_registration' => [
-                    'firstName' => '123',
+                    'firstName' => '1',
                     'lastName' => 't',
                     'emailAddress' => [
                         'first' => 'toto@too.fr',
@@ -97,7 +97,7 @@ class FormControllerTest extends WebTestCase
             ],
             [
                 'children' => [
-                    'lastName' => [
+                    'firstName' => [
                         'errors' => [
                             'Votre prénom doit comporter au moins 2 caractères.',
                         ],
@@ -118,14 +118,14 @@ class FormControllerTest extends WebTestCase
             urlencode(DonationRequestType::class),
             [
                 'app_donation' => [
-                    'firstName' => '123',
+                    'firstName' => '1',
                     'lastName' => 't',
                     'emailAddress' => 'fail',
                 ],
             ],
             [
                 'children' => [
-                    'lastName' => [
+                    'firstName' => [
                         'errors' => [
                             'Votre prénom doit comporter au moins 2 caractères.',
                         ],

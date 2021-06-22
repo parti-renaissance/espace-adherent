@@ -104,7 +104,7 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"profile"})
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
      *     minMessage="procuration.last_name.min_length",
      *     maxMessage="procuration.last_name.max_length",

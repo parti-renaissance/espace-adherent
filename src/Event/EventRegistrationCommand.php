@@ -38,7 +38,7 @@ class EventRegistrationCommand
      * @Groups({"event_registration_write"})
      *
      * @Assert\NotBlank
-     * @Assert\Length(min=2, max=50)
+     * @Assert\Length(min=1, max=50)
      */
     private $lastName;
 

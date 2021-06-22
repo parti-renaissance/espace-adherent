@@ -173,7 +173,7 @@ class MembershipControllerTest extends WebTestCase
                 'g-recaptcha-response' => 'fake',
                 'adherent_registration' => [
                     'firstName' => 'Test',
-                    'lastName' => 'Adhesion',
+                    'lastName' => 'A',
                     'nationality' => 'FR',
                     'emailAddress' => [
                         'first' => 'test@test.com',

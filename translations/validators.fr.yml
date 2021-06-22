@@ -13,19 +13,19 @@
 common.gender.not_blank: Veuillez renseigner un genre.
 common.gender.invalid_choice: Ce sexe n'est pas valide.
 
-common.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
-common.first_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+common.first_name.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
+common.first_name.max_length: Votre prénom ne peut pas dépasser {{ limit }} caractères.
 
-common.last_name.min_length: Votre prénom doit comporter au moins 2 caractères.
-common.last_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
+common.last_name.min_length: Votre nom doit comporter au moins {{ limit }} caractères.
+common.last_name.max_length: Votre nom ne peut pas dépasser {{ limit }} caractères.
 
 common.email.invalid: Ceci n'est pas une adresse e-mail valide.
 common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.
 common.email.repeated: Les adresses email ne correspondent pas.
 
 common.birth_name.not_blank: Votre nom de naissance est requis.
-common.birth_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
-common.birth_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
+common.birth_name.min_length: Votre nom de naissance doit comporter au moins {{ limit }} caractères.
+common.birth_name.max_length: Votre nom de naissance ne peut pas dépasser {{ limit }} caractères.
 
 common.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 common.birthcity.not_blank: Vous devez spécifier votre lieu de naissance.
@@ -232,11 +232,11 @@ procuration.election_context.min_count: Vous devez choisir au moins une électio
 procuration.election_rounds.min_count: Vous devez choisir au moins un tour d'élection.
 
 procuration.last_name.not_blank: Votre nom de naissance est requis.
-procuration.last_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
-procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
+procuration.last_name.min_length: Votre nom de naissance doit comporter au moins {{ limit }} caractères.
+procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser {{ limit }} caractères.
 
-procuration.first_names.min_length: Votre prénom doit comporter au moins 2 caractères.
-procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
+procuration.first_names.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
+procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser {{ limit }} caractères.
 
 procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
@@ -355,8 +355,8 @@ assessor.first_name.min_length: Votre prénom doit comporter au moins 2 caractè
 assessor.first_name.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
 
 assessor.last_name.not_blank: Votre nom est requis.
-assessor.last_name.min_length: Votre nom doit comporter au moins 2 caractères.
-assessor.last_name.max_length: Vos nom ne peuvent pas dépasser 100 caractères.
+assessor.last_name.min_length: Votre nom doit comporter au moins {{ limit }} caractères.
+assessor.last_name.max_length: Vos nom ne peuvent pas dépasser {{ limit }} caractères.
 
 assessor.birthdate.minimum_required_age: Vous devez être âgé d'au moins 18 ans pour être assesseur.
 assessor.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour être assesseur.
