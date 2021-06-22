@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\App\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche\Poll;
 
 use App\Entity\Notification;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -279,8 +279,6 @@ class PollCandidateControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-
         $this->disableRepublicanSilence();
         $this->notificationRepository = $this->getRepository(Notification::class);
     }
@@ -288,8 +286,6 @@ class PollCandidateControllerTest extends WebTestCase
     protected function tearDown(): void
     {
         $this->notificationRepository = null;
-
-        $this->kill();
 
         parent::tearDown();
     }

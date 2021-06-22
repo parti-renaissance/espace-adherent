@@ -44,6 +44,8 @@ class CommitteeAdherentMandateManagerTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
         $this->electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
@@ -67,6 +69,8 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->translator = null;
         $this->mandateManager = null;
         $this->committeeManager = null;
+
+        parent::tearDown();
     }
 
     public function testCannotCreateMandateIfIncorrectGender()
@@ -415,7 +419,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             $gender,
             'Damien',
             'DUPONT',
-            new \DateTime($birthday ? $birthday : '1979-03-25'),
+            new \DateTime($birthday ?: '1979-03-25'),
             'position',
             PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381')
         );

@@ -4,10 +4,10 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Procuration\Filter\ProcurationProxyProposalFilters;
 use App\Procuration\Filter\ProcurationRequestFilters;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -46,7 +46,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
-    public function providePages()
+    public function providePages(): array
     {
         return [
             ['/espace-responsable-procuration'],
@@ -355,16 +355,7 @@ class ProcurationManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-
         $this->disableRepublicanSilence();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 
     private function assertProcurationTotalCount(Crawler $crawler, string $subject, int $count, string $status): void
@@ -374,7 +365,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         } elseif (self::SUBJECT_PROPOSAL === $subject) {
             $message = $crawler->filter('.procuration_proposals_total_count');
         } else {
-            throw new \InvalidArgumentException(sprintf('Expected one of "%s" or "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
+            throw new \InvalidArgumentException(sprintf('Expected one of "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
         }
 
         $regexp = sprintf(
@@ -385,6 +376,6 @@ class ProcurationManagerControllerTest extends WebTestCase
         );
 
         $this->assertCount(1, $message);
-        $this->assertRegExp("/^$regexp\$/", trim($message->text()));
+        $this->assertMatchesRegularExpression("/^$regexp\$/", trim($message->text()));
     }
 }

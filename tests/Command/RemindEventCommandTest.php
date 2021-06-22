@@ -3,13 +3,10 @@
 namespace Tests\App\Command;
 
 use App\Entity\Notification;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\AbstractCommandCaseTest;
 
-class RemindEventCommandTest extends WebTestCase
+class RemindEventCommandTest extends AbstractCommandCaseTest
 {
-    use ControllerTestTrait;
-
     private $notificationRepository;
 
     public function testCommandForMeetingMode(): void
@@ -66,16 +63,12 @@ class RemindEventCommandTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-
         $this->notificationRepository = $this->getRepository(Notification::class);
     }
 
     protected function tearDown(): void
     {
         $this->notificationRepository = null;
-
-        $this->kill();
 
         parent::tearDown();
     }

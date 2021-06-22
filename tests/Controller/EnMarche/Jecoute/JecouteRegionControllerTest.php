@@ -2,9 +2,9 @@
 
 namespace Tests\App\Controller\EnMarche\Jecoute;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -62,7 +62,7 @@ class JecouteRegionControllerTest extends WebTestCase
         $values['primaryColor'] = 'purple';
         $values['logoFile']['croppedImage'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+';
 
-        $crawler = $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
+        $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
@@ -81,7 +81,7 @@ class JecouteRegionControllerTest extends WebTestCase
         $values['description'] = 'Description de la campagne modifiée';
         $values['primaryColor'] = 'green';
 
-        $crawler = $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
+        $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
@@ -108,15 +108,6 @@ class JecouteRegionControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-
         $this->disableRepublicanSilence();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

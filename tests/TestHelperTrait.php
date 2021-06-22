@@ -21,6 +21,7 @@ use App\Entity\DonatorIdentifier;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email;
 use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Filesystem\File;
@@ -104,9 +105,14 @@ trait TestHelperTrait
     /** @var Adherent[] */
     protected $adherents;
 
-    public function get($id)
+    public function get(string $id): ?object
     {
-        return static::$container->get($id);
+        return self::$container->get($id);
+    }
+
+    public function getParameter(string $name)
+    {
+        return self::$container->getParameter($name);
     }
 
     public function assertMailCountRecipients(int $count, ?Email $mail): void
@@ -130,25 +136,29 @@ trait TestHelperTrait
 
     public function getManagerRegistry(): ManagerRegistry
     {
-        return static::$container->get('doctrine');
+        return $this->get('doctrine');
     }
 
     public function getStorage(): Filesystem
     {
-        return static::$container->get(FilesystemInterface::class);
+        return $this->get(FilesystemInterface::class);
     }
 
     public function getGlide(): Server
     {
-        return static::$container->get(Server::class);
+        return $this->get(Server::class);
     }
 
-    public function getEntityManager($class): ObjectManager
+    public function getEntityManager(string $class = null): ObjectManager
     {
+        if (null === $class) {
+            return $this->getManagerRegistry()->getManager();
+        }
+
         return $this->getManagerRegistry()->getManagerForClass($class);
     }
 
-    public function getRepository($class): ObjectRepository
+    public function getRepository(string $class): ObjectRepository
     {
         return $this->getManagerRegistry()->getRepository($class);
     }
@@ -345,7 +355,7 @@ trait TestHelperTrait
 
     public function getCommitteeFeedManager(): CommitteeFeedManager
     {
-        return static::$container->get(CommitteeFeedManager::class);
+        return $this->get(CommitteeFeedManager::class);
     }
 
     protected function getAdherent(string $uuid): ?Adherent
@@ -419,40 +429,6 @@ trait TestHelperTrait
         );
     }
 
-    /**
-     * Remove all container references from all loaded services
-     */
-    protected function cleanupContainer($container, $exclude = ['kernel', 'libphonenumber.phone_number_util'])
-    {
-        if (!$container) {
-            return;
-        }
-
-        $object = new \ReflectionObject($container);
-        $property = $object->getProperty('services');
-        $property->setAccessible(true);
-
-        $services = $property->getValue($container) ?: [];
-        foreach ($services as $id => $service) {
-            if (\in_array($id, $exclude, true)) {
-                continue;
-            }
-
-            $serviceObject = new \ReflectionObject($service);
-            foreach ($serviceObject->getProperties() as $prop) {
-                $prop->setAccessible(true);
-
-                if ($prop->isStatic()) {
-                    continue;
-                }
-
-                $prop->setValue($service, null);
-            }
-        }
-
-        $property->setValue($container, null);
-    }
-
     protected function disableRepublicanSilence(): void
     {
         $this
@@ -462,5 +438,10 @@ trait TestHelperTrait
             ->getQuery()
             ->execute()
         ;
+    }
+
+    protected function getEventCategoryIdForName(string $categoryName): int
+    {
+        return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
     }
 }

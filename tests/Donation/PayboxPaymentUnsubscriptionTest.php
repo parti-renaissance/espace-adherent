@@ -2,19 +2,16 @@
 
 namespace Tests\App\Donation;
 
-use App\Donation\DonationRequestUtils;
 use App\Donation\PayboxPaymentUnsubscription;
 use App\Entity\Donation;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Mailer\MailerService;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Tests\App\AbstractKernelTestCase;
 
-class PayboxPaymentUnsubscriptionTest extends WebTestCase
+class PayboxPaymentUnsubscriptionTest extends AbstractKernelTestCase
 {
-    public const DONATION_REQUEST_UUID = 'cfd3c04f-cce0-405d-865f-f5f3a2c1792e';
-
     public function testUnsubscribError(): void
     {
         $donation = $this->createMock(Donation::class);
@@ -47,7 +44,6 @@ class PayboxPaymentUnsubscriptionTest extends WebTestCase
             $this->createConfiguredMock(Request::class, [
                 'cancel' => 'ACQ=NO&ERREUR=9&IDENTIFIANT=2&REFERENCE=refcmd1',
             ]),
-            $this->getContainer()->get(DonationRequestUtils::class)
         );
     }
 
@@ -57,10 +53,7 @@ class PayboxPaymentUnsubscriptionTest extends WebTestCase
 
         return new PayboxPaymentUnsubscription(
             $this->createConfiguredMock(MailerService::class, []),
-            $this->createConfiguredMock(Request::class, [
-                'cancel' => 'ACQ=OK&IDENTIFIANT=2&REFERENCE=refcmd1',
-            ]),
-            $this->getContainer()->get(DonationRequestUtils::class)
+            $this->createConfiguredMock(Request::class, ['cancel' => 'ACQ=OK&IDENTIFIANT=2&REFERENCE=refcmd1']),
         );
     }
 }

@@ -5,11 +5,11 @@ namespace Tests\App\Controller\EnMarche;
 use App\Assessor\Filter\AssessorRequestFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Mailer\Message\AssessorRequestAssociateMessage;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
@@ -17,7 +17,7 @@ use Tests\App\Test\Helper\PHPUnitHelper;
  * @group functional
  * @group assessor
  */
-class AssessorManagerControllerTest extends WebTestCase
+class AssessorManagerControllerTest extends AbstractWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -30,13 +30,6 @@ class AssessorManagerControllerTest extends WebTestCase
         self::SUBJECT_REQUEST,
         self::SUBJECT_VOTE_PLACE,
     ];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->init();
-    }
 
     /**
      * @dataProvider providePages
@@ -568,7 +561,7 @@ class AssessorManagerControllerTest extends WebTestCase
         } elseif (self::SUBJECT_VOTE_PLACE === $subject) {
             $message = $crawler->filter('.assessor_vote_places_total_count');
         } else {
-            throw new \InvalidArgumentException(sprintf('Expected one of "%s" or "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
+            throw new \InvalidArgumentException(sprintf('Expected one of "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
         }
 
         $regexp = sprintf(
@@ -579,7 +572,7 @@ class AssessorManagerControllerTest extends WebTestCase
         );
 
         $this->assertCount(1, $message);
-        $this->assertRegExp("/^$regexp\$/", trim($message->text()));
+        $this->assertMatchesRegularExpression("/^$regexp\$/", trim($message->text()));
     }
 
     public function testAssessorRequestExport()

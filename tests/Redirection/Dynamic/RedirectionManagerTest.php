@@ -4,19 +4,16 @@ namespace Tests\App\Redirection\Dynamic;
 
 use App\Entity\Redirection;
 use App\Redirection\Dynamic\RedirectionManager;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group functional
  */
-class RedirectionManagerTest extends WebTestCase
+class RedirectionManagerTest extends AbstractKernelTestCase
 {
-    use ControllerTestTrait;
-
     public function testSimpleResolveRedirection(): void
     {
-        $redirectionManager = $this->getContainer()->get(RedirectionManager::class);
+        $redirectionManager = $this->get(RedirectionManager::class);
 
         self::assertNull($redirectionManager->getRedirection('/test1'));
         $redirectionManager->optimiseRedirection($redirectionManager->setRedirection('/test1', '/test2'));
@@ -26,7 +23,7 @@ class RedirectionManagerTest extends WebTestCase
 
     public function testMultipleResolveRedirection(): void
     {
-        $redirectionManager = $this->getContainer()->get(RedirectionManager::class);
+        $redirectionManager = $this->get(RedirectionManager::class);
 
         self::assertNull($redirectionManager->getRedirection('/test1'));
         $redirectionManager->optimiseRedirection($redirectionManager->setRedirection('/test1', '/test2'));
@@ -42,7 +39,7 @@ class RedirectionManagerTest extends WebTestCase
 
     public function testLoopRedirection(): void
     {
-        $redirectionManager = $this->getContainer()->get(RedirectionManager::class);
+        $redirectionManager = $this->get(RedirectionManager::class);
 
         self::assertNull($redirectionManager->getRedirection('/test1'));
         $redirectionManager->optimiseRedirection($redirectionManager->setRedirection('/test1', '/test2'));
@@ -67,17 +64,5 @@ class RedirectionManagerTest extends WebTestCase
         self::assertSame($source, $redirection->getFrom());
         self::assertSame($target, $redirection->getTo());
         self::assertSame($type, $redirection->getType());
-    }
-
-    protected function setUp(): void
-    {
-        $this->getContainer()->get('app.cache.redirection')->clear();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

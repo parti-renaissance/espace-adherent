@@ -8,9 +8,9 @@ use App\Entity\Device;
 use App\Entity\OAuth\AuthorizationCode;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -78,7 +78,7 @@ class OAuthServerControllerTest extends WebTestCase
         ]);
 
         $this->isSuccessful($this->client->getResponse());
-        self::assertCount(3, $devices = $this->deviceRepository->findAll());
+        self::assertCount(3, $this->deviceRepository->findAll());
 
         $newDevice = $this->deviceRepository->findOneBy(['deviceUuid' => 'dd4SOCS-4UlCtO-gZiQGDA']);
         self::assertSame('dd4SOCS-4UlCtO-gZiQGDA', $newDevice->getIdentifier());
@@ -118,7 +118,7 @@ class OAuthServerControllerTest extends WebTestCase
         $response = $this->client->getResponse();
         $this->isSuccessful($response);
         static::assertSame('application/json; charset=UTF-8', $response->headers->get('Content-Type'));
-        static::assertRegExp(self::ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX, $response->getContent());
+        static::assertMatchesRegularExpression(self::ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX, $response->getContent());
         $encryptedRefreshToken2 = json_decode($this->client->getResponse()->getContent(), true)['refresh_token'];
 
         // 2nd request with the same refresh token must fail because refresh token are valid one time only
@@ -210,7 +210,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Accepter')->form());
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect());
-        static::assertRegExp(self::AUTH_TOKEN_URI_REGEX, $location = $response->headers->get('Location'));
+        static::assertMatchesRegularExpression(self::AUTH_TOKEN_URI_REGEX, $location = $response->headers->get('Location'));
         if (!preg_match(self::AUTH_TOKEN_URI_REGEX, $location, $matches)) {
             throw new \RuntimeException('Unable to fetch the OAuth authorization token from the URI.');
         }
@@ -254,7 +254,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Accepter')->form());
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect());
-        static::assertRegExp(self::AUTH_TOKEN_URI_REGEX, $location = $response->headers->get('Location'));
+        static::assertMatchesRegularExpression(self::AUTH_TOKEN_URI_REGEX, $location = $response->headers->get('Location'));
         if (!preg_match(self::AUTH_TOKEN_URI_REGEX, $location, $matches)) {
             throw new \RuntimeException('Unable to fetch the OAuth authorization token from the URI.');
         }
@@ -269,7 +269,7 @@ class OAuthServerControllerTest extends WebTestCase
         $response = $this->client->getResponse();
         $this->isSuccessful($response);
         static::assertSame('application/json; charset=UTF-8', $response->headers->get('Content-Type'));
-        static::assertRegExp(self::ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX, $json = $response->getContent());
+        static::assertMatchesRegularExpression(self::ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX, $json = $response->getContent());
 
         // 6. /api/me is not accessible without the access token
         $this->client->request(Request::METHOD_GET, '/api/me');
@@ -303,7 +303,7 @@ class OAuthServerControllerTest extends WebTestCase
             'lastName' => 'Mirabeau',
             'zipCode' => '73100',
         ];
-        foreach ($data as $expectedKey => $expectedValue) {
+        foreach ($expected as $expectedKey => $expectedValue) {
             static::assertArrayHasKey($expectedKey, $data);
             static::assertSame($expectedValue, $data[$expectedKey]);
         }
@@ -312,14 +312,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $this->createAuthorizeUrl());
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect());
-        static::assertRegExp(self::AUTH_TOKEN_URI_REGEX, $response->headers->get('Location'));
-
-        // TODO later
-//        // 9. I should see my authorized app
-//        $this->client->request(Request::METHOD_GET, '/espace-personnel/applications');
-//        $response = $this->client->getResponse();
-//        $this->isSuccessful($response);
-//        $this->assertStringContainsString('<td>En-Marche !</td>', $response->getContent());
+        static::assertMatchesRegularExpression(self::AUTH_TOKEN_URI_REGEX, $response->headers->get('Location'));
     }
 
     public function testOAuthAuthenticationFailedWithoutRedirectUriIfClientHasMoreThan1RedirectUri(): void
@@ -359,7 +352,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->client->followRedirect();
         $response = $this->client->getResponse();
         static::assertTrue($response->isRedirect());
-        static::assertRegExp(self::AUTH_TOKEN_URI_REGEX, $response->headers->get('Location'));
+        static::assertMatchesRegularExpression(self::AUTH_TOKEN_URI_REGEX, $response->headers->get('Location'));
     }
 
     public function testOAuthAuthenticationIsFailedForClientWithRequestedRoles(): void
@@ -403,7 +396,6 @@ class OAuthServerControllerTest extends WebTestCase
     private function findAuthorizationCode(string $identifier): ?AuthorizationCode
     {
         return $this
-            ->getContainer()
             ->get('doctrine')
             ->getRepository(AuthorizationCode::class)
             ->findAuthorizationCodeByIdentifier($identifier)
@@ -429,7 +421,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         $params['state'] = 'bds1775p6f3ks29h2vla20ng5n';
 
-        return sprintf('http://'.$this->hosts['app'].'/oauth/v2/auth?%s', http_build_query($params));
+        return sprintf('http://'.$this->getParameter('app_host').'/oauth/v2/auth?%s', http_build_query($params));
     }
 
     private function getEncryptedCode(AuthorizationCode $authCode): string
@@ -482,17 +474,13 @@ class OAuthServerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-
-        $this->encryptionKey = $this->getContainer()->getParameter('ssl_encryption_key');
-        $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('ssl_private_key'));
+        $this->encryptionKey = $this->getParameter('ssl_encryption_key');
+        $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'));
         $this->deviceRepository = $this->getRepository(Device::class);
     }
 
     protected function tearDown(): void
     {
-        $this->kill();
-
         $this->privateCryptKey = null;
         $this->encryptionKey = null;
         $this->deviceRepository = null;

@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\EnMarche\EventManager;
 
 use App\Entity\Notification;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 class ReferentEventManagerControllerTest extends WebTestCase
@@ -69,16 +69,12 @@ class ReferentEventManagerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->init();
-
         $this->notificationRepository = $this->getRepository(Notification::class);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-
-        $this->kill();
 
         $this->notificationRepository = null;
     }

@@ -8,10 +8,10 @@ use App\Entity\Event\CommitteeEvent;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventContactMembersMessage;
 use App\Mailer\Message\EventUpdateMessage;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -53,7 +53,7 @@ class EventManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function provideHostProtectedPages()
+    public function provideHostProtectedPages(): array
     {
         $slug = date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
 
@@ -63,7 +63,7 @@ class EventManagerControllerTest extends WebTestCase
         ];
     }
 
-    public function provideCancelledInaccessiblePages()
+    public function provideCancelledInaccessiblePages(): array
     {
         $slug = date('Y-m-d', strtotime('+60 days')).'-reunion-de-reflexion-parisienne-annule';
 
@@ -112,7 +112,7 @@ class EventManagerControllerTest extends WebTestCase
         self::assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022 | La République En Marche !', $crawler->filter('title')->text());
         self::assertSame('Écologie, débatons-en ! - Lyon 1er, 02/03/2022', $crawler->filter('.committee-event-name')->text());
         self::assertSame('Organisé par Jacques Picard du comité En Marche Paris 8', trim(preg_replace('/\s+/', ' ', $crawler->filter('.committee-event-organizer')->text())));
-        self::assertRegExp('#Mercredi 2 mars 2022, 9h30 UTC \+0(1|2):00#', $crawler->filter('.committee-event-date')->text());
+        self::assertMatchesRegularExpression('#Mercredi 2 mars 2022, 9h30 UTC \+0(1|2):00#', $crawler->filter('.committee-event-date')->text());
         self::assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         self::assertSame('Cette journée sera consacrée à un grand débat sur la question écologique.', $crawler->filter('.committee-event-description')->text());
     }
@@ -376,7 +376,7 @@ END\:VCALENDAR
 CONTENT;
         $icalRegex = str_replace("\n", "\r\n", $icalRegex); // Returned content contains CRLF
 
-        $this->assertRegExp(sprintf('/%s/', $icalRegex), $response->getContent());
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $icalRegex), $response->getContent());
     }
 
     private function redirectionEventNotPublishTest($url)
@@ -388,19 +388,5 @@ CONTENT;
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

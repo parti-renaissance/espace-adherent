@@ -4,8 +4,8 @@ namespace Tests\App\Controller\EnMarche\VotingPlatform;
 
 use App\DataFixtures\ORM\LoadVotingPlatformElectionData;
 use App\Repository\VotingPlatform\VoteResultRepository;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -91,15 +91,8 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
         $results = $this->get(VoteResultRepository::class)->findAll();
-        $this->assertRegExp('/[[:alnum:]]{3}-[[:alnum:]]{4}-[[:alnum:]]{3}/', end($results)->getVoterKey());
+        $this->assertMatchesRegularExpression('/[[:alnum:]]{3}-[[:alnum:]]{4}-[[:alnum:]]{3}/', end($results)->getVoterKey());
 
         $this->assertStringEndsWith('/comites/en-marche-comite-de-evry', $crawler->getUri());
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->init();
     }
 }

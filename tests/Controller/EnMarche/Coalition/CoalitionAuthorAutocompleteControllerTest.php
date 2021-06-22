@@ -2,16 +2,16 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\App\AbstractWebCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Test\Helper\PHPUnitHelper;
 
 /**
  * @group functional
  */
-class CoalitionAuthorAutocompleteControllerTest extends WebTestCase
+class CoalitionAuthorAutocompleteControllerTest extends AbstractWebCaseTest
 {
     use ControllerTestTrait;
 
@@ -53,19 +53,5 @@ class CoalitionAuthorAutocompleteControllerTest extends WebTestCase
             'is_adherent' => true,
             'is_female' => false,
         ], $data[1]);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }
