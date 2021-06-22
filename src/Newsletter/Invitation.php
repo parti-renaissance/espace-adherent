@@ -22,10 +22,10 @@ class Invitation
      * @Assert\Type("string")
      * @Assert\NotBlank
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
+     *     minMessage="common.last_name.min_length",
+     *     maxMessage="common.last_name.max_length"
      * )
      */
     public $lastName = '';

@@ -43,7 +43,7 @@ class AssessorRequest
      *
      * @Assert\NotBlank(message="assessor.last_name.not_blank")
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
      *     minMessage="assessor.last_name.min_length",
      *     maxMessage="assessor.last_name.max_length"
@@ -73,7 +73,7 @@ class AssessorRequest
      *
      * @Assert\NotBlank(message="common.birth_name.not_blank")
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
      *     minMessage="common.birth_name.min_length",
      *     maxMessage="common.birth_name.max_length"

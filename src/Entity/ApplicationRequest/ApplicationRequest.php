@@ -57,7 +57,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @Assert\NotBlank(message="application_request.last_name.not_blank")
      * @Assert\Length(
-     *     min=2,
+     *     min=1,
      *     max=50,
      *     minMessage="application_request.last_name.min_length",
      *     maxMessage="application_request.last_name.max_length"
