@@ -6,7 +6,6 @@ use App\Form\BooleanChoiceType;
 use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
-use App\Form\MemberInterestsChoiceType;
 use App\ManagedUsers\ManagedUsersFilter;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,7 +28,6 @@ class ManagedUsersFilterType extends AbstractManagedUsersFilterType
             ->add('isCommitteeMember', BooleanChoiceType::class)
             ->add('includeRoles', FilterRoleType::class, ['required' => false])
             ->add('excludeRoles', FilterRoleType::class, ['required' => false])
-            ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
             ->add('registeredSince', DatePickerType::class, ['required' => false])
             ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('voteInCommittee', BooleanChoiceType::class)

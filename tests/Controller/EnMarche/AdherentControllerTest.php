@@ -324,55 +324,9 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/centres-d-interet');
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-compte/centres-d-interet');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $checkBoxPattern = 'form[name="app_adherent_pin_interests"] .checkb-cols input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
-
-        $this->assertCount(23, $checkboxes = $crawler->filter($checkBoxPattern));
-
-        $interests = $this->getParameter('adherent_interests');
-        $interestsValues = array_keys($interests);
-        $interestsLabels = array_values($interests);
-
-        foreach ($checkboxes as $i => $checkbox) {
-            self::assertSame($interestsValues[$i], $checkbox->getAttribute('value'));
-            self::assertSame($interestsLabels[$i], $crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->text());
-        }
-
-        $interests = $this->getParameter('adherent_interests');
-        $interestsValues = array_keys($interests);
-
-        $chosenInterests = [
-            4 => $interestsValues[4],
-            8 => $interestsValues[8],
-        ];
-
-        $this->client->submit($crawler->selectButton('Enregistrer')->form(), [
-            'app_adherent_pin_interests' => [
-                'interests' => $chosenInterests,
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/centres-d-interet', $this->client);
-
-        /* @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
-
-        self::assertSame(array_values($chosenInterests), $adherent->getInterests());
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertCount(23, $checkboxes = $crawler->filter($checkBoxPattern));
-
-        foreach ($checkboxes as $i => $checkbox) {
-            if (isset($chosenInterests[$i])) {
-                self::assertSame('checked', $checkbox->getAttribute('checked'));
-            } else {
-                $this->assertEmpty($crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->attr('checked'));
-            }
-        }
+        $this->assertResponseStatusCode(404, $this->client->getResponse());
     }
 
     public function testAdherentChangePassword(): void
