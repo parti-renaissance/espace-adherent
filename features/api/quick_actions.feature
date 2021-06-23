@@ -84,7 +84,7 @@ Feature:
             },
             {
                 "title": "Nouvelle URL",
-                "url": "https://new.url.com"
+                "url": "new.url.com"
             }
         ]
     }
@@ -140,7 +140,7 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "quick_actions[0].title: Vous devez saisir au moins 2 caractères.\nquick_actions[0].url: Cette valeur ne doit pas être vide.\nquick_actions[3].title: Cette valeur ne doit pas être vide.\nquick_actions[3].title: Vous devez saisir au moins 2 caractères.\nquick_actions[3].url: Cette valeur n'est pas une URL valide.",
+      "detail":"quick_actions[0].title: Vous devez saisir au moins 2 caract\u00e8res.\nquick_actions[0].url: Cette valeur ne doit pas \u00eatre vide.\nquick_actions[3].title: Cette valeur ne doit pas \u00eatre vide.\nquick_actions[3].title: Vous devez saisir au moins 2 caract\u00e8res.",
       "violations": [
         {
           "propertyPath": "quick_actions[0].title",
@@ -157,10 +157,6 @@ Feature:
         {
           "propertyPath": "quick_actions[3].title",
           "message": "Vous devez saisir au moins 2 caractères."
-        },
-        {
-          "propertyPath": "quick_actions[3].url",
-          "message": "Cette valeur n'est pas une URL valide."
         }
       ]
     }
@@ -185,7 +181,7 @@ Feature:
             },
             {
                 "title": "Action rapide 2",
-                "url": "http://action.eu"
+                "url": "action.eu"
             }
         ]
     }
@@ -206,7 +202,7 @@ Feature:
       {
         "id": "@integer@",
         "title": "Action rapide 2",
-        "url": "http://action.eu"
+        "url": "https://action.eu"
       }
     ]
     """
