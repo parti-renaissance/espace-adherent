@@ -1004,12 +1004,36 @@ class SummaryManagerControllerTest extends WebTestCase
      */
     public function testStepInterestsWithoutSummary()
     {
+        $summariesCount = \count($this->getSummaryRepository()->findAll());
+
         // This adherent has no summary yet
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
-        $this->assertResponseStatusCode(404, $this->client->getResponse());
+        $this->assertCount(25, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[member_interests][14]' => 'ruralite',
+            'summary[personal_data_collection]' => true,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(++$summariesCount, $this->getSummaryRepository()->findAll());
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+        $this->assertSummaryCompletion(15, $crawler);
+
+        $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
+
+        $this->assertCount(1, $interests->filter('li'));
+        $this->assertSame('Ruralité', trim($interests->filter('li')->text()));
     }
 
     /**
@@ -1020,9 +1044,32 @@ class SummaryManagerControllerTest extends WebTestCase
         // This adherent has a summary and trainings already
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
-        $this->assertResponseStatusCode(404, $this->client->getResponse());
+        $this->assertCount(25, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] select'));
+        $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
+
+        $this->client->submit($crawler->filter('form[name=summary]')->form([
+            'summary[member_interests][3]' => 'education',
+            'summary[member_interests][4]' => 'jeunesse',
+            'summary[personal_data_collection]' => true,
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
+        $this->assertSummaryCompletion(100, $crawler);
+
+        $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
+
+        $this->assertCount(2, $interests->filter('li'));
+        $this->assertSame('Jeunesse', trim($interests->filter('li')->eq(0)->text()));
+        $this->assertSame('Éducation', trim($interests->filter('li')->eq(1)->text()));
     }
 
     /**
