@@ -54,6 +54,7 @@
                             'app_user_edit',
                             'app_certification_request_*',
                             'app_user_change_password',
+                            'app_adherent_pin_interests',
                             'app_user_set_email_notifications',
                             'app_adherent_commitment',
                         ] ) %}
@@ -73,6 +74,9 @@
                                 </li>
                                 <li class="{{ is_active_route(app.request, 'app_user_change_password') ? 'active' }}">
                                     <a href="{{ path('app_user_change_password') }}">Mot de passe</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_pin_interests') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_pin_interests') }}">Centres d'intérêt</a>
                                 </li>
                                 <li class="{{ is_active_route(app.request, 'app_adherent_commitment') ? 'active' }}">
                                     <a href="{{ path('app_adherent_commitment') }}">Engagement</a>

@@ -8,6 +8,7 @@ use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
 use App\Form\GenderType;
+use App\Form\MemberInterestsChoiceType;
 use App\Repository\CommitteeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -43,6 +44,7 @@ class AdherentZoneFilterType extends AbstractType
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
+            ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
             ->add('registeredSince', DatePickerType::class, ['required' => false])
             ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('committee', CommitteeChoiceType::class, [
