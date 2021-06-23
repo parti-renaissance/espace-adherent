@@ -3,6 +3,7 @@
 namespace App\Adherent\Handler;
 
 use App\Adherent\AdherentInterestsMigrationHandler;
+use App\Adherent\Command\AdherentMigrateInterestsCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -23,7 +24,7 @@ class AdherentMigrateInterestsCommandHandler implements MessageHandlerInterface
         $this->migrationHandler = $migrationHandler;
     }
 
-    public function __invoke(AdherentInterestsMigrationHandler $command): void
+    public function __invoke(AdherentMigrateInterestsCommand $command): void
     {
         $adherent = $this->adherentRepository->findByUuid($command->getUuid()->toString());
 
