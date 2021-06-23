@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Adherent\Command\AdherentMigrateInterestsCommand;
-use App\Entity\Adherent;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
@@ -50,10 +49,9 @@ class MigrateAdherentInterestsCommand extends Command
         $this->io->progressStart($this->getAdherentsCount());
 
         foreach ($this->getAdherentsIterator() as $result) {
-            /** @var Adherent $adherent */
-            $adherent = $result[0];
+            $adherent = current($result);
 
-            $this->bus->dispatch(new AdherentMigrateInterestsCommand($adherent->getUuid()));
+            $this->bus->dispatch(new AdherentMigrateInterestsCommand($adherent['uuid']));
 
             $this->io->progressAdvance();
         }
@@ -67,6 +65,7 @@ class MigrateAdherentInterestsCommand extends Command
     {
         return $this
             ->createAdherentQueryBuilder()
+            ->select('adherent.uuid')
             ->getQuery()
             ->iterate()
         ;
