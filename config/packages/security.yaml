@@ -361,6 +361,7 @@ security:
         ROLE_REFERENT:
             - ROLE_JECOUTE_NEWS
             - ROLE_JECOUTE_REGION
+            - ROLE_DATA_CORNER
 
     access_decision_manager:
         strategy: unanimous
