@@ -332,7 +332,7 @@ Feature:
     {
       "interests": [
         {
-          "label": "Égalité F / H",
+          "label": "Égalité F/H",
           "code": "egalite"
         },
         {
@@ -782,21 +782,18 @@ Feature:
     When I send a "GET" request to "/api/v3/profile/configuration"
     Then the response status code should be 200
     And the response should be in JSON
+    Then print last JSON response
     And the JSON should be equal to:
     """
     {
       "interests": [
         {
-          "code": "agriculture",
-          "label": "Agriculture"
-        },
-        {
-          "code": "social",
-          "label": "Affaires sociales"
-        },
-        {
           "code": "culture",
           "label": "Culture"
+        },
+        {
+          "code": "democratie",
+          "label": "Démocratie"
         },
         {
           "code": "economie",
@@ -807,56 +804,80 @@ Feature:
           "label": "Éducation"
         },
         {
+          "code": "jeunesse",
+          "label": "Jeunesse"
+        },
+        {
           "code": "egalite",
-          "label": "Égalité F / H"
-        },
-        {
-          "code": "emploi",
-          "label": "Emploi"
-        },
-        {
-          "code": "environement",
-          "label": "Environnement"
+          "label": "Égalité F/H"
         },
         {
           "code": "europe",
           "label": "Europe"
         },
         {
-          "code": "international",
-          "label": "International"
+          "code": "inclusion",
+          "label": "Inclusion"
         },
         {
-          "code": "jeunesse",
-          "label": "Jeunesse"
+          "code": "international",
+          "label": "International"
         },
         {
           "code": "justice",
           "label": "Justice"
         },
         {
+          "code": "lgbt",
+          "label": "LGBT+"
+        },
+        {
           "code": "numerique",
           "label": "Numérique"
+        },
+        {
+          "code": "puissance_publique",
+          "label": "Puissance publique"
+        },
+        {
+          "code": "republique",
+          "label": "République"
+        },
+        {
+          "code": "ruralite",
+          "label": "Ruralité"
         },
         {
           "code": "sante",
           "label": "Santé"
         },
         {
-          "code": "securite",
-          "label": "Sécurité"
+          "code": "securite_et_defense",
+          "label": "Sécurité et Défense"
+        },
+        {
+          "code": "solidarites",
+          "label": "Solidarités"
         },
         {
           "code": "sport",
           "label": "Sport"
         },
         {
-          "code": "territoire",
-          "label": "Territoire"
+          "code": "transition_ecologique",
+          "label": "Transition écologique"
         },
         {
-          "code": "institution",
-          "label": "Vie publique & institutions"
+          "code": "travail",
+          "label": "Travail"
+        },
+        {
+          "code": "villes_et_quartiers",
+          "label": "Villes et quartiers"
+        },
+        {
+          "code": "famille",
+          "label": "Famille"
         }
       ],
       "subscription_types": [

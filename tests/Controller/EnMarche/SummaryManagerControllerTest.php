@@ -1011,12 +1011,12 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
-        $this->assertCount(20, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(25, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[member_interests][0]' => 'agriculture',
+            'summary[member_interests][14]' => 'ruralite',
             'summary[personal_data_collection]' => true,
         ]));
 
@@ -1033,7 +1033,7 @@ class SummaryManagerControllerTest extends WebTestCase
         $interests = $this->getSummarySection($crawler, self::SECTION_INTERESTS);
 
         $this->assertCount(1, $interests->filter('li'));
-        $this->assertSame('Agriculture', trim($interests->filter('li')->text()));
+        $this->assertSame('Ruralité', trim($interests->filter('li')->text()));
     }
 
     /**
@@ -1046,13 +1046,13 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/interests');
 
-        $this->assertCount(20, $crawler->filter('form[name=summary] input'));
+        $this->assertCount(25, $crawler->filter('form[name=summary] input'));
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[member_interests][4]' => 'education',
-            'summary[member_interests][10]' => 'jeunesse',
+            'summary[member_interests][3]' => 'education',
+            'summary[member_interests][4]' => 'jeunesse',
             'summary[personal_data_collection]' => true,
         ]));
 

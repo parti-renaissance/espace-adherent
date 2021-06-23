@@ -1,20 +1,25 @@
 parameters:
     adherent_interests:
-        agriculture: Agriculture
-        social: Affaires sociales
         culture: Culture
+        democratie: Démocratie
         economie: Économie
         education: Éducation
-        egalite: Égalité F / H
-        emploi: Emploi
-        environement: Environnement
-        europe: Europe
-        international: International
         jeunesse: Jeunesse
+        egalite: Égalité F/H
+        europe: Europe
+        inclusion: Inclusion
+        international: International
         justice: Justice
+        lgbt: LGBT+
         numerique: Numérique
+        puissance_publique: Puissance publique
+        republique: République
+        ruralite: Ruralité
         sante: Santé
-        securite: Sécurité
+        securite_et_defense: Sécurité et Défense
+        solidarites: Solidarités
         sport: Sport
-        territoire: Territoire
-        institution: Vie publique & institutions
+        transition_ecologique: Transition écologique
+        travail: Travail
+        villes_et_quartiers: Villes et quartiers
+        famille: Famille
