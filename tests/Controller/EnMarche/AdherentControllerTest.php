@@ -330,7 +330,7 @@ class AdherentControllerTest extends WebTestCase
 
         $checkBoxPattern = 'form[name="app_adherent_pin_interests"] .checkb-cols input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
-        $this->assertCount(18, $checkboxes = $crawler->filter($checkBoxPattern));
+        $this->assertCount(23, $checkboxes = $crawler->filter($checkBoxPattern));
 
         $interests = $this->getParameter('adherent_interests');
         $interestsValues = array_keys($interests);
@@ -364,7 +364,7 @@ class AdherentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertCount(18, $checkboxes = $crawler->filter($checkBoxPattern));
+        $this->assertCount(23, $checkboxes = $crawler->filter($checkBoxPattern));
 
         foreach ($checkboxes as $i => $checkbox) {
             if (isset($chosenInterests[$i])) {
