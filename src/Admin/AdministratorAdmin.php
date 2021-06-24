@@ -122,6 +122,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_ELECTION_CITY_CARD',
                     'ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS',
                     'ROLE_ADMIN_ELECTED_REPRESENTATIVE',
+                    'ROLE_APP_ADMIN_ELECTED_REPRESENTATIVE_LABELS',
                     'ROLE_ADMIN_TERRITORIAL_COUNCIL',
                     'ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG',
                     'ROLE_ADMIN_THEMATIC_COMMUNITY',
