@@ -17,7 +17,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    public function testListElectedRepresentatives()
+    public function testListCommittees()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
