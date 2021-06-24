@@ -2840,6 +2840,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->count();
     }
 
+    /**
+     * @return AdherentInstanceQuality[]
+     */
+    public function getNationalCouncilQualities(): array
+    {
+        return $this->instanceQualities->filter(function (AdherentInstanceQuality $adherentQuality) {
+            return $adherentQuality->hasNationalCouncilScope();
+        })->toArray();
+    }
+
     private function findInstanceQuality(InstanceQuality $quality): ?AdherentInstanceQuality
     {
         foreach ($this->instanceQualities as $adherentInstanceQuality) {

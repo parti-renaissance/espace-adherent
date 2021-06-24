@@ -75,10 +75,11 @@ class InstanceQuality
 
     public function getFullLabel(): string
     {
-        return sprintf(
-            '%s [%s]',
-            $this->label ?? $this->code,
-            implode(', ', $this->scopes)
-        );
+        return sprintf('%s [%s]', $this->__toString(), implode(', ', $this->scopes));
+    }
+
+    public function __toString(): string
+    {
+        return $this->label ?? $this->code;
     }
 }

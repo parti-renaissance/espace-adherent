@@ -18,6 +18,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
+use App\Entity\Instance\InstanceQuality;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
@@ -41,10 +42,12 @@ use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\History\EmailSubscriptionHistoryHandler;
+use App\Instance\InstanceQualityScopeEnum;
 use App\Intl\UnitedNationsBundle;
 use App\Membership\Mandates;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
+use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -98,7 +101,8 @@ class AdherentAdmin extends AbstractAdmin
     private $emailSubscriptionHistoryManager;
     /** @var PoliticalCommitteeManager */
     private $politicalCommitteeManager;
-
+    /** @var InstanceQualityRepository */
+    private $instanceQualityRepository;
     /**
      * State of adherent data before update
      *
@@ -1032,6 +1036,45 @@ class AdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('instanceQualities', CallbackFilter::class, [
+                'label' => 'Membre du Conseil national',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => array_merge([
+                        'Oui' => true,
+                        'Non' => false,
+                    ], array_combine($qualities = $this->instanceQualityRepository->getAllCustomQualities(), $qualities)),
+                    'group_by' => function ($choice) {
+                        if (\is_bool($choice)) {
+                            return 'Général';
+                        }
+
+                        return 'Qualités personnalisées';
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (null === $value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.instanceQualities", 'adherent_instance_quality')
+                        ->leftJoin('adherent_instance_quality.instanceQuality', 'instance_quality', Expr\Join::WITH, 'FIND_IN_SET(:national_council_scope, instance_quality.scopes) > 0')
+                        ->andWhere('instance_quality.id '.(0 === $value['value'] ? 'IS NULL' : 'IS NOT NULL'))
+                        ->setParameter('national_council_scope', InstanceQualityScopeEnum::NATIONAL_COUNCIL)
+                    ;
+
+                    if ($value['value'] instanceof InstanceQuality) {
+                        $qb
+                            ->andWhere('instance_quality = :instance_quality')
+                            ->setParameter('instance_quality', $value['value'])
+                        ;
+                    }
+
+                    return true;
+                },
+            ])
             ->add('memberships.committee', CallbackFilter::class, [
                 'label' => 'Comité de vote',
                 'field_type' => ModelAutocompleteType::class,
@@ -1243,5 +1286,11 @@ class AdherentAdmin extends AbstractAdmin
             'Ville' => 'postAddress.cityName',
             'Pays' => 'postAddress.country',
         ];
+    }
+
+    /** @required */
+    public function setInstanceQualityRepository(InstanceQualityRepository $instanceQualityRepository): void
+    {
+        $this->instanceQualityRepository = $instanceQualityRepository;
     }
 }
