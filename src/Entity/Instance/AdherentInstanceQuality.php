@@ -31,7 +31,7 @@ class AdherentInstanceQuality
     /**
      * @var InstanceQuality
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\InstanceQuality")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\InstanceQuality", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $instanceQuality;

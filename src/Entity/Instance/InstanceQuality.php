@@ -25,16 +25,31 @@ class InstanceQuality
     private $code;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $label;
+
+    /**
      * @var string[]
      *
      * @ORM\Column(type="simple_array")
      */
     private $scopes;
 
-    public function __construct(string $code, array $scopes, UuidInterface $uuid = null)
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $custom;
+
+    public function __construct(string $code, array $scopes, bool $custom = true, UuidInterface $uuid = null)
     {
         $this->code = $code;
         $this->scopes = $scopes;
+        $this->custom = $custom;
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
@@ -51,5 +66,19 @@ class InstanceQuality
     public function hasNationalCouncilScope(): bool
     {
         return \in_array(InstanceQualityScopeEnum::NATIONAL_COUNCIL, $this->scopes);
+    }
+
+    public function isCustom(): bool
+    {
+        return $this->custom;
+    }
+
+    public function getFullLabel(): string
+    {
+        return sprintf(
+            '%s [%s]',
+            $this->label ?? $this->code,
+            implode(', ', $this->scopes)
+        );
     }
 }

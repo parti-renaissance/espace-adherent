@@ -25,6 +25,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
+use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CandidateManagedAreaType;
@@ -282,238 +283,254 @@ class AdherentAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Informations personnelles', ['class' => 'col-md-6'])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'Etat du compte',
-                    'choices' => [
-                        'Activé' => Adherent::ENABLED,
-                        'Désactivé' => Adherent::DISABLED,
-                    ],
+            ->tab('Général')
+                ->with('Informations personnelles', ['class' => 'col-md-6'])
+                    ->add('status', ChoiceType::class, [
+                        'label' => 'Etat du compte',
+                        'choices' => [
+                            'Activé' => Adherent::ENABLED,
+                            'Désactivé' => Adherent::DISABLED,
+                        ],
+                    ])
+                    ->add('tags', ModelType::class, [
+                        'label' => 'Tags admin',
+                        'multiple' => true,
+                        'by_reference' => false,
+                        'btn_add' => false,
+                    ])
+                    ->add('gender', GenderType::class, [
+                        'label' => 'Genre',
+                    ])
+                    ->add('customGender', TextType::class, [
+                        'required' => false,
+                        'label' => 'Personnalisez votre genre',
+                        'attr' => [
+                            'max' => 80,
+                        ],
+                    ])
+                    ->add('lastName', TextType::class, [
+                        'label' => 'Nom',
+                        'filter_emojis' => true,
+                        'format_identity_case' => true,
+                    ])
+                    ->add('firstName', TextType::class, [
+                        'label' => 'Prénom',
+                        'filter_emojis' => true,
+                        'format_identity_case' => true,
+                    ])
+                    ->add('nickname', TextType::class, [
+                        'label' => 'Pseudo',
+                        'filter_emojis' => true,
+                        'required' => false,
+                    ])
+                    ->add('nicknameUsed', null, [
+                        'label' => 'Pseudo utilisé ?',
+                    ])
+                    ->add('emailAddress', null, [
+                        'label' => 'Adresse e-mail',
+                    ])
+                    ->add('phone', PhoneNumberType::class, [
+                        'label' => 'Téléphone',
+                        'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                        'required' => false,
+                    ])
+                    ->add('birthdate', DatePickerType::class, [
+                        'label' => 'Date de naissance',
+                        'required' => false,
+                    ])
+                    ->add('position', ActivityPositionType::class, [
+                        'label' => 'Statut',
+                    ])
+                    ->add('mandates', ChoiceType::class, [
+                        'label' => 'adherent.mandate.admin.label',
+                        'choices' => Mandates::CHOICES,
+                        'required' => false,
+                        'multiple' => true,
+                    ])
+                    ->add('subscriptionTypes', null, [
+                        'label' => 'Notifications via e-mail et mobile :',
+                        'choice_label' => 'label',
+                        'required' => false,
+                        'multiple' => true,
+                    ])
+                    ->add('media', null, [
+                        'label' => 'Photo',
+                    ])
+                    ->add('description', TextareaType::class, [
+                        'label' => 'Biographie',
+                        'required' => false,
+                        'attr' => ['class' => 'content-editor', 'rows' => 20],
+                    ])
+                    ->add('twitterPageUrl', UrlType::class, [
+                        'label' => 'Page Twitter',
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => 'https://twitter.com/alexandredumoulin',
+                        ],
+                    ])
+                    ->add('facebookPageUrl', UrlType::class, [
+                        'label' => 'Page Facebook',
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => 'https://facebook.com/alexandre-dumoulin',
+                        ],
+                    ])
+                ->end()
+                ->with('Identité de l\'élu', [
+                    'class' => 'col-md-6',
+                    'description' => 'adherent.admin.elected_representative.description',
+                    'box_class' => 'box box-success',
                 ])
-                ->add('tags', ModelType::class, [
-                    'label' => 'Tags admin',
-                    'multiple' => true,
-                    'by_reference' => false,
-                    'btn_add' => false,
+                    ->add('electedRepresentative', TextType::class, [
+                        'label' => false,
+                        'required' => false,
+                        'mapped' => false,
+                    ])
+                ->end()
+                ->with('Coalitions', ['class' => 'col-md-6'])
+                    ->add('isCoalitionModeratorRole', CheckboxType::class, [
+                        'label' => 'Responsable Coalition',
+                        'required' => false,
+                        'mapped' => false,
+                    ])
+                ->end()
+                ->with('Responsabilités locales', ['class' => 'col-md-6'])
+                    ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
+                        'label' => 'coordinator.label.codes.committee',
+                        'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
+                    ])
+                    ->add('managedArea', ReferentManagedAreaType::class, [
+                        'label' => false,
+                        'required' => false,
+                    ])
+                    ->add('lreArea', LreAreaType::class, [
+                        'label' => 'La république ensemble',
+                        'required' => false,
+                    ])
+                    ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
+                        'label' => 'jecoute_manager',
+                        'required' => false,
+                        'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
+                    ])
+                    ->add('printPrivilege', null, [
+                        'label' => 'Accès à "La maison des impressions"',
+                        'required' => false,
+                    ])
+                ->end()
+                ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                    ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
+                        'label' => 'Candidat Municipales 2020 🇫🇷',
+                        'help' => <<<HELP
+            Laisser vide si l'adhérent n'est pas chef municipal. 
+            Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
+            Utiliser <strong>75100</strong> pour la ville de Paris, 
+            <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
+    HELP
+                        ,
+                    ])
+                    ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
+                        'label' => 'Candidat Sénatoriales 2020',
+                    ])
+                    ->add('legislativeCandidateManagedDistrict', AvailableDistrictAutocompleteType::class, [
+                        'label' => 'Candidat aux législatives',
+                        'by_reference' => false,
+                        'required' => false,
+                        'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
+                        'callback' => [DistrictAdmin::class, 'prepareLegislativeCandidateAutocompleteFilterCallback'],
+                    ])
+                    ->add('candidateManagedArea', CandidateManagedAreaType::class, [
+                        'label' => 'Candidat',
+                    ])
+                    ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                        'label' => 'coordinator.label.codes',
+                        'required' => false,
+                        'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                    ])
+                    ->add('assessorManagedAreaCodesAsString', TextType::class, [
+                        'label' => 'assessors_manager',
+                        'required' => false,
+                        'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                    ])
+                    ->add('electionResultsReporter', null, [
+                        'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
+                        'required' => false,
+                    ])
+                ->end()
+                ->with('Mandat électif', ['class' => 'col-md-6'])
+                    ->add('managedDistrict', AvailableDistrictAutocompleteType::class, [
+                        'label' => 'Circonscription député',
+                        'by_reference' => false,
+                        'required' => false,
+                        'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
+                    ])
+                    ->add('senatorArea', SenatorAreaType::class, [
+                        'required' => false,
+                        'label' => 'Circonscription sénateur',
+                        'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
+                    ])
+                ->end()
+                ->with('Membre du Conseil', ['class' => 'col-md-6'])
+                    ->add('boardMemberArea', ChoiceType::class, [
+                        'label' => 'Région',
+                        'choices' => BoardMember::AREAS_CHOICES,
+                        'required' => false,
+                        'mapped' => false,
+                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+                    ])
+                    ->add('boardMemberRoles', ModelType::class, [
+                        'expanded' => true,
+                        'multiple' => true,
+                        'btn_add' => false,
+                        'class' => Role::class,
+                        'mapped' => false,
+                        'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+                    ])
+                ->end()
+                ->with('Responsable communauté thématique', ['class' => 'col-md-6'])
+                    ->add('handledThematicCommunities', EntityType::class, [
+                        'label' => 'Communautés thématiques',
+                        'class' => ThematicCommunity::class,
+                        'required' => false,
+                        'multiple' => true,
+                        'query_builder' => function (EntityRepository $er) {
+                            return $er
+                                ->createQueryBuilder('tc')
+                                ->andWhere('tc.enabled = 1')
+                                ;
+                        },
+                    ])
+                ->end()
+                ->with('Zone expérimentale 🚧', [
+                    'class' => 'col-md-6',
+                    'box_class' => 'box box-warning',
                 ])
-                ->add('gender', GenderType::class, [
-                    'label' => 'Genre',
-                ])
-                ->add('customGender', TextType::class, [
-                    'required' => false,
-                    'label' => 'Personnalisez votre genre',
-                    'attr' => [
-                        'max' => 80,
-                    ],
-                ])
-                ->add('lastName', TextType::class, [
-                    'label' => 'Nom',
-                    'filter_emojis' => true,
-                    'format_identity_case' => true,
-                ])
-                ->add('firstName', TextType::class, [
-                    'label' => 'Prénom',
-                    'filter_emojis' => true,
-                    'format_identity_case' => true,
-                ])
-                ->add('nickname', TextType::class, [
-                    'label' => 'Pseudo',
-                    'filter_emojis' => true,
-                    'required' => false,
-                ])
-                ->add('nicknameUsed', null, [
-                    'label' => 'Pseudo utilisé ?',
-                ])
-                ->add('emailAddress', null, [
-                    'label' => 'Adresse e-mail',
-                ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                    'required' => false,
-                ])
-                ->add('birthdate', DatePickerType::class, [
-                    'label' => 'Date de naissance',
-                    'required' => false,
-                ])
-                ->add('position', ActivityPositionType::class, [
-                    'label' => 'Statut',
-                ])
-                ->add('mandates', ChoiceType::class, [
-                    'label' => 'adherent.mandate.admin.label',
-                    'choices' => Mandates::CHOICES,
-                    'required' => false,
-                    'multiple' => true,
-                ])
-                ->add('subscriptionTypes', null, [
-                    'label' => 'Notifications via e-mail et mobile :',
-                    'choice_label' => 'label',
-                    'required' => false,
-                    'multiple' => true,
-                ])
-                ->add('media', null, [
-                    'label' => 'Photo',
-                ])
-                ->add('description', TextareaType::class, [
-                    'label' => 'Biographie',
-                    'required' => false,
-                    'attr' => ['class' => 'content-editor', 'rows' => 20],
-                ])
-                ->add('twitterPageUrl', UrlType::class, [
-                    'label' => 'Page Twitter',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'https://twitter.com/alexandredumoulin',
-                    ],
-                ])
-                ->add('facebookPageUrl', UrlType::class, [
-                    'label' => 'Page Facebook',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'https://facebook.com/alexandre-dumoulin',
-                    ],
-                ])
+                    ->add('canaryTester')
+                ->end()
             ->end()
-            ->with('Identité de l\'élu', [
-                'class' => 'col-md-6',
-                'description' => 'adherent.admin.elected_representative.description',
-                'box_class' => 'box box-success',
-            ])
-                ->add('electedRepresentative', TextType::class, [
-                    'label' => false,
-                    'required' => false,
-                    'mapped' => false,
+            ->tab('Instances')
+                ->with('Membre du Conseil territorial et CoPol', [
+                    'class' => 'col-md-6 territorial-council-member-info',
+                    'description' => 'territorial_council.admin.description',
                 ])
-            ->end()
-            ->with('Coalitions', ['class' => 'col-md-6'])
-                ->add('isCoalitionModeratorRole', CheckboxType::class, [
-                    'label' => 'Responsable Coalition',
-                    'required' => false,
-                    'mapped' => false,
-                ])
-            ->end()
-            ->with('Responsabilités locales', ['class' => 'col-md-6'])
-                ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
-                    'label' => 'coordinator.label.codes.committee',
-                    'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
-                ])
-                ->add('managedArea', ReferentManagedAreaType::class, [
-                    'label' => false,
-                    'required' => false,
-                ])
-                ->add('lreArea', LreAreaType::class, [
-                    'label' => 'La république ensemble',
-                    'required' => false,
-                ])
-                ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
-                    'label' => 'jecoute_manager',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
-                ])
-                ->add('printPrivilege', null, [
-                    'label' => 'Accès à "La maison des impressions"',
-                    'required' => false,
-                ])
-            ->end()
-            ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
-                ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
-                    'label' => 'Candidat Municipales 2020 🇫🇷',
-                    'help' => <<<HELP
-        Laisser vide si l'adhérent n'est pas chef municipal. 
-        Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
-        Utiliser <strong>75100</strong> pour la ville de Paris, 
-        <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
-HELP
-                    ,
-                ])
-                ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
-                    'label' => 'Candidat Sénatoriales 2020',
-                ])
-                ->add('legislativeCandidateManagedDistrict', AvailableDistrictAutocompleteType::class, [
-                    'label' => 'Candidat aux législatives',
-                    'by_reference' => false,
-                    'required' => false,
-                    'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
-                    'callback' => [DistrictAdmin::class, 'prepareLegislativeCandidateAutocompleteFilterCallback'],
-                ])
-                ->add('candidateManagedArea', CandidateManagedAreaType::class, [
-                    'label' => 'Candidat',
-                ])
-                ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'coordinator.label.codes',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
-                ->add('assessorManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'assessors_manager',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
-                ->add('electionResultsReporter', null, [
-                    'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
-                    'required' => false,
-                ])
-            ->end()
-            ->with('Mandat électif', ['class' => 'col-md-6'])
-                ->add('managedDistrict', AvailableDistrictAutocompleteType::class, [
-                    'label' => 'Circonscription député',
-                    'by_reference' => false,
-                    'required' => false,
-                    'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
-                ])
-                ->add('senatorArea', SenatorAreaType::class, [
-                    'required' => false,
-                    'label' => 'Circonscription sénateur',
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
-                ])
-            ->end()
-            ->with('Membre du Conseil territorial et CoPol', [
-                'class' => 'col-md-6 territorial-council-member-info',
-                'description' => 'territorial_council.admin.description',
-            ])
-                ->add('territorialCouncilMembership', AdherentTerritorialCouncilMembershipType::class, [
-                    'label' => false,
-                    'invalid_message' => 'Un adhérent ne peut être membre que d\'un seul Conseil territorial.',
-                ])
-            ->end()
-            ->with('Membre du Conseil', ['class' => 'col-md-6'])
-                ->add('boardMemberArea', ChoiceType::class, [
-                    'label' => 'Région',
-                    'choices' => BoardMember::AREAS_CHOICES,
-                    'required' => false,
-                    'mapped' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                ])
-                ->add('boardMemberRoles', ModelType::class, [
-                    'expanded' => true,
-                    'multiple' => true,
-                    'btn_add' => false,
-                    'class' => Role::class,
-                    'mapped' => false,
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                ])
-            ->end()
-            ->with('Responsable communauté thématique', ['class' => 'col-md-6'])
-                ->add('handledThematicCommunities', EntityType::class, [
-                    'label' => 'Communautés thématiques',
-                    'class' => ThematicCommunity::class,
-                    'required' => false,
-                    'multiple' => true,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er
-                            ->createQueryBuilder('tc')
-                            ->andWhere('tc.enabled = 1')
-                            ;
-                    },
-                ])
-            ->end()
-            ->with('Zone expérimentale 🚧', [
-                'class' => 'col-md-6',
-                'box_class' => 'box box-warning',
-            ])
-                ->add('canaryTester')
-            ->end()
+                    ->add('territorialCouncilMembership', AdherentTerritorialCouncilMembershipType::class, [
+                        'label' => false,
+                        'invalid_message' => 'Un adhérent ne peut être membre que d\'un seul Conseil territorial.',
+                    ])
+                ->end()
         ;
+
+        if ($this->isGranted('CONSEIL')) {
+            $formMapper
+                ->with('Conseil national', ['class' => 'col-md-6'])
+                    ->add('instanceQualities', AdherentInstanceQualityType::class, [
+                        'by_reference' => false,
+                        'label' => false,
+                    ])
+                ->end()
+            ;
+        }
+
+        $formMapper->end();
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
