@@ -4,11 +4,11 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData  |
-      | LoadArticleData   |
+      | LoadAdherentData       |
+      | LoadArticleData        |
       | LoadCommitteeEventData |
-      | LoadHomeBlockData |
-      | LoadPageData      |
+      | LoadHomeBlockData      |
+      | LoadPageData           |
 
   Scenario: The global sitemap displays correctly
     Given I am on "/sitemap.xml"

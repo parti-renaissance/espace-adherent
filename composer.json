@@ -120,7 +120,7 @@
         "symfony/validator": "^4.4",
         "symfony/workflow": "^4.4",
         "symfony/yaml": "^4.4",
-        "tackk/cartographer": "^1.1",
+        "tackk/cartographer": "dev-welcome-php7",
         "tetranz/select2entity-bundle": "^3.1",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.13",
@@ -185,6 +185,12 @@
         "symfony/polyfill-php72": "*",
         "symfony/polyfill-php73": "*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ottaviano/cartographer"
+        }
+    ],
     "conflict": {
         "symfony/symfony": "*"
     }

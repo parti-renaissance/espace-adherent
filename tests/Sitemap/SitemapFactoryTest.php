@@ -129,7 +129,7 @@ class SitemapFactoryTest extends TestCase
         parent::setUp();
 
         $this->objectManager = $this->createMock(ObjectManager::class);
-        $this->router = $this->createMock(RouterInterface::class);
+        $this->router = $this->createConfiguredMock(RouterInterface::class, ['generate' => '/fake']);
         $this->cache = $this->createMock(CacheItemPoolInterface::class);
     }
 
