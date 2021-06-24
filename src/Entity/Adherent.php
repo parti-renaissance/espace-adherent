@@ -2822,10 +2822,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $adherentInstanceQuality;
     }
 
-    public function removeInstanceQuality(InstanceQuality $quality): void
+    public function removeInstanceQuality($quality): void
     {
-        if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
-            $this->instanceQualities->removeElement($adherentInstanceQuality);
+        if ($quality instanceof InstanceQuality) {
+            $quality = $this->findInstanceQuality($quality);
+        }
+
+        if ($quality) {
+            $this->instanceQualities->removeElement($quality);
         }
     }
 
