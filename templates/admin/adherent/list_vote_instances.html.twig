@@ -6,9 +6,21 @@
             {{ object.memberships.votingCommitteeMembership.committee }}
         </a>{{ object.isTerritorialCouncilMember ? ', ' }}<br />
     {% endif %}
+
     {% if object.isTerritorialCouncilMember %}
         <a href="{{ path('admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.territorialCouncilMembership.territorialCouncil.id }}}) }}">
             {{ object.territorialCouncilMembership.territorialCouncil }}
         </a><br />
+    {% endif %}
+
+    {% if object.hasNationalCouncilQualities() %}
+        {% set qualities = object.getNationalCouncilQualities() %}
+        <span class="label label-success">
+            Conseil national
+            {% for quality in qualities|filter(quality => quality.getInstanceQuality().isCustom()) %}
+                -
+                {{ quality.getInstanceQuality() }}
+            {% endfor %}
+        </span><br />
     {% endif %}
 {% endblock %}

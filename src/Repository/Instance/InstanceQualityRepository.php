@@ -18,4 +18,15 @@ class InstanceQualityRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('quality')->where('quality.custom = true');
     }
+
+    /**
+     * @return InstanceQuality[]
+     */
+    public function getAllCustomQualities(): array
+    {
+        return $this->getCustomQualitiesQueryBuilder()
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -21,6 +21,11 @@ class LoadAdherentInstanceQualityData extends Fixture implements DependentFixtur
             ));
         }
 
+        $manager->persist(new AdherentInstanceQuality(
+            $this->getReference('adherent-32'),
+            $this->getReference('instance-quality-custom_quality')
+        ));
+
         $manager->flush();
     }
 
