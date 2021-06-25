@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\InternalApiApplication;
+use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -19,16 +20,19 @@ class LoadInternalApiApplicationData extends Fixture
             'application-1' => new InternalApiApplication(
                 'data-corner',
                 'http://enmarche.code',
+                [ScopeEnum::REFERENT, ScopeEnum::CANDIDATE, ScopeEnum::DEPUTY],
                 Uuid::fromString(self::INTERNAL_API_APPLICATION_01_UUID)
             ),
             'application-2' => new InternalApiApplication(
                 'je-marche',
                 'http://enmarche.code',
+                [],
                 Uuid::fromString(self::INTERNAL_API_APPLICATION_02_UUID)
             ),
             'application-3' => new InternalApiApplication(
                 'app-test',
                 'http://test.enmarche.code',
+                [ScopeEnum::CANDIDATE],
                 Uuid::fromString(self::INTERNAL_API_APPLICATION_03_UUID)
             ),
         ];

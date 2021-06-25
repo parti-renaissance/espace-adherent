@@ -7,12 +7,12 @@ use App\Scope\AppEnum;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class SenatorScopeGenerator implements ScopeGeneratorInterface
+class SenatorScopeGenerator extends AbstractScopeGenerator
 {
     public function generate(Adherent $adherent): Scope
     {
         return new Scope(
-            ScopeEnum::SENATOR,
+            $this->getScope(),
             [$adherent->getSenatorArea()->getDepartmentTag()->getZone()],
             [AppEnum::DATA_CORNER]
         );
@@ -21,5 +21,10 @@ class SenatorScopeGenerator implements ScopeGeneratorInterface
     public function supports(Adherent $adherent): bool
     {
         return $adherent->isSenator();
+    }
+
+    public function getScope(): string
+    {
+        return ScopeEnum::SENATOR;
     }
 }

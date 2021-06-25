@@ -3,12 +3,14 @@
 namespace App\Controller\Api;
 
 use App\Entity\InternalApiApplication;
+use App\Scope\GeneralScopeGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -30,13 +32,32 @@ class InternalApiProxyController extends AbstractController
         InternalApiApplication $internalApiApplication,
         string $path,
         HttpClientInterface $internalApiProxyClient,
-        UserInterface $user
+        UserInterface $user,
+        GeneralScopeGenerator $generalScopeGenerator,
+        SerializerInterface $serializer
     ): Response {
         $subRequestOption = [
             'headers' => array_merge($this->getFilteredRequestHeaders($request), [
                 'X-User-UUID' => $user->getUuid()->toString(),
             ]),
         ];
+
+        $scopeValue = $request->query->get('scope');
+        if ($scopeValue) {
+            if (!\in_array($scopeValue, $internalApiApplication->getScopes())) {
+                throw $this->createAccessDeniedException();
+            }
+
+            $scope = $generalScopeGenerator->generate($user, $scopeValue);
+            if ($scope) {
+                $subRequestOption['headers'] = array_merge(
+                    $subRequestOption['headers'],
+                    ['X-Scope' => base64_encode(
+                        $serializer->serialize($scope, 'json', ['groups' => ['scope']])
+                    )]
+                );
+            }
+        }
 
         if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT], true)) {
             //Body

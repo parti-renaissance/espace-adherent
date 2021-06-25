@@ -7,12 +7,12 @@ use App\Scope\AppEnum;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class CandidateScopeGenerator implements ScopeGeneratorInterface
+class CandidateScopeGenerator extends AbstractScopeGenerator
 {
     public function generate(Adherent $adherent): Scope
     {
         return new Scope(
-            ScopeEnum::CANDIDATE,
+            $this->getScope(),
             [$adherent->getCandidateManagedArea()->getZone()],
             [AppEnum::DATA_CORNER]
         );
@@ -21,5 +21,10 @@ class CandidateScopeGenerator implements ScopeGeneratorInterface
     public function supports(Adherent $adherent): bool
     {
         return $adherent->isHeadedRegionalCandidate();
+    }
+
+    public function getScope(): string
+    {
+        return ScopeEnum::CANDIDATE;
     }
 }

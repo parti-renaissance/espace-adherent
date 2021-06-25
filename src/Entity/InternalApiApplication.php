@@ -39,10 +39,27 @@ class InternalApiApplication
      */
     private $hostname;
 
-    public function __construct(string $applicationName, string $hostname, UuidInterface $uuid = null)
-    {
+    /**
+     * @var string[]
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Assert\Choice(
+     *     callback={"App\Scope\ScopeEnum", "toArray"},
+     *     multiple=true
+     * )
+     */
+    private $scopes;
+
+    public function __construct(
+        string $applicationName,
+        string $hostname,
+        array $scopes = [],
+        UuidInterface $uuid = null
+    ) {
         $this->applicationName = $applicationName;
         $this->hostname = $hostname;
+        $this->scopes = $scopes;
         $this->uuid = $uuid ?: Uuid::uuid4();
     }
 
@@ -64,5 +81,15 @@ class InternalApiApplication
     public function setHostname(string $hostname): void
     {
         $this->hostname = $hostname;
+    }
+
+    public function getScopes(): array
+    {
+        return $this->scopes;
+    }
+
+    public function setScopes(array $scopes): void
+    {
+        $this->scopes = $scopes;
     }
 }

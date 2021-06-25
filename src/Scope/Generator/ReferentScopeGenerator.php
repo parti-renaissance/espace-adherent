@@ -7,12 +7,12 @@ use App\Scope\AppEnum;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class ReferentScopeGenerator implements ScopeGeneratorInterface
+class ReferentScopeGenerator extends AbstractScopeGenerator
 {
     public function generate(Adherent $adherent): Scope
     {
         return new Scope(
-            ScopeEnum::REFERENT,
+            $this->getScope(),
             $adherent->getManagedArea()->getZones()->toArray(),
             [AppEnum::DATA_CORNER]
         );
@@ -21,5 +21,10 @@ class ReferentScopeGenerator implements ScopeGeneratorInterface
     public function supports(Adherent $adherent): bool
     {
         return $adherent->isReferent();
+    }
+
+    public function getScope(): string
+    {
+        return ScopeEnum::REFERENT;
     }
 }

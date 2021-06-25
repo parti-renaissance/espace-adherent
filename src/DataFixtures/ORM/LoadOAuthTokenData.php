@@ -77,7 +77,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
 
         $accessToken3 = $this->createAccessToken(
             'l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd',
-            LoadAdherentData::ADHERENT_2_UUID,
+            LoadAdherentData::ADHERENT_3_UUID,
             LoadClientData::CLIENT_11_UUID,
             '+1 hour'
         );

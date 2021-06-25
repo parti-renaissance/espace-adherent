@@ -7,12 +7,12 @@ use App\Scope\AppEnum;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class DeputyScopeGenerator implements ScopeGeneratorInterface
+class DeputyScopeGenerator extends AbstractScopeGenerator
 {
     public function generate(Adherent $adherent): Scope
     {
         return new Scope(
-            ScopeEnum::DEPUTY,
+            $this->getScope(),
             [$adherent->getManagedDistrict()->getReferentTag()->getZone()],
             [AppEnum::DATA_CORNER]
         );
@@ -21,5 +21,10 @@ class DeputyScopeGenerator implements ScopeGeneratorInterface
     public function supports(Adherent $adherent): bool
     {
         return $adherent->isDeputy();
+    }
+
+    public function getScope(): string
+    {
+        return ScopeEnum::DEPUTY;
     }
 }
