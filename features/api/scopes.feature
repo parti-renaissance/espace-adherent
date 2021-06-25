@@ -12,7 +12,7 @@ Feature:
       | LoadGeoZoneData                 |
       | LoadReferentTagsZonesLinksData  |
     When I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/scopes"
+    When I send a "GET" request to "/api/v3/profile/me/scopes"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
