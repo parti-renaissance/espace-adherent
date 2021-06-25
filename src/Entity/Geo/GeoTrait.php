@@ -30,9 +30,7 @@ trait GeoTrait
      *
      * @ORM\Column(unique=true)
      *
-     * @SymfonySerializer\Groups({"department_read", "region_read", "survey_list"})
-     *
-     * @SymfonySerializer\Groups({"zone_read"})
+     * @SymfonySerializer\Groups({"zone_read", "department_read", "region_read", "survey_list", "scopes"})
      */
     private $code;
 
@@ -41,9 +39,7 @@ trait GeoTrait
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"department_read", "region_read", "survey_list"})
-     *
-     * @SymfonySerializer\Groups({"zone_read"})
+     * @SymfonySerializer\Groups({"zone_read", "department_read", "region_read", "survey_list", "scopes"})
      */
     private $name;
 

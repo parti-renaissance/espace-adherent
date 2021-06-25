@@ -83,6 +83,8 @@ services:
             tags: ['app.voting_platform.mandate_factory']
         App\Instance\InstanceQualityUpdater\QualityUpdaterInterface:
             tags: ['app.instance.quality_updater']
+        App\Scope\Generator\ScopeGeneratorInterface:
+            tags: ['app.adherent.scope_generator']
 
     # Imports
     App\:
@@ -179,6 +181,10 @@ services:
     App\Committee\EventListener\CommitteeSubscriber:
         arguments:
             $producer: '@old_sound_rabbit_mq.sync_api_producer'
+
+    App\Scope\GeneralScopeGenerator:
+        arguments:
+            $generators: !tagged_iterator 'app.adherent.scope_generator'
 
     # Form
     App\Form\PurifiedTextareaType:
