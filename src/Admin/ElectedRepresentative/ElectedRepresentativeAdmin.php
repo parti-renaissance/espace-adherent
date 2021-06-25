@@ -213,20 +213,26 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Lieu de naissance',
                 ])
-                ->add('userListDefinitions', null, [
-                    'label' => 'Labels',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er
-                            ->createQueryBuilder('uld')
-                            ->andWhere('uld.type IN (:type)')
-                            ->setParameter('type', [
-                                UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
-                                UserListDefinitionEnum::TYPE_LRE,
-                            ])
-                            ->orderBy('uld.label', 'ASC')
+        ;
+
+        if ($this->isGranted('LABELS')) {
+            $formMapper->add('userListDefinitions', null, [
+                'label' => 'Labels',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er
+                        ->createQueryBuilder('uld')
+                        ->andWhere('uld.type IN (:type)')
+                        ->setParameter('type', [
+                            UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
+                            UserListDefinitionEnum::TYPE_LRE,
+                        ])
+                        ->orderBy('uld.label', 'ASC')
                         ;
-                    },
-                ])
+                },
+            ]);
+        }
+
+        $formMapper
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
                 ])

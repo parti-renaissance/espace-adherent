@@ -6,7 +6,7 @@
          bootstrap="tests/bootstrap.php">
     <php>
         <ini name="error_reporting" value="-1"/>
-        <env name="APP_ENV" value="test"/>
+        <server name="APP_ENV" value="test"/>
     </php>
 
     <testsuites>

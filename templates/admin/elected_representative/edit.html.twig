@@ -24,8 +24,11 @@
                             {{ form_row (form.birthPlace) }}
                         </div>
                     </div>
-                    {{ form_row(form.userListDefinitions) }}
-                    {{ form_row(form.hasFollowedTraining) }}
+
+                    {% if form.userListDefinitions is defined %}
+                        {{ form_row(form.userListDefinitions) }}
+                        {{ form_row(form.hasFollowedTraining) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
