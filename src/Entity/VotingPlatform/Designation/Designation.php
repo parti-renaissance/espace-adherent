@@ -26,6 +26,18 @@ class Designation
     public const DENOMINATION_DESIGNATION = 'désignation';
     public const DENOMINATION_ELECTION = 'élection';
 
+    public const NOTIFICATION_ALL = [
+        'Ouverture du vote' => self::NOTIFICATION_VOTE_OPENED,
+        'Fermeture du vote' => self::NOTIFICATION_VOTE_CLOSED,
+        'Rappel de vote' => self::NOTIFICATION_VOTE_REMINDER,
+        'Ouverture du tour bis' => self::NOTIFICATION_SECOND_ROUND,
+    ];
+
+    public const NOTIFICATION_VOTE_OPENED = 1;
+    public const NOTIFICATION_VOTE_CLOSED = 2;
+    public const NOTIFICATION_VOTE_REMINDER = 4;
+    public const NOTIFICATION_SECOND_ROUND = 8;
+
     /**
      * @var string|null
      *
@@ -103,6 +115,17 @@ class Designation
     private $resultDisplayDelay = 14;
 
     /**
+     * Display the election results after this delay (in hours)
+     *
+     * @var float
+     *
+     * @ORM\Column(type="float", options={"unsigned": true, "default": 0})
+     *
+     * @Assert\GreaterThanOrEqual(0)
+     */
+    private $resultScheduleDelay = 0;
+
+    /**
      * Duration of the additional round in day
      *
      * @var int
@@ -151,6 +174,11 @@ class Designation
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $notifications = 15;
 
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
@@ -269,6 +297,16 @@ class Designation
         $this->resultDisplayDelay = $resultDisplayDelay;
     }
 
+    public function getResultScheduleDelay(): float
+    {
+        return $this->resultScheduleDelay;
+    }
+
+    public function setResultScheduleDelay(float $resultScheduleDelay): void
+    {
+        $this->resultScheduleDelay = $resultScheduleDelay;
+    }
+
     public function getAdditionalRoundDuration(): int
     {
         return $this->additionalRoundDuration;
@@ -312,6 +350,41 @@ class Designation
         $this->lockPeriodThreshold = $lockPeriodThreshold;
     }
 
+    public function getNotifications(): int
+    {
+        return $this->notifications ?? array_sum(self::NOTIFICATION_ALL);
+    }
+
+    public function setNotifications(int $notifications): void
+    {
+        $this->notifications = $notifications;
+    }
+
+    public function isNotificationEnabled(string $notificationBit): bool
+    {
+        return 0 !== ($this->notifications & $notificationBit);
+    }
+
+    public function isNotificationVoteOpenedEnabled(): bool
+    {
+        return $this->isNotificationEnabled(self::NOTIFICATION_VOTE_OPENED);
+    }
+
+    public function isNotificationVoteClosedEnabled(): bool
+    {
+        return $this->isNotificationEnabled(self::NOTIFICATION_VOTE_CLOSED);
+    }
+
+    public function isNotificationVoteReminderEnabled(): bool
+    {
+        return $this->isNotificationEnabled(self::NOTIFICATION_VOTE_REMINDER);
+    }
+
+    public function isNotificationSecondRoundEnabled(): bool
+    {
+        return $this->isNotificationEnabled(self::NOTIFICATION_SECOND_ROUND);
+    }
+
     /**
      * @Assert\IsTrue(message="La combinaison des dates est invalide.")
      */
@@ -330,6 +403,10 @@ class Designation
      */
     public function hasValidZone(): bool
     {
+        if (DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type) {
+            return true;
+        }
+
         // no need to have a zone for committee partial elections
         if ($this->isCommitteeType() && $this->isLimited()) {
             return true;

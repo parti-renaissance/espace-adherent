@@ -12,7 +12,7 @@ class LoadAdherentInstanceQualityData extends Fixture implements DependentFixtur
 {
     public function load(ObjectManager $manager)
     {
-        $adherent = 31;
+        $adherent = 41;
 
         foreach (InstanceQualityEnum::values() as $quality) {
             $manager->persist(new AdherentInstanceQuality(
@@ -22,7 +22,7 @@ class LoadAdherentInstanceQualityData extends Fixture implements DependentFixtur
         }
 
         $manager->persist(new AdherentInstanceQuality(
-            $this->getReference('adherent-32'),
+            $this->getReference('adherent-41'),
             $this->getReference('instance-quality-custom_quality')
         ));
 

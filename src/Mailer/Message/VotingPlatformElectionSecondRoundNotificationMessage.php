@@ -15,7 +15,7 @@ final class VotingPlatformElectionSecondRoundNotificationMessage extends Abstrac
     {
         $first = array_shift($adherents);
 
-        $daysLeft = (int) $election->getDesignation()->getAdditionalRoundDuration();
+        $daysLeft = $election->getDesignation()->getAdditionalRoundDuration();
 
         $message = new self(
             Uuid::uuid4(),

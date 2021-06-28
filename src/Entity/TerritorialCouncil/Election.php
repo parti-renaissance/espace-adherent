@@ -67,11 +67,6 @@ class Election extends AbstractElectionEntity implements GeoPointInterface
      */
     private $meetingUrl;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getTerritorialCouncil(): TerritorialCouncil
     {
         return $this->territorialCouncil;

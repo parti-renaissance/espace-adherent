@@ -44,6 +44,10 @@ class ElectionNotifier
 
     public function notifyElectionVoteIsOpen(Election $election): void
     {
+        if (!$election->getDesignation()->isNotificationVoteOpenedEnabled()) {
+            return;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
             $committeeMemberships = $this->committeeMembershipRepository->findVotingForElectionMemberships(
                 $election->getElectionEntity()->getCommittee(),
@@ -80,6 +84,10 @@ class ElectionNotifier
 
     public function notifyVotingPlatformVoteReminder(Election $election, Adherent $adherent): void
     {
+        if (!$election->getDesignation()->isNotificationVoteReminderEnabled()) {
+            return;
+        }
+
         $this->mailer->sendMessage(VotingPlatformVoteReminderMessage::create(
             $election,
             $adherent,
@@ -89,6 +97,10 @@ class ElectionNotifier
 
     public function notifyElectionVoteIsOver(Election $election): void
     {
+        if (!$election->getDesignation()->isNotificationVoteClosedEnabled()) {
+            return;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
             $adherents = array_map(
                 function (Voter $voter) { return $voter->getAdherent(); },
@@ -109,6 +121,10 @@ class ElectionNotifier
 
     public function notifyElectionSecondRound(Election $election): void
     {
+        if (!$election->getDesignation()->isNotificationSecondRoundEnabled()) {
+            return;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
             $committeeMemberships = $this->committeeMembershipRepository->findVotingForElectionMemberships(
                 $election->getElectionEntity()->getCommittee(),
