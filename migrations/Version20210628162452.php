@@ -17,7 +17,7 @@ final class Version20210628162452 extends AbstractMigration
           id INT AUTO_INCREMENT NOT NULL,
           election_id INT UNSIGNED NOT NULL,
           candidacies_group_id INT UNSIGNED DEFAULT NULL,
-          adherent_id INT UNSIGNED DEFAULT NULL,
+          adherent_id INT UNSIGNED NOT NULL,
           gender VARCHAR(255) NOT NULL,
           biography LONGTEXT DEFAULT NULL,
           quality VARCHAR(255) DEFAULT NULL,
@@ -52,7 +52,7 @@ final class Version20210628162452 extends AbstractMigration
         $this->addSql('ALTER TABLE
           national_council_candidacy
         ADD
-          CONSTRAINT FK_31A7A20525F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id)');
+          CONSTRAINT FK_31A7A20525F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE
           national_council_election
         ADD

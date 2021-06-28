@@ -4,12 +4,15 @@ namespace App\Command\VotingPlatform;
 
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
+use App\Entity\Instance\NationalCouncil\Election as NationalCouncilElection;
 use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\CommitteeRepository;
+use App\Repository\Instance\NationalCouncil\ElectionRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,6 +33,8 @@ class InitializeElectionsCommand extends Command
     private $committeeRepository;
     /** @var TerritorialCouncilRepository */
     private $territorialCouncilRepository;
+    /** @var ElectionRepository */
+    private $nationalCouncilElectionRepository;
 
     protected function configure()
     {
@@ -54,6 +59,8 @@ class InitializeElectionsCommand extends Command
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureTerritorialCouncilElections($designation);
+            } elseif (DesignationTypeEnum::EXECUTIVE_OFFICE === $designation->getType()) {
+                $this->configureNationalCouncilElections($designation);
             } else {
                 $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
@@ -96,6 +103,15 @@ class InitializeElectionsCommand extends Command
         }
     }
 
+    private function configureNationalCouncilElections(Designation $designation): void
+    {
+        if (!$this->nationalCouncilElectionRepository->hasActive()) {
+            $this->entityManager->persist(new NationalCouncilElection($designation));
+            $this->entityManager->flush();
+            $this->io->progressAdvance();
+        }
+    }
+
     /** @required */
     public function setDesignationRepository(DesignationRepository $designationRepository): void
     {
@@ -118,5 +134,11 @@ class InitializeElectionsCommand extends Command
     public function setTerritorialCouncilRepository(TerritorialCouncilRepository $territorialCouncilRepository): void
     {
         $this->territorialCouncilRepository = $territorialCouncilRepository;
+    }
+
+    /** @required */
+    public function setNationalCouncilElectionRepository(ElectionRepository $nationalCouncilElectionRepository): void
+    {
+        $this->nationalCouncilElectionRepository = $nationalCouncilElectionRepository;
     }
 }

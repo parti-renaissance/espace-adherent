@@ -37,8 +37,10 @@ class LoadNationalCouncilElectionData extends Fixture implements DependentFixtur
     {
         $manager->persist($election = new Election($this->getReference('designation-11')));
 
+        $candidacyGroup = new CandidaciesGroup();
+
         for ($i = 1; $i <= 9; ++$i) {
-            if (1 === $i || 0 === $i % 3) {
+            if (0 === $i % 3) {
                 $manager->persist($candidacyGroup = new CandidaciesGroup());
             }
 

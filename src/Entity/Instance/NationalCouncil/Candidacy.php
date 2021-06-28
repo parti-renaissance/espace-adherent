@@ -33,6 +33,7 @@ class Candidacy extends BaseCandidacy
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $adherent;
 

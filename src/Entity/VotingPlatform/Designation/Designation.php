@@ -403,6 +403,10 @@ class Designation
      */
     public function hasValidZone(): bool
     {
+        if (DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type) {
+            return true;
+        }
+
         // no need to have a zone for committee partial elections
         if ($this->isCommitteeType() && $this->isLimited()) {
             return true;
