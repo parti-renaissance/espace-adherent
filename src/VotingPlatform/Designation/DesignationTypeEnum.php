@@ -16,6 +16,7 @@ final class DesignationTypeEnum extends Enum
 
     public const COPOL = 'copol';
     public const NATIONAL_COUNCIL = 'national_council';
+    public const EXECUTIVE_OFFICE = 'executive_office';
 
     public const TITLES = [
         self::COMMITTEE_SUPERVISOR => 'Élection du binôme paritaire d’Animateurs locaux',
@@ -26,6 +27,7 @@ final class DesignationTypeEnum extends Enum
         self::COMMITTEE_ADHERENT_MALE => 'Désignation d’un adhérent siégeant au Conseil territorial',
         self::COPOL => 'Désignation des binômes au Copol',
         self::NATIONAL_COUNCIL => 'Désignation des membres siégeant au Conseil national',
+        self::EXECUTIVE_OFFICE => 'Élection Burex',
     ];
 
     public const MAIN_TYPES = [
@@ -33,5 +35,6 @@ final class DesignationTypeEnum extends Enum
         self::COMMITTEE_ADHERENT,
         self::COPOL,
         self::NATIONAL_COUNCIL,
+        self::EXECUTIVE_OFFICE,
     ];
 }

@@ -140,11 +140,15 @@
                             À la suite de cette première désignation il y a eu une égalité entre les candidats,
                             nous vous invitions à voter de nouveau.
                         </p>
-                        <p class="text--small text--dark instance__elections-box--text">Consulter les
-                            <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="link--no-decor text--blue--dark box-el">
-                                résultats incomplets
-                            </a>
-                        </p>
+
+                        {% if voting_platform_election.isResultsDisplayable() %}
+                            <p class="text--small text--dark instance__elections-box--text">Consulter les
+                                <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="link--no-decor text--blue--dark box-el">
+                                    résultats incomplets
+                                </a>
+                            </p>
+                        {% endif %}
+
                         <hr/>
                     {% endif %}
 
@@ -179,7 +183,7 @@
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
                     <p class="text--small text--dark instance__elections-box--text">
-                        {% if voting_platform_election.getElectionResult %}
+                        {% if voting_platform_election.isResultsDisplayable() %}
                             Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
                         {% else %}
                             Le dépouillement est en cours, encore quelques secondes !

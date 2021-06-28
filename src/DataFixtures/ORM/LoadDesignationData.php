@@ -130,6 +130,19 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $this->setReference('designation-10', $designation);
         $manager->persist($designation);
 
+        // EXECUTIVE_OFFICE election
+        $designation = new Designation('Élection Burex');
+        $designation->setType(DesignationTypeEnum::EXECUTIVE_OFFICE);
+        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTime('-10 minutes'));
+        $designation->setVoteStartDate(new \DateTime('+1 day'));
+        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setNotifications(0);
+        $designation->setResultScheduleDelay(2.5);
+
+        $this->setReference('designation-11', $designation);
+        $manager->persist($designation);
+
         $manager->flush();
     }
 

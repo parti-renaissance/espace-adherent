@@ -306,4 +306,21 @@ class Election
     {
         return $this->hasResult() && \count($this->electionResult->getElectedCandidateGroups()) > 0;
     }
+
+    public function isResultsDisplayable(): bool
+    {
+        if (!$this->hasResult()) {
+            return false;
+        }
+
+        if (0 == $scheduleDelay = $this->designation->getResultScheduleDelay()) {
+            return true;
+        }
+
+        if (!$date = $this->closedAt ?? $this->secondRoundEndDate) {
+            return true;
+        }
+
+        return (clone $date)->modify((sprintf('+%d minutes', $scheduleDelay * 60))) <= new \DateTime();
+    }
 }
