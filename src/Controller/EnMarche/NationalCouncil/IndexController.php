@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\NationalCouncil;
 
+use App\Repository\Instance\NationalCouncil\ElectionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IndexController extends AbstractController
 {
-    public function __invoke(): Response
+    public function __invoke(ElectionRepository $electionRepository): Response
     {
-        return $this->render('national_council/index.html.twig');
+        return $this->render('national_council/index.html.twig', [
+            'election' => $electionRepository->findLast(),
+        ]);
     }
 }

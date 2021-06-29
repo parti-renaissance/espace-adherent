@@ -1,0 +1,99 @@
+{% set designation = election.getDesignation() %}
+
+<section class="instance__elections-box b__nudge--bottom-larger">
+    <div class="l__row">
+        <h2 class="text--medium box-el">{{ designation.getTitle() }}</h2>
+    </div>
+
+    <div class="text--body text--dark b__nudge--top b__nudge--bottom-large instance__elections-box--text">
+        Texte à fournir. Arcu dui vivamus arcu felis bibendum ut tristique. Enim sit amet venenatis urna cursus eget. Neque ornare aenean euismod elementum nisi quis. Dui faucibus in ornare quam viverra. Porttitor leo a diam sollicitudin tempor id eu. Ipsum faucibus vitae aliquet nec ullamcorper sit amet risus. Nec ullamcorper sit amet risus nullam eget felis eget nunc. Porttitor eget dolor morbi non arcu risus.
+    </div>
+
+    {% if election.voteStartDate is null %}
+        <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">
+            La date du du vote n'a pas encore été fixée.
+        </p>
+    {% else %}
+        <p class="text--body text--dark b__nudge--bottom-large b__nudge--top-0">
+            L’élection du Bureaux exécutif se tiendra en ligne du <span class="text--bold">{{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>.
+        </p>
+    {% endif %}
+
+    <hr/>
+
+    <div class="text--body l__row l__row--wrap">
+        {% if not election.isVotePeriodStarted %}
+            <div class="em-countdown-clock l__col--full b__nudge--top" data-event-timestamp="{{ election.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                <span class="text--dark text--small">Le vote ouvrira dans :</span>
+                <span class="clock-container"></span>
+            </div>
+        {% else %}
+            {% set voting_platform_election = get_voting_platform_election_for_national_council_election(election) %}
+
+            {% if voting_platform_election %}
+                {% if voting_platform_election.isVotePeriodActive %}
+                    {% if voting_platform_election.isSecondRoundVotePeriodActive %}
+                        <p class="text--dark text--small instance__elections-box--text">
+                            À la suite de cette première élection il y a eu une égalité entre les candidats,
+                            nous vous invitions à voter de nouveau.
+                        </p>
+
+                        {% if voting_platform_election.isResultsDisplayable() %}
+                            <p class="text--small text--dark instance__elections-box--text">Consulter les
+                                <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="link--no-decor text--blue--dark box-el">
+                                    résultats incomplets
+                                </a>
+                            </p>
+                        {% endif %}
+
+                        <hr/>
+                    {% endif %}
+
+                    {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                        <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                            <span class="text--dark text--small">Il vous reste</span>
+                            <span class="clock-container"></span>
+                            <span class="text--dark text--small">pour participer à la élection.</span>
+                        </div>
+
+                        <p>
+                            <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}"
+                               id="committee-toggle-candidacy"
+                               class="btn btn--pink btn--no-wrap box-el"
+                            >Je participe</a>
+                        </p>
+                    {% else %}
+                        {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election.currentRound) %}
+
+                        {% if my_vote %}
+                            <p class="text--dark text--small instance__elections-box--text l__col--full">Votre choix a bien été enregistré.</p>
+
+                            <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                                <span class="text--dark text--small">Les résultats seront publiés dans :</span>
+                                <span class="clock-container"></span>
+                            </div>
+
+                            <p>
+                                <span class="btn btn--disabled btn--no-wrap">Je participe</span>
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                {% elseif voting_platform_election.isResultPeriodActive %}
+                    <p class="text--small text--dark instance__elections-box--text">
+                        {% if voting_platform_election.isResultsDisplayable() %}
+                            Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                        {% else %}
+                            Le dépouillement est en cours, encore quelques secondes !
+                        {% endif %}
+                    </p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% if not election.isVotePeriodStarted %}
+            <p class="text--body text--small b__nudge--top-large b__nudge--right text--gray box-el">
+                Consulter <a href="#" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
+            </p>
+        {% endif %}
+    </div>
+</section>
