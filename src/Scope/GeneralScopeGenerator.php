@@ -4,6 +4,7 @@ namespace App\Scope;
 
 use App\Entity\Adherent;
 use App\Scope\Exception\InvalidScopeException;
+use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\Generator\ScopeGeneratorInterface;
 
 class GeneralScopeGenerator
@@ -35,18 +36,18 @@ class GeneralScopeGenerator
         return $scopes;
     }
 
-    public function generate(Adherent $adherent, string $scope): ?Scope
+    public function getGenerator(string $scopeCode): ?ScopeGeneratorInterface
     {
-        if (!\in_array($scope, ScopeEnum::toArray())) {
-            throw new InvalidScopeException(sprintf('Invalid scope "%s"', $scope));
+        if (!\in_array($scopeCode, ScopeEnum::toArray())) {
+            throw new InvalidScopeException(sprintf('Invalid scope "%s"', $scopeCode));
         }
 
         foreach ($this->generators as $generator) {
-            if ($generator->supportsScope($scope, $adherent)) {
-                return $generator->generate($adherent);
+            if ($generator->getScope() === $scopeCode) {
+                return $generator;
             }
         }
 
-        return null;
+        throw new NotFoundScopeGeneratorException("Scope generator not found for '$scopeCode'");
     }
 }

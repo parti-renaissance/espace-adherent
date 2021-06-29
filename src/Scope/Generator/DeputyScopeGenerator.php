@@ -7,7 +7,7 @@ use App\Scope\AppEnum;
 use App\Scope\Scope;
 use App\Scope\ScopeEnum;
 
-class DeputyScopeGenerator extends AbstractScopeGenerator
+class DeputyScopeGenerator implements ScopeGeneratorInterface
 {
     public function generate(Adherent $adherent): Scope
     {

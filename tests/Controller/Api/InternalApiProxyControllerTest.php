@@ -52,8 +52,8 @@ class InternalApiProxyControllerTest extends WebTestCase
 
         $url = sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s',
-            LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID,
-            ScopeEnum::CANDIDATE
+            LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
+            ScopeEnum::REFERENT
         );
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
@@ -65,18 +65,32 @@ class InternalApiProxyControllerTest extends WebTestCase
         self::assertCount(2, $data['items']);
     }
 
+    public function testGetEventsWithScopeThatUserDoesNotHave(): void
+    {
+        $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
+
+        $url = sprintf(
+            '/api/v3/internal/%s/api/v3/events?scope=%s',
+            LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
+            ScopeEnum::CANDIDATE
+        );
+
+        $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
+    }
+
     public function testGetEventsWithWrongScope(): void
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
         $url = sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s',
-            LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID,
-            ScopeEnum::REFERENT
+            LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
+            'invalid'
         );
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
-        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
+        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
     }
 
     public function testAnAdherentCanCreateCoalitionEventWithProxy()

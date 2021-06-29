@@ -40,26 +40,21 @@ class InternalApiApplication
     private $hostname;
 
     /**
-     * @var string[]
+     * @var bool
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Assert\Choice(
-     *     callback={"App\Scope\ScopeEnum", "toArray"},
-     *     multiple=true
-     * )
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $scopes;
+    private $scopeRequired;
 
     public function __construct(
         string $applicationName,
         string $hostname,
-        array $scopes = [],
+        bool $scopeRequired = false,
         UuidInterface $uuid = null
     ) {
         $this->applicationName = $applicationName;
         $this->hostname = $hostname;
-        $this->scopes = $scopes;
+        $this->scopeRequired = $scopeRequired;
         $this->uuid = $uuid ?: Uuid::uuid4();
     }
 
@@ -83,13 +78,13 @@ class InternalApiApplication
         $this->hostname = $hostname;
     }
 
-    public function getScopes(): array
+    public function isScopeRequired(): ?bool
     {
-        return $this->scopes;
+        return $this->scopeRequired;
     }
 
-    public function setScopes(array $scopes): void
+    public function setScopeRequired(bool $scopeRequired): void
     {
-        $this->scopes = $scopes;
+        $this->scopeRequired = $scopeRequired;
     }
 }
