@@ -112,6 +112,19 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByDesignation(Designation $designation): ?Election
+    {
+        return $this->createQueryBuilder('e')
+            ->addSelect('d')
+            ->innerJoin('e.designation', 'd')
+            ->where('d = :designation')
+            ->setParameters(['designation' => $designation])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function getAllAggregatedDataForCommittee(Committee $committee): array
     {
         return $this->createQueryBuilder('election')

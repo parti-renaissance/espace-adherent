@@ -32,4 +32,15 @@ class ElectionRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function findLast(): ?Election
+    {
+        return $this->createQueryBuilder('election')
+            ->innerJoin('election.designation', 'designation')
+            ->orderBy('designation.candidacyStartDate', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

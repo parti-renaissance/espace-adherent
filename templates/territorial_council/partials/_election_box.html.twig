@@ -37,15 +37,16 @@
         </p>
     {% else %}
         <p class="text--body b__nudge--bottom-large b__nudge--top-0">
-        {% if election.isOnlineMode %}
-            Le Conseil territorial se tiendra en ligne du <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
-            <span class="text--bold">{{ election.meetingEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>. <a href="{{ election.meetingUrl }}" class="link--no-decor text--blue--dark text--normal" target="_blank">Rejoindre la réunion</a>.
-        {% else %}
-            Le Conseil territorial se tiendra le <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
-            <a href="https://www.google.fr/maps/place/'{{ election.address }},+{{ election.postalCode }}+{{ election.cityName }}'" class="link--no-decor text--blue--dark text--normal">{{ election.inlineFormattedAddress }}</a>.
-        {% endif %}
+            {% if election.isOnlineMode %}
+                Le Conseil territorial se tiendra en ligne du <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
+                <span class="text--bold">{{ election.meetingEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>. <a href="{{ election.meetingUrl }}" class="link--no-decor text--blue--dark text--normal" target="_blank">Rejoindre la réunion</a>.
+            {% else %}
+                Le Conseil territorial se tiendra le <span class="text--bold">{{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au
+                <a href="https://www.google.fr/maps/place/'{{ election.address }},+{{ election.postalCode }}+{{ election.cityName }}'" class="link--no-decor text--blue--dark text--normal">{{ election.inlineFormattedAddress }}</a>.
+            {% endif %}
 
-        Le vote sera ouvert du <span class="text--bold">{{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>.
+            Le vote sera ouvert du <span class="text--bold">{{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>.
+        </p>
     {% endif %}
 
     <hr/>

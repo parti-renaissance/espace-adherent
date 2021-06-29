@@ -4,6 +4,7 @@ namespace App\Twig;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\Instance\NationalCouncil\Election as NationalCouncilElection;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
@@ -46,6 +47,11 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     public function findElectionForTerritorialCouncilElection(TerritorialCouncilElection $coTerrElection): ?Election
     {
         return $this->electionRepository->findOneForTerritorialCouncil($coTerrElection->getTerritorialCouncil(), $coTerrElection->getDesignation());
+    }
+
+    public function findElectionForNationalCouncilElection(NationalCouncilElection $nationalCouncilElection): ?Election
+    {
+        return $this->electionRepository->findByDesignation($nationalCouncilElection->getDesignation());
     }
 
     public function findMyVoteForElection(Adherent $adherent, ElectionRound $electionRound): ?Vote
