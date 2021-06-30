@@ -9,7 +9,7 @@ use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Instance\NationalCouncil\CandidacyRepository")
  * @ORM\Table(name="national_council_candidacy")
  */
 class Candidacy extends BaseCandidacy
@@ -75,5 +75,10 @@ class Candidacy extends BaseCandidacy
     public function setQuality(?string $quality): void
     {
         $this->quality = $quality;
+    }
+
+    public function getQuality(): ?string
+    {
+        return $this->quality;
     }
 }

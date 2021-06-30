@@ -30,6 +30,11 @@ abstract class BaseCandidaciesGroup implements \Countable
         $this->candidacies = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function addCandidacy(CandidacyInterface $candidacy): void
     {
         if (!$this->candidacies->contains($candidacy)) {

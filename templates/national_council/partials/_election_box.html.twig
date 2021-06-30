@@ -92,7 +92,7 @@
 
         {% if not election.isVotePeriodStarted %}
             <p class="text--body text--small b__nudge--top-large b__nudge--right text--gray box-el">
-                Consulter <a href="#" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
+                Consulter <a href="{{ path('app_national_council_candidacy_list', {'_fragment': 'tab-candidacy-list'}) }}" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
             </p>
         {% endif %}
     </div>

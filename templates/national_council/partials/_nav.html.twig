@@ -1,0 +1,13 @@
+<nav class="tabs-nav border-on b__nudge--bottom-larger">
+    <ul>
+        <li class="{{ is_active_route(app.request, 'app_national_council_index') ? 'active' }}" id="tab-index">
+            <a href="{{ path('app_national_council_index', {'_fragment': 'tab-index'}) }}" class="tabs-nav__item">Mot d’accueil</a>
+        </li>
+
+        {% if election and not election.isCandidacyPeriodActive() %}
+            <li class="{{ is_active_route(app.request, 'app_national_council_candidacy_list') ? 'active' }}" id="tab-candidacy-list">
+                <a href="{{ path('app_national_council_candidacy_list', {'_fragment': 'tab-candidacy-list'}) }}" class="tabs-nav__item">Candidatures</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

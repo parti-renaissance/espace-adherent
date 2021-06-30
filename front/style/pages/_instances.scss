@@ -45,6 +45,15 @@
         .instance-page__header {
             background-color: $blue--dark;
         }
+
+        .candidate-photo {
+            border: 3px solid $white;
+            box-sizing: border-box;
+
+            &:not(:first-child) {
+                margin-left: -10px;
+            }
+        }
     }
 
     &__main {
@@ -436,5 +445,11 @@
         padding: 0 10px;
         border-radius: 20px;
         font-size: 14px;
+    }
+}
+
+.candidacies-list-content {
+    .instance-page__candidacies {
+        padding: 24px;
     }
 }
