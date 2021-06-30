@@ -84,13 +84,12 @@ class InternalApiProxyControllerTest extends WebTestCase
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
         $url = sprintf(
-            '/api/v3/internal/%s/api/v3/events?scope=%s',
+            '/api/v3/internal/%s/api/v3/events?scope=invalid',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
-            'invalid'
         );
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
-        $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
     public function testAnAdherentCanCreateCoalitionEventWithProxy()

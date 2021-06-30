@@ -82,9 +82,4 @@ class InternalApiApplication
     {
         return $this->scopeRequired;
     }
-
-    public function setScopeRequired(bool $scopeRequired): void
-    {
-        $this->scopeRequired = $scopeRequired;
-    }
 }

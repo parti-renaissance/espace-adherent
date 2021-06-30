@@ -2,8 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Adherent;
 use App\Entity\InternalApiApplication;
-use App\Scope\Exception\InvalidScopeException;
+use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Scope;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -57,13 +58,8 @@ class InternalApiProxyController extends AbstractController
                 throw new BadRequestHttpException('No scope provided.');
             }
 
-            $data = $this->getScope($scopeCode, $user);
-            if (!$data) {
-                throw $this->createAccessDeniedException('User has no required scope.');
-            }
-
             $subRequestOption['headers']['X-Scope'] = base64_encode(
-                $serializer->serialize($data, 'json', ['groups' => ['scope']])
+                $serializer->serialize($this->getScope($scopeCode, $user), 'json', ['groups' => ['scope']])
             );
         }
 
@@ -92,17 +88,18 @@ class InternalApiProxyController extends AbstractController
         }, \ARRAY_FILTER_USE_KEY);
     }
 
-    private function getScope(string $scopeCode, UserInterface $adherent): ?Scope
+    private function getScope(string $scopeCode, Adherent $adherent): Scope
     {
         try {
             $generator = $this->generalScopeGenerator->getGenerator($scopeCode);
-            if (!$generator->supports($adherent)) {
-                return null;
-            }
 
-            return $generator->generate($adherent);
-        } catch (InvalidScopeException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+            if ($generator->supports($adherent)) {
+                return $generator->generate($adherent);
+            }
+        } catch (NotFoundScopeGeneratorException $e) {
+            // Catch for throwing AccessDenied exception
         }
+
+        throw $this->createAccessDeniedException('User has no required scope.');
     }
 }

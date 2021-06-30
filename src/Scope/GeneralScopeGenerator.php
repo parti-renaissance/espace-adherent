@@ -3,7 +3,6 @@
 namespace App\Scope;
 
 use App\Entity\Adherent;
-use App\Scope\Exception\InvalidScopeException;
 use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\Generator\ScopeGeneratorInterface;
 
@@ -36,12 +35,8 @@ class GeneralScopeGenerator
         return $scopes;
     }
 
-    public function getGenerator(string $scopeCode): ?ScopeGeneratorInterface
+    public function getGenerator(string $scopeCode): ScopeGeneratorInterface
     {
-        if (!\in_array($scopeCode, ScopeEnum::toArray())) {
-            throw new InvalidScopeException(sprintf('Invalid scope "%s"', $scopeCode));
-        }
-
         foreach ($this->generators as $generator) {
             if ($generator->getScope() === $scopeCode) {
                 return $generator;
