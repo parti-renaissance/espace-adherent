@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Instance\NationalCouncil\CandidaciesGroupRepository")
  * @ORM\Table(name="national_council_candidacies_group")
  */
 class CandidaciesGroup extends BaseCandidaciesGroup
