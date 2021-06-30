@@ -11,14 +11,14 @@ class Scope
     /**
      * @var string
      *
-     * @SymfonySerializer\Groups({"scopes"})
+     * @SymfonySerializer\Groups({"scopes", "scope"})
      */
     private $code;
 
     /**
      * @var Collection|Zone[]
      *
-     * @SymfonySerializer\Groups({"scopes"})
+     * @SymfonySerializer\Groups({"scopes", "scope"})
      */
     private $zones;
 

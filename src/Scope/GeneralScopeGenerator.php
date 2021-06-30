@@ -3,6 +3,7 @@
 namespace App\Scope;
 
 use App\Entity\Adherent;
+use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\Generator\ScopeGeneratorInterface;
 
 class GeneralScopeGenerator
@@ -32,5 +33,16 @@ class GeneralScopeGenerator
         }
 
         return $scopes;
+    }
+
+    public function getGenerator(string $scopeCode): ScopeGeneratorInterface
+    {
+        foreach ($this->generators as $generator) {
+            if ($generator->getScope() === $scopeCode) {
+                return $generator;
+            }
+        }
+
+        throw new NotFoundScopeGeneratorException("Scope generator not found for '$scopeCode'");
     }
 }

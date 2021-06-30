@@ -39,10 +39,22 @@ class InternalApiApplication
      */
     private $hostname;
 
-    public function __construct(string $applicationName, string $hostname, UuidInterface $uuid = null)
-    {
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $scopeRequired;
+
+    public function __construct(
+        string $applicationName,
+        string $hostname,
+        bool $scopeRequired = false,
+        UuidInterface $uuid = null
+    ) {
         $this->applicationName = $applicationName;
         $this->hostname = $hostname;
+        $this->scopeRequired = $scopeRequired;
         $this->uuid = $uuid ?: Uuid::uuid4();
     }
 
@@ -64,5 +76,10 @@ class InternalApiApplication
     public function setHostname(string $hostname): void
     {
         $this->hostname = $hostname;
+    }
+
+    public function isScopeRequired(): ?bool
+    {
+        return $this->scopeRequired;
     }
 }

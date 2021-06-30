@@ -80,7 +80,7 @@ class Zone implements GeoInterface
      *
      * @ORM\Column(type="uuid")
      *
-     * @SymfonySerializer\Groups({"zone_read", "scopes"})
+     * @SymfonySerializer\Groups({"zone_read", "scopes", "scope"})
      *
      * @ApiProperty(
      *     identifier=true,
