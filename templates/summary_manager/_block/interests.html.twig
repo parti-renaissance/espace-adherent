@@ -1,7 +1,0 @@
-{% extends 'summary/_block/interests.html.twig' %}
-
-{% block summary_interests %}
-    {{ parent() }}
-    <a href="{{ path('app_summary_manager_step', { step: constant('App\\Form\\SummaryType::STEP_INTERESTS') }) }}" class="button">
-        Modifier mes centres d'intérêts</a>
-{% endblock %}

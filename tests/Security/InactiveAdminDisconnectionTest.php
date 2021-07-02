@@ -42,7 +42,7 @@ class InactiveAdminDisconnectionTest extends WebTestCase
         sleep(1900);
 
         // go to another page
-        $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
+        $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
         // status code should be 200 OK, because there is no redirection to disconnect
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

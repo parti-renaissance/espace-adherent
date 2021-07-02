@@ -143,7 +143,7 @@ class SecurityController extends AbstractController
                 $handler->reset($adherent, $resetPasswordToken, $newPassword);
                 $this->addFlash('info', 'adherent.reset_password.success');
 
-                return $this->redirectToRoute('app_user_profile');
+                return $this->redirectToRoute('app_user_edit');
             } catch (AdherentTokenExpiredException $e) {
                 $this->addFlash('info', 'adherent.reset_password.expired_key');
             }

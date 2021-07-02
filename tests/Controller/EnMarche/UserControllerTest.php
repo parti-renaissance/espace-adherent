@@ -21,13 +21,13 @@ class UserControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier-email');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
-        $crawler = $this->client->submit($crawler->selectButton('Modifier')->form(), [
-            'adherent_change_email[email]' => 'referent@en-marche-dev.fr',
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form(), [
+            'adherent_profile[emailAddress]' => 'referent@en-marche-dev.fr',
         ]);
 
-        $errors = $crawler->filter('.form__errors > li');
+        $errors = $crawler->filter('.em-form--error');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         self::assertSame('Cette adresse e-mail existe déjà.', $errors->eq(0)->text());
@@ -37,10 +37,10 @@ class UserControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request('GET', '/parametres/mon-compte/modifier-email');
+        $crawler = $this->client->request('GET', '/parametres/mon-compte/modifier');
 
-        $this->client->submit($crawler->selectButton('Modifier')->form(), [
-            'adherent_change_email[email]' => 'new.mail@test.com',
+        $this->client->submit($crawler->selectButton('Enregistrer')->form(), [
+            'adherent_profile[emailAddress]' => 'new.mail@test.com',
         ]);
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
@@ -49,7 +49,10 @@ class UserControllerTest extends WebTestCase
 
         $this->assertStatusCode(200, $this->client);
 
-        $this->seeFlashMessage($crawler, 'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.');
+        $this->assertStringContainsString(
+            'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.',
+            $crawler->filter('.flash--info')->eq(1)->text()
+        );
 
         $token = $this->getRepository(AdherentChangeEmailToken::class)->findLastUnusedByEmail('new.mail@test.com');
 

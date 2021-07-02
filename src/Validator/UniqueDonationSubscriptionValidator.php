@@ -52,7 +52,7 @@ class UniqueDonationSubscriptionValidator extends ConstraintValidator
             $this->context
                 ->buildViolation($this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED') ? $constraint->message : $constraint->messageForAnonymous)
                 ->setParameters([
-                    '{{ profile_url }}' => $this->urlGenerator->generate('app_user_profile'),
+                    '{{ profile_url }}' => $this->urlGenerator->generate('app_user_edit'),
                     '{{ donation_url }}' => $this->urlGenerator->generate(
                         'donation_informations',
                         ['montant' => $value->getAmount()]

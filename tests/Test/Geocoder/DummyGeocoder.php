@@ -113,6 +113,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5182193,
             'longitude' => 2.624205,
         ],
+        '122 rue de mouxy, 73100 mouxy, fr' => [
+            'latitude' => 45.570898,
+            'longitude' => 5.927206,
+        ],
         '73100 mouxy, fr' => [
             'latitude' => 45.570898,
             'longitude' => 5.927206,

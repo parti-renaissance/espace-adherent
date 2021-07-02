@@ -50,16 +50,5 @@
             <argument type="service" id="filesystem" />
             <argument>%kernel.cache_dir%</argument>
         </service>
-
-        <service id="App\Summary\SummaryManager">
-            <argument type="service" id="App\Summary\SummaryFactory" />
-            <argument type="service" id="App\Repository\SummaryRepository" />
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
-            <argument type="service" id="League\Flysystem\FilesystemInterface" />
-            <argument type="service" id="League\Glide\Server" />
-            <argument>%kernel.secret%</argument>
-        </service>
-
     </services>
 </container>

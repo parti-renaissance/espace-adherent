@@ -39,7 +39,6 @@ use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
 use App\Entity\SubscriptionType;
-use App\Entity\Summary;
 use App\Entity\TerritorialCouncil\OfficialReport;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
@@ -81,7 +80,6 @@ use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
-use App\Repository\SummaryRepository;
 use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
@@ -271,11 +269,6 @@ trait TestHelperTrait
     public function getEmailRepository(): EmailRepository
     {
         return $this->getRepository(Email::class);
-    }
-
-    public function getSummaryRepository(): SummaryRepository
-    {
-        return $this->getRepository(Summary::class);
     }
 
     public function getTonMacronChoiceRepository(): TonMacronChoiceRepository

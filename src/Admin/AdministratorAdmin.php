@@ -84,8 +84,6 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_LEGISLATIVES',
                     'ROLE_ADMIN_ADHERENTS',
                     'ROLE_ADMIN_ADHERENTS_READONLY',
-                    'ROLE_ADMIN_SUMMARY',
-                    'ROLE_ADMIN_SKILLS',
                     'ROLE_ADMIN_COMMITTEES',
                     'ROLE_ADMIN_COMMITTEES_MERGE',
                     'ROLE_ADMIN_COMMITTEE_DESIGNATION',

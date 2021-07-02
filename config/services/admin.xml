@@ -155,26 +155,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.summary" class="App\Admin\SummaryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Profils" group="Adhérents" />
-
-            <argument />
-            <argument>App\Entity\Summary</argument>
-            <argument />
-
-            <call method="setInterestChoices">
-                <argument>%adherent_interests%</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.summary_mission_type" class="App\Admin\MissionTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Type de missions (profils)" group="Adhérents" />
-
-            <argument />
-            <argument>App\Entity\MemberSummary\MissionType</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Territory
@@ -1090,14 +1070,6 @@
             <tag name="sonata.admin" manager-type="orm" label="Zones géographiques" group="Archives" />
             <argument />
             <argument>App\Entity\LegislativeDistrictZone</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.skill" class="App\Admin\SkillAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Gestion des compétences" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\Skill</argument>
             <argument />
         </service>
 

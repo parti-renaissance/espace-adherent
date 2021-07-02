@@ -274,11 +274,9 @@ Feature:
     """
     And I clean the "api_sync" queue
 
-    Given I am on "/parametres/mon-compte"
+    Given I am on "/parametres/mon-compte/modifier"
     Then the response status code should be 200
 
-    Given I follow "Mes informations personnelles"
-    Then I should be on "/parametres/mon-compte/modifier"
     And the "adherent_profile[address][address]" field should contain "1 rue de l'egalite"
     And the "adherent_profile[address][country]" field should contain "FR"
     And the "adherent_profile[phone][country]" field should contain "FR"

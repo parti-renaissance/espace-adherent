@@ -4,16 +4,6 @@
     <section class="adherent-dashboard l__wrapper">
         <div class="adherent-dashboard__welcome">
             <p>
-                {% if summary is not null %}
-                    <img src="{{ path('asset_url', { path: summary.picturePath }) }}" title="{{ 'dashboard.picture.update'|trans }}">
-                {% else %}
-                    <a href="{{ path('app_summary_manager_step', {step: 'photo'}) }}">
-                        <img src="/images/user.png" alt="{{ 'dashboard.picture.update'|trans }}" title="{{ 'dashboard.picture.update'|trans }}">
-                    </a>
-                {% endif %}
-            </p>
-
-            <p>
                 <b>{{ 'dashboard.welcome'|trans({'%firstname%': app.user.firstname}) }} 👋</b><br>
                 {% if app.user.isReferent or app.user.isCoReferent or app.user.isDeputy or app.user.isSupervisor or app.user.isHost %}
                     {{ get_user_level_label(app.user) }},
@@ -89,27 +79,6 @@
                     <a href="{{ path('app_referent_event_manager_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
                 </p>
             </div>
-
-            <div class="interests">
-                <b>{{ 'dashboard.my_internets'|trans }}</b>
-                <hr>
-                <div>
-                    {% set interestEditPath = path('app_summary_manager_step', {step: 'interests'}) %}
-                    {% if app.user.interests|length > 0 %}
-                        <ul>
-                            {% for interest in app.user.interests %}
-                                <li class="adherent-dashboard-tag">{{ interest|capitalize }}</li>
-                            {% endfor %}
-                        </ul>
-                        <br>
-                        <p>
-                            <a href="{{ interestEditPath }}" class="link--no-decor link--newblue">{{ 'dashboard.edit'|trans }}</a>
-                        </p>
-                    {% else %}
-                        {{ 'dashboard.interests.empty'|trans({'%url%': interestEditPath})|raw }}
-                    {% endif %}
-                </div>
-            </div>
         </div>
 
         <div class="adherent-dashboard__column-right">
@@ -132,24 +101,6 @@
                         <li><a href="https://en-marche.helprace.com/" target="_blank" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.contact'|trans }}</a></li>
                     {% endif %}
                 </ul>
-            </div>
-            <div class="skills">
-                {% set skillEditPath = path('app_summary_manager_step', ({step: 'skills'})) %}
-                <b>{{ 'dashboard.my_skills'|trans }}</b>
-                <hr>
-                {% if summary is not null and summary.skills|length > 0 %}
-                    <ul>
-                        {% for skill in summary.skills|slice(0, 5) %}
-                            <li class="adherent-dashboard-tag">{{ skill }}</li>
-                        {% endfor %}
-                    </ul>
-
-                    <p>
-                        <a href="{{ skillEditPath }}" class="link--no-decor link--newblue">{{ 'dashboard.edit'|trans }}</a>
-                    </p>
-                {% else %}
-                    {{ 'dashboard.skills.empty'|trans({'%url%': skillEditPath})|raw }}
-                {% endif %}
             </div>
             <br>
             <div class="committees">
