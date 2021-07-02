@@ -20,6 +20,7 @@ Feature:
     [
       {
         "code": "deputy",
+        "name": "Député",
         "zones": [
           {
             "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
