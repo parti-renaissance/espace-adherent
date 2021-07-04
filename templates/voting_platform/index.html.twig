@@ -5,7 +5,8 @@
 {% block voting_platform_content %}
     <div class="l__wrapper--slim">
             <div class="text--body text--dark">
-                <h2>Bienvenue sur la plateforme de désignation par vote électronique de La République en Marche !</h2>
+
+                {{ block('election_sub_title') }}
 
                 {% if election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT') %}
                     <p>Vous allez participer à la désignation des binômes paritaires d'adhérents au sein de votre comité. C’est un grand temps fort de démocratie interne pour notre mouvement et une première étape importante pour la représentativité des adhérentes et des adhérents au sein du Conseil territorial.</p>
@@ -78,7 +79,7 @@
             </div>
 
         <div class="text--center b__nudge--top-50">
-            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="btn btn--blue btn--large-and-full">Soumettre mon vote</a>
+            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="btn btn--blue btn--large-and-full">{{ start_button_label ?? 'Soumettre mon vote' }}</a>
         </div>
     </div>
 {% endblock %}

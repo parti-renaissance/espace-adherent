@@ -403,7 +403,7 @@ class Designation
      */
     public function hasValidZone(): bool
     {
-        if (DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type) {
+        if ($this->isExecutiveOfficeType()) {
             return true;
         }
 
@@ -499,6 +499,11 @@ class Designation
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::COPOL,
         ], true);
+    }
+
+    public function isExecutiveOfficeType(): bool
+    {
+        return DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type;
     }
 
     public function isMajorityType(): bool

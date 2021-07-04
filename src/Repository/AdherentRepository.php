@@ -15,6 +15,7 @@ use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
@@ -1099,6 +1100,23 @@ SQL;
                 'true' => true,
                 'coalitions' => MembershipSourceEnum::COALITIONS,
             ])
+        ;
+    }
+
+    /** @return Adherent[] */
+    public function findAllWithNationalCouncilQualities(): array
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id}')
+            ->innerJoin('adherent.instanceQualities', 'adherent_instance_quality')
+            ->innerJoin('adherent_instance_quality.instanceQuality', 'instance_quality', Join::WITH, 'FIND_IN_SET(:national_council_scope, instance_quality.scopes) > 0')
+            ->where('adherent.status = :adherent_status AND adherent.adherent = true')
+            ->setParameters([
+                'national_council_scope' => InstanceQualityScopeEnum::NATIONAL_COUNCIL,
+                'adherent_status' => Adherent::ENABLED,
+            ])
+            ->getQuery()
+            ->getResult()
         ;
     }
 

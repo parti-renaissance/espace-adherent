@@ -2,14 +2,15 @@
 
 namespace App\Command\VotingPlatform;
 
+use App\Entity\Adherent;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
-use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
@@ -18,9 +19,11 @@ use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
+use App\Repository\AdherentRepository;
 use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeMembershipRepository;
+use App\Repository\Instance\NationalCouncil\ElectionRepository as NationalCouncilElectionRepository;
 use App\Repository\TerritorialCouncil\CandidacyRepository as TerritorialCouncilCandidacyRepository;
 use App\Repository\TerritorialCouncil\ElectionRepository as TerritorialCouncilElectionRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
@@ -61,6 +64,8 @@ class ConfigureCommand extends Command
     private $dispatcher;
     /** @var TerritorialCouncilElectionRepository */
     private $territorialCouncilElectionRepository;
+    /** @var NationalCouncilElectionRepository */
+    private $nationalCouncilElectionRepository;
     /** @var TerritorialCouncilCandidacyRepository */
     private $territorialCouncilCandidacyRepository;
 
@@ -92,6 +97,8 @@ class ConfigureCommand extends Command
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureCopolElections($designation);
+            } elseif ($designation->isExecutiveOfficeType()) {
+                $this->configureExecutiveOffice($designation);
             } else {
                 throw new RuntimeException(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
@@ -120,8 +127,8 @@ class ConfigureCommand extends Command
 
                 $this->io->progressAdvance();
 
-                $election = $this->createNewElection($designation);
-                $election->getElectionEntity()->setCommittee($committee);
+                $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
+                $electionEntity->setCommittee($committee);
 
                 $this->configureNewElectionForCommittee($election);
             }
@@ -152,8 +159,8 @@ class ConfigureCommand extends Command
 
                 $this->io->progressAdvance();
 
-                $election = $this->createNewElection($designation);
-                $election->getElectionEntity()->setTerritorialCouncil($coTerr);
+                $election = $this->createNewElection($designation, $electionEntity = new ElectionEntity());
+                $electionEntity->setTerritorialCouncil($coTerr);
 
                 if (($poll = $coTerrElection->getElectionPoll()) && $choice = $poll->getTopChoice()) {
                     $election->setAdditionalPlaces($choice->getValue());
@@ -169,6 +176,65 @@ class ConfigureCommand extends Command
 
             $offset += \count($territorialCouncilElections);
         }
+    }
+
+    private function configureExecutiveOffice(Designation $designation): void
+    {
+        if (!$nationCouncilElection = $this->nationalCouncilElectionRepository->findByDesignation($designation)) {
+            return;
+        }
+
+        if ($this->electionRepository->findByDesignation($designation)) {
+            return;
+        }
+
+        if (0 === \count($candidacies = $nationCouncilElection->getCandidacies())) {
+            return;
+        }
+
+        /** @var AdherentRepository $adherentRepository */
+        $adherentRepository = $this->entityManager->getRepository(Adherent::class);
+
+        $adherents = $adherentRepository->findAllWithNationalCouncilQualities();
+
+        if (0 === \count($adherents)) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+        $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($designation->getType()));
+        $election->addElectionPool($pool);
+
+        foreach ($candidacies as $candidacy) {
+            if ($candidacy->isTaken()) {
+                continue;
+            }
+
+            $group = new CandidateGroup();
+            $group->addCandidate($this->createCouncilCandidate($candidacy));
+
+            if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
+                foreach ($candidaciesGroup->getCandidacies() as $cand) {
+                    if ($cand->isTaken()) {
+                        continue;
+                    }
+
+                    $group->addCandidate($this->createCouncilCandidate($cand));
+                }
+            }
+
+            $pool->addCandidateGroup($group);
+        }
+
+        $this->entityManager->persist($this->createVoterList($election, $adherents));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+
+        $this->entityManager->clear();
+
+        $this->io->progressAdvance();
     }
 
     private function configureNewElectionForTerritorialCouncil(
@@ -193,7 +259,7 @@ class ConfigureCommand extends Command
             }
 
             $group = new CandidateGroup();
-            $group->addCandidate($this->createTerritorialCouncilCandidate($candidacy));
+            $group->addCandidate($this->createCouncilCandidate($candidacy));
 
             if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
                 foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
@@ -201,7 +267,7 @@ class ConfigureCommand extends Command
                         continue;
                     }
 
-                    $group->addCandidate($this->createTerritorialCouncilCandidate($candidacy));
+                    $group->addCandidate($this->createCouncilCandidate($candidacy));
                 }
             }
 
@@ -348,13 +414,13 @@ class ConfigureCommand extends Command
         return true;
     }
 
-    private function createNewElection(Designation $designation): Election
+    private function createNewElection(Designation $designation, ElectionEntity $electionEntity = null): Election
     {
         return new Election(
             $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
             null,
             [new ElectionRound()],
-            new ElectionEntity()
+            $electionEntity
         );
     }
 
@@ -396,7 +462,7 @@ class ConfigureCommand extends Command
         return true;
     }
 
-    private function createTerritorialCouncilCandidate(Candidacy $candidacy): Candidate
+    private function createCouncilCandidate(CandidacyInterface $candidacy): Candidate
     {
         $candidate = new Candidate(
             $candidacy->getFirstName(),
@@ -490,5 +556,12 @@ class ConfigureCommand extends Command
         TerritorialCouncilCandidacyRepository $territorialCouncilCandidacyRepository
     ): void {
         $this->territorialCouncilCandidacyRepository = $territorialCouncilCandidacyRepository;
+    }
+
+    /** @required */
+    public function setNationalCouncilElectionRepository(
+        NationalCouncilElectionRepository $nationalCouncilElectionRepository
+    ): void {
+        $this->nationalCouncilElectionRepository = $nationalCouncilElectionRepository;
     }
 }

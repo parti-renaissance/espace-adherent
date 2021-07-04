@@ -77,57 +77,65 @@
     }
 
     .election-vote {
-        .candidate__box {
-            box-sizing: border-box;
-            flex-basis: calc(50% - 12px);
-            padding: 30px 30px 60px;
-            margin: 24px 0;
+        &__boxes {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: stretch;
 
-            @media (min-width: $mobile) {
-                padding: 30px;
-            }
+            .candidate__box {
+                box-sizing: border-box;
+                flex-basis: calc(50% - 12px);
+                padding: 30px 30px 60px;
+                margin: 24px 0;
 
-            .box__content {
-                position: relative;
+                @media (min-width: $mobile) {
+                    padding: 30px;
+                }
 
-                .candidate-names {
-                    margin-bottom: 30px;
+                .box__content {
+                    position: relative;
 
-                    li {
-                        position: relative;
-                        padding-left: 18px;
-                        font-size: 18px;
-                        margin: 10px 0;
+                    .candidate-names {
+                        margin-bottom: 30px;
 
-                        &::before {
-                            content: '';
-                            display: block;
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                            position: absolute;
-                            left: 0;
-                            top: 10px;
+                        li {
+                            position: relative;
+                            padding-left: 18px;
+                            font-size: 18px;
+                            margin: 10px 0;
+
+                            &::before {
+                                content: '';
+                                display: block;
+                                width: 8px;
+                                height: 8px;
+                                border-radius: 50%;
+                                position: absolute;
+                                left: 0;
+                                top: 10px;
+                            }
                         }
                     }
-                }
 
-                .candidate-footer {
-                    position: relative;
-                    z-index: 5;
-                }
-
-                .candidate-photo {
-                    border: 3px solid $white;
-                    box-sizing: border-box;
-
-                    &:not(:first-child) {
-                        margin-left: -10px;
+                    .candidate-footer {
+                        position: relative;
+                        z-index: 5;
                     }
-                }
 
-                .candidate-biography {
-                    pointer-events: all;
+                    .candidate-photo {
+                        border: 3px solid $white;
+                        box-sizing: border-box;
+
+                        &:not(:first-child) {
+                            margin-left: -10px;
+                        }
+                    }
+
+                    .candidate-biography {
+                        pointer-events: all;
+                    }
                 }
             }
         }
@@ -378,7 +386,8 @@
         }
 
         &__committee_adherent,
-        &__copol {
+        &__copol,
+        &__executive_office {
             .election-vote {
                 .candidate__box {
                     .box__content {
@@ -459,6 +468,38 @@
                                 bottom: auto;
                                 top: 33px;
                                 right: 30px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__executive_office {
+            .election-vote {
+                &__boxes {
+                    justify-content: space-around;
+
+                    .candidate__box {
+                        flex-basis: calc(25% - 12px);
+
+                        .box__content {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+
+                            ul.candidate-names {
+                                flex-basis: 100%;
+
+                                li {
+                                    position: initial;
+                                    padding-left: 0;
+                                    white-space: nowrap;
+
+                                    &:before {
+                                        content: none;
+                                    }
+                                }
                             }
                         }
                     }

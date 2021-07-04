@@ -17,7 +17,7 @@ class Candidacy extends BaseCandidacy
     /**
      * @var Election
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\NationalCouncil\Election")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\NationalCouncil\Election", inversedBy="candidacies")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $election;
@@ -32,7 +32,7 @@ class Candidacy extends BaseCandidacy
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $adherent;

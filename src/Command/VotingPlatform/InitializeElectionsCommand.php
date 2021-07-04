@@ -12,7 +12,6 @@ use App\Repository\CommitteeRepository;
 use App\Repository\Instance\NationalCouncil\ElectionRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,7 +58,7 @@ class InitializeElectionsCommand extends Command
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {
                 $this->configureTerritorialCouncilElections($designation);
-            } elseif (DesignationTypeEnum::EXECUTIVE_OFFICE === $designation->getType()) {
+            } elseif ($designation->isExecutiveOfficeType()) {
                 $this->configureNationalCouncilElections($designation);
             } else {
                 $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
