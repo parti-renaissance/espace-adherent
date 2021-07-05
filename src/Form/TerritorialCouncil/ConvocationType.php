@@ -35,7 +35,7 @@ class ConvocationType extends AbstractType
                 'choices' => array_combine(DesignationVoteModeEnum::ALL, DesignationVoteModeEnum::ALL),
                 'expanded' => true,
                 'choice_label' => function (string $choice) {
-                    return 'territorial_council.convocation.mode.'.$choice;
+                    return 'common.mode.'.$choice;
                 },
             ])
             ->add('meetingUrl', UrlType::class, [

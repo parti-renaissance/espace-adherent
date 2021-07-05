@@ -44,7 +44,7 @@ class EventCommandHandler
         return $event;
     }
 
-    public function handleUpdate(BaseEvent $event, EventCommand $command)
+    public function handleUpdate(BaseEvent $event, EventCommand $command): BaseEvent
     {
         if ($event instanceof CommitteeEvent) {
             $sfEvent = new CommitteeEventEvent($command->getAuthor(), $event, $command->getCommittee());

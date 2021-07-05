@@ -38,7 +38,7 @@
                                                 {{ convocation.entity.name }}
                                             {% if instance is instanceof('App\\Entity\\TerritorialCouncil\\TerritorialCouncil') %}</a>{% endif %}
                                         </td>
-                                        <td>{{ ('territorial_council.convocation.mode.'~convocation.mode)|trans }}</td>
+                                        <td>{{ ('common.mode.'~convocation.mode)|trans }}</td>
                                         <td>{{ convocation.meetingStartDate|date('d/m/Y H:i') }}</td>
                                         <td>{{ convocation.meetingEndDate|date('d/m/Y H:i') }}</td>
                                     </tr>

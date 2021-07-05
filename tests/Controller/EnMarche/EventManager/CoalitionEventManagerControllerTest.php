@@ -48,12 +48,10 @@ class CoalitionEventManagerControllerTest extends WebTestCase
         $data = [];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
-        $this->assertSame(7, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#event-name-field > .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être nulle.',
-            $this->client->getCrawler()->filter('#event-category-field > .form__errors > li')->text());
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#event-coalition-field > .form__errors > li')->text());
         $this->assertSame('Cette valeur ne doit pas être vide.',
@@ -74,7 +72,6 @@ class CoalitionEventManagerControllerTest extends WebTestCase
 
         $data = [];
         $data['coalition_event']['name'] = 'Nouveau événement des coalitions';
-        $data['coalition_event']['category'] = $this->getEventCategoryIdForName('Événement innovant');
         $data['coalition_event']['coalition'] = $this->getCoalitionRepository()->findOneBy(['uuid' => LoadCoalitionData::COALITION_1_UUID])->getId();
         $data['coalition_event']['beginAt'] = '2023-06-14 16:15';
         $data['coalition_event']['finishAt'] = '2023-06-15 23:00';

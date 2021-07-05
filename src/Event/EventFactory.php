@@ -142,6 +142,7 @@ class EventFactory
                 $event = new DefaultEvent($command->getUuid());
         }
 
+        $event->setMode($command->getMode());
         $event->setAuthor($command->getAuthor());
         $event->setName($command->getName());
         $event->setCategory($command->getCategory());
@@ -233,6 +234,7 @@ class EventFactory
             $event->setIsForLegislatives($command->isForLegislatives());
         }
 
+        $event->setMode($command->getMode());
         $event->setCategory($command->getCategory());
         $event->setImage($command->getImage());
         $event->setRemoveImage($command->isRemoveImage());

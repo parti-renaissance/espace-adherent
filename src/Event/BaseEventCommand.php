@@ -20,7 +20,7 @@ class BaseEventCommand
     protected $event;
 
     /**
-     * @Assert\NotNull
+     * @Assert\NotNull(groups="with_category")
      */
     protected $category;
 
@@ -70,6 +70,13 @@ class BaseEventCommand
     private $image;
 
     private $removeImage = false;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\Choice(choices=App\Entity\Event\BaseEvent::MODES)
+     */
+    private $mode;
 
     /**
      * @param ?Adherent $author Author may be null if unregistered when editing an event
@@ -219,6 +226,16 @@ class BaseEventCommand
     public function setRemoveImage(bool $value): void
     {
         $this->removeImage = $value;
+    }
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(?string $mode): void
+    {
+        $this->mode = $mode;
     }
 
     protected function getCategoryClass(): string

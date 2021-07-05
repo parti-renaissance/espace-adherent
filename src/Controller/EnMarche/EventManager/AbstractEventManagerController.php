@@ -7,17 +7,15 @@ use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
-use App\Event\EventRegistrationCommandHandler;
-use App\Form\Coalition\CoalitionEventType;
 use App\Form\EventCommandType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -63,8 +61,7 @@ abstract class AbstractEventManagerController extends AbstractController
     public function eventsCreateAction(
         Request $request,
         GeoCoder $geoCoder,
-        EventCommandHandler $eventCommandHandler,
-        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+        EventCommandHandler $eventCommandHandler
     ): Response {
         /** @var Adherent $user */
         $user = $this->getMainUser($request->getSession());
@@ -73,13 +70,7 @@ abstract class AbstractEventManagerController extends AbstractController
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
         $form = $this
-            ->createForm(
-                CoalitionEvent::class === $this->getEventClassName() ? CoalitionEventType::class : EventCommandType::class,
-                $command,
-                [
-                    'event_group_category' => $this->getEventGroupCategory(),
-                ]
-            )
+            ->createEventForm($command)
             ->handleRequest($request)
         ;
 
@@ -103,14 +94,10 @@ abstract class AbstractEventManagerController extends AbstractController
      */
     public function editAction(Request $request, BaseEvent $event, EventCommandHandler $handler): Response
     {
+        $command = EventCommand::createFromEvent($event);
+
         $form = $this
-            ->createForm(
-                CoalitionEvent::class === $this->getEventClassName() ? CoalitionEventType::class : EventCommandType::class,
-                $command = EventCommand::createFromEvent($event),
-                [
-                    'image_path' => $event->getImagePath(),
-                ]
-            )
+            ->createEventForm($command, $event)
             ->handleRequest($request)
         ;
 
@@ -148,6 +135,18 @@ abstract class AbstractEventManagerController extends AbstractController
     }
 
     abstract protected function getSpaceType(): string;
+
+    protected function createEventForm(EventCommand $command, BaseEvent $event = null): FormInterface
+    {
+        return $this->createForm(
+            EventCommandType::class,
+            $command,
+            [
+                'event_group_category' => $this->getEventGroupCategory(),
+                'image_path' => $event ? $event->getImagePath() : null,
+            ]
+        );
+    }
 
     abstract protected function getEventsPaginator(
         Adherent $adherent,

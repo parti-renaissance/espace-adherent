@@ -82,6 +82,7 @@ class BaseEventCommandType extends AbstractType
             ->setDefaults([
                 'event_category_class' => EventCategory::class,
                 'image_path' => null,
+                'validation_groups' => ['Default', 'with_category'],
             ])
             ->setAllowedTypes('image_path', ['string', 'null'])
         ;

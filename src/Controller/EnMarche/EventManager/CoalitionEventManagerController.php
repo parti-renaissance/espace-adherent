@@ -4,11 +4,15 @@ namespace App\Controller\EnMarche\EventManager;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CoalitionEvent;
+use App\Event\EventCommand;
 use App\Event\EventManagerSpaceEnum;
+use App\Form\Coalition\CoalitionEventType;
 use App\Repository\CauseEventRepository;
 use App\Repository\CoalitionEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -59,6 +63,11 @@ class CoalitionEventManagerController extends AbstractEventManagerController
             ),
             'share_by_email' => $this->shareByEmail(),
         ]);
+    }
+
+    protected function createEventForm(EventCommand $command, BaseEvent $event = null): FormInterface
+    {
+        return $this->createForm(CoalitionEventType::class, $command);
     }
 
     protected function getSpaceType(): string
