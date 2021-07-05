@@ -16,7 +16,7 @@
     "@ckeditor/ckeditor5-build-en-marche": "https://github.com/EnMarche/ckeditor5-build-classic#stable",
     "@google/markerclusterer": "^2.0.9",
     "@mapbox/polylabel": "^1.0.2",
-    "algoliasearch": "^4.10.2",
+    "algoliasearch": "^4.10.3",
     "atob": "^2.1.0",
     "babel-loader": "^8.2.2",
     "clipboard": "^2.0.8",
