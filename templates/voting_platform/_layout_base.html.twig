@@ -50,7 +50,7 @@
                     <div class="introduction-header l__wrapper--slim">
                         <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
                         <p class="text--body text--default-large text--muted b__nudge--bottom-large">
-                            {{ designation.getDenomination(true)|capitalize }} est ouverte du
+                            {{ designation.getDenomination(true, true) }} est ouverte du
                             {% if election.isSecondRoundVotePeriodActive %}
                                 {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
                             {% else %}

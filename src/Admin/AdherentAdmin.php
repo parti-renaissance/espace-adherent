@@ -530,18 +530,12 @@ class AdherentAdmin extends AbstractAdmin
                         'by_reference' => false,
                         'label' => false,
                     ])
+                    ->add('voteInspector', null, ['label' => 'Inspecteur de vote', 'required' => false])
                 ->end()
             ;
         }
 
-        $formMapper
-            ->end()
-            ->tab('Élections')
-                ->with('Contrôle', ['class' => 'col-md-6'])
-                    ->add('voteInspector', null, ['label' => 'Inspecteur de vote', 'required' => false])
-                ->end()
-            ->end()
-        ;
+        $formMapper->end();
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())

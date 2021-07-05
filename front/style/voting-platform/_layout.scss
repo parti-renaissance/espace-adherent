@@ -481,7 +481,8 @@
                     justify-content: space-around;
 
                     .candidate__box {
-                        flex-basis: calc(25% - 12px);
+                        flex-basis: calc(25% - 24px);
+                        min-width: 250px;
 
                         .box__content {
                             display: flex;
@@ -496,6 +497,11 @@
                                     padding-left: 0;
                                     white-space: nowrap;
 
+                                    span {
+                                        white-space: normal;
+                                        word-break: break-all;
+                                    }
+
                                     &:before {
                                         content: none;
                                     }
@@ -504,6 +510,10 @@
                         }
                     }
                 }
+            }
+
+            .ballot-paper {
+                margin: 0 auto;
             }
         }
 
