@@ -726,6 +726,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     protected $postAddress;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $voteInspector = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1001,6 +1008,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->hasNationalCouncilQualities()) {
             $roles[] = 'ROLE_NATIONAL_COUNCIL_MEMBER';
+        }
+
+        if ($this->voteInspector) {
+            $roles[] = 'ROLE_VOTE_INSPECTOR';
         }
 
         // Must be at the end as it uses $roles array
@@ -2627,6 +2638,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setCommitment(AdherentCommitment $commitment): void
     {
         $this->commitment = $commitment;
+    }
+
+    public function isVoteInspector(): bool
+    {
+        return $this->voteInspector;
+    }
+
+    public function setVoteInspector(bool $voteInspector): void
+    {
+        $this->voteInspector = $voteInspector;
     }
 
     public function getHandledThematicCommunities(): Collection

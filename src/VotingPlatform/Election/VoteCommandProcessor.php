@@ -29,6 +29,11 @@ class VoteCommandProcessor
         return $voteCommand->isConfirm() || $this->can($voteCommand, VoteCommandStateEnum::TO_CONFIRM);
     }
 
+    public function canFinish(VoteCommand $voteCommand): bool
+    {
+        return $voteCommand->isFinish() || $this->can($voteCommand, VoteCommandStateEnum::TO_FINISH);
+    }
+
     public function doStart(VoteCommand $command): void
     {
         if (!$command->isStart()) {

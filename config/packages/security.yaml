@@ -373,6 +373,9 @@ security:
             - ROLE_JECOUTE_REGION
             - ROLE_DATA_CORNER
 
+        ROLE_VOTE_INSPECTOR:
+            - ROLE_NATIONAL_COUNCIL_MEMBER
+
     access_decision_manager:
         strategy: unanimous
 

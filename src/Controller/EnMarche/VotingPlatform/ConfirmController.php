@@ -28,6 +28,10 @@ class ConfirmController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->processor->canFinish($voteCommand)) {
+                return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
+            }
+
             $this->processor->doFinish($voteCommand);
 
             return $this->redirectToElectionRoute('app_voting_platform_finish_step', $election);
