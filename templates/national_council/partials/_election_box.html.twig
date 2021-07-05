@@ -49,7 +49,7 @@
                         <hr/>
                     {% endif %}
 
-                    {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                    {% if is_granted('ABLE_TO_VOTE', voting_platform_election) or is_granted('ROLE_VOTE_INSPECTOR') %}
                         <div class="em-countdown-clock l__col--full b__nudge--top" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                             <span class="text--dark text--small">Il vous reste</span>
                             <span class="clock-container"></span>

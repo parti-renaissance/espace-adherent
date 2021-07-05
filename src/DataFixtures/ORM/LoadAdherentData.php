@@ -139,6 +139,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33187264236',
             'registered_at' => '2017-01-03 08:47:54',
         ]);
+        $adherent3->setVoteInspector(true);
         $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent3->addReferentTag($this->getReference('referent_tag_75'));
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
