@@ -1,0 +1,24 @@
+{% extends 'voting_platform/_layout_base.html.twig' %}
+
+{% set start_button_label = 'Commencer' %}
+
+{% block banner %}
+    <div class="space--10-0 background--blue-dark">
+        <div class="l__wrapper--wide">
+            <a href="{{ path('app_national_council_index') }}"
+               class="text--body text--small text--white link--no-decor">
+                Retourner au Conseil national →
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block election_sub_title '' %}
+
+{% block vote_finish_action_block %}
+    <div class="b__nudge--bottom-large b__nudge--top-large">
+        <a href="{{ path('app_national_council_index') }}" class="btn btn--blue">
+            Retour au Conseil national
+        </a>
+    </div>
+{% endblock %}

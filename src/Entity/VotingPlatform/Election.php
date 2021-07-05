@@ -126,9 +126,14 @@ class Election
         return $this->designation->getTitle();
     }
 
-    public function getElectionEntity(): ElectionEntity
+    public function getElectionEntity(): ?ElectionEntity
     {
         return $this->electionEntity;
+    }
+
+    public function getElectionEntityName(): ?string
+    {
+        return $this->electionEntity ? $this->electionEntity->getName() : null;
     }
 
     public function setElectionEntity(ElectionEntity $electionEntity): void

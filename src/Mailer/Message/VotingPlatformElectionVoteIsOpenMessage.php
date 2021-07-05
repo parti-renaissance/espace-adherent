@@ -22,7 +22,7 @@ final class VotingPlatformElectionVoteIsOpenMessage extends AbstractVotingPlatfo
             sprintf('[%s] Le vote est ouvert !', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-                'name' => $election->getElectionEntity()->getName(),
+                'name' => $election->getElectionEntityName(),
                 'election_type' => $election->getDesignationType(),
                 'page_url' => $url,
             ],

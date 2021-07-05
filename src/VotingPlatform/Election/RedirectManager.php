@@ -29,6 +29,10 @@ class RedirectManager
             return $this->urlGenerator->generate('app_territorial_council_index');
         }
 
+        if ($designation->isExecutiveOfficeType()) {
+            return $this->urlGenerator->generate('app_national_council_index');
+        }
+
         return $this->urlGenerator->generate('homepage');
     }
 }

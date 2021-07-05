@@ -302,6 +302,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
     background-color: rgba($blue--dark, 0.1);
 }
 
+.background--blue-dark {
+    background-color: $blue--dark;
+}
+
 .background--green {
     background-color: $green;
 }

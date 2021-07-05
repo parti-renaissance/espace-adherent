@@ -22,7 +22,7 @@ final class VotingPlatformElectionVoteIsOverMessage extends AbstractVotingPlatfo
             sprintf('[%s] Les résultats sont disponibles', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'election_type' => $election->getDesignationType(),
-                'name' => static::escape($election->getElectionEntity()->getName()),
+                'name' => $election->getElectionEntityName(),
                 'page_url' => $url,
             ],
             [

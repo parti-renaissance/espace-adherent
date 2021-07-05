@@ -31,7 +31,7 @@ final class VotingPlatformVoteReminderMessage extends Message
                 'remaining_time' => $remainingTime,
                 'first_name' => $adherent->getFirstName(),
                 'election_type' => $election->getDesignationType(),
-                'name' => $election->getElectionEntity()->getName(),
+                'name' => $election->getElectionEntityName(),
                 'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'page_url' => $pageUrl,
             ]

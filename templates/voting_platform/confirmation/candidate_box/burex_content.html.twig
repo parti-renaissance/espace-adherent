@@ -1,0 +1,32 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
+<div class="ballot-paper">
+    <div class="ballot-paper__content text--center">
+        <div class="b__nudge--bottom-small">
+            <div class="text--uppercase text--gray b__nudge--bottom">
+                {{ get_election_pool_title_key(pool)|trans }}
+            </div>
+            {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
+            {% if candidate_group %}
+                <ul class="candidate-names">
+                    {% for candidate in candidate_group.getCandidates() %}
+                        <li class="text--body b__nudge--bottom-small">
+                            <div class="l__row">
+                                <span class="candidate-photo avatar-initials avatar--small avatar--style-01">
+                                    {{ helper.display_candidate_photo(candidate) }}
+                                </span>
+                                <span class="b__nudge--left">{{ candidate.fullName }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 class="text--medium">Bulletin blanc</h3>
+            {% endif %}
+        </div>
+
+        <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
+            Modifier mon choix
+        </a>
+    </div>
+</div>
