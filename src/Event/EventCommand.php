@@ -81,6 +81,8 @@ class EventCommand extends BaseEventCommand
             $event->getVisioUrl()
         );
 
+        $command->setMode($event->getMode());
+
         $command->category = $event->getCategory();
         $command->capacity = $event->getCapacity();
 

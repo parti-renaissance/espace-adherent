@@ -23,11 +23,13 @@
             {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom de l'événement" } }) }}
         </div>
 
-        <div class="form__row" id="event-category-field">
-            {{ form_errors(form.category) }}
-            {{ form_label(form.category, 'Type') }}
-            {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category' }, placeholder: "Choisissez le type de l'événement" }) }}
-        </div>
+        {% if form.category is defined %}
+            <div class="form__row" id="event-category-field">
+                {{ form_errors(form.category) }}
+                {{ form_label(form.category, 'Type') }}
+                {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category' }, placeholder: "Choisissez le type de l'événement" }) }}
+            </div>
+        {% endif %}
 
         {% if form.coalition is defined %}
             <div class="form__row" id="event-coalition-field">
@@ -48,6 +50,13 @@
             {{ form_label(form.finishAt, 'Fin') }}
             {{ form_widget(form.finishAt, { attr: { class: 'form__group event__finish_at', autocomplete: 'off' } }) }}
         </div>
+
+        {% if form.mode is defined %}
+            <div class="em-form__group">
+                {{ form_errors(form.mode) }}
+                {{ form_widget(form.mode) }}
+            </div>
+        {% endif %}
 
         <div id="event-address">
             {{ form_errors(form.address) }}
