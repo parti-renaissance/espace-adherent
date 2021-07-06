@@ -1125,12 +1125,11 @@ SQL;
         $qb = $this->createEnabledCoalitionUserQueryBuilder();
 
         $values = array_filter(explode(' ', $search));
-        $searchExpression = $qb->expr()->orX();
+        $searchExpression = $qb->expr()->andX();
 
         foreach ($values as $key => $text) {
-            $searchExpression->add("a.firstName LIKE :value_$key");
-            $searchExpression->add("a.lastName LIKE :value_$key");
-            $qb->setParameter("value_$key", "%$text%");
+            $searchExpression->add("a.firstName LIKE :value_$key OR a.lastName LIKE :value_$key");
+            $qb->setParameter("value_$key", "$text%");
         }
 
         return $qb
