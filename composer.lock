@@ -4101,16 +4101,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.24.0",
+            "version": "v1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "ab1ad1d2722196e1476b151d5143234aa2e85d14"
+                "reference": "440e195a11dbb9a6a98818dc78ba09857fbf7ebd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/ab1ad1d2722196e1476b151d5143234aa2e85d14",
-                "reference": "ab1ad1d2722196e1476b151d5143234aa2e85d14",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/440e195a11dbb9a6a98818dc78ba09857fbf7ebd",
+                "reference": "440e195a11dbb9a6a98818dc78ba09857fbf7ebd",
                 "shasum": ""
             },
             "require": {
@@ -4149,9 +4149,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.24.0"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.24.1"
             },
-            "time": "2021-06-30T16:21:40+00:00"
+            "time": "2021-07-05T20:37:04+00:00"
         },
         {
             "name": "google/cloud-vision",
