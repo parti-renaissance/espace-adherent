@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
+use App\Entity\Instance\NationalCouncil\CandidaciesGroup;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
@@ -213,7 +214,10 @@ class ConfigureCommand extends Command
             $group = new CandidateGroup();
             $group->addCandidate($this->createCouncilCandidate($candidacy));
 
+            /** @var CandidaciesGroup $candidaciesGroup */
             if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
+                $group->setLabel($candidaciesGroup->getLabel());
+
                 foreach ($candidaciesGroup->getCandidacies() as $cand) {
                     if ($cand->isTaken()) {
                         continue;
@@ -262,12 +266,12 @@ class ConfigureCommand extends Command
             $group->addCandidate($this->createCouncilCandidate($candidacy));
 
             if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
-                foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
-                    if ($candidacy->isTaken()) {
+                foreach ($candidaciesGroup->getCandidacies() as $cand) {
+                    if ($cand->isTaken()) {
                         continue;
                     }
 
-                    $group->addCandidate($this->createCouncilCandidate($candidacy));
+                    $group->addCandidate($this->createCouncilCandidate($cand));
                 }
             }
 
@@ -346,12 +350,12 @@ class ConfigureCommand extends Command
                 $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
 
                 if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
-                    foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
-                        if ($candidacy->isTaken()) {
+                    foreach ($candidaciesGroup->getCandidacies() as $cand) {
+                        if ($cand->isTaken()) {
                             continue;
                         }
 
-                        $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
+                        $group->addCandidate($this->createCommitteeSupervisorCandidate($cand));
                     }
                 }
 

@@ -10,9 +10,9 @@ abstract class AbstractVotingPlatformMessage extends Message
     protected static function getMailSubjectPrefix(Designation $designation, bool $isPartial = false): string
     {
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
-            return sprintf('Élections %s', $isPartial ? 'partielles' : 'internes');
+            return sprintf('%ss %s', $designation->getDenomination(false, true), $isPartial ? 'partielles' : 'internes');
         }
 
-        return sprintf('Désignations%s', $isPartial ? ' partielles' : '');
+        return sprintf('%ss%s', $designation->getDenomination(false, true), $isPartial ? ' partielles' : '');
     }
 }

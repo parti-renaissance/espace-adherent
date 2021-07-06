@@ -44,6 +44,13 @@ class CandidateGroup
      */
     private $elected = false;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $label;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -83,6 +90,16 @@ class CandidateGroup
         });
 
         return $candidates;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
     }
 
     public function isElected(): bool

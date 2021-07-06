@@ -19,4 +19,21 @@ class CandidaciesGroup extends BaseCandidaciesGroup
      * @ORM\OneToMany(targetEntity="App\Entity\Instance\NationalCouncil\Candidacy", mappedBy="candidaciesGroup")
      */
     protected $candidacies;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $label;
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
+    }
 }

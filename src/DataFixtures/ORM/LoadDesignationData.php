@@ -133,6 +133,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // EXECUTIVE_OFFICE election
         $designation = new Designation('Élection Burex');
         $designation->setType(DesignationTypeEnum::EXECUTIVE_OFFICE);
+        $designation->setDenomination(Designation::DENOMINATION_ELECTION);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('-10 minutes'));
         $designation->setVoteStartDate(new \DateTime('+1 day'));

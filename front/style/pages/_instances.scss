@@ -49,10 +49,7 @@
         .candidate-photo {
             border: 3px solid $white;
             box-sizing: border-box;
-
-            &:not(:first-child) {
-                margin-left: -10px;
-            }
+            margin-left: -12px;
         }
     }
 

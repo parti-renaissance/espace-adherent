@@ -74,7 +74,7 @@ class ReferentDesignationController extends AbstractDesignationController
 
                     $this->dispatchMessage(new NotifyPartialElectionVoterCommand($committee->getId()));
 
-                    $this->addFlash('info', ucfirst($designation->getDenomination(true)).' partielle a bien été créée.');
+                    $this->addFlash('info', $designation->getDenomination(true, true).' partielle a bien été créée.');
 
                     return $this->redirectToRoute('app_referent_committees_designations_partials');
                 }

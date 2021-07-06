@@ -514,17 +514,19 @@ class Designation
         ], true);
     }
 
-    public function getDenomination(bool $withDeterminer = false): string
+    public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string
     {
         if ($withDeterminer) {
             if (self::DENOMINATION_ELECTION === $this->denomination) {
-                return 'l\''.$this->denomination;
+                return ($ucfirst ? 'L\'' : 'l\'').$this->denomination;
             }
 
-            return 'la '.$this->denomination;
+            return ($ucfirst ? 'La ' : 'la ').$this->denomination;
         }
 
-        return $this->denomination;
+        return $ucfirst ?
+            mb_strtoupper(mb_substr($this->denomination, 0, 1)).mb_substr($this->denomination, 1)
+            : $this->denomination;
     }
 
     public function setDenomination(string $denomination): void

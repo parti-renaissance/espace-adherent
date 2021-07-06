@@ -16,11 +16,11 @@ final class VotingPlatformElectionVoteConfirmationMessage extends AbstractVoting
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            sprintf('[%s] Félicitations, vos bulletins sont dans l\'urne !', self::getMailSubjectPrefix($election->getDesignation())),
+            sprintf('[%s] Félicitations, vos bulletins sont dans l\'urne !', self::getMailSubjectPrefix($designation = $election->getDesignation())),
             [
+                'election_type' => $designation->getDenomination(false, true).'s',
                 'first_name' => $adherent->getFirstName(),
                 'voter_key' => static::escape($voterKey),
-                'election_type' => $election->getDesignationType(),
                 'vote_end_date' => static::formatDate($election->getRealVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             ],
         );
