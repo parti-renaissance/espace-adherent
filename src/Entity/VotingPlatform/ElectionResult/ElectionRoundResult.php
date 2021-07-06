@@ -113,7 +113,9 @@ class ElectionRoundResult
             $poolResult->updateFromNewVoteChoice($voteChoice);
 
             if (!\in_array($pool->getId(), $expressedPoolIds)) {
-                $poolResult->incrementExpressed();
+                if (!$voteChoice->isBlank()) {
+                    $poolResult->incrementExpressed();
+                }
                 $expressedPoolIds[] = $pool->getId();
             }
         }

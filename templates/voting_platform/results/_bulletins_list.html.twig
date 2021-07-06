@@ -29,10 +29,14 @@
                                 {% if vote_choice.isBlank %}
                                     ~
                                 {% else %}
-                                    {% for candidate in vote_choice.candidateGroup.getCandidatesSorted() %}
-                                        {{ candidate.fullName }}
-                                        {% if loop.length > 1 %}<br/>{% endif %}
-                                    {% endfor %}
+                                    {% if designation.isExecutiveOfficeType() %}
+                                        {{ vote_choice.candidateGroup.getLabel() }}
+                                    {% else %}
+                                        {% for candidate in vote_choice.candidateGroup.getCandidatesSorted() %}
+                                            {{ candidate.fullName }}
+                                            {% if loop.length > 1 %}<br/>{% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </td>

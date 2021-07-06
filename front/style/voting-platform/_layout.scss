@@ -515,6 +515,23 @@
             .ballot-paper {
                 margin: 0 auto;
             }
+
+            .election-results {
+                .candidate__box {
+                    &.elected {
+                        border: solid 3px $blue--dark;
+                    }
+                }
+
+                .progress-bar__gauge .slider {
+                    background: $blue--dark;
+                }
+
+                .election__ballots-detail table {
+                    width: auto !important;
+                    min-width: 350px !important;
+                }
+            }
         }
 
         &__committee_supervisor,
