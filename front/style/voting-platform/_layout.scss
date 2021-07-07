@@ -478,11 +478,12 @@
         &__executive_office {
             .election-vote {
                 &__boxes {
-                    justify-content: space-around;
+                    justify-content: center;
 
                     .candidate__box {
-                        flex-basis: calc(25% - 24px);
-                        min-width: 250px;
+                        flex-basis: auto;
+                        min-width: 315px;
+                        margin-right: 24px;
 
                         .box__content {
                             display: flex;
