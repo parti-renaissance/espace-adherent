@@ -101,7 +101,15 @@ class Media
      * @var UploadedFile|null
      *
      * @Assert\File(
-     *     mimeTypes={"image/*", "video/mpeg", "video/mp4", "video/quicktime", "video/webm"}
+     *     mimeTypes={
+     *         "image/jpeg",
+     *         "image/gif",
+     *         "image/png",
+     *         "video/mpeg",
+     *         "video/mp4",
+     *         "video/quicktime",
+     *         "video/webm",
+     *     }
      * )
      */
     private $file;
