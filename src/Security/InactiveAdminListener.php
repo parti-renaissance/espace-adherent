@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
 class InactiveAdminListener
@@ -41,8 +40,8 @@ class InactiveAdminListener
             $user = $token->getUser();
 
             $isPreviousAdmin = false;
-            foreach ($token->getRoles() as $role) {
-                if ($role instanceof Role && 'ROLE_PREVIOUS_ADMIN' == $role->getRole()) {
+            foreach ($token->getRoleNames() as $role) {
+                if ('ROLE_PREVIOUS_ADMIN' == $role) {
                     $isPreviousAdmin = true;
 
                     break;
