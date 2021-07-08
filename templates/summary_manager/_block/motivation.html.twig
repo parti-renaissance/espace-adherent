@@ -1,8 +1,0 @@
-{% extends 'summary/_block/motivation.html.twig' %}
-
-{% block summary_motivation %}
-    {{ parent() }}
-    <a href="{{ path('app_summary_manager_step', { step: constant('App\\Form\\SummaryType::STEP_MOTIVATION') }) }}" class="button">
-        Modifier mes motivations</a>
-{% endblock %}
-

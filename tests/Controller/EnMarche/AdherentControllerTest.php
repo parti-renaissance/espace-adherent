@@ -106,26 +106,22 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('.settings .settings-menu ul li.active a'));
-        $this->assertSame('Nom Carl Mirabeau', $crawler->filter('.settings__username')->text());
-        $this->assertSame('Adhérent depuis novembre 2016.', $crawler->filter('.settings__membership')->text());
-        $this->assertSame('Mon compte', $crawler->filter('.settings h2')->text());
+        $this->assertSame('Carl Mirabeau', $crawler->filter('.adherent-profile__id .name')->text());
+        $this->assertStringContainsString('Adhérent depuis le16 novembre 2016 à 20:45', $crawler->filter('.adherent-profile__id .adhesion-date')->text());
     }
 
     public function testProfileActionIsAccessibleForInactiveAdherent(): void
     {
         $this->authenticateAsAdherent($this->client, 'thomas.leclerc@example.ch');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('.settings .settings-menu ul li.active a'));
-        $this->assertSame('Nom Thomas Leclerc', $crawler->filter('.settings__username')->text());
-        $this->assertSame('Non adhérent.', $crawler->filter('.settings__membership')->text());
-        $this->assertSame('Mon compte', $crawler->filter('.settings h2')->text());
+        $this->assertSame('Thomas Leclerc', $crawler->filter('.adherent-profile__id .name')->text());
+        $this->assertStringContainsString('Non adhérent.', $crawler->filter('.adherent-profile__id .adhesion-date')->text());
     }
 
     public function testProfileActionIsNotAccessibleForDisabledAdherent(): void
@@ -798,14 +794,17 @@ class AdherentControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, $email);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(0, $crawler->filter('.settings_unsubscribe'));
+        $this->assertStringNotContainsString(
+            'Si vous souhaitez désadhérer et supprimer votre compte En Marche, cliquez-ici.',
+            $crawler->text()
+        );
 
-        $this->client->request(Request::METHOD_GET, '/mon-compte/desadherer');
+        $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
 
-        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
     public function dataProviderCannotTerminateMembership(): \Generator
@@ -813,7 +812,7 @@ class AdherentControllerTest extends WebTestCase
         yield 'Host' => ['gisele-berthoux@caramail.com'];
         yield 'Referent' => ['referent@en-marche-dev.fr'];
         yield 'BoardMember' => ['carl999@example.fr'];
-        yield 'CommitteeCandidate' => ['adherent-female-36@en-marche-dev.fr'];
+        yield 'CommitteeCandidate' => ['adherent-female-a@en-marche-dev.fr'];
         yield 'TerritorialCouncilCandidate' => ['senatorial-candidate@en-marche-dev.fr'];
     }
 
@@ -832,12 +831,15 @@ class AdherentControllerTest extends WebTestCase
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertCount(1, $crawler->filter('.settings__delete_account'));
+        $this->assertStringContainsString(
+            'Si vous souhaitez désadhérer et supprimer votre compte En Marche, cliquez-ici.',
+            $crawler->text()
+        );
 
-        $crawler = $this->client->click($crawler->selectLink('Supprimer définitivement ce compte')->link());
+        $crawler = $this->client->click($crawler->selectLink('cliquez-ici')->link());
         $this->assertEquals('http://'.$this->getParameter('app_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 

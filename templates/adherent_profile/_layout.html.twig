@@ -29,7 +29,13 @@
                                         {% include('components/_certification_logo.html.twig') %}
                                     {% endif %}
                                 </div>
-                                <div class="adhesion-date">Adhérent{{ app.user.female ? "e" }} depuis le<br/>{{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy à HH:mm') }}</div>
+                                <div class="adhesion-date">
+                                    {% if has_role_adherent and app.user.activatedAt %}
+                                        Adhérent{{ app.user.female ? "e" }} depuis le<br/>{{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy à HH:mm') }}
+                                    {% else %}
+                                        Non adhérent{{ app.user.female ? "e" }}.
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                         <ul class="adherent-profile__roles b__nudge--bottom-large">

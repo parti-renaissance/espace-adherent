@@ -25,7 +25,6 @@ use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
 use App\Repository\EventRepository;
-use App\Repository\SummaryRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -85,14 +84,12 @@ class AdherentController extends AbstractController
         AdherentRepository $adherentRepository,
         EventRepository $eventRepository,
         EmailRepository $emailRepository,
-        SummaryRepository $summaryRepository,
         MemberActivityTracker $memberActivityTracker,
         UserInterface $user
     ): Response {
         return $this->render('adherent/dashboard.html.twig', [
             'events' => $eventRepository->findEventsByOrganizer($user),
             'emails' => $emailRepository->findBy(['sender' => $user->getEmailAddress()]),
-            'summary' => $summaryRepository->findOneForAdherent($user),
             'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($user),
             'area_stats' => $user->isReferent()
                 ? [

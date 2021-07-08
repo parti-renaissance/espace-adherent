@@ -10,8 +10,8 @@ Feature: Test donation page
 
   Scenario: Be able to navigate in my donation page as an adherent with monthly donations
     Given I am logged as "jacques.picard@en-marche.fr"
-    And I am on "/parametres/mon-compte"
-    And I should see "jacques.picard@en-marche.fr"
+    And I am on "/parametres/mon-compte/modifier"
+    And I should see "Jacques Picard"
 
     When I follow "Mes dons"
     Then I should be on "/parametres/mes-activites#donations"
@@ -37,8 +37,8 @@ Feature: Test donation page
 
   Scenario: Be able to navigate in my donation page as an adherent without monthly donations
     Given I am logged as "luciole1989@spambox.fr"
-    And I am on "/parametres/mon-compte"
-    And I should see "luciole1989@spambox.fr"
+    And I am on "/parametres/mon-compte/modifier"
+    And I should see "Lucie Olivera"
 
     When I follow "Mes dons"
     Then I should be on "/parametres/mes-activites#donations"
@@ -52,8 +52,8 @@ Feature: Test donation page
 
   Scenario: Be able to navigate in my donation page as an adherent without donations
     Given I am logged as "carl999@example.fr"
-    And I am on "/parametres/mon-compte"
-    And I should see "carl999@example.fr"
+    And I am on "/parametres/mon-compte/modifier"
+    And I should see "Carl Mirabeau"
 
     When I follow "Mes dons"
     Then I should be on "/parametres/mes-activites#donations"

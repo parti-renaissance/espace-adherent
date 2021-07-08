@@ -40,14 +40,6 @@ class UserController extends AbstractController
     private const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
-     * @Route("", name="app_user_profile", methods={"GET"})
-     */
-    public function profileOverviewAction(): Response
-    {
-        return $this->render('user/my_account.html.twig');
-    }
-
-    /**
      * @Route("/modifier", name="app_user_edit", methods={"GET", "POST"})
      */
     public function profileAction(Request $request, AdherentProfileHandler $handler): Response

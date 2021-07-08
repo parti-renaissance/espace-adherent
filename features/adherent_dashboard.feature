@@ -16,18 +16,10 @@ Feature:
     And I should see "adhérent depuis"
     And I should see an "img" element
 
-    # As an adherent, I should have an interests section
-    Then I should see "Les thématiques qui m'intéressent"
-    And I should see "Aucun intérèt pour l'instant, renseignez-en ici"
-
     # As an adherent, I should have 1 shortcut
     Then I should see "Raccourcis"
     And I should see 1 ".shortcuts ul li" elements
     And I should see "Mes documents"
-
-    # As an adherent, I should have a skills section
-    Then I should see "Mes compétences"
-    And I should see "Aucune compétence pour l'instant, renseignez-en ici"
 
     # As an adherent, I should have a committee section
     Then I should see "Les comités dont je fais partie"
@@ -62,10 +54,6 @@ Feature:
     Then I should see "Les événements que j'ai créés"
     And I should see "Voir tous les événements"
 
-    # As a referent, I should have an interest section
-    Then I should see "Les thématiques qui m'intéressent"
-    And I should see "Aucun intérèt pour l'instant, renseignez-en ici"
-
     # As a referent, I can see 2 shortcuts
     Then I should see 2 ".shortcuts ul li" elements
     And I should see "Mes documents"
@@ -85,18 +73,10 @@ Feature:
     And I should see "Événement de la catégorie masquée"
     And I should see "Réunion de réflexion parisienne"
 
-    # As an animator, I should have an interests section
-    Then I should see "Les thématiques qui m'intéressent"
-    And I should see "Aucun intérèt pour l'instant, renseignez-en ici"
-
     # As an animator, I should have 2 shortcuts
     Then I should see "Raccourcis"
     And I should see 1 ".shortcuts ul li" elements
     And I should see "Mes documents"
-
-    # As an animator, I should have a skills section
-    Then I should see "Mes compétences"
-    And I should see "Aucune compétence pour l'instant, renseignez-en ici"
 
     # As an animator, I should have a committee section
     Then I should see "Les comités dont je fais partie"
