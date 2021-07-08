@@ -591,4 +591,9 @@ class Designation
 
         return $designation;
     }
+
+    public function isBlankVoteEnabled(): bool
+    {
+        return !$this->isExecutiveOfficeType();
+    }
 }

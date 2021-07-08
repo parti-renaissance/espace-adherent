@@ -19,10 +19,12 @@
         </div>
 
         {% if not designation.isMajorityType %}
-            <div class="el">
-                <div class="title">Blancs</div>
-                <span class="value">{{ pool_result.blank ?? 0 }}</span>
-            </div>
+            {% if designation.isBlankVoteEnabled() %}
+                <div class="el">
+                    <div class="title">Blancs</div>
+                    <span class="value">{{ pool_result.blank ?? 0 }}</span>
+                </div>
+            {% endif %}
 
             <div class="el">
                 <div class="title">Abstentions</div>
