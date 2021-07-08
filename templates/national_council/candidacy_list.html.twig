@@ -28,8 +28,8 @@
                     <h2 class="text--medium-large b__nudge--bottom-large">{{ group.getLabel() }}</h2>
 
                     {% for candidacy in group.candidacies %}
-                        <div class="instance-page__candidacies l__row">
-                            <div class="candidate-photo avatar-initials avatar--small b__nudge--right">
+                        <div class="l__row b__nudge--bottom-medium b__nudge--left">
+                            <div class="candidate-photo avatar-initials avatar--medium b__nudge--right">
                                 <img src="{{ path('asset_url', {path: candidacy.imagePath}) }}" alt="photo" />
                             </div>
 
@@ -40,7 +40,7 @@
                         </div>
                     {% endfor %}
 
-                    <p class="text--body text--dark">{{ group.candidacies|first.faithStatement|nl2br }}</p>
+                    <p class="text--body text--dark b__nudge--top-50">{{ group.candidacies|first.faithStatement|nl2br }}</p>
                 </div>
             </div>
         </section>
