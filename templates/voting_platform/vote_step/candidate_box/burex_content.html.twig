@@ -2,7 +2,7 @@
 
 <div class="box__content">
     {% if candidate_group %}
-        <h2>{{ candidate_group.getLabel() }}</h2>
+        <h2 class="b__nudge--right-large">{{ candidate_group.getLabel() }}</h2>
 
         {% set candidates = candidate_group.getCandidatesSorted() %}
 
@@ -29,7 +29,7 @@
 
                 <div id="candidate-biography-content-{{ candidate_group.uuid }}" class="hidden">
                     <div class="candidacies-list-content">
-                        <h1 class="b__nudge--bottom-large">{{ candidate_group.getLabel() }}</h1>
+                        <h2 class="text--medium-large b__nudge--bottom-large">{{ candidate_group.getLabel() }}</h2>
 
                         {% for candidate in candidates %}
                             <div class="instance-page__candidacies l__row">
