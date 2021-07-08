@@ -481,7 +481,7 @@
                     justify-content: center;
 
                     .candidate__box {
-                        flex-basis: auto;
+                        flex-basis: calc(25% - 24px);
                         min-width: 315px;
                         margin-right: 24px;
 
