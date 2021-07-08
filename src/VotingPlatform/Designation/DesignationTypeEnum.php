@@ -27,7 +27,7 @@ final class DesignationTypeEnum extends Enum
         self::COMMITTEE_ADHERENT_MALE => 'Désignation d’un adhérent siégeant au Conseil territorial',
         self::COPOL => 'Désignation des binômes au Copol',
         self::NATIONAL_COUNCIL => 'Désignation des membres siégeant au Conseil national',
-        self::EXECUTIVE_OFFICE => 'Élection des membres du Burex',
+        self::EXECUTIVE_OFFICE => 'Élection des membres du Bureau Exécutif',
     ];
 
     public const MAIN_TYPES = [

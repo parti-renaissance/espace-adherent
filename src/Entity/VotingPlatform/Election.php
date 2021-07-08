@@ -274,6 +274,10 @@ class Election
 
         $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
 
+        if ($roundResult && $this->designation->isExecutiveOfficeType()) {
+            return true;
+        }
+
         return $roundResult && $roundResult->hasOnlyElectedPool();
     }
 

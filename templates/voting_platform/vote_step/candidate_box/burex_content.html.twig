@@ -4,7 +4,7 @@
     {% if candidate_group %}
         <h2 class="b__nudge--right-large">{{ candidate_group.getLabel() }}</h2>
 
-        {% set candidates = candidate_group.getCandidatesSorted() %}
+        {% set candidates = candidate_group.getCandidates() %}
 
         <ul class="candidate-names">
             {% for candidate in candidates %}
@@ -20,8 +20,6 @@
         </ul>
 
         <div class="candidate-footer">
-            {% set candidacies_with_bio = candidates|filter(candidacy => candidacy.hasBiography) %}
-
             <div class="candidate-biography text--right">
                 <a href="#" class="text--body link--no-decor text--blue--dark b__nudge--none em-modal--trigger"
                    data-content-element="#candidate-biography-content-{{ candidate_group.uuid }}"
@@ -32,8 +30,8 @@
                         <h2 class="text--medium-large b__nudge--bottom-large">{{ candidate_group.getLabel() }}</h2>
 
                         {% for candidate in candidates %}
-                            <div class="instance-page__candidacies l__row">
-                                <div class="candidate-photo avatar-initials avatar--small b__nudge--right">
+                            <div class="l__row b__nudge--bottom-medium b__nudge--left">
+                                <div class="candidate-photo avatar-initials avatar--medium b__nudge--right">
                                     <img src="{{ path('asset_url', {path: candidate.imagePath}) }}" alt="photo" />
                                 </div>
 
@@ -43,7 +41,7 @@
                             </div>
                         {% endfor %}
 
-                        <p class="text--body text--dark">{{ candidates|first.faithStatement|nl2br }}</p>
+                        <p class="text--body text--dark b__nudge--top-50">{{ candidates|first.faithStatement|nl2br }}</p>
                     </div>
                 </div>
             </div>
