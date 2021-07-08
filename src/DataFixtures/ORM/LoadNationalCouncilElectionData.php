@@ -38,12 +38,12 @@ class LoadNationalCouncilElectionData extends Fixture implements DependentFixtur
         $manager->persist($election = new Election($this->getReference('designation-11')));
 
         $candidacyGroup = new CandidaciesGroup();
-        $candidacyGroup->setLabel('Liste A');
+        $candidacyGroup->setLabel('Liste A - Élection des membres du Burex');
 
         for ($i = 1; $i <= 9; ++$i) {
             if (0 === $i % 3) {
                 $manager->persist($candidacyGroup = new CandidaciesGroup());
-                $candidacyGroup->setLabel('Liste '.\chr(65 + $i));
+                $candidacyGroup->setLabel('Liste '.\chr(65 + $i).' - Élection des membres du Burex');
             }
 
             /** @var Adherent $adherent */
