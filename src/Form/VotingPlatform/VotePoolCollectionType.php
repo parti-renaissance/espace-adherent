@@ -24,20 +24,22 @@ class VotePoolCollectionType extends AbstractType
             ]);
         } else {
             $builder->add('poolChoice', VoteChoiceType::class, [
-                'choices' => $this->getFilteredCandidates($options['candidate_groups']),
+                'choices' => $this->getFilteredCandidates($designation, $options['candidate_groups']),
             ]);
         }
 
         $builder->add('confirm', SubmitType::class);
     }
 
-    private function getFilteredCandidates(array $candidateGroups): array
+    private function getFilteredCandidates(Designation $designation, array $candidateGroups): array
     {
         $choices = array_map(static function (CandidateGroup $group) {
             return $group->getUuid()->toString();
         }, $candidateGroups);
 
-        $choices[] = VoteChoice::BLANK_VOTE_VALUE;
+        if ($designation->isBlankVoteEnabled()) {
+            $choices[] = VoteChoice::BLANK_VOTE_VALUE;
+        }
 
         return $choices;
     }
