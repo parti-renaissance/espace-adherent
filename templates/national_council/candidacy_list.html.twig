@@ -40,7 +40,7 @@
                         </div>
                     {% endfor %}
 
-                    <p class="text--body text--dark b__nudge--top-50">{{ group.candidacies|first.faithStatement|nl2br }}</p>
+                    <p class="text--body text--dark b__nudge--top-50">{{ group.candidacies|first.faithStatement|markdown }}</p>
                 </div>
             </div>
         </section>
