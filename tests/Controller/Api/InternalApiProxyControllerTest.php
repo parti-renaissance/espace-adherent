@@ -65,6 +65,26 @@ class InternalApiProxyControllerTest extends WebTestCase
         self::assertCount(2, $data['items']);
     }
 
+    public function testGetEventsWithExtraParametersReturnValidJsonResponse(): void
+    {
+        $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
+
+        $url = sprintf(
+            '/api/v3/internal/%s/api/v3/events?scope=%s&name=%s',
+            LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
+            ScopeEnum::REFERENT,
+            urlencode('Grand Meeting de Paris'),
+        );
+
+        $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
+        $this->isSuccessful($response = $this->client->getResponse());
+        $this->assertJson($response->getContent());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('items', $data);
+        self::assertCount(1, $data['items']);
+    }
+
     public function testGetEventsWithScopeThatUserDoesNotHave(): void
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
