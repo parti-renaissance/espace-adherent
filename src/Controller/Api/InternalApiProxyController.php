@@ -51,6 +51,7 @@ class InternalApiProxyController extends AbstractController
             'headers' => array_merge($this->getFilteredRequestHeaders($request), [
                 'X-User-UUID' => $user->getUuid()->toString(),
             ]),
+            'query' => $request->query->all(),
         ];
 
         if ($internalApiApplication->isScopeRequired()) {
