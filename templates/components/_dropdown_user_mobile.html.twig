@@ -88,6 +88,11 @@
                         {% endif %}
                         <ul class="items">
                             {{ include('adherent/_list_my_sections.html.twig') }}
+                            {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
+                                <li>
+                                    <a href="{{ data_corner_host }}">DataCorner</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
