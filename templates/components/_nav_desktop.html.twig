@@ -200,7 +200,7 @@
             {% endif %}
             {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
                 <li>
-                    <a href="{{ data_corner_host }}" class="is-new">DataCorner</a>
+                    <a href="{{ data_corner_host }}" target="_blank" class="is-new">DataCorner</a>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_FORMATION_SPACE') %}
