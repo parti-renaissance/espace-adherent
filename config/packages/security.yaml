@@ -363,6 +363,12 @@ security:
             - ROLE_JECOUTE_REGION
             - ROLE_DATA_CORNER
 
+        ROLE_DEPUTY:
+            - ROLE_DATA_CORNER
+
+        ROLE_SENATOR:
+            - ROLE_DATA_CORNER
+
         ROLE_VOTE_INSPECTOR:
             - ROLE_NATIONAL_COUNCIL_MEMBER
 
