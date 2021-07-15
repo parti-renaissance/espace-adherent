@@ -8,14 +8,16 @@
     <div class="election__stats space--30">
         <h3 class="text--medium-large b__nudge--bottom-large">Les <span class="text--on-yellow">chiffres</span> de {{ designation.getDenomination(true) }}</h3>
 
+        {% set participated = pool_result.participated ?? 0 %}
+        {% set expressed = pool_result.expressed ?? 0 %}
         <div class="el">
             <div class="title">Participants</div>
-            <span class="value">{{ pool_result.participated ?? 0 }}</span>
+            <span class="value">{{ participated }}</span>
         </div>
 
         <div class="el">
             <div class="title">Exprimés</div>
-            <span class="value">{{ pool_result.expressed ?? 0 }}</span>
+            <span class="value">{{ expressed }}</span>
         </div>
 
         {% if not designation.isMajorityType %}
@@ -29,6 +31,11 @@
             <div class="el">
                 <div class="title">Abstentions</div>
                 <span class="value">{{ pool_result.abstentions ?? 0 }}</span>
+            </div>
+        {% else %}
+            <div class="el">
+                <div class="title">Participation</div>
+                <span class="value">{{ ((expressed / participated) * 100)|number_format(1, ',') }}%</span>
             </div>
         {% endif %}
     </div>
