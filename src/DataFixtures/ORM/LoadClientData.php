@@ -168,11 +168,11 @@ class LoadClientData extends Fixture
             'Data-Corner',
             'Data-Corner',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://localhost:3000/auth']
         );
         $client12->setAskUserForAuthorization(false);
-        $client12->setRequestedRoles(['ROLE_DATA_CORNER']);
+        $client12->setRequestedRoles(['DATA_CORNER']);
 
         $manager->persist($client12);
 
