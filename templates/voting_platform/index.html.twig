@@ -75,6 +75,16 @@
                     <p>Lors du vote, vous allez ainsi donner votre avis sur une ou plusieurs listes de trinômes candidats en leur attribuant cinq mentions : Excellent; Très bien; Bien ; Passable; Insuffisant.</p>
 
                     <p>👉 La liste de trinôme qui obtiendra le meilleur score auprès de 50% du corps électoral sera élu.</p>
+                {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::EXECUTIVE_OFFICE') %}
+                    <p>Bienvenue sur la plateforme de vote électronique de La République en Marche !</p>
+                    <p>Vous allez participer au vote des listes candidates au Bureau Exécutif, qui constitue l'organe de direction et assure la conduite et l'animation du Mouvement aux côtés du Délégué Général.</p>
+
+                    <h2>Comment se déroule le vote ?</h2>
+                    <p>Le vote a lieu de façon dématérialisée du 19 juillet à 13h30 au 21 juillet à 16h00. Les résultats seront annoncés lors de la visio-conférence du Conseil national et affichés sur la plateforme.</p>
+                    <p>Le vote se fait par scrutin majoritaire à un tour. La liste ayant obtenue le plus de suffrages est automatiquement élue à l’annonce des résultats. Il n’y a pas de second tour.</p>
+
+                    <h2>Mon choix est-il anonyme ?</h2>
+                    <p>Ici, vous êtes comme dans l’isoloir. Votre choix ne sera connu que de vous seul. Lors de votre vote, vous recevrez un numéro anonymisé qui vous permettra de retrouver votre choix lors de l’affichage des résultats dans l’espace du Conseil national.</p>
                 {% endif %}
             </div>
 
