@@ -43,6 +43,7 @@ class ZoneController extends AbstractController
 
     /**
      * @Route("/zone/autocompletion", name="api_zone_autocomplete", condition="request.isXmlHttpRequest()", methods={"GET"})
+     * @Route("/v3/zone/autocompletion", name="api_v3_zone_autocomplete", methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
      */
     public function autocomplete(
