@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DeputyManagedUsersController extends AbstractManagedUsersController
 {
-    private const SPACE_NAME = ManagedZoneProvider::DEPUTY;
+    public const SPACE_NAME = ManagedZoneProvider::DEPUTY;
 
     protected function getSpaceType(): string
     {
