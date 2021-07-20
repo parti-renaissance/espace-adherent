@@ -30,6 +30,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "denormalization_context": {"groups": {"audience_write"}},
  *     },
  *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/audiences",
+ *             "controller": "App\Controller\Api\Audience\RetrieveAudiencesController",
+ *             "normalization_context": {
+ *                 "groups": {"audience_list_read"}
+ *             },
+ *         },
  *         "post": {
  *             "path": "/v3/audiences",
  *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_CREATE_AUDIENCE', object)",
@@ -39,6 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('CAN_MANAGE_AUDIENCE', object)",
  *         },
  *         "put": {
  *             "path": "/v3/audiences/{id}",
@@ -64,7 +72,7 @@ abstract class AbstractAudience
      *
      * @Assert\NotBlank
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "audience_list_read"})
      */
     protected $name;
 

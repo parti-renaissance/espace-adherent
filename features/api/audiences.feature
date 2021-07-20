@@ -6,7 +6,9 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
+      | LoadCommitteeData               |
       | LoadAdherentData                |
+      | LoadDelegatedAccessData         |
       | LoadClientData                  |
       | LoadGeoZoneData                 |
       | LoadAudienceData                |
@@ -20,6 +22,7 @@ Feature:
     Examples:
       | method  | url                                                     |
       | POST    | /api/v3/audiences                                       |
+      | GET     | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c  |
       | PUT     | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c  |
       | DELETE  | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c  |
 
@@ -221,23 +224,149 @@ Feature:
     When I send a "DELETE" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c"
     Then the response status code should be 204
 
-  Scenario Outline: As a non logged-in user I can not manage an audience
-    When I send a "<method>" request to "<url>"
-    Then the response status code should be 401
-    Examples:
-      | method | url                                                    |
-      | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c |
-      | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c |
-
   Scenario Outline: As a logged-in user with no correct rights I can not manage an audience
     Given I am logged with "<user>" via OAuth client "Data-Corner"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
       | method | url                                                    | user                              |
+      | GET    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | referent-child@en-marche-dev.fr   |
       | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | referent-child@en-marche-dev.fr   |
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | referent-child@en-marche-dev.fr   |
+      | GET    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | adherent-male-a@en-marche-dev.fr  |
       | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | adherent-male-a@en-marche-dev.fr  |
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | adherent-male-a@en-marche-dev.fr  |
+      | GET    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
       | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
+
+  Scenario: As a logged-in user with correct rights, but no audience type, I can not get audiences
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences"
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON node "detail" should be equal to "No type provided."
+
+  Scenario: As a logged-in referent I can not get deputy audiences
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences?type=deputy"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in referent I can get referent audiences
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences?type=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "name": "Audience REFERENT avec les paramètres nécessaires",
+        "uuid": "4fe24658-000c-4223-87be-d09129c1e191"
+      },
+      {
+        "name": "Audience REFERENT avec quelques paramètres",
+        "uuid": "4562e1ca-09ee-4500-96b6-a73431e40bf1"
+      }
+    ]
+    """
+
+  Scenario: As a logged-in deputy I can get deputy audiences
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences?type=deputy"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "name": "Audience DEPUTY avec les paramètres nécessaires",
+        "uuid": "bd298079-f763-4c7a-9a8a-a243d01d0e31"
+      },
+      {
+        "name": "Audience DEPUTY avec tous les paramètres possibles",
+        "uuid": "f7ac8140-0a5b-4832-a5f4-47e661dc130c"
+      }
+    ]
+    """
+
+  Scenario: As a logged-in regional headed candidate I can get candidate audiences
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences?type=candidate"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "name": "Audience CANDIDATE avec les paramètres nécessaires",
+        "uuid": "6e1a9be9-254d-48f7-a0ab-c26f35cfa783"
+      },
+      {
+        "name": "Audience CANDIDATE avec quelques paramètres",
+        "uuid": "aef77422-0797-40fd-a160-2c5f2ee19260"
+      },
+      {
+        "name": "Audience CANDIDATE, les hommes à Paris",
+        "uuid": "79b2046c-1722-406e-b5b4-4ddcc0827ead"
+      }
+    ]
+    """
+
+  Scenario: As a logged-in deputy I can get a candidate audience with all parameters
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "zone": {
+        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+        "code": "75-1",
+        "name": "Paris (1)"
+      },
+      "name": "Audience DEPUTY avec tous les paramètres possibles",
+      "first_name": "Julien",
+      "last_name": "PREMIER",
+      "gender": "male",
+      "age_min": 18,
+      "age_max": 42,
+      "registered_since": "2017-07-01T00:00:00+02:00",
+      "registered_until": "2021-07-01T00:00:00+02:00",
+      "is_committee_member": true,
+      "is_certified": false,
+      "has_email_subscription": true,
+      "has_sms_subscription": false,
+      "uuid": "f7ac8140-0a5b-4832-a5f4-47e661dc130c"
+    }
+    """
+
+  Scenario: As a logged-in deputy I can get a candidate audience with some parameters
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/audiences/bd298079-f763-4c7a-9a8a-a243d01d0e31"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "zone": {
+        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+        "code": "75-1",
+        "name": "Paris (1)"
+      },
+      "name": "Audience DEPUTY avec les paramètres nécessaires",
+      "first_name": null,
+      "last_name": null,
+      "gender": null,
+      "age_min": null,
+      "age_max": null,
+      "registered_since": null,
+      "registered_until": null,
+      "is_committee_member": null,
+      "is_certified": null,
+      "has_email_subscription": null,
+      "has_sms_subscription": null,
+      "uuid": "bd298079-f763-4c7a-9a8a-a243d01d0e31"
+    }
+    """

@@ -50,6 +50,7 @@ trait EntityIdentityTrait
      *     "event_list_read",
      *     "event_read",
      *     "audience_read",
+     *     "audience_list_read",
      * })
      *
      * @ApiProperty(

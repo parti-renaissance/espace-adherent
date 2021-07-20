@@ -2,8 +2,8 @@
 
 namespace App\Normalizer;
 
+use App\Audience\AudienceTypeEnum;
 use App\Entity\Audience\AbstractAudience;
-use App\Entity\Audience\AudienceTypeEnum;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
