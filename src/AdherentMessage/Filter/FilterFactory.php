@@ -6,6 +6,7 @@ use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
@@ -14,6 +15,7 @@ use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\Audience\AudienceInterface;
 
 abstract class FilterFactory
 {
@@ -47,6 +49,30 @@ abstract class FilterFactory
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
+    }
+
+    public static function createFromAudience(AudienceInterface $audience, string $type): AdherentMessageFilterInterface
+    {
+        $filter = new AudienceFilter();
+        if (AdherentMessageTypeEnum::CANDIDATE === $type) {
+            $filter->setZone($audience->getZone());
+        } else {
+            $filter->setReferentTags($audience->getZone()->getReferentTags()->toArray());
+        }
+        $filter->setGender($audience->getGender());
+        $filter->setFirstName($audience->getFirstName());
+        $filter->setLastName($audience->getLastName());
+        $filter->setAgeMin($audience->getAgeMin());
+        $filter->setAgeMax($audience->getAgeMax());
+        $filter->setRegisteredSince($audience->getRegisteredSince());
+        $filter->setRegisteredUntil($audience->getRegisteredUntil());
+        $filter->setIsCertified($audience->isCertified());
+        if (null !== $audience->isCommitteeMember()) {
+            $filter->setIncludeAdherentsInCommittee($audience->isCommitteeMember());
+            $filter->setIncludeAdherentsNoCommittee(!$audience->isCommitteeMember());
+        }
+
+        return $filter;
     }
 
     private static function createReferentFilter(Adherent $user): ReferentUserFilter

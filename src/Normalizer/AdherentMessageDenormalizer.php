@@ -3,8 +3,10 @@
 namespace App\Normalizer;
 
 use App\AdherentMessage\AdherentMessageFactory;
+use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -16,6 +18,13 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
     use DenormalizerAwareTrait;
 
     private const ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED = 'ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED';
+
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
@@ -35,11 +44,24 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
         unset($data['type']);
 
+        if (isset($data['audience'])) {
+            $audienceClass = AdherentMessageTypeEnum::AUDIENCE_CLASSES[$messageType];
+            if (!$audienceClass) {
+                throw new UnexpectedValueException('No audience class for this message type');
+            }
+
+            $audience = $this->entityManager->getRepository($audienceClass)->findByUuid($data['audience']);
+            if (!$audience) {
+                throw new \InvalidArgumentException(sprintf('Audience with uuid "%s" does not exist', $data['audience']));
+            }
+
+            $data['audience'] = $audience;
+        }
+
         $context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED] = true;
 
         /** @var AdherentMessageInterface $message */
         $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context);
-
         $message->setSource(AdherentMessageInterface::SOURCE_API);
 
         return $message;

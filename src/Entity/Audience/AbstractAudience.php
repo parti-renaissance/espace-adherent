@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-abstract class AbstractAudience
+abstract class AbstractAudience implements AudienceInterface
 {
     use EntityIdentityTrait;
 
@@ -301,7 +301,7 @@ abstract class AbstractAudience
         $this->isCommitteeMember = $value;
     }
 
-    public function getIsCertified(): ?bool
+    public function isCertified(): ?bool
     {
         return $this->isCertified;
     }

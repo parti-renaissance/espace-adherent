@@ -4,6 +4,7 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -11,7 +12,8 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
 {
     public function support(AdherentMessageFilterInterface $filter): bool
     {
-        return $filter instanceof AdherentGeoZoneFilter;
+        return $filter instanceof AdherentGeoZoneFilter
+            || ($filter instanceof AudienceFilter && $filter->getZone());
     }
 
     public function build(MailchimpCampaign $campaign): array

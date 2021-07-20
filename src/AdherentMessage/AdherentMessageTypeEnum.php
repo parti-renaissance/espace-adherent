@@ -14,6 +14,10 @@ use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Entity\Audience\CandidateAudience;
+use App\Entity\Audience\DeputyAudience;
+use App\Entity\Audience\ReferentAudience;
+use App\Entity\Audience\SenatorAudience;
 use MyCLabs\Enum\Enum;
 
 class AdherentMessageTypeEnum extends Enum
@@ -44,6 +48,13 @@ class AdherentMessageTypeEnum extends Enum
         self::CANDIDATE => CandidateAdherentMessage::class,
         self::CANDIDATE_JECOUTE => CandidateJecouteMessage::class,
         self::COALITIONS => CoalitionsMessage::class,
+    ];
+
+    public const AUDIENCE_CLASSES = [
+        self::DEPUTY => DeputyAudience::class,
+        self::REFERENT => ReferentAudience::class,
+        self::SENATOR => SenatorAudience::class,
+        self::CANDIDATE => CandidateAudience::class,
     ];
 
     public const ROLES = [

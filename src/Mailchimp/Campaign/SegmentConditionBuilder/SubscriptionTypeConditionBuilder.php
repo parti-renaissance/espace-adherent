@@ -6,6 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -39,6 +40,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             case ReferentAdherentMessage::class:
                 if (
                     ($filter = $campaign->getMessage()->getFilter())
+                    && !($filter instanceof AudienceFilter)
                     && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())
                 ) {
                     return [];

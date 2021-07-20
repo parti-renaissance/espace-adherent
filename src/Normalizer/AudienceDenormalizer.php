@@ -36,10 +36,7 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 
         $context[self::AUDIENCE_DENORMALIZER_ALREADY_CALLED] = true;
 
-        /** @var AbstractAudience $audience */
-        $audience = $this->denormalizer->denormalize($data, $audienceClass, $format, $context);
-
-        return $audience;
+        return $this->denormalizer->denormalize($data, $audienceClass, $format, $context);
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])

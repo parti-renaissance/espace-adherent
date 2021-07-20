@@ -103,3 +103,5 @@ services:
 
             $applicationRequestTagIds:              '%env(json:MAILCHIMP_APPLICATION_REQUEST_TAG_IDS)%'
             $newsletterTagIds:                      '%env(json:MAILCHIMP_NEWSLETTER_TAG_IDS)%'
+
+            $segmentTagIds:                         '%env(json:MAILCHIMP_SEGMENT_TAG_IDS)%'

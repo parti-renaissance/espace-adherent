@@ -3,7 +3,7 @@
 namespace App\Security\Voter\Audience;
 
 use App\Entity\Adherent;
-use App\Entity\Audience\AbstractAudience;
+use App\Entity\Audience\AudienceInterface;
 use App\Entity\Audience\CandidateAudience;
 use App\Entity\Audience\DeputyAudience;
 use App\Entity\Audience\ReferentAudience;
@@ -59,6 +59,6 @@ class ManageAudienceVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $subject)
     {
-        return self::PERMISSION === $attribute && $subject instanceof AbstractAudience;
+        return self::PERMISSION === $attribute && $subject instanceof AudienceInterface;
     }
 }

@@ -2,10 +2,16 @@
 
 namespace App\Repository\Audience;
 
+use App\Entity\Audience\AudienceInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 abstract class AbstractAudienceRepository extends ServiceEntityRepository
 {
+    public function findByUuid(string $uuid): AudienceInterface
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
+
     public function findByZones(array $zones): array
     {
         $qb = $this->createQueryBuilder('audience');

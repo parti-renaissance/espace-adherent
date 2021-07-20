@@ -46,4 +46,9 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
     {
         return $this->mailchimpObjectIdMapping->getInterestIds();
     }
+
+    protected function getSegmentTagIds(): array
+    {
+        return $this->mailchimpObjectIdMapping->getSegmentTagIds();
+    }
 }

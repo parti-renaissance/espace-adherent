@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Audience\AbstractAudience;
+use App\Entity\Audience\AudienceInterface;
 use App\Entity\Audience\CandidateAudience;
 use App\Entity\Audience\DeputyAudience;
 use App\Entity\Audience\ReferentAudience;
@@ -158,7 +158,7 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         bool $isCertified = null,
         bool $hasEmailSubscription = null,
         bool $hasSmsSubscription = null
-    ): AbstractAudience {
+    ): AudienceInterface {
         $audience = new $classAudience(Uuid::fromString($uuid));
         $audience->setName($name);
         $audience->setFirstName($firstName);

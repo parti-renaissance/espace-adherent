@@ -23,6 +23,7 @@ class MailchimpObjectIdMapping
     private $coalitionsNotificationInterestGroupId;
     private $applicationRequestTagIds;
     private $newsletterTagIds;
+    private $segmentTagIds;
 
     public function __construct(
         string $mainListId,
@@ -40,7 +41,8 @@ class MailchimpObjectIdMapping
         string $subscriptionTypeInterestGroupId,
         string $coalitionsNotificationInterestGroupId,
         array $applicationRequestTagIds,
-        array $newsletterTagIds
+        array $newsletterTagIds,
+        array $segmentTagIds
     ) {
         $this->mainListId = $mainListId;
         $this->newsletterListId = $newsletterListId;
@@ -58,6 +60,7 @@ class MailchimpObjectIdMapping
         $this->coalitionsNotificationInterestGroupId = $coalitionsNotificationInterestGroupId;
         $this->applicationRequestTagIds = $applicationRequestTagIds;
         $this->newsletterTagIds = $newsletterTagIds;
+        $this->segmentTagIds = $segmentTagIds;
     }
 
     public function getFolderIdByType(string $messageType): ?string
@@ -156,6 +159,11 @@ class MailchimpObjectIdMapping
     public function getNewsletterTagIds(): array
     {
         return $this->newsletterTagIds;
+    }
+
+    public function getSegmentTagIds(): array
+    {
+        return $this->segmentTagIds;
     }
 
     private function findTemplateId(string $key): ?int

@@ -4,6 +4,7 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -16,6 +17,7 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
         return $filter instanceof ReferentUserFilter
             || $filter instanceof CommitteeFilter
             || $filter instanceof AdherentZoneFilter
+            || $filter instanceof AudienceFilter
         ;
     }
 

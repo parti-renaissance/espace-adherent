@@ -36,6 +36,10 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $message->setFilter(FilterFactory::create($author, $message->getType()));
+        if ($audience = $message->getAudience()) {
+            $message->setFilter(FilterFactory::createFromAudience($audience, $message->getType()));
+        } else {
+            $message->setFilter(FilterFactory::create($author, $message->getType()));
+        }
     }
 }

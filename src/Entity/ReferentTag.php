@@ -86,7 +86,7 @@ class ReferentTag
     /**
      * @var Zone
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone", inversedBy="referentTags", cascade={"persist"})
      */
     private $zone;
 

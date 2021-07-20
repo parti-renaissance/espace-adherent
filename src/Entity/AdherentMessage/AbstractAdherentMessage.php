@@ -8,8 +8,10 @@ use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
+use App\Entity\Audience\AudienceInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Validator\ValidAuthorRoleMessageType;
+use App\Validator\ValidMessageAudience;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -92,6 +94,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ValidAuthorRoleMessageType
+ * @ValidMessageAudience
  */
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
@@ -201,6 +204,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @ORM\Column(options={"default": self::SOURCE_PLATFORM})
      */
     private $source = self::SOURCE_PLATFORM;
+
+    /**
+     * @var AudienceInterface|null
+     *
+     * @Groups({"message_write"})
+     */
+    private $audience;
 
     final public function __construct(UuidInterface $uuid = null, Adherent $author = null)
     {
@@ -426,5 +436,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function setSource(string $source): void
     {
         $this->source = $source;
+    }
+
+    public function getAudience(): ?AudienceInterface
+    {
+        return $this->audience;
+    }
+
+    public function setAudience(?AudienceInterface $audience): void
+    {
+        $this->audience = $audience;
     }
 }

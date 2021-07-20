@@ -4,7 +4,7 @@ namespace App\Security\Voter\Audience;
 
 use App\Audience\AudienceHelper;
 use App\Entity\Adherent;
-use App\Entity\Audience\AbstractAudience;
+use App\Entity\Audience\AudienceInterface;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -32,6 +32,6 @@ class CreateAudienceVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $subject)
     {
-        return self::PERMISSION === $attribute && $subject instanceof AbstractAudience;
+        return self::PERMISSION === $attribute && $subject instanceof AudienceInterface;
     }
 }

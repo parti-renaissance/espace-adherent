@@ -6,6 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
@@ -25,6 +26,7 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
             || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
             || $filter instanceof AbstractElectedRepresentativeFilter
             || $filter instanceof CoalitionsFilter
+            || $filter instanceof AudienceFilter
         ;
     }
 

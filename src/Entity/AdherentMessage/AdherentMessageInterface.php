@@ -5,6 +5,7 @@ namespace App\Entity\AdherentMessage;
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
+use App\Entity\Audience\AudienceInterface;
 use App\Entity\AuthoredItemsCollectionInterface;
 use Ramsey\Uuid\UuidInterface;
 
@@ -69,4 +70,8 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
     public function getSource(): string;
 
     public function setSource(string $source): void;
+
+    public function getAudience(): ?AudienceInterface;
+
+    public function setAudience(AudienceInterface $audience): void;
 }

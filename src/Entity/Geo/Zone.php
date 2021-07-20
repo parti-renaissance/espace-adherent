@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -139,6 +140,13 @@ class Zone implements GeoInterface
      */
     private $postalCode;
 
+    /**
+     * @var Collection|ReferentTag[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\ReferentTag", mappedBy="zone", fetch="EXTRA_LAZY")
+     */
+    private $referentTags;
+
     public function __construct(string $type, string $code, string $name, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -147,6 +155,7 @@ class Zone implements GeoInterface
         $this->name = $name;
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->referentTags = new ArrayCollection();
     }
 
     public function getUuid(): UuidInterface
@@ -296,5 +305,13 @@ class Zone implements GeoInterface
     public function setPostalCode(?array $postalCode): void
     {
         $this->postalCode = $postalCode;
+    }
+
+    /**
+     * @return Collection|ReferentTag[]
+     */
+    public function getReferentTags(): Collection
+    {
+        return $this->referentTags;
     }
 }

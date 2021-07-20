@@ -48,6 +48,7 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuil
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\CertifiedConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CoalitionsNotificationConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
@@ -1058,6 +1059,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'site_departmental' => 123,
                         'site_municipal' => 456,
                         'main_site' => 789,
+                    ],
+                    [
+                        'certifié' => 999,
                     ]
                 ),
                 new SegmentConditionsBuilder($this->mailchimpMapping, [
@@ -1080,6 +1084,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
                     new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
                     new ToElectedRepresentativeConditionBuilder($this->mailchimpMapping),
+                    new CertifiedConditionBuilder($this->mailchimpMapping),
                 ])
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
