@@ -113,9 +113,9 @@ class CauseFollower extends AbstractFollower
         $this->cause = $cause;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstName(): string
     {
-        return $this->firstName;
+        return (string) $this->firstName;
     }
 
     public function setFirstName(?string $firstName): void
