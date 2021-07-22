@@ -12,6 +12,7 @@ final class Version20210721120753 extends AbstractMigration
         $this->addSql('CREATE TABLE audience (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
+          type VARCHAR(255) NOT NULL,
           zone_id INT UNSIGNED DEFAULT NULL,
           name VARCHAR(255) NOT NULL,
           first_name VARCHAR(255) DEFAULT NULL,
@@ -24,7 +25,6 @@ final class Version20210721120753 extends AbstractMigration
           is_committee_member TINYINT(1) DEFAULT NULL,
           is_certified TINYINT(1) DEFAULT NULL,
           has_email_subscription TINYINT(1) DEFAULT NULL,
-          subscription_type VARCHAR(50) DEFAULT NULL,
           has_sms_subscription TINYINT(1) DEFAULT NULL,
           INDEX IDX_FDCD94189F2C3FAB (zone_id),
           PRIMARY KEY(id)

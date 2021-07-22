@@ -2,9 +2,10 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Audience;
+use App\Entity\Audience\AbstractAudience;
+use App\Entity\Audience\DeputyAudience;
+use App\Entity\Audience\ReferentAudience;
 use App\Entity\Geo\Zone;
-use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,12 +19,14 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $audienceOnlyObligatoire = $this->createAudience(
+        $audienceReferentOnlyRequired = $this->createAudience(
+            ReferentAudience::class,
             self::AUDIENCE_1_UUID,
             'Avec les paramètres nécessaires',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_77')
         );
         $audienceAll = $this->createAudience(
+            DeputyAudience::class,
             self::AUDIENCE_2_UUID,
             'Avec tous les paramètres possibles',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'),
@@ -37,17 +40,17 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             true,
             false,
             true,
-            SubscriptionTypeEnum::REFERENT_EMAIL,
             false
         );
 
-        $manager->persist($audienceOnlyObligatoire);
+        $manager->persist($audienceReferentOnlyRequired);
         $manager->persist($audienceAll);
 
         $manager->flush();
     }
 
     public function createAudience(
+        string $classAudience,
         string $uuid,
         string $name,
         Zone $zone,
@@ -61,10 +64,9 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         bool $isCommitteeMember = null,
         bool $isCertified = null,
         bool $hasEmailSubscription = null,
-        string $subscriptionType = null,
         bool $hasSmsSubscription = null
-    ): Audience {
-        $audience = new Audience(Uuid::fromString($uuid));
+    ): AbstractAudience {
+        $audience = new $classAudience(Uuid::fromString($uuid));
         $audience->setName($name);
         $audience->setFirstName($firstName);
         $audience->setLastName($lastName);
@@ -77,7 +79,6 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         $audience->setIsCommitteeMember($isCommitteeMember);
         $audience->setIsCertified($isCertified);
         $audience->setHasEmailSubscription($hasEmailSubscription);
-        $audience->setSubscriptionType($subscriptionType);
         $audience->setHasSmsSubscription($hasSmsSubscription);
 
         return $audience;

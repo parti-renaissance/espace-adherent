@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Audience;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -12,6 +13,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="audience")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "referent": "App\Entity\Audience\ReferentAudience",
+ *     "deputy": "App\Entity\Audience\DeputyAudience",
+ *     "senator": "App\Entity\Audience\SenatorAudience",
+ *     "candidate": "App\Entity\Audience\CandidateAudience",
+ * })
  *
  * @ApiResource(
  *     attributes={
@@ -22,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "post": {
  *             "path": "/v3/audiences",
+ *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_CREATE_AUDIENCE', object)",
  *         },
  *     },
  *     itemOperations={
@@ -32,15 +43,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_MANAGE_AUDIENCE', object)",
  *         },
  *         "delete": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_MANAGE_AUDIENCE', object)",
  *         },
  *     }
  * )
  */
-class Audience
+abstract class AbstractAudience
 {
     use EntityIdentityTrait;
 
@@ -53,7 +66,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string|null
@@ -64,7 +77,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string|null
@@ -75,7 +88,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @var string|null
@@ -90,7 +103,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $gender;
+    protected $gender;
 
     /**
      * @var int|null
@@ -99,7 +112,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $ageMin;
+    protected $ageMin;
 
     /**
      * @var int|null
@@ -108,7 +121,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $ageMax;
+    protected $ageMax;
 
     /**
      * @var \DateTime|null
@@ -117,7 +130,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $registeredSince;
+    protected $registeredSince;
 
     /**
      * @var \DateTime|null
@@ -126,7 +139,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $registeredUntil;
+    protected $registeredUntil;
 
     /**
      * @var Zone
@@ -137,7 +150,7 @@ class Audience
      *
      * @Assert\NotBlank
      */
-    private $zone;
+    protected $zone;
 
     /**
      * @var bool|null
@@ -146,7 +159,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $isCommitteeMember;
+    protected $isCommitteeMember;
 
     /**
      * @var bool|null
@@ -155,7 +168,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $isCertified;
+    protected $isCertified;
 
     /**
      * @var bool|null
@@ -164,16 +177,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $hasEmailSubscription;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"audience_read", "audience_write"})
-     */
-    private $subscriptionType;
+    protected $hasEmailSubscription;
 
     /**
      * @var bool|null
@@ -182,7 +186,7 @@ class Audience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    private $hasSmsSubscription;
+    protected $hasSmsSubscription;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -307,16 +311,6 @@ class Audience
     public function setHasEmailSubscription(?bool $hasEmailSubscription): void
     {
         $this->hasEmailSubscription = $hasEmailSubscription;
-    }
-
-    public function getSubscriptionType(): ?string
-    {
-        return $this->subscriptionType;
-    }
-
-    public function setSubscriptionType(?string $subscriptionType): void
-    {
-        $this->subscriptionType = $subscriptionType;
     }
 
     public function hasSmsSubscription(): ?bool
