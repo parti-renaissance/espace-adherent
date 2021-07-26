@@ -66,6 +66,8 @@ common.checkbox.is_true: Veuillez cocher cette case pour continuer
 common.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 common.message.max_length: Le message ne doit pas contenir plus de {{ limit }} caractères.
 
+common.zone.not_managed_zone: La zone choisie ne fait pas partie des zones gérées.
+
 #
 # Adherent
 #

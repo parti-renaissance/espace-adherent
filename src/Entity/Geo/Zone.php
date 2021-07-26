@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *             "path": "/zones",
  *         },
  *     },
- *     itemOperations={},
+ *     itemOperations={"get"},
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
@@ -80,7 +80,7 @@ class Zone implements GeoInterface
      *
      * @ORM\Column(type="uuid")
      *
-     * @SymfonySerializer\Groups({"zone_read", "scopes", "scope"})
+     * @SymfonySerializer\Groups({"zone_read", "scopes", "scope", "audience_read"})
      *
      * @ApiProperty(
      *     identifier=true,
