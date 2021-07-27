@@ -13050,21 +13050,22 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.4.25",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
-                "reference": "fc695ab721136b27aa84427a0fa80189761266ef"
+                "reference": "2eb2095edc03a4f0780a417c2cf5b6f6ac5a7284"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/inflector/zipball/fc695ab721136b27aa84427a0fa80189761266ef",
-                "reference": "fc695ab721136b27aa84427a0fa80189761266ef",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/2eb2095edc03a4f0780a417c2cf5b6f6ac5a7284",
+                "reference": "2eb2095edc03a4f0780a417c2cf5b6f6ac5a7284",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
-                "symfony/polyfill-ctype": "~1.8"
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-php80": "^1.16"
             },
             "type": "library",
             "autoload": {
@@ -13100,7 +13101,7 @@
                 "words"
             ],
             "support": {
-                "source": "https://github.com/symfony/inflector/tree/v4.4.25"
+                "source": "https://github.com/symfony/inflector/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -13117,7 +13118,7 @@
                 }
             ],
             "abandoned": "use `EnglishInflector` from the String component instead",
-            "time": "2021-05-26T17:39:37+00:00"
+            "time": "2021-07-21T12:19:41+00:00"
         },
         {
             "name": "symfony/intl",
@@ -14150,21 +14151,22 @@
         },
         {
             "name": "symfony/property-info",
-            "version": "v4.4.25",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-info.git",
-                "reference": "18f7a0e58c9196c255ca8272f2c0de0b2bd563c6"
+                "reference": "dac7c1e2b211f7ee7caf42b68d7c61f8d6f3e03e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/18f7a0e58c9196c255ca8272f2c0de0b2bd563c6",
-                "reference": "18f7a0e58c9196c255ca8272f2c0de0b2bd563c6",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/dac7c1e2b211f7ee7caf42b68d7c61f8d6f3e03e",
+                "reference": "dac7c1e2b211f7ee7caf42b68d7c61f8d6f3e03e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
-                "symfony/inflector": "^3.4|^4.0|^5.0"
+                "symfony/inflector": "^3.4|^4.0|^5.0",
+                "symfony/polyfill-php80": "^1.16"
             },
             "conflict": {
                 "phpdocumentor/reflection-docblock": "<3.0|>=3.2.0,<3.2.2",
@@ -14218,7 +14220,7 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-info/tree/v4.4.25"
+                "source": "https://github.com/symfony/property-info/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -14234,7 +14236,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:39:37+00:00"
+            "time": "2021-07-21T11:57:04+00:00"
         },
         {
             "name": "symfony/proxy-manager-bridge",
