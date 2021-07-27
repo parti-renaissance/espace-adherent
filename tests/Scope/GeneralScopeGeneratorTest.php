@@ -37,14 +37,24 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
 
     public function provideAdherent(): iterable
     {
-        yield [LoadAdherentData::DEPUTY_1_UUID, [[
-            'code' => 'deputy',
-            'zones' => [[
-                'code' => '75-1',
-                'name' => 'Paris (1)',
-            ]],
-            'apps' => ['data_corner'],
-        ]]];
+        yield [LoadAdherentData::DEPUTY_1_UUID, [
+            [
+                'code' => 'deputy',
+                'zones' => [[
+                    'code' => '75-1',
+                    'name' => 'Paris (1)',
+                ]],
+                'apps' => ['data_corner'],
+            ],
+            [
+                'code' => 'national',
+                'zones' => [[
+                    'code' => 'FR',
+                    'name' => 'France',
+                ]],
+                'apps' => ['data_corner'],
+            ],
+        ]];
         yield [LoadAdherentData::REFERENT_3_UUID, [[
             'code' => 'referent',
             'zones' => [[
