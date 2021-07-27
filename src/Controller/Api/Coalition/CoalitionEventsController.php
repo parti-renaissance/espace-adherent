@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class CoalitionEventsController extends AbstractController
 {
@@ -19,8 +18,7 @@ class CoalitionEventsController extends AbstractController
     public function _invoke(
         Request $request,
         Coalition $coalition,
-        BaseEventRepository $baseEventRepository,
-        SerializerInterface $serializer
+        BaseEventRepository $baseEventRepository
     ): JsonResponse {
         $events = $baseEventRepository->findEventsForCoalition(
             $coalition,
