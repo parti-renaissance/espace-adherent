@@ -420,6 +420,10 @@ class AdherentAdmin extends AbstractAdmin
                         'label' => 'Accès à "La maison des impressions"',
                         'required' => false,
                     ])
+                    ->add('nationalRole', null, [
+                        'label' => 'Rôle National',
+                        'required' => false,
+                    ])
                 ->end()
                 ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
                     ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
@@ -842,6 +846,12 @@ class AdherentAdmin extends AbstractAdmin
                     if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value['value'], true)) {
                         $where->add("$alias.printPrivilege = :printPrivilege");
                         $qb->setParameter('printPrivilege', true);
+                    }
+
+                    // National Role
+                    if (\in_array(AdherentRoleEnum::ROLE_NATIONAL, $value['value'], true)) {
+                        $where->add("$alias.nationalRole = :nationalRole");
+                        $qb->setParameter('nationalRole', true);
                     }
 
                     if ($delegatedTypes = array_intersect(
