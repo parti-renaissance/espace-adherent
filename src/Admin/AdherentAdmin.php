@@ -420,7 +420,7 @@ class AdherentAdmin extends AbstractAdmin
                         'label' => 'Accès à "La maison des impressions"',
                         'required' => false,
                     ])
-                    ->add('natioinalRole', null, [
+                    ->add('nationalRole', null, [
                         'label' => 'Rôle National',
                         'required' => false,
                     ])
