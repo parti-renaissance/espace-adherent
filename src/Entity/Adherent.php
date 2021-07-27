@@ -590,6 +590,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $printPrivilege = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $nationalRole = false;
+
+    /**
      * @var Collection|AdherentCharterInterface[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\AdherentCharter\AbstractAdherentCharter", mappedBy="adherent", cascade={"all"})
@@ -964,6 +971,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->hasPrintPrivilege()) {
             $roles[] = 'ROLE_PRINT_PRIVILEGE';
+        }
+
+        if ($this->hasNationalRole()) {
+            $roles[] = 'ROLE_NATIONAL';
         }
 
         if ($this->isElectionResultsReporter()) {
@@ -2284,6 +2295,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setPrintPrivilege(bool $printPrivilege): void
     {
         $this->printPrivilege = $printPrivilege;
+    }
+
+    public function hasNationalRole(): bool
+    {
+        return $this->nationalRole;
+    }
+
+    public function setNationalRole(bool $nationalRole): void
+    {
+        $this->nationalRole = $nationalRole;
     }
 
     public function hasFormationSpaceAccess(): bool

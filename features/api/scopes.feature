@@ -31,6 +31,20 @@ Feature:
         "apps": [
           "data_corner"
         ]
+      },
+      {
+        "code": "national",
+        "name": "National",
+        "zones": [
+          {
+            "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "code": "FR",
+            "name": "France"
+          }
+        ],
+        "apps": [
+          "data_corner"
+        ]
       }
     ]
     """

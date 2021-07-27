@@ -369,6 +369,9 @@ security:
         ROLE_SENATOR:
             - ROLE_DATA_CORNER
 
+        ROLE_NATIONAL:
+            - ROLE_DATA_CORNER
+
         ROLE_VOTE_INSPECTOR:
             - ROLE_NATIONAL_COUNCIL_MEMBER
 
