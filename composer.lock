@@ -11733,21 +11733,22 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v4.4.26",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "a944d2f8e903dc99f5f1baf3eb74081352f0067f"
+                "reference": "52866e2cb314972ff36c5b3d405ba8f523e56f6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/a944d2f8e903dc99f5f1baf3eb74081352f0067f",
-                "reference": "a944d2f8e903dc99f5f1baf3eb74081352f0067f",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/52866e2cb314972ff36c5b3d405ba8f523e56f6e",
+                "reference": "52866e2cb314972ff36c5b3d405ba8f523e56f6e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
                 "psr/container": "^1.0",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/service-contracts": "^1.1.6|^2"
             },
             "conflict": {
@@ -11798,7 +11799,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v4.4.26"
+                "source": "https://github.com/symfony/dependency-injection/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -11814,7 +11815,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-24T08:08:16+00:00"
+            "time": "2021-07-23T15:41:52+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -12353,21 +12354,22 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.4.26",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "a501126eb6ec9288a3434af01b3d4499ec1268a0"
+                "reference": "517fb795794faf29086a77d99eb8f35e457837a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/a501126eb6ec9288a3434af01b3d4499ec1268a0",
-                "reference": "a501126eb6ec9288a3434af01b3d4499ec1268a0",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/517fb795794faf29086a77d99eb8f35e457837a7",
+                "reference": "517fb795794faf29086a77d99eb8f35e457837a7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
-                "symfony/polyfill-ctype": "~1.8"
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-php80": "^1.16"
             },
             "type": "library",
             "autoload": {
@@ -12395,7 +12397,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v4.4.26"
+                "source": "https://github.com/symfony/filesystem/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -12411,7 +12413,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-30T07:12:23+00:00"
+            "time": "2021-07-21T12:19:41+00:00"
         },
         {
             "name": "symfony/finder",
@@ -14315,23 +14317,24 @@
         },
         {
             "name": "symfony/proxy-manager-bridge",
-            "version": "v4.4.25",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/proxy-manager-bridge.git",
-                "reference": "1b3ca99d59d210cf159d165b301a9a9492d93bd4"
+                "reference": "7731460a4e192b2377cae0592df4323fc5cd14ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/1b3ca99d59d210cf159d165b301a9a9492d93bd4",
-                "reference": "1b3ca99d59d210cf159d165b301a9a9492d93bd4",
+                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/7731460a4e192b2377cae0592df4323fc5cd14ea",
+                "reference": "7731460a4e192b2377cae0592df4323fc5cd14ea",
                 "shasum": ""
             },
             "require": {
                 "composer/package-versions-deprecated": "^1.8",
                 "friendsofphp/proxy-manager-lts": "^1.0.2",
                 "php": ">=7.1.3",
-                "symfony/dependency-injection": "^4.0|^5.0"
+                "symfony/dependency-injection": "^4.0|^5.0",
+                "symfony/polyfill-php80": "^1.16"
             },
             "require-dev": {
                 "symfony/config": "^3.4|^4.0|^5.0"
@@ -14362,7 +14365,7 @@
             "description": "Provides integration for ProxyManager with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v4.4.25"
+                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -14378,7 +14381,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T11:20:16+00:00"
+            "time": "2021-07-21T12:19:41+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
