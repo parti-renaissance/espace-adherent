@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
- *         "access_control": "is_granted('ROLE_DATA_CORNER')",
+ *         "access_control": "is_granted('ROLE_AUDIENCE')",
  *         "normalization_context": {"groups": {"audience_read"}},
  *         "denormalization_context": {"groups": {"audience_write"}},
  *     },
@@ -39,24 +39,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/audiences",
- *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_CREATE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_CREATE_AUDIENCE', object)",
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('CAN_MANAGE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_MANAGE_AUDIENCE', object)",
  *         },
  *         "put": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_MANAGE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_MANAGE_AUDIENCE', object)",
  *         },
  *         "delete": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_DATA_CORNER') and is_granted('CAN_MANAGE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_MANAGE_AUDIENCE', object)",
  *         },
  *     }
  * )

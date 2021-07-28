@@ -291,7 +291,7 @@ Feature:
     """
 
   Scenario: As a logged-in regional headed candidate I can get candidate audiences
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "GET" request to "/api/v3/audiences?type=candidate"
     Then the response status code should be 200
     And the response should be in JSON
