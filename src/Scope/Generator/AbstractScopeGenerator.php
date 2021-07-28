@@ -17,11 +17,16 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
             $code,
             $this->getScopeName($code),
             $this->getZones($adherent),
-            [AppEnum::DATA_CORNER]
+            $this->getApps()
         );
     }
 
     abstract protected function getZones(Adherent $adherent): array;
+
+    protected function getApps(): array
+    {
+        return [AppEnum::DATA_CORNER];
+    }
 
     private function getScopeName(string $code): string
     {

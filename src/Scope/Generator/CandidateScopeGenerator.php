@@ -21,4 +21,9 @@ class CandidateScopeGenerator extends AbstractScopeGenerator
     {
         return [$adherent->getCandidateManagedArea()->getZone()];
     }
+
+    protected function getApps(): array
+    {
+        return [];
+    }
 }

@@ -349,7 +349,6 @@ security:
             - ROLE_CANDIDATE
             - ROLE_JECOUTE_NEWS
             - ROLE_JECOUTE_REGION
-            - ROLE_DATA_CORNER
 
         ROLE_CANDIDATE_REGIONAL_LEADER:
             - ROLE_CANDIDATE
