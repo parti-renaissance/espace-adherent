@@ -80,7 +80,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => '11',
                 'name' => 'Île-de-France',
             ]],
-            'apps' => ['data_corner'],
+            'apps' => [],
         ]]];
         yield [LoadAdherentData::ADHERENT_2_UUID, []];
     }

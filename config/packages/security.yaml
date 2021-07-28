@@ -349,7 +349,7 @@ security:
             - ROLE_CANDIDATE
             - ROLE_JECOUTE_NEWS
             - ROLE_JECOUTE_REGION
-            - ROLE_DATA_CORNER
+            - ROLE_AUDIENCE
 
         ROLE_CANDIDATE_REGIONAL_LEADER:
             - ROLE_CANDIDATE
@@ -362,15 +362,19 @@ security:
             - ROLE_JECOUTE_NEWS
             - ROLE_JECOUTE_REGION
             - ROLE_DATA_CORNER
+            - ROLE_AUDIENCE
 
         ROLE_DEPUTY:
             - ROLE_DATA_CORNER
+            - ROLE_AUDIENCE
 
         ROLE_SENATOR:
             - ROLE_DATA_CORNER
+            - ROLE_AUDIENCE
 
         ROLE_NATIONAL:
             - ROLE_DATA_CORNER
+            - ROLE_AUDIENCE
 
         ROLE_VOTE_INSPECTOR:
             - ROLE_NATIONAL_COUNCIL_MEMBER
