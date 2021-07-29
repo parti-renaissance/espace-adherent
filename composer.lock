@@ -13280,22 +13280,22 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v4.4.26",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "de0030fda722e26b4f3cc23622e583c6e985a5a5"
+                "reference": "c8c91d6b3fa2951dddc314ff30beafd0e5f437b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/de0030fda722e26b4f3cc23622e583c6e985a5a5",
-                "reference": "de0030fda722e26b4f3cc23622e583c6e985a5a5",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/c8c91d6b3fa2951dddc314ff30beafd0e5f437b5",
+                "reference": "c8c91d6b3fa2951dddc314ff30beafd0e5f437b5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
-                "psr/log": "~1.0",
-                "symfony/polyfill-php80": "^1.15"
+                "psr/log": "^1|^2|^3",
+                "symfony/polyfill-php80": "^1.16"
             },
             "conflict": {
                 "doctrine/persistence": "<1.3",
@@ -13347,7 +13347,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v4.4.26"
+                "source": "https://github.com/symfony/messenger/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -13363,7 +13363,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-27T12:18:17+00:00"
+            "time": "2021-07-21T13:21:16+00:00"
         },
         {
             "name": "symfony/mime",
