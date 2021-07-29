@@ -11259,20 +11259,21 @@
         },
         {
             "name": "symfony/asset",
-            "version": "v4.4.25",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/asset.git",
-                "reference": "a6b30fd4a9c992667b38d6f13efb20446761980a"
+                "reference": "1910a978dbe03503d9ee72408e2fef7c4041d97d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/asset/zipball/a6b30fd4a9c992667b38d6f13efb20446761980a",
-                "reference": "a6b30fd4a9c992667b38d6f13efb20446761980a",
+                "url": "https://api.github.com/repos/symfony/asset/zipball/1910a978dbe03503d9ee72408e2fef7c4041d97d",
+                "reference": "1910a978dbe03503d9ee72408e2fef7c4041d97d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3"
+                "php": ">=7.1.3",
+                "symfony/polyfill-php80": "^1.16"
             },
             "require-dev": {
                 "symfony/http-foundation": "^3.4|^4.0|^5.0",
@@ -11307,7 +11308,7 @@
             "description": "Manages URL generation and versioning of web assets such as CSS stylesheets, JavaScript files and image files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/asset/tree/v4.4.25"
+                "source": "https://github.com/symfony/asset/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -11323,7 +11324,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:39:37+00:00"
+            "time": "2021-07-21T12:19:41+00:00"
         },
         {
             "name": "symfony/cache",
@@ -15640,22 +15641,23 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v4.4.26",
+            "version": "v4.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "1f20bad74b6d62f1a5779eeed47e91f3fa476094"
+                "reference": "43ee727eac546610f8da01cf69857fde34b394ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/1f20bad74b6d62f1a5779eeed47e91f3fa476094",
-                "reference": "1f20bad74b6d62f1a5779eeed47e91f3fa476094",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/43ee727eac546610f8da01cf69857fde34b394ea",
+                "reference": "43ee727eac546610f8da01cf69857fde34b394ea",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-mbstring": "~1.0",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/translation-contracts": "^1.1|^2"
             },
             "conflict": {
@@ -15725,7 +15727,7 @@
             "description": "Provides tools to validate values",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/validator/tree/v4.4.26"
+                "source": "https://github.com/symfony/validator/tree/v4.4.29"
             },
             "funding": [
                 {
@@ -15741,7 +15743,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-30T07:16:09+00:00"
+            "time": "2021-07-27T06:31:16+00:00"
         },
         {
             "name": "symfony/var-dumper",
