@@ -7,6 +7,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData                |
       | LoadClientData                  |
+      | LoadScopeData                   |
       | LoadDistrictData                |
       | LoadReferentTagData             |
       | LoadGeoZoneData                 |
