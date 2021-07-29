@@ -13,11 +13,11 @@ class LoadScopeData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat'));
         $manager->persist($this->createScope(ScopeEnum::REFERENT, 'Référent'));
         $manager->persist($this->createScope(ScopeEnum::DEPUTY, 'Député'));
         $manager->persist($this->createScope(ScopeEnum::SENATOR, 'Sénateur'));
         $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National'));
+        $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat', FeatureEnum::ALL, []));
 
         $manager->flush();
     }

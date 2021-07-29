@@ -51,7 +51,7 @@ class Scope
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\Choice(choices=App\Scope\FeatureEnum::ALL, multiple=true)
      */
@@ -60,7 +60,7 @@ class Scope
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\Choice(choices=App\Scope\AppEnum::ALL, multiple=true)
      */

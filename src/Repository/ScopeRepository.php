@@ -25,7 +25,7 @@ class ScopeRepository extends ServiceEntityRepository
     public function findGrantedForDataCorner(): array
     {
         return $this->createQueryBuilder('scope')
-            ->where(':data_corner IN (scope.apps)')
+            ->where('FIND_IN_SET(:data_corner, scope.apps) > 0')
             ->setParameter('data_corner', AppEnum::DATA_CORNER)
             ->getQuery()
             ->getResult()
