@@ -15132,16 +15132,16 @@
         },
         {
             "name": "symfony/templating",
-            "version": "v4.4.25",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/templating.git",
-                "reference": "7b280e4252aeb029db4084b6a76531d8a8cd58f7"
+                "reference": "7e57cfc8104e8f9887d6009c7572a485eec57cc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/templating/zipball/7b280e4252aeb029db4084b6a76531d8a8cd58f7",
-                "reference": "7b280e4252aeb029db4084b6a76531d8a8cd58f7",
+                "url": "https://api.github.com/repos/symfony/templating/zipball/7e57cfc8104e8f9887d6009c7572a485eec57cc2",
+                "reference": "7e57cfc8104e8f9887d6009c7572a485eec57cc2",
                 "shasum": ""
             },
             "require": {
@@ -15149,7 +15149,7 @@
                 "symfony/polyfill-ctype": "~1.8"
             },
             "require-dev": {
-                "psr/log": "~1.0"
+                "psr/log": "^1|^2|^3"
             },
             "suggest": {
                 "psr/log-implementation": "For using debug logging in loaders"
@@ -15180,7 +15180,7 @@
             "description": "Provides all the tools needed to build any kind of template system",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/templating/tree/v4.4.25"
+                "source": "https://github.com/symfony/templating/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -15196,7 +15196,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T11:20:16+00:00"
+            "time": "2021-07-23T15:41:52+00:00"
         },
         {
             "name": "symfony/thanks",
