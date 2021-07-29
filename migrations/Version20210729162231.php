@@ -9,7 +9,7 @@ final class Version20210729162231 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE scopes (
+        $this->addSql('CREATE TABLE scope (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           code VARCHAR(255) NOT NULL,
           name VARCHAR(100) NOT NULL,
