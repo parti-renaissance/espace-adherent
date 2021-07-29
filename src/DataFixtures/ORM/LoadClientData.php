@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\OAuth\Client;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
+use App\Security\Voter\DataCornerVoter;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -168,11 +169,11 @@ class LoadClientData extends Fixture
             'Data-Corner',
             'Data-Corner',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://localhost:3000/auth']
         );
         $client12->setAskUserForAuthorization(false);
-        $client12->setRequestedRoles(['ROLE_DATA_CORNER']);
+        $client12->setRequestedRoles([DataCornerVoter::DATA_CORNER]);
 
         $manager->persist($client12);
 
