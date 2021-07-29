@@ -11327,23 +11327,24 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v4.4.26",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "fcdbaf8af546939eeed5e32399656da2ad371aaf"
+                "reference": "49002c15f3e26b13c7d36c6ffe5d597ef6719cc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/fcdbaf8af546939eeed5e32399656da2ad371aaf",
-                "reference": "fcdbaf8af546939eeed5e32399656da2ad371aaf",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/49002c15f3e26b13c7d36c6ffe5d597ef6719cc1",
+                "reference": "49002c15f3e26b13c7d36c6ffe5d597ef6719cc1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
                 "psr/cache": "^1.0|^2.0",
-                "psr/log": "~1.0",
+                "psr/log": "^1|^2|^3",
                 "symfony/cache-contracts": "^1.1.7|^2",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/service-contracts": "^1.1|^2",
                 "symfony/var-exporter": "^4.2|^5.0"
             },
@@ -11400,7 +11401,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v4.4.26"
+                "source": "https://github.com/symfony/cache/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -11416,7 +11417,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-23T18:14:43+00:00"
+            "time": "2021-07-23T15:41:52+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -12788,23 +12789,24 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v4.4.26",
+            "version": "v4.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "78bd3796452b2e47d585f807dbfca945cfe34a73"
+                "reference": "ade6979785bb799e08912f3104959fb169739462"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/78bd3796452b2e47d585f807dbfca945cfe34a73",
-                "reference": "78bd3796452b2e47d585f807dbfca945cfe34a73",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/ade6979785bb799e08912f3104959fb169739462",
+                "reference": "ade6979785bb799e08912f3104959fb169739462",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
-                "psr/log": "^1.0",
+                "psr/log": "^1|^2|^3",
                 "symfony/http-client-contracts": "^1.1.10|^2",
                 "symfony/polyfill-php73": "^1.11",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/service-contracts": "^1.0|^2"
             },
             "provide": {
@@ -12848,7 +12850,7 @@
             "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v4.4.26"
+                "source": "https://github.com/symfony/http-client/tree/v4.4.27"
             },
             "funding": [
                 {
@@ -12864,7 +12866,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-23T20:58:46+00:00"
+            "time": "2021-07-23T15:41:52+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -13926,16 +13928,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.23.0",
+            "version": "v1.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "eca0bf41ed421bed1b57c4958bab16aa86b757d0"
+                "reference": "1100343ed1a92e3a38f9ae122fc0eb21602547be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/eca0bf41ed421bed1b57c4958bab16aa86b757d0",
-                "reference": "eca0bf41ed421bed1b57c4958bab16aa86b757d0",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/1100343ed1a92e3a38f9ae122fc0eb21602547be",
+                "reference": "1100343ed1a92e3a38f9ae122fc0eb21602547be",
                 "shasum": ""
             },
             "require": {
@@ -13989,7 +13991,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.23.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.23.1"
             },
             "funding": [
                 {
@@ -14005,7 +14007,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-19T12:13:01+00:00"
+            "time": "2021-07-28T13:41:28+00:00"
         },
         {
             "name": "symfony/polyfill-php81",
@@ -15826,20 +15828,21 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v4.4.26",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "ac8cd05f3a70ee2805070ebdf7a0e0ddea574f91"
+                "reference": "b7898a65fc91e7c41de7a88c7db9aee9c0d432f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/ac8cd05f3a70ee2805070ebdf7a0e0ddea574f91",
-                "reference": "ac8cd05f3a70ee2805070ebdf7a0e0ddea574f91",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/b7898a65fc91e7c41de7a88c7db9aee9c0d432f0",
+                "reference": "b7898a65fc91e7c41de7a88c7db9aee9c0d432f0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3"
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.16"
             },
             "require-dev": {
                 "symfony/var-dumper": "^4.4.9|^5.0.9"
@@ -15878,7 +15881,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v4.4.26"
+                "source": "https://github.com/symfony/var-exporter/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -15894,7 +15897,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-26T11:58:58+00:00"
+            "time": "2021-07-21T12:38:00+00:00"
         },
         {
             "name": "symfony/workflow",
@@ -15981,16 +15984,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.26",
+            "version": "v4.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "e096ef4b4c4c9a2f72c2ac660f54352cd31c60f8"
+                "reference": "3abcc4db06d4e776825eaa3ed8ad924d5bc7432a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/e096ef4b4c4c9a2f72c2ac660f54352cd31c60f8",
-                "reference": "e096ef4b4c4c9a2f72c2ac660f54352cd31c60f8",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/3abcc4db06d4e776825eaa3ed8ad924d5bc7432a",
+                "reference": "3abcc4db06d4e776825eaa3ed8ad924d5bc7432a",
                 "shasum": ""
             },
             "require": {
@@ -16032,7 +16035,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.26"
+                "source": "https://github.com/symfony/yaml/tree/v4.4.29"
             },
             "funding": [
                 {
@@ -16048,7 +16051,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-23T19:06:53+00:00"
+            "time": "2021-07-27T16:19:30+00:00"
         },
         {
             "name": "tackk/cartographer",
