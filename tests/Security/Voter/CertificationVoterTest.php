@@ -6,7 +6,7 @@ use App\Adherent\Certification\CertificationPermissions;
 use App\Collection\CertificationRequestCollection;
 use App\Entity\Adherent;
 use App\Security\Voter\AbstractAdherentVoter;
-use App\Security\Voter\DataCornerVoter;
+use App\Security\Voter\CertificationVoter;
 
 /**
  * @group certification
@@ -21,7 +21,7 @@ class CertificationVoterTest extends AbstractAdherentVoterTest
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new DataCornerVoter();
+        return new CertificationVoter();
     }
 
     /**
