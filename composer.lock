@@ -13019,16 +13019,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v4.4.28",
+            "version": "v4.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "7370efeb3ee5120c71d12f7a50b920305b2ae544"
+                "reference": "752b170e1ba0dd4104e7fa17c1cef1ec8a7fc506"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/7370efeb3ee5120c71d12f7a50b920305b2ae544",
-                "reference": "7370efeb3ee5120c71d12f7a50b920305b2ae544",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/752b170e1ba0dd4104e7fa17c1cef1ec8a7fc506",
+                "reference": "752b170e1ba0dd4104e7fa17c1cef1ec8a7fc506",
                 "shasum": ""
             },
             "require": {
@@ -13103,7 +13103,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v4.4.28"
+                "source": "https://github.com/symfony/http-kernel/tree/v4.4.29"
             },
             "funding": [
                 {
@@ -13119,7 +13119,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-27T04:31:34+00:00"
+            "time": "2021-07-29T06:45:05+00:00"
         },
         {
             "name": "symfony/inflector",
@@ -14550,16 +14550,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v4.4.26",
+            "version": "v4.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "64b34827d764ef3cd2c86f3f6a3c56742efbfde5"
+                "reference": "3053d8faa77a40491727445e410868a2a3762ff8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/64b34827d764ef3cd2c86f3f6a3c56742efbfde5",
-                "reference": "64b34827d764ef3cd2c86f3f6a3c56742efbfde5",
+                "url": "https://api.github.com/repos/symfony/security/zipball/3053d8faa77a40491727445e410868a2a3762ff8",
+                "reference": "3053d8faa77a40491727445e410868a2a3762ff8",
                 "shasum": ""
             },
             "require": {
@@ -14567,6 +14567,7 @@
                 "symfony/event-dispatcher-contracts": "^1.1|^2",
                 "symfony/http-foundation": "^3.4.40|^4.4.7|^5.0.7",
                 "symfony/http-kernel": "^4.4",
+                "symfony/polyfill-php80": "^1.16",
                 "symfony/property-access": "^3.4|^4.0|^5.0",
                 "symfony/service-contracts": "^1.1|^2"
             },
@@ -14582,7 +14583,7 @@
             },
             "require-dev": {
                 "psr/container": "^1.0|^2.0",
-                "psr/log": "~1.0",
+                "psr/log": "^1|^2|^3",
                 "symfony/expression-language": "^3.4|^4.0|^5.0",
                 "symfony/finder": "^3.4|^4.0|^5.0",
                 "symfony/ldap": "^4.4|^5.0",
@@ -14629,7 +14630,7 @@
             "description": "Provides a complete security system for your web application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/security/tree/v4.4.26"
+                "source": "https://github.com/symfony/security/tree/v4.4.29"
             },
             "funding": [
                 {
@@ -14645,7 +14646,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-23T21:43:12+00:00"
+            "time": "2021-07-27T06:31:16+00:00"
         },
         {
             "name": "symfony/security-acl",
@@ -15747,16 +15748,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.3.4",
+            "version": "v5.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "a895407f7cf55da42aa1480935d707684b690bfc"
+                "reference": "3dd8ddd1e260e58ecc61bb78da3b6584b3bfcba0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/a895407f7cf55da42aa1480935d707684b690bfc",
-                "reference": "a895407f7cf55da42aa1480935d707684b690bfc",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/3dd8ddd1e260e58ecc61bb78da3b6584b3bfcba0",
+                "reference": "3dd8ddd1e260e58ecc61bb78da3b6584b3bfcba0",
                 "shasum": ""
             },
             "require": {
@@ -15815,7 +15816,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.3.4"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.3.6"
             },
             "funding": [
                 {
@@ -15831,7 +15832,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:55:36+00:00"
+            "time": "2021-07-27T01:56:02+00:00"
         },
         {
             "name": "symfony/var-exporter",
