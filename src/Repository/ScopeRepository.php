@@ -19,16 +19,16 @@ class ScopeRepository extends ServiceEntityRepository
         return $this->findOneBy(['code' => $code]);
     }
 
-    /**
-     * @return Scope[]|array
-     */
-    public function findGrantedForDataCorner(): array
+    public function findCodesGrantedForDataCorner(): array
     {
-        return $this->createQueryBuilder('scope')
+        $codes = $this->createQueryBuilder('scope')
+            ->select('scope.code')
             ->where('FIND_IN_SET(:data_corner, scope.apps) > 0')
             ->setParameter('data_corner', AppEnum::DATA_CORNER)
             ->getQuery()
-            ->getResult()
+            ->getArrayResult()
         ;
+
+        return array_map('current', $codes);
     }
 }

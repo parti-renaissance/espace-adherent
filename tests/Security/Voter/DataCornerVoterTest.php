@@ -3,7 +3,6 @@
 namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Entity\Scope;
 use App\Repository\ScopeRepository;
 use App\Scope\ScopeEnum;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -18,9 +17,9 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        $scopeRepository = $this->createConfiguredMock(ScopeRepository::class, ['findGrantedForDataCorner' => [
-            $this->createConfiguredMock(Scope::class, ['getCode' => ScopeEnum::SENATOR]),
-            $this->createConfiguredMock(Scope::class, ['getCode' => ScopeEnum::DEPUTY]),
+        $scopeRepository = $this->createConfiguredMock(ScopeRepository::class, ['findCodesGrantedForDataCorner' => [
+            ScopeEnum::SENATOR,
+            ScopeEnum::DEPUTY,
         ]]);
 
         return new DataCornerVoter($scopeRepository);

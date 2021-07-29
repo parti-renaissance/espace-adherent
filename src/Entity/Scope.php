@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Scope
 {
     /**
-     * @var string|null
+     * @var int|null
      *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})

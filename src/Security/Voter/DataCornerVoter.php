@@ -3,7 +3,6 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Entity\Scope;
 use App\Repository\ScopeRepository;
 use App\Scope\ScopeEnum;
 
@@ -25,51 +24,18 @@ class DataCornerVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        foreach ($this->findScopesGrantedForDataCorner() as $scope) {
-            switch ($scope->getCode()) {
-                case ScopeEnum::REFERENT:
-                    if ($adherent->isReferent()) {
-                        return true;
-                    }
+        $codes = $this->findCodesGrantedForDataCorner();
 
-                    break;
-                case ScopeEnum::DEPUTY:
-                    if ($adherent->isDeputy()) {
-                        return true;
-                    }
-
-                    break;
-                case ScopeEnum::CANDIDATE:
-                    if ($adherent->isHeadedRegionalCandidate()) {
-                        return true;
-                    }
-
-                    break;
-                case ScopeEnum::SENATOR:
-                    if ($adherent->isSenator()) {
-                        return true;
-                    }
-
-                    break;
-                case ScopeEnum::NATIONAL:
-                    if ($adherent->hasNationalRole()) {
-                        return true;
-                    }
-
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('Scope entity with code "%s" has not been defined in the "%s" voter.', $scope->getCode(), self::class));
-            }
-        }
-
-        return false;
+        return (\in_array(ScopeEnum::REFERENT, $codes) && $adherent->isReferent())
+            || (\in_array(ScopeEnum::DEPUTY, $codes) && $adherent->isDeputy())
+            || (\in_array(ScopeEnum::CANDIDATE, $codes) && $adherent->isHeadedRegionalCandidate())
+            || (\in_array(ScopeEnum::SENATOR, $codes) && $adherent->isSenator())
+            || (\in_array(ScopeEnum::NATIONAL, $codes) && $adherent->hasNationalRole())
+        ;
     }
 
-    /**
-     * @return Scope[]|array
-     */
-    private function findScopesGrantedForDataCorner(): array
+    private function findCodesGrantedForDataCorner(): array
     {
-        return $this->scopeRepository->findGrantedForDataCorner();
+        return $this->scopeRepository->findCodesGrantedForDataCorner();
     }
 }
