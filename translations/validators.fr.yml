@@ -104,6 +104,13 @@ adherent_profile.facebook_page_url.invalid: Cette URL ne semble pas être une UR
 adherent_profile.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
 adherent_profile.linkedin_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
 adherent_profile.telegram_page_url.invalid: Cette URL ne semble pas être une URL Telegram valide.
+adherent_profile.nationality.not_blank: La nationalité est requise.
+adherent_profile.email.not_blank: L'adresse email est requise.
+adherent_profile.mandates.invalid_choice: Une ou plusieurs des valeurs des mandats sont invalides. Merci de contacter le support.
+adherent_profile.subscription_types.invalid_choice: Une ou plusieurs des valeurs de la suscription aux notifications sont invalides. Merci de contacter le support.
+adherent_profile.coalition_subscription.invalid: La valeur de la suscription à l'actualité des coalitions doit être booléenne.
+adherent_profile.cause_subscription.invalid: La valeur de la suscription à l'actualité des causes doit être booléenne.
+adherent_profile.coalitions_cgu_accepted.invalid: La valeur des CGU de la plateforme pourunecause.fr doit être booléenne.
 
 #
 # Committee

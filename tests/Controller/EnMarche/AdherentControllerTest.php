@@ -181,6 +181,7 @@ class AdherentControllerTest extends WebTestCase
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'adherent_profile' => [
+                'emailAddress' => '',
                 'gender' => 'male',
                 'firstName' => '',
                 'lastName' => '',
@@ -203,17 +204,19 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.em-form--error');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        self::assertSame(6, $errors->count());
+        self::assertSame(7, $errors->count());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
+        self::assertSame('La nationalité est requise.', $errors->eq(2)->text());
         self::assertSame('L\'adresse est obligatoire.', $errors->eq(3)->text());
         self::assertSame('Veuillez renseigner un code postal.', $errors->eq(4)->text());
         self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(5)->text());
+        self::assertSame('L\'adresse email est requise.', $errors->eq(6)->text());
 
         // Submit the profile form with too long input
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'adherent_profile' => [
+                'emailAddress' => 'carl999@example.fr',
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
