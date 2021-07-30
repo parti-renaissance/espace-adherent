@@ -65,9 +65,9 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 RUN chmod 0444 gcloud-service-key.json && \
     mkdir /run/php && \
     mkdir var && \
-    APP_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
-    APP_ENV=prod bin/console cache:clear --no-warmup && \
-    APP_ENV=prod bin/console cache:warmup && \
+    APP_ENV=dev composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
+    APP_ENV=dev bin/console cache:clear --no-warmup && \
+    APP_ENV=dev bin/console cache:warmup && \
     chown -R www-data:www-data var && \
     cp docker/prod/php.ini /etc/php/7.3/cli/conf.d/50-setting.ini && \
     mv docker/prod/php.ini /etc/php/7.3/fpm/conf.d/50-setting.ini && \
