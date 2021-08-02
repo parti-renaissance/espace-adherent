@@ -360,7 +360,7 @@ Feature:
       "violations": [
         {
           "propertyPath": "subscription_types",
-          "message": "Une ou plusieurs des valeurs soumises sont invalides."
+          "message": "Une ou plusieurs des valeurs de la suscription aux notifications sont invalides. Merci de contacter le support."
         }
       ]
     }

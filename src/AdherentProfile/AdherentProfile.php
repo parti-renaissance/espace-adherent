@@ -98,7 +98,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="adherent_profile.nationality.not_blank")
      * @Assert\Country(message="common.nationality.invalid", groups={"Default", "api_put_validation"})
      *
      * @SymfonySerializer\Groups({"profile_write"})
@@ -108,7 +108,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="adherent_profile.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      *
@@ -208,6 +208,7 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\Choice(
      *     callback={"App\Membership\Mandates", "all"},
+     *     multipleMessage="adherent_profile.mandates.invalid_choice",
      *     multiple=true
      * )
      */
@@ -227,6 +228,7 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\Choice(
      *     choices=App\Subscription\SubscriptionTypeEnum::ADHERENT_TYPES,
+     *     multipleMessage="adherent_profile.subscription_types.invalid_choice",
      *     multiple=true,
      *     strict=true
      * )
@@ -238,7 +240,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var bool
      *
-     * @Assert\Type("bool")
+     * @Assert\Type("bool", message="adherent_profile.coalition_subscription.invalid")
      *
      * @SymfonySerializer\Groups({"profile_write"})
      */
@@ -247,7 +249,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var bool
      *
-     * @Assert\Type("bool")
+     * @Assert\Type("bool", message="adherent_profile.cause_subscription.invalid")
      *
      * @SymfonySerializer\Groups({"profile_write"})
      */
@@ -256,7 +258,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var bool
      *
-     * @Assert\Type("bool")
+     * @Assert\Type("bool", message="adherent_profile.coalitions_cgu_accepted.invalid")
      *
      * @SymfonySerializer\Groups({"profile_write"})
      */
