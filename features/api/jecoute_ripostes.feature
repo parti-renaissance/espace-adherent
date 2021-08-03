@@ -9,6 +9,26 @@ Feature:
       | LoadAdherentData        |
       | LoadJecouteRiposteData  |
 
+  Scenario Outline: As a non logged-in user I can not manage ripostes
+    Given I send a "<method>" request to "<url>"
+    Then the response status code should be 401
+    Examples:
+      | method  | url                                                     |
+      | POST    | /api/v3/ripostes                                        |
+      | GET     | /api/v3/ripostes                                        |
+      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
+      | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
+
+  Scenario Outline: As a logged-in user with no correct rights I can not manage ripostes
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method  | url                                                     |
+      | GET     | /api/v3/ripostes                                        |
+      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
+      | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
+
   Scenario: As a logged-in user I can retrieve ripostes
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/ripostes"
@@ -19,7 +39,7 @@ Feature:
     {
       "title": "La plus récente riposte d'aujourd'hui avec un URL et notification",
       "body": "Le texte de la plus récente riposte d'aujourd'hui avec un lien http://riposte.fr",
-      "source_url": "a-repondre.fr",
+      "source_url": "https://a-repondre.fr",
       "with_notification": true,
       "uuid": "220bd36e-4ac4-488a-8473-8e99a71efba4",
       "created_at": "@string@.isDateTime()"
@@ -52,12 +72,114 @@ Feature:
   {
     "title": "La plus récente riposte d'aujourd'hui avec un URL et notification",
     "body": "Le texte de la plus récente riposte d'aujourd'hui avec un lien http://riposte.fr",
-    "source_url": "a-repondre.fr",
+    "source_url": "https://a-repondre.fr",
     "with_notification": true,
     "uuid": "220bd36e-4ac4-488a-8473-8e99a71efba4",
     "created_at": "@string@.isDateTime()"
   }
   """
+
+  Scenario: As a logged-in user with no correct rights I cannot create a riposte
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/ripostes" with body:
+    """
+    {
+      "title": "Une nouvelle riposte d'aujourd'hui",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "source_url": "aujourdhui.fr",
+      "with_notification": true
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I cannot create a riposte with no data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/ripostes" with body:
+    """
+    {}
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "type":"https://tools.ietf.org/html/rfc2616#section-10",
+       "title":"An error occurred",
+       "detail":"title: Cette valeur ne doit pas être vide.\nbody: Cette valeur ne doit pas être vide.",
+       "violations":[
+          {
+             "propertyPath":"title",
+             "message":"Cette valeur ne doit pas être vide."
+          },
+          {
+             "propertyPath":"body",
+             "message":"Cette valeur ne doit pas être vide."
+          }
+       ]
+    }
+    """
+
+  Scenario: As a logged-in user I cannot create a riposte with invalid data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/ripostes" with body:
+    """
+    {
+      "title": "Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui",
+      "with_notification": "true"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "title: Vous devez saisir au maximum 255 caractères.\nbody: Cette valeur ne doit pas être vide.\nwith_notification: Cette valeur doit être de type bool.",
+      "violations": [
+        {
+          "propertyPath": "title",
+          "message": "Vous devez saisir au maximum 255 caractères."
+        },
+        {
+          "propertyPath": "body",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "with_notification",
+          "message": "Cette valeur doit être de type bool."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a logged-in user I can create a riposte
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/ripostes" with body:
+    """
+    {
+      "title": "Une nouvelle riposte d'aujourd'hui",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "source_url": "aujourdhui.fr",
+      "with_notification": true
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Une nouvelle riposte d'aujourd'hui",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "source_url": "https://aujourdhui.fr",
+      "with_notification": true,
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()"
+    }
+    """
 
   Scenario: As a logged-in user I cannot retrieve disabled riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -69,20 +191,12 @@ Feature:
     When I send a "GET" request to "/api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4"
     Then the response status code should be 404
 
-  Scenario: As a non logged-in user I cannot retrieve ripostes
-    Given I send a "GET" request to "/api/v3/ripostes"
-    Then the response status code should be 401
+  Scenario: As a logged-in user I can delete my riposte
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/ripostes/10ac465f-a2f9-44f1-9d80-8f2653a1b496"
+    Then the response status code should be 204
 
-  Scenario: As a non logged-in user I cannot get a riposte
-    Given I send a "GET" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4"
-    Then the response status code should be 401
-
-  Scenario: As a logged-in user with no correct rights I cannot retrieve ripostes
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/ripostes"
-    Then the response status code should be 403
-
-  Scenario: As a logged-in user with no correct rights I cannot get a riposte
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4"
+  Scenario: As a logged-in user I cannot delete not my riposte
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4"
     Then the response status code should be 403

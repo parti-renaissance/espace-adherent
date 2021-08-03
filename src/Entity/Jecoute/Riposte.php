@@ -3,6 +3,7 @@
 namespace App\Entity\Jecoute;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
@@ -22,9 +23,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "pagination_enabled": false,
  *         "access_control": "is_granted('ROLE_NATIONAL')",
  *         "normalization_context": {"groups": {"riposte_read"}},
+ *         "denormalization_context": {"groups": {"riposte_write"}},
  *     },
  *     collectionOperations={
  *         "get": {
+ *             "path": "/v3/ripostes",
+ *         },
+ *         "post": {
  *             "path": "/v3/ripostes",
  *         },
  *     },
@@ -32,6 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/ripostes/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *         },
+ *         "delete": {
+ *             "path": "/v3/ripostes/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getAuthor() == user",
  *         },
  *     }
  * )
@@ -50,7 +60,7 @@ class Riposte
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"riposte_read"})
+     * @Groups({"riposte_read", "riposte_write"})
      */
     private $title;
 
@@ -61,7 +71,7 @@ class Riposte
      *
      * @Assert\NotBlank
      *
-     * @Groups({"riposte_read"})
+     * @Groups({"riposte_read", "riposte_write"})
      */
     private $body;
 
@@ -72,7 +82,7 @@ class Riposte
      *
      * @Assert\Url
      *
-     * @Groups({"riposte_read"})
+     * @Groups({"riposte_read", "riposte_write"})
      */
     private $sourceUrl;
 
@@ -81,7 +91,9 @@ class Riposte
      *
      * @ORM\Column(type="boolean", options={"default": true})
      *
-     * @Groups({"riposte_read"})
+     * @Assert\Type("bool")
+     *
+     * @Groups({"riposte_read", "riposte_write"})
      */
     private $withNotification;
 
@@ -165,6 +177,11 @@ class Riposte
     public function setCreatedBy(?Administrator $createdBy): void
     {
         $this->createdBy = $createdBy;
+    }
+
+    public function setAuthor(Adherent $author): void
+    {
+        $this->author = $author;
     }
 
     public function __toString(): string
