@@ -2,6 +2,7 @@
 
 namespace App\Entity\Jecoute;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Administrator;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
@@ -9,11 +10,31 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="jecoute_riposte")
+ *
+ * @ApiResource(
+ *     attributes={
+ *         "pagination_enabled": false,
+ *         "access_control": "is_granted('ROLE_NATIONAL')",
+ *         "normalization_context": {"groups": {"riposte_read"}},
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/ripostes",
+ *         },
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/ripostes/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *         },
+ *     }
+ * )
  */
 class Riposte
 {
@@ -28,6 +49,8 @@ class Riposte
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
+     *
+     * @Groups({"riposte_read"})
      */
     private $title;
 
@@ -37,6 +60,8 @@ class Riposte
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"riposte_read"})
      */
     private $body;
 
@@ -46,6 +71,8 @@ class Riposte
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
+     *
+     * @Groups({"riposte_read"})
      */
     private $sourceUrl;
 
@@ -53,6 +80,8 @@ class Riposte
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"riposte_read"})
      */
     private $withNotification;
 
