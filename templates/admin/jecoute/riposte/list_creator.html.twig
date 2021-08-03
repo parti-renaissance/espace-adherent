@@ -1,0 +1,27 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.author %}
+        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+            <a href="{{ path('admin_app_adherent_edit', { id: object.author.id }) }}">
+                {{ object.author.fullName }}
+            </a>
+        {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+            <a href="{{ path('admin_app_adherent_show', { id: object.author.id }) }}">
+                {{ object.author.fullName }}
+            </a>
+        {% else %}
+            {{ object.author.fullName }}
+        {% endif %}
+    {% elseif object.createdBy %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('admin_app_administrator_edit', { id: object.createdBy.id }) }}">
+                {{ object.createdBy }}
+            </a>
+        {% else %}
+            {{ object.createdBy }}
+        {% endif %}
+    {% else %}
+        <p>Ancien adhérent ou administrateur</p>
+    {% endif %}
+{% endblock %}
