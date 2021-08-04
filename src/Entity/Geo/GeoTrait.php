@@ -37,7 +37,8 @@ trait GeoTrait
      *     "survey_list",
      *     "scopes",
      *     "scope",
-     *     "audience_read"
+     *     "audience_read",
+     *     "audience_segment_read"
      * })
      */
     private $code;
@@ -54,7 +55,8 @@ trait GeoTrait
      *     "survey_list",
      *     "scopes",
      *     "scope",
-     *     "audience_read"
+     *     "audience_read",
+     *     "audience_segment_read"
      * })
      */
     private $name;

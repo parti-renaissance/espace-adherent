@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,6 +17,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $gender;
 
@@ -23,6 +26,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $ageMin;
 
@@ -30,6 +35,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $ageMax;
 
@@ -39,6 +46,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $firstName;
 
@@ -48,6 +57,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $lastName;
 
@@ -71,6 +82,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $registeredSince;
 
@@ -78,6 +91,8 @@ abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implemen
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $registeredUntil;
 

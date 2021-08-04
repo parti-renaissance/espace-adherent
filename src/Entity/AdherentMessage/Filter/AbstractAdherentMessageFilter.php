@@ -48,10 +48,10 @@ abstract class AbstractAdherentMessageFilter implements AdherentMessageFilterInt
 
     public function getExternalId(): ?string
     {
-        return $this->message->getExternalId();
+        return $this->message ? $this->message->getExternalId() : null;
     }
 
-    public function getMessage(): AdherentMessageInterface
+    public function getMessage(): ?AdherentMessageInterface
     {
         return $this->message;
     }
