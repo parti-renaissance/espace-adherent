@@ -4,6 +4,7 @@ namespace App\Normalizer;
 
 use App\Entity\Coalition\QuickAction;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Jecoute\Riposte;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +22,8 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
         $urlProperty = 'url';
         if (is_a($type, BaseEvent::class, true)) {
             $urlProperty = 'visio_url';
+        } elseif (is_a($type, Riposte::class, true)) {
+            $urlProperty = 'source_url';
         }
 
         $url = $data[$urlProperty] ?? '';
@@ -38,6 +41,7 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
             && (
                 is_a($type, BaseEvent::class, true)
                 || QuickAction::class === $type
+                || Riposte::class === $type
             );
     }
 }

@@ -24,7 +24,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             self::RIPOSTE_1_UUID,
             'La plus récente riposte d\'aujourd\'hui avec un URL et notification',
             'Le texte de la plus récente riposte d\'aujourd\'hui avec un lien http://riposte.fr',
-            'a-repondre.fr',
+            'https://a-repondre.fr',
         );
         $riposteTodayWithoutUrl = $this->createRiposte(
             self::RIPOSTE_2_UUID,
@@ -39,7 +39,9 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             'Le texte de la riposte sans URL et notification',
             null,
             '-12 hours',
-            false
+            false,
+            true,
+            $this->getReference('deputy-75-1')
         );
         $riposteTodayDisabled = $this->createRiposte(
             self::RIPOSTE_4_UUID,
@@ -54,7 +56,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             self::RIPOSTE_5_UUID,
             'La riposte d\'avant-hier avec un URL et notification',
             'Le texte de la riposte d\'avant-hier avec un lien http://riposte.fr',
-            'a-repondre-avant-hier.fr',
+            'https://a-repondre-avant-hier.fr',
             '-2 days'
         );
 
@@ -83,6 +85,10 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         $riposte->setBody($body);
         $riposte->setSourceUrl($sourceUrl);
         $riposte->setCreatedAt(new \DateTime($createdAt));
+        if ($author) {
+            $riposte->setAuthor($author);
+        }
+
         if (!$author && !$admin) {
             $riposte->setCreatedBy($this->getReference('administrator-2'));
         }
@@ -94,6 +100,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
     {
         return [
             LoadAdminData::class,
+            LoadAdherentData::class,
         ];
     }
 }
