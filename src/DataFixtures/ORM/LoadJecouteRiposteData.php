@@ -55,6 +55,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             'La riposte d\'avant-hier avec un URL et notification',
             'Le texte de la riposte d\'avant-hier avec un lien http://riposte.fr',
             'a-repondre-avant-hier.fr',
+            '-2 days'
         );
 
         $manager->persist($riposteTodayLast);
