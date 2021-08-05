@@ -33,7 +33,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Conseiller(e) municipal(e) (DIV)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Rouen (76540)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(3)->text()));
+        $this->assertStringContainsString(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(4)->text()));
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertStringContainsString('Oui', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
