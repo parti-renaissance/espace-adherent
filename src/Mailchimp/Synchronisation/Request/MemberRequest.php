@@ -35,6 +35,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_CODE_REGION = 'CODE_REGIO';
     public const MERGE_FIELD_ZONE = 'ZONE';
     public const MERGE_FIELD_SOURCE = 'SOURCE';
+    public const MERGE_FIELD_CERTIFIED = 'CERTIFIED';
 
     private $memberIdentifier;
 
