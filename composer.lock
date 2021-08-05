@@ -18032,16 +18032,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "64c554bcef3c3b4702fcf34c227a316b47139b66"
+                "reference": "990b979379502feb7f393d6c9aa36cc9b9765f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/64c554bcef3c3b4702fcf34c227a316b47139b66",
-                "reference": "64c554bcef3c3b4702fcf34c227a316b47139b66",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/990b979379502feb7f393d6c9aa36cc9b9765f24",
+                "reference": "990b979379502feb7f393d6c9aa36cc9b9765f24",
                 "shasum": ""
             },
             "require": {
@@ -18108,7 +18108,7 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues",
-                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v3.0.1"
+                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v3.0.2"
             },
             "funding": [
                 {
@@ -18116,7 +18116,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-08-02T17:57:52+00:00"
+            "time": "2021-08-04T19:28:19+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
