@@ -628,6 +628,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @JMS\Groups({"adherent_change_diff"})
      */
     private $certifiedAt;
 

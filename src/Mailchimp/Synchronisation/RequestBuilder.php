@@ -37,6 +37,8 @@ class RequestBuilder implements LoggerAwareInterface
     private $countryName;
     private $adhesionDate;
     /** @var bool|null */
+    private $isCertified;
+    /** @var bool|null */
     private $isAdherent;
 
     private $interests;
@@ -91,6 +93,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
             ->setZones($adherent->getZones())
             ->setTeamCode($adherent)
+            ->setIsCertified($adherent->isCertified())
         ;
     }
 
@@ -178,6 +181,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setBirthDay(?\DateTimeInterface $birthDay): self
     {
         $this->birthDay = $birthDay;
+
+        return $this;
+    }
+
+    public function setIsCertified(bool $isCertified = null): self
+    {
+        $this->isCertified = $isCertified;
 
         return $this;
     }
@@ -401,6 +411,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->birthDay) {
             $mergeFields[MemberRequest::MERGE_FIELD_BIRTHDATE] = $this->birthDay->format(MemberRequest::DATE_FORMAT);
+        }
+
+        if (null !== $this->isCertified) {
+            $mergeFields[MemberRequest::MERGE_FIELD_CERTIFIED] = $this->isCertified ? 'oui' : 'non';
         }
 
         if (null !== $this->isAdherent) {
