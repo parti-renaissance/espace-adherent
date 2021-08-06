@@ -3,7 +3,6 @@
 namespace App\Normalizer;
 
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\Audience\AbstractAudience;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -24,10 +23,7 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
 
         $context[self::AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED] = true;
 
-        /** @var AbstractAudience $audience */
-        $audience = $this->denormalizer->denormalize($data, AudienceFilter::class, $format, $context);
-
-        return $audience;
+        return $this->denormalizer->denormalize($data, AudienceFilter::class, $format, $context);
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
