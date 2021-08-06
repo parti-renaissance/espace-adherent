@@ -9,8 +9,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  */
-class AudienceFilter extends AbstractUserFilter
+class AudienceFilter extends AbstractAdherentFilter
 {
+    use GeneralFilterTrait;
+
     /**
      * @var bool
      *

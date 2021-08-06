@@ -8,20 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="adherent_message_filters")
- * @ORM\InheritanceType("SINGLE_TABLE")
  */
-abstract class AbstractAdherentMessageFilter implements AdherentMessageFilterInterface
+abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter implements AdherentMessageFilterInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
     /**
      * @var AdherentMessageInterface
      *
@@ -29,29 +18,12 @@ abstract class AbstractAdherentMessageFilter implements AdherentMessageFilterInt
      */
     private $message;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $synchronized = false;
-
-    public function setSynchronized(bool $value): void
-    {
-        $this->synchronized = $value;
-    }
-
-    public function isSynchronized(): bool
-    {
-        return $this->synchronized;
-    }
-
     public function getExternalId(): ?string
     {
-        return $this->message ? $this->message->getExternalId() : null;
+        return $this->message->getExternalId();
     }
 
-    public function getMessage(): ?AdherentMessageInterface
+    public function getMessage(): AdherentMessageInterface
     {
         return $this->message;
     }
