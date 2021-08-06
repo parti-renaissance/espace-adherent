@@ -52,6 +52,8 @@ trait EntityIdentityTrait
      *     "audience_read",
      *     "audience_list_read",
      *     "riposte_read",
+     *     "riposte_read",
+     *     "audience_segment_read",
      * })
      *
      * @ApiProperty(
