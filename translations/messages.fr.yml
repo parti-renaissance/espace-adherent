@@ -1148,3 +1148,14 @@ scope.feature.mobile_app: Application Mobile
 scope.feature.elections: Elections
 
 scope.app.data_corner: DataCorner
+
+#
+# Team
+#
+team.type.phoning: Phoning
+
+#
+# TeamMemberHistory
+#
+team_member_history.action.add: Ajout
+team_member_history.action.remove: SUppression

@@ -513,3 +513,15 @@ internal_api_application.validation.application_name_length: Le nom de l'applica
 #
 audience_segment.scope.invalid_choice: Le scope n'est pas valide.
 audience.zones.empty: Le périmètre géographique ne doit pas être vide
+
+#
+# Team
+#
+team.member.already_exists: Cet adhérent fait déjà parti de cette équipe.
+team.member.adherent.not_blank: Veuillez sélectiionner un adhérent.
+team.type_name.already_exists: Une équipe du même type porte déjà le même nom.
+team.name.not_blank: Veuillez spécifier un nom d'équipe.
+team.name.min_length: Le nom de l'équipe doit fait au moins {{ limit }} caractères.
+team.name.max_length: Le nom de l'équipe ne doit pas dépasser {{ limit }} caractères.
+team.type.not_blank: Veuillez spécifier un type d'équipe.
+team.type.choice: Le type d'équipe n'est pas valide.
