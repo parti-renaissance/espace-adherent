@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
 use App\Entity\Geo\Zone;
+use App\Scope\ScopeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -22,6 +23,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         $segment1 = $this->createSegment(
             self::SEGMENT_1_UUID,
             $this->getReference('adherent-8'),
+            ScopeEnum::REFERENT,
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             'Maria',
             'Dupont',
@@ -37,6 +39,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         $segment2 = $this->createSegment(
             self::SEGMENT_2_UUID,
             $this->getReference('deputy-75-1'),
+            ScopeEnum::DEPUTY,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             null,
             null,
@@ -59,6 +62,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
     public function createSegment(
         string $uuid,
         Adherent $author,
+        string $scope,
         Zone $zone,
         string $firstName = null,
         string $lastName = null,
@@ -74,6 +78,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         $segment = new AudienceSegment(Uuid::fromString($uuid));
         $segment->setAuthor($author);
         $filter = new AudienceFilter();
+        $filter->setScope($scope);
         $filter->setZone($zone);
         $filter->setFirstName($firstName);
         $filter->setLastName($lastName);

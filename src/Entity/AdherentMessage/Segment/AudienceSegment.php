@@ -3,12 +3,13 @@
 namespace App\Entity\AdherentMessage\Segment;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\AdherentMessage\StaticSegmentInterface;
+use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AuthorInterface;
+use App\Entity\DynamicSegmentTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\StaticSegmentTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -48,10 +49,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class AudienceSegment implements AuthorInterface, StaticSegmentInterface
+class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
 {
     use EntityIdentityTrait;
-    use StaticSegmentTrait;
+    use DynamicSegmentTrait;
 
     /**
      * @var AudienceFilter|null
@@ -81,30 +82,12 @@ class AudienceSegment implements AuthorInterface, StaticSegmentInterface
      */
     private $author;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true}, nullable=true)
-     *
-     * @Groups({"audience_segment_read"})
-     */
-    private $recipientCount;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"audience_segment_read"})
-     */
-    private $synchronized = false;
-
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public function getFilter(): ?AudienceFilter
+    public function getFilter(): ?SegmentFilterInterface
     {
         return $this->filter;
     }
@@ -122,25 +105,5 @@ class AudienceSegment implements AuthorInterface, StaticSegmentInterface
     public function setAuthor(?Adherent $author): void
     {
         $this->author = $author;
-    }
-
-    public function getRecipientCount(): ?int
-    {
-        return $this->recipientCount;
-    }
-
-    public function setRecipientCount(?int $recipientCount): void
-    {
-        $this->recipientCount = $recipientCount;
-    }
-
-    public function isSynchronized(): bool
-    {
-        return $this->synchronized;
-    }
-
-    public function setSynchronized(bool $synchronized): void
-    {
-        $this->synchronized = $synchronized;
     }
 }

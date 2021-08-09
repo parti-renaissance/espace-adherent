@@ -6,13 +6,17 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
 class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
@@ -31,7 +35,12 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
         ], true);
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
+    {
+        return $filter instanceof AudienceFilter;
+    }
+
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
         $interestKeys = [];
 
@@ -77,6 +86,34 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
             default:
                 throw new \InvalidArgumentException(sprintf('Message type %s does not match any subscription type', $messageClass));
+        }
+
+        return [$this->buildInterestCondition(
+            $interestKeys,
+            $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId()
+        )];
+    }
+
+    /**
+     * @param AudienceFilter $filter
+     */
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
+        switch ($scope = $filter->getScope()) {
+            case ScopeEnum::REFERENT:
+                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
+                break;
+            case ScopeEnum::DEPUTY:
+                $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
+                break;
+            case ScopeEnum::CANDIDATE:
+                $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
+                break;
+            case ScopeEnum::SENATOR:
+                $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Scope %s does not match any subscription type', $scope));
         }
 
         return [$this->buildInterestCondition(

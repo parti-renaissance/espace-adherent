@@ -3,8 +3,10 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Manager;
 
@@ -21,11 +23,21 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
         ;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
     {
-        /** @var AdherentZoneFilter|ReferentUserFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
+        return false;
+    }
 
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
+    {
+        return $this->buildFromFilter($campaign->getMessage()->getFilter());
+    }
+
+    /**
+     * @param AdherentZoneFilter|ReferentUserFilter $filter
+     */
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
         $conditions = [];
         $interestIncludeKeys = [];
         $interestExcludeKeys = [];

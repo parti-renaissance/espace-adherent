@@ -3,9 +3,12 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -19,11 +22,21 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
         ;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
     {
-        /** @var CommitteeFilter|ReferentUserFilter|AdherentZoneFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
+        return $filter instanceof AudienceFilter;
+    }
 
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
+    {
+        return $this->buildFromFilter($campaign->getMessage()->getFilter());
+    }
+
+    /**
+     * @param CommitteeFilter|ReferentUserFilter|AdherentZoneFilter|AudienceFilter $filter
+     */
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
         $conditions = [];
 
         if ($registeredSince = $filter->getRegisteredSince()) {

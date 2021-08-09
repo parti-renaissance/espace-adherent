@@ -27,7 +27,7 @@ class CampaignRequestBuilder
             ->setTemplateId($this->objectIdMapping->getTemplateId($message))
             ->setSubject($message->getSubject())
             ->setTitle($this->createCampaignLabel($campaign))
-            ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($campaign) : [])
+            ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->buildFromMailchimpCampaign($campaign) : [])
             ->setFromName($message->getFromName())
         ;
     }

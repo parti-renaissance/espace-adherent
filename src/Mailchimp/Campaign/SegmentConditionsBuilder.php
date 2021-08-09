@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp\Campaign;
 
+use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
@@ -21,7 +22,7 @@ class SegmentConditionsBuilder
         $this->builders = $builders;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
         $message = $campaign->getMessage();
         $filter = $message->getFilter();
@@ -34,7 +35,7 @@ class SegmentConditionsBuilder
 
         foreach ($this->builders as $builder) {
             if ($builder->support($filter)) {
-                $conditions = array_merge($conditions, $builder->build($campaign));
+                $conditions = array_merge($conditions, $builder->buildFromMailchimpCampaign($campaign));
                 $built = true;
             }
         }
@@ -49,6 +50,33 @@ class SegmentConditionsBuilder
                 'match' => 'all',
                 'conditions' => $conditions ?? [],
             ],
+        ];
+    }
+
+    public function buildFromDynamicSegment(DynamicSegmentInterface $dynamicSegment): array
+    {
+        $filter = $dynamicSegment->getFilter();
+
+        if (!$filter) {
+            throw new \InvalidArgumentException('Filter is null');
+        }
+
+        $conditions = [];
+
+        foreach ($this->builders as $builder) {
+            if ($builder->supportSegmentFilter($filter)) {
+                $conditions = array_merge($conditions, $builder->buildFromFilter($filter));
+                $built = true;
+            }
+        }
+
+        if (!isset($built)) {
+            throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', \get_class($filter)));
+        }
+
+        return [
+            'match' => 'all',
+            'conditions' => $conditions ?? [],
         ];
     }
 

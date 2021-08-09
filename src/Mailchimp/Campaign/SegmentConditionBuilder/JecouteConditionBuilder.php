@@ -3,7 +3,9 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -14,10 +16,21 @@ class JecouteConditionBuilder implements SegmentConditionBuilderInterface
         return $filter instanceof JecouteFilter;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
     {
-        /** @var JecouteFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
+        return false;
+    }
+
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
+    {
+        return $this->buildFromFilter($campaign->getMessage()->getFilter());
+    }
+
+    /**
+     * @param JecouteFilter $filter
+     */
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
         $conditions = [];
 
         $zone = $filter->getZone();

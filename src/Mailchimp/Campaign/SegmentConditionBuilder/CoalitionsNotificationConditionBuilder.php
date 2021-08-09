@@ -4,6 +4,8 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\CoalitionsMessage;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
 
@@ -14,7 +16,12 @@ class CoalitionsNotificationConditionBuilder extends AbstractConditionBuilder
         return $filter->getMessage() instanceof CoalitionsMessage;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
+    {
+        return false;
+    }
+
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
         return [$this->buildInterestCondition(
             [CoalitionMemberRequestBuilder::INTEREST_KEY_CAUSE_SUBSCRIPTION],
@@ -25,5 +32,10 @@ class CoalitionsNotificationConditionBuilder extends AbstractConditionBuilder
     protected function getListInterestIds(): array
     {
         return $this->mailchimpObjectIdMapping->getCoalitionsInterestIds();
+    }
+
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
+        return [];
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Intl\FranceCitiesBundle;
 use App\Mailchimp\Exception\InvalidFilterException;
@@ -24,13 +26,27 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
             );
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
     {
-        /** @var MunicipalChiefFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
+        return false;
+    }
 
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
+    {
+        try {
+            return $this->buildFromFilter($campaign->getMessage()->getFilter());
+        } catch (\RuntimeException $e) {
+            throw new InvalidFilterException($campaign->getMessage(), $e->getMessage());
+        }
+    }
+
+    /**
+     * @param MunicipalChiefFilter $filter
+     */
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
         if (!$inseeCode = $filter->getInseeCode()) {
-            throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
+            throw new \RuntimeException('[MunicipalChiefMessage] Message does not have a valid city value');
         }
 
         $conditions[] = [
@@ -104,7 +120,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
 
         if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode]) && $postalCode = $filter->getPostalCode()) {
             if (false === ($matchedInseeCode = array_search($postalCode, FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode], true))) {
-                throw new InvalidFilterException($campaign->getMessage(), sprintf('[MunicipalChiefMessage] Postal code "%s" not found for the city "%s"', $postalCode, $inseeCode));
+                throw new \RuntimeException(sprintf('[MunicipalChiefMessage] Postal code "%s" not found for the city "%s"', $postalCode, $inseeCode));
             }
 
             $conditions[] = [

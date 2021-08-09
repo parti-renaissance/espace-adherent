@@ -4,6 +4,7 @@ namespace App\Mailchimp;
 
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
+use App\Mailchimp\MailchimpSegment\Request\EditSegmentRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use GuzzleHttp\ClientInterface;
@@ -148,6 +149,19 @@ class Driver implements LoggerAwareInterface
             'DELETE',
             sprintf('/lists/%s/segments/%d/members/%s', $this->listId, $segmentId, $this->createHash($mail))
         );
+    }
+
+    public function createDynamicSegment(string $listId, EditSegmentRequest $request): ResponseInterface
+    {
+        return $this->send('POST', sprintf('/lists/%s/segments', $listId), $request->toArray());
+    }
+
+    public function updateDynamicSegment(
+        string $segmentId,
+        string $listId,
+        EditSegmentRequest $request
+    ): ResponseInterface {
+        return $this->send('PATCH', sprintf('/lists/%s/segments/%s', $listId, $segmentId), $request->toArray());
     }
 
     public function archiveMember(string $mail, string $listId): bool

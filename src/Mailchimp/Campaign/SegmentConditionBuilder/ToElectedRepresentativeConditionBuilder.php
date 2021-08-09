@@ -3,7 +3,9 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
@@ -15,7 +17,12 @@ class ToElectedRepresentativeConditionBuilder extends AbstractConditionBuilder
         return $filter instanceof AbstractElectedRepresentativeFilter;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
+    {
+        return false;
+    }
+
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
         $conditions = array_map(function (MailchimpSegment $mailchimpSegment) {
             return $this->buildStaticSegmentCondition($mailchimpSegment->getExternalId());
@@ -30,5 +37,10 @@ class ToElectedRepresentativeConditionBuilder extends AbstractConditionBuilder
         ];
 
         return $conditions;
+    }
+
+    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    {
+        return [];
     }
 }
