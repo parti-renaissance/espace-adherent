@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\ApplicationRequestCandidate;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\ApplicationRequest\ApplicationRequestRepository;
 use App\ApplicationRequest\ApplicationRequestTypeEnum;
 use App\ApplicationRequest\Filter\ListFilter;
@@ -20,8 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MunicipalChiefSpaceController extends AbstractApplicationRequestController
 {
-    private const SPACE_NAME = 'municipal_chief';
-
     /**
      * @Route("candidature-colistiers/mon-equipe", name="_my_team_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
      * @Route("candidature-benevoles/mon-equipe", name="_my_team_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
@@ -64,7 +63,7 @@ class MunicipalChiefSpaceController extends AbstractApplicationRequestController
 
     protected function getSpaceName(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::MUNICIPAL_CHIEF;
     }
 
     protected function checkAccess(Request $request, ApplicationRequest $applicationRequest = null): void

@@ -2,8 +2,8 @@
 
 namespace App\Controller\EnMarche\Poll;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
-use App\Poll\PollSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +16,7 @@ class PollCandidateController extends AbstractPollController
 {
     protected function getSpaceName(): string
     {
-        return PollSpaceEnum::CANDIDATE_SPACE;
+        return AdherentSpaceEnum::CANDIDATE;
     }
 
     protected function getZones(Adherent $adherent): array

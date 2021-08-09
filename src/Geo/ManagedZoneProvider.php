@@ -2,31 +2,23 @@
 
 namespace App\Geo;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 
 class ManagedZoneProvider
 {
-    public const DEPUTY = 'deputy';
-    public const LRE = 'lre';
-    public const REFERENT = 'referent';
-    public const SENATOR = 'senator';
-    public const SENATORIAL_CANDIDATE = 'senatorial_candidate';
-    public const CANDIDATE = 'candidate';
-    public const CANDIDATE_JECOUTE = 'candidate_jecoute';
-    public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
-
     /**
      * @return Zone[]
      */
     public function getManagedZones(Adherent $adherent, string $spaceType): array
     {
-        if (self::DEPUTY === $spaceType) {
+        if (AdherentSpaceEnum::DEPUTY === $spaceType) {
             return [$adherent->getManagedDistrict()->getReferentTag()->getZone()];
         }
 
-        if (self::LRE === $spaceType) {
+        if (AdherentSpaceEnum::LRE === $spaceType) {
             if ($adherent->getLreArea()->isAllTags()) {
                 return [];
             }
@@ -34,15 +26,15 @@ class ManagedZoneProvider
             return [$adherent->getLreArea()->getReferentTag()->getZone()];
         }
 
-        if (self::REFERENT === $spaceType) {
+        if (AdherentSpaceEnum::REFERENT === $spaceType) {
             return $adherent->getManagedArea()->getZones()->toArray();
         }
 
-        if (self::SENATOR === $spaceType) {
+        if (AdherentSpaceEnum::SENATOR === $spaceType) {
             return [$adherent->getSenatorArea()->getDepartmentTag()->getZone()];
         }
 
-        if (self::SENATORIAL_CANDIDATE === $spaceType) {
+        if (AdherentSpaceEnum::SENATORIAL_CANDIDATE === $spaceType) {
             $zones = [];
 
             /* @var ReferentTag $referentTag */
@@ -54,11 +46,11 @@ class ManagedZoneProvider
             return $zones;
         }
 
-        if (\in_array($spaceType, [self::CANDIDATE, self::CANDIDATE_JECOUTE], true)) {
+        if (\in_array($spaceType, [AdherentSpaceEnum::CANDIDATE, AdherentSpaceEnum::CANDIDATE_JECOUTE], true)) {
             return [$adherent->getCandidateManagedArea()->getZone()];
         }
 
-        if (self::LEGISLATIVE_CANDIDATE === $spaceType) {
+        if (AdherentSpaceEnum::LEGISLATIVE_CANDIDATE === $spaceType) {
             return [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()->getZone()];
         }
 

@@ -2,14 +2,8 @@
 
 namespace App\Controller\EnMarche\ManagedUsers;
 
-use App\Entity\Adherent;
-use App\Form\ManagedUsers\ManagedUsersFilterType;
-use App\Geo\ManagedZoneProvider;
-use App\ManagedUsers\ManagedUsersFilter;
-use App\Subscription\SubscriptionTypeEnum;
+use App\AdherentSpace\AdherentSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,33 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SenatorManagedUsersController extends AbstractManagedUsersController
 {
-    private const SPACE_NAME = ManagedZoneProvider::SENATOR;
-
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
-    }
-
-    protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
-    {
-        return $this->createForm(ManagedUsersFilterType::class, $filter, [
-            'method' => Request::METHOD_GET,
-            'csrf_protection' => false,
-            'space_type' => $this->getSpaceType(),
-        ]);
-    }
-
-    protected function createFilterModel(Request $request): ManagedUsersFilter
-    {
-        /** @var Adherent $adherent */
-        $adherent = $this->getMainUser($request->getSession());
-        $session = $request->getSession();
-
-        return new ManagedUsersFilter(
-            SubscriptionTypeEnum::SENATOR_EMAIL,
-            [$adherent->getSenatorArea()->getDepartmentTag()->getZone()],
-            $this->getRestrictedCommittees($session),
-            $this->getRestrictedCities($session)
-        );
+        return AdherentSpaceEnum::SENATOR;
     }
 }

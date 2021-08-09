@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\ApplicationRequestCandidate;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\ApplicationRequest\ApplicationRequestRepository;
 use App\ApplicationRequest\ApplicationRequestTypeEnum;
 use App\ApplicationRequest\Filter\ListFilter;
@@ -17,8 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferentSpaceController extends AbstractApplicationRequestController
 {
-    private const SPACE_NAME = 'referent';
-
     protected function getApplicationRequests(
         ApplicationRequestRepository $repository,
         string $type,
@@ -33,7 +32,7 @@ class ReferentSpaceController extends AbstractApplicationRequestController
 
     protected function getSpaceName(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::REFERENT;
     }
 
     protected function checkAccess(Request $request, ApplicationRequest $applicationRequest = null): void

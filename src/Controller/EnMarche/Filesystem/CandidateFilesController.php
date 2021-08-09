@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Filesystem;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,10 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CandidateFilesController extends AbstractFilesController
 {
-    public const SPACE_NAME = 'candidate';
-
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::CANDIDATE;
     }
 }

@@ -19,7 +19,7 @@ class DeputyAudience extends AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      *
-     * @ManagedZone(spaceType=App\Geo\ManagedZoneProvider::DEPUTY, message="common.zone.not_managed_zone")
+     * @ManagedZone(spaceType=App\AdherentSpace\AdherentSpaceEnum::DEPUTY, message="common.zone.not_managed_zone")
      */
     protected $zone;
 }

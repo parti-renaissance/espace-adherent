@@ -19,7 +19,7 @@ class CandidateAudience extends AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      *
-     * @ManagedZone(spaceType=App\Geo\ManagedZoneProvider::CANDIDATE, message="common.zone.not_managed_zone")
+     * @ManagedZone(spaceType=App\AdherentSpace\AdherentSpaceEnum::CANDIDATE, message="common.zone.not_managed_zone")
      */
     protected $zone;
 }

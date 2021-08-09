@@ -2,12 +2,12 @@
 
 namespace App\Audience;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Audience\CandidateAudience;
 use App\Entity\Audience\DeputyAudience;
 use App\Entity\Audience\ReferentAudience;
 use App\Entity\Audience\SenatorAudience;
-use App\Geo\ManagedZoneProvider;
 
 class AudienceHelper
 {
@@ -24,13 +24,13 @@ class AudienceHelper
     {
         switch ($audienceClass) {
             case ReferentAudience::class:
-                return ManagedZoneProvider::REFERENT;
+                return AdherentSpaceEnum::REFERENT;
             case DeputyAudience::class:
-                return ManagedZoneProvider::DEPUTY;
+                return AdherentSpaceEnum::DEPUTY;
             case SenatorAudience::class:
-                return ManagedZoneProvider::SENATOR;
+                return AdherentSpaceEnum::SENATOR;
             case CandidateAudience::class:
-                return ManagedZoneProvider::CANDIDATE;
+                return AdherentSpaceEnum::CANDIDATE;
             default:
                 return null;
         }

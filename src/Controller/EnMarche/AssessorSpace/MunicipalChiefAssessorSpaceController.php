@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\AssessorSpace;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Assessor\Filter\AssessorRequestExportFilter;
 use App\Assessor\Filter\AssociationVotePlaceFilter;
 use App\Entity\Election;
@@ -19,11 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceController
 {
-    private const SPACE_NAME = 'municipal_chief';
-
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::MUNICIPAL_CHIEF;
     }
 
     protected function getAssessorRequestExportFilter(): AssessorRequestExportFilter

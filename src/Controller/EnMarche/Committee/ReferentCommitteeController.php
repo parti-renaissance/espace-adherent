@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche\Committee;
 
-use App\Committee\CommitteeSpaceEnum;
+use App\AdherentSpace\AdherentSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,7 +15,7 @@ class ReferentCommitteeController extends AbstractCommitteeController
 {
     protected function getSpaceType(): string
     {
-        return CommitteeSpaceEnum::REFERENT_SPACE;
+        return AdherentSpaceEnum::REFERENT;
     }
 
     protected function getWithProvisionalSupervisors(): bool

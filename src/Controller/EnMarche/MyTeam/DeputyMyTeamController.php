@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\MyTeam;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -14,8 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DeputyMyTeamController extends AbstractMyTeamController
 {
-    private const SPACE_NAME = 'deputy';
-
     protected function getCommittees(Adherent $adherent, string $term, CommitteeRepository $committeeRepository): array
     {
         return $committeeRepository->findByPartialNameForDeputy($adherent, $term);
@@ -33,6 +32,6 @@ class DeputyMyTeamController extends AbstractMyTeamController
 
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::DEPUTY;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\EventManager;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Event\EventGroupCategory;
 use App\Event\EventManagerSpaceEnum;
@@ -46,7 +47,7 @@ class CandidateEventManagerController extends AbstractEventManagerController
     protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            $managedZones = $this->managedZoneProvider->getManagedZones($adherent, ManagedZoneProvider::CANDIDATE);
+            $managedZones = $this->managedZoneProvider->getManagedZones($adherent, AdherentSpaceEnum::CANDIDATE);
 
             return $this->repository->findManagedByPaginator($managedZones, $page);
         }

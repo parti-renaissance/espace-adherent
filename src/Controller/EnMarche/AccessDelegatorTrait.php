@@ -11,6 +11,7 @@ trait AccessDelegatorTrait
 {
     protected function getMainUser(SessionInterface $session): Adherent
     {
+        /** @var Adherent $user */
         $user = $this->getUser();
 
         if (null !== $delegatedAccess = $this->getDelegatedAccess($user, $session)) {
@@ -20,7 +21,7 @@ trait AccessDelegatorTrait
         return $user;
     }
 
-    protected function getRestrictedCommittees(SessionInterface $session)
+    protected function getRestrictedCommittees(SessionInterface $session): array
     {
         if (null !== $delegatedAccess = $this->getDelegatedAccess($this->getUser(), $session)) {
             return $delegatedAccess->getRestrictedCommittees()->map(static function (Committee $committee) {
@@ -31,7 +32,7 @@ trait AccessDelegatorTrait
         return [];
     }
 
-    protected function getRestrictedCities(SessionInterface $session)
+    protected function getRestrictedCities(SessionInterface $session): array
     {
         if (null !== $delegatedAccess = $this->getDelegatedAccess($this->getUser(), $session)) {
             return $delegatedAccess->getRestrictedCities();

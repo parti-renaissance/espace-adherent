@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\MunicipalManagerAttribution;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\MunicipalManager\Filter\AssociationCityFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -14,11 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferentMunicipalManagerAttributionController extends AbstractMunicipalManagerAttributionController
 {
-    private const SPACE_NAME = 'referent';
-
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::REFERENT;
     }
 
     protected function createCityFilter(): AssociationCityFilter

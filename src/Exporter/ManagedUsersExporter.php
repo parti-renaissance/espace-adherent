@@ -2,8 +2,7 @@
 
 namespace App\Exporter;
 
-use App\Controller\EnMarche\ManagedUsers\CandidateManagedUsersController;
-use App\Controller\EnMarche\ManagedUsers\DeputyManagedUsersController;
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Projection\ManagedUserRepository;
@@ -25,7 +24,7 @@ class ManagedUsersExporter
     public function getResponse(string $format, ManagedUsersFilter $filter, string $spaceType): Response
     {
         switch ($spaceType) {
-            case CandidateManagedUsersController::SPACE_NAME:
+            case AdherentSpaceEnum::CANDIDATE:
                 $callback = function (ManagedUser $managedUser) {
                     return [
                         'Prénom' => $managedUser->getFirstName(),
@@ -40,7 +39,7 @@ class ManagedUsersExporter
                 };
 
                 break;
-            case DeputyManagedUsersController::SPACE_NAME:
+            case AdherentSpaceEnum::DEPUTY:
                 $callback = function (ManagedUser $managedUser) {
                     return [
                         'Prénom' => $managedUser->getFirstName(),
