@@ -79,4 +79,9 @@ class Scope
     {
         return $this->features;
     }
+
+    public function hasFeature(string $featureCode): bool
+    {
+        return \in_array($featureCode, $this->features, true);
+    }
 }

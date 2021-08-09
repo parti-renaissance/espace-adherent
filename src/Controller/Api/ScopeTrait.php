@@ -15,11 +15,7 @@ trait ScopeTrait
     protected function getScope(string $scopeCode, Adherent $adherent): Scope
     {
         try {
-            $generator = $this->generalScopeGenerator->getGenerator($scopeCode);
-
-            if ($generator->supports($adherent)) {
-                return $generator->generate($adherent);
-            }
+            return $this->generalScopeGenerator->getGenerator($scopeCode, $adherent)->generate($adherent);
         } catch (NotFoundScopeGeneratorException $e) {
             // Catch for throwing AccessDenied exception
         }

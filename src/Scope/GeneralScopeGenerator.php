@@ -35,11 +35,15 @@ class GeneralScopeGenerator
         return $scopes;
     }
 
-    public function getGenerator(string $scopeCode): ScopeGeneratorInterface
+    public function getGenerator(string $scopeCode, Adherent $adherent): ScopeGeneratorInterface
     {
         foreach ($this->generators as $generator) {
-            if ($generator->getScope() === $scopeCode) {
-                return $generator;
+            if ($generator->getCode() === $scopeCode) {
+                if ($generator->supports($adherent)) {
+                    return $generator;
+                }
+
+                break;
             }
         }
 
