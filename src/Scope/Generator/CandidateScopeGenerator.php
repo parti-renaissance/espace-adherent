@@ -7,7 +7,7 @@ use App\Scope\ScopeEnum;
 
 class CandidateScopeGenerator extends AbstractScopeGenerator
 {
-    public function getScope(): string
+    public function getCode(): string
     {
         return ScopeEnum::CANDIDATE;
     }

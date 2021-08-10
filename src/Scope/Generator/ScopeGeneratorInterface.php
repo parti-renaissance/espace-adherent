@@ -11,5 +11,5 @@ interface ScopeGeneratorInterface
 
     public function supports(Adherent $adherent): bool;
 
-    public function getScope(): string;
+    public function getCode(): string;
 }

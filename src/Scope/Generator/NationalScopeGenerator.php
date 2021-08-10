@@ -19,7 +19,7 @@ class NationalScopeGenerator extends AbstractScopeGenerator
         $this->zoneRepository = $zoneRepository;
     }
 
-    public function getScope(): string
+    public function getCode(): string
     {
         return ScopeEnum::NATIONAL;
     }

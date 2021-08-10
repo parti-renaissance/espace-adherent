@@ -18,12 +18,10 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 
     final public function generate(Adherent $adherent): Scope
     {
-        $code = $this->getScope();
-
-        $scopeEntity = $this->findScope($code);
+        $scopeEntity = $this->findScope($this->getCode());
 
         return new Scope(
-            $code,
+            $scopeEntity->getCode(),
             $scopeEntity->getName(),
             $this->getZones($adherent),
             $scopeEntity->getApps(),

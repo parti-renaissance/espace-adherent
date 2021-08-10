@@ -2,6 +2,6 @@
 
 namespace App\Scope\Exception;
 
-class NotFoundScopeGeneratorException extends \LogicException
+class NotFoundScopeGeneratorException extends \LogicException implements ScopeExceptionInterface
 {
 }

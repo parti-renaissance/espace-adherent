@@ -32,9 +32,7 @@ class RetrieveAudiencesController extends AbstractController
         }
 
         return $entityManager->getRepository($className)->findByZones(
-            $managedZoneProvider->getManagedZones(
-                $user,
-                AudienceHelper::getSpaceType($className))
+            $managedZoneProvider->getManagedZones($user, AudienceHelper::getSpaceType($className))
         );
     }
 }
