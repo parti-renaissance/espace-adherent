@@ -9,7 +9,6 @@ use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
@@ -23,7 +22,8 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 {
     public function support(AdherentMessageFilterInterface $filter): bool
     {
-        return \in_array(\get_class($filter->getMessage()), [
+        return $filter instanceof AudienceFilter ||
+            \in_array(\get_class($filter->getMessage()), [
             ReferentAdherentMessage::class,
             ReferentInstancesMessage::class,
             DeputyAdherentMessage::class,
@@ -33,11 +33,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             LegislativeCandidateAdherentMessage::class,
             CandidateAdherentMessage::class,
         ], true);
-    }
-
-    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
-    {
-        return $filter instanceof AudienceFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

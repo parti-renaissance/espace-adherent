@@ -7,7 +7,6 @@ use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -19,11 +18,6 @@ class ContactCityConditionBuilder implements SegmentConditionBuilderInterface
             || $filter instanceof ReferentUserFilter
             || $filter instanceof CommitteeFilter
         ;
-    }
-
-    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
-    {
-        return false;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

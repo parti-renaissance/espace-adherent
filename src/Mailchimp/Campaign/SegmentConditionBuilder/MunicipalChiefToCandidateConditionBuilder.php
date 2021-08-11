@@ -5,7 +5,6 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Intl\FranceCitiesBundle;
 use App\Mailchimp\Exception\InvalidFilterException;
@@ -24,11 +23,6 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
                 || $filter->getContactRunningMateTeam()
                 || $filter->getContactVolunteerTeam()
             );
-    }
-
-    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
-    {
-        return false;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

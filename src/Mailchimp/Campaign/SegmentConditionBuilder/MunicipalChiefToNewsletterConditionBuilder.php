@@ -5,7 +5,6 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Exception\InvalidFilterException;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
@@ -16,11 +15,6 @@ class MunicipalChiefToNewsletterConditionBuilder extends AbstractConditionBuilde
     public function support(AdherentMessageFilterInterface $filter): bool
     {
         return $filter instanceof MunicipalChiefFilter && $filter->getContactNewsletter();
-    }
-
-    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
-    {
-        return false;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

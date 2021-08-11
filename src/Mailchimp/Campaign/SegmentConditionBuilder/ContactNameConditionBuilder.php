@@ -13,7 +13,6 @@ use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -28,12 +27,8 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
             || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
             || $filter instanceof AbstractElectedRepresentativeFilter
             || $filter instanceof CoalitionsFilter
+            || $filter instanceof AudienceFilter
         ;
-    }
-
-    public function supportSegmentFilter(SegmentFilterInterface $filter): bool
-    {
-        return $filter instanceof AudienceFilter;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

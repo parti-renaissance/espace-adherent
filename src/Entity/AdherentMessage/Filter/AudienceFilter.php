@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class AudienceFilter extends AbstractAdherentFilter implements SegmentFilterInterface
+class AudienceFilter extends AbstractAdherentFilter
 {
     use GeneralFilterTrait;
 

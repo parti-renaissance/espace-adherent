@@ -64,7 +64,7 @@ class SegmentConditionsBuilder
         $conditions = [];
 
         foreach ($this->builders as $builder) {
-            if ($builder->supportSegmentFilter($filter)) {
+            if ($builder->support($filter)) {
                 $conditions = array_merge($conditions, $builder->buildFromFilter($filter));
                 $built = true;
             }
