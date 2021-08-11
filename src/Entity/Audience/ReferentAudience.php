@@ -19,7 +19,7 @@ class ReferentAudience extends AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      *
-     * @ManagedZone(spaceType=App\Geo\ManagedZoneProvider::REFERENT, message="common.zone.not_managed_zone")
+     * @ManagedZone(spaceType=App\AdherentSpace\AdherentSpaceEnum::REFERENT, message="common.zone.not_managed_zone")
      */
     protected $zone;
 }

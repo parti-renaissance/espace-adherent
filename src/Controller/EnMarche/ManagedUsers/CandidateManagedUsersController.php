@@ -2,10 +2,9 @@
 
 namespace App\Controller\EnMarche\ManagedUsers;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Form\ManagedUsers\CandidateManagedUsersFilterType;
-use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\ManagedUsersFilter;
-use App\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CandidateManagedUsersController extends AbstractManagedUsersController
 {
-    public const SPACE_NAME = ManagedZoneProvider::CANDIDATE;
-
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::CANDIDATE;
     }
 
     protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
@@ -32,18 +29,5 @@ class CandidateManagedUsersController extends AbstractManagedUsersController
             'csrf_protection' => false,
             'space_type' => $this->getSpaceType(),
         ]);
-    }
-
-    protected function createFilterModel(Request $request): ManagedUsersFilter
-    {
-        $session = $request->getSession();
-
-        return new ManagedUsersFilter(
-            SubscriptionTypeEnum::CANDIDATE_EMAIL,
-            [$this->getMainUser($session)->getCandidateManagedArea()->getZone()],
-            $this->getRestrictedCommittees($session),
-            $this->getRestrictedCities($session),
-            []
-        );
     }
 }

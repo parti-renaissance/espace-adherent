@@ -434,9 +434,19 @@ class ManagedUsersFilter
         return $this->committeeUuids;
     }
 
+    public function setCommitteeUuids(array $committeeUuids): void
+    {
+        $this->committeeUuids = $committeeUuids;
+    }
+
     public function getCities(): array
     {
         return $this->cities;
+    }
+
+    public function setCities(array $cities): void
+    {
+        $this->cities = $cities;
     }
 
     public function toArray(): array

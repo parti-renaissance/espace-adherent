@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter\Audience;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Audience\AbstractAudience;
 use App\Entity\Audience\CandidateAudience;
@@ -40,13 +41,13 @@ class ManageAudienceVoter extends AbstractAdherentVoter
         }
 
         if ($subject instanceof ReferentAudience && $adherent->isReferent()) {
-            $spaceType = ManagedZoneProvider::REFERENT;
+            $spaceType = AdherentSpaceEnum::REFERENT;
         } elseif ($subject instanceof DeputyAudience && $adherent->isDeputy()) {
-            $spaceType = ManagedZoneProvider::DEPUTY;
+            $spaceType = AdherentSpaceEnum::DEPUTY;
         } elseif ($subject instanceof SenatorAudience && $adherent->isSenator()) {
-            $spaceType = ManagedZoneProvider::SENATOR;
+            $spaceType = AdherentSpaceEnum::SENATOR;
         } elseif ($subject instanceof CandidateAudience && $adherent->isHeadedRegionalCandidate()) {
-            $spaceType = ManagedZoneProvider::CANDIDATE;
+            $spaceType = AdherentSpaceEnum::CANDIDATE;
         } else {
             return false;
         }

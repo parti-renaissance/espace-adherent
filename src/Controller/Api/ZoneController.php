@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
@@ -66,7 +67,7 @@ class ZoneController extends AbstractController
         $zones = $repository->searchByTermAndManagedZonesGroupedByType(
             $term,
             $managedZones,
-            ManagedZoneProvider::CANDIDATE_JECOUTE === $spaceType ? self::CANDIDATE_TYPES : self::TYPES,
+            AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType ? self::CANDIDATE_TYPES : self::TYPES,
             $activeOnly,
             $max
         );

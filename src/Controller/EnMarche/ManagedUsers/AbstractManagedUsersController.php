@@ -4,7 +4,10 @@ namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Exporter\ManagedUsersExporter;
+use App\Form\ManagedUsers\ManagedUsersFilterType;
+use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\ManagedUsers\ManagedUsersFilterFactory;
 use App\Repository\Projection\ManagedUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -17,10 +20,17 @@ abstract class AbstractManagedUsersController extends AbstractController
     use AccessDelegatorTrait;
 
     private $managedUsersRepository;
+    private $filterFactory;
+    private $managedZoneProvider;
 
-    public function __construct(ManagedUserRepository $managedUsersRepository)
-    {
+    public function __construct(
+        ManagedUserRepository $managedUsersRepository,
+        ManagedZoneProvider $managedZoneProvider,
+        ManagedUsersFilterFactory $filterFactory
+    ) {
         $this->managedUsersRepository = $managedUsersRepository;
+        $this->managedZoneProvider = $managedZoneProvider;
+        $this->filterFactory = $filterFactory;
     }
 
     /**
@@ -53,9 +63,26 @@ abstract class AbstractManagedUsersController extends AbstractController
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function createFilterModel(Request $request): ManagedUsersFilter;
+    protected function createFilterModel(Request $request): ManagedUsersFilter
+    {
+        $session = $request->getSession();
 
-    abstract protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface;
+        $model = $this->filterFactory->create($this->getSpaceType(), $this->getMainUser($session));
+
+        $model->setCommitteeUuids($this->getRestrictedCommittees($session));
+        $model->setCities($this->getRestrictedCities($session));
+
+        return $model;
+    }
+
+    protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
+    {
+        return $this->createForm(ManagedUsersFilterType::class, $filter, [
+            'method' => Request::METHOD_GET,
+            'csrf_protection' => false,
+            'space_type' => $this->getSpaceType(),
+        ]);
+    }
 
     private function renderTemplate(string $template, array $parameters = []): Response
     {

@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,10 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MunicipalChiefVoteResultController extends DefaultVoteResultController
 {
-    private const SPACE_NAME = 'municipal_chief';
-
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::MUNICIPAL_CHIEF;
     }
 }

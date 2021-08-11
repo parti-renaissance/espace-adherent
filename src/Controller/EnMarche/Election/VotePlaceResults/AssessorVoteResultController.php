@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +17,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AssessorVoteResultController extends AbstractVoteResultController
 {
-    private const SPACE_NAME = 'assessor';
-
     /**
      * @Route("/resultats", name="_index", methods={"GET", "POST"})
      */
@@ -29,6 +28,6 @@ class AssessorVoteResultController extends AbstractVoteResultController
 
     protected function getSpaceType(): string
     {
-        return self::SPACE_NAME;
+        return AdherentSpaceEnum::ASSESSOR;
     }
 }
