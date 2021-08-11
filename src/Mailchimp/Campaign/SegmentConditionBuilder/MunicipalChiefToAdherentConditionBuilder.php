@@ -2,9 +2,9 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Intl\FranceCitiesBundle;
 use App\Mailchimp\Exception\InvalidFilterException;
@@ -12,7 +12,7 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
 {
-    public function support(AdherentMessageFilterInterface $filter): bool
+    public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof MunicipalChiefFilter && $filter->getContactAdherents();
     }
