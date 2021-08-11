@@ -19,4 +19,11 @@ class ScopeEnum extends Enum
         self::CANDIDATE,
         self::NATIONAL,
     ];
+
+    public const FOR_AUDIENCE_SEGMENT = [
+        self::REFERENT,
+        self::DEPUTY,
+        self::SENATOR,
+        self::CANDIDATE,
+    ];
 }

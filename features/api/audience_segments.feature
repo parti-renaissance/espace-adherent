@@ -47,6 +47,7 @@ Feature:
     {
       "filter": {
         "is_certified": false,
+        "scope": "deputy",
         "zone": {
           "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
           "code": "92024",
@@ -68,12 +69,13 @@ Feature:
     """
 
   Scenario: As a logged-in user with no correct rights I cannot create an audience segment
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "michel.vasseur@example.ch" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audience-segments" with body:
     """
     {
         "filter": {
+          "scope": "referent",
           "first_name": "Pierre",
           "last_name": "Dupond",
           "gender": "male",
@@ -87,7 +89,45 @@ Feature:
         }
     }
     """
-    Then the response status code should be 201
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I cannot create an audience segment, if filter scope is not authorized
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/audience-segments" with body:
+    """
+    {
+        "filter": {
+          "scope": "referent",
+          "first_name": "Pierre",
+          "last_name": "Dupond",
+          "gender": "male",
+          "zone": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+          "age_min": 25,
+          "age_max": 35,
+          "registered_since": "2017-06-21",
+          "registered_until": "2021-04-29",
+          "is_committee_member": false,
+          "is_certified": false
+        }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+       "type":"https://tools.ietf.org/html/rfc2616#section-10",
+       "title":"An error occurred",
+       "detail":"filter.scope.type: Le scope n'est pas autoris\u00e9",
+       "violations":[
+          {
+             "propertyPath":"filter.scope.type",
+             "message":"Le scope n'est pas autorisé"
+          }
+       ]
+    }
+    """
 
   Scenario: As a logged-in user I cannot create an audience segment with no data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -101,7 +141,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
       "detail": "filter: Cette valeur ne doit pas être nulle.",
       "violations": [
@@ -120,6 +160,7 @@ Feature:
     """
     {
         "filter": {
+          "scope": "deputy",
           "first_name": "Pierre",
           "last_name": "Dupond",
           "gender": "male",
@@ -139,6 +180,7 @@ Feature:
     {
       "filter": {
         "is_certified": false,
+        "scope": "deputy",
         "zone": {
           "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
           "code": "75-1",
@@ -166,6 +208,7 @@ Feature:
     """
     {
         "filter": {
+          "scope": "referent",
           "first_name": "Nouveau prénom",
           "last_name": "Nouveau nom",
           "gender": "male",
@@ -185,6 +228,7 @@ Feature:
     {
       "filter": {
         "is_certified": false,
+        "scope": "referent",
         "zone": {
           "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
           "code": "75-1",
@@ -215,7 +259,7 @@ Feature:
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | method  | url                                                                               |
+      | method  | url                                                             |
       | GET     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
       | PUT     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
       | DELETE  | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |

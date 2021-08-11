@@ -2,8 +2,8 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Intl\FranceCitiesBundle;
 use App\Mailchimp\Exception\InvalidFilterException;
@@ -11,12 +11,12 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
 {
-    public function support(AdherentMessageFilterInterface $filter): bool
+    public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof MunicipalChiefFilter && $filter->getContactAdherents();
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
         if (!$inseeCode = $campaign->getCity()) {
             throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
@@ -49,5 +49,10 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
         }
 
         return $conditions;
+    }
+
+    public function buildFromFilter(SegmentFilterInterface $filter): array
+    {
+        return [];
     }
 }

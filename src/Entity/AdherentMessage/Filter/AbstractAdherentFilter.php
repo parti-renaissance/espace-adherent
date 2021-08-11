@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="adherent_message_filters")
  * @ORM\InheritanceType("SINGLE_TABLE")
  */
-abstract class AbstractAdherentFilter
+abstract class AbstractAdherentFilter implements SegmentFilterInterface
 {
     /**
      * @var int

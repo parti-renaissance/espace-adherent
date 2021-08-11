@@ -37,4 +37,13 @@ class AuthorizationChecker
 
         return $scope->hasFeature($featureCode);
     }
+
+    public function isValidScopeForAdherent(string $code, Adherent $adherent): bool
+    {
+        return (ScopeEnum::REFERENT === $code && !$adherent->isReferent())
+        || (ScopeEnum::DEPUTY === $code && !$adherent->isDeputy())
+        || (ScopeEnum::CANDIDATE === $code && !$adherent->isHeadedRegionalCandidate())
+        || (ScopeEnum::SENATOR === $code && !$adherent->isSenator())
+        || (ScopeEnum::NATIONAL === $code && !$adherent->hasNationalRole());
+    }
 }

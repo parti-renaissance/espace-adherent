@@ -2,21 +2,22 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
 {
-    public function support(AdherentMessageFilterInterface $filter): bool
+    public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof ReferentUserFilter
             || $filter instanceof AdherentZoneFilter
@@ -25,14 +26,20 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
             || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
             || $filter instanceof AbstractElectedRepresentativeFilter
             || $filter instanceof CoalitionsFilter
+            || $filter instanceof AudienceFilter
         ;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
-        /** @var MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|ReferentElectedRepresentativeFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
+        return $this->buildFromFilter($campaign->getMessage()->getFilter());
+    }
 
+    /**
+     * @param MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|ReferentElectedRepresentativeFilter|AudienceFilter $filter
+     */
+    public function buildFromFilter(SegmentFilterInterface $filter): array
+    {
         $conditions = [];
 
         if ($filter->getGender()) {

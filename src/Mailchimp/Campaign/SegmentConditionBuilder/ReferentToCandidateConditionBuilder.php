@@ -2,8 +2,8 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Exception\InvalidFilterException;
 use App\Mailchimp\Synchronisation\ApplicationRequestTagLabelEnum;
@@ -11,14 +11,14 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ReferentToCandidateConditionBuilder extends AbstractConditionBuilder
 {
-    public function support(AdherentMessageFilterInterface $filter): bool
+    public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof ReferentUserFilter
             && ($filter->getContactOnlyVolunteers() || $filter->getContactOnlyRunningMates())
         ;
     }
 
-    public function build(MailchimpCampaign $campaign): array
+    public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
         if (!$campaign->getLabel()) {
             throw new InvalidFilterException($campaign->getMessage(), '[ReferentMessage] Referent message does not have a valid tag code');
@@ -31,8 +31,15 @@ class ReferentToCandidateConditionBuilder extends AbstractConditionBuilder
             'value' => $campaign->getLabel(),
         ];
 
-        /** @var ReferentUserFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
+        return array_merge($conditions, $this->buildFromFilter($campaign->getMessage()->getFilter()));
+    }
+
+    /**
+     * @param ReferentUserFilter $filter
+     */
+    public function buildFromFilter(SegmentFilterInterface $filter): array
+    {
+        $conditions = [];
 
         if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
             $conditions[] = $this->buildStaticSegmentCondition(

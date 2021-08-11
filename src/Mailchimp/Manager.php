@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp;
 
+use App\AdherentMessage\DynamicSegmentInterface;
 use App\Coalition\CoalitionMemberValueObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
@@ -16,6 +17,7 @@ use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
+use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
@@ -308,6 +310,44 @@ class Manager implements LoggerAwareInterface
         }
 
         return null;
+    }
+
+    public function createDynamicSegment(DynamicSegmentInterface $segment, string $listId = null): bool
+    {
+        return $this->editDynamicSegment($segment, null, $listId);
+    }
+
+    public function updateDynamicSegment(DynamicSegmentInterface $segment, int $segmentId, string $listId = null): bool
+    {
+        return $this->editDynamicSegment($segment, $segmentId, $listId);
+    }
+
+    private function editDynamicSegment(
+        DynamicSegmentInterface $segment,
+        int $segmentId = null,
+        string $listId = null
+    ): bool {
+        /** @var SegmentRequestBuilder $requestBuilder */
+        $requestBuilder = $this->requestBuildersLocator->get(SegmentRequestBuilder::class);
+
+        $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
+        if ($segmentId) {
+            $response = $this->driver->updateDynamicSegment($segmentId, $listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
+        } else {
+            $response = $this->driver->createDynamicSegment($listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
+        }
+
+        $responseData = $this->driver->toArray($response);
+
+        if (200 === $response->getStatusCode()) {
+            $segment->setMailchimpId($responseData['id']);
+            $segment->setRecipientCount($responseData['member_count']);
+            $segment->setSynchronized(true);
+
+            return true;
+        }
+
+        return false;
     }
 
     public function findSegmentId(string $name, string $listId): ?int

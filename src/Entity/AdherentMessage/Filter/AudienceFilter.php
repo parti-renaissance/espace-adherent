@@ -3,8 +3,10 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use App\Entity\Geo\Zone;
+use App\Validator\ValidScope;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -48,6 +50,23 @@ class AudienceFilter extends AbstractAdherentFilter
      * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $zone;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=20)
+     *
+     * @Assert\NotNull
+     * @Assert\Choice(
+     *     choices=App\Scope\ScopeEnum::FOR_AUDIENCE_SEGMENT,
+     *     message="audience_segment.scope.invalid_choice",
+     *     strict=true
+     * )
+     * @ValidScope
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write"})
+     */
+    private $scope;
 
     public function includeAdherentsNoCommittee(): ?bool
     {
@@ -95,5 +114,15 @@ class AudienceFilter extends AbstractAdherentFilter
     public function setZone(?Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function getScope(): ?string
+    {
+        return $this->scope;
+    }
+
+    public function setScope(string $scope): void
+    {
+        $this->scope = $scope;
     }
 }

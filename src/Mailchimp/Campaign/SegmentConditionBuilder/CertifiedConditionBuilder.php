@@ -2,19 +2,16 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
-class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterface
+class CertifiedConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AdherentGeoZoneFilter
-            || $filter instanceof AudienceFilter
-        ;
+        return $filter instanceof AudienceFilter && null !== $filter->isCertified();
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -23,17 +20,15 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
     }
 
     /**
-     * @param AdherentGeoZoneFilter|AudienceFilter $filter
+     * @param AudienceFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        $zone = $filter->getZone();
-
         return [[
             'condition_type' => 'TextMerge',
-            'op' => 'ends',
-            'field' => MemberRequest::getMergeFieldFromZone($zone),
-            'value' => sprintf('(%s)', $zone->getCode()),
+            'op' => 'is',
+            'field' => MemberRequest::MERGE_FIELD_CERTIFIED,
+            'value' => $filter->isCertified() ? 'oui' : 'non',
         ]];
     }
 }

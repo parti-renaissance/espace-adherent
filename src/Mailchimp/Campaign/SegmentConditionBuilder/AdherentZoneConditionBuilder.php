@@ -4,13 +4,14 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Exception\InvalidFilterException;
 use App\Mailchimp\Exception\StaticSegmentIdMissingException;
 
 class AdherentZoneConditionBuilder extends AbstractStaticSegmentConditionBuilder
 {
-    public function support(AdherentMessageFilterInterface $filter): bool
+    public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof AdherentZoneFilter;
     }

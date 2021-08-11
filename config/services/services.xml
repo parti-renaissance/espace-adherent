@@ -245,6 +245,7 @@
                 <argument key="App\Mailchimp\Synchronisation\RequestBuilder" type="service" id="App\Mailchimp\Synchronisation\RequestBuilder" />
                 <argument key="App\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="App\Mailchimp\Campaign\CampaignRequestBuilder" />
                 <argument key="App\Mailchimp\Campaign\CampaignContentRequestBuilder" type="service" id="App\Mailchimp\Campaign\CampaignContentRequestBuilder" />
+                <argument key="App\Mailchimp\MailchimpSegment\SegmentRequestBuilder" type="service" id="App\Mailchimp\MailchimpSegment\SegmentRequestBuilder" />
             </argument>
             <tag name="container.service_locator" />
         </service>
