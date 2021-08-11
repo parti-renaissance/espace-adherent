@@ -332,7 +332,7 @@ class Manager implements LoggerAwareInterface
 
         $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
         if ($segmentId) {
-            $response = $this->driver->updateDynamicSegment($segmentId, $listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
+            $response = $this->driver->updateDynamicSegment($segmentId, $listId,$requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
         } else {
             $response = $this->driver->createDynamicSegment($listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
         }

@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -23,7 +22,7 @@ class CertifiedConditionBuilder implements SegmentConditionBuilderInterface
     /**
      * @param AudienceFilter $filter
      */
-    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         return [[
             'condition_type' => 'TextMerge',

@@ -3,7 +3,6 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\CoalitionsMessage;
-use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -29,7 +28,7 @@ class CoalitionsNotificationConditionBuilder extends AbstractConditionBuilder
         return $this->mailchimpObjectIdMapping->getCoalitionsInterestIds();
     }
 
-    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         return [];
     }

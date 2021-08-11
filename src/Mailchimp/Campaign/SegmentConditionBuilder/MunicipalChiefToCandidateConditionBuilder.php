@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -37,7 +36,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
     /**
      * @param MunicipalChiefFilter $filter
      */
-    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         if (!$inseeCode = $filter->getInseeCode()) {
             throw new \RuntimeException('[MunicipalChiefMessage] Message does not have a valid city value');

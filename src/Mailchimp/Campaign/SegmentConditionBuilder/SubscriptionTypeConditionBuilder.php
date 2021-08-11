@@ -5,7 +5,6 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
-use App\Entity\AdherentMessage\Filter\AbstractAdherentFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
@@ -92,7 +91,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     /**
      * @param AudienceFilter $filter
      */
-    public function buildFromFilter(AbstractAdherentFilter $filter): array
+    public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         switch ($scope = $filter->getScope()) {
             case ScopeEnum::REFERENT:

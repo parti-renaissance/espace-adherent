@@ -3,22 +3,21 @@
 namespace App\AdherentMessage\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\AdherentMessage\Segment\DynamicSegmentEvent;
-use App\AdherentMessage\Segment\DynamicSegmentEvents;
+use App\AdherentMessage\Command\SynchronizeDynamicSegmentCommand;
 use App\Entity\AdherentMessage\Segment\AudienceSegment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PostWriteAudienceSegmentListener implements EventSubscriberInterface
 {
-    private $eventDispatcher;
+    private $bus;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(MessageBusInterface $bus)
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->bus = $bus;
     }
 
     public static function getSubscribedEvents()
@@ -38,6 +37,8 @@ class PostWriteAudienceSegmentListener implements EventSubscriberInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(new DynamicSegmentEvent($audienceSegment), DynamicSegmentEvents::POST_CHANGE);
+        if (!$audienceSegment->isSynchronized()) {
+            $this->bus->dispatch(new SynchronizeDynamicSegmentCommand($audienceSegment->getUuid(), \get_class($audienceSegment)));
+        }
     }
 }
