@@ -2,8 +2,8 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\CoalitionsMessage;
-use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
@@ -12,7 +12,7 @@ class CoalitionsNotificationConditionBuilder extends AbstractConditionBuilder
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return !($filter instanceof AudienceFilter) && $filter->getMessage() instanceof CoalitionsMessage;
+        return $filter instanceof AdherentMessageFilterInterface && $filter->getMessage() instanceof CoalitionsMessage;
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

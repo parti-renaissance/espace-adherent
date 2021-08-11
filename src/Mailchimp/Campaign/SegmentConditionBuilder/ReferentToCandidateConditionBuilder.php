@@ -43,12 +43,12 @@ class ReferentToCandidateConditionBuilder extends AbstractConditionBuilder
 
         if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
             $conditions[] = $this->buildStaticSegmentCondition(
-            $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
-            $filter->getContactOnlyRunningMates()
-                ? ApplicationRequestTagLabelEnum::RUNNING_MATE
-                : ApplicationRequestTagLabelEnum::VOLUNTEER
-            ]
-        );
+                $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
+                $filter->getContactOnlyRunningMates()
+                    ? ApplicationRequestTagLabelEnum::RUNNING_MATE
+                    : ApplicationRequestTagLabelEnum::VOLUNTEER
+                ]
+            );
         }
 
         return $conditions;

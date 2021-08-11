@@ -2,8 +2,9 @@
 
 namespace App\Validator;
 
-use App\Scope\ScopeEnum;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use App\Entity\Adherent;
+use App\Scope\AuthorizationChecker;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -11,10 +12,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class ValidScopeValidator extends ConstraintValidator
 {
     private $authorizationChecker;
+    protected $security;
 
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(AuthorizationChecker $authorizationChecker, Security $security)
     {
         $this->authorizationChecker = $authorizationChecker;
+        $this->security = $security;
     }
 
     public function validate($value, Constraint $constraint)
@@ -27,12 +30,9 @@ class ValidScopeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ValidScope::class);
         }
 
-        if ((ScopeEnum::REFERENT === $value && !$this->authorizationChecker->isGranted('ROLE_REFERENT'))
-            || (ScopeEnum::DEPUTY === $value && !$this->authorizationChecker->isGranted('ROLE_DEPUTY'))
-            || (ScopeEnum::CANDIDATE === $value && !$this->authorizationChecker->isGranted('ROLE_CANDIDATE_REGIONAL_HEADED'))
-            || (ScopeEnum::SENATOR === $value && !$this->authorizationChecker->isGranted('ROLE_SENATOR'))
-            || (ScopeEnum::NATIONAL === $value && !$this->authorizationChecker->isGranted('ROLE_NATIONAL'))
-        ) {
+        $user = $this->security->getUser();
+
+        if (!$user instanceof Adherent || $this->authorizationChecker->isValidScopeForAdherent($value, $user)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('type')
