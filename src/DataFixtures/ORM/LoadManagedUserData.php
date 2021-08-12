@@ -48,6 +48,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
             'certified_at' => '2018-06-01 10:20:45',
+            'interests' => ['europe', 'numerique', 'sante'],
         ]);
 
         $managedUser2 = $managedUserFactory->createFromArray([
@@ -77,6 +78,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
+            'interests' => ['numerique'],
         ]);
 
         $managedUser3 = $managedUserFactory->createFromArray([

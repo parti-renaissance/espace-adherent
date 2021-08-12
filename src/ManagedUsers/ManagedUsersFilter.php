@@ -4,6 +4,7 @@ namespace App\ManagedUsers;
 
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,16 +14,22 @@ class ManagedUsersFilter
 {
     /**
      * @var string|null
+     *
+     * @Groups({"filter_write"})
      */
     private $gender;
 
     /**
      * @var int|null
+     *
+     * @Groups({"filter_write"})
      */
     private $ageMin;
 
     /**
      * @var int|null
+     *
+     * @Groups({"filter_write"})
      */
     private $ageMax;
 
@@ -30,6 +37,8 @@ class ManagedUsersFilter
      * @var string|null
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"filter_write"})
      */
     private $firstName;
 
@@ -37,6 +46,8 @@ class ManagedUsersFilter
      * @var string|null
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"filter_write"})
      */
     private $lastName;
 
@@ -49,16 +60,22 @@ class ManagedUsersFilter
 
     /**
      * @var array|null
+     *
+     * @Groups({"filter_write"})
      */
     private $interests = [];
 
     /**
      * @var \DateTime|null
+     *
+     * @Groups({"filter_write"})
      */
     private $registeredSince;
 
     /**
      * @var \DateTime|null
+     *
+     * @Groups({"filter_write"})
      */
     private $registeredUntil;
 
@@ -99,6 +116,8 @@ class ManagedUsersFilter
 
     /**
      * @var bool|null
+     *
+     * @Groups({"filter_write"})
      */
     private $emailSubscription;
 
@@ -150,6 +169,8 @@ class ManagedUsersFilter
 
     /**
      * @var bool|null
+     *
+     * @Groups({"filter_write"})
      */
     private $isCertified;
 

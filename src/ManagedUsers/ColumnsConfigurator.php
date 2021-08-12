@@ -27,46 +27,43 @@ class ColumnsConfigurator
                 ],
             ],
             [
-                'key' => 'firstName',
+                'key' => 'first_name',
                 'label' => 'Prénom',
                 'filter' => [
                     'type' => 'text',
                 ],
             ],
             [
-                'key' => 'lastName',
+                'key' => 'last_name',
                 'label' => 'Nom',
                 'filter' => [
                     'type' => 'text',
                 ],
             ],
             [
-                'key' => 'subscribedEmail',
+                'key' => 'email_subscription',
                 'label' => 'Abonné email',
                 'filter' => [
                     'type' => 'boolean',
                 ],
             ],
             [
-                'key' => 'subscribedPhone',
+                'key' => 'sms_subscription',
                 'label' => 'Abonné tel',
                 'filter' => [
                     'type' => 'boolean',
                 ],
             ],
             [
-                'key' => 'postalCode',
+                'key' => 'postal_code',
                 'label' => 'Code postal',
                 'filter' => [
                     'type' => 'string',
                 ],
             ],
             [
-                'key' => 'cityCode',
+                'key' => 'city_code',
                 'label' => 'Code commune',
-                'filter' => [
-                    'type' => 'string',
-                ],
             ],
             [
                 'key' => 'city',
@@ -76,32 +73,20 @@ class ColumnsConfigurator
                 ],
             ],
             [
-                'key' => 'departmentCode',
+                'key' => 'department_code',
                 'label' => 'Code département',
-                'filter' => [
-                    'type' => 'string',
-                ],
             ],
             [
                 'key' => 'department',
                 'label' => 'Département',
-                'filter' => [
-                    'type' => 'string',
-                ],
             ],
             [
-                'key' => 'regionCode',
+                'key' => 'region_code',
                 'label' => 'Code région',
-                'filter' => [
-                    'type' => 'string',
-                ],
             ],
             [
                 'key' => 'region',
                 'label' => 'Région',
-                'filter' => [
-                    'type' => 'string',
-                ],
             ],
             [
                 'key' => 'interests',
