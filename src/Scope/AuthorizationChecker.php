@@ -5,6 +5,7 @@ namespace App\Scope;
 use App\Entity\Adherent;
 use App\Scope\Exception\InvalidFeatureCodeException;
 use App\Scope\Exception\InvalidScopeException;
+use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\Exception\ScopeQueryParamMissingException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,12 +39,12 @@ class AuthorizationChecker
         return $scope->hasFeature($featureCode);
     }
 
-    public function isValidScopeForAdherent(string $code, Adherent $adherent): bool
+    public function isScopeGranted(string $scope, Adherent $adherent): bool
     {
-        return (ScopeEnum::REFERENT === $code && !$adherent->isReferent())
-        || (ScopeEnum::DEPUTY === $code && !$adherent->isDeputy())
-        || (ScopeEnum::CANDIDATE === $code && !$adherent->isHeadedRegionalCandidate())
-        || (ScopeEnum::SENATOR === $code && !$adherent->isSenator())
-        || (ScopeEnum::NATIONAL === $code && !$adherent->hasNationalRole());
+        try {
+            return (bool) $this->scopeGenerator->getGenerator($scope, $adherent);
+        } catch (NotFoundScopeGeneratorException $e) {
+            return false;
+        }
     }
 }
