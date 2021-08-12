@@ -31,25 +31,33 @@ class SegmentConditionsBuilder
             throw new \InvalidArgumentException('Filter is null');
         }
 
+        $savedSegment = [];
         $conditions = [];
-
-        foreach ($this->builders as $builder) {
-            if ($builder->support($filter)) {
-                $conditions = array_merge($conditions, $builder->buildFromMailchimpCampaign($campaign));
-                $built = true;
+        if ($segment = $filter->getSegment()) {
+            if (!$segment->isSynchronized()) {
+                throw new \RuntimeException(sprintf('The segment with id "%s" of the filter class %s is not syncronized.', $segment->getId(), \get_class($filter)));
             }
-        }
 
-        if (!isset($built)) {
-            throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', \get_class($filter)));
+            $savedSegment = ['saved_segment_id' => $filter->getSegment()->getMailchimpId()];
+        } else {
+            foreach ($this->builders as $builder) {
+                if ($builder->support($filter)) {
+                    $conditions = array_merge($conditions, $builder->buildFromMailchimpCampaign($campaign));
+                    $built = true;
+                }
+            }
+
+            if (!isset($built)) {
+                throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', \get_class($filter)));
+            }
         }
 
         return [
             'list_id' => $this->getListId($message),
-            'segment_opts' => [
+            'segment_opts' => array_merge($savedSegment, [
                 'match' => 'all',
                 'conditions' => $conditions ?? [],
-            ],
+            ]),
         ];
     }
 

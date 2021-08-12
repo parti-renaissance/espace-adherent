@@ -60,7 +60,7 @@ class ReferentMessageControllerTest extends WebTestCase
 
         $referentMessage = $this->client->getContainer()->get('doctrine')->getManager()
             ->getRepository(ReferentAdherentMessage::class)
-            ->findOneBy(['status' => 'draft'])
+            ->findOneBy(['status' => 'draft', 'filter' => null])
         ;
 
         $uuid = $referentMessage->getUuid()->toString();
