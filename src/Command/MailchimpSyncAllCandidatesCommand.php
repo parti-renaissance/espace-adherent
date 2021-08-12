@@ -58,6 +58,8 @@ class MailchimpSyncAllCandidatesCommand extends Command
         $this->doSync($runningMatePaginator, $runningMateCount);
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function getVolunteerPaginator(): Paginator

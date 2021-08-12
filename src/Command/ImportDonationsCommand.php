@@ -162,6 +162,8 @@ class ImportDonationsCommand extends Command
 
             throw $exception;
         }
+
+        return 0;
     }
 
     private function handleImport(string $filename): void

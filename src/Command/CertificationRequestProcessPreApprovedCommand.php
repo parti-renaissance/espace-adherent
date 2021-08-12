@@ -48,6 +48,8 @@ class CertificationRequestProcessPreApprovedCommand extends Command
         foreach ($certificationRequests as $certificationRequest) {
             $this->processPreApproved($certificationRequest);
         }
+
+        return 0;
     }
 
     private function processPreApproved(CertificationRequest $certificationRequest): void

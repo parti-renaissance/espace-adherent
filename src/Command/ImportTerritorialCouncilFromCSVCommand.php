@@ -96,5 +96,7 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
 
         $this->io->writeln('');
         $this->io->success('Done');
+
+        return 0;
     }
 }

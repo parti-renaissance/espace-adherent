@@ -54,6 +54,8 @@ class RemindActivatedMembershipCommand extends Command
 
             $this->em->clear();
         }
+
+        return 0;
     }
 
     /**

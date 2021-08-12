@@ -34,5 +34,7 @@ class MailerPublishCommand extends ContainerAwareCommand
 
         $producer = $this->getContainer()->get('old_sound_rabbit_mq.mailer_'.$client.'_producer');
         $producer->publish(json_encode(['uuid' => $uuid]));
+
+        return 0;
     }
 }

@@ -86,6 +86,8 @@ class MailchimpSyncAllElectedRepresentativesCommand extends Command
         } while ($offset < $count && (!$limit || $offset < $limit));
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function getQueryBuilder(): Paginator

@@ -78,6 +78,8 @@ class BindDeputiesToDistrictsCommand extends Command
 
         $this->em->commit();
         $this->io->success('Done: deputies have been successfully bound to districts.');
+
+        return 0;
     }
 
     private function bindDeputies(array $deputies): void

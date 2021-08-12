@@ -79,6 +79,8 @@ class UpdatePoliticalCommitteeMembershipsCommand extends Command
         $this->io->progressFinish();
 
         $this->io->success('Political committee memberships have been updated successfully!');
+
+        return 0;
     }
 
     private function getTerritorialCouncilMembership(): IterableResult

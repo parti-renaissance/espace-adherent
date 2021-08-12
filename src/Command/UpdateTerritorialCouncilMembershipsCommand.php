@@ -102,6 +102,8 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
 
         $this->io->progressFinish();
         $this->io->success('Done');
+
+        return 0;
     }
 
     private function getAdherentsPaginator(bool $onlyElectedRepresentatives = false): Paginator

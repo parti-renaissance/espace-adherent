@@ -77,6 +77,8 @@ class CreateCoalitionFollowerFromCauseFollowerCommand extends Command
         $this->io->progressFinish();
 
         $this->io->success('Coalition followers have been added successfully.');
+
+        return 0;
     }
 
     private function getCauseFollowers(): IterableResult

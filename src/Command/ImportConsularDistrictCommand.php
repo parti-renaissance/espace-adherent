@@ -79,6 +79,8 @@ class ImportConsularDistrictCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function buildDistrict(array $row, bool $withPoint = false): ConsularDistrict

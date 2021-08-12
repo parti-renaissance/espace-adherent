@@ -116,6 +116,8 @@ SQL;
 
         $this->io->newLine(2);
         $this->io->success('Email subscription history initialized successfully!');
+
+        return 0;
     }
 
     private function isAlreadyInitialize(): bool

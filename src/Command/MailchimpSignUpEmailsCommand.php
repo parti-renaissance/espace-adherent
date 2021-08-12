@@ -129,5 +129,7 @@ class MailchimpSignUpEmailsCommand extends Command
                 array_map(static function (string $email) {return (array) $email; }, $emailError)
             );
         }
+
+        return 0;
     }
 }

@@ -75,6 +75,8 @@ class ProcurationSendReminderCommand extends Command
 
         $progress->finish();
         $output->writeln("\n".$totalCount.' reminders sent');
+
+        return 0;
     }
 
     /** @required */

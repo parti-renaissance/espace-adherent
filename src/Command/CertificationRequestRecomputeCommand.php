@@ -72,5 +72,7 @@ class CertificationRequestRecomputeCommand extends Command
         $this->io->progressFinish();
 
         $this->io->text('Done.');
+
+        return 0;
     }
 }

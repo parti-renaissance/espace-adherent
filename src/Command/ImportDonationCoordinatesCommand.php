@@ -77,6 +77,8 @@ class ImportDonationCoordinatesCommand extends Command
         $this->em->clear();
 
         $output->writeln('Imported Donation coordinates successfully.');
+
+        return 0;
     }
 
     private function parseCSV(string $filepath): array

@@ -94,6 +94,8 @@ class UnregisterAdherentsCommand extends Command
                 $output->writeln($email);
             }
         }
+
+        return 0;
     }
 
     private function parseCSV(string $filename): array

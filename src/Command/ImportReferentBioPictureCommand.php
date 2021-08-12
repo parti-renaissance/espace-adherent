@@ -104,6 +104,8 @@ class ImportReferentBioPictureCommand extends Command
             }
             $output->writeln('');
         }
+
+        return 0;
     }
 
     private function extractArchive($pahToArchive): string

@@ -70,5 +70,7 @@ class MailchimpDeleteStaticSegmentCommand extends Command
             $this->io->warning('These segments have not been deleted');
             $this->io->comment(implode(',', $errors));
         }
+
+        return 0;
     }
 }

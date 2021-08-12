@@ -106,6 +106,8 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
         $this->em->commit();
 
         $output->writeln('Referents load OK');
+
+        return 0;
     }
 
     private function parseCSV(string $filename): array

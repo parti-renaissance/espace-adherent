@@ -61,7 +61,7 @@ class DonationCancelCommand extends Command
         if (!$donations) {
             $this->io->error('No recurring donation found for this email.');
 
-            return;
+            return 1;
         }
 
         foreach ($donations as $donation) {
@@ -91,5 +91,7 @@ class DonationCancelCommand extends Command
                 ));
             }
         }
+
+        return 0;
     }
 }

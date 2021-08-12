@@ -83,5 +83,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 }

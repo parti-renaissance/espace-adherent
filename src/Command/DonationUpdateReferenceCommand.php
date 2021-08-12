@@ -52,6 +52,8 @@ class DonationUpdateReferenceCommand extends Command
         }
 
         $output->writeln(['', 'Donations reference updated successfully!']);
+
+        return 0;
     }
 
     private function updateDonationsReference(OutputInterface $output): void

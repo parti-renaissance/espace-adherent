@@ -85,6 +85,8 @@ class UpdateDistrictGeoPolygonCommand extends Command
                 $this->io->progressAdvance();
             }
         }
+
+        return 0;
     }
 
     private function getNewGeoData(District $district): ?GeoData

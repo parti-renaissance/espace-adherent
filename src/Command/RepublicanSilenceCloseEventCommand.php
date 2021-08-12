@@ -50,6 +50,8 @@ class RepublicanSilenceCloseEventCommand extends Command
         foreach ($this->getSilences() as $silence) {
             $this->closeEvents($silence);
         }
+
+        return 0;
     }
 
     /**
