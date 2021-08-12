@@ -3,12 +3,14 @@
 namespace App\Entity\Projection;
 
 use App\Entity\EntityZoneTrait;
+use App\Entity\Geo\Zone;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * This entity is a projection: do not insert, update or delete objects using this class.
@@ -92,6 +94,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $postalCode;
 
@@ -108,6 +112,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $city;
 
@@ -115,6 +121,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $country;
 
@@ -122,6 +130,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $firstName;
 
@@ -129,6 +139,8 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $lastName;
 
@@ -206,11 +218,15 @@ class ManagedUser
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $gender;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_user_read"})
      */
     private $interests = [];
 
@@ -268,7 +284,8 @@ class ManagedUser
         array $supervisorTags = [],
         UuidInterface $uuid = null,
         int $voteCommitteeId = null,
-        \DateTime $certifiedAt = null
+        \DateTime $certifiedAt = null,
+        array $interests = []
     ) {
         $this->status = $status;
         $this->type = $type;
@@ -298,6 +315,7 @@ class ManagedUser
         $this->supervisorTags = $supervisorTags;
         $this->voteCommitteeId = $voteCommitteeId;
         $this->zones = new ArrayCollection($zones);
+        $this->interests = $interests;
     }
 
     public function getId(): int
@@ -504,5 +522,63 @@ class ManagedUser
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getCityCode(): ?string
+    {
+        $zones = $this->getZonesOfType(Zone::CITY, true);
+
+        return $zones ? current($zones)->getCode() : null;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getDepartmentCode(): ?string
+    {
+        $zones = $this->getZonesOfType(Zone::DEPARTMENT, true);
+
+        return $zones ? current($zones)->getCode() : null;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getDepartment(): ?string
+    {
+        $zones = $this->getZonesOfType(Zone::DEPARTMENT, true);
+
+        return $zones ? current($zones)->getName() : null;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getRegionCode(): ?string
+    {
+        $zones = $this->getZonesOfType(Zone::REGION, true);
+
+        return $zones ? current($zones)->getCode() : null;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getRegion(): ?string
+    {
+        $zones = $this->getZonesOfType(Zone::REGION, true);
+
+        return $zones ? current($zones)->getName() : null;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getSmsSubscription(): bool
+    {
+        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
     }
 }

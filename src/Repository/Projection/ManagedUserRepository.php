@@ -53,6 +53,10 @@ class ManagedUserRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('u')
+            ->addSelect('zone')
+            ->addSelect('parent_zone')
+            ->leftJoin('u.zones', 'zone')
+            ->leftJoin('zone.parents', 'parent_zone')
             ->where('u.status = :status')
             ->setParameter('status', ManagedUser::STATUS_READY)
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')

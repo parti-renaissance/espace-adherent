@@ -53,7 +53,7 @@ class EventMessageNotifier implements EventSubscriberInterface
             );
 
             foreach ($chunks as $chunk) {
-                $this->mailer->sendMessage($mail = $this->createCauseMessage($chunk, $eventEvent));
+                $this->mailer->sendMessage($this->createCauseMessage($chunk, $eventEvent));
             }
         }
 

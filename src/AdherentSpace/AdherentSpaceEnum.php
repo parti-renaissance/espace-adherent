@@ -2,6 +2,8 @@
 
 namespace App\AdherentSpace;
 
+use App\Scope\ScopeEnum;
+
 class AdherentSpaceEnum
 {
     public const DEPUTY = 'deputy';
@@ -16,4 +18,11 @@ class AdherentSpaceEnum
     public const MUNICIPAL_MANAGER = 'municipal_manager';
     public const MUNICIPAL_MANAGER_SUPERVISOR = 'municipal_manager_supervisor';
     public const ASSESSOR = 'assessor';
+
+    public const SCOPES = [
+        ScopeEnum::REFERENT => self::REFERENT,
+        ScopeEnum::CANDIDATE => self::CANDIDATE,
+        ScopeEnum::SENATOR => self::SENATOR,
+        ScopeEnum::DEPUTY => self::DEPUTY,
+    ];
 }

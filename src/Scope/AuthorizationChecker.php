@@ -21,7 +21,7 @@ class AuthorizationChecker
 
     public function isFeatureGranted(Request $request, Adherent $adherent, string $featureCode): bool
     {
-        if (!$scope = $request->query->get(self::SCOPE_QUERY_PARAM)) {
+        if (!$scope = $this->getScope($request)) {
             throw new ScopeQueryParamMissingException();
         }
 
@@ -45,5 +45,10 @@ class AuthorizationChecker
         || (ScopeEnum::CANDIDATE === $code && !$adherent->isHeadedRegionalCandidate())
         || (ScopeEnum::SENATOR === $code && !$adherent->isSenator())
         || (ScopeEnum::NATIONAL === $code && !$adherent->hasNationalRole());
+    }
+
+    public function getScope(Request $request): ?string
+    {
+        return $request->query->get(self::SCOPE_QUERY_PARAM);
     }
 }

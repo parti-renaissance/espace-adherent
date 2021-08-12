@@ -62,11 +62,14 @@ trait EntityZoneTrait
     /**
      * @return Zone[]
      */
-    public function getZonesOfType(string $type): array
+    public function getZonesOfType(string $type, bool $deep = false): array
     {
-        return array_filter($this->zones->toArray(), function (Zone $zone) use ($type) {
-            return $type === $zone->getType();
-        });
+        return array_filter(
+            $deep ? array_merge($this->zones->toArray(), $this->getParentZones()) : $this->zones->toArray(),
+            function (Zone $zone) use ($type) {
+                return $type === $zone->getType();
+            }
+        );
     }
 
     /**
@@ -80,5 +83,12 @@ trait EntityZoneTrait
         }
 
         return array_unique($zones);
+    }
+
+    public function getParentZones(): array
+    {
+        return array_merge(...array_map(function (Zone $zone) {
+            return $zone->getParents();
+        }, $this->zones->toArray()));
     }
 }

@@ -34,7 +34,8 @@ class ManagedUserFactory
             $data['supervisor_tags'] ?? [],
             $data['uuid'] ?? null,
             $data['vote_committee_id'] ?? null,
-            isset($data['certified_at']) ? new \DateTime($data['certified_at']) : null
+            isset($data['certified_at']) ? new \DateTime($data['certified_at']) : null,
+            $data['interests'] ?? []
         );
     }
 

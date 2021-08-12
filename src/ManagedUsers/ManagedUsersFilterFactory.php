@@ -2,6 +2,7 @@
 
 namespace App\ManagedUsers;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface;
@@ -30,5 +31,14 @@ class ManagedUsersFilterFactory
         }
 
         return null;
+    }
+
+    public function createForScope(string $scopeCode, Adherent $adherent): ?ManagedUsersFilter
+    {
+        if (!isset(AdherentSpaceEnum::SCOPES[$scopeCode])) {
+            return null;
+        }
+
+        return $this->create(AdherentSpaceEnum::SCOPES[$scopeCode], $adherent);
     }
 }
