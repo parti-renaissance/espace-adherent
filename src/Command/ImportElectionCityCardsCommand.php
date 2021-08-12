@@ -81,6 +81,8 @@ class ImportElectionCityCardsCommand extends Command
 
             throw $exception;
         }
+
+        return 0;
     }
 
     private function loadFile(InputInterface $input, OutputInterface $output): void

@@ -106,6 +106,8 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
 
         $this->io->title('City errors');
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
+
+        return 0;
     }
 
     private function updateResult(string $dptCode, array $cityAttr): void

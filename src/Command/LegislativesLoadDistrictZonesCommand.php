@@ -115,6 +115,8 @@ class LegislativesLoadDistrictZonesCommand extends Command
             $progress->finish();
             $output->writeln('');
         }
+
+        return 0;
     }
 
     private function createCandidate(

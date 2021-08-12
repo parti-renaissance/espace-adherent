@@ -120,6 +120,7 @@ class ProxyQuery implements ProxyQueryInterface
 
     public function setSortBy($parentAssociationMappings, $fieldMapping)
     {
+        return $this;
     }
 
     public function getSingleScalarResult()
@@ -128,6 +129,7 @@ class ProxyQuery implements ProxyQueryInterface
 
     public function getUniqueParameterId()
     {
+        return null;
     }
 
     public function entityJoin(array $associationMappings)

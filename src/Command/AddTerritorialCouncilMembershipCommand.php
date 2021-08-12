@@ -104,6 +104,8 @@ class AddTerritorialCouncilMembershipCommand extends Command
         $this->io->progressFinish();
 
         $this->io->success('Territorial Council memberhip added successfully to adherents!');
+
+        return 0;
     }
 
     private function getReferents(): IterableResult

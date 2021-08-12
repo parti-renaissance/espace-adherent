@@ -84,5 +84,7 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
         $this->io->progressFinish();
 
         $this->io->note(sprintf('Synchronized %d/%d tags', $countSyncTags, $countAllTags));
+
+        return 0;
     }
 }

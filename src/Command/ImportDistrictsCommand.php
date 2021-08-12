@@ -50,5 +50,7 @@ class ImportDistrictsCommand extends Command
         );
 
         $this->io->success('Done');
+
+        return 0;
     }
 }

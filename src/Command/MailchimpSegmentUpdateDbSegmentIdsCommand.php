@@ -65,6 +65,8 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function updateReferentTags(array $segments): void

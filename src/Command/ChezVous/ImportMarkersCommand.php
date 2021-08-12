@@ -14,7 +14,6 @@ use App\Entity\ChezVous\Marker;
 use App\Entity\ChezVous\Measure;
 use App\Entity\ChezVous\MeasureType;
 use App\Repository\ChezVous\CityRepository;
-use App\Repository\ChezVous\MarkerRepository;
 use App\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
@@ -28,7 +27,6 @@ class ImportMarkersCommand extends AbstractImportCommand
 
     protected static $defaultName = 'app:chez-vous:import-markers';
 
-    private $markerRepository;
     private $markerChoiceLoader;
     private $measureChoiceLoader;
     private $measureRepository;
@@ -45,14 +43,12 @@ class ImportMarkersCommand extends AbstractImportCommand
         EntityManagerInterface $em,
         CityRepository $cityRepository,
         FilesystemInterface $storage,
-        MarkerRepository $markerRepository,
         MarkerChoiceLoader $markerChoiceLoader,
         MeasureChoiceLoader $measureChoiceLoader,
         MeasureRepository $measureRepository
     ) {
         parent::__construct($em, $cityRepository, $storage);
 
-        $this->markerRepository = $markerRepository;
         $this->markerChoiceLoader = $markerChoiceLoader;
         $this->measureChoiceLoader = $measureChoiceLoader;
         $this->measureRepository = $measureRepository;
@@ -77,6 +73,8 @@ class ImportMarkersCommand extends AbstractImportCommand
         $this->em->commit();
 
         $this->io->success('ChezVous markers imported successfully!');
+
+        return 0;
     }
 
     private function importMarkerType(string $type): void

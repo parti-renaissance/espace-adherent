@@ -72,6 +72,8 @@ class MailchimpSyncAllNewsletterCommand extends Command
         } while (0 !== $offset && $offset < $count);
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function getPaginator(): Paginator

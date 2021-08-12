@@ -87,6 +87,8 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function findSegment(string $list, string $label): ?MailchimpSegment

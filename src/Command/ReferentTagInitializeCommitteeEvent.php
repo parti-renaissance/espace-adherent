@@ -44,6 +44,8 @@ class ReferentTagInitializeCommitteeEvent extends Command
         }
 
         $output->writeln(['', 'Referent Tags imported successfully!']);
+
+        return 0;
     }
 
     private function initializeCommitteeTags(OutputInterface $output): void

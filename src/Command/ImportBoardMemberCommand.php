@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\BoardMember\BoardMember;
 use App\Repository\AdherentRepository;
-use App\Repository\BoardMember\BoardMemberRepository;
 use App\Repository\BoardMember\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,11 +20,6 @@ class ImportBoardMemberCommand extends Command
      * @var EntityManagerInterface
      */
     private $em;
-
-    /**
-     * @var BoardMemberRepository
-     */
-    private $boardMemberRepository;
 
     /**
      * @var AdherentRepository
@@ -51,7 +45,6 @@ class ImportBoardMemberCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fileNameTypeFormCSV = null;
         $fileNameOtherCSV = null;
         $typeFormRows = [];
         $otherCSVRows = [];
@@ -92,6 +85,8 @@ class ImportBoardMemberCommand extends Command
                 $output->writeln($email);
             }
         }
+
+        return 0;
     }
 
     private function parseTypeFormCSV(string $filename): array
@@ -242,12 +237,6 @@ class ImportBoardMemberCommand extends Command
     public function setEntityManager(EntityManagerInterface $em): void
     {
         $this->em = $em;
-    }
-
-    /** @required */
-    public function setBoardMemberRepository(BoardMemberRepository $boardMemberRepository): void
-    {
-        $this->boardMemberRepository = $boardMemberRepository;
     }
 
     /** @required */

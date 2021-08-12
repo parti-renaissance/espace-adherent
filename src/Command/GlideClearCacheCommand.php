@@ -27,6 +27,8 @@ class GlideClearCacheCommand extends Command
         $this->glide->deleteCache($input->getArgument('path'));
 
         $output->writeln('Done');
+
+        return 0;
     }
 
     /** @required */

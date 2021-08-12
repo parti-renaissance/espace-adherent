@@ -48,6 +48,8 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
             $this->em->flush();
         }
+
+        return 0;
     }
 
     private function processTimeout(CertificationRequest $certificationRequest): void

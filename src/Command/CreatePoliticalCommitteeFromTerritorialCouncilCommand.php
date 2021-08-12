@@ -66,6 +66,8 @@ class CreatePoliticalCommitteeFromTerritorialCouncilCommand extends Command
         $this->io->progressFinish();
 
         $this->io->success('Political committee have been created successfully!');
+
+        return 0;
     }
 
     private function getTerritorialCouncils(): IterableResult

@@ -75,6 +75,8 @@ class MailchimpUpdateAdherentCommand extends Command
         }
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function validateHeaders(

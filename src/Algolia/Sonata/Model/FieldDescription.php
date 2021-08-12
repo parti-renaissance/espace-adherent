@@ -42,5 +42,6 @@ class FieldDescription extends BaseFieldDescription
 
     public function isIdentifier()
     {
+        return false;
     }
 }

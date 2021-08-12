@@ -138,6 +138,8 @@ class ImportJecouteSurveysCommand extends Command
         $this->em->flush();
 
         $this->io->success('Done');
+
+        return 0;
     }
 
     private function importSuggestedQuestions(): void

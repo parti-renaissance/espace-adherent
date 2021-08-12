@@ -86,6 +86,8 @@ class MailchimpSyncCoalitionsMembersCommand extends Command
 
             $this->syncContacts(false, $paginator, $count, $total, $limit);
         }
+
+        return 0;
     }
 
     private function syncContacts(bool $isAdherent, Paginator $paginator, int $count, int $total, int $limit): void

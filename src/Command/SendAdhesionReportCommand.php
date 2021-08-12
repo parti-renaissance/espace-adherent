@@ -105,6 +105,8 @@ class SendAdhesionReportCommand extends Command
         if ($dryRunMode && $this->reports) {
             $this->io->table(array_keys($this->reports[0]), $this->reports);
         }
+
+        return 0;
     }
 
     /**

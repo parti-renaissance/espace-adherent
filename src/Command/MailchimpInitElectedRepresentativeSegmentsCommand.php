@@ -63,7 +63,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $referentTags = $this->referentTagRepository->findAll();
-        $this->io->progressStart($countAllTags = \count($referentTags));
+        $this->io->progressStart(\count($referentTags));
 
         /** @var ReferentTag $tag */
         foreach ($referentTags as $tag) {
@@ -102,6 +102,8 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
             'Tags synchronized ! Maybe run "%s" to ensure both ways are synced.',
             'mailchimp:sync:segments elected_representative'
         ));
+
+        return 0;
     }
 
     private function initTag(string $label): void

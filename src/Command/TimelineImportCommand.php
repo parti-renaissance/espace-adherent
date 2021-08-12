@@ -70,6 +70,8 @@ class TimelineImportCommand extends Command
         $this->em->commit();
 
         $output->writeln(['', 'Timeline imported successfully!']);
+
+        return 0;
     }
 
     private function importProfiles(): void

@@ -98,6 +98,8 @@ class MailchimpSyncAllEventsCommand extends Command
         } while ($offset < $count && (!$limit || $offset < $limit));
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
     private function buildPaginator(string $type): Paginator

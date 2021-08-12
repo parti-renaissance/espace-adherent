@@ -164,6 +164,8 @@ class ThematicCommunityMembershipImportCommand extends Command
 
         $this->entityManager->flush();
         $this->entityManager->clear();
+
+        return 0;
     }
 
     protected function setUserListDefinitions(ThematicCommunityMembership $membership, array $categories): void

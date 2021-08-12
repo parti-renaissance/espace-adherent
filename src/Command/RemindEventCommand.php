@@ -68,5 +68,7 @@ class RemindEventCommand extends Command
 
         $this->io->progressFinish();
         $this->io->success("$total events has been reminded.");
+
+        return 0;
     }
 }

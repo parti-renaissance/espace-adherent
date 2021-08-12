@@ -60,6 +60,8 @@ class ImportZipCodesCommand extends AbstractImportCommand
         $this->em->commit();
 
         $this->io->success('ChezVous zipcodes imported successfully!');
+
+        return 0;
     }
 
     private function importRegions(): void

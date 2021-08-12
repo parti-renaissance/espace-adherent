@@ -76,6 +76,7 @@ class ModelManager implements ModelManagerInterface
 
     public function findBy($class, array $criteria = [])
     {
+        return [];
     }
 
     public function findOneBy($class, array $criteria = [])
@@ -96,14 +97,17 @@ class ModelManager implements ModelManagerInterface
 
     public function getIdentifierValues($model)
     {
+        return [];
     }
 
     public function getIdentifierFieldNames($class)
     {
+        return [];
     }
 
     public function getNormalizedIdentifier($model)
     {
+        return null;
     }
 
     public function getUrlsafeIdentifier($model)
@@ -112,10 +116,12 @@ class ModelManager implements ModelManagerInterface
 
     public function getModelInstance($class)
     {
+        return null;
     }
 
     public function getModelCollectionInstance($class)
     {
+        return null;
     }
 
     public function collectionRemoveElement(&$collection, &$element)
@@ -128,6 +134,7 @@ class ModelManager implements ModelManagerInterface
 
     public function collectionHasElement(&$collection, &$element)
     {
+        return false;
     }
 
     public function collectionClear(&$collection)
@@ -136,10 +143,12 @@ class ModelManager implements ModelManagerInterface
 
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
+        return [];
     }
 
     public function modelReverseTransform($class, array $array = [])
     {
+        return null;
     }
 
     public function modelTransform($class, $instance)
@@ -156,10 +165,12 @@ class ModelManager implements ModelManagerInterface
         $firstResult = null,
         $maxResult = null
     ) {
+        return null;
     }
 
     public function getExportFields($class)
     {
+        return [];
     }
 
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx)

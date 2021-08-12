@@ -51,6 +51,8 @@ class ReferentTagImportCommand extends Command
         }
 
         $output->writeln(['', 'Referent Tags imported successfully!']);
+
+        return 0;
     }
 
     private function importReferentTags(InputInterface $input, OutputInterface $output): void

@@ -153,6 +153,8 @@ class ImportMeasureTypesCommand extends Command
         $this->em->commit();
 
         $this->io->success('ChezVous measure types imported successfully!');
+
+        return 0;
     }
 
     private function importMeasureTypes(): void

@@ -126,7 +126,6 @@ class ImportElectionVotePlaceResultsCommand extends Command
                 foreach ($voteResult->getListTotalResults() as $list) {
                     if (0 === strcasecmp($list->getList()->getLabel(), $listData['list_label'])) {
                         $list->setTotal((int) $listData['voix']);
-                        continue;
                     }
                 }
             }
@@ -145,6 +144,8 @@ class ImportElectionVotePlaceResultsCommand extends Command
 
         $this->io->title('VotePlace errors');
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
+
+        return 0;
     }
 
     private function getVoteResult(ElectionRound $electionRound, VotePlace $votePlace): VotePlaceResult

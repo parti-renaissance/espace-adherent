@@ -92,6 +92,8 @@ class DonatorSynchronizeCommand extends Command
 
         $this->io->progressFinish();
         $this->io->text('Donators successfully synchronized.');
+
+        return 0;
     }
 
     private function getCount(): int

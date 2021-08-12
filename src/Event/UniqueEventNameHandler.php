@@ -38,6 +38,7 @@ class UniqueEventNameHandler implements SlugHandlerWithUniqueCallbackInterface
 
     public function handlesUrlization()
     {
+        return false;
     }
 
     public static function validate(array $options, ClassMetadata $meta)

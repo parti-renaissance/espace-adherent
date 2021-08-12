@@ -74,6 +74,8 @@ class ImportMeasuresCommand extends AbstractImportCommand
         $this->em->commit();
 
         $this->io->success('ChezVous measures imported successfully!');
+
+        return 0;
     }
 
     private function importMeasureType(string $type): void

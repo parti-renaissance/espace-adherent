@@ -51,6 +51,8 @@ class CertificationRequestRemoveDocumentCommand extends Command
 
             $this->em->flush();
         }
+
+        return 0;
     }
 
     private function removeDocument(CertificationRequest $certificationRequest): void

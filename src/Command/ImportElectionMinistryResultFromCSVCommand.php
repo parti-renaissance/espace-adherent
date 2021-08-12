@@ -145,6 +145,8 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
 
         $this->io->title('VotePlace errors');
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
+
+        return 0;
     }
 
     private function extractLists(array $row, int $initialOffset): array

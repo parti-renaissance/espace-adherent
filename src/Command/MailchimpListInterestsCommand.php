@@ -70,6 +70,8 @@ class MailchimpListInterestsCommand extends Command
 
             $this->io->table(['Nom', 'ID'], $rows);
         }
+
+        return 0;
     }
 
     private function getInterestCategories(string $listId): array

@@ -49,6 +49,8 @@ class CertificationRequestProcessPreRefusedCommand extends Command
         foreach ($certificationRequests as $certificationRequest) {
             $this->processPreRefused($certificationRequest);
         }
+
+        return 0;
     }
 
     private function processPreRefused(CertificationRequest $certificationRequest): void

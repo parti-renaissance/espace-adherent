@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Repository\Poll\LocalPollRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,14 +13,12 @@ class UnpublishLocalPollCommand extends Command
 {
     protected static $defaultName = 'app:polls:unpublish-passed-local';
 
-    private $em;
     private $localPollRepository;
     /** @var SymfonyStyle */
     private $io;
 
-    public function __construct(EntityManagerInterface $em, LocalPollRepository $localPollRepository)
+    public function __construct(LocalPollRepository $localPollRepository)
     {
-        $this->em = $em;
         $this->localPollRepository = $localPollRepository;
 
         parent::__construct();
@@ -65,6 +62,8 @@ class UnpublishLocalPollCommand extends Command
             $total > 1 ? 's' : '',
             $total > 1 ? 'have' : 'has'
         ));
+
+        return 0;
     }
 
     private function getPassedLocalPollsCount(): int

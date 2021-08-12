@@ -45,6 +45,8 @@ class ApplicationRequestsUpdateMissingTags extends Command
         $this->updateApplicationRequests(VolunteerRequest::class);
 
         $this->io->success('Done');
+
+        return 0;
     }
 
     private function updateApplicationRequests(string $entityClass): void

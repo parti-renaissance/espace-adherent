@@ -60,6 +60,8 @@ class ImportVotePlacesCommand extends Command
 
         $this->io->text('Vote places are loaded');
         $this->io->success('Done');
+
+        return 0;
     }
 
     private function parseCSV(string $filename): array

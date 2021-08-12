@@ -91,6 +91,8 @@ class ImportProgrammaticFoundationCommand extends Command
 
             throw $exception;
         }
+
+        return 0;
     }
 
     private function import(InputInterface $input): void

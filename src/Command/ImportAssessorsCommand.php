@@ -75,6 +75,8 @@ class ImportAssessorsCommand extends Command
 
         $this->io->writeln('');
         $this->io->success('Done');
+
+        return 0;
     }
 
     private function parseCSV(string $filename): array
