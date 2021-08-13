@@ -14,9 +14,9 @@ class RedirectionsProvider
         ],
         self::TO_ROUTE => [
             '/article/' => 'article_view',
-            '/amp/article/' => 'amp_article_view',
-            '/amp/proposition/' => 'amp_proposal_view',
-            '/amp/transformer-la-france/' => 'amp_explainer_article_show',
+            '/amp/article/' => 'article_view',
+            '/amp/proposition/' => 'program_proposal',
+            '/amp/transformer-la-france/' => 'app_explainer_article_show',
         ],
         self::TO_REMOVE_UUID => [
             '/evenements/' => '/evenements',
