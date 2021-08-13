@@ -6,6 +6,14 @@ use App\ValueObject\Genders;
 
 class ColumnsConfigurator
 {
+    private const COLUMN_TYPE_ARRAY = 'array';
+    private const COLUMN_TYPE_BOOLEAN = 'boolean';
+    private const COLUMN_TYPE_TRANS = 'trans';
+
+    private const FILTER_TYPE_STRING = 'string';
+    private const FILTER_TYPE_SELECT = 'select';
+    private const FILTER_TYPE_BOOLEAN = 'boolean';
+
     private $adherentInterests;
 
     public function __construct(array $adherentInterests)
@@ -19,8 +27,10 @@ class ColumnsConfigurator
             [
                 'key' => 'gender',
                 'label' => 'Genre',
+                'type' => self::COLUMN_TYPE_TRANS,
+                'messages' => Genders::CHOICES_LABELS,
                 'filter' => [
-                    'type' => 'select',
+                    'type' => self::FILTER_TYPE_SELECT,
                     'options' => [
                         'choices' => Genders::CHOICES_LABELS,
                     ],
@@ -30,35 +40,37 @@ class ColumnsConfigurator
                 'key' => 'first_name',
                 'label' => 'Prénom',
                 'filter' => [
-                    'type' => 'text',
+                    'type' => self::FILTER_TYPE_STRING,
                 ],
             ],
             [
                 'key' => 'last_name',
                 'label' => 'Nom',
                 'filter' => [
-                    'type' => 'text',
+                    'type' => self::FILTER_TYPE_STRING,
                 ],
             ],
             [
                 'key' => 'email_subscription',
                 'label' => 'Abonné email',
+                'type' => self::COLUMN_TYPE_BOOLEAN,
                 'filter' => [
-                    'type' => 'boolean',
+                    'type' => self::FILTER_TYPE_BOOLEAN,
                 ],
             ],
             [
                 'key' => 'sms_subscription',
                 'label' => 'Abonné tel',
+                'type' => self::COLUMN_TYPE_BOOLEAN,
                 'filter' => [
-                    'type' => 'boolean',
+                    'type' => self::FILTER_TYPE_BOOLEAN,
                 ],
             ],
             [
                 'key' => 'postal_code',
                 'label' => 'Code postal',
                 'filter' => [
-                    'type' => 'string',
+                    'type' => self::FILTER_TYPE_STRING,
                 ],
             ],
             [
@@ -69,7 +81,7 @@ class ColumnsConfigurator
                 'key' => 'city',
                 'label' => 'Commune',
                 'filter' => [
-                    'type' => 'string',
+                    'type' => self::FILTER_TYPE_STRING,
                 ],
             ],
             [
@@ -91,9 +103,12 @@ class ColumnsConfigurator
             [
                 'key' => 'interests',
                 'label' => 'Intérêts',
+                'type' => self::COLUMN_TYPE_ARRAY.'|'.self::COLUMN_TYPE_TRANS,
+                'messages' => $this->adherentInterests,
                 'filter' => [
-                    'type' => 'select',
+                    'type' => self::FILTER_TYPE_SELECT,
                     'options' => [
+                        'multiple' => true,
                         'choices' => $this->adherentInterests,
                     ],
                 ],
