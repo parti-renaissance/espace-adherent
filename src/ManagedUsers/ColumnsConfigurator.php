@@ -31,9 +31,6 @@ class ColumnsConfigurator
                 'messages' => Genders::CHOICES_LABELS,
                 'filter' => [
                     'type' => self::FILTER_TYPE_SELECT,
-                    'options' => [
-                        'choices' => Genders::CHOICES_LABELS,
-                    ],
                 ],
             ],
             [
@@ -109,7 +106,6 @@ class ColumnsConfigurator
                     'type' => self::FILTER_TYPE_SELECT,
                     'options' => [
                         'multiple' => true,
-                        'choices' => $this->adherentInterests,
                     ],
                 ],
             ],
