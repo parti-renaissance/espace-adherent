@@ -32,7 +32,11 @@ class ValidScopeValidator extends ConstraintValidator
 
         $user = $this->security->getUser();
 
-        if (!$user instanceof Adherent || $this->authorizationChecker->isValidScopeForAdherent($value, $user)) {
+        if (!$user instanceof Adherent) {
+            return;
+        }
+
+        if (!$this->authorizationChecker->isScopeGranted($value, $user)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('type')
