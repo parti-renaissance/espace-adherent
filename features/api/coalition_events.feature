@@ -1393,6 +1393,80 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user if I edit only a visioUrl of a cause event, an email is send
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App" with scope "write:event"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8" with body:
+    """
+    {
+      "visioUrl": "https://new.url.fr"
+    }
+    """
+    Then the response status code should be 200
+    And I should have 1 email
+    And I should have 1 email "CoalitionsEventUpdateMessage" for "jacques.picard@en-marche.fr" with payload:
+    """
+    {
+       "template_name":"coalitions-event-update",
+       "template_content":[
+          
+       ],
+       "message":{
+          "subject":"✊ Un événement a été modifié",
+          "from_email":"contact@pourunecause.fr",
+          "global_merge_vars":[
+             {
+                "name":"event_name",
+                "content":"Événement culturel 1 de la cause culturelle 1"
+             },
+             {
+                "name":"event_url",
+                "content":"http://coalitions.code/cause/cause-pour-la-culture?eventId=ef62870c-6d42-47b6-91ea-f454d473adf8"
+             },
+             {
+                "name":"event_date",
+                "content":"dimanche 22 août 2021"
+             },
+             {
+                "name":"event_hour",
+                "content":"09h00"
+             },
+             {
+                "name":"event_address",
+                "content":"60 avenue des Champs-Élysées, 75008 Paris 8e"
+             },
+             {
+                "name":"event_online",
+                "content":false
+             },
+             {
+                "name":"event_visio_url",
+                "content":"https://new.url.fr"
+             }
+          ],
+          "merge_vars":[
+             {
+                "rcpt":"jacques.picard@en-marche.fr",
+                "vars":[
+                   {
+                      "name":"first_name",
+                      "content":"Jacques"
+                   }
+                ]
+             }
+          ],
+          "from_name":"Pour une cause",
+          "to":[
+             {
+                "email":"jacques.picard@en-marche.fr",
+                "type":"to",
+                "name":"Jacques"
+             }
+          ]
+       }
+    }
+    """
+
   Scenario: As a non logged-in user I see cause events
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/events"

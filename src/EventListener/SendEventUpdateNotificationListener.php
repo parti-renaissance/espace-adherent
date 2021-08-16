@@ -19,6 +19,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SendEventUpdateNotificationListener implements EventSubscriberInterface
 {
+    /** @var string */
+    private $visioUrl;
     /** @var DateTimeInterface */
     private $eventBeginAt;
     /** @var DateTimeInterface */
@@ -74,11 +76,13 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
         return !$this->postAddress->equals($event->getPostAddressModel())
             || $this->eventBeginAt != $event->getBeginAt()
             || $this->eventFinishAt != $event->getFinishAt()
+            || $this->visioUrl != $event->getVisioUrl()
         ;
     }
 
     private function doPreUpdate(BaseEvent $event): void
     {
+        $this->visioUrl = $event->getVisioUrl();
         $this->postAddress = clone $event->getPostAddressModel();
         $this->eventBeginAt = clone $event->getBeginAt();
         $this->eventFinishAt = clone $event->getFinishAt();
