@@ -24,7 +24,7 @@ class LoadMunicipalEventData extends Fixture implements DependentFixtureInterfac
             $eventCategory1,
             'Allons à la rencontre des citoyens.',
             PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
+            (new Chronos('+3 days'))->format('Y-m-d').' 08:30:00',
             (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00'
         );
 

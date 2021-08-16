@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Scope\ScopeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,5 +14,10 @@ class ReferentAdherentMessage extends AbstractAdherentMessage implements Campaig
     public function getType(): string
     {
         return AdherentMessageTypeEnum::REFERENT;
+    }
+
+    protected function getScope(): ?string
+    {
+        return ScopeEnum::REFERENT;
     }
 }

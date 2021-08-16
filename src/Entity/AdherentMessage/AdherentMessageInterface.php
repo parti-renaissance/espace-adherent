@@ -64,9 +64,11 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
 
     public function markAsSent(): void;
 
-    public static function createFromAdherent(Adherent $adherent): self;
+    public static function createFromAdherent(Adherent $adherent, UuidInterface $uuid = null): self;
 
     public function getSource(): string;
 
     public function setSource(string $source): void;
+
+    public function isCompatibleWithScope(string $scope): bool;
 }

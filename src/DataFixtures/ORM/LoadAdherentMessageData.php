@@ -9,20 +9,42 @@ use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use Ramsey\Uuid\Uuid;
 
 class LoadAdherentMessageData extends Fixture implements DependentFixtureInterface
 {
+    public const MESSAGE_01_UUID = '969b1f08-53ec-4a7d-8d6e-7654a001b13f';
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('FR_fr');
-        $message = null;
 
+        $message = ReferentAdherentMessage::createFromAdherent(
+            $this->getAuthor(ReferentAdherentMessage::class),
+            Uuid::fromString(self::MESSAGE_01_UUID)
+        );
+
+        $message->setContent($faker->randomHtml());
+        $message->setSubject($faker->sentence(5));
+        $message->setLabel($faker->sentence(2));
+
+        if ($filter = $this->getFilter(ReferentAdherentMessage::class)) {
+            $message->setFilter($filter);
+        }
+        $message->addMailchimpCampaign(new MailchimpCampaign($message));
+        $message->setFilter(new ReferentUserFilter([$this->getReference('referent_tag_75')]));
+
+        $manager->persist($message);
+        $manager->flush();
+
+        $message = null;
         foreach ($this->getMessageClasses() as $class) {
             for ($i = 1; $i <= 100; ++$i) {
                 /** @var AdherentMessageInterface $message */
@@ -51,6 +73,8 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         return [
             LoadCommitteeData::class,
+            LoadDistrictData::class,
+            LoadReferentTagData::class,
         ];
     }
 

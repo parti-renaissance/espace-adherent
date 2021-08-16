@@ -209,9 +209,9 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->mailchimpCampaigns = new ArrayCollection();
     }
 
-    public static function createFromAdherent(Adherent $adherent): AdherentMessageInterface
+    public static function createFromAdherent(Adherent $adherent, UuidInterface $uuid = null): AdherentMessageInterface
     {
-        return new static(Uuid::uuid4(), $adherent);
+        return new static($uuid ?? Uuid::uuid4(), $adherent);
     }
 
     public function getId(): ?int
@@ -426,5 +426,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function setSource(string $source): void
     {
         $this->source = $source;
+    }
+
+    public function isCompatibleWithScope(string $scope): bool
+    {
+        return $scope === $this->getScope();
+    }
+
+    protected function getScope(): ?string
+    {
+        return null;
     }
 }

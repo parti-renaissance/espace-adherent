@@ -54,6 +54,7 @@ trait EntityIdentityTrait
      *     "riposte_read",
      *     "riposte_read",
      *     "audience_segment_read",
+     *     "adherent_message_update_filter",
      * })
      *
      * @ApiProperty(
