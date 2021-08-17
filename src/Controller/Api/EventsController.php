@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Api\EventProvider;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Exporter\EventRegistrationExporter;
 use App\Repository\CommitteeRepository;
 use App\Repository\Event\BaseEventRepository;
 use App\Repository\EventRegistrationRepository;
@@ -108,5 +109,14 @@ class EventsController extends AbstractController
         return JsonResponse::create(array_map(function (BaseEvent $event) {
             return $event->getUuid();
         }, $events));
+    }
+
+    /**
+     * @Route("/v3/events/{uuid}/export-registrations", name="api_export_event_registrations", requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
+     * @Security("event.getAuthor() === user")
+     */
+    public function exportRegistrations(EventRegistrationExporter $exporter, BaseEvent $event): Response
+    {
+        return $exporter->getResponse('xls', $event);
     }
 }

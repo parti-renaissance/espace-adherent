@@ -60,6 +60,7 @@ class LoadCauseEventData extends Fixture implements DependentFixtureInterface
             (new Chronos('+6 days'))->format('Y-m-d').' 18:00:00'
         );
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCulture1, $adherent3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCulture1, $adherent7)));
 
         $eventCulture2 = $this->createEvent(
             self::EVENT_2_UUID,
@@ -97,6 +98,9 @@ class LoadCauseEventData extends Fixture implements DependentFixtureInterface
             (new Chronos('+20 days'))->format('Y-m-d').' 19:00:00'
         );
         $eventCultureCancelled->cancel();
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCultureCancelled, $adherent3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCultureCancelled, $adherent11)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($eventCultureCancelled, $adherent12)));
 
         $eventCultureFinished = $this->createEvent(
             self::EVENT_5_UUID,

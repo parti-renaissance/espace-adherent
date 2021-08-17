@@ -431,10 +431,19 @@ Feature:
         "merge_vars": [
           {
             "rcpt": "jacques.picard@en-marche.fr",
-            "vars": [
+            "vars":[
               {
                 "name": "first_name",
                 "content": "Jacques"
+              }
+            ]
+          },
+          {
+            "rcpt": "francis.brioul@yahoo.com",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Francis"
               }
             ]
           }
@@ -445,6 +454,11 @@ Feature:
             "email": "jacques.picard@en-marche.fr",
             "type": "to",
             "name": "Jacques"
+          },
+          {
+            "email": "francis.brioul@yahoo.com",
+            "type": "to",
+            "name": "Francis"
           }
         ]
       }
