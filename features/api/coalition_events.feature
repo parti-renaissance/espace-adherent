@@ -1425,7 +1425,7 @@ Feature:
              },
              {
                 "name":"event_date",
-                "content":"dimanche 22 août 2021"
+                "content":"@string@"
              },
              {
                 "name":"event_hour",
