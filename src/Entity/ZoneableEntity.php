@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\Collection;
 
-interface ZoneableEntity extends EntityPostAddressInterface
+interface ZoneableEntity
 {
     /**
      * @return Collection|Zone[]
@@ -17,4 +17,6 @@ interface ZoneableEntity extends EntityPostAddressInterface
     public function removeZone(Zone $Zone): void;
 
     public function clearZones(): void;
+
+    public function getScope(): ?string;
 }

@@ -2,14 +2,13 @@
 
 namespace App\Controller\Api\Audience;
 
-use App\Audience\AudienceHelper;
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Geo\ManagedZoneProvider;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Audience\AudienceRepository;
+use App\Scope\AuthorizationChecker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class RetrieveAudiencesController extends AbstractController
 {
@@ -17,22 +16,16 @@ class RetrieveAudiencesController extends AbstractController
 
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
-        ManagedZoneProvider $managedZoneProvider
+        ManagedZoneProvider $managedZoneProvider,
+        AudienceRepository $repository,
+        AuthorizationChecker $authorizationChecker
     ): array {
-        if (!$type = $request->query->get('type')) {
-            throw new BadRequestHttpException('No type provided.');
-        }
-
-        $className = AudienceHelper::getAudienceClassName($type);
+        $scope = $authorizationChecker->getScope($request);
         $user = $this->getMainUser($request->getSession());
 
-        if (!$user || !AudienceHelper::validateAdherentAccess($user, $className)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        return $entityManager->getRepository($className)->findByZones(
-            $managedZoneProvider->getManagedZones($user, AudienceHelper::getSpaceType($className))
+        return $repository->findByZones(
+            $scope,
+            $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scope])
         );
     }
 }

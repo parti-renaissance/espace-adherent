@@ -2,10 +2,11 @@
 
 namespace App\Normalizer;
 
-use App\Audience\AudienceTypeEnum;
-use App\Entity\Audience\AbstractAudience;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use App\AdherentSpace\AdherentSpaceEnum;
+use App\Entity\Audience\Audience;
+use App\Geo\ManagedZoneProvider;
+use App\Scope\AuthorizationChecker;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -16,28 +17,34 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 
     private const AUDIENCE_DENORMALIZER_ALREADY_CALLED = 'AUDIENCE_DENORMALIZER_ALREADY_CALLED';
 
+    private $authorizationChecker;
+    private $managedZoneProvider;
+    private $security;
+
+    public function __construct(
+        AuthorizationChecker $authorizationChecker,
+        ManagedZoneProvider $managedZoneProvider,
+        Security $security
+    ) {
+        $this->authorizationChecker = $authorizationChecker;
+        $this->managedZoneProvider = $managedZoneProvider;
+        $this->security = $security;
+    }
+
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
-            $audienceClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
-        } else {
-            $audienceType = $data['type'] ?? null;
-
-            if (!$audienceType || !($audienceClass = $this->getAudienceClassFromType($audienceType))) {
-                throw new UnexpectedValueException('Type value is missing or invalid');
-            }
-        }
-
-        if (!$audienceClass) {
-            throw new UnexpectedValueException('Type value is missing or invalid');
-        }
-
-        unset($data['type']);
-
         $context[self::AUDIENCE_DENORMALIZER_ALREADY_CALLED] = true;
 
-        /** @var AbstractAudience $audience */
-        $audience = $this->denormalizer->denormalize($data, $audienceClass, $format, $context);
+        /** @var Audience $audience */
+        $audience = $this->denormalizer->denormalize($data, $type, $format, $context);
+
+        if (
+            !empty($data['scope'])
+            && ($user = $this->security->getUser())
+            && $this->authorizationChecker->isScopeGranted($data['scope'], $user)
+        ) {
+            $audience->setZones($this->managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$data['scope']]));
+        }
 
         return $audience;
     }
@@ -46,15 +53,6 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
     {
         return
             empty($context[self::AUDIENCE_DENORMALIZER_ALREADY_CALLED])
-            && AbstractAudience::class === $type;
-    }
-
-    private function getAudienceClassFromType(string $type): ?string
-    {
-        if (!isset(AudienceTypeEnum::CLASSES[$type])) {
-            throw new \InvalidArgumentException(sprintf('Audience type "%s" is undefined', $type));
-        }
-
-        return AudienceTypeEnum::CLASSES[$type];
+            && Audience::class === $type;
     }
 }

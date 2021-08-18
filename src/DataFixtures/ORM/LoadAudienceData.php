@@ -2,12 +2,9 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Audience\AbstractAudience;
-use App\Entity\Audience\CandidateAudience;
-use App\Entity\Audience\DeputyAudience;
-use App\Entity\Audience\ReferentAudience;
-use App\Entity\Audience\SenatorAudience;
+use App\Entity\Audience\Audience;
 use App\Entity\Geo\Zone;
+use App\Scope\ScopeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -30,33 +27,33 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $audienceReferentOnlyRequired = $this->createAudience(
-            ReferentAudience::class,
             self::AUDIENCE_1_UUID,
+            ScopeEnum::REFERENT,
             'Audience REFERENT avec les paramètres nécessaires',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_77')
         );
         $audienceDeputyOnlyRequired = $this->createAudience(
-            DeputyAudience::class,
             self::AUDIENCE_2_UUID,
+            ScopeEnum::DEPUTY,
             'Audience DEPUTY avec les paramètres nécessaires',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')
         );
         $audienceSenatorOnlyRequired = $this->createAudience(
-            SenatorAudience::class,
             self::AUDIENCE_3_UUID,
+            ScopeEnum::SENATOR,
             'Audience SENATOR avec les paramètres nécessaires',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_59')
         );
         $audienceCandidateOnlyRequired = $this->createAudience(
-            CandidateAudience::class,
             self::AUDIENCE_4_UUID,
+            ScopeEnum::CANDIDATE,
             'Audience CANDIDATE avec les paramètres nécessaires',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_77')
         );
 
         $audienceReferentClichy = $this->createAudience(
-            ReferentAudience::class,
             self::AUDIENCE_5_UUID,
+            ScopeEnum::REFERENT,
             'Audience REFERENT avec quelques paramètres',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             null,
@@ -72,8 +69,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             false
         );
         $audienceReferent69 = $this->createAudience(
-            ReferentAudience::class,
             self::AUDIENCE_6_UUID,
+            ScopeEnum::REFERENT,
             'Audience REFERENT, les femmes à 69',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_69'),
             null,
@@ -81,8 +78,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             Genders::FEMALE
         );
         $audienceDeputyAll = $this->createAudience(
-            DeputyAudience::class,
             self::AUDIENCE_7_UUID,
+            ScopeEnum::DEPUTY,
             'Audience DEPUTY avec tous les paramètres possibles',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             'Julien',
@@ -98,8 +95,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             false
         );
         $audienceDeputy2020 = $this->createAudience(
-            DeputyAudience::class,
             self::AUDIENCE_8_UUID,
+            ScopeEnum::DEPUTY,
             'Audience DEPUTY à Clichy avant 2020',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             null,
@@ -110,8 +107,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             new \DateTime('2019-12-31')
         );
         $audienceCandidate = $this->createAudience(
-            CandidateAudience::class,
             self::AUDIENCE_9_UUID,
+            ScopeEnum::CANDIDATE,
             'Audience CANDIDATE avec quelques paramètres',
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'),
             null,
@@ -119,8 +116,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             Genders::MALE
         );
         $audienceCandidateParis = $this->createAudience(
-            CandidateAudience::class,
             self::AUDIENCE_10_UUID,
+            ScopeEnum::CANDIDATE,
             'Audience CANDIDATE, les hommes à Paris',
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'),
             null,
@@ -143,8 +140,8 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
     }
 
     public function createAudience(
-        string $classAudience,
         string $uuid,
+        string $scope,
         string $name,
         Zone $zone,
         string $firstName = null,
@@ -158,8 +155,9 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         bool $isCertified = null,
         bool $hasEmailSubscription = null,
         bool $hasSmsSubscription = null
-    ): AbstractAudience {
-        $audience = new $classAudience(Uuid::fromString($uuid));
+    ): Audience {
+        $audience = new Audience(Uuid::fromString($uuid));
+        $audience->setScope($scope);
         $audience->setName($name);
         $audience->setFirstName($firstName);
         $audience->setLastName($lastName);
@@ -168,6 +166,7 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         $audience->setAgeMax($ageMax);
         $audience->setRegisteredSince($registeredSince);
         $audience->setRegisteredUntil($registeredUntil);
+        $audience->addZone($zone);
         $audience->setZone($zone);
         $audience->setIsCommitteeMember($isCommitteeMember);
         $audience->setIsCertified($isCertified);

@@ -2,11 +2,13 @@
 
 namespace App\Security\Voter;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ZoneableEntity;
 use App\Geo\ManagedZoneProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ManageZoneableItemVoter extends AbstractAdherentVoter
 {
@@ -14,11 +16,16 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
 
     private $session;
     private $managedZoneProvider;
+    private $authorizationChecker;
 
-    public function __construct(SessionInterface $session, ManagedZoneProvider $managedZoneProvider)
-    {
+    public function __construct(
+        SessionInterface $session,
+        ManagedZoneProvider $managedZoneProvider,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         $this->session = $session;
         $this->managedZoneProvider = $managedZoneProvider;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
@@ -28,7 +35,17 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        if (!$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $this->getSpaceType($attribute))) {
+        $spaceType = $this->getSpaceType($attribute);
+
+        if ($scope = $subject->getScope()) {
+            if (!$this->authorizationChecker->isGranted(RequestScopeVoter::PERMISSION, $scope)) {
+                return false;
+            }
+
+            $spaceType = AdherentSpaceEnum::SCOPES[$scope];
+        }
+
+        if (!$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {
             return false;
         }
 

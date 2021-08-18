@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ * @Target({"CLASS", "PROPERTY", "METHOD", "ANNOTATION"})
  */
 class ManagedZone extends Constraint
 {
@@ -16,6 +16,8 @@ class ManagedZone extends Constraint
      * @var string
      */
     public $spaceType;
+    public $zoneGetMethodName = 'getZone';
+    public $path;
 
     public function __construct($options = null)
     {
@@ -28,13 +30,8 @@ class ManagedZone extends Constraint
         parent::__construct($options);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getRequiredOptions(): array
+    public function getTargets()
     {
-        return [
-            'spaceType',
-        ];
+        return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }
 }

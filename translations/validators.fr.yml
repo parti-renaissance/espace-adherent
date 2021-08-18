@@ -512,3 +512,4 @@ internal_api_application.validation.application_name_length: Le nom de l'applica
 # AudienceSegment
 #
 audience_segment.scope.invalid_choice: Le scope n'est pas valide.
+audience.zones.empty: Le périmètre géographique ne doit pas être vide
