@@ -1379,6 +1379,15 @@ Feature:
                 "content": "Jacques"
               }
             ]
+          },
+          {
+            "rcpt": "francis.brioul@yahoo.com",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Francis"
+              }
+            ]
           }
         ],
         "from_name": "Pour une cause",
@@ -1387,6 +1396,11 @@ Feature:
             "email": "jacques.picard@en-marche.fr",
             "type": "to",
             "name": "Jacques"
+          },
+          {
+            "email": "francis.brioul@yahoo.com",
+            "type": "to",
+            "name": "Francis"
           }
         ]
       }
@@ -1445,23 +1459,37 @@ Feature:
              }
           ],
           "merge_vars":[
-             {
-                "rcpt":"jacques.picard@en-marche.fr",
-                "vars":[
-                   {
-                      "name":"first_name",
-                      "content":"Jacques"
-                   }
-                ]
-             }
+            {
+              "rcpt":"jacques.picard@en-marche.fr",
+              "vars":[
+                {
+                  "name":"first_name",
+                  "content":"Jacques"
+                }
+              ]
+            },
+            {
+              "rcpt":"francis.brioul@yahoo.com",
+              "vars":[
+                {
+                  "name":"first_name",
+                  "content":"Francis"
+                }
+              ]
+            }
           ],
           "from_name":"Pour une cause",
           "to":[
-             {
-                "email":"jacques.picard@en-marche.fr",
-                "type":"to",
-                "name":"Jacques"
-             }
+            {
+              "email":"jacques.picard@en-marche.fr",
+              "type":"to",
+              "name":"Jacques"
+            },
+            {
+              "email":"francis.brioul@yahoo.com",
+              "type":"to",
+              "name":"Francis"
+            }
           ]
        }
     }
