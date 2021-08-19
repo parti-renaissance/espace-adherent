@@ -9,6 +9,7 @@ use App\DataFixtures\ORM\LoadCoalitionEventData;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\OAuth\Model\GrantTypeEnum;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
@@ -57,6 +58,29 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
     }
 
+    /** @dataProvider provideCancelledEvents */
+    public function testConnectedUserCannotSubscribeOnCancelledEvent(
+        string $eventUuid,
+        string $userEmail,
+        string $messageClass
+    ) {
+        $accessToken = $this->getAccessToken(
+            LoadClientData::CLIENT_11_UUID,
+            'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
+            GrantTypeEnum::PASSWORD,
+            null,
+            $userEmail,
+            LoadAdherentData::DEFAULT_PASSWORD
+        );
+
+        $this->client->request(Request::METHOD_POST, sprintf('/api/v3/events/%s/subscribe', $eventUuid), [], [], [
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+        ]);
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        $this->assertCountMails(0, $messageClass, $userEmail);
+    }
+
     public function provideEvents(): iterable
     {
         yield [LoadCoalitionEventData::EVENT_1_UUID, 'simple-user@example.ch', 'CoalitionsEventRegistrationConfirmationMessage'];
@@ -65,5 +89,12 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
         yield [LoadCoalitionEventData::EVENT_1_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCauseEventData::EVENT_1_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_1_UUID, 'carl999@example.fr', 'EventRegistrationConfirmationMessage'];
+    }
+
+    public function provideCancelledEvents(): iterable
+    {
+        yield [LoadCoalitionEventData::EVENT_6_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
+        yield [LoadCauseEventData::EVENT_4_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
+        yield [LoadCommitteeEventData::EVENT_6_UUID, 'carl999@example.fr', 'EventRegistrationConfirmationMessage'];
     }
 }

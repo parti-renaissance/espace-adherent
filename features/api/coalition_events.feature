@@ -1422,9 +1422,7 @@ Feature:
     """
     {
        "template_name":"coalitions-event-update",
-       "template_content":[
-          
-       ],
+       "template_content":[],
        "message":{
           "subject":"✊ Un événement a été modifié",
           "from_email":"contact@pourunecause.fr",
@@ -1604,5 +1602,55 @@ Feature:
           "mode": null
         }
       ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can see cancelled event
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "coalition": {
+        "name": "Culture",
+        "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+      },
+      "uuid": "2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e",
+      "name": "Événement culturel annulé",
+      "slug": "@string@-evenement-culturel-annule",
+      "description": "Cet événement est annulé",
+      "time_zone": "Europe/Paris",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "organizer": {
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+        "first_name": "Jacques",
+        "last_name": "Picard"
+      },
+      "participants_count": 0,
+      "status": "CANCELLED",
+      "capacity": null,
+      "post_address": {
+        "address": "60 avenue des Champs-Élysées",
+        "postal_code": "75008",
+        "city": "75008-75108",
+        "city_name": "Paris 8e",
+        "country": "FR",
+        "latitude": 48.870506,
+        "longitude": 2.313243
+      },
+      "category": {
+        "event_group_category": {
+          "name": "événement",
+          "slug": "evenement"
+        },
+        "name": "Atelier du programme",
+        "slug": "atelier-du-programme"
+      },
+      "visio_url": null,
+      "mode": null,
+      "image_url": null
     }
     """

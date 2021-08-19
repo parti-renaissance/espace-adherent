@@ -31,6 +31,10 @@ class SubscribeAsAnonymousController extends AbstractController
 
     public function __invoke(Request $request, BaseEvent $event): Response
     {
+        if ($event->isCancelled()) {
+            throw $this->createNotFoundException('Event is cancelled');
+        }
+
         $this->serializer->deserialize($request->getContent(), EventRegistrationCommand::class, JsonEncoder::FORMAT, [
             AbstractNormalizer::GROUPS => ['event_registration_write'],
             AbstractNormalizer::OBJECT_TO_POPULATE => $command = new EventRegistrationCommand($event),

@@ -37,6 +37,10 @@ class SubscribeAsAdherentController extends AbstractController
 
     public function __invoke(Request $request, BaseEvent $event, UserInterface $adherent): Response
     {
+        if ($event->isCancelled()) {
+            throw $this->createNotFoundException('Event is cancelled');
+        }
+
         if ($request->isMethod(Request::METHOD_DELETE)) {
             $eventRegistration = $this->entityManager->getRepository(EventRegistration::class)->findOneBy([
                 'event' => $event,
