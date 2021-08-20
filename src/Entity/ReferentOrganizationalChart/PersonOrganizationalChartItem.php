@@ -52,6 +52,6 @@ class PersonOrganizationalChartItem extends AbstractOrganizationalChartItem
     public function removeReferentPersonLink(ReferentPersonLink $referentPersonLink): void
     {
         $referentPersonLink->setPersonOrganizationalChartItem(null);
-        $this->referentPersonLinks->remove($referentPersonLink);
+        $this->referentPersonLinks->removeElement($referentPersonLink);
     }
 }

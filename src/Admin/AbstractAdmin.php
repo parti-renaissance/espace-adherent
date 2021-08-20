@@ -10,4 +10,9 @@ class AbstractAdmin extends SonataAdmin
     {
         return !(bool) $this->getSubject()->getId();
     }
+
+    protected function configureBatchActions($actions)
+    {
+        return [];
+    }
 }

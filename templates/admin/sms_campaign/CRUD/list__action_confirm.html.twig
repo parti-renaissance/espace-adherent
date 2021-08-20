@@ -1,0 +1,10 @@
+{% if object.isDraft() %}
+    <a
+            href="{{ admin.generateObjectUrl('confirm', object, actions.link_parameters|default([])) }}"
+            class="btn btn-sm btn-success"
+            title="Envoyer"
+    >
+        <i class="fa fa-send" aria-hidden="true"></i>
+        Envoyer
+    </a>
+{% endif %}

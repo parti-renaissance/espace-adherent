@@ -35,14 +35,14 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        $spaceType = $this->getSpaceType($attribute);
-
         if ($scope = $subject->getScope()) {
             if (!$this->authorizationChecker->isGranted(RequestScopeVoter::PERMISSION, $scope)) {
                 return false;
             }
 
             $spaceType = AdherentSpaceEnum::SCOPES[$scope];
+        } else {
+            $spaceType = $this->getSpaceType($attribute);
         }
 
         if (!$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {

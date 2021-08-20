@@ -35,9 +35,9 @@ trait EntityZoneTrait
         }
     }
 
-    public function removeZone(Zone $Zone): void
+    public function removeZone(Zone $zone): void
     {
-        $this->zones->remove($Zone);
+        $this->zones->removeElement($zone);
     }
 
     public function clearZones(): void

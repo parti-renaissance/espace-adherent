@@ -35,7 +35,7 @@ trait EntityReferentTagTrait
 
     public function removeReferentTag(ReferentTag $referentTag): void
     {
-        $this->referentTags->remove($referentTag);
+        $this->referentTags->removeElement($referentTag);
     }
 
     public function clearReferentTags(): void
