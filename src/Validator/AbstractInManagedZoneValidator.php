@@ -36,13 +36,15 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
         $this->session = $session;
     }
 
-    protected function validateZones(array $zones, Constraint $constraint): void
+    protected function validateZones(array $zones, Constraint $constraint, array $managedZones = null): void
     {
         if (!$user = $this->getAuthenticatedUser()) {
             throw new \InvalidArgumentException('No user provided');
         }
 
-        if (!$managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, $constraint->spaceType)) {
+        if ($managedZones) {
+            $managedZonesIds = array_map(function (Zone $zone) {return $zone->getId(); }, $managedZones);
+        } elseif (!$managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, $constraint->spaceType)) {
             return;
         }
 
@@ -50,6 +52,7 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
             if (!$this->managedZoneProvider->zoneBelongsToSome($zone, $managedZonesIds)) {
                 $this->context
                     ->buildViolation($constraint->message)
+                    ->atPath($constraint->path ?? null)
                     ->addViolation()
                 ;
 

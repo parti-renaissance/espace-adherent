@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthorizationChecker
 {
     private const SCOPE_QUERY_PARAM = 'scope';
+    private const SCOPE_POSITION_PARAM = 'scope_position';
+
+    private const SCOPE_POSITION_REQUEST = 'request';
+    private const SCOPE_POSITION_QUERY = 'query';
 
     private $scopeGenerator;
 
@@ -50,6 +54,14 @@ class AuthorizationChecker
 
     public function getScope(Request $request): ?string
     {
+        $scopePosition = $request->attributes->get(self::SCOPE_POSITION_PARAM, self::SCOPE_POSITION_QUERY);
+
+        if (self::SCOPE_POSITION_REQUEST === $scopePosition) {
+            $content = json_decode($request->getContent(), true);
+
+            return $content[self::SCOPE_QUERY_PARAM] ?? null;
+        }
+
         return $request->query->get(self::SCOPE_QUERY_PARAM);
     }
 }

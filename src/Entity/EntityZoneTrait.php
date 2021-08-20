@@ -23,6 +23,11 @@ trait EntityZoneTrait
         return $this->zones;
     }
 
+    public function setZones(array $zones): void
+    {
+        array_walk($zones, [$this, 'addZone']);
+    }
+
     public function addZone(Zone $Zone): void
     {
         if (!$this->zones->contains($Zone)) {
@@ -90,5 +95,10 @@ trait EntityZoneTrait
         return array_merge(...array_map(function (Zone $zone) {
             return $zone->getParents();
         }, $this->zones->toArray()));
+    }
+
+    public function getScope(): ?string
+    {
+        return null;
     }
 }

@@ -32,7 +32,7 @@ Feature:
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
-      "type": "deputy"
+      "scope": "deputy"
     }
     """
     Then the response status code should be 403
@@ -43,7 +43,7 @@ Feature:
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
-      "type": "deputy"
+      "scope": "deputy"
     }
     """
     Then the response status code should be 403
@@ -54,7 +54,7 @@ Feature:
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
-      "type": "deputy"
+      "scope": "deputy"
     }
     """
     Then the response status code should be 400
@@ -64,12 +64,8 @@ Feature:
     {
        "type":"https://tools.ietf.org/html/rfc2616#section-10",
        "title":"An error occurred",
-       "detail":"zone: Cette valeur ne doit pas \u00eatre vide.\nname: Cette valeur ne doit pas \u00eatre vide.",
+       "detail":"name: Cette valeur ne doit pas \u00eatre vide.",
        "violations":[
-          {
-             "propertyPath":"zone",
-             "message":"Cette valeur ne doit pas être vide."
-          },
           {
              "propertyPath":"name",
              "message":"Cette valeur ne doit pas être vide."
@@ -84,7 +80,7 @@ Feature:
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
-      "type": "deputy",
+      "scope": "deputy",
       "first_name": "untrèslongprénomuntrèslongprénomuntrèslongprénomuntrèslongprénomuntrèslongprénomuntrèslongprénom",
       "last_name": "untrèslongnomuntrèslongnomuntrèslongnomuntrèslongnomuntrèslongnomuntrèslongnomuntrèslongnom",
       "gender": "invalid",
@@ -130,7 +126,7 @@ Feature:
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
     {
-      "type": "deputy",
+      "scope": "deputy",
       "name": "Nouvelle audience",
       "first_name": "Prénom",
       "last_name": "Nom",
@@ -243,18 +239,16 @@ Feature:
   Scenario: As a logged-in user with correct rights, but no audience type, I can not get audiences
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/audiences"
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON node "detail" should be equal to "No type provided."
+    Then the response status code should be 403
 
   Scenario: As a logged-in referent I can not get deputy audiences
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/audiences?type=deputy"
+    When I send a "GET" request to "/api/v3/audiences?scope=deputy"
     Then the response status code should be 403
 
   Scenario: As a logged-in referent I can get referent audiences
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/audiences?type=referent"
+    When I send a "GET" request to "/api/v3/audiences?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -273,7 +267,7 @@ Feature:
 
   Scenario: As a logged-in deputy I can get deputy audiences
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/audiences?type=deputy"
+    When I send a "GET" request to "/api/v3/audiences?scope=deputy"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -292,7 +286,7 @@ Feature:
 
   Scenario: As a logged-in regional headed candidate I can get candidate audiences
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
-    When I send a "GET" request to "/api/v3/audiences?type=candidate"
+    When I send a "GET" request to "/api/v3/audiences?scope=candidate"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

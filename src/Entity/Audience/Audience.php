@@ -4,7 +4,12 @@ namespace App\Entity\Audience;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
+use App\Entity\ZoneableEntity;
+use App\Validator\ManagedZone;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,16 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="audience")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "referent": "App\Entity\Audience\ReferentAudience",
- *     "deputy": "App\Entity\Audience\DeputyAudience",
- *     "senator": "App\Entity\Audience\SenatorAudience",
- *     "candidate": "App\Entity\Audience\CandidateAudience",
- * })
+ * @ORM\Entity(repositoryClass="App\Repository\Audience\AudienceRepository")
  *
  * @ApiResource(
  *     attributes={
@@ -33,37 +29,45 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/audiences",
  *             "controller": "App\Controller\Api\Audience\RetrieveAudiencesController",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('REQUEST_SCOPE_GRANTED')",
  *             "normalization_context": {
  *                 "groups": {"audience_list_read"}
  *             },
  *         },
  *         "post": {
  *             "path": "/v3/audiences",
- *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_CREATE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('REQUEST_SCOPE_GRANTED')",
+ *             "defaults": {"scope_position": "request"},
+ *             "validation_groups": {"Default", "api_scope_context"},
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_MANAGE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
  *         },
  *         "put": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_MANAGE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
+ *             "validation_groups": {"Default", "api_scope_context"},
  *         },
  *         "delete": {
  *             "path": "/v3/audiences/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('CAN_MANAGE_AUDIENCE', object)",
+ *             "access_control": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
  *         },
  *     }
  * )
+ *
+ * @ManagedZone(path="zone", message="common.zone.not_managed_zone")
  */
-abstract class AbstractAudience
+class Audience implements ZoneableEntity
 {
     use EntityIdentityTrait;
+    use EntityTimestampableTrait;
+    use EntityZoneTrait;
 
     /**
      * @var string
@@ -74,7 +78,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write", "audience_list_read"})
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string|null
@@ -85,7 +89,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $firstName;
+    private $firstName;
 
     /**
      * @var string|null
@@ -96,7 +100,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $lastName;
+    private $lastName;
 
     /**
      * @var string|null
@@ -111,7 +115,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $gender;
+    private $gender;
 
     /**
      * @var int|null
@@ -120,7 +124,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $ageMin;
+    private $ageMin;
 
     /**
      * @var int|null
@@ -129,7 +133,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $ageMax;
+    private $ageMax;
 
     /**
      * @var \DateTime|null
@@ -138,7 +142,7 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $registeredSince;
+    private $registeredSince;
 
     /**
      * @var \DateTime|null
@@ -147,58 +151,67 @@ abstract class AbstractAudience
      *
      * @Groups({"audience_read", "audience_write"})
      */
-    protected $registeredUntil;
+    private $registeredUntil;
 
     /**
-     * @var Zone
+     * @var bool|null
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_read", "audience_write"})
+     */
+    private $isCommitteeMember;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_read", "audience_write"})
+     */
+    private $isCertified;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_read", "audience_write"})
+     */
+    private $hasEmailSubscription;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_read", "audience_write"})
+     */
+    private $hasSmsSubscription;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"audience_write"})
+     */
+    private $scope;
+
+    /**
+     * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      *
      * @Groups({"audience_read", "audience_write"})
-     *
-     * @Assert\NotBlank
      */
     protected $zone;
-
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_read", "audience_write"})
-     */
-    protected $isCommitteeMember;
-
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_read", "audience_write"})
-     */
-    protected $isCertified;
-
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_read", "audience_write"})
-     */
-    protected $hasEmailSubscription;
-
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups({"audience_read", "audience_write"})
-     */
-    protected $hasSmsSubscription;
 
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+
+        $this->zones = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -281,17 +294,7 @@ abstract class AbstractAudience
         $this->registeredUntil = $registeredUntil;
     }
 
-    public function getZone(): ?Zone
-    {
-        return $this->zone;
-    }
-
-    public function setZone(Zone $zone): void
-    {
-        $this->zone = $zone;
-    }
-
-    public function isCommitteeMember(): ?bool
+    public function getIsCommitteeMember(): ?bool
     {
         return $this->isCommitteeMember;
     }
@@ -311,7 +314,7 @@ abstract class AbstractAudience
         $this->isCertified = $isCertified;
     }
 
-    public function hasEmailSubscription(): ?bool
+    public function getHasEmailSubscription(): ?bool
     {
         return $this->hasEmailSubscription;
     }
@@ -321,7 +324,7 @@ abstract class AbstractAudience
         $this->hasEmailSubscription = $hasEmailSubscription;
     }
 
-    public function hasSmsSubscription(): ?bool
+    public function getHasSmsSubscription(): ?bool
     {
         return $this->hasSmsSubscription;
     }
@@ -329,5 +332,33 @@ abstract class AbstractAudience
     public function setHasSmsSubscription(?bool $hasSmsSubscription): void
     {
         $this->hasSmsSubscription = $hasSmsSubscription;
+    }
+
+    public function getScope(): ?string
+    {
+        return $this->scope;
+    }
+
+    public function setScope(?string $scope): void
+    {
+        $this->scope = $scope;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): void
+    {
+        $this->zone = $zone;
+    }
+
+    /**
+     * @Assert\IsTrue(groups={"api_scope_context"}, message="audience.zones.empty")
+     */
+    public function isValidZones(): bool
+    {
+        return !$this->zones->isEmpty();
     }
 }
