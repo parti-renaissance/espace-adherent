@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Team\MemberRepository")
- * @ORM\Table(uniqueConstraints={
+ * @ORM\Table(name="team_member", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="team_member_unique", columns={"team_id", "adherent_id"}),
  * })
  *
@@ -63,7 +63,7 @@ class Member
         return $this->team;
     }
 
-    public function setTeam(?Team $team): void
+    public function setTeam(Team $team): void
     {
         $this->team = $team;
     }

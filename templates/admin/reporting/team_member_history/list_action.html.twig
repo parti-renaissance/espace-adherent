@@ -2,9 +2,9 @@
 
 {% block field %}
     <span class="badge
-        {% if object.isAdd %}
+        {% if object.isAdded %}
             bg-green
-        {% elseif object.isRemove %}
+        {% elseif object.isRemoved %}
             bg-red
         {% endif %}
         ">

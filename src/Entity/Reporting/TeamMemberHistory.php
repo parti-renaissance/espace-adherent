@@ -8,14 +8,11 @@ use App\Entity\Team\Team;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(
- *     name="team_member_histories",
- *     indexes={
- *         @ORM\Index(name="team_member_histories_adherent_id_idx", columns="adherent_id"),
- *         @ORM\Index(name="team_member_histories_administrator_id_idx", columns="administrator_id"),
- *         @ORM\Index(name="team_member_histories_date_idx", columns="date")
- *     }
- * )
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="team_member_history_adherent_id_idx", columns="adherent_id"),
+ *     @ORM\Index(name="team_member_history_administrator_id_idx", columns="administrator_id"),
+ *     @ORM\Index(name="team_member_history_date_idx", columns="date")
+ * })
  * @ORM\Entity
  */
 class TeamMemberHistory
@@ -114,12 +111,12 @@ class TeamMemberHistory
         return $this->date;
     }
 
-    public function isAdd(): bool
+    public function isAdded(): bool
     {
         return self::ACTION_ADD === $this->action;
     }
 
-    public function isRemove(): bool
+    public function isRemoved(): bool
     {
         return self::ACTION_REMOVE === $this->action;
     }
