@@ -674,6 +674,9 @@ class AdherentAdmin extends AbstractAdmin
                     'Désactivé' => Adherent::DISABLED,
                 ],
             ])
+            ->add('adherent', null, [
+                'label' => 'Est adhérent ?',
+            ])
             ->add('referentTags', ModelAutocompleteFilter::class, [
                 'label' => 'Tags souscrits',
                 'field_options' => [

@@ -23,6 +23,7 @@ use App\Entity\Instance\InstanceQuality;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
+use App\Entity\Team\Member;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -727,6 +728,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $provisionalSupervisors;
 
     /**
+     * @var Member[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Team\Member", mappedBy="adherent", fetch="EXTRA_LAZY")
+     */
+    private $teamMemberships;
+
+    /**
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
@@ -756,6 +764,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->provisionalSupervisors = new ArrayCollection();
         $this->causes = new ArrayCollection();
         $this->instanceQualities = new ArrayCollection();
+        $this->teamMemberships = new ArrayCollection();
     }
 
     public static function createLight(
@@ -2903,5 +2912,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         return null;
+    }
+
+    public function getTeamMemberships(): Collection
+    {
+        return $this->teamMemberships;
     }
 }

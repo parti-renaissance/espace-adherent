@@ -339,6 +339,30 @@
             <argument type="service" id="App\Filesystem\FileManager"/>
         </service>
 
+        <service id="app.admin.team.team" class="App\Admin\Team\TeamAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Équipes" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\Team\Team</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.team.member" class="App\Admin\Team\MemberAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false" />
+
+            <argument />
+            <argument>App\Entity\Team\Member</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.reporting.team_member_history" class="App\Admin\Reporting\TeamMemberHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Historique des équipes" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\Reporting\TeamMemberHistory</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Je marche app

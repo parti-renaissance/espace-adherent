@@ -1,0 +1,13 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    <span class="badge
+        {% if object.isAdded %}
+            bg-green
+        {% elseif object.isRemoved %}
+            bg-red
+        {% endif %}
+        ">
+        {{ ('team_member_history.action.'~value)|trans }}
+    </span>
+{% endblock %}
