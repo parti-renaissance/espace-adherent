@@ -15,7 +15,7 @@ class MemberAdherentAutocompleteType extends AbstractType
 {
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['admin_code'] = 'app.admin.member';
+        $view->vars['admin_code'] = 'app.admin.team.member';
     }
 
     public function configureOptions(OptionsResolver $resolver)
