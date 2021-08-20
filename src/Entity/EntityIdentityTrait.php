@@ -51,7 +51,7 @@ trait EntityIdentityTrait
      *     "event_read",
      *     "audience_read",
      *     "audience_list_read",
-     *     "riposte_read",
+     *     "riposte_list_read",
      *     "riposte_read",
      *     "audience_segment_read",
      *     "adherent_message_update_filter",

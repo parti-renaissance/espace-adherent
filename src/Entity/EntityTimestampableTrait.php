@@ -21,6 +21,7 @@ trait EntityTimestampableTrait
      *     "jecoute_news_read",
      *     "email_template_read",
      *     "email_template_list_read",
+     *     "riposte_list_read",
      *     "riposte_read"
      * })
      * @Gedmo\Timestampable(on="create")

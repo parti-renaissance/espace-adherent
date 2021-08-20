@@ -2,10 +2,13 @@
 
 namespace App\Entity\Jecoute;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Filter\ActiveRipostesFilter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredTrait;
+use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/ripostes",
+ *             "normalization_context": {"groups": {"riposte_list_read"}},
  *         },
  *         "post": {
  *             "path": "/v3/ripostes",
@@ -37,16 +41,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/ripostes/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {"groups": {"riposte_read"}},
+ *         },
+ *         "put": {
+ *             "path": "/v3/ripostes/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"}
  *         },
  *         "delete": {
  *             "path": "/v3/ripostes/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "object.getAuthor() == user",
+ *             "requirements": {"id": "%pattern_uuid%"}
  *         },
  *     }
  * )
+ *
+ * @ApiFilter(ActiveRipostesFilter::class)
  */
-class Riposte
+class Riposte implements AuthorInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -60,7 +70,7 @@ class Riposte
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"riposte_read", "riposte_write"})
+     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
     private $title;
 
@@ -71,7 +81,7 @@ class Riposte
      *
      * @Assert\NotBlank
      *
-     * @Groups({"riposte_read", "riposte_write"})
+     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
     private $body;
 
@@ -82,7 +92,7 @@ class Riposte
      *
      * @Assert\Url
      *
-     * @Groups({"riposte_read", "riposte_write"})
+     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
     private $sourceUrl;
 
@@ -93,7 +103,7 @@ class Riposte
      *
      * @Assert\Type("bool")
      *
-     * @Groups({"riposte_read", "riposte_write"})
+     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
     private $withNotification;
 
@@ -101,6 +111,8 @@ class Riposte
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"riposte_read", "riposte_write"})
      */
     private $enabled;
 
