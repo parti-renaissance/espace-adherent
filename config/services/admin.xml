@@ -339,7 +339,7 @@
             <argument type="service" id="App\Filesystem\FileManager"/>
         </service>
 
-        <service id="app.admin.team" class="App\Admin\TeamAdmin">
+        <service id="app.admin.team.team" class="App\Admin\Team\TeamAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Équipes" group="Territoires" />
 
             <argument />
@@ -347,7 +347,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.member" class="App\Admin\MemberAdmin">
+        <service id="app.admin.team.member" class="App\Admin\Team\MemberAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false" />
 
             <argument />

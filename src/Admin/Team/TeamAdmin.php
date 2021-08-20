@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Team;
 
 use App\Entity\Administrator;
 use App\Entity\Team\Team;
-use App\Form\Admin\MemberAdherentAutocompleteType;
-use App\Form\Admin\MemberType;
+use App\Form\Admin\Team\MemberAdherentAutocompleteType;
+use App\Form\Admin\Team\MemberType;
+use App\Form\Admin\Team\TeamType;
 use App\Team\TeamMemberHistoryManager;
-use App\Team\TypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
@@ -44,12 +43,8 @@ class TeamAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
-                ->add('type', ChoiceType::class, [
+                ->add('type', TeamType::class, [
                     'label' => 'Type',
-                    'choices' => TypeEnum::ALL,
-                    'choice_label' => function (string $choice) {
-                        return "team.type.$choice";
-                    },
                 ])
                 ->add('name', TextType::class, [
                     'label' => 'Nom',
@@ -78,12 +73,8 @@ class TeamAdmin extends AbstractAdmin
             ->add('type', ChoiceFilter::class, [
                 'show_filter' => true,
                 'label' => 'Type',
-                'field_type' => ChoiceType::class,
+                'field_type' => TeamType::class,
                 'field_options' => [
-                    'choices' => TypeEnum::ALL,
-                    'choice_label' => function (string $choice) {
-                        return "team.type.$choice";
-                    },
                     'multiple' => true,
                 ],
             ])

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Team;
 
-use App\Form\Admin\MemberAdherentAutocompleteType;
+use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 

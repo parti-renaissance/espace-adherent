@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Admin;
+namespace App\Form\Admin\Team;
 
 use App\Entity\Adherent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
