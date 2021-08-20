@@ -11,6 +11,7 @@ class ScopeEnum extends Enum
     public const SENATOR = 'senator';
     public const CANDIDATE = 'candidate';
     public const NATIONAL = 'national';
+    public const PHONING = 'phoning';
 
     public const ALL = [
         self::REFERENT,
@@ -18,6 +19,7 @@ class ScopeEnum extends Enum
         self::SENATOR,
         self::CANDIDATE,
         self::NATIONAL,
+        self::PHONING,
     ];
 
     public const FOR_AUDIENCE_SEGMENT = [

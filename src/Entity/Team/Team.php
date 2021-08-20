@@ -5,6 +5,7 @@ namespace App\Entity\Team;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Team\TypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -125,6 +126,11 @@ class Team
     public function removeMember(Member $member): void
     {
         $this->members->removeElement($member);
+    }
+
+    public function isPhoning(): bool
+    {
+        return TypeEnum::PHONING === $this->type;
     }
 
     public function __clone()

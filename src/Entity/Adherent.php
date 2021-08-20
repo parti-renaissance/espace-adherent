@@ -1032,6 +1032,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_NATIONAL_COUNCIL_MEMBER';
         }
 
+        if ($this->hasPhoningRole()) {
+            $roles[] = 'ROLE_PHONING';
+        }
+
         if ($this->voteInspector) {
             $roles[] = 'ROLE_VOTE_INSPECTOR';
         }
@@ -2316,6 +2320,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setNationalRole(bool $nationalRole): void
     {
         $this->nationalRole = $nationalRole;
+    }
+
+    public function hasPhoningRole(): bool
+    {
+        foreach ($this->teamMemberships as $membership) {
+            if ($membership->getTeam()->isPhoning()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function hasFormationSpaceAccess(): bool

@@ -12,6 +12,7 @@ Feature:
       | LoadReferentTagData             |
       | LoadGeoZoneData                 |
       | LoadReferentTagsZonesLinksData  |
+      | LoadTeamData                    |
 
   Scenario:
     When I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -47,6 +48,14 @@ Feature:
         ],
         "apps": [
           "data_corner"
+        ]
+      },
+      {
+        "code": "phoning",
+        "name": "Appelant",
+        "zones": [],
+        "apps": [
+          "jemarche"
         ]
       }
     ]
