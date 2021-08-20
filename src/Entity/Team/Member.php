@@ -39,7 +39,7 @@ class Member
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
+     * @ORM\ManyToOne(targetEntity=Adherent::class, inversedBy="teamMemberships")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank(message="team.member.adherent.not_blank")
