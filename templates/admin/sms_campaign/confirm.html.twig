@@ -29,7 +29,11 @@
                         <i class="fa fa-edit" aria-hidden="true"></i> Modifier
                     </a>
 
-                    <button type="submit" {{ total_count < 1 ? 'disabled="disabled"' }} class="btn btn-success" name="btn_update"><i class="fa fa-send" aria-hidden="true"></i> Envoyer</button>
+                    {% if total_count > 0 %}
+                        <a href="{{ admin.generateObjectUrl('send', object, actions.link_parameters|default([])) }}" class="btn btn-success">
+                            <i class="fa fa-send" aria-hidden="true"></i> Envoyer
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

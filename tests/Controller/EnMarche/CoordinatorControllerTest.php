@@ -62,8 +62,6 @@ class CoordinatorControllerTest extends WebTestCase
         $data['coordinator_area']['accept'] = null;
         $this->client->submit($this->client->getCrawler()->selectButton('Pré-approuver')->eq(1)->form(), $data);
 
-        var_dump((string) $this->client->getResponse()->getContent());
-
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
         $this->assertClientIsRedirectedTo('/espace-coordinateur/comites/list', $this->client);

@@ -6,6 +6,7 @@ use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableWithScopeEntity;
 use App\Geo\ManagedZoneProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -35,7 +36,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        if ($scope = $subject->getScope()) {
+        if ($subject instanceof ZoneableWithScopeEntity && $scope = $subject->getScope()) {
             if (!$this->authorizationChecker->isGranted(RequestScopeVoter::PERMISSION, $scope)) {
                 return false;
             }

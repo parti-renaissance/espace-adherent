@@ -22,6 +22,7 @@ class SmsCampaignAdmin extends AbstractAdmin
     {
         $collection
             ->add('confirm', $this->getRouterIdParameter().'/confirmation')
+            ->add('send', $this->getRouterIdParameter().'/envoyer')
         ;
     }
 

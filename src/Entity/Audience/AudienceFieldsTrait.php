@@ -246,6 +246,11 @@ trait AudienceFieldsTrait
         $this->hasSmsSubscription = $hasSmsSubscription;
     }
 
+    public function getScope(): ?string
+    {
+        return $this->scope;
+    }
+
     public function setScope(?string $scope): void
     {
         $this->scope = $scope;

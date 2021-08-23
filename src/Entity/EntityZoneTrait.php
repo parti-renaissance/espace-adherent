@@ -96,9 +96,4 @@ trait EntityZoneTrait
             return $zone->getParents();
         }, $this->zones->toArray()));
     }
-
-    public function getScope(): ?string
-    {
-        return null;
-    }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Entity\Audience;
 
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableWithScopeEntity;
 
-interface AudienceInterface extends ZoneableEntity
+interface AudienceInterface extends ZoneableWithScopeEntity
 {
     public function getFirstName(): ?string;
 
