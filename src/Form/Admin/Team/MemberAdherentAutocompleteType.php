@@ -35,7 +35,7 @@ class MemberAdherentAutocompleteType extends AbstractType
                 ],
                 'class' => Adherent::class,
                 'to_string_callback' => [self::class, 'toStringCallback'],
-                'template' => 'admin/team/member_type_model_autocomplete.html.twig',
+                'template' => 'admin/form/sonata_type_model_autocomplete.html.twig',
                 'req_params' => [
                     'field' => 'adherent',
                     '_context' => 'form',
