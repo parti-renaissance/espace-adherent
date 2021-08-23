@@ -18,6 +18,7 @@ class LoadScopeData extends Fixture
         $manager->persist($this->createScope(ScopeEnum::SENATOR, 'Sénateur'));
         $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National'));
         $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat', FeatureEnum::ALL, []));
+        $manager->persist($this->createScope(ScopeEnum::PHONING, 'Appelant', [], [AppEnum::JEMARCHE]));
 
         $manager->flush();
     }
@@ -26,7 +27,7 @@ class LoadScopeData extends Fixture
         string $code,
         string $name,
         array $features = FeatureEnum::ALL,
-        array $apps = AppEnum::ALL
+        array $apps = [AppEnum::DATA_CORNER]
     ): Scope {
         return new Scope($code, $name, $features, $apps);
     }

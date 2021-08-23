@@ -54,6 +54,11 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 ]],
                 'apps' => ['data_corner'],
             ],
+            [
+                'code' => 'phoning',
+                'zones' => [],
+                'apps' => ['jemarche'],
+            ],
         ]];
         yield [LoadAdherentData::REFERENT_3_UUID, [[
             'code' => 'referent',
@@ -74,14 +79,21 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ]],
             'apps' => ['data_corner'],
         ]]];
-        yield [LoadAdherentData::ADHERENT_3_UUID, [[
-            'code' => 'candidate',
-            'zones' => [[
-                'code' => '11',
-                'name' => 'Île-de-France',
-            ]],
-            'apps' => [],
-        ]]];
+        yield [LoadAdherentData::ADHERENT_3_UUID, [
+            [
+                'code' => 'candidate',
+                'zones' => [[
+                    'code' => '11',
+                    'name' => 'Île-de-France',
+                ]],
+                'apps' => [],
+            ],
+            [
+                'code' => 'phoning',
+                'zones' => [],
+                'apps' => ['jemarche'],
+            ],
+        ]];
         yield [LoadAdherentData::ADHERENT_2_UUID, []];
     }
 
