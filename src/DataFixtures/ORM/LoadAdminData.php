@@ -68,6 +68,8 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_TERRITORIAL_COUNCIL',
             'ROLE_ADMIN_FILES',
             'ROLE_ADMIN_RIPOSTES',
+            'ROLE_ADMIN_TEAMS',
+            'ROLE_ADMIN_PHONING_CAMPAIGNS',
         ];
 
         $writerRoles = [

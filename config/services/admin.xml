@@ -376,6 +376,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.phoning.campaign" class="App\Admin\Phoning\CampaignAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Campagnes de Phoning" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\Phoning\Campaign</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Je marche app

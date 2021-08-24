@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TeamType extends AbstractType
+class TeamTypeType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {

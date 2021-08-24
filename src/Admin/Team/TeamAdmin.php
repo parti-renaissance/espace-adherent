@@ -6,7 +6,7 @@ use App\Entity\Administrator;
 use App\Entity\Team\Team;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
-use App\Form\Admin\Team\TeamType;
+use App\Form\Admin\Team\TeamTypeType;
 use App\Team\TeamMemberHistoryManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -43,7 +43,7 @@ class TeamAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
-                ->add('type', TeamType::class, [
+                ->add('type', TeamTypeType::class, [
                     'label' => 'Type',
                 ])
                 ->add('name', TextType::class, [
@@ -73,7 +73,7 @@ class TeamAdmin extends AbstractAdmin
             ->add('type', ChoiceFilter::class, [
                 'show_filter' => true,
                 'label' => 'Type',
-                'field_type' => TeamType::class,
+                'field_type' => TeamTypeType::class,
                 'field_options' => [
                     'multiple' => true,
                 ],

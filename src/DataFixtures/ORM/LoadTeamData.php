@@ -29,11 +29,13 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         $team1->addMember($this->createMember(self::MEMBER_1_UUID, $this->getReference('adherent-1')));
         $team1->addMember($this->createMember(self::MEMBER_2_UUID, $this->getReference('adherent-3')));
         $team1->addMember($this->createMember(self::MEMBER_3_UUID, $this->getReference('adherent-12')));
+        $this->setReference('team-1', $team1);
 
         $team2 = $this->createTeam(self::TEAM_2_UUID, TypeEnum::PHONING, 'Deuxième équipe de phoning');
         $team2->addMember($this->createMember(self::MEMBER_4_UUID, $this->getReference('adherent-3')));
         $team2->addMember($this->createMember(self::MEMBER_5_UUID, $this->getReference('adherent-12')));
         $team2->addMember($this->createMember(self::MEMBER_6_UUID, $this->getReference('deputy-75-1')));
+        $this->setReference('team-2', $team2);
 
         $manager->persist($team1);
         $manager->persist($team2);
