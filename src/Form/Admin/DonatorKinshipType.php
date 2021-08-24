@@ -28,7 +28,7 @@ class DonatorKinshipType extends AbstractType
                 ],
                 'model_manager' => $options['model_manager'],
                 'class' => Donator::class,
-                'template' => 'admin/donator/donator_type_model_autocomplete.html.twig',
+                'template' => 'admin/form/sonata_type_model_autocomplete.html.twig',
                 'admin_code' => 'app.admin.donation',
                 'req_params' => [
                     'field' => 'donator',

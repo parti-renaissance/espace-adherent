@@ -7,6 +7,7 @@ use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\Entity\Audience\AudienceInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\City;
 use App\Entity\Committee;
@@ -47,6 +48,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
     use PaginatorTrait;
     use GeoFilterTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -1212,5 +1214,107 @@ SQL;
             ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
             ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
         ;
+    }
+
+    public function findForAudience(AudienceInterface $audience, int $page = 1, int $limit = 100): PaginatorInterface
+    {
+        $qb = $this
+            ->createQueryBuilder('adherent')
+            ->andWhere('adherent.adherent = true')
+            ->andWhere('adherent.source IS NULL')
+            ->andWhere('adherent.status = :adherent_status')
+            ->setParameter('adherent_status', Adherent::ENABLED)
+        ;
+
+        if ($firstName = $audience->getFirstName()) {
+            $qb
+                ->andWhere('adherent.firstName LIKE :first_name')
+                ->setParameter('first_name', $firstName.'%')
+            ;
+        }
+
+        if ($lastName = $audience->getLastName()) {
+            $qb
+                ->andWhere('adherent.lastName LIKE :last_name')
+                ->setParameter('last_name', $lastName.'%')
+            ;
+        }
+
+        if ($gender = $audience->getGender()) {
+            $qb
+                ->andWhere('adherent.gender = :gender')
+                ->setParameter('gender', $gender)
+            ;
+        }
+
+        if ($ageMin = $audience->getAgeMin()) {
+            $now = new \DateTimeImmutable();
+            $qb
+                ->andWhere('adherent.birthdate <= :min_age_birth_date')
+                ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMin))))
+            ;
+        }
+
+        if ($ageMax = $audience->getAgeMax()) {
+            $now = new \DateTimeImmutable();
+            $qb
+                ->andWhere('adherent.birthdate >= :max_age_birth_date')
+                ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMax))))
+            ;
+        }
+
+        if ($registeredSince = $audience->getRegisteredSince()) {
+            $qb
+                ->andWhere('adherent.registeredAt >= :registered_since')
+                ->setParameter('registered_since', $registeredSince->format('Y-m-d 00:00:00'))
+            ;
+        }
+
+        if ($registeredUntil = $audience->getRegisteredUntil()) {
+            $qb
+                ->andWhere('adherent.registeredAt <= :registered_until')
+                ->setParameter('registered_until', $registeredUntil->format('Y-m-d 23:59:59'))
+            ;
+        }
+
+        if (null !== $isCertified = $audience->getIsCertified()) {
+            $qb->andWhere('adherent.certifiedAt '.($isCertified ? 'IS NOT NULL' : 'IS NULL'));
+        }
+
+        if ($zones = $audience->getZones()->toArray()) {
+            $this->withGeoZones(
+                $zones,
+                $qb,
+                'adherent',
+                Adherent::class,
+                'a2',
+                'zones',
+                'z2',
+                function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                    $zoneQueryBuilder
+                        ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
+                        ->andWhere(sprintf('%s.source IS NULL', $entityClassAlias))
+                        ->andWhere(sprintf('%s.status = :adherent_status', $entityClassAlias))
+                    ;
+                }
+            );
+        }
+
+        if (null !== $hasSmsSubscription = $audience->getHasSmsSubscription()) {
+            $qb
+                ->leftJoin('adherent.subscriptionTypes', 'subscription_type', Join::WITH, 'subscription_type.code = :sms_subscription_code')
+                ->setParameter('sms_subscription_code', SubscriptionTypeEnum::MILITANT_ACTION_SMS)
+                ->andWhere('subscription_type.id '.($hasSmsSubscription ? 'IS NOT NULL' : 'IS NULL'))
+            ;
+        }
+
+        if (null !== $isCommitteeMember = $audience->getIsCommitteeMember()) {
+            $qb
+                ->leftJoin('adherent.memberships', 'committee_membership')
+                ->andWhere('committee_membership.id '.($isCommitteeMember ? 'IS NOT NULL' : 'IS NULL'))
+            ;
+        }
+
+        return $this->configurePaginator($qb, $page, $limit);
     }
 }

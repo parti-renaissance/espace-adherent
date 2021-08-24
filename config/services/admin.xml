@@ -103,6 +103,19 @@
             <argument />
         </service>
 
+        <service id="app.admin.sms_campaign" class="App\Admin\SmsCampaignAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Campagne SMS" group="Communication" />
+
+            <argument />
+            <argument>App\Entity\SmsCampaign</argument>
+            <argument>App\Controller\Admin\AdminSmsCampaignCRUDController</argument>
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/sms_campaign/edit.html.twig</argument>
+            </call>
+        </service>
+
         <!--
         ######################################################
         # Adhérents
@@ -769,6 +782,20 @@
 
             <argument />
             <argument>App\Entity\Geo\Zone</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
+        # Audience
+        ######################################################
+        -->
+
+        <service id="app.admin.audience" class="App\Admin\Audience\AudienceAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\Audience\Audience</argument>
             <argument />
         </service>
 

@@ -1,0 +1,12 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+
+{% block sonata_form_actions %}
+    {% if objectId %}
+        {% if object.isDraft %}
+            <button type="submit" class="btn btn-success" name="btn_edit_and_confirm"><i class="fa fa-save" aria-hidden="true"></i> Modifier</button>
+            <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fa fa-save"></i> <i class="fa fa-list" aria-hidden="true"></i>  Modifier et fermer</button>
+        {% endif %}
+    {% else %}
+        <button type="submit" class="btn btn-success" name="btn_edit_and_confirm"><i class="fa fa-save" aria-hidden="true"></i> Créer la campagne</button>
+    {% endif %}
+{% endblock %}

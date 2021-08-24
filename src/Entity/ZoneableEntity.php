@@ -14,9 +14,7 @@ interface ZoneableEntity
 
     public function addZone(Zone $Zone): void;
 
-    public function removeZone(Zone $Zone): void;
+    public function removeZone(Zone $zone): void;
 
     public function clearZones(): void;
-
-    public function getScope(): ?string;
 }

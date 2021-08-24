@@ -174,11 +174,6 @@ class DesignationAdmin extends AbstractAdmin
         ;
     }
 
-    public function configureBatchActions($actions)
-    {
-        return [];
-    }
-
     public function toString($object)
     {
         return 'Désignation';
