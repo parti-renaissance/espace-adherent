@@ -4,7 +4,6 @@ namespace App\Admin\Phoning;
 
 use App\Admin\Audience\AudienceAdmin;
 use App\Entity\Phoning\Campaign;
-use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
