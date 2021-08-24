@@ -2,6 +2,7 @@
 
 namespace App\Entity\Phoning;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
@@ -10,11 +11,24 @@ use App\Entity\Team\Team;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Phoning\CampaignRepository")
  * @ORM\Table(name="phoning_campaign")
+ *
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get_my_phoning_campaigns": {
+ *             "method": "GET",
+ *             "path": "/v3/phoning_campaigns/mine",
+ *             "access_control": "is_granted('ROLE_PHONING')",
+ *             "controller": "App\Controller\Api\Phoning\MyPhoningCampaignsController",
+ *             "normalization_context": {"groups": {"phoning_campaign_read"}},
+ *         }
+ *     },
+ * )
  */
 class Campaign
 {
@@ -29,6 +43,8 @@ class Campaign
      *
      * @Assert\NotBlank
      * @Assert\Length(max="255")
+     *
+     * @Groups({"phoning_campaign_read"})
      */
     private $title;
 
@@ -39,6 +55,8 @@ class Campaign
      *
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
+     *
+     * @Groups({"phoning_campaign_read"})
      */
     private $goal;
 
@@ -49,6 +67,8 @@ class Campaign
      *
      * @Assert\NotBlank
      * @Assert\DateTime
+     *
+     * @Groups({"phoning_campaign_read"})
      */
     private $finishAt;
 
