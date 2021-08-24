@@ -43,6 +43,8 @@ class UserControllerTest extends WebTestCase
             'adherent_profile[emailAddress]' => 'new.mail@test.com',
         ]);
 
+        var_dump((string) $this->client->getResponse()->getContent());
+
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
 
         $crawler = $this->client->followRedirect();
