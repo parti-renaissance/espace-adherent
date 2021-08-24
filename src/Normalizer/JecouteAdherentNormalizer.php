@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Repository\Jecoute\DataSurveyRepository;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
 class JecouteAdherentNormalizer extends AdherentNormalizer
@@ -13,7 +13,7 @@ class JecouteAdherentNormalizer extends AdherentNormalizer
 
     private $dataSurveyRepository;
 
-    public function __construct(DataSurveyRepository $dataSurveyRepository)
+    public function __construct(JemarcheDataSurveyRepository $dataSurveyRepository)
     {
         $this->dataSurveyRepository = $dataSurveyRepository;
     }

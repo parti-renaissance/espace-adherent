@@ -2,12 +2,12 @@
 
 namespace App\Mailer\Message;
 
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use Ramsey\Uuid\Uuid;
 
 final class DataSurveyAnsweredMessage extends Message
 {
-    public static function create(DataSurvey $dataSurvey): self
+    public static function create(JemarcheDataSurvey $dataSurvey): self
     {
         return new self(
             Uuid::uuid4(),

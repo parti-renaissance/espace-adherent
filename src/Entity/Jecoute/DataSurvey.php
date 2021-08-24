@@ -4,7 +4,6 @@ namespace App\Entity\Jecoute;
 
 use App\Entity\Adherent;
 use App\Entity\Device;
-use App\Validator\DataSurveyConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,9 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="jecoute_data_survey")
- * @ORM\Entity
- *
- * @DataSurveyConstraint
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\DataSurveyRepository")
  */
 class DataSurvey
 {
@@ -144,11 +141,9 @@ class DataSurvey
      */
     private $longitude;
 
-    public function __construct(Survey $survey = null, string $firstName = null, string $lastName = null)
+    public function __construct(Survey $survey = null)
     {
         $this->survey = $survey;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
         $this->answers = new ArrayCollection();
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Mailchimp\Synchronisation\Command;
 
-class DataSurveyCreateCommand implements DataSurveyCommandInterface
+class JemarcheDataSurveyCreateCommand implements JemarcheDataSurveyCommandInterface
 {
     private $email;
 

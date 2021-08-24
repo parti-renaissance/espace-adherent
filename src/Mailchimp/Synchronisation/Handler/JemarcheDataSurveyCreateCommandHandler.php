@@ -3,19 +3,19 @@
 namespace App\Mailchimp\Synchronisation\Handler;
 
 use App\Entity\Geo\Zone;
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Geo\ZoneMatcher;
 use App\Mailchimp\Manager;
-use App\Mailchimp\Synchronisation\Command\DataSurveyCommandInterface;
+use App\Mailchimp\Synchronisation\Command\JemarcheDataSurveyCommandInterface;
 use App\Repository\Geo\ZoneRepository;
-use App\Repository\Jecoute\DataSurveyRepository;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class DataSurveyCreateCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+class JemarcheDataSurveyCreateCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -27,7 +27,7 @@ class DataSurveyCreateCommandHandler implements MessageHandlerInterface, LoggerA
 
     public function __construct(
         Manager $manager,
-        DataSurveyRepository $dataSurveyRepository,
+        JemarcheDataSurveyRepository $dataSurveyRepository,
         ZoneRepository $zoneRepository,
         ZoneMatcher $zoneMatcher,
         EntityManagerInterface $entityManager
@@ -40,9 +40,9 @@ class DataSurveyCreateCommandHandler implements MessageHandlerInterface, LoggerA
         $this->logger = new NullLogger();
     }
 
-    public function __invoke(DataSurveyCommandInterface $message): void
+    public function __invoke(JemarcheDataSurveyCommandInterface $message): void
     {
-        /** @var DataSurvey $dataSurvey */
+        /** @var JemarcheDataSurvey $dataSurvey */
         if (!$dataSurvey = $this->dataSurveyRepository->findLastAvailableToContactByEmail($email = $message->getEmail())) {
             $this->logger->warning(sprintf('DataSurvey contact available to contact with email "%s" not found, message skipped', $email));
 

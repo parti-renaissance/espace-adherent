@@ -2,21 +2,21 @@
 
 namespace App\Validator;
 
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Jecoute\GenderEnum;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class DataSurveyConstraintValidator extends ConstraintValidator
+class JemarcheDataSurveyConstraintValidator extends ConstraintValidator
 {
     /**
-     * @param DataSurvey $dataSurvey
+     * @param JemarcheDataSurvey $dataSurvey
      */
     public function validate($dataSurvey, Constraint $constraint)
     {
-        if (!$constraint instanceof DataSurveyConstraint) {
-            throw new UnexpectedTypeException($constraint, DataSurveyConstraint::class);
+        if (!$constraint instanceof JemarcheDataSurveyConstraint) {
+            throw new UnexpectedTypeException($constraint, JemarcheDataSurveyConstraint::class);
         }
 
         if (null === $dataSurvey) {

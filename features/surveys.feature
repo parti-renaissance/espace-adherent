@@ -5,9 +5,9 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadJecouteSurveyData      |
-      | LoadJecouteDataSurveyData  |
-      | LoadJecouteDataAnswerData  |
+      | LoadJecouteSurveyData       |
+      | LoadJemarcheDataSurveyData  |
+      | LoadJecouteDataAnswerData   |
 
   @javascript
   Scenario: I can see local surveys and their actions

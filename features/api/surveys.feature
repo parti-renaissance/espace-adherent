@@ -292,6 +292,76 @@ Feature:
     ]
     """
 
+  Scenario: As a logged-in user I can reply to a national survey (new body structure)
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+    """
+    {
+      "dataSurvey":{
+        "survey":1,
+        "answers":[
+          {
+            "surveyQuestion":6,
+            "textField":"Réponse libre d'un questionnaire national"
+          },
+          {
+            "surveyQuestion":7,
+            "selectedChoices":[
+              "5",
+              "6"
+            ]
+          }
+        ]
+      },
+      "lastName":"Bonsoirini",
+      "firstName":"Ernestino",
+      "emailAddress":"ernestino@bonsoirini.fr",
+      "agreedToStayInContact":true,
+      "agreedToContactForJoin":true,
+      "agreedToTreatPersonalData":true,
+      "postalCode":"59000",
+      "profession":"employees",
+      "ageRange": "between_25_39",
+      "gender": "male",
+      "latitude": 48.856614,
+      "longitude": 2.3522219
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "status": "ok"
+    }
+    """
+    And I should have 1 email "DataSurveyAnsweredMessage" for "ernestino@bonsoirini.fr" with payload:
+    """
+    {
+      "template_name": "data-survey-answered",
+      "template_content": [],
+      "message": {
+        "subject": "Votre adhésion à La République En Marche !",
+        "from_email": "contact@en-marche.fr",
+        "global_merge_vars": [
+          {
+            "name": "first_name",
+            "content": "Ernestino"
+          }
+        ],
+        "from_name": "La R\u00e9publique En Marche !",
+        "to": [
+          {
+            "email": "ernestino@bonsoirini.fr",
+            "type": "to"
+          }
+        ]
+      }
+    }
+    """
+
   Scenario: As a logged-in user I can reply to a national survey
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
@@ -483,9 +553,19 @@ Feature:
     {
       "status":"error",
       "errors":{
-        "survey":[
-          "Il n'existe aucun sondage correspondant à cet ID."
-        ],
+        "dataSurvey":{
+          "survey":[
+            "Il n'existe aucun sondage correspondant à cet ID."
+          ],
+          "answers":{
+            "2":{
+              "surveyQuestion":[
+                "La question 3 est une question à choix unique et doit contenir un seul choix sélectionné.",
+                "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
+              ]
+            }
+          }
+        },
         "emailAddress":[
           "Cette valeur n'est pas une adresse email valide."
         ],
@@ -501,14 +581,89 @@ Feature:
         "longitude": [
           "Cette valeur n'est pas valide."
         ],
-        "answers":{
-          "2":{
-            "surveyQuestion":[
-              "La question 3 est une question à choix unique et doit contenir un seul choix sélectionné.",
-              "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
+        "postalCode": [
+          "Vous devez saisir exactement 5 caractères."
+        ]
+      }
+    }
+    """
+
+  Scenario: As a logged-in user I cannot reply to a local survey with errors (new body structure)
+    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+    """
+    {
+      "dataSurvey":{
+        "survey":null,
+        "answers":[
+          {
+            "surveyQuestion":1
+          },
+          {
+            "surveyQuestion":2,
+            "selectedChoices":[
+              "1",
+              "2"
+            ]
+          },
+          {
+            "surveyQuestion":3,
+            "textField":"Réponse non autorisé",
+            "selectedChoices":[
+              "1",
+              "2"
             ]
           }
+        ]
+      },
+      "lastName":"Bonsoirini",
+      "firstName":"Ernestino",
+      "emailAddress":"bonsoirini.fr",
+      "agreedToStayInContact":true,
+      "postalCode":"59",
+      "profession":"bonsoir",
+      "ageRange": "between_00_00",
+      "latitude": "bad_latitude",
+      "longitude": "bad_longitude"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "status":"error",
+      "errors":{
+        "dataSurvey":{
+          "survey":[
+            "Il n'existe aucun sondage correspondant à cet ID."
+          ],
+          "answers":{
+            "2":{
+              "surveyQuestion":[
+                "La question 3 est une question à choix unique et doit contenir un seul choix sélectionné.",
+                "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
+              ]
+            }
+          }
         },
+        "emailAddress":[
+          "Cette valeur n'est pas une adresse email valide."
+        ],
+        "profession":[
+          "Cette valeur n'est pas valide."
+        ],
+        "ageRange":[
+          "Cette valeur n'est pas valide."
+        ],
+        "latitude": [
+          "Cette valeur n'est pas valide."
+        ],
+        "longitude": [
+          "Cette valeur n'est pas valide."
+        ],
         "postalCode": [
           "Vous devez saisir exactement 5 caractères."
         ]

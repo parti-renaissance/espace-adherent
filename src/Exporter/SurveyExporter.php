@@ -3,11 +3,11 @@
 namespace App\Exporter;
 
 use App\Entity\Jecoute\Choice;
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\GenderEnum;
-use App\Repository\Jecoute\DataSurveyRepository;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Cocur\Slugify\Slugify;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Exporter as SonataExporter;
@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SurveyExporter
 {
-    /** @var DataSurveyRepository */
+    /** @var JemarcheDataSurveyRepository */
     private $dataSurveyRepository;
 
     /** @var Exporter */
@@ -30,7 +30,7 @@ class SurveyExporter
     private $i = 0;
 
     public function __construct(
-        DataSurveyRepository $dataSurveyRepository,
+        JemarcheDataSurveyRepository $dataSurveyRepository,
         SonataExporter $exporter,
         TranslatorInterface $translator
     ) {
@@ -51,10 +51,11 @@ class SurveyExporter
                 $format
             ),
             new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones), function (array $data) use ($survey, $fromAdmin) {
-                /** @var DataSurvey $dataSurvey */
-                $dataSurvey = $data[0];
+                /** @var JemarcheDataSurvey $jemarcheDataSurvey */
+                $jemarcheDataSurvey = $data[0];
+                $dataSurvey = $jemarcheDataSurvey->getDataSurvey();
 
-                $allowPersonalData = $fromAdmin || $dataSurvey->getAgreedToTreatPersonalData();
+                $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
 
                 $row = [];
                 $row['ID'] = ++$this->i;
@@ -66,24 +67,24 @@ class SurveyExporter
 
                 $row['Nom Prénom de l\'auteur'] = (string) $author;
                 $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
-                $row['Nom'] = $allowPersonalData ? $dataSurvey->getFirstName() : null;
-                $row['Prénom'] = $allowPersonalData ? $dataSurvey->getLastName() : null;
+                $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;
+                $row['Prénom'] = $allowPersonalData ? $jemarcheDataSurvey->getLastName() : null;
 
                 if ($fromAdmin) {
-                    $row['Email'] = $dataSurvey->getEmailAddress();
-                    $row['Accepte d\'être contacté'] = (int) $dataSurvey->getAgreedToStayInContact();
-                    $row['Accepte d\'être invité à adhérer'] = (int) $dataSurvey->getAgreedToContactForJoin();
+                    $row['Email'] = $jemarcheDataSurvey->getEmailAddress();
+                    $row['Accepte d\'être contacté'] = (int) $jemarcheDataSurvey->getAgreedToStayInContact();
+                    $row['Accepte d\'être invité à adhérer'] = (int) $jemarcheDataSurvey->getAgreedToContactForJoin();
                 }
 
-                $row['Code postal'] = $allowPersonalData ? $dataSurvey->getPostalCode() : null;
-                $row['Tranche d\'age'] = $allowPersonalData && $dataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$dataSurvey->getAgeRange()) : null;
-                $row['Genre'] = $allowPersonalData && $dataSurvey->getGender() ? (GenderEnum::OTHER === $dataSurvey->getGender() ? $dataSurvey->getGenderOther() : $this->translator->trans('common.'.$dataSurvey->getGender())) : null;
+                $row['Code postal'] = $allowPersonalData ? $jemarcheDataSurvey->getPostalCode() : null;
+                $row['Tranche d\'age'] = $allowPersonalData && $jemarcheDataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$jemarcheDataSurvey->getAgeRange()) : null;
+                $row['Genre'] = $allowPersonalData && $jemarcheDataSurvey->getGender() ? (GenderEnum::OTHER === $jemarcheDataSurvey->getGender() ? $jemarcheDataSurvey->getGenderOther() : $this->translator->trans('common.'.$jemarcheDataSurvey->getGender())) : null;
 
                 if ($fromAdmin) {
-                    $row['Accepte que ses données soient traitées'] = (int) $dataSurvey->getAgreedToTreatPersonalData();
+                    $row['Accepte que ses données soient traitées'] = (int) $jemarcheDataSurvey->getAgreedToTreatPersonalData();
                 }
 
-                $row['Profession'] = $allowPersonalData && $dataSurvey->getProfession() ? $dataSurvey->getProfession() : null;
+                $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
 
                 /** @var SurveyQuestion $surveyQuestion */
                 foreach ($survey->getQuestions() as $surveyQuestion) {

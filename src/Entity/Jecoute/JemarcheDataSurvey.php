@@ -3,14 +3,14 @@
 namespace App\Entity\Jecoute;
 
 use App\Entity\Device;
-use App\Validator\DataSurveyConstraint;
+use App\Validator\JemarcheDataSurveyConstraint;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\JemarcheDataSurveyRepository")
  *
- * @DataSurveyConstraint
+ * @JemarcheDataSurveyConstraint
  */
 class JemarcheDataSurvey
 {
@@ -24,10 +24,10 @@ class JemarcheDataSurvey
     /**
      * @var DataSurvey
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey")
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
-     * @Assert\NotBlank
+     * @Assert\Valid
      */
     private $dataSurvey;
 

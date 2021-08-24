@@ -5,15 +5,15 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadReferentTagsZonesLinksData               |
-      | LoadReferentTagData                          |
-      | LoadGeoZoneData                              |
-      | LoadAdherentData                             |
-      | LoadApplicationRequestRunningMateRequestData |
-      | LoadApplicationRequestVolunteerRequestData   |
-      | LoadJecouteSurveyData      |
-      | LoadJecouteDataSurveyData  |
-      | LoadJecouteDataAnswerData  |
+      | LoadReferentTagsZonesLinksData                |
+      | LoadReferentTagData                           |
+      | LoadGeoZoneData                               |
+      | LoadAdherentData                              |
+      | LoadApplicationRequestRunningMateRequestData  |
+      | LoadApplicationRequestVolunteerRequestData    |
+      | LoadJecouteSurveyData                         |
+      | LoadJemarcheDataSurveyData                    |
+      | LoadJecouteDataAnswerData                     |
 
   # Municipal space
   @javascript

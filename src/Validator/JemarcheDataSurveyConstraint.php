@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})
  */
-class DataSurveyConstraint extends Constraint
+class JemarcheDataSurveyConstraint extends Constraint
 {
     public $agreedToStayInContactRequired = 'data.survey.agreed_to_stay_in_contact.required';
 

@@ -48,7 +48,7 @@ services:
         calls:
             - ['setLogger', ['@logger']]
 
-    App\Mailchimp\Synchronisation\Handler\DataSurveyCreateCommandHandler:
+    App\Mailchimp\Synchronisation\Handler\JemarcheDataSurveyCreateCommandHandler:
         tags:
             - { name: 'monolog.logger', channel: 'mailchimp_sync' }
         calls:

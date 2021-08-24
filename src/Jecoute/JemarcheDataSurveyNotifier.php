@@ -2,14 +2,14 @@
 
 namespace App\Jecoute;
 
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Mailer\MailerService;
 use App\Mailer\Message\DataSurveyAnsweredMessage;
 use App\Repository\AdherentRepository;
-use App\Repository\Jecoute\DataSurveyRepository;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class DataSurveyNotifier implements EventSubscriberInterface
+class JemarcheDataSurveyNotifier implements EventSubscriberInterface
 {
     private $mailer;
     private $dataSurveyRepository;
@@ -17,7 +17,7 @@ class DataSurveyNotifier implements EventSubscriberInterface
 
     public function __construct(
         MailerService $transactionalMailer,
-        DataSurveyRepository $dataSurveyRepository,
+        JemarcheDataSurveyRepository $dataSurveyRepository,
         AdherentRepository $adherentRepository
     ) {
         $this->mailer = $transactionalMailer;
@@ -25,7 +25,7 @@ class DataSurveyNotifier implements EventSubscriberInterface
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function onDataSurveyAnswered(DataSurveyEvent $dataSurveyEvent): void
+    public function onDataSurveyAnswered(JemarcheDataSurveyEvent $dataSurveyEvent): void
     {
         $dataSurvey = $dataSurveyEvent->getDataSurvey();
 
@@ -37,11 +37,11 @@ class DataSurveyNotifier implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            SurveyEvents::DATA_SURVEY_ANSWERED => 'onDataSurveyAnswered',
+            SurveyEvents::JEMARCHE_DATA_SURVEY_ANSWERED => 'onDataSurveyAnswered',
         ];
     }
 
-    public function canNotify(DataSurvey $dataSurvey): bool
+    public function canNotify(JemarcheDataSurvey $dataSurvey): bool
     {
         if (!$email = $dataSurvey->getEmailAddress()) {
             return false;
@@ -53,7 +53,7 @@ class DataSurveyNotifier implements EventSubscriberInterface
 
         if ($this->dataSurveyRepository->countByEmailAnsweredForOneMonth(
             $dataSurvey->getEmailAddress(),
-            $dataSurvey->getPostedAt())
+            $dataSurvey->getDataSurvey()->getPostedAt())
         ) {
             return false;
         }

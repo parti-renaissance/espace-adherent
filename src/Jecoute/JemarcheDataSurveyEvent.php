@@ -2,19 +2,19 @@
 
 namespace App\Jecoute;
 
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DataSurveyEvent extends Event
+class JemarcheDataSurveyEvent extends Event
 {
     private $dataSurvey;
 
-    public function __construct(DataSurvey $dataSurvey)
+    public function __construct(JemarcheDataSurvey $dataSurvey)
     {
         $this->dataSurvey = $dataSurvey;
     }
 
-    public function getDataSurvey(): DataSurvey
+    public function getDataSurvey(): JemarcheDataSurvey
     {
         return $this->dataSurvey;
     }

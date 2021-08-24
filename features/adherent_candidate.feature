@@ -9,7 +9,7 @@ Feature:
       | LoadGeoZoneData                 |
       | LoadAdherentData                |
       | LoadJecouteSurveyData           |
-      | LoadJecouteDataSurveyData       |
+      | LoadJemarcheDataSurveyData      |
       | LoadJecouteDataAnswerData       |
 
   Scenario: As a headed regional candidate I can access user list in candidate space

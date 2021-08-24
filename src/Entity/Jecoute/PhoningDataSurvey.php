@@ -4,14 +4,11 @@ namespace App\Entity\Jecoute;
 
 use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
-use App\Validator\DataSurveyConstraint;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @DataSurveyConstraint
  */
 class PhoningDataSurvey
 {
@@ -25,7 +22,7 @@ class PhoningDataSurvey
     /**
      * @var DataSurvey
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey")
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank

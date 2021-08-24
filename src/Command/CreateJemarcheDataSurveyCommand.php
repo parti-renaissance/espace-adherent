@@ -4,6 +4,8 @@ namespace App\Command;
 
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\JemarcheDataSurvey;
+use App\Repository\Jecoute\DataSurveyRepository;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
@@ -25,11 +27,14 @@ class CreateJemarcheDataSurveyCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    public function __construct(EntityManagerInterface $em)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        DataSurveyRepository $dataSurveyRepository,
+        JemarcheDataSurveyRepository $jemarcheDataSurveyRepository
+    ) {
         $this->em = $em;
-        $this->dataSurveyRepository = $this->em->getRepository(DataSurvey::class);
-        $this->jemarcheDataSurveyRepository = $this->em->getRepository(JemarcheDataSurvey::class);
+        $this->dataSurveyRepository = $dataSurveyRepository;
+        $this->jemarcheDataSurveyRepository = $jemarcheDataSurveyRepository;
 
         parent::__construct();
     }
