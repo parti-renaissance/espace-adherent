@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Coalition\Cause;
 use App\Validator\ValidMessageCoalitionsFilter;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,12 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  *
  * @ValidMessageCoalitionsFilter
- *
- * @ApiResource(
- *     itemOperations={},
- *     collectionOperations={},
- *     subresourceOperations={},
- * )
  */
 class CoalitionsFilter extends AbstractUserFilter
 {
