@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Audience\AudienceBackup;
+use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\ValueObject\Genders;
@@ -53,6 +53,6 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
 
     private function createCampaign(string $uuid, string $title, Team $team, int $goal, string $finishAt): Campaign
     {
-        return new Campaign(Uuid::fromString($uuid), $title, $team, new AudienceBackup(), $goal, new Chronos($finishAt));
+        return new Campaign(Uuid::fromString($uuid), $title, $team, new AudienceSnapshot(), $goal, new Chronos($finishAt));
     }
 }

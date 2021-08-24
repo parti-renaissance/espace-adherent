@@ -3,11 +3,11 @@
 namespace App\Admin\Phoning;
 
 use App\Admin\Audience\AudienceAdmin;
-use App\Entity\Administrator;
+use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
-use App\Form\Audience\AudienceBackupType;
+use App\Form\Audience\AudienceSnapshotType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -55,7 +55,7 @@ class CampaignAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Filtres')
-                ->add('audience', AudienceBackupType::class, ['label' => false])
+                ->add('audience', AudienceSnapshotType::class, ['label' => false])
             ->end()
         ;
 
@@ -121,13 +121,10 @@ class CampaignAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Team $object
+     * @param Campaign $object
      */
     public function prePersist($object)
     {
-        /** @var Administrator $administrator */
-        $administrator = $this->security->getUser();
-
-        $object->setAdministrator($administrator);
+        $object->setAdministrator($this->security->getUser());
     }
 }

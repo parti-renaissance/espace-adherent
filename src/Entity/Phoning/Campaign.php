@@ -2,7 +2,7 @@
 
 namespace App\Entity\Phoning;
 
-use App\Entity\Audience\AudienceBackup;
+use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -63,9 +63,9 @@ class Campaign
     private $team;
 
     /**
-     * @var AudienceBackup|null
+     * @var AudienceSnapshot|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceBackup", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
@@ -76,7 +76,7 @@ class Campaign
         UuidInterface $uuid = null,
         string $title = null,
         Team $team = null,
-        AudienceBackup $audience = null,
+        AudienceSnapshot $audience = null,
         int $goal = null,
         \DateTimeInterface $finishAt = null
     ) {
@@ -133,12 +133,12 @@ class Campaign
         $this->team = $team;
     }
 
-    public function getAudience(): ?AudienceBackup
+    public function getAudience(): ?AudienceSnapshot
     {
         return $this->audience;
     }
 
-    public function setAudience(AudienceBackup $audience): void
+    public function setAudience(AudienceSnapshot $audience): void
     {
         $this->audience = $audience;
     }
