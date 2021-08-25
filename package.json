@@ -42,7 +42,7 @@
     "js-cookie": "^2.1.0",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^1.6.2",
-    "mocha": "^8.4.0",
+    "mocha": "^9.1.0",
     "mocha-webpack": "^1.0.0",
     "moment": "^2.29.1",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
