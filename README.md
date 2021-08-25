@@ -9,7 +9,7 @@
 | Linux | [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master) |
 
 
-Vous souhaitez aider le projet ou simplement parler avec nous? Rejoingez nous sur [Slack](https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw):
+Vous souhaitez aider le projet ou simplement parler avec nous? Rejoignez nous sur [Slack](https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw):
 <div align="center">
   <a href="https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw">
     <img src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/2019-01_BrandRefresh_Old-to-New-Final.fr-FR.gif" height=25% width=25% alt="Slack Logo">
