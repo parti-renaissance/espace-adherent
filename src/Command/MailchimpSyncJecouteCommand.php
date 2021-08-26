@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Jecoute\DataSurvey;
-use App\Mailchimp\Synchronisation\Command\DataSurveyCreateCommand;
-use App\Repository\Jecoute\DataSurveyRepository;
+use App\Entity\Jecoute\JemarcheDataSurvey;
+use App\Mailchimp\Synchronisation\Command\JemarcheDataSurveyCreateCommand;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
@@ -25,7 +25,7 @@ class MailchimpSyncJecouteCommand extends Command
     private $io;
 
     public function __construct(
-        DataSurveyRepository $dataSurveyRepository,
+        JemarcheDataSurveyRepository $dataSurveyRepository,
         EntityManagerInterface $entityManager,
         MessageBusInterface $bus
     ) {
@@ -67,11 +67,11 @@ class MailchimpSyncJecouteCommand extends Command
         $offset = 0;
 
         do {
-            /** @var DataSurvey $dataSurvey */
+            /** @var JemarcheDataSurvey $dataSurvey */
             foreach ($paginator->getIterator() as $dataSurvey) {
                 $this->io->comment($dataSurvey->getEmailAddress());
 
-                $this->bus->dispatch(new DataSurveyCreateCommand($dataSurvey->getEmailAddress()));
+                $this->bus->dispatch(new JemarcheDataSurveyCreateCommand($dataSurvey->getEmailAddress()));
 
                 $this->io->progressAdvance();
                 ++$offset;

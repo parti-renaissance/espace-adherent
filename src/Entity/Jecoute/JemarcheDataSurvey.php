@@ -2,47 +2,40 @@
 
 namespace App\Entity\Jecoute;
 
-use App\Entity\Adherent;
 use App\Entity\Device;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Validator\JemarcheDataSurveyConstraint;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="jecoute_data_survey")
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\DataSurveyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\JemarcheDataSurveyRepository")
+ *
+ * @JemarcheDataSurveyConstraint
  */
-class DataSurvey
+class JemarcheDataSurvey
 {
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @var DataSurvey
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Assert\Valid
      */
-    private $author;
+    private $dataSurvey;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Device")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $device;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $postedAt;
 
     /**
      * @ORM\Column(length=50, nullable=true)
@@ -111,23 +104,6 @@ class DataSurvey
     private $genderOther;
 
     /**
-     * @var DataAnswer[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="DataAnswer", mappedBy="dataSurvey", cascade={"persist", "remove"})
-     *
-     * @Assert\Valid
-     */
-    private $answers;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Survey")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    private $survey;
-
-    /**
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
@@ -141,10 +117,11 @@ class DataSurvey
      */
     private $longitude;
 
-    public function __construct(Survey $survey = null)
+    public function __construct(DataSurvey $dataSurvey = null, string $firstName = null, string $lastName = null)
     {
-        $this->survey = $survey;
-        $this->answers = new ArrayCollection();
+        $this->dataSurvey = $dataSurvey;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
     }
 
     public function getId(): ?int
@@ -152,14 +129,14 @@ class DataSurvey
         return $this->id;
     }
 
-    public function setAuthor(Adherent $author): void
+    public function getDataSurvey(): ?DataSurvey
     {
-        $this->author = $author;
+        return $this->dataSurvey;
     }
 
-    public function getAuthor(): ?Adherent
+    public function setDataSurvey(DataSurvey $dataSurvey): void
     {
-        return $this->author;
+        $this->dataSurvey = $dataSurvey;
     }
 
     public function setDevice(?Device $device): void
@@ -170,11 +147,6 @@ class DataSurvey
     public function getDevice(): ?Device
     {
         return $this->device;
-    }
-
-    public function getPostedAt(): ?\DateTime
-    {
-        return $this->postedAt;
     }
 
     public function getFirstName(): ?string
@@ -262,7 +234,7 @@ class DataSurvey
         return $this->ageRange;
     }
 
-    public function setAgeRange(string $ageRange): void
+    public function setAgeRange(?string $ageRange): void
     {
         $this->ageRange = $ageRange;
     }
@@ -272,7 +244,7 @@ class DataSurvey
         return $this->gender;
     }
 
-    public function setGender(string $gender): void
+    public function setGender(?string $gender): void
     {
         $this->gender = $gender;
     }
@@ -282,37 +254,9 @@ class DataSurvey
         return $this->genderOther;
     }
 
-    public function setGenderOther(string $genderOther): void
+    public function setGenderOther(?string $genderOther): void
     {
         $this->genderOther = $genderOther;
-    }
-
-    public function addAnswer(DataAnswer $answer): void
-    {
-        if (!$this->answers->contains($answer)) {
-            $answer->setDataSurvey($this);
-            $this->answers->add($answer);
-        }
-    }
-
-    public function removeAnswer(DataAnswer $answer): void
-    {
-        $this->answers->removeElement($answer);
-    }
-
-    public function getAnswers(): Collection
-    {
-        return $this->answers;
-    }
-
-    public function getSurvey(): ?Survey
-    {
-        return $this->survey;
-    }
-
-    public function setSurvey(Survey $survey): void
-    {
-        $this->survey = $survey;
     }
 
     public function getLatitude(): ?float

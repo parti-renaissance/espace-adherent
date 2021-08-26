@@ -8,7 +8,7 @@ use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -134,7 +134,7 @@ class RequestBuilder implements LoggerAwareInterface
         ;
     }
 
-    public function updateFromDataSurvey(DataSurvey $dataSurvey, array $zones): self
+    public function updateFromDataSurvey(JemarcheDataSurvey $dataSurvey, array $zones): self
     {
         $this
             ->setEmail($dataSurvey->getEmailAddress())

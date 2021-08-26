@@ -3,9 +3,8 @@
 namespace App\Controller\Api\Jecoute;
 
 use App\Entity\Adherent;
-use App\Form\Jecoute\DataSurveyFormType;
-use App\Jecoute\DataSurveyAnswerHandler;
-use App\Jecoute\SurveyTypeEnum;
+use App\Form\Jecoute\JemarcheDataSurveyFormType;
+use App\Jecoute\JemarcheDataSurveyAnswerHandler;
 use App\OAuth\Model\DeviceApiUser;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\LocalSurveyRepository;
@@ -17,7 +16,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -79,22 +77,25 @@ class SurveyController extends AbstractController
      */
     public function surveyReplyAction(
         Request $request,
-        DataSurveyAnswerHandler $dataSurveyHandler,
+        JemarcheDataSurveyAnswerHandler $dataSurveyHandler,
         FormFactoryInterface $formFactory,
         UserInterface $user
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
-
-        if (!SurveyTypeEnum::isValid($data['type'])) {
-            throw new BadRequestHttpException('Invalid type.');
-        }
-
-        $form = $formFactory->create(DataSurveyFormType::class, null, [
+        $form = $formFactory->create(JemarcheDataSurveyFormType::class, null, [
             'csrf_protection' => false,
-            'type' => $data['type'],
         ]);
 
-        unset($data['type']);
+        if (!isset($data['dataSurvey'])) {
+            $data['dataSurvey']['survey'] = $data['survey'];
+            unset($data['survey']);
+            $data['dataSurvey']['answers'] = $data['answers'];
+            unset($data['answers']);
+        }
+
+        if (isset($data['type'])) {
+            unset($data['type']);
+        }
 
         $form->submit($data);
 

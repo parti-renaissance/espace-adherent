@@ -525,3 +525,10 @@ team.name.min_length: Le nom de l'équipe doit faire au moins {{ limit }} caract
 team.name.max_length: Le nom de l'équipe ne doit pas dépasser {{ limit }} caractères.
 team.type.not_blank: Veuillez spécifier un type d'équipe.
 team.type.choice: Le type d'équipe n'est pas valide.
+
+#
+# Phoning
+#
+phoning.data_survey.type.invalid_choice: Le type n'est pas valide.
+phoning.data_survey.status.invalid_choice: Le status n'est pas valide.
+phoning.data_survey.finish_at.invalid: La date de fin doit être postérieure à la date de début.
