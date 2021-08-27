@@ -392,6 +392,12 @@ class App {
             module.default(this.get('api'), slug, submitButtonSelector, wrapperSelector);
         });
     }
+
+    runResubscribeEmail() {
+        System.import('pages/resubscribe_email').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

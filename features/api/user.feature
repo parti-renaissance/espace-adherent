@@ -23,6 +23,7 @@ Feature:
       {
         "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
         "email_address": "carl999@example.fr",
+        "email_unsubscribed": false,
         "first_name": "Carl",
         "last_name": "Mirabeau",
         "country": "FR",

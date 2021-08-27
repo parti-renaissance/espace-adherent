@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\NewsletterSubscription;
 use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Mailchimp\SignUp\SignUpHandler;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,13 +25,11 @@ class SubscriptionHandler
     private $subscriptionTypeRepository;
     private $newsletterSubscriptionRepository;
     private $subscriptionHistoryHandler;
-    private $signUpHandler;
     private $dispatcher;
 
     public function __construct(
         EntityManagerInterface $em,
         EmailSubscriptionHistoryHandler $subscriptionHistoryHandler,
-        SignUpHandler $signUpHandler,
         EventDispatcherInterface $dispatcher
     ) {
         $this->em = $em;
@@ -41,16 +38,11 @@ class SubscriptionHandler
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
         $this->subscriptionTypeRepository = $this->em->getRepository(SubscriptionType::class);
         $this->newsletterSubscriptionRepository = $this->em->getRepository(NewsletterSubscription::class);
-        $this->signUpHandler = $signUpHandler;
         $this->dispatcher = $dispatcher;
     }
 
     public function handleChanges(Adherent $adherent, array $oldEmailsSubscriptions): void
     {
-        if ($adherent->isEmailUnsubscribed() && array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions)) {
-            $adherent->setEmailUnsubscribed(!$this->signUpHandler->signUpAdherent($adherent));
-        }
-
         $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
         $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
     }

@@ -37,10 +37,7 @@ class SignUpHandler implements LoggerAwareInterface
     {
         try {
             $response = $this->client->request('POST', '/subscribe/post', [
-                'query' => [
-                    'u' => $this->mailchimpOrgId,
-                    'id' => $this->listId,
-                ],
+                'query' => $this->getQueryData(),
                 'body' => $this->getFormData($adherent),
                 'headers' => [
                     'origin' => 'https://en-marche.fr',
@@ -56,7 +53,12 @@ class SignUpHandler implements LoggerAwareInterface
         return false;
     }
 
-    private function getFormData(Adherent $adherent)
+    public function generatePayload(Adherent $adherent): array
+    {
+        return array_merge($this->getQueryData(), $this->getFormData($adherent));
+    }
+
+    private function getFormData(Adherent $adherent): array
     {
         $formData = [
             'EMAIL' => $adherent->getEmailAddress(),
@@ -75,5 +77,13 @@ class SignUpHandler implements LoggerAwareInterface
     private function getTokenKey(): string
     {
         return sprintf('b_%s_%s', $this->mailchimpOrgId, $this->listId);
+    }
+
+    private function getQueryData(): array
+    {
+        return [
+            'u' => $this->mailchimpOrgId,
+            'id' => $this->listId,
+        ];
     }
 }

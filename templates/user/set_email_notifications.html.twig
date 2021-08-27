@@ -3,39 +3,61 @@
 {% block page_title 'Communication' %}
 
 {% block adherent_profile_content %}
-<section class="adherent-profile__section" id="subscriptions">
-    <h1 class="text--medium-large">Communications</h1>
+    <section class="adherent-profile__section" id="subscriptions">
+        <h1 class="text--medium-large">Communications</h1>
 
-    {{ form_start(form, { attr: { class: 'em-form' } }) }}
-        {{ form_errors(form) }}
+        {% if app.user.isEmailUnsubscribed() %}
+            <div class="alert alert--tips l__row l__row--h-stretch b__nudge--bottom-50">
+                <div class="l__col">Vous êtes désabonné</div>
+                <div class="l__col"><a href="#" class="btn btn--blue" id="resubscribe-trigger">Me réabonner</a></div>
+            </div>
+        {% endif %}
 
-        {% set help_messages = {
-            (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
-        } %}
+        {{ form_start(form, { attr: { class: 'em-form' } }) }}
+            {{ form_errors(form) }}
 
-        {% for group_choices in form.subscriptionTypes.vars.choices %}
-            <section class="em-form__section">
-            {% if group_choices.choices is defined %}
-                {% if group_choices.label %}
-                    <h2 class="section-subtitle">{{ group_choices.label|trans }}</h2>
+            {% set help_messages = {
+                (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
+            } %}
+
+            {% for group_choices in form.subscriptionTypes.vars.choices %}
+                <section class="em-form__section">
+                {% if group_choices.choices is defined %}
+                    {% if group_choices.label %}
+                        <h2 class="section-subtitle">{{ group_choices.label|trans }}</h2>
+                    {% endif %}
+
+                    <div class="em-form__group">
+                        {% for key, choice_view in group_choices %}
+                            {{ form_row(form.subscriptionTypes.children[key]) }}
+
+                            {% if help_messages[choice_view.data.code] is defined %}
+                                <p class="text--small text--muted">{{ help_messages[choice_view.data.code]|raw }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
+                </section>
+            {% endfor %}
 
-                <div class="em-form__group">
-                    {% for key, choice_view in group_choices %}
-                        {{ form_row(form.subscriptionTypes.children[key]) }}
+            <div class="b__nudge--top">
+                {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
 
-                        {% if help_messages[choice_view.data.code] is defined %}
-                            <p class="text--small text--muted">{{ help_messages[choice_view.data.code]|raw }}</p>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            </section>
-        {% endfor %}
+{% block javascripts %}
+    {{ parent() }}
 
-        <div class="b__nudge--top">
-            {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
-        </div>
-    {{ form_end(form) }}
-</section>
+    {% if app.user.isEmailUnsubscribed() %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                on(dom('#resubscribe-trigger'), 'click', function (event) {
+                    event.preventDefault();
+                    App.runResubscribeEmail();
+                })
+            });
+        </script>
+    {% endif %}
 {% endblock %}
