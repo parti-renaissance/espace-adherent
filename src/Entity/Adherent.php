@@ -537,6 +537,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     private $emailUnsubscribed = false;
 

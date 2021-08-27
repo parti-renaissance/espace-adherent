@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 export default class ReqwestApiClient {
     constructor(reqwest) {
         this._reqwest = reqwest;
@@ -7,6 +9,30 @@ export default class ReqwestApiClient {
         this._createRequest(callback, {
             url: `/api/postal-code/${postalCode}`,
             type: 'json',
+        });
+    }
+
+    getMe(callback) {
+        this._createRequest(callback, {
+            url: '/api/users/me',
+            type: 'json',
+        });
+    }
+
+    getResubscribeEmailPayload(callback) {
+        this._createRequest(callback, {
+            url: '/api/resubscribe-email',
+            type: 'json',
+        });
+    }
+
+    sendResubscribeEmail(url, body, callback) {
+        this._createRequest(callback, {
+            url: `${url}/subscribe/post-json`,
+            method: 'post',
+            type: 'jsonp',
+            jsonpCallback: 'c',
+            data: qs.stringify(body),
         });
     }
 

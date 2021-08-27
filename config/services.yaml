@@ -55,6 +55,7 @@ services:
             $adherentInterests: '%adherent_interests%'
             $mailchimpOrgId: '%env(MAILCHIMP_ORG_ID)%'
             $mailchimpCampaignUrl: '%env(MAILCHIMP_CAMPAIGN_URL)%'
+            $mailchimpSignUpHost: '%env(MAILCHIMP_SIGNUP_HOST)%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
             $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $enableMunicipalSpace: '%env(bool:ENABLE_MUNICIPAL_SPACE)%'
