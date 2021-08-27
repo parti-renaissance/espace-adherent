@@ -2,109 +2,109 @@
 # yarn lockfile v1
 
 
-"@algolia/cache-browser-local-storage@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.10.4.tgz#d6799fef0f107ac8e99a991a846b851ef7b0f8ad"
-  integrity sha512-oNCRQWI9cTYqNkyt+lelkqF5Z3sQNSJ2OT9tK5w0587IJNWqkzZzqipJyWHZv2sWyBbOboDrwZfZUcik3y0Qrg==
+"@algolia/cache-browser-local-storage@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.10.5.tgz#961cf07cf59955de17af13bd74f7806bd2119553"
+  integrity sha512-cfX2rEKOtuuljcGI5DMDHClwZHdDqd2nT2Ohsc8aHtBiz6bUxKVyIqxr2gaC6tU8AgPtrTVBzcxCA+UavXpKww==
   dependencies:
-    "@algolia/cache-common" "4.10.4"
+    "@algolia/cache-common" "4.10.5"
 
-"@algolia/cache-common@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/cache-common/-/cache-common-4.10.4.tgz#c4976256bd1373e849caf310dd2bc3d7c413f03e"
-  integrity sha512-R2Sbg8zvVMsxFDKWQYAZD1cQIEO6J00dZFjFfYDMTH+r/t2CCOZal2EFGnHl7FcgTIEUsSrNJUzLefL8NM8/iA==
+"@algolia/cache-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/cache-common/-/cache-common-4.10.5.tgz#9510419e9dfb6d8814582c6b20615196f213a9d6"
+  integrity sha512-1mClwdmTHll+OnHkG+yeRoFM17kSxDs4qXkjf6rNZhoZGXDvfYLy3YcZ1FX4Kyz0DJv8aroq5RYGBDsWkHj6Tw==
 
-"@algolia/cache-in-memory@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/cache-in-memory/-/cache-in-memory-4.10.4.tgz#eacadfee2ad8961c84d3fc9bf94db341a9f24504"
-  integrity sha512-ReQnhekfAvYFRu2odShmMxPM2OcRjSK1Atncam2HSu7Zt/51gtQp6WJMm7K+Mb3y+mT+ckBbOTamv/uTREcu2A==
+"@algolia/cache-in-memory@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/cache-in-memory/-/cache-in-memory-4.10.5.tgz#de9331cb86734bf7f7624063cdaa639e43509be1"
+  integrity sha512-+ciQnfIGi5wjMk02XhEY8fmy2pzy+oY1nIIfu8LBOglaSipCRAtjk6WhHc7/KIbXPiYzIwuDbM2K1+YOwSGjwA==
   dependencies:
-    "@algolia/cache-common" "4.10.4"
+    "@algolia/cache-common" "4.10.5"
 
-"@algolia/client-account@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/client-account/-/client-account-4.10.4.tgz#b9730a2c067380419f5b23d0b77b6c4e2d081cca"
-  integrity sha512-Wtr91lXidDh5niXL0LPWxCluRdKA2CDpE2O/RKc9uMNDYCzCOkAxF2CcUuIpEW0IceO0D3d8n/TLuuKOIk2mww==
+"@algolia/client-account@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/client-account/-/client-account-4.10.5.tgz#82f7c330fc5f0625b5b559afe9c6b1aa6722b6cf"
+  integrity sha512-I9UkSS2glXm7RBZYZIALjBMmXSQbw/fI/djPcBHxiwXIheNIlqIFl2SNPkvihpPF979BSkzjqdJNRPhE1vku3Q==
   dependencies:
-    "@algolia/client-common" "4.10.4"
-    "@algolia/client-search" "4.10.4"
-    "@algolia/transporter" "4.10.4"
+    "@algolia/client-common" "4.10.5"
+    "@algolia/client-search" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
-"@algolia/client-analytics@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/client-analytics/-/client-analytics-4.10.4.tgz#830e17f87e878863294e438690c64e4c2520938f"
-  integrity sha512-CNOqWwq735i2kDh4DWk9Y4AN4mPIYOOec83xeWRnlSTfoL6DbLWVZTNBHi7Mi97h3prKVpr/Zm4f46RPrTYSsA==
+"@algolia/client-analytics@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/client-analytics/-/client-analytics-4.10.5.tgz#269e47c9de7e53e9e05e4a2d3c380607c3d2631f"
+  integrity sha512-h2owwJSkovPxzc+xIsjY1pMl0gj+jdVwP9rcnGjlaTY2fqHbSLrR9yvGyyr6305LvTppxsQnfAbRdE/5Z3eFxw==
   dependencies:
-    "@algolia/client-common" "4.10.4"
-    "@algolia/client-search" "4.10.4"
-    "@algolia/requester-common" "4.10.4"
-    "@algolia/transporter" "4.10.4"
+    "@algolia/client-common" "4.10.5"
+    "@algolia/client-search" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
-"@algolia/client-common@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/client-common/-/client-common-4.10.4.tgz#a3b6874d4873249c10e4ca10e3a2a453b36df7ae"
-  integrity sha512-O5GcD/7JW7eLlLPc2AUGUHmWP95JZthivpiOmwloAVR1DFvgKZL3+1e3/e1wederPA3ETvz80++aL+6yPRhb8w==
+"@algolia/client-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/client-common/-/client-common-4.10.5.tgz#a7d0833796a9a2da68be16be76b6dc3962bf2f18"
+  integrity sha512-21FAvIai5qm8DVmZHm2Gp4LssQ/a0nWwMchAx+1hIRj1TX7OcdW6oZDPyZ8asQdvTtK7rStQrRnD8a95SCUnzA==
   dependencies:
-    "@algolia/requester-common" "4.10.4"
-    "@algolia/transporter" "4.10.4"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
-"@algolia/client-personalization@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/client-personalization/-/client-personalization-4.10.4.tgz#047909c626266803ddd0b1c08033f4429c1efb55"
-  integrity sha512-n5lb4DXLhk0rbCBSE2TgjKko+NCX0/lNBCSTszdanznkdA8NaHnOdy0/LvDoXh2ZYAMJx2etZvfWLYcSLO8cGQ==
+"@algolia/client-personalization@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/client-personalization/-/client-personalization-4.10.5.tgz#78a8fb8161bdbeaa66b400b3283640ef689e155b"
+  integrity sha512-nH+IyFKBi8tCyzGOanJTbXC5t4dspSovX3+ABfmwKWUYllYzmiQNFUadpb3qo+MLA3jFx5IwBesjneN6dD5o3w==
   dependencies:
-    "@algolia/client-common" "4.10.4"
-    "@algolia/requester-common" "4.10.4"
-    "@algolia/transporter" "4.10.4"
+    "@algolia/client-common" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
-"@algolia/client-search@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/client-search/-/client-search-4.10.4.tgz#d14f9ded350cf2b5807561e10105d377f86223b5"
-  integrity sha512-qqSKogn85YTub8g01N4tcctsowbxq+QJzzzHSQA0+j4Pw93CguinDpX6mU/WbLIZIu2eaTeAQ7pORual3Li0yA==
+"@algolia/client-search@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/client-search/-/client-search-4.10.5.tgz#47907232a3e4ecf2aa4459b8de17242afd88147c"
+  integrity sha512-1eQFMz9uodrc5OM+9HeT+hHcfR1E1AsgFWXwyJ9Q3xejA2c1c4eObGgOgC9ZoshuHHdptaTN1m3rexqAxXRDBg==
   dependencies:
-    "@algolia/client-common" "4.10.4"
-    "@algolia/requester-common" "4.10.4"
-    "@algolia/transporter" "4.10.4"
+    "@algolia/client-common" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
-"@algolia/logger-common@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/logger-common/-/logger-common-4.10.4.tgz#72c42a2b4a4335e0049108481fa0e9b9fd84cfa2"
-  integrity sha512-B4D6HqS2TDcf6S8YEr9cFm8S7eswIniojC8IFoCtlfMxhCj2OM70rH1eqfY2VQy/KPY1txYPdMPk8AG8685fHg==
+"@algolia/logger-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/logger-common/-/logger-common-4.10.5.tgz#cf807107e755ad4a72c5afc787e968ff1196f1cc"
+  integrity sha512-gRJo9zt1UYP4k3woEmZm4iuEBIQd/FrArIsjzsL/b+ihNoOqIxZKTSuGFU4UUZOEhvmxDReiA4gzvQXG+TMTmA==
 
-"@algolia/logger-console@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/logger-console/-/logger-console-4.10.4.tgz#61565ca5eca3ff978d165e78054dd5340c0c2a2d"
-  integrity sha512-217KiWZ66BcQ5begHhD+h8mNTjOHvTmUYV203pXteExOgfAm/gzQ4GzzAwXVAhCID2tzRDObfDq8M3BCMp8NPA==
+"@algolia/logger-console@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/logger-console/-/logger-console-4.10.5.tgz#f961a7a7c6718c3f3842fb9b522d47b03b9df8ad"
+  integrity sha512-4WfIbn4253EDU12u9UiYvz+QTvAXDv39mKNg9xSoMCjKE5szcQxfcSczw2byc6pYhahOJ9PmxPBfs1doqsdTKQ==
   dependencies:
-    "@algolia/logger-common" "4.10.4"
+    "@algolia/logger-common" "4.10.5"
 
-"@algolia/requester-browser-xhr@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/requester-browser-xhr/-/requester-browser-xhr-4.10.4.tgz#e6873b354e15c8e4676e3086e2b8eec95d973f7f"
-  integrity sha512-a8sEt9WQeolA/ZCSfhd2ImH+8v7o45359Omn2iBXzB3+UD/fo1jOFcDgyX35AusXw8pNtDI/Jd4n0vBYJvtSWg==
+"@algolia/requester-browser-xhr@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/requester-browser-xhr/-/requester-browser-xhr-4.10.5.tgz#7063e3bc6d9c72bc535e1794352eddf47459dfe6"
+  integrity sha512-53/MURQEqtK+bGdfq4ITSPwTh5hnADU99qzvpAINGQveUFNSFGERipJxHjTJjIrjFz3vxj5kKwjtxDnU6ygO9g==
   dependencies:
-    "@algolia/requester-common" "4.10.4"
+    "@algolia/requester-common" "4.10.5"
 
-"@algolia/requester-common@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/requester-common/-/requester-common-4.10.4.tgz#93c042d201287b1623db3d6d4b0e91dfb64a5971"
-  integrity sha512-RkAxkX/z8DAHUGg0vtZkY/lZXBPc/aEUf/DmWPp2dspAiCp1ekYlyf+qLNwOwEHMu+Q6nm+meStpAUl0BpsNVg==
+"@algolia/requester-common@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/requester-common/-/requester-common-4.10.5.tgz#52abfbf10b743d26afd3ce20f62771bc393ff4f0"
+  integrity sha512-UkVa1Oyuj6NPiAEt5ZvrbVopEv1m/mKqjs40KLB+dvfZnNcj+9Fry4Oxnt15HMy/HLORXsx4UwcthAvBuOXE9Q==
 
-"@algolia/requester-node-http@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/requester-node-http/-/requester-node-http-4.10.4.tgz#413701d24b87220f78645ae7caadc429af8a8217"
-  integrity sha512-iixy8GOrj0A4sIQX2Q0GChc1z3iM6LF8fJNXVXG629hbXlssEECAl8wO3+6bqAOgbCLiYeY9Aj3QsJyA6vJ4Iw==
+"@algolia/requester-node-http@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/requester-node-http/-/requester-node-http-4.10.5.tgz#db7e9ece1fda1b71a28c8e623666aaa096320b5c"
+  integrity sha512-aNEKVKXL4fiiC+bS7yJwAHdxln81ieBwY3tsMCtM4zF9f5KwCzY2OtN4WKEZa5AAADVcghSAUdyjs4AcGUlO5w==
   dependencies:
-    "@algolia/requester-common" "4.10.4"
+    "@algolia/requester-common" "4.10.5"
 
-"@algolia/transporter@4.10.4":
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/@algolia/transporter/-/transporter-4.10.4.tgz#aec3bb3b87569ceec331861fe2c6ca6698a48d19"
-  integrity sha512-I60q9+4mYo3D9qIsUYaxU8ZukJVG/DWn1FBAeB5bW9c6/+chmppYJ5CJd/ZvKYEWd7ESwaRrrceYev94O4VrWw==
+"@algolia/transporter@4.10.5":
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/@algolia/transporter/-/transporter-4.10.5.tgz#9354989f12af3e2ce7d3109a94f519d467a960e0"
+  integrity sha512-F8DLkmIlvCoMwSCZA3FKHtmdjH3o5clbt0pi2ktFStVNpC6ZDmY307HcK619bKP5xW6h8sVJhcvrLB775D2cyA==
   dependencies:
-    "@algolia/cache-common" "4.10.4"
-    "@algolia/logger-common" "4.10.4"
-    "@algolia/requester-common" "4.10.4"
+    "@algolia/cache-common" "4.10.5"
+    "@algolia/logger-common" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
 
 "@babel/code-frame@7.12.11":
   version "7.12.11"
@@ -1433,25 +1433,25 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-algoliasearch@^4.10.4:
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-4.10.4.tgz#500e66db668b0b7cedb36e9135a4fa719f236e59"
-  integrity sha512-noZ59PZYyYJVsm78YEo6EXH5DgaU0jSKf17xxJ3q9WtpBkmiaNk5b53mSJFsAI3c5gMOWgXM4+4o1EEaCbXXGg==
+algoliasearch@^4.10.5:
+  version "4.10.5"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-4.10.5.tgz#1faf34a3ae5ac3bef27282eb141251c70c7f5db2"
+  integrity sha512-KmH2XkiN+8FxhND4nWFbQDkIoU6g2OjfeU9kIv4Lb+EiOOs3Gpp7jvd+JnatsCisAZsnWQdjd7zVlW7I/85QvQ==
   dependencies:
-    "@algolia/cache-browser-local-storage" "4.10.4"
-    "@algolia/cache-common" "4.10.4"
-    "@algolia/cache-in-memory" "4.10.4"
-    "@algolia/client-account" "4.10.4"
-    "@algolia/client-analytics" "4.10.4"
-    "@algolia/client-common" "4.10.4"
-    "@algolia/client-personalization" "4.10.4"
-    "@algolia/client-search" "4.10.4"
-    "@algolia/logger-common" "4.10.4"
-    "@algolia/logger-console" "4.10.4"
-    "@algolia/requester-browser-xhr" "4.10.4"
-    "@algolia/requester-common" "4.10.4"
-    "@algolia/requester-node-http" "4.10.4"
-    "@algolia/transporter" "4.10.4"
+    "@algolia/cache-browser-local-storage" "4.10.5"
+    "@algolia/cache-common" "4.10.5"
+    "@algolia/cache-in-memory" "4.10.5"
+    "@algolia/client-account" "4.10.5"
+    "@algolia/client-analytics" "4.10.5"
+    "@algolia/client-common" "4.10.5"
+    "@algolia/client-personalization" "4.10.5"
+    "@algolia/client-search" "4.10.5"
+    "@algolia/logger-common" "4.10.5"
+    "@algolia/logger-console" "4.10.5"
+    "@algolia/requester-browser-xhr" "4.10.5"
+    "@algolia/requester-common" "4.10.5"
+    "@algolia/requester-node-http" "4.10.5"
+    "@algolia/transporter" "4.10.5"
 
 alphanum-sort@^1.0.2:
   version "1.0.2"
