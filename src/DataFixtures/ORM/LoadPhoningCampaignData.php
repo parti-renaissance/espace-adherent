@@ -27,6 +27,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
             '+10 days'
         );
         $campaign1->getAudience()->setGender(Genders::MALE);
+        $this->addReference('campaign-1', $campaign1);
 
         $campaign2 = $this->createCampaign(
             self::CAMPAIGN_2_UUID,
@@ -36,6 +37,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
             '+15 days'
         );
         $campaign2->getAudience()->setGender(Genders::FEMALE);
+        $this->addReference('campaign-2', $campaign2);
 
         $manager->persist($campaign1);
         $manager->persist($campaign2);

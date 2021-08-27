@@ -14,10 +14,13 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Jecoute\CampaignHistory;
+use App\Entity\Phoning\Campaign;
 use App\Entity\ReferentManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
+use App\Phoning\DataSurveyStatusEnum;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -1218,6 +1221,11 @@ SQL;
 
     public function findForAudience(AudienceInterface $audience, int $page = 1, int $limit = 100): PaginatorInterface
     {
+        return $this->configurePaginator($this->createQueryBuilderForAudience($audience), $page, $limit);
+    }
+
+    public function createQueryBuilderForAudience(AudienceInterface $audience): QueryBuilder
+    {
         $qb = $this
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.adherent = true')
@@ -1315,6 +1323,55 @@ SQL;
             ;
         }
 
-        return $this->configurePaginator($qb, $page, $limit);
+        return $qb;
+    }
+
+    public function findOneToCall(Campaign $campaign): ?Adherent
+    {
+        $subQb = $this->createQueryBuilder('a')
+            ->leftJoin(CampaignHistory::class, 'phoningds', Join::WITH, 'phoningds.adherent = a')
+            ->where('phoningds.status IN (:callable_later) AND DAY(phoningds.beginAt) < CURRENT_DATE()')
+            ->orWhere('(phoningds.status = :completed AND phoningds.campaign = :campaign)')
+            ->orWhere('(phoningds.status = :completed AND phoningds.campaign != :campaign AND DAY(phoningds.beginAt) < CURRENT_DATE())')
+            ->orderBy('phoningds.beginAt', 'DESC')
+            ->setParameter('callable_later', DataSurveyStatusEnum::CALLABLE_LATER)
+            ->setParameter('completed', DataSurveyStatusEnum::COMPLETED)
+            ->setParameter('campaign', $campaign)
+        ;
+
+        $qb = $this->createQueryBuilderForAudience($campaign->getAudience());
+        $qb
+            ->select('adherent.id', 'adherent.phone', 'pds.callMore', 'adherent.emailAddress')
+            ->leftJoin(CampaignHistory::class, 'pds', Join::WITH, 'pds.adherent = adherent')
+            ->andWhere('adherent.phone IS NOT NULL')
+            ->andWhere(sprintf('adherent.id NOT IN (%s)'), $this->createQueryBuilder('a2')
+                ->select('a2.id')
+                ->join(CampaignHistory::class, 'pds2', Join::WITH, 'pds2.adherent = a2')
+                ->andWhere((new Orx())
+                    ->add('pds2.status IN (:statuses)')
+                    ->add('pds2.status = :dont_remind AND pds2.campaign = :campaign')
+                )
+            )
+            ->andWhere((new Orx())
+                ->add('pds.id IS NULL')
+                ->add($qb->expr()->not($qb->expr()->exists($subQb)))
+//                ->add('adherent.id IN (:ids)')
+            )
+            ->setParameter('statuses', DataSurveyStatusEnum::NOT_CALLABLE)
+            ->setParameter('dont_remind', DataSurveyStatusEnum::INTERRUPTED_DONT_REMIND)
+            ->setParameter('campaign', $campaign)
+//            ->setParameter('ids', $adherentsIds)
+        ;
+
+        $adherents = $qb->getQuery()->getArrayResult();
+
+        dd($adherents);
+
+        if (1 === rand(0, 1)) {
+            // only with 1 value
+            return $adherents[array_rand($adherents)];
+        }
+
+        return $adherents[array_rand($adherents)];
     }
 }

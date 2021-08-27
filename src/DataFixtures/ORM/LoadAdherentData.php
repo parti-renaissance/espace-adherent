@@ -852,6 +852,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330699887766',
         ]);
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
@@ -888,6 +889,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330688887766',
         ]);
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
@@ -924,6 +926,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330677887766',
         ]);
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
@@ -960,6 +963,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330666887766',
         ]);
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
@@ -1017,6 +1021,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
                 'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
                 'birthdate' => '1962-03-04',
                 'registered_at' => '2017-01-25 19:31:45',
+                'phone' => "+3306998877$index",
             ]);
             $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
             $adherent->certify();

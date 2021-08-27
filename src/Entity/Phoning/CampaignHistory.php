@@ -9,8 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="phoning_campaign_history")
  */
-class PhoningDataSurvey
+class CampaignHistory
 {
     /**
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -23,7 +24,7 @@ class PhoningDataSurvey
      * @var DataSurvey
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank
      */
@@ -76,28 +77,28 @@ class PhoningDataSurvey
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $postalCodeChecked;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $callMore;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $needRenewal;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $becomeCaller;
 
