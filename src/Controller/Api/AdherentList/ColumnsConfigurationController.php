@@ -36,7 +36,7 @@ class ColumnsConfigurationController extends AbstractController
     {
         try {
             $this->authorizationChecker->isFeatureGranted($request, $user, FeatureEnum::CONTACTS);
-        } catch (InvalidScopeException | ScopeQueryParamMissingException $e) {
+        } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {
             throw new BadRequestHttpException();
         } catch (ScopeExceptionInterface $e) {
             throw $this->createAccessDeniedException();

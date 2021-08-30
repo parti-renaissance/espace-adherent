@@ -46,7 +46,7 @@ class SignUpHandler implements LoggerAwareInterface
             ]);
 
             return 200 === $response->getStatusCode();
-        } catch (ClientExceptionInterface | TransportExceptionInterface $e) {
+        } catch (ClientExceptionInterface|TransportExceptionInterface $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
         }
 
