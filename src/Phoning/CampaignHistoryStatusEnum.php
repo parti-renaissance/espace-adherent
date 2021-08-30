@@ -4,7 +4,7 @@ namespace App\Phoning;
 
 use MyCLabs\Enum\Enum;
 
-class DataSurveyStatusEnum extends Enum
+class CampaignHistoryStatusEnum extends Enum
 {
     public const SEND = 'send';
     public const TO_UNSUBSCRIBE = 'to-unsubscribe';

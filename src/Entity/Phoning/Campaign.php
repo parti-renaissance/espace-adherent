@@ -19,14 +19,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="phoning_campaign")
  *
  * @ApiResource(
+ *     attributes={
+ *         "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
+ *     },
+ *     itemOperations={
+ *         "start_campaign_for_one_adherent": {
+ *             "method": "POST",
+ *             "path": "/v3/phoning_campaigns/{uuid}/start",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Phoning\StartCampaignController",
+ *             "defaults": {"_api_receive": false},
+ *         },
+ *     },
  *     collectionOperations={
- *         "get_my_phoning_campaigns": {
+ *         "get_my_phoning_campaigns_scores": {
  *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/mine",
- *             "access_control": "is_granted('ROLE_PHONING')",
- *             "controller": "App\Controller\Api\Phoning\MyPhoningCampaignsController",
+ *             "path": "/v3/phoning_campaigns/scores",
+ *             "controller": "App\Controller\Api\Phoning\CampaignsScoresController",
  *             "normalization_context": {"groups": {"phoning_campaign_read"}},
- *         }
+ *         },
  *     },
  * )
  */
@@ -161,5 +172,10 @@ class Campaign
     public function setAudience(AudienceSnapshot $audience): void
     {
         $this->audience = $audience;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->finishAt <= new \DateTime();
     }
 }

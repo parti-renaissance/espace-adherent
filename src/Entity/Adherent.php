@@ -752,6 +752,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $voteInspector = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $phoningCampaignCallMoreStatus = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1034,8 +1041,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_NATIONAL_COUNCIL_MEMBER';
         }
 
-        if ($this->hasPhoningRole()) {
-            $roles[] = 'ROLE_PHONING';
+        if ($this->isPhoningCampaignTeamMember()) {
+            $roles[] = 'ROLE_PHONING_CAMPAIGN_MEMBER';
         }
 
         if ($this->voteInspector) {
@@ -2324,7 +2331,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->nationalRole = $nationalRole;
     }
 
-    public function hasPhoningRole(): bool
+    public function isPhoningCampaignTeamMember(): bool
     {
         foreach ($this->teamMemberships as $membership) {
             if ($membership->getTeam()->isPhoning()) {

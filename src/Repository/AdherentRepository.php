@@ -14,13 +14,13 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\Jecoute\CampaignHistory;
 use App\Entity\Phoning\Campaign;
+use App\Entity\Phoning\CampaignHistory;
 use App\Entity\ReferentManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
-use App\Phoning\DataSurveyStatusEnum;
+use App\Phoning\CampaignHistoryStatusEnum;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -1328,50 +1328,40 @@ SQL;
 
     public function findOneToCall(Campaign $campaign): ?Adherent
     {
-        $subQb = $this->createQueryBuilder('a')
-            ->leftJoin(CampaignHistory::class, 'phoningds', Join::WITH, 'phoningds.adherent = a')
-            ->where('phoningds.status IN (:callable_later) AND DAY(phoningds.beginAt) < CURRENT_DATE()')
-            ->orWhere('(phoningds.status = :completed AND phoningds.campaign = :campaign)')
-            ->orWhere('(phoningds.status = :completed AND phoningds.campaign != :campaign AND DAY(phoningds.beginAt) < CURRENT_DATE())')
-            ->orderBy('phoningds.beginAt', 'DESC')
-            ->setParameter('callable_later', DataSurveyStatusEnum::CALLABLE_LATER)
-            ->setParameter('completed', DataSurveyStatusEnum::COMPLETED)
-            ->setParameter('campaign', $campaign)
-        ;
-
-        $qb = $this->createQueryBuilderForAudience($campaign->getAudience());
-        $qb
-            ->select('adherent.id', 'adherent.phone', 'pds.callMore', 'adherent.emailAddress')
-            ->leftJoin(CampaignHistory::class, 'pds', Join::WITH, 'pds.adherent = adherent')
+        $adherents = $this->createQueryBuilderForAudience($campaign->getAudience())
+            ->select('PARTIAL adherent.{id, phone}')
             ->andWhere('adherent.phone IS NOT NULL')
-            ->andWhere(sprintf('adherent.id NOT IN (%s)'), $this->createQueryBuilder('a2')
-                ->select('a2.id')
-                ->join(CampaignHistory::class, 'pds2', Join::WITH, 'pds2.adherent = a2')
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a4')
+                ->select('DISTINCT(a4.id)')
+                ->innerJoin(CampaignHistory::class, 'ch4', Join::WITH, 'ch4.adherent = a4')
+                ->andWhere('ch4.status = :completed_status')
+                ->andWhere('ch4.campaign = :campaign')
+           ))
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a2')
+                ->select('DISTINCT(a2.id)')
+                ->innerJoin(CampaignHistory::class, 'ch2', Join::WITH, 'ch2.adherent = a2')
                 ->andWhere((new Orx())
-                    ->add('pds2.status IN (:statuses)')
-                    ->add('pds2.status = :dont_remind AND pds2.campaign = :campaign')
+                    ->add('ch2.status IN (:statuses)')
+                    ->add('ch2.status = :dont_remind AND ch2.campaign = :campaign')
                 )
-            )
-            ->andWhere((new Orx())
-                ->add('pds.id IS NULL')
-                ->add($qb->expr()->not($qb->expr()->exists($subQb)))
-//                ->add('adherent.id IN (:ids)')
-            )
-            ->setParameter('statuses', DataSurveyStatusEnum::NOT_CALLABLE)
-            ->setParameter('dont_remind', DataSurveyStatusEnum::INTERRUPTED_DONT_REMIND)
+            ))
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a3')
+                ->select('DISTINCT(a3.id)')
+                ->innerJoin(CampaignHistory::class, 'ch3', Join::WITH, 'ch3.adherent = a3')
+                ->andWhere('ch3.status IN (:recall_statuses)')
+                ->andWhere('DATE(ch3.beginAt) = CURRENT_DATE()')
+            ))
+            ->orderBy('adherent.phoningCampaignCallMoreStatus', 'DESC')
+            ->setMaxResults(10)
+            ->setParameter('statuses', CampaignHistoryStatusEnum::NOT_CALLABLE)
+            ->setParameter('recall_statuses', CampaignHistoryStatusEnum::CALLABLE_LATER + [CampaignHistoryStatusEnum::COMPLETED])
+            ->setParameter('completed_status', CampaignHistoryStatusEnum::COMPLETED)
+            ->setParameter('dont_remind', CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND)
             ->setParameter('campaign', $campaign)
-//            ->setParameter('ids', $adherentsIds)
+            ->getQuery()
+            ->getResult()
         ;
 
-        $adherents = $qb->getQuery()->getArrayResult();
-
-        dd($adherents);
-
-        if (1 === rand(0, 1)) {
-            // only with 1 value
-            return $adherents[array_rand($adherents)];
-        }
-
-        return $adherents[array_rand($adherents)];
+        return $adherents ? $adherents[array_rand($adherents)] : null;
     }
 }
