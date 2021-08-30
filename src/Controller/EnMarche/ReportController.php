@@ -66,7 +66,7 @@ class ReportController extends AbstractController
             try {
                 $this->router->setContext($this->router->getContext()->setMethod(Request::METHOD_GET));
                 $this->router->match($url);
-            } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
+            } catch (ResourceNotFoundException|MethodNotAllowedException $e) {
                 $url = '/';
             }
 
