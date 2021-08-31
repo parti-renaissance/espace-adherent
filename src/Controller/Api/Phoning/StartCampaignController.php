@@ -6,7 +6,6 @@ use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Repository\AdherentRepository;
 use App\Security\Voter\PhoningCampaignVoter;
-use App\Utils\PhoneNumberUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,8 +18,7 @@ class StartCampaignController extends AbstractController
         Campaign $campaign,
         UserInterface $connectedAdherent,
         AdherentRepository $adherentRepository,
-        EntityManagerInterface $entityManager,
-        PhoneNumberUtils $phoneNumberUtils
+        EntityManagerInterface $entityManager
     ): JsonResponse {
         $this->denyAccessUnlessGranted(PhoningCampaignVoter::PERMISSION, $campaign);
 
@@ -32,9 +30,9 @@ class StartCampaignController extends AbstractController
             return $this->json(['message' => 'Aucun numéro à appeler disponible'], Response::HTTP_BAD_REQUEST);
         }
 
-        $entityManager->persist(CampaignHistory::createForCampaign($campaign, $connectedAdherent, $adherent));
+        $entityManager->persist($campaignHistory = CampaignHistory::createForCampaign($campaign, $connectedAdherent, $adherent));
         $entityManager->flush();
 
-        return $this->json(['phone' => $phoneNumberUtils->format($adherent->getPhone())]);
+        return $this->json($campaignHistory, Response::HTTP_CREATED, [], ['groups' => ['phoning_campaign_call_read']]);
     }
 }

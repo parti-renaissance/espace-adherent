@@ -62,7 +62,7 @@ trait EntityPostAddressTrait
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      *
-     * @SymfonySerializer\Groups({"user_profile", "export"})
+     * @SymfonySerializer\Groups({"user_profile", "export", "phoning_campaign_call_read"})
      */
     public function getPostalCode(): ?string
     {

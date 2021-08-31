@@ -23,6 +23,7 @@ trait EntityPersonNameTrait
      *     "profile_read",
      *     "event_read",
      *     "event_list_read",
+     *     "phoning_campaign_call_read",
      * })
      *
      * @JMS\Groups({"adherent_change_diff", "public"})

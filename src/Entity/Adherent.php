@@ -140,7 +140,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(length=6, nullable=true)
      *
      * @JMS\Groups({"adherent_change_diff"})
-     * @SymfonySerializer\Groups({"api_candidacy_read", "profile_read"})
+     * @SymfonySerializer\Groups({"api_candidacy_read", "profile_read", "phoning_campaign_call_read"})
      */
     private $gender;
 
@@ -164,7 +164,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read"})
+     * @SymfonySerializer\Groups({"profile_read", "phoning_campaign_call_read"})
      */
     private $phone;
 
@@ -1196,7 +1196,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @SymfonySerializer\Groups({"export"})
+     * @SymfonySerializer\Groups({"export", "phoning_campaign_call_read"})
      */
     public function getAge(): ?int
     {
@@ -2217,7 +2217,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      *
-     * @SymfonySerializer\Groups({"export"})
+     * @SymfonySerializer\Groups({"export", "phoning_campaign_call_read"})
      */
     public function getCityName(): ?string
     {

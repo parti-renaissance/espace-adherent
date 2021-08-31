@@ -26,12 +26,14 @@ Feature:
       {
         "title": "Campagne pour les hommes",
         "finish_at": "@string@.isDateTime()",
-        "goal": 500
+        "goal": 500,
+        "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
       },
       {
         "title": "Campagne pour les femmes",
         "finish_at": "@string@.isDateTime()",
-        "goal": 500
+        "goal": 500,
+        "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc"
       }
     ]
     """
