@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *     },
  *     itemOperations={
+ *         "get",
  *         "start_campaign_for_one_adherent": {
  *             "method": "POST",
  *             "path": "/v3/phoning_campaigns/{uuid}/start",
