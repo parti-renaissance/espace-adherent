@@ -4,7 +4,7 @@ namespace App\Phoning;
 
 use MyCLabs\Enum\Enum;
 
-class DataSurveyStatusEnum extends Enum
+class CampaignHistoryStatusEnum extends Enum
 {
     public const SEND = 'send';
     public const TO_UNSUBSCRIBE = 'to-unsubscribe';
@@ -15,4 +15,17 @@ class DataSurveyStatusEnum extends Enum
     public const INTERRUPTED_DONT_REMIND = 'interrupted-dont-remind';
     public const INTERRUPTED = 'interrupted';
     public const COMPLETED = 'completed';
+
+    public const NOT_CALLABLE = [
+        self::TO_UNJOIN,
+        self::TO_UNSUBSCRIBE,
+        self::FAILED,
+    ];
+
+    public const CALLABLE_LATER = [
+        self::SEND,
+        self::NOT_RESPOND,
+        self::TO_REMIND,
+        self::INTERRUPTED,
+    ];
 }

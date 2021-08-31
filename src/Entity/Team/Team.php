@@ -2,6 +2,7 @@
 
 namespace App\Entity\Team;
 
+use App\Entity\Adherent;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -136,5 +137,16 @@ class Team
     public function __clone()
     {
         $this->members = new ArrayCollection($this->members->toArray());
+    }
+
+    public function hasAdherent(Adherent $adherent): bool
+    {
+        foreach ($this->members as $member) {
+            if ($member->getAdherent() === $adherent) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

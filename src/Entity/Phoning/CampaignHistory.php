@@ -1,33 +1,40 @@
 <?php
 
-namespace App\Entity\Jecoute;
+namespace App\Entity\Phoning;
 
 use App\Entity\Adherent;
-use App\Entity\Phoning\Campaign;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\Jecoute\DataSurvey;
+use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="phoning_campaign_history")
  */
-class PhoningDataSurvey
+class CampaignHistory
 {
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
+    use EntityIdentityTrait;
 
     /**
-     * @var DataSurvey
+     * @var DataSurvey|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank
      */
     private $dataSurvey;
+
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $caller;
 
     /**
      * @var Adherent
@@ -74,30 +81,30 @@ class PhoningDataSurvey
     private $status;
 
     /**
-     * @var bool
+     * @var bool|null
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $postalCodeChecked;
 
     /**
-     * @var bool
+     * @var bool|null
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $callMore;
 
     /**
-     * @var bool
+     * @var bool|null
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $needRenewal;
 
     /**
-     * @var bool
+     * @var bool|null
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $becomeCaller;
 
@@ -124,15 +131,21 @@ class PhoningDataSurvey
      */
     private $finishAt;
 
-    public function __construct(DataSurvey $dataSurvey = null, Adherent $adherent = null)
+    public function __construct(Campaign $campaign)
     {
-        $this->dataSurvey = $dataSurvey;
-        $this->adherent = $adherent;
+        $this->campaign = $campaign;
+        $this->uuid = Uuid::uuid4();
     }
 
-    public function getId(): ?int
+    public static function createForCampaign(Campaign $campaign, Adherent $caller, Adherent $adherent): self
     {
-        return $this->id;
+        $history = new self($campaign);
+        $history->caller = $caller;
+        $history->adherent = $adherent;
+        $history->status = CampaignHistoryStatusEnum::SEND;
+        $history->beginAt = new \DateTime();
+
+        return $history;
     }
 
     public function getDataSurvey(): ?DataSurvey
@@ -155,14 +168,9 @@ class PhoningDataSurvey
         $this->adherent = $adherent;
     }
 
-    public function getCampaign(): ?Campaign
+    public function getCampaign(): Campaign
     {
         return $this->campaign;
-    }
-
-    public function setCampaign(Campaign $campaign): void
-    {
-        $this->campaign = $campaign;
     }
 
     public function getType(): ?string
@@ -190,7 +198,7 @@ class PhoningDataSurvey
         return $this->postalCodeChecked;
     }
 
-    public function setPostalCodeChecked(bool $postalCodeChecked): void
+    public function setPostalCodeChecked(?bool $postalCodeChecked): void
     {
         $this->postalCodeChecked = $postalCodeChecked;
     }
@@ -200,7 +208,7 @@ class PhoningDataSurvey
         return $this->callMore;
     }
 
-    public function setCallMore(bool $callMore): void
+    public function setCallMore(?bool $callMore): void
     {
         $this->callMore = $callMore;
     }
@@ -210,7 +218,7 @@ class PhoningDataSurvey
         return $this->needRenewal;
     }
 
-    public function setNeedRenewal(bool $needRenewal): void
+    public function setNeedRenewal(?bool $needRenewal): void
     {
         $this->needRenewal = $needRenewal;
     }
@@ -220,7 +228,7 @@ class PhoningDataSurvey
         return $this->becomeCaller;
     }
 
-    public function setBecomeCaller(bool $becomeCaller): void
+    public function setBecomeCaller(?bool $becomeCaller): void
     {
         $this->becomeCaller = $becomeCaller;
     }

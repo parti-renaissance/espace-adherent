@@ -14,10 +14,13 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Phoning\Campaign;
+use App\Entity\Phoning\CampaignHistory;
 use App\Entity\ReferentManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
+use App\Phoning\CampaignHistoryStatusEnum;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -1218,6 +1221,11 @@ SQL;
 
     public function findForAudience(AudienceInterface $audience, int $page = 1, int $limit = 100): PaginatorInterface
     {
+        return $this->configurePaginator($this->createQueryBuilderForAudience($audience), $page, $limit);
+    }
+
+    public function createQueryBuilderForAudience(AudienceInterface $audience): QueryBuilder
+    {
         $qb = $this
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.adherent = true')
@@ -1315,6 +1323,46 @@ SQL;
             ;
         }
 
-        return $this->configurePaginator($qb, $page, $limit);
+        return $qb;
+    }
+
+    public function findOneToCall(Campaign $campaign): ?Adherent
+    {
+        $adherents = $this->createQueryBuilderForAudience($campaign->getAudience())
+            ->select('PARTIAL adherent.{id, phone}')
+            ->andWhere('adherent.phone LIKE :fr_phone')
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a4')
+                ->select('DISTINCT(a4.id)')
+                ->innerJoin(CampaignHistory::class, 'ch4', Join::WITH, 'ch4.adherent = a4')
+                ->andWhere('ch4.status = :completed')
+                ->andWhere('ch4.campaign = :campaign')
+            ))
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a2')
+                ->select('DISTINCT(a2.id)')
+                ->innerJoin(CampaignHistory::class, 'ch2', Join::WITH, 'ch2.adherent = a2')
+                ->andWhere((new Orx())
+                    ->add('ch2.status IN (:not_callable)')
+                    ->add('ch2.status = :dont_remind AND ch2.campaign = :campaign')
+                )
+            ))
+            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a3')
+                ->select('DISTINCT(a3.id)')
+                ->innerJoin(CampaignHistory::class, 'ch3', Join::WITH, 'ch3.adherent = a3')
+                ->andWhere('ch3.status IN (:recall)')
+                ->andWhere('DATE(ch3.beginAt) = CURRENT_DATE()')
+            ))
+            ->orderBy('adherent.phoningCampaignCallMoreStatus', 'DESC')
+            ->setMaxResults(10)
+            ->setParameter('fr_phone', '+33%')
+            ->setParameter('not_callable', CampaignHistoryStatusEnum::NOT_CALLABLE)
+            ->setParameter('recall', CampaignHistoryStatusEnum::CALLABLE_LATER + [CampaignHistoryStatusEnum::COMPLETED])
+            ->setParameter('completed', CampaignHistoryStatusEnum::COMPLETED)
+            ->setParameter('dont_remind', CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND)
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $adherents ? $adherents[array_rand($adherents)] : null;
     }
 }

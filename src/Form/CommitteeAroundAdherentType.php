@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Committee\CommitteeManager;
 use App\Entity\Committee;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -13,13 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitteeAroundAdherentType extends AbstractType
 {
-    private $manager;
-
-    public function __construct(CommitteeManager $manager)
-    {
-        $this->manager = $manager;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

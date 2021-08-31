@@ -14,13 +14,14 @@ class CampaignRepository extends ServiceEntityRepository
         parent::__construct($registry, Campaign::class);
     }
 
+    /** @return Campaign[] */
     public function findForAdherent(Adherent $adherent): array
     {
         return $this->createQueryBuilder('campaign')
-            ->leftJoin('campaign.team', 'team')
-            ->leftJoin('team.members', 'tmember')
+            ->innerJoin('campaign.team', 'team')
+            ->innerJoin('team.members', 'team_member')
             ->where('campaign.finishAt > :now')
-            ->andWhere('tmember.adherent = :adherent')
+            ->andWhere('team_member.adherent = :adherent')
             ->setParameters([
                 'adherent' => $adherent,
                 'now' => new \DateTime(),
