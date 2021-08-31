@@ -8,6 +8,7 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,6 +42,8 @@ class CampaignHistory
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"phoning_campaign_call_read"})
      */
     private $adherent;
 

@@ -26,7 +26,9 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
             500,
             '+10 days'
         );
-        $campaign1->getAudience()->setGender(Genders::MALE);
+        ($audience = $campaign1->getAudience())->setGender(Genders::MALE);
+        $audience->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
+
         $this->addReference('campaign-1', $campaign1);
 
         $campaign2 = $this->createCampaign(

@@ -55,6 +55,8 @@ trait EntityIdentityTrait
      *     "riposte_read",
      *     "audience_segment_read",
      *     "adherent_message_update_filter",
+     *     "phoning_campaign_call_read",
+     *     "phoning_campaign_read",
      * })
      *
      * @ApiProperty(
