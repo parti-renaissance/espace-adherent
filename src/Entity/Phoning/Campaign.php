@@ -21,9 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"phoning_campaign_read"},
+ *         },
  *     },
  *     itemOperations={
- *         "get",
  *         "start_campaign_for_one_adherent": {
  *             "method": "POST",
  *             "path": "/v3/phoning_campaigns/{uuid}/start",
@@ -37,7 +40,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/scores",
  *             "controller": "App\Controller\Api\Phoning\CampaignsScoresController",
- *             "normalization_context": {"groups": {"phoning_campaign_read"}},
  *         },
  *     },
  * )
