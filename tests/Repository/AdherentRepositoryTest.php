@@ -5,10 +5,13 @@ namespace Tests\App\Repository;
 use App\BoardMember\BoardMemberFilter;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
+use App\DataFixtures\ORM\LoadPhoningCampaignData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\Phoning\Campaign;
 use App\Entity\ReferentTag;
 use App\Repository\AdherentRepository;
+use App\Repository\Phoning\CampaignRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -28,6 +31,11 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
      * @var ReferentTagRepository
      */
     private $referentTagRepository;
+
+    /**
+     * @var CampaignRepository
+     */
+    private $campaignRepository;
 
     public function testLoadUserByUsername()
     {
@@ -199,6 +207,47 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->assertFalse($this->adherentRepository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID)));
     }
 
+    /**
+     * @dataProvider dataProviderExcludedCampaignAdherents
+     */
+    public function testFindOneToCall(string $campaignUuid, string $assert, array $adherentEmails): void
+    {
+        $campaign = $this->campaignRepository->findOneBy(['uuid' => $campaignUuid]);
+        $adherent = $this->adherentRepository->findOneToCall($campaign);
+
+        /** @var Adherent $adherent */
+        $this->assertNotNull($adherent);
+        $this->$assert($adherent->getEmailAddress(), $adherentEmails);
+        $audience = $campaign->getAudience();
+        if ($gender = $audience->getGender()) {
+            $this->assertSame($gender, $adherent->getGender());
+        }
+    }
+
+    public function dataProviderExcludedCampaignAdherents(): \Generator
+    {
+        yield [LoadPhoningCampaignData::CAMPAIGN_1_UUID, 'assertNotContains', [
+            'adherent-male-a@en-marche-dev.fr',
+            'adherent-male-b@en-marche-dev.fr',
+            'adherent-male-c@en-marche-dev.fr',
+            'adherent-male-d@en-marche-dev.fr',
+            'adherent-male-e@en-marche-dev.fr',
+            'adherent-female-f@en-marche-dev.fr',
+            'adherent-male-33@en-marche-dev.fr',
+            'adherent-male-35@en-marche-dev.fr',
+            'adherent-male-37@en-marche-dev.fr',
+            'adherent-male-39@en-marche-dev.fr',
+            'adherent-male-41@en-marche-dev.fr',
+            'adherent-male-43@en-marche-dev.fr',
+            'adherent-male-45@en-marche-dev.fr',
+            'adherent-male-47@en-marche-dev.fr',
+            'adherent-male-49@en-marche-dev.fr',
+        ]];
+        yield [LoadPhoningCampaignData::CAMPAIGN_5_UUID, 'assertContains', [
+            'benjyd@aol.com',
+        ]];
+    }
+
     public function dataProviderSearchBoardMembers(): array
     {
         return [
@@ -260,12 +309,14 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->referentTagRepository = $this->getRepository(ReferentTag::class);
+        $this->campaignRepository = $this->getRepository(Campaign::class);
     }
 
     protected function tearDown(): void
     {
         $this->adherentRepository = null;
         $this->referentTagRepository = null;
+        $this->campaignRepository = null;
 
         parent::tearDown();
     }
