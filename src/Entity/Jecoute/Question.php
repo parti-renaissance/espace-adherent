@@ -67,10 +67,10 @@ class Question
      */
     private $choices;
 
-    public function __construct(string $content = null, string $type = SurveyQuestionTypeEnum::SIMPLE_FIELD)
+    public function __construct(string $content = null, string $type = null)
     {
         $this->content = $content;
-        $this->type = $type;
+        $this->type = $type ?? SurveyQuestionTypeEnum::SIMPLE_FIELD;
         $this->choices = new ArrayCollection();
     }
 
