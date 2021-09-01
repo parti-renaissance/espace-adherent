@@ -57,8 +57,10 @@ class LocalSurveyRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('survey')
-            ->addSelect('questions', 'zone')
-            ->innerJoin('survey.questions', 'questions')
+            ->addSelect('survey_question', 'question', 'zone', 'choice')
+            ->innerJoin('survey.questions', 'survey_question')
+            ->innerJoin('survey_question.question', 'question')
+            ->leftJoin('question.choices', 'choice')
             ->innerJoin('survey.zone', 'zone')
             ->leftJoin('zone.children', 'child')
             ->where('(zone IN (:zones) OR child IN (:zones))')
