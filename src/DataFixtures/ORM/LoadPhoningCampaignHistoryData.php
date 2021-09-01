@@ -12,9 +12,12 @@ use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixtureInterface
 {
+    public const HISTORY_1_UUID = '47bf09fb-db03-40c3-b951-6fe6bbe1f055';
+
     public function load(ObjectManager $manager)
     {
         /** @var NationalSurvey $nationalSurvey1 */
@@ -25,6 +28,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         $campaign2 = $this->getReference('campaign-2');
 
         $adherent3 = $this->getReference('adherent-3');
+        $adherent12 = $this->getReference('adherent-12');
 
         $phoningDataSurvey1 = $this->createPhoningCampaignHistory(
             $nationalSurvey1,
@@ -88,11 +92,14 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $adherent3,
             $this->getReference('adherent-39'),
             $campaign1,
-            CampaignHistoryStatusEnum::SEND
+            CampaignHistoryStatusEnum::SEND,
+            new \DateTime(),
+            true,
+            self::HISTORY_1_UUID
         );
         $phoningDataSurvey9a = $this->createPhoningCampaignHistory(
             $nationalSurvey1,
-            $adherent3,
+            $adherent12,
             $this->getReference('adherent-39'),
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
@@ -100,14 +107,14 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey10 = $this->createPhoningCampaignHistory(
             $nationalSurvey1,
-            $adherent3,
+            $adherent12,
             $this->getReference('adherent-41'),
             $campaign1,
             CampaignHistoryStatusEnum::NOT_RESPOND
         );
         $phoningDataSurvey10a = $this->createPhoningCampaignHistory(
             $nationalSurvey1,
-            $adherent3,
+            $adherent12,
             $this->getReference('adherent-41'),
             $campaign1,
             CampaignHistoryStatusEnum::NOT_RESPOND,
@@ -115,14 +122,14 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey11 = $this->createPhoningCampaignHistory(
             $nationalSurvey1,
-            $adherent3,
+            $adherent12,
             $this->getReference('adherent-43'),
             $campaign1,
             CampaignHistoryStatusEnum::TO_REMIND
         );
         $phoningDataSurvey11a = $this->createPhoningCampaignHistory(
             $nationalSurvey1,
-            $adherent3,
+            $adherent12,
             $this->getReference('adherent-43'),
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
@@ -189,9 +196,10 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         Campaign $campaign,
         string $status,
         \DateTime $begitAt = null,
-        bool $callMore = null
+        bool $callMore = null,
+        string $uuid = null
     ): CampaignHistory {
-        $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called);
+        $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called, $uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
 
         $campaignHistory->setStatus($status);
         $campaignHistory->setBeginAt($begitAt ?? new \DateTime('-10 minutes'));
