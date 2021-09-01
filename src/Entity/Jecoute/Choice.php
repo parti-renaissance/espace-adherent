@@ -53,7 +53,7 @@ class Choice
     /**
      * @var DataAnswer[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Jecoute\DataAnswer", fetch="EAGER", mappedBy="selectedChoices")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Jecoute\DataAnswer", fetch="EXTRA_LAZY", mappedBy="selectedChoices")
      */
     private $dataAnswers;
 

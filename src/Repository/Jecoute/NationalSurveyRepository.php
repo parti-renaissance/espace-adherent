@@ -22,8 +22,10 @@ class NationalSurveyRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('survey')
-            ->addSelect('questions')
-            ->innerJoin('survey.questions', 'questions')
+            ->addSelect('survey_question', 'question', 'choice')
+            ->innerJoin('survey.questions', 'survey_question')
+            ->innerJoin('survey_question.question', 'question')
+            ->leftJoin('question.choices', 'choice')
             ->andWhere('survey.published = true')
             ->orderBy('survey.id', 'DESC')
             ->getQuery()
