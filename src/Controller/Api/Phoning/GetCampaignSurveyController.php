@@ -36,8 +36,8 @@ class GetCampaignSurveyController extends AbstractController
                 'interrupted' => CampaignHistoryStatusEnum::LABEL_INTERRUPTED_STATUS,
             ],
             'questions' => array_merge(!$campaignHistory->getAdherent()->isEmailUnsubscribed() ? [
-                    'become_caller' => [
-                        'label' => ' Souhaiteriez-vous devenir appelant ?',
+                    'need_renewal' => [
+                        'label' => 'Souhaiterez-vous vous réabonner ?',
                         'responses' => [
                             true => 'Oui',
                             false => 'Non',
@@ -51,8 +51,8 @@ class GetCampaignSurveyController extends AbstractController
                         false => 'Non',
                     ],
                 ],
-                'need_renewal' => [
-                    'label' => 'Souhaiterez-vous vous réabonner ?',
+                'become_caller' => [
+                    'label' => ' Souhaiteriez-vous devenir appelant ?',
                     'responses' => [
                         true => 'Oui',
                         false => 'Non',

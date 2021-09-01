@@ -105,12 +105,12 @@ Feature:
     Given I send a "GET" request to "/api/v3/phoning_campaigns/survey/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
     Then the response status code should be 401
 
-  Scenario: As a logged-in user, but not a caller of this phoning campaign history, I cannot get a phoning campaign survey
+  Scenario: As a logged-in user, but not a caller of the phoning campaign history, I cannot get a phoning campaign survey
     Given I am logged with "kiroule.p@blabla.tld" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/phoning_campaigns/survey/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
     Then the response status code should be 403
 
-  Scenario: As a logged-in user, acaller of this phoning campaign history, I can get a phoning campaign survey
+  Scenario: As a logged-in user, a caller of the phoning campaign history, I can get a phoning campaign survey
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/phoning_campaigns/survey/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
     Then the response status code should be 200
