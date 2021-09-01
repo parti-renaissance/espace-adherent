@@ -21,8 +21,8 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
     {
         return $this->json([
             'call_status' => [
-                'finished' => self::transformStatusArray(CampaignHistoryStatusEnum::LABEL_FINISHED_STATUS),
-                'interrupted' => self::transformStatusArray(CampaignHistoryStatusEnum::LABEL_INTERRUPTED_STATUS),
+                'finished' => self::transformStatusArray(CampaignHistoryStatusEnum::FINISHED_STATUS),
+                'interrupted' => self::transformStatusArray(CampaignHistoryStatusEnum::INTERRUPTED_STATUS),
             ],
             'satisfaction_questions' => array_merge($campaignHistory->getAdherent()->isEmailUnsubscribed() ? [[
                 'code' => 'need_renewal',
