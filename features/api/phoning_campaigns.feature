@@ -6,10 +6,11 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData        |
-      | LoadClientData          |
-      | LoadTeamData            |
-      | LoadPhoningCampaignData |
+      | LoadAdherentData                |
+      | LoadClientData                  |
+      | LoadTeamData                    |
+      | LoadPhoningCampaignData         |
+      | LoadPhoningCampaignHistoryData  |
 
   Scenario: As a logged-in user with no correct rights I cannot get my phoning campaigns
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
@@ -50,7 +51,7 @@ Feature:
     ]
     """
 
-  Scenario: As a logged-in user with no correct rights I cannot get a phone number to call
+  Scenario: As a non logged-in user I cannot get a phone number to call
     Given I send a "POST" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start"
     Then the response status code should be 401
 
@@ -98,4 +99,74 @@ Feature:
     And the JSON should be equal to:
     """
     {"message":"Cette campagne est terminée"}
+    """
+
+  Scenario: As a non logged-in user I cannot get a phoning campaign history configuration
+    Given I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user, but not a caller of the phoning campaign history, I cannot get a phoning campaign history configuration
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user, a caller of the phoning campaign history, I can get a phoning campaign history configuration
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "call_status": {
+            "finished": [
+                {
+                    "code": "to-unsubscribe",
+                    "label": "Ne souhaite plus être rappelé"
+                },
+                {
+                    "code": "to-unjoin",
+                    "label": "Souhaite désadhérer"
+                },
+                {
+                    "code": "not-respond",
+                    "label": "N'a pa répondu au téléphone"
+                },
+                {
+                    "code": "to-remind",
+                    "label": "Souhaite être rappelé plus tard"
+                },
+                {
+                    "code": "failed",
+                    "label": "L'appel a échoué"
+                }
+            ],
+            "interrupted": [
+                {
+                    "code": "interrupted-dont-remind",
+                    "label": "Appel interrompu, ne pas rappeler"
+                },
+                {
+                    "code": "interrupted",
+                    "label": "Appel interrompu"
+                }
+            ]
+        },
+        "satisfaction_questions": [
+            {
+                "code": "postal_code_checked",
+                "label": "Code postal à jour ?",
+                "type": "boolean"
+            },
+            {
+                "code": "become_caller",
+                "label": "Souhaiteriez-vous devenir appelant ?",
+                "type": "boolean"
+            },
+            {
+                "code": "call_more",
+                "label": "Souhaitez-vous être rappelé plus souvent ?",
+                "type": "boolean"
+            }
+        ]
+    }
     """

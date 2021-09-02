@@ -8,6 +8,7 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -134,15 +135,19 @@ class CampaignHistory
      */
     private $finishAt;
 
-    public function __construct(Campaign $campaign)
+    public function __construct(Campaign $campaign, UuidInterface $uuid = null)
     {
         $this->campaign = $campaign;
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public static function createForCampaign(Campaign $campaign, Adherent $caller, Adherent $adherent): self
-    {
-        $history = new self($campaign);
+    public static function createForCampaign(
+        Campaign $campaign,
+        Adherent $caller,
+        Adherent $adherent,
+        UuidInterface $uuid = null
+    ): self {
+        $history = new self($campaign, $uuid);
         $history->caller = $caller;
         $history->adherent = $adherent;
         $history->status = CampaignHistoryStatusEnum::SEND;
