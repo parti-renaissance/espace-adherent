@@ -20,17 +20,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
- *         "normalization_context": {"groups": {"phoning_campaign_history_read"}},
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"phoning_campaign_history_read"},
+ *         },
  *         "denormalization_context": {"groups": {"phoning_campaign_history_write"}},
  *     },
  *     itemOperations={
- *         "get": {
- *             "path": "/v3/phoning_campaigns/history/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') and is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
- *         },
  *         "put": {
- *             "path": "/v3/phoning_campaigns/history/{id}",
+ *             "path": "/v3/phoning_campaign_histories/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') and is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
  *         },
