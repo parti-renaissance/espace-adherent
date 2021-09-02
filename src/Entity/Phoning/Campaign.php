@@ -7,6 +7,7 @@ use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Team\Team;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -106,11 +107,20 @@ class Campaign
      */
     private $audience;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
+     */
+    private $survey;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
         Team $team = null,
         AudienceSnapshot $audience = null,
+        Survey $survey = null,
         int $goal = null,
         \DateTimeInterface $finishAt = null
     ) {
@@ -118,6 +128,7 @@ class Campaign
         $this->title = $title;
         $this->team = $team;
         $this->audience = $audience;
+        $this->survey = $survey;
         $this->goal = $goal;
         $this->finishAt = $finishAt;
     }
@@ -175,6 +186,16 @@ class Campaign
     public function setAudience(AudienceSnapshot $audience): void
     {
         $this->audience = $audience;
+    }
+
+    public function getSurvey(): ?Survey
+    {
+        return $this->survey;
+    }
+
+    public function setSurvey(Survey $survey): void
+    {
+        $this->survey = $survey;
     }
 
     public function isFinished(): bool

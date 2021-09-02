@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Audience\AudienceSnapshot;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\ValueObject\Genders;
@@ -22,10 +23,16 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
 
     public function load(ObjectManager $manager)
     {
+        $team1 = $this->getReference('team-1');
+        $team2 = $this->getReference('team-2');
+        $nationalSurvey1 = $this->getReference('national-survey-1');
+        $nationalSurvey2 = $this->getReference('national-survey-2');
+
         $campaign1 = $this->createCampaign(
             self::CAMPAIGN_1_UUID,
             'Campagne pour les hommes',
-            $this->getReference('team-1'),
+            $team1,
+            $nationalSurvey1,
             500,
             '+10 days'
         );
@@ -37,7 +44,8 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaign2 = $this->createCampaign(
             self::CAMPAIGN_2_UUID,
             'Campagne pour les femmes',
-            $this->getReference('team-2'),
+            $team2,
+            $nationalSurvey2,
             500,
             '+15 days'
         );
@@ -47,7 +55,8 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaignFinished = $this->createCampaign(
             self::CAMPAIGN_3_UUID,
             'Campagne terminé',
-            $this->getReference('team-1'),
+            $team1,
+            $nationalSurvey1,
             100,
             '-5 days'
         );
@@ -57,7 +66,8 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaignNoAdherent = $this->createCampaign(
             self::CAMPAIGN_4_UUID,
             'Campagne sans adhérents dispo à appeler',
-            $this->getReference('team-1'),
+            $team1,
+            $nationalSurvey1,
             100,
             '+5 days'
         );
@@ -67,7 +77,8 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaignWithAllAudienceParameters = $this->createCampaign(
             self::CAMPAIGN_5_UUID,
             'Campagne avec l\'audience contenant tous les paramètres',
-            $this->getReference('team-2'),
+            $team2,
+            $nationalSurvey2,
             10,
             '+5 days'
         );
@@ -102,11 +113,18 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         return [
             LoadTeamData::class,
             LoadAdminData::class,
+            LoadJecouteSurveyData::class,
         ];
     }
 
-    private function createCampaign(string $uuid, string $title, Team $team, int $goal, string $finishAt): Campaign
-    {
-        return new Campaign(Uuid::fromString($uuid), $title, $team, new AudienceSnapshot(), $goal, new Chronos($finishAt));
+    private function createCampaign(
+        string $uuid,
+        string $title,
+        Team $team,
+        Survey $survey,
+        int $goal,
+        string $finishAt
+    ): Campaign {
+        return new Campaign(Uuid::fromString($uuid), $title, $team, new AudienceSnapshot(), $survey, $goal, new Chronos($finishAt));
     }
 }
