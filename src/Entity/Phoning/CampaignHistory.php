@@ -2,6 +2,7 @@
 
 namespace App\Entity\Phoning;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
@@ -16,6 +17,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="phoning_campaign_history")
+ *
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"phoning_campaign_history_read"},
+ *         },
+ *         "denormalization_context": {"groups": {"phoning_campaign_history_write"}},
+ *     },
+ *     itemOperations={
+ *         "put": {
+ *             "path": "/v3/phoning_campaign_histories/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') and is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
+ *         },
+ *     }
+ * )
  */
 class CampaignHistory implements DataSurveyAwareInterface
 {
@@ -53,10 +71,9 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\Column(length=10, nullable=true)
      *
-     * @Assert\NotNull
      * @Assert\Choice(
      *     callback={"App\Phoning\DataSurveyTypeEnum", "toArray"},
-     *     message="phoning.data_survey.type.invalid_choice",
+     *     message="phoning.campaign_history.type.invalid_choice",
      *     strict=true
      * )
      */
@@ -69,10 +86,12 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\NotNull
      * @Assert\Choice(
-     *     callback={"App\Phoning\DataSurveyStatusEnum", "toArray"},
-     *     message="phoning.data_survey.status.invalid_choice",
+     *     choices=App\Phoning\CampaignHistoryStatusEnum::AFTER_CALL_STATUS,
+     *     message="phoning.campaign_history.status.invalid_choice",
      *     strict=true
      * )
+     *
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read"})
      */
     private $status;
 
@@ -122,7 +141,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\DateTime
      * @Assert\Expression(
      *     "value === null or value > this.getBeginAt()",
-     *     message="phoning.data_survey.finish_at.invalid"
+     *     message="phoning.campaign_history.finish_at.invalid"
      * )
      */
     private $finishAt;
@@ -146,6 +165,11 @@ class CampaignHistory implements DataSurveyAwareInterface
         $history->beginAt = new \DateTime();
 
         return $history;
+    }
+
+    public function getCaller(): ?Adherent
+    {
+        return $this->caller;
     }
 
     public function getAdherent(): ?Adherent

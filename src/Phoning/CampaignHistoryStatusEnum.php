@@ -27,7 +27,17 @@ class CampaignHistoryStatusEnum extends Enum
         self::INTERRUPTED => 'Appel interrompu',
     ];
 
-    public const LABEL_FINISHED_STATUS = [
+    public const AFTER_CALL_STATUS = [
+        self::TO_UNSUBSCRIBE,
+        self::TO_UNJOIN,
+        self::NOT_RESPOND,
+        self::TO_REMIND,
+        self::FAILED,
+        self::INTERRUPTED_DONT_REMIND,
+        self::INTERRUPTED,
+    ];
+
+    public const FINISHED_STATUS = [
         self::TO_UNSUBSCRIBE,
         self::TO_UNJOIN,
         self::NOT_RESPOND,
@@ -35,7 +45,7 @@ class CampaignHistoryStatusEnum extends Enum
         self::FAILED,
     ];
 
-    public const LABEL_INTERRUPTED_STATUS = [
+    public const INTERRUPTED_STATUS = [
         self::INTERRUPTED_DONT_REMIND,
         self::INTERRUPTED,
     ];
