@@ -102,17 +102,17 @@ Feature:
     """
 
   Scenario: As a non logged-in user I cannot get a phoning campaign history configuration
-    Given I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/configuration"
+    Given I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
     Then the response status code should be 401
 
   Scenario: As a logged-in user, but not a caller of the phoning campaign history, I cannot get a phoning campaign history configuration
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
-    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/configuration"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
     Then the response status code should be 403
 
   Scenario: As a logged-in user, a caller of the phoning campaign history, I can get a phoning campaign history configuration
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
-    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/configuration"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -121,42 +121,37 @@ Feature:
             "finished": [
                 {
                     "code": "to-unsubscribe",
-                    "value": "Ne souhaite plus être rappelé"
+                    "label": "Ne souhaite plus être rappelé"
                 },
                 {
                     "code": "to-unjoin",
-                    "value": "Souhaite désadhérer"
+                    "label": "Souhaite désadhérer"
                 },
                 {
                     "code": "not-respond",
-                    "value": "N'a pa répondu au téléphone"
+                    "label": "N'a pa répondu au téléphone"
                 },
                 {
                     "code": "to-remind",
-                    "value": "Souhaite être rappelé plus tard"
+                    "label": "Souhaite être rappelé plus tard"
                 },
                 {
                     "code": "failed",
-                    "value": "L'appel a échoué"
+                    "label": "L'appel a échoué"
                 }
             ],
             "interrupted": [
                 {
                     "code": "interrupted-dont-remind",
-                    "value": "Appel interrompu, ne pas rappeler"
+                    "label": "Appel interrompu, ne pas rappeler"
                 },
                 {
                     "code": "interrupted",
-                    "value": "Appel interrompu"
+                    "label": "Appel interrompu"
                 }
             ]
         },
         "satisfaction_questions": [
-            {
-                "code": "need_renewal",
-                "label": "Souhaiterez-vous vous réabonner ?",
-                "type": "boolean"
-            },
             {
                 "code": "postal_code_checked",
                 "label": "Code postal à jour ?",
