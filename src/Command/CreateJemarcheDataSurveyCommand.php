@@ -65,7 +65,8 @@ class CreateJemarcheDataSurveyCommand extends Command
                 continue;
             }
 
-            $jemarcheDS = new JemarcheDataSurvey($dataSurvey);
+            $jemarcheDS = new JemarcheDataSurvey();
+            $jemarcheDS->setDataSurvey($dataSurvey);
             $jemarcheDS->setFirstName($dataSurvey->getFirstName());
             $jemarcheDS->setLastName($dataSurvey->getLastName());
             $jemarcheDS->setAgeRange($dataSurvey->getAgeRange());

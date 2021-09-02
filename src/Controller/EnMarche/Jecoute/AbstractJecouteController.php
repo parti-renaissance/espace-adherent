@@ -72,7 +72,7 @@ abstract class AbstractJecouteController extends AbstractController
         $this->checkCreateAccess();
 
         /** @var Adherent $user */
-        $localSurvey = new LocalSurvey($user);
+        $localSurvey = LocalSurvey::create($user);
         $zones = $this->getZones($this->getMainUser($request->getSession()));
         if (1 === \count($zones)) {
             $localSurvey->setZone($zones[0]);

@@ -12,9 +12,18 @@ use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 {
+    public const SURVEY_NATIONAL_1 = '13814039-1dd2-11b2-9bfd-78ea3dcdf0d9';
+    public const SURVEY_NATIONAL_2 = '1f07832c-2a69-1e80-a33a-d5f9460e838f';
+
+    public const SURVEY_LOCAL_1 = '138140e9-1dd2-11b2-a08e-41ae5b09da7d';
+    public const SURVEY_LOCAL_2 = 'dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea';
+    public const SURVEY_LOCAL_3 = '478a2e65-7e86-1bb9-8078-8b70de061a8a';
+    public const SURVEY_LOCAL_4 = '0de90b18-47f5-1606-af9d-74eb1fa4a30a';
+
     public function load(ObjectManager $manager)
     {
         AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_survey');
@@ -38,10 +47,18 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /**
          * Local Surveys
          */
-        $localSurvey1 = new LocalSurvey($referent1, 'Questionnaire numéro 1', true);
-        $localSurvey2 = new LocalSurvey($referent2, 'Un deuxième questionnaire', true);
-        $localSurvey3 = new LocalSurvey($headedRegionalCandidate, 'Un questionnaire de la Région', true);
-        $localSurvey4 = new LocalSurvey($referent1, 'Un questionnaire avec modification bloquée', true, true);
+        $localSurvey1 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_1), 'Questionnaire numéro 1', true);
+        $localSurvey1->setAuthor($referent1);
+
+        $localSurvey2 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_2), 'Un deuxième questionnaire', true);
+        $localSurvey2->setAuthor($referent2);
+
+        $localSurvey3 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_3), 'Un questionnaire de la Région', true);
+        $localSurvey3->setAuthor($headedRegionalCandidate);
+
+        $localSurvey4 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_4), 'Un questionnaire avec modification bloquée', true);
+        $localSurvey4->setAuthor($referent1);
+        $localSurvey4->setBlockedChanges(true);
 
         /** @var Question $question1 */
         $question1 = $this->getReference('question-1');
@@ -99,7 +116,8 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /**
          * National Surveys
          */
-        $nationalSurvey1 = new NationalSurvey($administrator1, 'Questionnaire national numéro 1', true);
+        $nationalSurvey1 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_1), 'Questionnaire national numéro 1', true);
+        $nationalSurvey1->setAdministrator($administrator1);
 
         /** @var Question $nationalQuestion1 */
         $nationalQuestion1 = $this->getReference('national-question-1');
@@ -120,7 +138,8 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $this->addReference('national-survey-1-question-1', $nationalSurveyQuestion1);
         $this->addReference('national-survey-1-question-2', $nationalSurveyQuestion2);
 
-        $nationalSurvey2 = new NationalSurvey($administrator2, 'Le deuxième questionnaire national', true);
+        $nationalSurvey2 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_2), 'Le deuxième questionnaire national', true);
+        $nationalSurvey2->setAdministrator($administrator2);
 
         /** @var Question $nationalQuestion3 */
         $nationalQuestion3 = $this->getReference('national-question-3');

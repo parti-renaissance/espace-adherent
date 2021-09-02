@@ -4,7 +4,8 @@ namespace App\Entity\Phoning;
 
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\DataSurveyAwareInterface;
+use App\Entity\Jecoute\DataSurveyAwareTrait;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -16,19 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="phoning_campaign_history")
  */
-class CampaignHistory
+class CampaignHistory implements DataSurveyAwareInterface
 {
     use EntityIdentityTrait;
-
-    /**
-     * @var DataSurvey|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     *
-     * @Assert\NotBlank
-     */
-    private $dataSurvey;
+    use DataSurveyAwareTrait;
 
     /**
      * @var Adherent|null
@@ -154,16 +146,6 @@ class CampaignHistory
         $history->beginAt = new \DateTime();
 
         return $history;
-    }
-
-    public function getDataSurvey(): ?DataSurvey
-    {
-        return $this->dataSurvey;
-    }
-
-    public function setDataSurvey(DataSurvey $dataSurvey): void
-    {
-        $this->dataSurvey = $dataSurvey;
     }
 
     public function getAdherent(): ?Adherent

@@ -17,13 +17,6 @@ class NationalSurvey extends Survey
      */
     private $administrator;
 
-    public function __construct(Administrator $administrator = null, string $name = null, bool $published = false)
-    {
-        $this->administrator = $administrator;
-
-        parent::__construct($name, $published);
-    }
-
     public function setAdministrator(Administrator $administrator): void
     {
         $this->administrator = $administrator;

@@ -2,34 +2,45 @@
 
 namespace App\Entity\Jecoute;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Device;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Validator\JemarcheDataSurveyConstraint;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\JemarcheDataSurveyRepository")
  *
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"jemarche_data_survey_read"},
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"jemarche_data_survey_write"},
+ *         },
+ *     },
+ *     itemOperations={},
+ *     collectionOperations={
+ *         "post": {
+ *             "path": "/v3/jemarche_data_surveys",
+ *             "access_control": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
+ *         },
+ *     },
+ * )
  * @JemarcheDataSurveyConstraint
  */
-class JemarcheDataSurvey
+class JemarcheDataSurvey implements DataSurveyAwareInterface
 {
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
-     * @var DataSurvey
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Assert\Valid
-     */
-    private $dataSurvey;
+    use EntityIdentityTrait;
+    use DataSurveyAwareTrait;
+    use EntityTimestampableTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Device")
@@ -39,11 +50,15 @@ class JemarcheDataSurvey
 
     /**
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $lastName;
 
@@ -52,21 +67,29 @@ class JemarcheDataSurvey
      *
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $emailAddress;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $agreedToStayInContact = false;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $agreedToContactForJoin = false;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $agreedToTreatPersonalData = false;
 
@@ -74,6 +97,8 @@ class JemarcheDataSurvey
      * @ORM\Column(length=5, nullable=true)
      *
      * @Assert\Length(min=5, max=5)
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $postalCode;
 
@@ -81,6 +106,8 @@ class JemarcheDataSurvey
      * @ORM\Column(length=30, nullable=true)
      *
      * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $profession;
 
@@ -88,6 +115,8 @@ class JemarcheDataSurvey
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $ageRange;
 
@@ -95,11 +124,15 @@ class JemarcheDataSurvey
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Choice(callback={"App\Jecoute\GenderEnum", "all"})
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $gender;
 
     /**
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $genderOther;
 
@@ -107,6 +140,8 @@ class JemarcheDataSurvey
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $latitude;
 
@@ -114,29 +149,14 @@ class JemarcheDataSurvey
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
+     *
+     * @Groups({"jemarche_data_survey_write"})
      */
     private $longitude;
 
-    public function __construct(DataSurvey $dataSurvey = null, string $firstName = null, string $lastName = null)
+    public function __construct(UuidInterface $uuid = null)
     {
-        $this->dataSurvey = $dataSurvey;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getDataSurvey(): ?DataSurvey
-    {
-        return $this->dataSurvey;
-    }
-
-    public function setDataSurvey(DataSurvey $dataSurvey): void
-    {
-        $this->dataSurvey = $dataSurvey;
+        $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
     public function setDevice(?Device $device): void
