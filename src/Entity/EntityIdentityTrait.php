@@ -57,6 +57,9 @@ trait EntityIdentityTrait
      *     "adherent_message_update_filter",
      *     "phoning_campaign_call_read",
      *     "phoning_campaign_read",
+     *     "data_survey_write",
+     *     "data_survey_read",
+     *     "jemarche_data_survey_read",
      * })
      *
      * @ApiProperty(

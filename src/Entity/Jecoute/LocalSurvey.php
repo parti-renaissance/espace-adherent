@@ -51,18 +51,14 @@ class LocalSurvey extends Survey implements AuthoredInterface
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $blockedChanges;
+    private $blockedChanges = false;
 
-    public function __construct(
-        ?Adherent $author = null,
-        ?string $name = null,
-        ?bool $published = false,
-        ?bool $blockedChanges = false
-    ) {
-        $this->author = $author;
-        $this->blockedChanges = $blockedChanges;
+    public static function create(Adherent $user): self
+    {
+        $survey = new self();
+        $survey->author = $user;
 
-        parent::__construct($name, $published);
+        return $survey;
     }
 
     public function getAuthor(): ?Adherent

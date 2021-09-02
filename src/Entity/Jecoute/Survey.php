@@ -2,6 +2,7 @@
 
 namespace App\Entity\Jecoute;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Jecoute\SurveyTypeEnum;
@@ -9,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,6 +23,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     SurveyTypeEnum::LOCAL: "LocalSurvey",
  *     SurveyTypeEnum::NATIONAL: "NationalSurvey"
  * })
+ *
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"data_survey_read"},
+ *         },
+ *     },
+ *     itemOperations={},
+ *     collectionOperations={
+ *         "post_reply": {
+ *             "path": "/v3/surveys/{uuid}/reply",
+ *             "method": "POST",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Jecoute\ReplyController",
+ *             "access_control": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
+ *             "defaults": {"_api_receive": false},
+ *         },
+ *     },
+ * )
  */
 abstract class Survey
 {
@@ -40,7 +61,7 @@ abstract class Survey
     /**
      * @var SurveyQuestion[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid
@@ -52,9 +73,9 @@ abstract class Survey
      */
     private $published;
 
-    public function __construct(string $name = null, bool $published = false)
+    public function __construct(UuidInterface $uuid = null, string $name = null, bool $published = false)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
         $this->published = $published;
         $this->questions = new ArrayCollection();

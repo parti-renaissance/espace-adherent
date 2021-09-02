@@ -61,8 +61,11 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
     ): JemarcheDataSurvey {
         $dataSurvey = new DataSurvey($survey);
         $dataSurvey->setAuthor($author);
-        $jemarcheDataSurvey = new JemarcheDataSurvey($dataSurvey, $firstName, $lastName);
+        $jemarcheDataSurvey = new JemarcheDataSurvey();
         $jemarcheDataSurvey->setGender($gender);
+        $jemarcheDataSurvey->setFirstName($firstName);
+        $jemarcheDataSurvey->setLastName($lastName);
+        $jemarcheDataSurvey->setDataSurvey($dataSurvey);
 
         return $jemarcheDataSurvey;
     }

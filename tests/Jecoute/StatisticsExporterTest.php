@@ -42,7 +42,8 @@ class StatisticsExporterTest extends TestCase
     {
         /** @var Adherent $author */
         $author = $this->createMock(Adherent::class);
-        $survey = new LocalSurvey($author, 'Questionnaire TestU');
+        $survey = LocalSurvey::create($author);
+        $survey->setName('Questionnaire TestU');
 
         $question = new Question('question test u', SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE);
         $surveyQuestion = new SurveyQuestion($survey, $question);
