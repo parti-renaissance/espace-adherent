@@ -166,11 +166,6 @@ class CampaignHistory
         $this->dataSurvey = $dataSurvey;
     }
 
-    public function getCaller(): ?Adherent
-    {
-        return $this->caller;
-    }
-
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;

@@ -101,64 +101,77 @@ Feature:
     {"message":"Cette campagne est terminée"}
     """
 
-  Scenario: As a non logged-in user I cannot get a phoning campaign survey
-    Given I send a "GET" request to "/api/v3/phoning_campaigns/survey/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
+  Scenario: As a non logged-in user I cannot get a phoning campaign history configuration
+    Given I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/configuration"
     Then the response status code should be 401
 
-  Scenario: As a logged-in user, but not a caller of the phoning campaign history, I cannot get a phoning campaign survey
-    Given I am logged with "kiroule.p@blabla.tld" via OAuth client "JeMarche App"
-    When I send a "GET" request to "/api/v3/phoning_campaigns/survey/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
+  Scenario: As a logged-in user, but not a caller of the phoning campaign history, I cannot get a phoning campaign history configuration
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/configuration"
     Then the response status code should be 403
 
-  Scenario: As a logged-in user, a caller of the phoning campaign history, I can get a phoning campaign survey
+  Scenario: As a logged-in user, a caller of the phoning campaign history, I can get a phoning campaign history configuration
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
-    When I send a "GET" request to "/api/v3/phoning_campaigns/survey/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/configuration"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "call_status": {
-            "finished": {
-                "failed": "L'appel a échoué",
-                "not-respond": "N'a pa répondu au téléphone",
-                "to-remind": "Souhaite être rappelé plus tard",
-                "to-unjoin": "Souhaite désadhérer",
-                "to-unsubscribe": "Ne souhaite plus être rappelé"
-            },
-            "interrupted": {
-                "interrupted": "Appel interrompu",
-                "interrupted-dont-remind": "Appel interrompu, ne pas rappeler"
-            }
+            "finished": [
+                {
+                    "code": "to-unsubscribe",
+                    "value": "Ne souhaite plus être rappelé"
+                },
+                {
+                    "code": "to-unjoin",
+                    "value": "Souhaite désadhérer"
+                },
+                {
+                    "code": "not-respond",
+                    "value": "N'a pa répondu au téléphone"
+                },
+                {
+                    "code": "to-remind",
+                    "value": "Souhaite être rappelé plus tard"
+                },
+                {
+                    "code": "failed",
+                    "value": "L'appel a échoué"
+                }
+            ],
+            "interrupted": [
+                {
+                    "code": "interrupted-dont-remind",
+                    "value": "Appel interrompu, ne pas rappeler"
+                },
+                {
+                    "code": "interrupted",
+                    "value": "Appel interrompu"
+                }
+            ]
         },
-        "questions": {
-            "become_caller": {
-                "label": " Souhaiteriez-vous devenir appelant ?",
-                "responses": {
-                    "1": "Oui",
-                    "0": "Non"
-                }
-            },
-            "call_more": {
-                "label": "Souhaitez-vous être rappelé plus souvent ?",
-                "responses": {
-                    "1": "Oui",
-                    "0": "Non"
-                }
-            },
-            "need_renewal": {
+        "satisfaction_questions": [
+            {
+                "code": "need_renewal",
                 "label": "Souhaiterez-vous vous réabonner ?",
-                "responses": {
-                    "1": "Oui",
-                    "0": "Non"
-                }
+                "type": "boolean"
             },
-            "postal_code_checked": {
+            {
+                "code": "postal_code_checked",
                 "label": "Code postal à jour ?",
-                "responses": {
-                    "1": "Oui",
-                    "0": "Non"
-                }
+                "type": "boolean"
+            },
+            {
+                "code": "become_caller",
+                "label": "Souhaiteriez-vous devenir appelant ?",
+                "type": "boolean"
+            },
+            {
+                "code": "call_more",
+                "label": "Souhaitez-vous être rappelé plus souvent ?",
+                "type": "boolean"
             }
-        }
+        ]
     }
     """
