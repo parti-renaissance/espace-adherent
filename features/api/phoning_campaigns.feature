@@ -26,24 +26,28 @@ Feature:
     [
        {
           "title": "Campagne pour les hommes",
+          "brief": "**Campagne** pour les hommes",
           "finish_at": "@string@.isDateTime()",
           "goal": 500,
           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
        },
        {
           "title": "Campagne pour les femmes",
+          "brief": "### Campagne pour les femmes",
           "finish_at": "@string@.isDateTime()",
           "goal": 500,
           "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc"
        },
        {
           "title": "Campagne sans adhérents dispo à appeler",
+          "brief": null,
           "finish_at": "@string@.isDateTime()",
           "goal": 100,
           "uuid": "b5e1b850-faec-4da7-8da6-d64b94494668"
        },
        {
           "title": "Campagne avec l'audience contenant tous les paramètres",
+          "brief": "**Campagne** avec l'audience contenant tous les paramètres",
           "finish_at": "@string@.isDateTime()",
           "goal": 10,
           "uuid": "cc8f32ce-176c-42c8-a7e9-b854cc8fc61e"

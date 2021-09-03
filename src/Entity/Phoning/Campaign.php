@@ -64,6 +64,15 @@ class Campaign
     private $title;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups({"phoning_campaign_read"})
+     */
+    private $brief;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(type="integer")
@@ -118,6 +127,7 @@ class Campaign
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
+        string $brief = null,
         Team $team = null,
         AudienceSnapshot $audience = null,
         Survey $survey = null,
@@ -126,6 +136,7 @@ class Campaign
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;
+        $this->brief = $brief;
         $this->team = $team;
         $this->audience = $audience;
         $this->survey = $survey;
@@ -146,6 +157,16 @@ class Campaign
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    public function getBrief(): ?string
+    {
+        return $this->brief;
+    }
+
+    public function setBrief(string $brief): void
+    {
+        $this->brief = $brief;
     }
 
     public function getGoal(): ?int

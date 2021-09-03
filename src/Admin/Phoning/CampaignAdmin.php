@@ -19,6 +19,7 @@ use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
 
@@ -39,6 +40,12 @@ class CampaignAdmin extends AbstractAdmin
             ->with('Informations ⚙️')
                 ->add('title', TextType::class, [
                     'label' => 'Nom',
+                ])
+                ->add('brief', TextareaType::class, [
+                    'label' => 'Briefing',
+                    'required' => false,
+                    'filter_emojis' => true,
+                    'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
                 ->add('goal', NumberType::class, [
                     'label' => 'Objectif',
