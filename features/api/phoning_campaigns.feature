@@ -9,6 +9,7 @@ Feature:
       | LoadAdherentData                |
       | LoadClientData                  |
       | LoadTeamData                    |
+      | LoadJecouteSurveyData           |
       | LoadPhoningCampaignData         |
       | LoadPhoningCampaignHistoryData  |
 
@@ -220,5 +221,58 @@ Feature:
     {
         "status": "not-respond",
         "uuid": "47bf09fb-db03-40c3-b951-6fe6bbe1f055"
+    }
+    """
+
+  Scenario: As a non logged-in user I cannot get a campaign survey
+    Given I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey"
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I can get a campaign survey
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    And I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "id":1,
+      "type": "national",
+      "questions":[
+        {
+          "id":6,
+          "type":"simple_field",
+          "content":"Une première question du 1er questionnaire national ?",
+          "choices":[]
+        },
+        {
+          "id":7,
+          "type":"multiple_choice",
+          "content":"Une deuxième question du 1er questionnaire national ?",
+          "choices":[
+            {
+              "id":5,
+              "content":"Réponse nationale A"
+            },
+            {
+              "id":6,
+              "content":"Réponse nationale B"
+            },
+            {
+              "id":7,
+              "content":"Réponse nationale C"
+            },
+            {
+              "id":8,
+              "content":"Réponse nationale D"
+            }
+          ]
+        }
+      ],
+      "name":"Questionnaire national numéro 1"
     }
     """
