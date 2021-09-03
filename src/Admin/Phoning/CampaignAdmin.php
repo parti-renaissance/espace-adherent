@@ -3,6 +3,7 @@
 namespace App\Admin\Phoning;
 
 use App\Admin\Audience\AudienceAdmin;
+use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Phoning\Campaign;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
@@ -16,6 +17,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
@@ -55,6 +57,17 @@ class CampaignAdmin extends AbstractAdmin
             ->end()
             ->with('Filtres')
                 ->add('audience', AudienceSnapshotType::class, ['label' => false])
+            ->end()
+            ->with('Questionnaire')
+                ->add('survey', EntityType::class, [
+                    'label' => 'Questionnaire nationale',
+                    'placeholder' => '--',
+                    'class' => NationalSurvey::class,
+                    'choice_label' => 'name',
+                    'attr' => [
+                        'data-sonata-select2' => 'false',
+                    ],
+                ])
             ->end()
         ;
 
@@ -102,6 +115,9 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('team', null, [
                 'label' => 'Équipe',
+            ])
+            ->add('survey', null, [
+                'label' => 'Questionnaire',
             ])
             ->add('goal', null, [
                 'label' => 'Objectif',
