@@ -27,7 +27,7 @@ start: build up config/packages/assets_version.yaml db rabbitmq-fabric public/bu
 start-mac: build up config/packages/assets_version.yaml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
-	$(DOCKER_COMPOSE) kill
+	$(DOCKER_COMPOSE) kill || true
 	$(DOCKER_COMPOSE) rm -v --force
 
 reset: stop rm-docker-dev.lock start
