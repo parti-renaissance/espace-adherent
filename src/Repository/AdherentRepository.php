@@ -1365,4 +1365,30 @@ SQL;
 
         return $adherents ? $adherents[array_rand($adherents)] : null;
     }
+
+    public function findScoresByCampaign(Campaign $campaign): array
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('adherent.id, adherent.firstName, COUNT(campaignHistory.id) AS score')
+            ->innerJoin('adherent.teamMemberships', 'teamMemberships')
+            ->innerJoin('teamMemberships.team', 'team')
+            ->innerJoin(Campaign::class, 'campaign', Join::WITH, 'campaign.team = team')
+            ->leftJoin(
+                'campaign.campaignHistories',
+                'campaignHistory',
+                Join::WITH,
+                'campaignHistory.caller = adherent AND campaignHistory.status != :send'
+            )
+            ->where('campaign = :campaign')
+            ->groupBy('adherent')
+            ->orderBy('score', 'DESC')
+            ->addOrderBy('campaignHistory.beginAt', 'DESC')
+            ->setParameters([
+                'campaign' => $campaign,
+                'send' => CampaignHistoryStatusEnum::SEND,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

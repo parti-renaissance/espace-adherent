@@ -61,7 +61,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @var Campaign
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign", inversedBy="campaignHistories")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $campaign;

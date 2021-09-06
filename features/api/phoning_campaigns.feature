@@ -19,40 +19,70 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can get my phoning campaigns
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/phoning_campaigns/scores"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     [
-       {
-          "title": "Campagne pour les hommes",
-          "brief": "**Campagne** pour les hommes",
-          "finish_at": "@string@.isDateTime()",
-          "goal": 500,
-          "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
-       },
-       {
-          "title": "Campagne pour les femmes",
-          "brief": "### Campagne pour les femmes",
-          "finish_at": "@string@.isDateTime()",
-          "goal": 500,
-          "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc"
-       },
-       {
-          "title": "Campagne sans adhérents dispo à appeler",
-          "brief": null,
-          "finish_at": "@string@.isDateTime()",
-          "goal": 100,
-          "uuid": "b5e1b850-faec-4da7-8da6-d64b94494668"
-       },
-       {
-          "title": "Campagne avec l'audience contenant tous les paramètres",
-          "brief": "**Campagne** avec l'audience contenant tous les paramètres",
-          "finish_at": "@string@.isDateTime()",
-          "goal": 10,
-          "uuid": "cc8f32ce-176c-42c8-a7e9-b854cc8fc61e"
-       }
+      {
+        "title": "Campagne pour les femmes",
+        "brief": "### Campagne pour les femmes",
+        "goal": 500,
+        "finish_at": "@string@.isDateTime()",
+        "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc",
+        "nb_calls": 0,
+        "nb_surveys": 0,
+        "scoreboard": [
+          {
+            "firstName": "Jacques",
+            "score": "4",
+            "position": 1,
+            "caller": false
+          },
+          {
+            "firstName": "Pierre",
+            "score": "1",
+            "position": 2,
+            "caller": false
+          },
+          {
+            "firstName": "Lucie",
+            "score": "0",
+            "position": 4,
+            "caller": true
+          }
+        ]
+      },
+      {
+        "title": "Campagne avec l'audience contenant tous les paramètres",
+        "brief": "**Campagne** avec l'audience contenant tous les paramètres",
+        "goal": 10,
+        "finish_at": "@string@.isDateTime()",
+        "uuid": "cc8f32ce-176c-42c8-a7e9-b854cc8fc61e",
+        "nb_calls": 0,
+        "nb_surveys": 0,
+        "scoreboard": [
+          {
+            "firstName": "Jacques",
+            "score": "0",
+            "position": "@integer@",
+            "caller": false
+          },
+          {
+            "firstName": "Lucie",
+            "score": "0",
+            "position": "@integer@",
+            "caller": true
+          },
+          {
+            "firstName": "Pierre",
+            "score": "0",
+            "position": "@integer@",
+            "caller": false
+          }
+        ]
+      }
     ]
     """
 
