@@ -31,6 +31,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaign1 = $this->createCampaign(
             self::CAMPAIGN_1_UUID,
             'Campagne pour les hommes',
+            '**Campagne** pour les hommes',
             $team1,
             $nationalSurvey1,
             500,
@@ -44,6 +45,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaign2 = $this->createCampaign(
             self::CAMPAIGN_2_UUID,
             'Campagne pour les femmes',
+            '### Campagne pour les femmes',
             $team2,
             $nationalSurvey2,
             500,
@@ -55,6 +57,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaignFinished = $this->createCampaign(
             self::CAMPAIGN_3_UUID,
             'Campagne terminé',
+            null,
             $team1,
             $nationalSurvey1,
             100,
@@ -66,6 +69,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaignNoAdherent = $this->createCampaign(
             self::CAMPAIGN_4_UUID,
             'Campagne sans adhérents dispo à appeler',
+            null,
             $team1,
             $nationalSurvey1,
             100,
@@ -77,6 +81,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $campaignWithAllAudienceParameters = $this->createCampaign(
             self::CAMPAIGN_5_UUID,
             'Campagne avec l\'audience contenant tous les paramètres',
+            '**Campagne** avec l\'audience contenant tous les paramètres',
             $team2,
             $nationalSurvey2,
             10,
@@ -120,11 +125,12 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
     private function createCampaign(
         string $uuid,
         string $title,
+        ?string $brief,
         Team $team,
         Survey $survey,
         int $goal,
         string $finishAt
     ): Campaign {
-        return new Campaign(Uuid::fromString($uuid), $title, $team, new AudienceSnapshot(), $survey, $goal, new Chronos($finishAt));
+        return new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, new Chronos($finishAt));
     }
 }
