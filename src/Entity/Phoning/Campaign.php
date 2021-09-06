@@ -3,6 +3,7 @@
 namespace App\Entity\Phoning;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
@@ -41,6 +42,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/scores",
  *             "controller": "App\Controller\Api\Phoning\CampaignsScoresController",
+ *         },
+ *     },
+ *     subresourceOperations={
+ *         "survey_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/v3/phoning_campaigns/{id}/survey",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *         },
  *     },
  * )
@@ -121,6 +129,8 @@ class Campaign
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
+     *
+     * @ApiSubresource
      */
     private $survey;
 
