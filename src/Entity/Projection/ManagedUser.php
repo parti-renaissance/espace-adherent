@@ -18,7 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * of SQL queries.
  *
  * @ORM\Table(name="projection_managed_users", indexes={
- *     @ORM\Index(name="projection_managed_users_search", columns={"status", "postal_code", "country"})
+ *     @ORM\Index(name="projection_managed_users_search", columns={"status", "postal_code", "country"}),
+ *     @ORM\Index(columns={"original_id"}),
  * })
  * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\Projection\ManagedUserRepository")
  * @ORM\AssociationOverrides({
