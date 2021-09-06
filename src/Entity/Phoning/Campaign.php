@@ -48,6 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "survey_get_subresource": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{id}/survey",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *         },
  *     },
  * )

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Jecoute;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -44,7 +45,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     subresourceOperations={
  *         "api_campaigns_survey_get_subresource": {
- *             "normalization_context": {"groups": {"survey_list"}},
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *         },
  *     },
@@ -54,6 +54,22 @@ abstract class Survey
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     *
+     * @SymfonySerializer\Groups({
+     *     "data_survey_write",
+     *     "data_survey_read",
+     *     "jemarche_data_survey_read",
+     *     "survey_list",
+     * })
+     *
+     * @ApiProperty(identifier=true)
+     */
+    protected $uuid;
 
     /**
      * @ORM\Column

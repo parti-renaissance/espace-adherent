@@ -24,6 +24,7 @@ Feature:
     [
       {
         "id":3,
+        "uuid":"@uuid@",
         "type": "local",
         "questions":[
           {
@@ -78,6 +79,7 @@ Feature:
       },
       {
         "id":2,
+        "uuid":"@uuid@",
         "type":"national",
         "questions":[
           {
@@ -104,6 +106,7 @@ Feature:
       },
       {
         "id":1,
+        "uuid":"@uuid@",
         "type": "national",
         "questions":[
           {
@@ -173,6 +176,7 @@ Feature:
     [
       {
         "id":3,
+        "uuid":"@uuid@",
         "type": "local",
         "questions":[
           {
@@ -227,6 +231,7 @@ Feature:
       },
       {
         "id":2,
+        "uuid":"@uuid@",
         "type":"national",
         "questions":[
           {
@@ -253,6 +258,7 @@ Feature:
       },
       {
         "id":1,
+        "uuid":"@uuid@",
         "type": "national",
         "questions":[
           {
