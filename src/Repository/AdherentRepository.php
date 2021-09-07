@@ -1380,7 +1380,7 @@ SQL;
                 'campaignHistory.caller = adherent AND campaignHistory.status != :send'
             )
             ->where('campaign = :campaign')
-            ->groupBy('adherent')
+            ->groupBy('adherent.id')
             ->orderBy('score', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
             ->setParameters([
