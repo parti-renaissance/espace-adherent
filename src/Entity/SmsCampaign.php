@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SmsCampaignRepository")
  */
 class SmsCampaign
 {
@@ -53,6 +53,34 @@ class SmsCampaign
      * @ORM\Column
      */
     private $status = SmsCampaignStatusEnum::DRAFT;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $recipientCount;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $responsePayload;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $externalId;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $sentAt;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -112,5 +140,51 @@ class SmsCampaign
     public function isDone(): bool
     {
         return SmsCampaignStatusEnum::DONE === $this->status;
+    }
+
+    public function isSending(): bool
+    {
+        return SmsCampaignStatusEnum::SENDING === $this->status;
+    }
+
+    public function getRecipientCount(): ?int
+    {
+        return $this->recipientCount;
+    }
+
+    public function setRecipientCount(?int $recipientCount): void
+    {
+        $this->recipientCount = $recipientCount;
+    }
+
+    public function setResponsePayload(?string $responsePayload): void
+    {
+        $this->responsePayload = $responsePayload;
+    }
+
+    public function getResponsePayload(): ?string
+    {
+        return $this->responsePayload;
+    }
+
+    public function setExternalId(?string $externalId): void
+    {
+        $this->externalId = $externalId;
+    }
+
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    public function getSentAt(): ?\DateTime
+    {
+        return $this->sentAt;
+    }
+
+    public function send(): void
+    {
+        $this->status = SmsCampaignStatusEnum::SENDING;
+        $this->sentAt = new \DateTime();
     }
 }

@@ -280,3 +280,11 @@ services:
             - '@api_platform.metadata.property.name_collection_factory'
             - '@api_platform.metadata.property.metadata_factory'
             - '@api_platform.path_segment_name_generator'
+
+    App\OvhCloud\Driver:
+        arguments:
+            - '@app.http_client.ovh_cloud'
+            - '%env(OVHCLOUD_APPLICATION_KEY)%'
+            - '%env(OVHCLOUD_APPLICATION_SECRET)%'
+            - '%env(OVHCLOUD_CONSUMER_KEY)%'
+            - '%env(OVHCLOUD_SERVICE_NAME)%'

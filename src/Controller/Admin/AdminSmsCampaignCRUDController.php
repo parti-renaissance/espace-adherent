@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\SmsCampaign;
 use App\Repository\AdherentRepository;
 use App\SmsCampaign\Command\SendSmsCampaignCommand;
-use App\SmsCampaign\SmsCampaignStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,12 +29,16 @@ class AdminSmsCampaignCRUDController extends CRUDController
             return $this->redirectToList();
         }
 
-        $paginator = $this->adherentRepository->findForAudience($smsCampaign->getAudience());
+        $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign);
+
+        if ($paginator->getTotalItems() !== $smsCampaign->getRecipientCount()) {
+            $smsCampaign->setRecipientCount($paginator->getTotalItems());
+            $this->entityManager->flush();
+        }
 
         return $this->renderWithExtraParams('admin/sms_campaign/confirm.html.twig', [
             'action' => 'show',
             'object' => $smsCampaign,
-            'total_count' => (int) $paginator->getTotalItems(),
         ]);
     }
 
@@ -47,7 +50,7 @@ class AdminSmsCampaignCRUDController extends CRUDController
             return $this->redirectToList();
         }
 
-        $paginator = $this->adherentRepository->findForAudience($smsCampaign->getAudience());
+        $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign);
 
         if ($paginator->getTotalItems() < 1) {
             $this->addFlash('sonata_flash_error', 'Cette campagne vise aucun contact');
@@ -55,7 +58,7 @@ class AdminSmsCampaignCRUDController extends CRUDController
             return $this->redirectToList();
         }
 
-        $smsCampaign->setStatus(SmsCampaignStatusEnum::SENDING);
+        $smsCampaign->send();
         $this->entityManager->flush();
 
         $bus->dispatch(new SendSmsCampaignCommand($smsCampaign->getId()));
