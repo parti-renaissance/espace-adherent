@@ -14,7 +14,7 @@ references:
             - EXEC: "$(DOCKER_COMPOSE) exec -T app entrypoint.sh"
         machine:
             enabled: true
-            image: circleci/classic:201711-01
+            image: ubuntu-2004:202107-02
 
     generate_docker_hashes: &generate_docker_hashes
         run: |
