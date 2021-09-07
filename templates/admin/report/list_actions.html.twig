@@ -3,10 +3,6 @@
 {% block field %}
     {{ parent() }}
 
-    {% if is_granted('ROLE_ADMIN_IDEAS_WORKSHOP') %}
-        {{ include('admin/ideas_workshop/list_action_moderate.html.twig', { object: object.subject, targetRoute: app.request.get('_route') }) }}
-    {% endif %}
-
     {% if is_granted('ROLE_APP_ADMIN_REPORT_APPROVE') and not object.isResolved %}
         <div class="btn-group">
             <a href="{{ path('app_admin_report_resolve', {id: object.id, token: csrf_token('report.' ~ object.id)}) }}"
