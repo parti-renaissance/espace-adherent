@@ -78,11 +78,9 @@ class DonationControllerTest extends WebTestCase
      * @depends testPayboxPreprodIsHealthy
      * @dataProvider getDonationSubscriptions
      */
-    public function testSuccessFulProcess(int $duration)
+    public function testSuccessFullProcess(int $duration)
     {
-        $this->markTestSkipped(
-            'Paybox ask to choose a card type.'
-        );
+        $this->markTestSkipped('Paybox ask to choose a card type.');
 
         $appClient = $this->client;
         // There should not be any donation for the moment
