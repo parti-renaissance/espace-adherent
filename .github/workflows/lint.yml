@@ -12,11 +12,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-        # switch php version to 7.3
         -   name: Setup PHP
             uses: shivammathur/setup-php@v2
             with:
-              php-version: '7.3'
+              php-version: '7.4'
 
         -   name: Checkout repository
             uses: actions/checkout@v2

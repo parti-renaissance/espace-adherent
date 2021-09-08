@@ -17,17 +17,21 @@ use ApiPlatform\Core\Operation\PathSegmentNameGeneratorInterface;
  */
 class SubresourceOperationFactory implements SubresourceOperationFactoryInterface
 {
-    const SUBRESOURCE_SUFFIX = '_subresource';
-    const FORMAT_SUFFIX = '.{_format}';
-    const ROUTE_OPTIONS = ['defaults' => [], 'requirements' => [], 'options' => [], 'host' => '', 'schemes' => [], 'condition' => '', 'controller' => null];
+    public const SUBRESOURCE_SUFFIX = '_subresource';
+    public const FORMAT_SUFFIX = '.{_format}';
+    public const ROUTE_OPTIONS = ['defaults' => [], 'requirements' => [], 'options' => [], 'host' => '', 'schemes' => [], 'condition' => '', 'controller' => null];
 
     private $resourceMetadataFactory;
     private $propertyNameCollectionFactory;
     private $propertyMetadataFactory;
     private $pathSegmentNameGenerator;
 
-    public function __construct(ResourceMetadataFactoryInterface $resourceMetadataFactory, PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory, PropertyMetadataFactoryInterface $propertyMetadataFactory, PathSegmentNameGeneratorInterface $pathSegmentNameGenerator)
-    {
+    public function __construct(
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
+        PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory,
+        PropertyMetadataFactoryInterface $propertyMetadataFactory,
+        PathSegmentNameGeneratorInterface $pathSegmentNameGenerator
+    ) {
         $this->resourceMetadataFactory = $resourceMetadataFactory;
         $this->propertyNameCollectionFactory = $propertyNameCollectionFactory;
         $this->propertyMetadataFactory = $propertyMetadataFactory;
@@ -48,15 +52,18 @@ class SubresourceOperationFactory implements SubresourceOperationFactoryInterfac
     /**
      * {@inheritdoc}
      */
-    private function computeSubresourceOperations(string $resourceClass, array &$tree, string $rootResourceClass = null, array $parentOperation = null, array $visited = [], int $depth = 0, int $maxDepth = null)
-    {
+    private function computeSubresourceOperations(
+        string $resourceClass,
+        array &$tree,
+        string $rootResourceClass = null,
+        array $parentOperation = null,
+        array $visited = [],
+        int $depth = 0,
+        int $maxDepth = null
+    ) {
         if (null === $rootResourceClass) {
             $rootResourceClass = $resourceClass;
         }
-
-//        if (!is_array($parentOperation)) {
-//            $parentOperation = [];
-//        }
 
         foreach ($this->propertyNameCollectionFactory->create($resourceClass) as $property) {
             $propertyMetadata = $this->propertyMetadataFactory->create($resourceClass, $property);
@@ -85,6 +92,7 @@ class SubresourceOperationFactory implements SubresourceOperationFactoryInterfac
             if (null !== $maxDepth && $depth >= $maxDepth) {
                 break;
             }
+
             if (isset($visited[$visiting])) {
                 continue;
             }
