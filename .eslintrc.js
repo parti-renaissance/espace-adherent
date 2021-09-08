@@ -43,6 +43,8 @@ module.exports = {
         toggleClass: true,
         removeClass: true,
         App: true,
+        Kernel: true,
+        Raven: true,
         google: true,
         getUrlParameter: true,
     },
