@@ -4,6 +4,7 @@ import 'utils/dom';
 import 'utils/css';
 import 'utils/text';
 import 'utils/url';
+import { decode } from 'js-base64';
 
 window.Kernel = class {
     static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist) {
@@ -15,17 +16,13 @@ window.Kernel = class {
 
         const runIfReady = () => {
             if (app && vendor) {
-                const sentryDsn = Kernel.sentryDsn;
-                const release = Kernel.release;
-                const listeners = Kernel.listeners;
+                const { sentryDsn, release, listeners } = Kernel;
 
                 if (sentryDsn) {
                     Raven.config(sentryDsn, { release }).install();
                 }
 
-                for (const i in listeners) {
-                    App.addListener(listeners[i]);
-                }
+                listeners.forEach((listener) => App.addListener(listener));
 
                 App.run({
                     sentryDsn,
@@ -33,7 +30,7 @@ window.Kernel = class {
                     environment,
                     algoliaAppId,
                     algoliaAppPublicKey,
-                    algoliaBlacklist: Base64.decode(algoliaBlacklist).split(','),
+                    algoliaBlacklist: decode(algoliaBlacklist).split(','),
                 });
             }
         };
