@@ -44,6 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/scores",
  *             "controller": "App\Controller\Api\Phoning\CampaignsScoresController",
+ *             "normalization_context": {
+ *                 "iri": true,
+ *                 "groups": {"phoning_campaign_read_with_score"},
+ *             },
  *         },
  *     },
  *     subresourceOperations={
@@ -69,7 +73,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\Length(max="255")
      *
-     * @Groups({"phoning_campaign_read"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */
     private $title;
 
@@ -78,7 +82,7 @@ class Campaign
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"phoning_campaign_read"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */
     private $brief;
 
@@ -90,7 +94,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
      *
-     * @Groups({"phoning_campaign_read"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */
     private $goal;
 
@@ -102,7 +106,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\DateTime
      *
-     * @Groups({"phoning_campaign_read"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */
     private $finishAt;
 

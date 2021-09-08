@@ -9,11 +9,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const CAMPAIGN_ALREADY_CALLED = 'CAMPAIGN_NORMALIZER_ALREADY_CALLED';
+    private const CAMPAIGN_SCORE_ALREADY_CALLED = 'CAMPAIGN_SCORE_NORMALIZER_ALREADY_CALLED';
 
     private $adherentRepository;
     private $tokenStorage;
@@ -29,7 +29,7 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::CAMPAIGN_ALREADY_CALLED] = true;
+        $context[self::CAMPAIGN_SCORE_ALREADY_CALLED] = true;
 
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
@@ -65,9 +65,9 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     public function supportsNormalization($data, $format = null, array $context = [])
     {
         return
-            empty($context[self::CAMPAIGN_ALREADY_CALLED])
+            empty($context[self::CAMPAIGN_SCORE_ALREADY_CALLED])
             && $data instanceof Campaign
-            && \in_array('phoning_campaign_read', $context['groups'] ?? [])
+            && \in_array('phoning_campaign_read_with_score', $context['groups'] ?? [])
         ;
     }
 }

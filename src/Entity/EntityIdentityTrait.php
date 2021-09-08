@@ -58,6 +58,7 @@ trait EntityIdentityTrait
      *     "phoning_campaign_call_read",
      *     "phoning_campaign_history_read",
      *     "phoning_campaign_read",
+     *     "phoning_campaign_read_with_score",
      *     "data_survey_write",
      *     "data_survey_read",
      *     "jemarche_data_survey_read",

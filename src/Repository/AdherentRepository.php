@@ -1383,6 +1383,7 @@ SQL;
             ->groupBy('adherent.id')
             ->orderBy('score', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
+            ->addOrderBy('adherent.id', 'ASC')
             ->setParameters([
                 'campaign' => $campaign,
                 'send' => CampaignHistoryStatusEnum::SEND,
