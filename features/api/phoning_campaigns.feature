@@ -200,17 +200,17 @@ Feature:
     {
        "type":"https://tools.ietf.org/html/rfc2616#section-10",
        "title":"An error occurred",
-       "detail":"status: Le status n'est pas valide.",
+       "detail":"status: Le statut n'est pas valide.",
        "violations":[
           {
              "propertyPath":"status",
-             "message":"Le status n'est pas valide."
+             "message":"Le statut n'est pas valide."
           }
        ]
     }
     """
 
-  Scenario: As a logged-in user I can change my phoning campaign history
+  Scenario: As a logged-in user I can change only status of my phoning campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
@@ -224,6 +224,28 @@ Feature:
     """
     {
         "status": "not-respond",
+        "uuid": "47bf09fb-db03-40c3-b951-6fe6bbe1f055"
+    }
+    """
+
+  Scenario: As a logged-in user I can change my phoning campaign history
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
+    """
+    {
+        "status": "completed",
+        "postalCodeChecked": true,
+        "callMore": true,
+        "needRenewal": false,
+        "becomeCaller": true
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "status": "completed",
         "uuid": "47bf09fb-db03-40c3-b951-6fe6bbe1f055"
     }
     """

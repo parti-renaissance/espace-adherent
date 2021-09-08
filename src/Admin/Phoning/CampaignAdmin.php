@@ -42,7 +42,7 @@ class CampaignAdmin extends AbstractAdmin
                     'label' => 'Nom',
                 ])
                 ->add('brief', TextareaType::class, [
-                    'label' => 'Briefing',
+                    'label' => 'Brief',
                     'required' => false,
                     'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],

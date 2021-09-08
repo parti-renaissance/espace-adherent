@@ -35,6 +35,7 @@ class CampaignHistoryStatusEnum extends Enum
         self::FAILED,
         self::INTERRUPTED_DONT_REMIND,
         self::INTERRUPTED,
+        self::COMPLETED,
     ];
 
     public const FINISHED_STATUS = [

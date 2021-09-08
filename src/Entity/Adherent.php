@@ -1380,6 +1380,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->interests = $interests;
     }
 
+    public function setPhoningCampaignCallMoreStatus(bool $callMore): void
+    {
+        $this->phoningCampaignCallMoreStatus = $callMore;
+    }
+
     public function updateProfile(AdherentProfile $adherentProfile, PostAddress $postAddress): void
     {
         $this->customGender = $adherentProfile->getCustomGender();

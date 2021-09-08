@@ -99,6 +99,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"phoning_campaign_history_write"})
      */
     protected $postalCodeChecked;
 
@@ -106,6 +108,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"phoning_campaign_history_write"})
      */
     protected $callMore;
 
@@ -113,6 +117,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"phoning_campaign_history_write"})
      */
     protected $needRenewal;
 
@@ -120,6 +126,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"phoning_campaign_history_write"})
      */
     protected $becomeCaller;
 
@@ -265,5 +273,10 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setFinishAt(?\DateTimeInterface $finishAt): void
     {
         $this->finishAt = $finishAt;
+    }
+
+    public function isInAfterCallStatus(): bool
+    {
+        return \in_array($this->status, CampaignHistoryStatusEnum::AFTER_CALL_STATUS);
     }
 }
