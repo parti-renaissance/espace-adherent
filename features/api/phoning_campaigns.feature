@@ -13,10 +13,14 @@ Feature:
       | LoadPhoningCampaignData         |
       | LoadPhoningCampaignHistoryData  |
 
-  Scenario: As a logged-in user with no correct rights I cannot get my phoning campaigns
+  Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
-    When I send a "GET" request to "/api/v3/phoning_campaigns/scores"
+    When I send a "GET" request to "<url>"
     Then the response status code should be 403
+    Examples:
+      | url                                                                   |
+      | /api/v3/phoning_campaigns/scores                                      |
+      | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/scores |
 
   Scenario: As a logged-in user I can get my phoning campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -84,6 +88,43 @@ Feature:
         ]
       }
     ]
+    """
+
+  Scenario: As a logged-in user I can get one of my phoning campaigns
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc/scores"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+      {
+        "title": "Campagne pour les femmes",
+        "brief": "### Campagne pour les femmes",
+        "goal": 500,
+        "finish_at": "@string@.isDateTime()",
+        "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc",
+        "nb_calls": 4,
+        "nb_surveys": 3,
+        "scoreboard": [
+          {
+            "firstName": "Jacques",
+            "score": "4",
+            "position": 1,
+            "caller": true
+          },
+          {
+            "firstName": "Pierre",
+            "score": "1",
+            "position": 2,
+            "caller": false
+          },
+          {
+            "firstName": "Député",
+            "score": "1",
+            "position": 3,
+            "caller": false
+          }
+        ]
+      }
     """
 
   Scenario: As a non logged-in user I cannot get a phone number to call

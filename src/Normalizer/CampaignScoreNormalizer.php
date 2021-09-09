@@ -55,8 +55,13 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
             }
         }
 
-        $campaign['nb_calls'] = $object->getCampaignHistories()->count();
-        $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
+        if (isset($context['item_operation_name']) && 'get_with_scores' === $context['item_operation_name']) {
+            $campaign['nb_calls'] = $object->getCampaignHistoriesForAdherent($caller)->count();
+            $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurveyForAdherent($caller)->count();
+        } else {
+            $campaign['nb_calls'] = $object->getCampaignHistories()->count();
+            $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
+        }
         $campaign['scoreboard'] = $callers;
 
         return $campaign;

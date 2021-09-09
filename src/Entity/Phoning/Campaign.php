@@ -4,14 +4,17 @@ namespace App\Entity\Phoning;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Entity\Adherent;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Team\Team;
+use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -31,6 +34,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  *     itemOperations={
+ *         "get_with_scores": {
+ *             "method": "GET",
+ *             "path": "/v3/phoning_campaigns/{id}/scores",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)",
+ *             "normalization_context": {
+ *                 "groups": {"phoning_campaign_read_with_score"},
+ *             },
+ *         },
  *         "start_campaign_for_one_adherent": {
  *             "method": "POST",
  *             "path": "/v3/phoning_campaigns/{uuid}/start",
@@ -259,6 +271,33 @@ class Campaign
         return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
             return $campaignHistory->getDataSurvey();
         });
+    }
+
+    /**
+     * @return CampaignHistory[]|Collection
+     */
+    public function getCampaignHistoriesForAdherent(Adherent $adherent): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->neq('status', CampaignHistoryStatusEnum::SEND))
+            ->andWhere(Criteria::expr()->eq('caller', $adherent))
+        ;
+
+        return $this->campaignHistories->matching($criteria);
+    }
+
+    /**
+     * @return CampaignHistory[]|Collection
+     */
+    public function getCampaignHistoriesWithDataSurveyForAdherent(Adherent $adherent): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->neq('status', CampaignHistoryStatusEnum::SEND))
+            ->andWhere(Criteria::expr()->eq('caller', $adherent))
+            ->andWhere(Criteria::expr()->neq('dataSurvey', null))
+        ;
+
+        return $this->campaignHistories->matching($criteria);
     }
 
     public function isFinished(): bool

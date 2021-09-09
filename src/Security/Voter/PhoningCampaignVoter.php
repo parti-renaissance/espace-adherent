@@ -7,7 +7,7 @@ use App\Entity\Phoning\Campaign;
 
 class PhoningCampaignVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'CAN_START_PHONING_CAMPAIGN';
+    public const PERMISSION = 'CAN_MANAGE_PHONING_CAMPAIGN';
 
     /** @param Campaign $subject */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
