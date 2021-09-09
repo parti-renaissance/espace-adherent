@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\Adherent;
+use App\Repository\Phoning\CampaignHistoryRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -12,10 +13,12 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     use NormalizerAwareTrait;
 
     private $adherentInterests;
+    private $campaignHistoryRepository;
 
-    public function __construct(array $adherentInterests)
+    public function __construct(array $adherentInterests, CampaignHistoryRepository $campaignHistoryRepository)
     {
         $this->adherentInterests = $adherentInterests;
+        $this->campaignHistoryRepository = $campaignHistoryRepository;
     }
 
     private const LEGACY_MAPPING = [
@@ -58,6 +61,21 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
             }
 
             $data['interests'] = $interests;
+        }
+
+        if (\in_array('phoning_campaign_call_read', $groups)) {
+            $lastCall = $this->campaignHistoryRepository->findLastHistoryForAdherent($object);
+
+            $data['info'] = sprintf(
+                '%s%s, habitant %s (%s). %s.',
+                $object->getFirstName(),
+                $object->getBirthdate() ? sprintf(', %s ans', $object->getAge()) : '',
+                $object->getCityName(),
+                $object->getPostalCode(),
+                sprintf($lastCall
+                    ? 'Appelé%s précédemment le '.$lastCall->getBeginAt()->format('d/m/Y')
+                    : 'N’a encore jamais été appelé%s', $object->isFemale() ? 'e' : '')
+            );
         }
 
         return $data;

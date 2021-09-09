@@ -1196,7 +1196,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @SymfonySerializer\Groups({"export", "phoning_campaign_call_read"})
+     * @SymfonySerializer\Groups({"export"})
      */
     public function getAge(): ?int
     {
@@ -2222,7 +2222,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      *
-     * @SymfonySerializer\Groups({"export", "phoning_campaign_call_read"})
+     * @SymfonySerializer\Groups({"export"})
      */
     public function getCityName(): ?string
     {

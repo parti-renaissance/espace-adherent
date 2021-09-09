@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Phoning\CampaignHistoryRepository")
  * @ORM\Table(name="phoning_campaign_history")
  *
  * @ApiResource(

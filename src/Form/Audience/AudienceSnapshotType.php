@@ -26,7 +26,7 @@ class AudienceSnapshotType extends AbstractType
             ->add('registeredUntil', DatePickerType::class, ['label' => 'Date d\'adhésion (au)', 'required' => false])
             ->add('isCertified', BooleanType::class, ['label' => 'Certifié', 'required' => false])
             ->add('isCommitteeMember', BooleanType::class, ['label' => 'Membre de comité', 'required' => false])
-            ->add('hasSmsSubscription', BooleanType::class, ['label' => 'Membre de comité', 'required' => false])
+            ->add('hasSmsSubscription', BooleanType::class, ['label' => 'Abonné aux SMS', 'required' => false])
         ;
     }
 
