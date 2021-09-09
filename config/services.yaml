@@ -272,3 +272,11 @@ services:
     App\Instance\Handler\UpdateInstanceQualitiesCommandHandler:
         arguments:
             $qualityUpdaters: !tagged_iterator 'app.instance.quality_updater'
+
+    api_platform.subresource_operation_factory:
+        class: App\Api\ApiPlatform\Core\Operation\Factory\SubresourceOperationFactory
+        arguments:
+            - '@api_platform.metadata.resource.metadata_factory'
+            - '@api_platform.metadata.property.name_collection_factory'
+            - '@api_platform.metadata.property.metadata_factory'
+            - '@api_platform.path_segment_name_generator'

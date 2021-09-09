@@ -31,19 +31,19 @@ class AccountNotValidatedException extends AccountStatusException
         ];
     }
 
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             $this->redirect,
             $this->messageKey,
-            parent::serialize(),
-        ]);
+            parent::__serialize(),
+        ];
     }
 
-    public function unserialize($str)
+    public function __unserialize(array $data): void
     {
-        [$this->redirect, $this->messageKey, $parentData] = unserialize($str);
+        [$this->redirect, $this->messageKey, $parentData] = $data;
 
-        parent::unserialize($parentData);
+        parent::__unserialize($parentData);
     }
 }
