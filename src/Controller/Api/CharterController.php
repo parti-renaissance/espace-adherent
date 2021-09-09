@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CharterController extends AbstractController
 {
     /**
-     * @Security("is_granted('CAN_ACCEPT_CHARTER', type)")
+     * @Security("is_granted('CAN_ACCEPT_CHARTER', type)")$this->redirect($translator->trans(
      * @Route("/v3/profile/charter/{type}", name="app_api_get_charter", methods={"GET"})
      */
     public function retrieveCharter(string $type, TranslatorInterface $translator): Response
@@ -36,13 +36,10 @@ class CharterController extends AbstractController
                 return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
             }
 
-            return $this->json(
-                ['content' => '**Texte de la charte** pour la *campagne* de phoning avec le Markdown'],
-                JsonResponse::HTTP_OK
-            );
+            return $this->json(['content' => '**Texte de la charte** pour la *campagne* de phoning avec le Markdown']);
         }
 
-        return $this->redirect($translator->trans(sprintf('%s.popup.file_url', $type)));
+        return $this->json(['pdf' => $translator->trans(sprintf('%s.popup.file_url', $type))]);
     }
 
     /**
@@ -65,6 +62,6 @@ class CharterController extends AbstractController
             $entityManager->flush();
         }
 
-        return new JsonResponse('OK', Response::HTTP_OK);
+        return $this->json('OK');
     }
 }

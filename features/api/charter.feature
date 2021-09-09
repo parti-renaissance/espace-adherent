@@ -52,3 +52,14 @@ Feature:
     """
     "OK"
     """
+
+  Scenario: As a logged-in user with correct rights I can get a referent charter
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
+    And I send a "GET" request to "/api/v3/profile/charter/referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "pdf": "https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_referents_animateurs.pdf"
+    }
+    """
