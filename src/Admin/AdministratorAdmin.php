@@ -111,7 +111,6 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_JECOUTE',
                     'ROLE_ADMIN_BAN',
                     'ROLE_ADMIN_CERTIFICATION',
-                    'ROLE_ADMIN_IDEAS_WORKSHOP',
                     'ROLE_ADMIN_FORMATION',
                     'ROLE_ADMIN_ASSESSOR',
                     'ROLE_ADMIN_APPLICATION_REQUEST',
