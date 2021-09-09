@@ -6,6 +6,7 @@ use App\AdherentCharter\AdherentCharterFactory;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CharterController extends AbstractController
 {
     /**
+     * @Security("is_granted('CAN_ACCEPT_CHARTER', type)")
      * @Route("/v3/profile/charter/{type}", name="app_api_get_charter", methods={"GET"})
      */
     public function retrieveCharter(string $type, TranslatorInterface $translator): Response
@@ -44,6 +46,7 @@ class CharterController extends AbstractController
     }
 
     /**
+     * @Security("is_granted('CAN_ACCEPT_CHARTER', type)")
      * @Route("/v3/profile/charter/{type}/accept", name="app_api_accept_charter", methods={"PUT"})
      */
     public function acceptChart(string $type, EntityManagerInterface $entityManager): JsonResponse

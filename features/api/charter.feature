@@ -19,6 +19,15 @@ Feature:
       | GET     | /api/v3/profile/charter/phoning_campaign        |
       | PUT     | /api/v3/profile/charter/phoning_campaign/accept |
 
+  Scenario Outline: As a logged-in user with no correct rights I cannot manage charters
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method  | url                                             |
+      | GET     | /api/v3/profile/charter/phoning_campaign        |
+      | PUT     | /api/v3/profile/charter/phoning_campaign/accept |
+
   Scenario: As a logged-in user with correct rights I cannot get a charter, if I have accepted it
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/profile/charter/phoning_campaign"
