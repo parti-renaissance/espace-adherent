@@ -530,5 +530,5 @@ team.type.choice: Le type d'équipe n'est pas valide.
 # Phoning
 #
 phoning.campaign_history.type.invalid_choice: Le type n'est pas valide.
-phoning.campaign_history.status.invalid_choice: Le status n'est pas valide.
+phoning.campaign_history.status.invalid_choice: Le statut n'est pas valide.
 phoning.campaign_history.finish_at.invalid: La date de fin doit être postérieure à la date de début.
