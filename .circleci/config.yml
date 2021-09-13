@@ -113,7 +113,7 @@ jobs:
                 set -x
 
                 mkdir -p ./behat
-                make -j2 tfp-rabbitmq tfp-db
+                make -j2 tfp-rabbitmq tfp-db-init
                 make perm
 
                 case $CIRCLE_NODE_INDEX in
