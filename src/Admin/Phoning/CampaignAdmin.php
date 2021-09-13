@@ -83,9 +83,6 @@ class CampaignAdmin extends AbstractAdmin
                     'placeholder' => '--',
                     'class' => NationalSurvey::class,
                     'choice_label' => 'name',
-                    'attr' => [
-                        'data-sonata-select2' => 'false',
-                    ],
                 ])
             ->end()
         ;
@@ -115,7 +112,7 @@ class CampaignAdmin extends AbstractAdmin
                 ],
             ])
             ->add('team.members.adherent', ModelAutocompleteFilter::class, [
-                'label' => 'Participant',
+                'label' => 'Appelant',
                 'show_filter' => true,
                 'field_type' => MemberAdherentAutocompleteType::class,
             ])
@@ -134,15 +131,29 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('team', null, [
                 'label' => 'Équipe',
+                'template' => 'admin/phoning/campaign/list_team.html.twig',
             ])
             ->add('survey', null, [
                 'label' => 'Questionnaire',
             ])
             ->add('goal', null, [
-                'label' => 'Objectif',
+                'label' => 'Objectif de la campagne',
+                'template' => 'admin/phoning/campaign/list_goal.html.twig',
             ])
             ->add('finishAt', null, [
                 'label' => 'Date de fin',
+            ])
+            ->add('campaignHistoriesCount', null, [
+                'label' => 'Appels passés',
+                'template' => 'admin/phoning/campaign/list_campaign_histories_count.html.twig',
+            ])
+            ->add('campaignHistoriesWithDataSurveyCount', null, [
+                'label' => 'Questionnaires remplis',
+                'template' => 'admin/phoning/campaign/list_campaign_histories_with_data_survey_count.html.twig',
+            ])
+            ->add('unjoinAndUnsubscribeCount', null, [
+                'label' => 'Désabonnements / Désadhésions',
+                'template' => 'admin/phoning/campaign/list_campaign_histories_unjoin_unsubscribe_count.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
