@@ -16,7 +16,7 @@
                         <div><pre>{{ object.getContent() }}</pre></div>
                         <h4 class="text-bold">Audience :</h4>
                         <p>{{ object.getAudience() }}</p>
-                        <p>Nombre de contacts trouvés : {{ total_count }}</p>
+                        <p>Nombre de contacts trouvés : {{ object.getRecipientCount() }}</p>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                         <i class="fa fa-edit" aria-hidden="true"></i> Modifier
                     </a>
 
-                    {% if total_count > 0 %}
+                    {% if object.getRecipientCount() > 0 %}
                         <a href="{{ admin.generateObjectUrl('send', object, actions.link_parameters|default([])) }}" class="btn btn-success">
                             <i class="fa fa-send" aria-hidden="true"></i> Envoyer
                         </a>

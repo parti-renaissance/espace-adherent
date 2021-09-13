@@ -138,12 +138,12 @@ class RabbitMqContext implements Context
         return $this->container->get($service);
     }
 
-    public function countMessage(string $producer): int
+    public function countMessage(string $queue): int
     {
         $channel = $this->container->get('old_sound_rabbit_mq.connection.default')->channel();
 
         // We use the same name for queue and producer.
-        list(, $count) = $channel->queue_declare($producer, false, true, false, false);
+        list(, $count) = $channel->queue_declare($queue, false, true, false, false);
 
         return $count;
     }

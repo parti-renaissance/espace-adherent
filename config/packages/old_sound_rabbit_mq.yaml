@@ -6,7 +6,7 @@ old_sound_rabbit_mq:
             user: "%env(RABBITMQ_USER)%"
             password: "%env(RABBITMQ_PASSWORD)%"
             vhost: '/'
-            lazy: false
+            lazy: true
             connection_timeout: 10
             read_write_timeout: 30
             heartbeat: 15

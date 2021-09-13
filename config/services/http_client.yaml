@@ -7,6 +7,10 @@ services:
         autoconfigure: true
         public: false
 
+    _instanceof:
+        Symfony\Contracts\HttpClient\HttpClientInterface:
+            tags: ['http_client.client']
+
     app.http_client.mailchimp_signup:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory:
@@ -21,6 +25,12 @@ services:
             - Symfony\Component\HttpClient\HttpClient
             - create
         arguments: [base_uri: '%env(GEO_GOUV_API_HOST)%']
+
+    app.http_client.ovh_cloud:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory:
+            - Symfony\Component\HttpClient\HttpClient
+            - create
 
     Symfony\Contracts\HttpClient\HttpClientInterface:
         class: Symfony\Contracts\HttpClient\HttpClientInterface

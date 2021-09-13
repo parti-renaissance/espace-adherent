@@ -17,6 +17,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\ReferentManagedArea;
+use App\Entity\SmsCampaign;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
@@ -1219,9 +1220,24 @@ SQL;
         ;
     }
 
+    /** @return PaginatorInterface|Adherent[] */
     public function findForAudience(AudienceInterface $audience, int $page = 1, int $limit = 100): PaginatorInterface
     {
         return $this->configurePaginator($this->createQueryBuilderForAudience($audience), $page, $limit);
+    }
+
+    /** @return PaginatorInterface|Adherent[] */
+    public function findForSmsCampaign(SmsCampaign $smsCampaign, int $page = 1, int $limit = 100): PaginatorInterface
+    {
+        return $this->configurePaginator($this->createQueryBuilderForSmsCampaign($smsCampaign), $page, $limit);
+    }
+
+    public function createQueryBuilderForSmsCampaign(SmsCampaign $smsCampaign): QueryBuilder
+    {
+        return $this->createQueryBuilderForAudience($smsCampaign->getAudience())
+            ->andWhere('adherent.phone LIKE :phone')
+            ->setParameter('phone', '+33%')
+        ;
     }
 
     public function createQueryBuilderForAudience(AudienceInterface $audience): QueryBuilder

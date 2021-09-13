@@ -66,8 +66,6 @@ class CoalitionEventManagerControllerTest extends WebTestCase
 
     public function testCreateEventSuccessful(): void
     {
-        self::markTestSkipped('Need to fix: "stream_select(): You MUST recompile PHP with a larger value of FD_SETSIZE."');
-
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $this->client->request(Request::METHOD_GET, '/espace-coalition/evenements/creer');

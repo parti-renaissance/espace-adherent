@@ -9,4 +9,5 @@ final class SmsCampaignStatusEnum extends Enum
     public const DRAFT = 'draft';
     public const SENDING = 'sending';
     public const DONE = 'done';
+    public const ERROR = 'error';
 }

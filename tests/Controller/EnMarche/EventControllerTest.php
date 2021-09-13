@@ -34,8 +34,6 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAnonymousUserCanRegisterToEvent()
     {
-        self::markTestSkipped('Need to fix: "stream_select(): You MUST recompile PHP with a larger value of FD_SETSIZE."');
-
         $this->assertCount(5, $this->subscriptionsRepository->findAll());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -109,8 +107,6 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
-        self::markTestSkipped('Need to fix: "stream_select(): You MUST recompile PHP with a larger value of FD_SETSIZE."');
-
         $this->authenticateAsAdherent($this->client, 'deputy@en-marche-dev.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
