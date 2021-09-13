@@ -53,7 +53,7 @@ class AdminSmsCampaignCRUDController extends CRUDController
         $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign);
 
         if ($paginator->getTotalItems() < 1) {
-            $this->addFlash('sonata_flash_error', 'Cette campagne vise aucun contact');
+            $this->addFlash('sonata_flash_error', 'Cette campagne ne vise aucun contact.');
 
             return $this->redirectToList();
         }

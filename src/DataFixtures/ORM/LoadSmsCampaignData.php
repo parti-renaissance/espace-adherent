@@ -7,11 +7,10 @@ use App\Entity\SmsCampaign;
 use App\SmsCampaign\SmsCampaignStatusEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadSmsCampaignData extends Fixture implements DependentFixtureInterface
+class LoadSmsCampaignData extends Fixture
 {
     public const UUID_1 = '0950cc74-eb81-49c6-9989-8500530feaa6';
     public const UUID_2 = 'a8a9b003-a05c-40b9-bc78-8184a2a4ac71';
@@ -56,12 +55,5 @@ class LoadSmsCampaignData extends Fixture implements DependentFixtureInterface
         $object->setResponsePayload('{"class":"Client::BadRequest","message":"Unknown body parameter sender"}');
 
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return [
-            LoadAdminData::class,
-        ];
     }
 }
