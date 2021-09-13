@@ -7,6 +7,7 @@ use MyCLabs\Enum\Enum;
 class CampaignHistoryStatusEnum extends Enum
 {
     public const SEND = 'send';
+    public const ANSWERED = 'answered'; // not a real status, used only for labels in front
     public const TO_UNSUBSCRIBE = 'to-unsubscribe';
     public const TO_UNJOIN = 'to-unjoin';
     public const NOT_RESPOND = 'not-respond';
@@ -18,6 +19,7 @@ class CampaignHistoryStatusEnum extends Enum
 
     public const LABELS = [
         self::SEND => 'Numéro de téléphone envoyé',
+        self::ANSWERED => 'Il accepte de répondre aux questions',
         self::TO_UNSUBSCRIBE => 'Ne souhaite plus être rappelé',
         self::TO_UNJOIN => 'Souhaite désadhérer',
         self::NOT_RESPOND => 'N\'a pa répondu au téléphone',
@@ -39,6 +41,7 @@ class CampaignHistoryStatusEnum extends Enum
     ];
 
     public const FINISHED_STATUS = [
+        self::ANSWERED,
         self::TO_UNSUBSCRIBE,
         self::TO_UNJOIN,
         self::NOT_RESPOND,

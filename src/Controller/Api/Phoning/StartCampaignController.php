@@ -23,11 +23,17 @@ class StartCampaignController extends AbstractController
         $this->denyAccessUnlessGranted(PhoningCampaignVoter::PERMISSION, $campaign);
 
         if ($campaign->isFinished()) {
-            return $this->json(['message' => 'Cette campagne est terminée'], Response::HTTP_BAD_REQUEST);
+            return $this->json([
+                'code' => 'finished_campaign',
+                'message' => 'Cette campagne est terminée',
+            ], Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$adherent = $adherentRepository->findOneToCall($campaign)) {
-            return $this->json(['message' => 'Aucun numéro à appeler disponible'], Response::HTTP_BAD_REQUEST);
+        if (!$adherent = $adherentRepository->findOneToCall($campaign, $connectedAdherent)) {
+            return $this->json([
+                'code' => 'no_available_number',
+                'message' => 'Aucun numéro à appeler disponible',
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $entityManager->persist($campaignHistory = CampaignHistory::createForCampaign($campaign, $connectedAdherent, $adherent));

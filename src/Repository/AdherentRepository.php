@@ -1326,11 +1326,11 @@ SQL;
         return $qb;
     }
 
-    public function findOneToCall(Campaign $campaign): ?Adherent
+    public function findOneToCall(Campaign $campaign, Adherent $excludedAdherent): ?Adherent
     {
         $adherents = $this->createQueryBuilderForAudience($campaign->getAudience())
             ->select('adherent')
-            ->andWhere('adherent.phone LIKE :fr_phone')
+            ->andWhere('adherent.phone LIKE :fr_phone AND adherent != :excludedAdherent')
             ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a3')
                 ->select('DISTINCT(a3.id)')
                 ->innerJoin(CampaignHistory::class, 'ch3', Join::WITH, 'ch3.adherent = a3')
@@ -1359,6 +1359,7 @@ SQL;
             ->setParameter('completed', CampaignHistoryStatusEnum::COMPLETED)
             ->setParameter('dont_remind', CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND)
             ->setParameter('campaign', $campaign)
+            ->setParameter('excludedAdherent', $excludedAdherent)
             ->getQuery()
             ->getResult()
         ;

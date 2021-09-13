@@ -210,10 +210,15 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
     /**
      * @dataProvider dataProviderExcludedCampaignAdherents
      */
-    public function testFindOneToCall(string $campaignUuid, string $assert, array $adherentEmails): void
-    {
+    public function testFindOneToCall(
+        string $campaignUuid,
+        string $excludedAdherent,
+        string $assert,
+        array $adherentEmails
+    ): void {
+        $excludedAdherent = $this->adherentRepository->findOneByEmail($excludedAdherent);
         $campaign = $this->campaignRepository->findOneBy(['uuid' => $campaignUuid]);
-        $adherent = $this->adherentRepository->findOneToCall($campaign);
+        $adherent = $this->adherentRepository->findOneToCall($campaign, $excludedAdherent);
 
         /** @var Adherent $adherent */
         $this->assertNotNull($adherent);
@@ -226,7 +231,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
 
     public function dataProviderExcludedCampaignAdherents(): \Generator
     {
-        yield [LoadPhoningCampaignData::CAMPAIGN_1_UUID, 'assertNotContains', [
+        yield [LoadPhoningCampaignData::CAMPAIGN_1_UUID, 'jacques.picard@en-marche.fr', 'assertNotContains', [
             'adherent-male-a@en-marche-dev.fr',
             'adherent-male-b@en-marche-dev.fr',
             'adherent-male-c@en-marche-dev.fr',
@@ -243,7 +248,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
             'adherent-male-47@en-marche-dev.fr',
             'adherent-male-49@en-marche-dev.fr',
         ]];
-        yield [LoadPhoningCampaignData::CAMPAIGN_5_UUID, 'assertContains', [
+        yield [LoadPhoningCampaignData::CAMPAIGN_5_UUID, 'jacques.picard@en-marche.fr', 'assertContains', [
             'benjyd@aol.com',
         ]];
     }

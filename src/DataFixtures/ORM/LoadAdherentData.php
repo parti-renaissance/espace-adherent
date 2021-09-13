@@ -647,6 +647,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('26 rue Vivienne', '75002-75102', null, 48.870025, 2.340985),
             'birthdate' => '1975-04-01',
             'registered_at' => '2018-08-05 15:02:34',
+            'phone' => '+33187656781',
         ]);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('deputy'));
