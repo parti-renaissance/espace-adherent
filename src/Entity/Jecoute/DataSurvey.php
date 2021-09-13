@@ -52,6 +52,8 @@ class DataSurvey implements AuthorInterface
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"data_survey_write"})
      */
     private $survey;
 

@@ -32,7 +32,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') and is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
  *         },
- *     }
+ *         "post_reply": {
+ *             "method": "POST",
+ *             "path": "/v3/phoning_campaign_histories/{uuid}/reply",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Phoning\CampaignHistoryReplyController",
+ *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
+ *             "defaults": {"_api_receive": false},
+ *             "normalization_context": {"groups": {"data_survey_read"}},
+ *         },
+ *     },
  * )
  */
 class CampaignHistory implements DataSurveyAwareInterface

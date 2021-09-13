@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="jecoute_choice")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\ChoiceRepository")
  */
 class Choice
 {
