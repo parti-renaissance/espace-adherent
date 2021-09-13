@@ -7,6 +7,7 @@ use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Team\TypeEnum;
+use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,6 +65,7 @@ class Team
      * @ORM\OneToMany(targetEntity="App\Entity\Team\Member", mappedBy="team", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
+     * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
     private $members;
 

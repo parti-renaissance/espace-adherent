@@ -8,7 +8,6 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,12 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="team_member", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="team_member_unique", columns={"team_id", "adherent_id"}),
  * })
- *
- * @UniqueEntity(
- *     fields={"team", "adherent"},
- *     message="team.member.already_exists",
- *     errorPath="adherent"
- * )
  */
 class Member
 {

@@ -68,6 +68,8 @@ common.message.max_length: Le message ne doit pas contenir plus de {{ limit }} c
 
 common.zone.not_managed_zone: La zone choisie ne fait pas partie des zones gérées.
 
+constraint.unique_in_collection: Un élément avec la valeur "%value%" existe déjà.
+
 #
 # Adherent
 #
@@ -517,7 +519,7 @@ audience.zones.empty: Le périmètre géographique ne doit pas être vide
 #
 # Team
 #
-team.member.already_exists: Cet adhérent fait déjà partie de cette équipe.
+team.members.adherent_already_in_collection: L'adhérent "%value%" fait déjà partie de cette équipe.
 team.member.adherent.not_blank: Veuillez sélectionner un adhérent.
 team.type_name.already_exists: Une équipe du même type porte déjà le même nom.
 team.name.not_blank: Veuillez spécifier un nom d'équipe.
