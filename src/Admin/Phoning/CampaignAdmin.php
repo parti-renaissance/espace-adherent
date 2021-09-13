@@ -5,14 +5,15 @@ namespace App\Admin\Phoning;
 use App\Admin\Audience\AudienceAdmin;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Phoning\Campaign;
+use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\DatePickerType;
@@ -39,7 +40,7 @@ class CampaignAdmin extends AbstractAdmin
         $formMapper
             ->with('Informations ⚙️')
                 ->add('title', TextType::class, [
-                    'label' => 'Nom',
+                    'label' => 'Titre',
                 ])
                 ->add('brief', TextareaType::class, [
                     'label' => 'Brief',
@@ -48,18 +49,29 @@ class CampaignAdmin extends AbstractAdmin
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
                 ->add('goal', NumberType::class, [
-                    'label' => 'Objectif',
+                    'label' => 'Objectif individuel',
+                    'help' => 'Cet objectif sera affiché de manière identique à chaque appelant. L’objectif de la campagne sera calculé par cet objectif multiplié du nombre d’appelants.',
                 ])
                 ->add('finishAt', DatePickerType::class, [
                     'label' => 'Date de fin',
                     'error_bubbling' => true,
                     'attr' => ['class' => 'width-140'],
                 ])
-                ->add('team', ModelAutocompleteType::class, [
-                    'label' => 'Équipe',
-                    'property' => [
-                        'name',
-                    ],
+                ->add('team', EntityType::class, [
+                    'label' => 'Équipe phoning',
+                    'class' => Team::class,
+                    'choice_label' => function (Team $team) {
+                        return sprintf('%s (%s)',
+                            $team->getName(),
+                            $team->getMembersCount()
+                        );
+                    },
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er
+                            ->createQueryBuilder('team')
+                            ->innerJoin('team.members', 'member')
+                        ;
+                    },
                 ])
             ->end()
             ->with('Filtres')

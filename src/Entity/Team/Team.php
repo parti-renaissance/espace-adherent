@@ -61,7 +61,13 @@ class Team
     /**
      * @var Member[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Team\Member", mappedBy="team", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Team\Member",
+     *     mappedBy="team",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
      *
      * @Assert\Valid
      */
@@ -127,6 +133,11 @@ class Team
     public function removeMember(Member $member): void
     {
         $this->members->removeElement($member);
+    }
+
+    public function getMembersCount(): int
+    {
+        return $this->members->count();
     }
 
     public function isPhoning(): bool
