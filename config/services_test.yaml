@@ -34,8 +34,6 @@ services:
     old_sound_rabbit_mq.chezvous_algolia_producer:
         class: 'Tests\App\Test\Producer\ChezVous\AlgoliaNullProducer'
 
-    Tests\App\Test\Consumer\DummyConsumer: ~
-
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'

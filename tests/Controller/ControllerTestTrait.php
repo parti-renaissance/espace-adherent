@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
+use Tests\App\Test\OldSoundRabbitMq\Connection\DummyConnection;
 use Tests\App\TestHelperTrait;
 
 /**
@@ -164,13 +165,16 @@ trait ControllerTestTrait
 
     private function getMessages(string $queue): array
     {
-        $channel = $this->get('old_sound_rabbit_mq.connection.default')->channel();
+        /** @var DummyConnection $connection */
+        $connection = $this->get('old_sound_rabbit_mq.connection.default');
+
+        $channel = $connection->channel();
+
         $messages = [];
 
         /** @var AMQPMessage $message */
         while ($message = $channel->basic_get($queue)) {
             $messages[] = $message;
-            $channel->basic_ack($message->get('delivery_tag'));
         }
 
         return $messages;

@@ -46,10 +46,6 @@ Feature:
     Then the response status code should be 200
     And I should be on "/presque-fini"
     Then the adherent "jp@test.com" should have the "94" referent tag
-    And "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                                       |
-      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"city":"Thiais","country":"FR","zipCode":"94320","tags":["94"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
@@ -121,15 +117,9 @@ Feature:
       | Pays               | CH          |
       | Nationalité        | CH          |
     And I resolved the captcha
-    And I clean the "api_sync" queue
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"
     And the response status code should be 200
-    And "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                                       |
-      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"CH","zipCode":"38000","tags":["CH"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
-    And I clean the "api_sync" queue
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
@@ -236,10 +226,6 @@ Feature:
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
-    And "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                                       |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"city":"Nice","country":"FR","zipCode":"06000","tags":["06"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 2 emails
     And the adherent "jp@test.com" should have the "06" referent tag
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
@@ -300,11 +286,6 @@ Feature:
     And I press "Enregistrer les modifications"
     Then the response status code should be 200
     And I should see "Vos préférences d'e-mails ont bien été mises à jour."
-    Then "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key               | body                                                                         |
-      | user.update_subscriptions | {"uuid":"@string@","subscriptions":["123abc","456def"],"unsubscriptions":[]} |
-    And I clean the "api_sync" queue
 
   @javascript
   Scenario: I can become adherent with a foreign country
@@ -334,11 +315,6 @@ Feature:
     Then I should be on "/espace-adherent/accueil"
     And the adherent "simple-user@example.ch" should have the "CH" referent tag
     And I should see "Votre compte adhérent est maintenant actif."
-    And "api_sync" should have 1 message
-    And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                                             |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"city":"Zürich","country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
-    And I clean the "api_sync" queue
 
   @javascript
   Scenario: I can become adherent with a french address
