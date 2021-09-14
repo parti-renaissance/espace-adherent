@@ -65,6 +65,12 @@ Feature:
             "caller": false
           },
           {
+            "firstName": "Député",
+            "score": "1",
+            "position": 3,
+            "caller": false
+          },
+          {
             "firstName": "Lucie",
             "score": "0",
             "position": 4,
@@ -95,6 +101,12 @@ Feature:
           },
           {
             "firstName": "Pierre",
+            "score": "0",
+            "position": "@integer@",
+            "caller": false
+          },
+          {
+            "firstName": "Député",
             "score": "0",
             "position": "@integer@",
             "caller": false
@@ -135,6 +147,12 @@ Feature:
             "firstName": "Député",
             "score": "1",
             "position": 3,
+            "caller": false
+          },
+          {
+            "firstName": "Lucie",
+            "score": "0",
+            "position": 4,
             "caller": false
           }
         ]

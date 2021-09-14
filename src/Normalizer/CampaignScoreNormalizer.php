@@ -34,26 +34,7 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
         $caller = $this->tokenStorage->getToken()->getUser();
-        $adherents = $this->adherentRepository->findScoresByCampaign($object);
-        $callers = [];
-        $adherentAdded = false;
-        // add top 3, if caller in top 3 OR top 2 and a caller
-        foreach ($adherents as $key => $adherent) {
-            $adherent['position'] = ++$key;
-            $adherent['caller'] = $caller->getId() === $adherent['id'];
-            unset($adherent['id']);
-
-            if ($adherent['caller']) {
-                $callers[] = $adherent;
-                $adherentAdded = true;
-            } elseif ((\count($callers) < 3 && $adherentAdded) || \count($callers) < 2) {
-                $callers[] = $adherent;
-            }
-
-            if (3 === \count($callers)) {
-                break;
-            }
-        }
+        $callerId = $caller->getId();
 
         if (isset($context['item_operation_name']) && 'get_with_scores' === $context['item_operation_name']) {
             $campaign['nb_calls'] = $object->getCampaignHistoriesForAdherent($caller)->count();
@@ -62,6 +43,13 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
             $campaign['nb_calls'] = $object->getCampaignHistories()->count();
             $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
         }
+
+        $callers = $this->adherentRepository->findScoresByCampaign($object);
+        array_walk($callers, function (&$adherent, $key) use ($callerId) {
+            $adherent['caller'] = $callerId === $adherent['id'];
+            $adherent['position'] = ++$key;
+            unset($adherent['id']);
+        });
         $campaign['scoreboard'] = $callers;
 
         return $campaign;
