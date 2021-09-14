@@ -12,7 +12,7 @@ DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
-.PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db test-behat test-phpunit-functional
+.PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db tfp-db-init test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock
 
 help:
@@ -142,6 +142,12 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
+
+tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
+	$(CONSOLE) doctrine:database:create --env=test --no-debug
+	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2020.sql
+	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
+	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 
 tfp-db: wait-for-db                                                                                    ## Init databases for tests
 	$(EXEC) rm -rf /tmp/data.db || true
