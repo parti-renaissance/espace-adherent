@@ -1386,7 +1386,9 @@ SQL;
     public function findScoresByCampaign(Campaign $campaign): array
     {
         return $this->createQueryBuilder('adherent')
-            ->select('adherent.id, adherent.firstName, COUNT(campaignHistory.id) AS score')
+            ->select('adherent.id, adherent.firstName')
+            ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
+            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_survey')
             ->innerJoin('adherent.teamMemberships', 'teamMemberships')
             ->innerJoin('teamMemberships.team', 'team')
             ->innerJoin(Campaign::class, 'campaign', Join::WITH, 'campaign.team = team')
@@ -1398,7 +1400,7 @@ SQL;
             )
             ->where('campaign = :campaign')
             ->groupBy('adherent.id')
-            ->orderBy('score', 'DESC')
+            ->orderBy('nb_survey', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
             ->addOrderBy('adherent.id', 'ASC')
             ->setParameters([

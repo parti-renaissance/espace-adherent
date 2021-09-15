@@ -54,19 +54,29 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Jacques",
-            "score": "4",
+            "nb_calls": "4",
+            "nb_survey": "3",
             "position": 1,
             "caller": false
           },
           {
             "firstName": "Pierre",
-            "score": "1",
+            "nb_calls": "1",
+            "nb_survey": "1",
             "position": 2,
             "caller": false
           },
           {
+            "firstName": "Député",
+            "nb_calls": "1",
+            "nb_survey": "1",
+            "position": 3,
+            "caller": false
+          },
+          {
             "firstName": "Lucie",
-            "score": "0",
+            "nb_calls": "0",
+            "nb_survey": "0",
             "position": 4,
             "caller": true
           }
@@ -83,19 +93,29 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Jacques",
-            "score": "0",
+            "nb_calls": "0",
+            "nb_survey": "0",
             "position": "@integer@",
             "caller": false
           },
           {
             "firstName": "Lucie",
-            "score": "0",
+            "nb_calls": "0",
+            "nb_survey": "0",
             "position": "@integer@",
             "caller": true
           },
           {
             "firstName": "Pierre",
-            "score": "0",
+            "nb_calls": "0",
+            "nb_survey": "0",
+            "position": "@integer@",
+            "caller": false
+          },
+          {
+            "firstName": "Député",
+            "nb_calls": "0",
+            "nb_survey": "0",
             "position": "@integer@",
             "caller": false
           }
@@ -121,20 +141,30 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Jacques",
-            "score": "4",
+            "nb_calls": "4",
+            "nb_survey": "3",
             "position": 1,
             "caller": true
           },
           {
             "firstName": "Pierre",
-            "score": "1",
+            "nb_calls": "1",
+            "nb_survey": "1",
             "position": 2,
             "caller": false
           },
           {
             "firstName": "Député",
-            "score": "1",
+            "nb_calls": "1",
+            "nb_survey": "1",
             "position": 3,
+            "caller": false
+          },
+          {
+            "firstName": "Lucie",
+            "nb_calls": "0",
+            "nb_survey": "0",
+            "position": 4,
             "caller": false
           }
         ]
