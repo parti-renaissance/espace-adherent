@@ -3,18 +3,19 @@
 namespace App\Validator;
 
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UniqueInCollectionValidator extends ConstraintValidator
 {
     private $propertyAccessor;
 
-    public function __construct()
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     public function validate($value, Constraint $constraint)
@@ -28,7 +29,7 @@ class UniqueInCollectionValidator extends ConstraintValidator
         }
 
         if (!$value instanceof Collection) {
-            throw new UnexpectedTypeException($value, Collection::class);
+            throw new UnexpectedValueException($value, Collection::class);
         }
 
         $propertyValues = [];
