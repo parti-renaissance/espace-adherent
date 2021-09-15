@@ -32,17 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  *     itemOperations={},
- *     collectionOperations={
- *         "post_reply": {
- *             "path": "/v3/surveys/{uuid}/reply",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Jecoute\ReplyController",
- *             "access_control": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
- *             "defaults": {"_api_receive": false},
- *             "normalization_context": {"groups": {"data_survey_read"}},
- *         },
- *     },
  *     subresourceOperations={
  *         "api_campaigns_survey_get_subresource": {
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",

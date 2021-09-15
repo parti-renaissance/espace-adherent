@@ -11,9 +11,12 @@ use App\Jecoute\GenderEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInterface
 {
+    public const JEMARCHE_DATA_SURVEY_1_UUID = '5191f388-ccb0-4a93-b7f9-a15f107287fb';
+
     public function load(ObjectManager $manager)
     {
         /** @var Survey $survey1 */
@@ -28,12 +31,13 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         /** @var Adherent $adherent7 */
         $adherent7 = $this->getReference('adherent-7');
 
-        $dataSurvey1 = $this->createDataSurvey($survey1, $adherent7, 'Juan', 'Nanardinho', GenderEnum::MALE);
-        $dataSurvey2 = $this->createDataSurvey($survey1, $adherent7, 'Brigitte', 'Brioulini', GenderEnum::FEMALE);
-        $dataSurvey3 = $this->createDataSurvey($survey1, $adherent7, 'Michel', 'Mimolette', GenderEnum::MALE);
-        $dataSurvey4 = $this->createDataSurvey($nationalSurvey1, $adherent7, 'Roger', 'Camembert', GenderEnum::MALE);
-        $dataSurvey5 = $this->createDataSurvey($nationalSurvey1, $adherent7, 'Sophie', 'Stiket', GenderEnum::FEMALE);
-        $dataSurvey6 = $this->createDataSurvey($nationalSurvey2, $adherent7, 'Pierre', 'Feuilcizo', GenderEnum::MALE);
+        $dataSurvey1 = $this->createDataSurvey($adherent7, 'Juan', 'Nanardinho', GenderEnum::MALE, $survey1);
+        $dataSurvey2 = $this->createDataSurvey($adherent7, 'Brigitte', 'Brioulini', GenderEnum::FEMALE, $survey1);
+        $dataSurvey3 = $this->createDataSurvey($adherent7, 'Michel', 'Mimolette', GenderEnum::MALE, $survey1);
+        $dataSurvey4 = $this->createDataSurvey($adherent7, 'Roger', 'Camembert', GenderEnum::MALE, $nationalSurvey1);
+        $dataSurvey5 = $this->createDataSurvey($adherent7, 'Sophie', 'Stiket', GenderEnum::FEMALE, $nationalSurvey1);
+        $dataSurvey6 = $this->createDataSurvey($adherent7, 'Pierre', 'Feuilcizo', GenderEnum::MALE, $nationalSurvey1);
+        $dataSurvey7 = $this->createDataSurvey($adherent7, 'Maria', 'Mozzarella', GenderEnum::MALE, null, self::JEMARCHE_DATA_SURVEY_1_UUID);
 
         $manager->persist($dataSurvey1);
         $manager->persist($dataSurvey2);
@@ -41,6 +45,7 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         $manager->persist($dataSurvey4);
         $manager->persist($dataSurvey5);
         $manager->persist($dataSurvey6);
+        $manager->persist($dataSurvey7);
 
         $this->addReference('data-survey-1', $dataSurvey1->getDataSurvey());
         $this->addReference('data-survey-2', $dataSurvey2->getDataSurvey());
@@ -53,19 +58,23 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
     }
 
     public function createDataSurvey(
-        Survey $survey,
         Adherent $author,
         string $firstName,
         string $lastName,
-        string $gender
+        string $gender,
+        Survey $survey = null,
+        string $uuid = null
     ): JemarcheDataSurvey {
-        $dataSurvey = new DataSurvey($survey);
-        $dataSurvey->setAuthor($author);
-        $jemarcheDataSurvey = new JemarcheDataSurvey();
+        $jemarcheDataSurvey = new JemarcheDataSurvey($uuid ? Uuid::fromString($uuid) : null);
         $jemarcheDataSurvey->setGender($gender);
         $jemarcheDataSurvey->setFirstName($firstName);
         $jemarcheDataSurvey->setLastName($lastName);
-        $jemarcheDataSurvey->setDataSurvey($dataSurvey);
+
+        if ($survey) {
+            $dataSurvey = new DataSurvey($survey);
+            $dataSurvey->setAuthor($author);
+            $jemarcheDataSurvey->setDataSurvey($dataSurvey);
+        }
 
         return $jemarcheDataSurvey;
     }

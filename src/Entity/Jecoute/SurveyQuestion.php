@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="jecoute_survey_question")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SurveyQuestionRepository")
  */
 class SurveyQuestion implements AuthoredInterface
 {

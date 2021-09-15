@@ -10,7 +10,7 @@ trait DataSurveyAwareTrait
     /**
      * @var DataSurvey|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\Valid

@@ -6,6 +6,7 @@ use App\Validator\DataSurveyAnswerTypeChoice;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,8 @@ class DataAnswer
     /**
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="dataAnswers")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     *
+     * @Groups({"data_survey_write"})
      */
     private $surveyQuestion;
 
@@ -33,6 +36,8 @@ class DataAnswer
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
+     *
+     * @Groups({"data_survey_write"})
      */
     private $textField;
 
@@ -49,6 +54,8 @@ class DataAnswer
      *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
+     *
+     * @Groups({"data_survey_write"})
      */
     private $selectedChoices;
 
