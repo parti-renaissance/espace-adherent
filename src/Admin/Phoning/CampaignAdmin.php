@@ -46,7 +46,7 @@ class CampaignAdmin extends AbstractAdmin
                     'label' => 'Brief',
                     'required' => false,
                     'filter_emojis' => true,
-                    'attr' => ['class' => 'content-editor', 'rows' => 20],
+                    'attr' => ['class' => 'simplified-content-editor', 'rows' => 15],
                 ])
                 ->add('goal', NumberType::class, [
                     'label' => 'Objectif individuel',
