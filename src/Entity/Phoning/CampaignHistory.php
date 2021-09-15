@@ -72,7 +72,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\Column(length=10, nullable=true)
      *
      * @Assert\Choice(
-     *     callback={"App\Phoning\DataSurveyTypeEnum", "toArray"},
+     *     callback={"App\Phoning\CampaignHistoryTypeEnum", "toArray"},
      *     message="phoning.campaign_history.type.invalid_choice",
      *     strict=true
      * )
@@ -278,5 +278,15 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function isInAfterCallStatus(): bool
     {
         return \in_array($this->status, CampaignHistoryStatusEnum::AFTER_CALL_STATUS);
+    }
+
+    public function isToUnjoinStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::TO_UNJOIN === $this->status;
+    }
+
+    public function isToUnsubscribeStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::TO_UNSUBSCRIBE === $this->status;
     }
 }

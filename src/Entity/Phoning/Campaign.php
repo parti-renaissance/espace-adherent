@@ -263,6 +263,11 @@ class Campaign
         return $this->campaignHistories;
     }
 
+    public function getCampaignHistoriesCount(): int
+    {
+        return $this->campaignHistories->count();
+    }
+
     /**
      * @return CampaignHistory[]|Collection
      */
@@ -300,8 +305,27 @@ class Campaign
         return $this->campaignHistories->matching($criteria);
     }
 
+    public function getCampaignHistoriesToUnsubscribe(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isToUnsubscribeStatus();
+        });
+    }
+
+    public function getCampaignHistoriesToUnjoin(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isToUnjoinStatus();
+        });
+    }
+
     public function isFinished(): bool
     {
         return $this->finishAt <= new \DateTime();
+    }
+
+    public function getGoalOverall(): int
+    {
+        return (int) $this->goal * $this->getTeam()->getMembersCount();
     }
 }

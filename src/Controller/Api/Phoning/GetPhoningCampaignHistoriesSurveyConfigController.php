@@ -18,12 +18,14 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
 {
     public function __invoke(CampaignHistory $campaignHistory): JsonResponse
     {
+        $adherent = $campaignHistory->getAdherent();
+
         return $this->json([
             'call_status' => [
                 'finished' => self::transformStatusArray(CampaignHistoryStatusEnum::FINISHED_STATUS),
                 'interrupted' => self::transformStatusArray(CampaignHistoryStatusEnum::INTERRUPTED_STATUS),
             ],
-            'satisfaction_questions' => array_merge($campaignHistory->getAdherent()->isEmailUnsubscribed() ? [[
+            'satisfaction_questions' => array_merge($adherent && $adherent->isEmailUnsubscribed() ? [[
                 'code' => 'need_renewal',
                 'label' => 'Souhaiterez-vous vous réabonner ?',
                 'type' => 'boolean',
