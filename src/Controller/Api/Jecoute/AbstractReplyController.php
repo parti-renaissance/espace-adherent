@@ -30,6 +30,13 @@ abstract class AbstractReplyController extends AbstractController
 
     public function handleRequest(Request $request, DataSurveyAwareInterface $object): Response
     {
+        if ($object->getDataSurvey()) {
+            return $this->json([
+                'code' => 'already_replied',
+                'message' => 'La réponse a été déjà envoyée',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         $this->serializer->deserialize($request->getContent(), DataSurvey::class, 'json', [
             AbstractObjectNormalizer::GROUPS => ['data_survey_write'],
             AbstractObjectNormalizer::OBJECT_TO_POPULATE => $dataSurvey = new DataSurvey(),
