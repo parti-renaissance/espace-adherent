@@ -611,6 +611,9 @@
     "php-http/promise": {
         "version": "1.1.0"
     },
+    "php-webdriver/webdriver": {
+        "version": "1.11.1"
+    },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
     },
@@ -1054,6 +1057,15 @@
     },
     "symfony/options-resolver": {
         "version": "v4.4.17"
+    },
+    "symfony/panther": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "877d853a05c6713665a2f4b954734592680abff6"
+        }
     },
     "symfony/phpunit-bridge": {
         "version": "5.3",

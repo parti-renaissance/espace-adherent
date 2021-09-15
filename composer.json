@@ -105,6 +105,7 @@
         "symfony/messenger": "^4.4",
         "symfony/monolog-bridge": "^4.4",
         "symfony/monolog-bundle": "^3.6",
+        "symfony/panther": "^1.1",
         "symfony/property-info": "^4.4",
         "symfony/proxy-manager-bridge": "^4.4",
         "symfony/psr-http-message-bridge": "^1.0",
