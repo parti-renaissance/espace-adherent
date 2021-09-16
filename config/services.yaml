@@ -88,6 +88,8 @@ services:
             tags: ['app.adherent.scope_generator']
         App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface:
             tags: ['app.managed_user.filer_factory']
+        App\AdherentFilter\FilterBuilder\AdherentFilterBuilderInterface:
+            tags: [ 'app.adherent_filter.builder' ]
 
     # Imports
     App\:
@@ -288,3 +290,6 @@ services:
             - '%env(OVHCLOUD_APPLICATION_SECRET)%'
             - '%env(OVHCLOUD_CONSUMER_KEY)%'
             - '%env(OVHCLOUD_SERVICE_NAME)%'
+
+    App\AdherentFilter\AdherentFiltersGenerator:
+        arguments: [!tagged_iterator 'app.adherent_filter.builder']
