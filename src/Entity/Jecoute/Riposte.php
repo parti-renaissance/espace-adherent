@@ -51,6 +51,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/ripostes/{id}",
  *             "requirements": {"id": "%pattern_uuid%"}
  *         },
+ *         "increment": {
+ *             "method": "PUT",
+ *             "path": "/v3/ripostes/{uuid}/action/{action}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Jecoute\IncrementRiposteStatsCounterController",
+ *             "defaults": {"_api_receive": false},
+ *         },
  *     }
  * )
  *
@@ -61,6 +68,11 @@ class Riposte implements AuthorInterface
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use AuthoredTrait;
+
+    public const ACTION_VIEW = 'view';
+    public const ACTION_DETAIL_VIEW = 'detail_view';
+    public const ACTION_SOURCE_VIEW = 'source_view';
+    public const ACTION_RIPOSTE = 'riposte';
 
     /**
      * @var string
@@ -123,6 +135,34 @@ class Riposte implements AuthorInterface
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $createdBy;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     */
+    private $nbViews = 0;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     */
+    private $ndDetailViews = 0;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     */
+    private $nbSourceViews = 0;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     */
+    private $nbRipostes = 0;
 
     public function __construct(UuidInterface $uuid = null, $withNotification = true, $enabled = true)
     {
@@ -194,6 +234,46 @@ class Riposte implements AuthorInterface
     public function setAuthor(Adherent $author): void
     {
         $this->author = $author;
+    }
+
+    public function getNbViews(): ?int
+    {
+        return $this->nbViews;
+    }
+
+    public function incrementNbViews(): void
+    {
+        ++$this->nbViews;
+    }
+
+    public function getNdDetailViews(): ?int
+    {
+        return $this->ndDetailViews;
+    }
+
+    public function incrementNdDetailViews(): void
+    {
+        ++$this->ndDetailViews;
+    }
+
+    public function getNbSourceViews(): ?int
+    {
+        return $this->nbSourceViews;
+    }
+
+    public function incrementNbSourceViews(): void
+    {
+        ++$this->nbSourceViews;
+    }
+
+    public function getNbRipostes(): ?int
+    {
+        return $this->nbRipostes;
+    }
+
+    public function incrementNbRipostes(): void
+    {
+        ++$this->nbRipostes;
     }
 
     public function __toString(): string
