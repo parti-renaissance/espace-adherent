@@ -4,6 +4,7 @@ namespace App\Admin\Jecoute;
 
 use App\Entity\Administrator;
 use App\Entity\Jecoute\Riposte;
+use App\Riposte\RiposteOpenGraphHandler;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,6 +13,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Security;
 
 class RiposteAdmin extends AbstractAdmin
@@ -24,6 +27,8 @@ class RiposteAdmin extends AbstractAdmin
     ];
 
     private $security;
+    /** @var RiposteOpenGraphHandler */
+    private $openGraphHandler;
 
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -120,7 +125,6 @@ class RiposteAdmin extends AbstractAdmin
             ])
             ->add('sourceUrl', UrlType::class, [
                 'label' => 'URL',
-                'required' => false,
             ])
             ->add('withNotification', null, [
                 'label' => 'Avec notification',
@@ -129,6 +133,16 @@ class RiposteAdmin extends AbstractAdmin
                 'label' => 'Active',
             ])
         ;
+
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
+    }
+
+    public function submit(FormEvent $event): void
+    {
+        /** @var Riposte $riposte */
+        $riposte = $event->getData();
+
+        $this->openGraphHandler->handle($riposte);
     }
 
     /**
@@ -148,5 +162,13 @@ class RiposteAdmin extends AbstractAdmin
     public function setSecurity(Security $security)
     {
         $this->security = $security;
+    }
+
+    /**
+     * @required
+     */
+    public function setOpenGraphHandler(RiposteOpenGraphHandler $openGraphHandler)
+    {
+        $this->openGraphHandler = $openGraphHandler;
     }
 }

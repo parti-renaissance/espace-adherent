@@ -9,6 +9,7 @@ use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Validator\RiposteOpenGraph;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -58,6 +59,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
+ *
+ * @RiposteOpenGraph
  */
 class Riposte implements AuthorInterface
 {
@@ -71,7 +74,7 @@ class Riposte implements AuthorInterface
     public const ACTION_RIPOSTE = 'riposte';
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column
      *
@@ -83,7 +86,7 @@ class Riposte implements AuthorInterface
     private $title;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="text")
      *
@@ -94,10 +97,11 @@ class Riposte implements AuthorInterface
     private $body;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column
      *
+     * @Assert\NotBlank
      * @Assert\Url
      *
      * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
@@ -120,9 +124,20 @@ class Riposte implements AuthorInterface
      *
      * @ORM\Column(type="boolean", options={"default": true})
      *
-     * @Groups({"riposte_read", "riposte_write"})
+     * @Assert\Type("bool")
+     *
+     * @Groups({"riposte_list_read", "riposte_read", "riposte_write"})
      */
     private $enabled;
+
+    /**
+     * @var array|null
+     *
+     * @ORM\Column(type="json_array")
+     *
+     * @Groups({"riposte_list_read", "riposte_read"})
+     */
+    protected $openGraph;
 
     /**
      * @var Administrator|null
@@ -172,7 +187,7 @@ class Riposte implements AuthorInterface
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
@@ -182,7 +197,7 @@ class Riposte implements AuthorInterface
         return $this->body;
     }
 
-    public function setBody(string $body): void
+    public function setBody(?string $body): void
     {
         $this->body = $body;
     }
@@ -215,6 +230,21 @@ class Riposte implements AuthorInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getOpenGraph(): ?array
+    {
+        return $this->openGraph;
+    }
+
+    public function setOpenGraph(array $openGraph): void
+    {
+        $this->openGraph = $openGraph;
+    }
+
+    public function clearOpenGraph(): void
+    {
+        $this->openGraph = null;
     }
 
     public function getCreatedBy(): ?Administrator

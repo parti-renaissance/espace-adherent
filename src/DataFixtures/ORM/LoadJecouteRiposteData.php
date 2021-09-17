@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Jecoute\Riposte;
+use App\Riposte\RiposteOpenGraphHandler;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,7 +17,13 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
     public const RIPOSTE_2_UUID = 'ff4a352e-9762-4da7-b9f3-a8bfdbce63c1';
     public const RIPOSTE_3_UUID = '10ac465f-a2f9-44f1-9d80-8f2653a1b496';
     public const RIPOSTE_4_UUID = '80b2eb70-38c3-425e-8c1d-a90e84e1a4b3';
-    public const RIPOSTE_5_UUID = '5222890b-8cf7-45e3-909a-049f1ba5baa4';
+
+    private $riposteOpenGraphHandler;
+
+    public function __construct(RiposteOpenGraphHandler $riposteOpenGraphHandler)
+    {
+        $this->riposteOpenGraphHandler = $riposteOpenGraphHandler;
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -26,34 +33,30 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             'Le texte de la plus récente riposte d\'aujourd\'hui avec un lien http://riposte.fr',
             'https://a-repondre.fr',
         );
-        $riposteTodayWithoutUrl = $this->createRiposte(
-            self::RIPOSTE_2_UUID,
-            'La riposte d\'aujourd\'hui sans URL',
-            'Le texte de la riposte d\'aujourd\'hui sans URL',
-            null,
-            '-1 minute'
-        );
+
         $riposte12hoursWithoutNotification = $this->createRiposte(
-            self::RIPOSTE_3_UUID,
-            'La riposte sans URL et notification',
-            'Le texte de la riposte sans URL et notification',
-            null,
+            self::RIPOSTE_2_UUID,
+            'La riposte avec URL et sans notification',
+            'Le texte de la riposte avec URL et sans notification',
+            'https://a-repondre.fr',
             '-12 hours',
             false,
             true,
             $this->getReference('deputy-75-1')
         );
+
         $riposteTodayDisabled = $this->createRiposte(
-            self::RIPOSTE_4_UUID,
-            'La riposte d\'aujourd\'hui désactivé',
-            'Le texte de la riposte d\'aujourd\'hui désactivé',
-            null,
+            self::RIPOSTE_3_UUID,
+            'La riposte d\'aujourd\'hui désactivée',
+            'Le texte de la riposte d\'aujourd\'hui désactivée',
+            'https://a-repondre.fr',
             'now',
             true,
             false
         );
+
         $riposte2daysAgo = $this->createRiposte(
-            self::RIPOSTE_5_UUID,
+            self::RIPOSTE_4_UUID,
             'La riposte d\'avant-hier avec un URL et notification',
             'Le texte de la riposte d\'avant-hier avec un lien http://riposte.fr',
             'https://a-repondre-avant-hier.fr',
@@ -61,7 +64,6 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         );
 
         $manager->persist($riposteTodayLast);
-        $manager->persist($riposteTodayWithoutUrl);
         $manager->persist($riposte12hoursWithoutNotification);
         $manager->persist($riposteTodayDisabled);
         $manager->persist($riposte2daysAgo);
@@ -69,11 +71,11 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         $manager->flush();
     }
 
-    public function createRiposte(
+    private function createRiposte(
         string $uuid,
         string $title,
         string $body,
-        ?string $sourceUrl,
+        string $sourceUrl,
         string $createdAt = 'now',
         bool $withNotification = true,
         bool $enabled = true,
@@ -92,6 +94,8 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         if (!$author && !$admin) {
             $riposte->setCreatedBy($this->getReference('administrator-2'));
         }
+
+        $this->riposteOpenGraphHandler->handle($riposte);
 
         return $riposte;
     }

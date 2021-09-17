@@ -31,6 +31,9 @@ services:
         decorates: 'search.service'
         arguments: ['@Tests\App\Test\Algolia\DummySearchService.inner']
 
+    App\OpenGraph\OpenGraphFetcher:
+        class: 'Tests\App\Test\OpenGraph\DummyOpenGraphFetcher'
+
     data_collector.messenger:
         class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector
         tags: [{ name: 'data_collector', id: messenger, template: profiler/messenger.html.twig }]

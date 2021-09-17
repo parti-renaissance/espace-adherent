@@ -637,3 +637,30 @@
         });
     </script>
 {% endblock %}
+
+{% block app_admin_jecoute_riposte_sourceUrl_url_row -%}
+    {{ block('form_row') }}
+
+    {% set object = form.parent.vars.value %}
+    {% set openGraph = object.openGraph %}
+    {% if object.openGraph is not empty %}
+        <div class="well">
+            <div class="media">
+                <div class="media-left">
+                    {% if openGraph.image is defined and openGraph.image is not null %}
+                        <img class="media-object" style="width: 64px; height: 64px;" src="{{ openGraph.image }}">
+                    {% endif %}
+                </div>
+                <div class="media-body">
+                    {% if openGraph.title is defined and openGraph.title is not null %}
+                        <h4 class="media-heading">{{ openGraph.title }}</h4>
+                    {% endif %}
+                    {% if openGraph.description is defined and openGraph.description is not null %}
+                        {{ openGraph.description[:50] }}
+                        {%- if openGraph.description|length > 50 %}...{% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
