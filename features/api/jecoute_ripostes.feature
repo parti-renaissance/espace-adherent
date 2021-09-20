@@ -25,27 +25,31 @@ Feature:
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | method  | url                                                     |
-      | GET     | /api/v3/ripostes                                        |
-      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
-      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
-      | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
+      | method  | url                                                                   |
+      | GET     | /api/v3/ripostes                                                      |
+      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                 |
+      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                 |
+      | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                 |
+      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/riposte  |
 
   Scenario Outline: As a logged-in user I can get, edit or delete any riposte (not mine, disabled or old more that 24 hours)
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "<method>" request to "<url>"
     Then the response status code should be <status>
     Examples:
-      | method  | url                                                   | status |
-      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4 | 200    |
-      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4 | 200    |
-      | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4 | 204    |
-      | GET     | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3 | 200    |
-      | PUT     | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3 | 200    |
-      | DELETE  | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3 | 204    |
-      | GET     | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4 | 200    |
-      | PUT     | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4 | 200    |
-      | DELETE  | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4 | 204    |
+      | method  | url                                                                       | status |
+      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                     | 200    |
+      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                     | 200    |
+      | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                     | 204    |
+      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/riposte      | 200    |
+      | GET     | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3                     | 200    |
+      | PUT     | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3                     | 200    |
+      | DELETE  | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3                     | 204    |
+      | PUT     | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3/action/detail_view  | 200    |
+      | GET     | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4                     | 200    |
+      | PUT     | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4                     | 200    |
+      | DELETE  | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4                     | 204    |
+      | PUT     | /api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4/action/source_view  | 200    |
 
   Scenario: As a logged-in user I can retrieve all ripostes
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -276,4 +280,25 @@ Feature:
       "uuid": "@uuid@",
       "created_at": "@string@.isDateTime()"
     }
+    """
+
+  Scenario: As a logged-in user I cannot increment number of invalid action on a riposte
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    And I send a "PUT" request to "/api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4/action/some_action"
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "code": "unknown_action",
+      "message": "L'action n'est pas réconnue."
+    }
+    """
+
+  Scenario: As a logged-in user I can increment number of some action on a riposte
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    And I send a "PUT" request to "/api/v3/ripostes/5222890b-8cf7-45e3-909a-049f1ba5baa4/action/source_view"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    "OK"
     """

@@ -80,6 +80,22 @@ class RiposteAdmin extends AbstractAdmin
                 'label' => 'Auteur',
                 'template' => 'admin/jecoute/riposte/list_creator.html.twig',
             ])
+            ->add('nbViews', null, [
+                'label' => 'Nb de vues',
+                'header_style' => 'max-width: 70px',
+            ])
+            ->add('ndDetailViews', null, [
+                'label' => 'Nb de vues détaillées',
+                'header_style' => 'max-width: 70px',
+            ])
+            ->add('nbSourceViews', null, [
+                'label' => 'Nb de vues de la source',
+                'header_style' => 'max-width: 70px',
+            ])
+            ->add('nbRipostes', null, [
+                'label' => 'Nb de ripostes',
+                'header_style' => 'max-width: 70px',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
