@@ -120,7 +120,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $callMore;
+    protected $needEmailRenewal;
 
     /**
      * @var bool|null
@@ -129,16 +129,33 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $needRenewal;
+    protected $needSmsRenewal;
 
     /**
-     * @var bool|null
+     * @var string|null
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(length=20, nullable=true)
+     *
+     * @Assert\Choice(
+     *     callback={"App\Phoning\CampaignHistoryEngagementEnum", "toArray"},
+     *     message="phoning.campaign_history.type.invalid_choice",
+     *     strict=true
+     * )
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $becomeCaller;
+    protected $engagement;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
+     *
+     * @Assert\Range(min="1", max="5")
+     *
+     * @Groups({"phoning_campaign_history_write"})
+     */
+    protected $note;
 
     /**
      * @var \DateTime
@@ -234,34 +251,44 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->postalCodeChecked = $postalCodeChecked;
     }
 
-    public function isCallMore(): ?bool
+    public function getNeedEmailRenewal(): ?bool
     {
-        return $this->callMore;
+        return $this->needEmailRenewal;
     }
 
-    public function setCallMore(?bool $callMore): void
+    public function setNeedEmailRenewal(?bool $needEmailRenewal): void
     {
-        $this->callMore = $callMore;
+        $this->needEmailRenewal = $needEmailRenewal;
     }
 
-    public function isNeedRenewal(): ?bool
+    public function getNeedSmsRenewal(): ?bool
     {
-        return $this->needRenewal;
+        return $this->needSmsRenewal;
     }
 
-    public function setNeedRenewal(?bool $needRenewal): void
+    public function setNeedSmsRenewal(?bool $needSmsRenewal): void
     {
-        $this->needRenewal = $needRenewal;
+        $this->needSmsRenewal = $needSmsRenewal;
     }
 
-    public function isBecomeCaller(): ?bool
+    public function getEngagement(): ?string
     {
-        return $this->becomeCaller;
+        return $this->engagement;
     }
 
-    public function setBecomeCaller(?bool $becomeCaller): void
+    public function setEngagement(?string $engagement): void
     {
-        $this->becomeCaller = $becomeCaller;
+        $this->engagement = $engagement;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(?int $note): void
+    {
+        $this->note = $note;
     }
 
     public function getBeginAt(): \DateTimeInterface

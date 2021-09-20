@@ -752,13 +752,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $voteInspector = false;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $phoningCampaignCallMoreStatus = false;
-
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1378,11 +1371,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setInterests(array $interests): void
     {
         $this->interests = $interests;
-    }
-
-    public function setPhoningCampaignCallMoreStatus(bool $callMore): void
-    {
-        $this->phoningCampaignCallMoreStatus = $callMore;
     }
 
     public function updateProfile(AdherentProfile $adherentProfile, PostAddress $postAddress): void

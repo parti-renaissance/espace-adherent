@@ -40,10 +40,6 @@ class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
             $campaignHistory->setFinishAt(new \DateTime());
         }
 
-        if ($campaignHistory->isCallMore()) {
-            $campaignHistory->getAdherent()->setPhoningCampaignCallMoreStatus($campaignHistory->isCallMore());
-        }
-
         $this->entityManager->flush();
     }
 }

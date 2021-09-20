@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Phoning;
 
 use App\Entity\Phoning\CampaignHistory;
+use App\Phoning\CampaignHistoryEngagementEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,26 +26,33 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
                 'finished' => self::transformStatusArray(CampaignHistoryStatusEnum::FINISHED_STATUS),
                 'interrupted' => self::transformStatusArray(CampaignHistoryStatusEnum::INTERRUPTED_STATUS),
             ],
-            'satisfaction_questions' => array_merge($adherent && $adherent->isEmailUnsubscribed() ? [[
-                'code' => 'need_renewal',
-                'label' => 'Souhaiterez-vous vous réabonner ?',
+            'satisfaction_questions' => array_merge($adherent->isEmailUnsubscribed() ? [[
+                'code' => 'need_email_renewal',
+                'label' => 'Souhaitez-vous vous réabonner à nos emails ?',
+                'type' => 'boolean',
+            ]] : [],
+                !$adherent->hasSmsSubscriptionType() ? [[
+                'code' => 'need_sms_renewal',
+                'label' => 'Souhaitez-vous vous réabonner à nos SMS ?',
                 'type' => 'boolean',
             ]] : [],
             [
                 [
                     'code' => 'postal_code_checked',
-                    'label' => 'Code postal à jour ?',
+                    'label' => sprintf('Habitez-vous toujours à %s (%s) ?', $adherent->getCityName(), $adherent->getPostalCode()),
                     'type' => 'boolean',
                 ],
                 [
-                    'code' => 'become_caller',
-                    'label' => 'Souhaiteriez-vous devenir appelant ?',
-                    'type' => 'boolean',
+                    'code' => 'engagement',
+                    'label' => 'Souhaitez-vous vous (re)engager sur le terrain ?',
+                    'type' => 'choice',
+                    'choices' => CampaignHistoryEngagementEnum::LABELS,
                 ],
                 [
-                    'code' => 'call_more',
-                    'label' => 'Souhaitez-vous être rappelé plus souvent ?',
-                    'type' => 'boolean',
+                    'code' => 'note',
+                    'label' => 'Comment s\'est passé cet appel ?',
+                    'type' => 'note',
+                    'values' => [1, 2, 3, 4, 5],
                 ],
             ]),
         ]);

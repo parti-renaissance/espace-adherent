@@ -262,19 +262,36 @@ Feature:
         },
         "satisfaction_questions": [
             {
+                "code": "need_sms_renewal",
+                "label": "Souhaitez-vous vous réabonner à nos SMS ?",
+                "type": "boolean"
+            },
+            {
                 "code": "postal_code_checked",
-                "label": "Code postal à jour ?",
+                "label": "Habitez-vous toujours à Melun (77000) ?",
                 "type": "boolean"
             },
             {
-                "code": "become_caller",
-                "label": "Souhaiteriez-vous devenir appelant ?",
-                "type": "boolean"
+                "code": "engagement",
+                "label": "Souhaitez-vous vous (re)engager sur le terrain ?",
+                "type": "choice",
+                "choices": {
+                  "active": "Déjà actif",
+                  "want_to_engage": "Souhaite se mobiliser",
+                  "dont_want_to_engage": "Ne le souhaite pas"
+                }
             },
             {
-                "code": "call_more",
-                "label": "Souhaitez-vous être rappelé plus souvent ?",
-                "type": "boolean"
+                "code": "note",
+                "label": "Comment s'est passé cet appel ?",
+                "type": "note",
+                "values": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
             }
         ]
     }
