@@ -101,9 +101,9 @@ Feature:
     ]
     """
 
-  Scenario: As a logged-in user I can retrieve only active ripostes
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/ripostes?active"
+  Scenario: As a logged-in jemarche app user I can retrieve only active ripostes
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/ripostes"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -290,7 +290,7 @@ Feature:
     """
     {
       "code": "unknown_action",
-      "message": "L'action n'est pas réconnue."
+      "message": "L'action n'est pas reconnue."
     }
     """
 

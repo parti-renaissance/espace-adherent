@@ -28,7 +28,7 @@ class IncrementRiposteStatsCounterController extends AbstractController
             default:
                 return $this->json([
                     'code' => 'unknown_action',
-                    'message' => 'L\'action n\'est pas réconnue.',
+                    'message' => 'L\'action n\'est pas reconnue.',
                 ], Response::HTTP_BAD_REQUEST);
         }
 
