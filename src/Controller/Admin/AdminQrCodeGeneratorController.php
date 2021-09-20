@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Controller\Admin;
+
+use App\Entity\QrCode;
+use App\QrCode\QrCodeEntityHandler;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/qr-code/{uuid}/generate", name="app_admin_qr_code_generate", methods="GET")
+ */
+class AdminQrCodeGeneratorController
+{
+    private $qrCodeEntityHandler;
+
+    public function __construct(QrCodeEntityHandler $qrCodeEntityHandler)
+    {
+        $this->qrCodeEntityHandler = $qrCodeEntityHandler;
+    }
+
+    public function __invoke(QrCode $qrCode): Response
+    {
+        return $this->qrCodeEntityHandler->generateQrCode($qrCode);
+    }
+}
