@@ -129,6 +129,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_TEAMS',
                     'ROLE_ADMIN_PHONING_CAMPAIGNS',
                     'ROLE_ADMIN_SMS_CAMPAIGNS',
+                    'ROLE_ADMIN_QR_CODES',
                 ],
             ])
             ->add(
