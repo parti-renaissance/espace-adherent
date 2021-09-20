@@ -2,9 +2,7 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Api\Filter\ActiveRipostesFilter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredTrait;
@@ -24,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "pagination_enabled": false,
- *         "access_control": "is_granted('ROLE_NATIONAL')",
+ *         "access_control": "is_granted('ROLE_NATIONAL') or (is_granted('ROLE_ADHERENT') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
  *         "normalization_context": {"groups": {"riposte_read"}},
  *         "denormalization_context": {"groups": {"riposte_write"}},
  *     },
@@ -60,8 +58,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
- *
- * @ApiFilter(ActiveRipostesFilter::class)
  */
 class Riposte implements AuthorInterface
 {
