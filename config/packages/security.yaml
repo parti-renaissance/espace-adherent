@@ -304,6 +304,9 @@ security:
         ROLE_ADMIN_SMS_CAMPAIGNS:
             - ROLE_APP_ADMIN_SMS_CAMPAIGN_ALL
 
+        ROLE_ADMIN_QR_CODES:
+            - ROLE_APP_ADMIN_QR_CODE_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -363,6 +366,7 @@ security:
             - ROLE_ADMIN_PHONING_CAMPAIGNS
             - ROLE_ADMIN_SMS_CAMPAIGNS
             - ROLE_APP_ADMIN_ADHERENT_CONSEIL
+            - ROLE_ADMIN_QR_CODES
 
         ROLE_CANDIDATE_REGIONAL_HEADED:
             - ROLE_CANDIDATE
