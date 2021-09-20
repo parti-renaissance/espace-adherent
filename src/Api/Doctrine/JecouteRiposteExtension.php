@@ -41,18 +41,16 @@ class JecouteRiposteExtension implements QueryItemExtensionInterface, QueryColle
 
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Riposte::class !== $resourceClass) {
+        if (Riposte::class !== $resourceClass
+            || !$this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
             return;
         }
 
-        if ($this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
-            $alias = $queryBuilder->getRootAliases()[0];
-
-            $queryBuilder
-                ->andWhere("$alias.enabled = :true AND $alias.createdAt > :last_24")
-                ->setParameter('true', true)
-                ->setParameter('last_24', new \DateTime('-24 hours'))
-            ;
-        }
+        $alias = $queryBuilder->getRootAliases()[0];
+        $queryBuilder
+            ->andWhere("$alias.enabled = :true AND $alias.createdAt > :last_24")
+            ->setParameter('true', true)
+            ->setParameter('last_24', new \DateTime('-24 hours'))
+        ;
     }
 }

@@ -65,7 +65,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractWebCaseTest
     {
         parent::setUp();
 
-        $this->riposteRepository = $this->getEntityManager()->getRepository(Riposte::class);
+        $this->riposteRepository = $this->getRepository(Riposte::class);
     }
 
     protected function tearDown(): void
