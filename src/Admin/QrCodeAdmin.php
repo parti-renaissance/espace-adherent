@@ -9,6 +9,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Security\Core\Security;
@@ -48,6 +50,11 @@ class QrCodeAdmin extends AbstractAdmin
                 'label' => 'Auteur',
                 'show_filter' => true,
             ])
+            ->add('createdAt', DateRangeFilter::class, [
+                'label' => 'Date de création',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
         ;
     }
 
@@ -68,6 +75,9 @@ class QrCodeAdmin extends AbstractAdmin
             ])
             ->add('createdBy', null, [
                 'label' => 'Auteur',
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Créé le',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
