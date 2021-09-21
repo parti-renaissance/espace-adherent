@@ -1367,7 +1367,6 @@ SQL;
                 ->andWhere('ch5.status IN (:recall)')
                 ->andWhere('DATE(ch5.beginAt) = CURRENT_DATE()')
             ))
-            ->orderBy('adherent.phoningCampaignCallMoreStatus', 'DESC')
             ->setMaxResults(10)
             ->setParameter('fr_phone', '+33%')
             ->setParameter('not_callable', CampaignHistoryStatusEnum::NOT_CALLABLE)
