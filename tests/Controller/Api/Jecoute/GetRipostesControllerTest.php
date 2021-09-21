@@ -15,7 +15,6 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group api
- * @group debug
  */
 class GetRipostesControllerTest extends AbstractWebCaseTest
 {
