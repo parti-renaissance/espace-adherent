@@ -1,0 +1,103 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Avancement de l'objectif de la campagne "{{ campaign.title }}"
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <p>
+        <a href="{{ path('admin_app_phoning_campaign_list') }}" class="btn btn-default">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Retour à la liste
+        </a>
+        <a href="{{ path('admin_app_phoning_campaign_edit', { id: campaign.id }) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Editer la campaign
+        </a>
+    </p>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-10">
+            <div class="box box-primary">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list committee-members">
+                        <thead>
+                        <tr>
+                            <th>
+                                Appelant
+                            </th>
+                            <th>
+                                Nb d'appels
+                            </th>
+                            <th>
+                                Nb complétés
+                            </th>
+                            <th>
+                                Nb désabonnés
+                            </th>
+                            <th>
+                                Nb désadhésions
+                            </th>
+                            <th>
+                                Nb à rappeler plus tard
+                            </th>
+                            <th>
+                                Nb n'a pas répondu
+                            </th>
+                            <th>
+                                Nb échecs
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for caller in callers %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_show', { id: caller.id }) }}">
+                                        {{ caller.firstName~' '~caller.lastName }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ caller.nb_calls }}
+                                </td>
+                                <td>
+                                    {{ caller.nb_completed }}
+                                </td>
+                                <td>
+                                    {{ caller.nb_to_unsubscribe }}
+                                </td>
+                                <td>
+                                    {{ caller.nb_to_unjoin }}
+                                </td>
+                                <td>
+                                    {{ caller.nb_to_remind }}
+                                </td>
+                                <td>
+                                    {{ caller.nb_not_respond }}
+                                </td>
+                                <td>
+                                    {{ caller.nb_failed }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
