@@ -18,7 +18,7 @@ class OpenGraphFetcher
     public function fetch(string $url): ?array
     {
         try {
-            PhpConfigurator::disableMemoryLimit(30);
+            PhpConfigurator::setTimeLimit(30);
 
             $this->client->request('GET', $this->buildUrl($url));
 
