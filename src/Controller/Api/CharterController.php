@@ -23,7 +23,7 @@ class CharterController extends AbstractController
     {
         if (!AdherentCharterTypeEnum::isValid($type)) {
             return $this->json(
-                ['message' => 'Le type de charte n\'est pas réconnu'],
+                ['message' => 'Le type de charte n\'est pas reconnu'],
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -50,7 +50,7 @@ class CharterController extends AbstractController
     {
         if (!AdherentCharterTypeEnum::isValid($type)) {
             return $this->json(
-                ['message' => 'Le type de charte n\'est pas réconnu'],
+                ['message' => 'Le type de charte n\'est pas reconnu'],
                 Response::HTTP_BAD_REQUEST
             );
         }
