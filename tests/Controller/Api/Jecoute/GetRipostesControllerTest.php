@@ -15,6 +15,7 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group api
+ * @group debug
  */
 class GetRipostesControllerTest extends AbstractWebCaseTest
 {
@@ -42,9 +43,9 @@ class GetRipostesControllerTest extends AbstractWebCaseTest
         static::assertJson($this->client->getResponse()->getContent());
         $result = \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true);
 
-        $this->assertCount(3, $result);
+        $this->assertCount(2, $result);
 
-        $riposte = $this->riposteRepository->findOneBy(['uuid' => $result[0]]);
+        $riposte = $this->riposteRepository->findOneBy(['uuid' => $result[0]['uuid']]);
 
         $this->assertSame(1, $riposte->getNbViews());
         $this->assertSame(0, $riposte->getNdDetailViews());
@@ -69,9 +70,9 @@ class GetRipostesControllerTest extends AbstractWebCaseTest
         static::assertJson($this->client->getResponse()->getContent());
         $result = \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true);
 
-        $this->assertCount(5, $result);
+        $this->assertCount(4, $result);
 
-        $riposte = $this->riposteRepository->findOneBy(['uuid' => $result[0]]);
+        $riposte = $this->riposteRepository->findOneBy(['uuid' => $result[0]['uuid']]);
 
         $this->assertSame(0, $riposte->getNbViews());
         $this->assertSame(0, $riposte->getNdDetailViews());

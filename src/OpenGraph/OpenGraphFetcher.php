@@ -3,23 +3,26 @@
 namespace App\OpenGraph;
 
 use App\Utils\EmojisRemover;
+use App\Utils\PhpConfigurator;
 use Symfony\Component\Panther\Client;
 
 class OpenGraphFetcher
 {
     private $client;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
-        $this->client = Client::createFirefoxClient();
+        $this->client = $client;
     }
 
     public function fetch(string $url): ?array
     {
         try {
+            PhpConfigurator::disableMemoryLimit(30);
+
             $this->client->request('GET', $this->buildUrl($url));
 
-            $crawler = $this->client->waitFor('//meta[@property="og:description"]');
+            $crawler = $this->client->waitFor('//meta[@property="og:description"]', 10);
 
             $metaTags = $crawler->filterXPath("//*/meta[starts-with(@property, 'og:')]");
 
