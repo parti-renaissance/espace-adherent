@@ -22,7 +22,7 @@ class AdherentBasicFieldsFilterBuilder implements AdherentFilterBuilderInterface
             ->createText('firstName', 'Prénom')
             ->createText('lastName', 'Nom')
             ->createFrom(AgeRange::class)
-            ->createDateInterval('registeredAt', 'Date d\'adhésion')
+            ->createDateInterval('registered', 'Adhésion')
             ->createFrom(ZoneAutocomplete::class)
             ->createBooleanSelect('isCommitteeMember', 'Membre d\'un comité')
             ->getFilters()

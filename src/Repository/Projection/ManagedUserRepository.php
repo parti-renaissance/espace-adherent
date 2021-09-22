@@ -233,8 +233,9 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
             $subscriptionTypesCondition = 'FIND_IN_SET(:subscription_type, u.subscriptionTypes) > 0';
+
             if (false === $filter->getEmailSubscription()) {
-                $subscriptionTypesCondition = '(FIND_IN_SET(:subscription_type, u.subscriptionTypes) = 0 OR u.subscriptionTypes IS NULL)';
+                $subscriptionTypesCondition = '(u.subscriptionTypes IS NULL OR FIND_IN_SET(:subscription_type, u.subscriptionTypes) = 0)';
             }
 
             $qb
@@ -245,8 +246,9 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (null !== $filter->getSmsSubscription()) {
             $subscriptionTypesCondition = 'FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) > 0';
+
             if (false === $filter->getSmsSubscription()) {
-                $subscriptionTypesCondition = '(FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) = 0 OR u.subscriptionTypes IS NULL)';
+                $subscriptionTypesCondition = '(u.subscriptionTypes IS NULL OR FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) = 0)';
             }
 
             $qb

@@ -13,9 +13,7 @@ class ZoneDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ZONE_DENORMALIZER_ALREADY_CALLED';
-
-    private $zoneRepository;
+    private ZoneRepository $zoneRepository;
 
     public function __construct(ZoneRepository $zoneRepository)
     {
@@ -24,13 +22,11 @@ class ZoneDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         return $this->zoneRepository->findOneByUuid($data);
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, $type, $format = null)
     {
-        return !isset($context[self::ALREADY_CALLED]) && Zone::class === $type && Uuid::isValid($data);
+        return Zone::class === $type && \is_string($data) && Uuid::isValid($data);
     }
 }

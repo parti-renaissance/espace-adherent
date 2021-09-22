@@ -81,6 +81,8 @@ class ManagedUsersFilter
 
     /**
      * @var bool|null
+     *
+     * @Groups({"filter_write"})
      */
     private $isCommitteeMember;
 
@@ -111,6 +113,8 @@ class ManagedUsersFilter
 
     /**
      * @var Zone[]
+     *
+     * @Groups({"filter_write"})
      */
     private $zones;
 
@@ -123,6 +127,8 @@ class ManagedUsersFilter
 
     /**
      * @var bool|null
+     *
+     * @Groups({"filter_write"})
      */
     private $smsSubscription;
 
@@ -222,6 +228,20 @@ class ManagedUsersFilter
         $this->ageMax = $ageMax;
     }
 
+    /**
+     * @Groups({"filter_write"})
+     */
+    public function setAge(array $minMax): void
+    {
+        if (!empty($minMax['min'])) {
+            $this->setAgeMin($minMax['min']);
+        }
+
+        if (!empty($minMax['max'])) {
+            $this->setAgeMax($minMax['max']);
+        }
+    }
+
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -285,6 +305,20 @@ class ManagedUsersFilter
     public function setRegisteredUntil(?\DateTime $registeredUntil): void
     {
         $this->registeredUntil = $registeredUntil;
+    }
+
+    /**
+     * @Groups({"filter_write"})
+     */
+    public function setRegistered(array $startEnd): void
+    {
+        if (!empty($startEnd['start'])) {
+            $this->setRegisteredSince(new \DateTime($startEnd['start']));
+        }
+
+        if (!empty($startEnd['end'])) {
+            $this->setRegisteredUntil(new \DateTime($startEnd['end']));
+        }
     }
 
     public function isCommitteeMember(): ?bool
