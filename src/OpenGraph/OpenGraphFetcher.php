@@ -37,8 +37,6 @@ class OpenGraphFetcher
             return $openGraph;
         } catch (\Exception $e) {
             $openGraph = null;
-        } finally {
-            $this->client->quit();
         }
 
         return $openGraph;
