@@ -41,6 +41,6 @@ default:
                     selenium2:
                         capabilities:
                             version: ''
-                        wd_host: "%%env(SELENIUM_URL)%%"
+                        wd_host: http://selenium:4444/wd/hub
         Behatch\Extension: ~
         Bex\Behat\SkipTestsExtension: ~
