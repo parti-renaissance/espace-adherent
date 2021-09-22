@@ -43,6 +43,11 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
                     'type' => 'boolean',
                 ],
                 [
+                    'code' => 'profession',
+                    'label' => 'Quel est votre métier ?',
+                    'type' => 'text',
+                ],
+                [
                     'code' => 'engagement',
                     'label' => 'Souhaitez-vous vous (re)engager sur le terrain ?',
                     'type' => 'choice',

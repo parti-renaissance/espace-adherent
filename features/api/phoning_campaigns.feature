@@ -272,6 +272,11 @@ Feature:
                 "type": "boolean"
             },
             {
+                "code": "profession",
+                "label": "Quel est votre métier ?",
+                "type": "text"
+            },
+            {
                 "code": "engagement",
                 "label": "Souhaitez-vous vous (re)engager sur le terrain ?",
                 "type": "choice",
@@ -352,10 +357,12 @@ Feature:
     """
     {
         "status": "completed",
-        "postalCodeChecked": true,
-        "callMore": true,
-        "needRenewal": false,
-        "becomeCaller": true
+        "postal_code_checked": true,
+        "need_email_renewal": false,
+        "need_sms_renewal": false,
+        "engagement": "want_to_engage",
+        "profession": "student",
+        "note": 4
     }
     """
     Then the response status code should be 200
