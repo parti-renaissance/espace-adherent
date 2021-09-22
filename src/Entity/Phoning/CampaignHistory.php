@@ -114,13 +114,15 @@ class CampaignHistory implements DataSurveyAwareInterface
     protected $postalCodeChecked;
 
     /**
-     * @var bool|null
+     * @var string|null
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $needEmailRenewal;
+    private $profession;
 
     /**
      * @var bool|null
@@ -129,7 +131,16 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $needSmsRenewal;
+    private $needEmailRenewal;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"phoning_campaign_history_write"})
+     */
+    private $needSmsRenewal;
 
     /**
      * @var string|null
@@ -144,7 +155,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $engagement;
+    private $engagement;
 
     /**
      * @var int|null
@@ -155,7 +166,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"phoning_campaign_history_write"})
      */
-    protected $note;
+    private $note;
 
     /**
      * @var \DateTime
@@ -249,6 +260,16 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setPostalCodeChecked(?bool $postalCodeChecked): void
     {
         $this->postalCodeChecked = $postalCodeChecked;
+    }
+
+    public function getProfession(): ?string
+    {
+        return $this->profession;
+    }
+
+    public function setProfession(?string $profession): void
+    {
+        $this->profession = $profession;
     }
 
     public function getNeedEmailRenewal(): ?bool
