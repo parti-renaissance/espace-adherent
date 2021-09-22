@@ -15,8 +15,8 @@ class SmsAndEmailSubscriptionStatusFilterBuilder implements AdherentFilterBuilde
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('isEmailSubscribed', 'Abonné email')
-            ->createBooleanSelect('isSmsSubscribed', 'Abonné SMS')
+            ->createBooleanSelect('emailSubscription', 'Abonné email')
+            ->createBooleanSelect('smsSubscription', 'Abonné SMS')
             ->getFilters()
         ;
     }

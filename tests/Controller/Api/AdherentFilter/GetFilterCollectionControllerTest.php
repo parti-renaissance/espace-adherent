@@ -64,8 +64,8 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                         "type": "integer_interval"
                     },
                     {
-                        "code": "registeredAt",
-                        "label": "Date d'adhésion",
+                        "code": "registered",
+                        "label": "Adhésion",
                         "options": null,
                         "type": "date_interval"
                     },
@@ -87,7 +87,7 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                             "choices": {
                                 "": "Tous",
                                 "1": "Oui",
-                                "2": "Non"
+                                "0": "Non"
                             }
                         },
                         "type": "select"
@@ -99,31 +99,31 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                             "choices": {
                                 "": "Tous",
                                 "1": "Oui",
-                                "2": "Non"
+                                "0": "Non"
                             }
                         },
                         "type": "select"
                     },
                     {
-                        "code": "isEmailSubscribed",
+                        "code": "emailSubscription",
                         "label": "Abonné email",
                         "options": {
                             "choices": {
                                 "": "Tous",
                                 "1": "Oui",
-                                "2": "Non"
+                                "0": "Non"
                             }
                         },
                         "type": "select"
                     },
                     {
-                        "code": "isSmsSubscribed",
+                        "code": "smsSubscription",
                         "label": "Abonné SMS",
                         "options": {
                             "choices": {
                                 "": "Tous",
                                 "1": "Oui",
-                                "2": "Non"
+                                "0": "Non"
                             }
                         },
                         "type": "select"
