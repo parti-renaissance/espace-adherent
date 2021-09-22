@@ -55,28 +55,28 @@ Feature:
           {
             "firstName": "Jacques",
             "nb_calls": "4",
-            "nb_survey": "3",
+            "nb_surveys": "3",
             "position": 1,
             "caller": false
           },
           {
             "firstName": "Pierre",
             "nb_calls": "1",
-            "nb_survey": "1",
+            "nb_surveys": "1",
             "position": 2,
             "caller": false
           },
           {
             "firstName": "Député",
             "nb_calls": "1",
-            "nb_survey": "1",
+            "nb_surveys": "1",
             "position": 3,
             "caller": false
           },
           {
             "firstName": "Lucie",
             "nb_calls": "0",
-            "nb_survey": "0",
+            "nb_surveys": "0",
             "position": 4,
             "caller": true
           }
@@ -94,28 +94,28 @@ Feature:
           {
             "firstName": "Jacques",
             "nb_calls": "0",
-            "nb_survey": "0",
+            "nb_surveys": "0",
             "position": "@integer@",
             "caller": false
           },
           {
             "firstName": "Lucie",
             "nb_calls": "0",
-            "nb_survey": "0",
+            "nb_surveys": "0",
             "position": "@integer@",
             "caller": true
           },
           {
             "firstName": "Pierre",
             "nb_calls": "0",
-            "nb_survey": "0",
+            "nb_surveys": "0",
             "position": "@integer@",
             "caller": false
           },
           {
             "firstName": "Député",
             "nb_calls": "0",
-            "nb_survey": "0",
+            "nb_surveys": "0",
             "position": "@integer@",
             "caller": false
           }
@@ -142,28 +142,28 @@ Feature:
           {
             "firstName": "Jacques",
             "nb_calls": "4",
-            "nb_survey": "3",
+            "nb_surveys": "3",
             "position": 1,
             "caller": true
           },
           {
             "firstName": "Pierre",
             "nb_calls": "1",
-            "nb_survey": "1",
+            "nb_surveys": "1",
             "position": 2,
             "caller": false
           },
           {
             "firstName": "Député",
             "nb_calls": "1",
-            "nb_survey": "1",
+            "nb_surveys": "1",
             "position": 3,
             "caller": false
           },
           {
             "firstName": "Lucie",
             "nb_calls": "0",
-            "nb_survey": "0",
+            "nb_surveys": "0",
             "position": 4,
             "caller": false
           }

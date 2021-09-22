@@ -160,6 +160,9 @@ class CampaignAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
+                    'stats' => [
+                        'template' => 'admin/phoning/campaign/list_action_stats.html.twig',
+                    ],
                 ],
             ])
         ;

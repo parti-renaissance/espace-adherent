@@ -1387,7 +1387,7 @@ SQL;
         return $this->createQueryBuilder('adherent')
             ->select('adherent.id, adherent.firstName')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
-            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_survey')
+            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->innerJoin('adherent.teamMemberships', 'teamMemberships')
             ->innerJoin('teamMemberships.team', 'team')
             ->innerJoin(Campaign::class, 'campaign', Join::WITH, 'campaign.team = team')
@@ -1399,12 +1399,52 @@ SQL;
             )
             ->where('campaign = :campaign')
             ->groupBy('adherent.id')
-            ->orderBy('nb_survey', 'DESC')
+            ->orderBy('nb_surveys', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
             ->addOrderBy('adherent.id', 'ASC')
             ->setParameters([
                 'campaign' => $campaign,
                 'send' => CampaignHistoryStatusEnum::SEND,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findFullScoresByCampaign(Campaign $campaign): array
+    {
+        return $this->createQueryBuilder('adherent')
+            ->select('adherent.id, adherent.firstName, adherent.lastName')
+            ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
+            ->addSelect('SUM(IF(campaignHistory.status = :completed, 1, 0)) as nb_completed')
+            ->addSelect('SUM(IF(campaignHistory.status = :to_unsubscribe, 1, 0)) as nb_to_unsubscribe')
+            ->addSelect('SUM(IF(campaignHistory.status = :to_unjoin, 1, 0)) as nb_to_unjoin')
+            ->addSelect('SUM(IF(campaignHistory.status = :to_remind, 1, 0)) as nb_to_remind')
+            ->addSelect('SUM(IF(campaignHistory.status = :not_respond, 1, 0)) as nb_not_respond')
+            ->addSelect('SUM(IF(campaignHistory.status = :failed, 1, 0)) as nb_failed')
+            ->innerJoin('adherent.teamMemberships', 'teamMemberships')
+            ->innerJoin('teamMemberships.team', 'team')
+            ->innerJoin(Campaign::class, 'campaign', Join::WITH, 'campaign.team = team')
+            ->leftJoin(
+                'campaign.campaignHistories',
+                'campaignHistory',
+                Join::WITH,
+                'campaignHistory.caller = adherent AND campaignHistory.status != :send'
+            )
+            ->where('campaign = :campaign')
+            ->groupBy('adherent.id')
+            ->orderBy('nb_completed', 'DESC')
+            ->addOrderBy('campaignHistory.beginAt', 'DESC')
+            ->addOrderBy('adherent.id', 'ASC')
+            ->setParameters([
+                'campaign' => $campaign,
+                'send' => CampaignHistoryStatusEnum::SEND,
+                'completed' => CampaignHistoryStatusEnum::COMPLETED,
+                'to_unsubscribe' => CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
+                'to_unjoin' => CampaignHistoryStatusEnum::TO_UNJOIN,
+                'to_remind' => CampaignHistoryStatusEnum::TO_REMIND,
+                'not_respond' => CampaignHistoryStatusEnum::NOT_RESPOND,
+                'failed' => CampaignHistoryStatusEnum::FAILED,
             ])
             ->getQuery()
             ->getResult()
