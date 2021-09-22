@@ -285,7 +285,7 @@ services:
             - '@api_platform.path_segment_name_generator'
 
     Symfony\Component\Panther\Client:
-        factory: ['App\Client\ClientFactory', 'createSeleniumClient']
+        factory: ['App\Panther\ClientFactory', 'createSeleniumClient']
 
     App\OvhCloud\Driver:
         arguments:

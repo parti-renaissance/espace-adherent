@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Client;
+namespace App\Panther;
 
 use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
