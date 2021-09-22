@@ -8,8 +8,7 @@ ENV LANG="en_US.UTF-8" \
     NODE_VERSION=14.17.5 \
     GOSU_VERSION=1.14 \
     PHP_SECURITY_CHECHER_VERSION=1.1.1 \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    GECKODRIVER_VERSION=0.28.0
+    COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
 WORKDIR /app
@@ -56,8 +55,7 @@ RUN apt-get update -q && \
         supervisor \
         tzdata \
         wget \
-        wkhtmltopdf \
-        firefox && \
+        wkhtmltopdf && \
     # Disable XDEBUG by default
     phpdismod xdebug && \
     # Clean
@@ -74,11 +72,7 @@ RUN apt-get update -q && \
     # Install Symfony security checker
     curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECHER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECHER_VERSION}_linux_$(dpkg --print-architecture) --output /usr/local/bin/local-php-security-checker && \
     chmod +x /usr/local/bin/local-php-security-checker && \
-    mkdir /run/php && \
-    # Install Gecko Driver
-    curl -L -o /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz && \
-    tar -zxf /tmp/geckodriver.tar.gz -C /usr/bin && \
-    rm /tmp/geckodriver.tar.gz
+    mkdir /run/php
 
 RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) --output /usr/local/bin/gosu && \
     chmod +x /usr/local/bin/gosu && \

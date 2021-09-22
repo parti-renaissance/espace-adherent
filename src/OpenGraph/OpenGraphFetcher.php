@@ -36,8 +36,10 @@ class OpenGraphFetcher
 
             return $openGraph;
         } catch (\Exception $e) {
-            return null;
+            $openGraph = null;
         }
+
+        return $openGraph;
     }
 
     private function buildUrl(string $url): string
@@ -58,7 +60,7 @@ class OpenGraphFetcher
             '%s://%s%s?%s',
             $parts['scheme'],
             $parts['host'],
-            $parts['path'],
+            $parts['path'] ?? null,
             $parts['query']
         );
     }

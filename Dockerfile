@@ -5,8 +5,7 @@ ENV LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
     TERM="xterm" \
     DEBIAN_FRONTEND="noninteractive" \
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    GECKODRIVER_VERSION=0.28.0
+    COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
 WORKDIR /app
@@ -50,15 +49,10 @@ RUN apt-get update -q && \
         supervisor \
         tzdata \
         wget \
-        wkhtmltopdf \
-        firefox && \
+        wkhtmltopdf && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
-    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
-    # Install Gecko Driver
-    curl -L -o /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz && \
-    tar -zxf /tmp/geckodriver.tar.gz -C /usr/bin && \
-    rm /tmp/geckodriver.tar.gz
+    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone
 
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
