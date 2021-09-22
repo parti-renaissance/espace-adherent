@@ -27,10 +27,11 @@ parameters:
     image_max_length:                     450px
     webhook.email_subscriptions_secret:   "%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%"
     sonata.exporter.writer.csv.with_bom:  true
-    adherent_message_referent_limit: 1000
-    adherent_message_committee_limit: 1000
-    adherent_message_deputy_limit: 1000
-    adherent_message_senator_limit: 1000
+    adherent_message_referent_limit:      1000
+    adherent_message_committee_limit:     1000
+    adherent_message_deputy_limit:        1000
+    adherent_message_senator_limit:       1000
+    env(SELENIUM_URL):                    "http://%env(SELENIUM_HOST)%:%env(SELENIUM_PORT)%/wd/hub"
 
 services:
     _defaults:
@@ -62,6 +63,7 @@ services:
             $timelineMaxItems: '%timeline_max_messages%'
             $coalitionsHost: '%coalitions_host%'
             $internalApiProxyClient: '@app.http_client.internal_api_proxy'
+            $seleniumUrl: '%env(SELENIUM_URL)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -284,7 +286,7 @@ services:
             - '@api_platform.path_segment_name_generator'
 
     Symfony\Component\Panther\Client:
-        factory: ['Symfony\Component\Panther\Client', 'createFirefoxClient']
+        factory: ['App\Client\ClientFactory', 'createSeleniumClient']
 
     App\OvhCloud\Driver:
         arguments:
