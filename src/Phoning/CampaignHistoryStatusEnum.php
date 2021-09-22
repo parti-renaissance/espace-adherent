@@ -27,6 +27,7 @@ class CampaignHistoryStatusEnum extends Enum
         self::FAILED => 'L\'appel a échoué',
         self::INTERRUPTED_DONT_REMIND => 'Appel interrompu, ne pas rappeler',
         self::INTERRUPTED => 'Appel interrompu',
+        self::COMPLETED => 'Complété',
     ];
 
     public const AFTER_CALL_STATUS = [

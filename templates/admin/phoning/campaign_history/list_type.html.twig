@@ -1,0 +1,6 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set types = constant('App\\Phoning\\CampaignHistoryTypeEnum::LABELS') %}
+    {{ object.type ? types[object.type] : '' }}
+{% endblock %}

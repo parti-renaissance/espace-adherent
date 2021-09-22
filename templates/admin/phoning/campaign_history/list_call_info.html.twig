@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.finishAt is not null %}
+        {% set difference = date(object.finishAt).diff(date(object.beginAt)) %}
+        {% set minutes = difference.i %}
+    {% endif %}
+    {{ object.beginAt|date('d/m/Y à H:i') }} {{ minutes is defined ? '('~minutes~' minutes)' : '' }}
+{% endblock %}
