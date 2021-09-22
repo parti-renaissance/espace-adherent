@@ -31,7 +31,6 @@ parameters:
     adherent_message_committee_limit:     1000
     adherent_message_deputy_limit:        1000
     adherent_message_senator_limit:       1000
-    env(SELENIUM_URL):                    "http://%env(SELENIUM_HOST)%:%env(SELENIUM_PORT)%/wd/hub"
 
 services:
     _defaults:
