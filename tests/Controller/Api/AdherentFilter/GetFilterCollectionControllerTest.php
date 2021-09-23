@@ -85,7 +85,6 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                         "label": "Membre d'un comité",
                         "options": {
                             "choices": {
-                                "": "Tous",
                                 "1": "Oui",
                                 "0": "Non"
                             }
@@ -97,7 +96,6 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                         "label": "Certifié",
                         "options": {
                             "choices": {
-                                "": "Tous",
                                 "1": "Oui",
                                 "0": "Non"
                             }
@@ -109,7 +107,6 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                         "label": "Abonné email",
                         "options": {
                             "choices": {
-                                "": "Tous",
                                 "1": "Oui",
                                 "0": "Non"
                             }
@@ -121,7 +118,6 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                         "label": "Abonné SMS",
                         "options": {
                             "choices": {
-                                "": "Tous",
                                 "1": "Oui",
                                 "0": "Non"
                             }

@@ -10,6 +10,6 @@ class BooleanSelect extends Select
     {
         parent::__construct($code, $label);
 
-        $this->setChoices([null => 'Tous', 0 => 'Non', 1 => 'Oui']);
+        $this->setChoices([0 => 'Non', 1 => 'Oui']);
     }
 }
