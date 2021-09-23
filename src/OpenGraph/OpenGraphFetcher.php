@@ -8,6 +8,8 @@ use Symfony\Component\Panther\Client;
 
 class OpenGraphFetcher
 {
+    private const TIMEOUT_IN_SECONDS = 20;
+
     private $client;
 
     public function __construct(Client $client)
@@ -22,7 +24,7 @@ class OpenGraphFetcher
 
             $this->client->request('GET', $this->buildUrl($url));
 
-            $crawler = $this->client->waitFor('//meta[@property="og:description"]', 10);
+            $crawler = $this->client->waitFor('//meta[@property="og:description"]', self::TIMEOUT_IN_SECONDS);
 
             $metaTags = $crawler->filterXPath("//*/meta[starts-with(@property, 'og:')]");
 
