@@ -1,0 +1,21 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.postalCodeChecked is not null %}
+        - Code postal mis à jour : {{ object.postalCodeChecked ? 'oui' : 'non' }}<br />
+    {% endif %}
+    {% if object.needEmailRenewal is not null %}
+        - Réabonnement aux emails : {{ object.needEmailRenewal ? 'oui' : 'non' }}<br />
+    {% endif %}
+    {% if object.needSmsRenewal is not null %}
+        - Réabonnement aux SMS : {{ object.needSmsRenewal ? 'oui' : 'non' }}<br />
+    {% endif %}
+    {% if object.engagement is not null %}
+        {% set engagements = constant('App\\Phoning\\CampaignHistoryEngagementEnum::LABELS') %}
+        - (Re)engagement : {{ object.engagement ? engagements[object.engagement] : '' }}<br />
+    {% endif %}
+    {% if object.profession is not null %}
+        - Métier : {{ object.profession }}<br />
+    {% endif %}
+    {{ object.note ? '- Note : '~object.note }}
+{% endblock %}

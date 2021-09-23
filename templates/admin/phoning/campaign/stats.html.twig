@@ -61,6 +61,9 @@
                             <th>
                                 Nb échecs
                             </th>
+                            <th>
+                                Actions
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -91,6 +94,22 @@
                                 </td>
                                 <td>
                                     {{ caller.nb_failed }}
+                                </td>
+                                <td>
+                                    {% if caller.nb_calls > 0 %}
+                                        <a href="{{ path('admin_app_phoning_campaignhistory_list', { filter: { campaign: { value: campaign.id }, caller: { value: caller.id } } }) }}" class="btn btn-sm btn-default view_link"
+                                           title="Voir les appels" target="_blank" rel="noopener noreferrer">
+                                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                            Voir les appels
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9" class="text--center">
+                                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                    Pas d'appelants
                                 </td>
                             </tr>
                         {% endfor %}
