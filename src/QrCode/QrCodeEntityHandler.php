@@ -17,7 +17,7 @@ class QrCodeEntityHandler
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function generateQrCode(QrCode $qrCode): QrCodeResponse
+    public function generateQrCode(QrCode $qrCode, string $writerByName): QrCodeResponse
     {
         $redirectUrl = $this->urlGenerator->generate(
             'app_qr_code',
@@ -27,6 +27,6 @@ class QrCodeEntityHandler
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return $this->qrCodeFactory->createResponse($redirectUrl, $qrCode->getName());
+        return $this->qrCodeFactory->createResponse($redirectUrl, $qrCode->getName(), $writerByName);
     }
 }
