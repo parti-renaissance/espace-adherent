@@ -27,6 +27,6 @@ class QrCodeEntityHandler
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return $this->qrCodeFactory->createResponse($redirectUrl);
+        return $this->qrCodeFactory->createResponse($redirectUrl, $qrCode->getName());
     }
 }

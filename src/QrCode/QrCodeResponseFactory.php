@@ -5,6 +5,8 @@ namespace App\QrCode;
 use Endroid\QrCode\Factory\QrCodeFactory as BaseQrCodeFactory;
 use Endroid\QrCode\QrCodeInterface;
 use Endroid\QrCode\Response\QrCodeResponse;
+use Gedmo\Sluggable\Util\Urlizer;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class QrCodeResponseFactory
 {
@@ -15,13 +17,24 @@ class QrCodeResponseFactory
         $this->qrCodeFactory = $qrCodeFactory;
     }
 
-    public function createResponse(string $text): QrCodeResponse
+    public function createResponse(string $text, string $filename): QrCodeResponse
     {
-        return new QrCodeResponse($this->getQrContent($text));
+        $response = new QrCodeResponse($this->getQrContent($text));
+
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            sprintf('QR-%s.svg', Urlizer::urlize($filename))
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
     }
 
     private function getQrContent(string $text): QrCodeInterface
     {
-        return $this->qrCodeFactory->create($text);
+        return $this->qrCodeFactory->create($text, [
+            'writer' => 'svg',
+        ]);
     }
 }

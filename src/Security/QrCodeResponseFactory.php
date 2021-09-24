@@ -2,9 +2,9 @@
 
 namespace App\Security;
 
+use App\Entity\Administrator;
 use App\QrCode\QrCodeResponseFactory as BaseQrCodeResponseFactory;
 use Endroid\QrCode\Response\QrCodeResponse;
-use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 
 class QrCodeResponseFactory
@@ -18,10 +18,10 @@ class QrCodeResponseFactory
         $this->googleAuthenticator = $googleAuthenticator;
     }
 
-    public function createResponseFor(TwoFactorInterface $user): QrCodeResponse
+    public function createResponseFor(Administrator $administrator): QrCodeResponse
     {
-        $qrContent = $this->googleAuthenticator->getQRContent($user);
+        $qrContent = $this->googleAuthenticator->getQRContent($administrator);
 
-        return $this->qrCodeFactory->createResponse($qrContent);
+        return $this->qrCodeFactory->createResponse($qrContent, $administrator->getEmailAddress());
     }
 }
