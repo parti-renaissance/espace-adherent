@@ -413,6 +413,15 @@
             <argument />
         </service>
 
+        <service id="app.admin.jecoute.national_region" class="App\Admin\Jecoute\NationalRegionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Campagnes nationale" group="Je marche app" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\Region</argument>
+            <argument />
+            <argument type="service" id="App\Jecoute\RegionManager" />
+        </service>
+
         <service id="app.admin.jecoute.candidate_region" class="App\Admin\Jecoute\CandidateRegionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Campagnes régionales" group="Je marche app" />
 
