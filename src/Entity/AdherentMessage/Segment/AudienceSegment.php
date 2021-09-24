@@ -22,7 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"audience_segment_read"}},
- *         "denormalization_context": {"groups": {"audience_segment_write"}},
+ *         "denormalization_context": {
+ *             "groups": {"audience_segment_write"},
+ *             "disable_type_enforcement": true,
+ *         },
  *     },
  *     collectionOperations={
  *         "post": {

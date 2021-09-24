@@ -4,7 +4,7 @@ namespace App\Filter\Types;
 
 use App\Filter\FilterTypeEnum;
 
-class Autocomplete extends AbstractFilter
+class Autocomplete extends Select
 {
     public function setUrl(string $url): void
     {

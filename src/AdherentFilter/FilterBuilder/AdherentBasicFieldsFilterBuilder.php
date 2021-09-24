@@ -5,7 +5,6 @@ namespace App\AdherentFilter\FilterBuilder;
 use App\Filter\FilterCollectionBuilder;
 use App\Filter\Types\DefinedTypes\AgeRange;
 use App\Filter\Types\DefinedTypes\GenderSelect;
-use App\Filter\Types\DefinedTypes\ZoneAutocomplete;
 use App\Scope\ScopeEnum;
 
 class AdherentBasicFieldsFilterBuilder implements AdherentFilterBuilderInterface
@@ -23,7 +22,6 @@ class AdherentBasicFieldsFilterBuilder implements AdherentFilterBuilderInterface
             ->createText('lastName', 'Nom')
             ->createFrom(AgeRange::class)
             ->createDateInterval('registered', 'Adhésion')
-            ->createFrom(ZoneAutocomplete::class)
             ->createBooleanSelect('isCommitteeMember', 'Membre d\'un comité')
             ->getFilters()
         ;
