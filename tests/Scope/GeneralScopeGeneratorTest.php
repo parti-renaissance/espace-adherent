@@ -71,14 +71,50 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ]],
             'apps' => ['data_corner'],
         ]]];
-        yield [LoadAdherentData::SENATOR_UUID, [[
-            'code' => 'senator',
-            'zones' => [[
-                'code' => '59',
-                'name' => 'Nord',
-            ]],
-            'apps' => ['data_corner'],
-        ]]];
+        yield [LoadAdherentData::SENATOR_UUID, [
+            [
+                'code' => 'senator',
+                'zones' => [[
+                    'code' => '59',
+                    'name' => 'Nord',
+                ]],
+                'apps' => ['data_corner'],
+            ],
+            [
+                'code' => 'delegated_08f40730-d807-4975-8773-69d8fae1da74',
+                'zones' => [
+                    [
+                        'code' => '13',
+                        'name' => 'Bouches-du-Rhône',
+                    ],
+                    [
+                        'code' => '59',
+                        'name' => 'Nord',
+                    ],
+                    [
+                        'code' => '76',
+                        'name' => 'Seine-Maritime',
+                    ],
+                    [
+                        'code' => '77',
+                        'name' => 'Seine-et-Marne',
+                    ],
+                    [
+                        'code' => '92',
+                        'name' => 'Hauts-de-Seine',
+                    ],
+                    [
+                        'code' => 'ES',
+                        'name' => 'Espagne',
+                    ],
+                    [
+                        'code' => 'CH',
+                        'name' => 'Suisse',
+                    ],
+                ],
+                'apps' => ['data_corner'],
+            ],
+        ]];
         yield [LoadAdherentData::ADHERENT_3_UUID, [
             [
                 'code' => 'candidate',

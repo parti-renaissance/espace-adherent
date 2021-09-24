@@ -40,15 +40,10 @@ class GeneralScopeGenerator
         foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
             $delegator = $delegatedAccess->getDelegator();
 
-            foreach ($this->generators as $generator) {
-                if (
-                    $generator->getCode() === $delegatedAccess->getType()
-                    && $generator->supports($delegator)
-                ) {
-                    $generator->setDelegatedAccess($delegatedAccess);
-                    $scopes[] = $generator->generate($delegator);
-                }
-            }
+            $generator = $this->getGenerator($delegatedAccess->getType(), $delegator);
+            $generator->setDelegatedAccess($delegatedAccess);
+
+            $scopes[] = $generator->generate($delegator);
         }
 
         return $scopes;
@@ -62,7 +57,7 @@ class GeneralScopeGenerator
             $delegatedAccess = $this->findDelegatedAccess($scopeCode);
 
             if (!$delegatedAccess) {
-                throw new NotFoundScopeGeneratorException("Can\'t find delegated access for code \"$scopeCode\".");
+                throw new NotFoundScopeGeneratorException("Can't find delegated access for code \"$scopeCode\".");
             }
 
             $delegator = $delegatedAccess->getDelegator();
