@@ -65,7 +65,7 @@ class BaseEventRepository extends ServiceEntityRepository
             $zones,
             $qb,
             'event',
-            CommitteeEvent::class,
+            BaseEvent::class,
             'e2',
             'zones',
             'z2',
