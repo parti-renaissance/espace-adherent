@@ -9,7 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/qr-code/{uuid}/generate", name="app_admin_qr_code_generate", methods="GET")
+ * @Route(
+ *     "/qr-code/{uuid}/generate.{_format}",
+ *     name="app_admin_qr_code_generate",
+ *     methods="GET",
+ *     defaults={"_format": "png"},
+ *     requirements={"_format": "png|svg"}
+ * )
  * @Security("is_granted('ROLE_ADMIN_QR_CODES')")
  */
 class AdminQrCodeGeneratorController
@@ -21,8 +27,8 @@ class AdminQrCodeGeneratorController
         $this->qrCodeEntityHandler = $qrCodeEntityHandler;
     }
 
-    public function __invoke(QrCode $qrCode): Response
+    public function __invoke(QrCode $qrCode, string $_format): Response
     {
-        return $this->qrCodeEntityHandler->generateQrCode($qrCode);
+        return $this->qrCodeEntityHandler->generateQrCode($qrCode, $_format);
     }
 }

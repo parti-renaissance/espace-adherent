@@ -79,12 +79,14 @@ class QrCodeAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Créé le',
             ])
+            ->add('_qrcode', null, [
+                'label' => 'QR Code',
+                'virtual_field' => true,
+                'template' => 'admin/qr_code/list_qrcode.html.twig',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'qrcode' => [
-                        'template' => 'admin/qr_code/list_qrcode.html.twig',
-                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
