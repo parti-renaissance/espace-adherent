@@ -3,6 +3,7 @@
 namespace App\Scope\Generator;
 
 use App\Entity\Adherent;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\Scope as ScopeEntity;
 use App\Repository\ScopeRepository;
 use App\Scope\Scope;
@@ -10,6 +11,9 @@ use App\Scope\Scope;
 abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 {
     private $scopeRepository;
+
+    /** @var DelegatedAccess|null */
+    private $delegatedAccess;
 
     public function __construct(ScopeRepository $scopeRepository)
     {
@@ -20,13 +24,22 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
     {
         $scopeEntity = $this->findScope($this->getCode());
 
-        return new Scope(
-            $scopeEntity->getCode(),
-            $scopeEntity->getName(),
-            $this->getZones($adherent),
+        $scope = new Scope(
+            $this->getScopeCode($scopeEntity),
+            $this->getScopeName($scopeEntity),
+            $this->getZones($this->delegatedAccess ? $this->delegatedAccess->getDelegator() : $adherent),
             $scopeEntity->getApps(),
             $scopeEntity->getFeatures()
         );
+
+        $this->delegatedAccess = null;
+
+        return $scope;
+    }
+
+    public function setDelegatedAccess(DelegatedAccess $delegatedAccess): void
+    {
+        $this->delegatedAccess = $delegatedAccess;
     }
 
     abstract protected function getZones(Adherent $adherent): array;
@@ -40,5 +53,24 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         }
 
         return $scope;
+    }
+
+    private function getScopeCode(ScopeEntity $scopeEntity): string
+    {
+        return $this->delegatedAccess
+            ? sprintf('%s%s', self::DELEGATED_SCOPE_PREFIX, $this->delegatedAccess->getUuid()->toString())
+            : $scopeEntity->getCode()
+        ;
+    }
+
+    private function getScopeName(ScopeEntity $scopeEntity): string
+    {
+        $name = $scopeEntity->getName();
+
+        if ($this->delegatedAccess) {
+            $name .= ' délégué';
+        }
+
+        return $name;
     }
 }
