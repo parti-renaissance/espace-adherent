@@ -70,17 +70,6 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                         "type": "date_interval"
                     },
                     {
-                        "code": "zones",
-                        "label": "Zone géographique",
-                        "options": {
-                            "url": "\/api\/v3\/zone\/autocompletion",
-                            "query_param": "q",
-                            "value_param": "uuid",
-                            "label_param": "name"
-                        },
-                        "type": "autocomplete"
-                    },
-                    {
                         "code": "isCommitteeMember",
                         "label": "Membre d'un comité",
                         "options": {
@@ -123,6 +112,18 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                             }
                         },
                         "type": "select"
+                    },
+                    {
+                        "code": "zones",
+                        "label": "Zone géographique",
+                        "options": {
+                            "label_param": "name",
+                            "multiple": true,
+                            "query_param": "q",
+                            "url": "/api/v3/zone/autocompletion",
+                            "value_param": "uuid"
+                        },
+                        "type": "autocomplete"
                     }
                 ]
 JSON,

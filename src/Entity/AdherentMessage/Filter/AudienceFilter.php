@@ -96,6 +96,17 @@ class AudienceFilter extends AbstractAdherentFilter
         return $this->includeAdherentsInCommittee ? true : ($this->includeAdherentsNoCommittee ? false : null);
     }
 
+    /**
+     * @Groups({"audience_segment_write"})
+     */
+    public function setIsCommitteeMember(?bool $value): void
+    {
+        if (null !== $value) {
+            $this->includeAdherentsInCommittee = $value;
+            $this->includeAdherentsNoCommittee = !$value;
+        }
+    }
+
     public function isCertified(): ?bool
     {
         return $this->isCertified;
@@ -124,5 +135,33 @@ class AudienceFilter extends AbstractAdherentFilter
     public function setScope(string $scope): void
     {
         $this->scope = $scope;
+    }
+
+    /**
+     * @Groups({"audience_segment_write"})
+     */
+    public function setAge(array $minMax): void
+    {
+        if (!empty($minMax['min'])) {
+            $this->setAgeMin($minMax['min']);
+        }
+
+        if (!empty($minMax['max'])) {
+            $this->setAgeMax($minMax['max']);
+        }
+    }
+
+    /**
+     * @Groups({"audience_segment_write"})
+     */
+    public function setRegistered(array $startEnd): void
+    {
+        if (!empty($startEnd['start'])) {
+            $this->setRegisteredSince(new \DateTime($startEnd['start']));
+        }
+
+        if (!empty($startEnd['end'])) {
+            $this->setRegisteredUntil(new \DateTime($startEnd['end']));
+        }
     }
 }

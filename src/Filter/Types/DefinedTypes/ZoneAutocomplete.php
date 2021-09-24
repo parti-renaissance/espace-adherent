@@ -6,9 +6,9 @@ use App\Filter\Types\Autocomplete;
 
 class ZoneAutocomplete extends Autocomplete
 {
-    public function __construct()
+    public function __construct(array $options = [])
     {
-        parent::__construct('zones', 'Zone géographique');
+        parent::__construct($options['code'] ?? 'zones', $options['label'] ?? 'Zone géographique');
 
         $this->setUrl('/api/v3/zone/autocompletion');
         $this->setQueryParam('q');

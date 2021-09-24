@@ -7,9 +7,9 @@ use App\ValueObject\Genders;
 
 class GenderSelect extends Select
 {
-    public function __construct()
+    public function __construct(array $options = [])
     {
-        parent::__construct('gender', 'Genre');
+        parent::__construct($options['code'] ?? 'gender', $options['label'] ?? 'Genre');
 
         $this->setChoices(Genders::CHOICES_LABELS);
     }

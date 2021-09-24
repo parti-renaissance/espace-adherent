@@ -14,15 +14,16 @@ use App\Filter\Types\Text;
  * @method self setQueryParam(string $queryParam)
  * @method self setValueParam(string $valueParam)
  * @method self setLabelParam(string $labelParam)
+ * @method self setMultiple(bool $multiple)
  */
 class FilterCollectionBuilder
 {
     private array $filters = [];
     private ?FilterInterface $current;
 
-    public function createFrom(string $class): self
+    public function createFrom(string $class, array $options = []): self
     {
-        return $this->create(new $class());
+        return $this->create(new $class($options));
     }
 
     public function createText(string $code, string $label): self
