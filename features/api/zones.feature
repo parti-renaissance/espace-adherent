@@ -77,8 +77,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can filter zones by space and partial name with page limit
-    Given I add "Accept" header equal to "application/json"
-    And I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/zone/autocompletion" with parameters:
       | key         | value     |
       | space_type  | referent  |
@@ -164,8 +163,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can filter zones by space and partial name
-    Given I add "Accept" header equal to "application/json"
-    And I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/zone/autocompletion" with parameters:
       | key         | value     |
       | space_type  | deputy    |

@@ -11,8 +11,7 @@ Feature:
       | LoadClientData          |
 
   Scenario: As a non logged-in user I get event categories with their group category
-    When I add "Accept" header equal to "application/json"
-    And I send a "GET" request to "/api/event_categories"
+    When I send a "GET" request to "/api/event_categories"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

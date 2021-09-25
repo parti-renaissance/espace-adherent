@@ -23,8 +23,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can access the adherents count information
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -51,8 +50,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can access the managed by referent adherents count information
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -183,13 +181,11 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can not set a nickname
-    Given I add "Accept" header equal to "application/json"
-    And I send a "PUT" request to "/api/adherents/me/anonymize"
+    Given I send a "PUT" request to "/api/adherents/me/anonymize"
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can not set a nickname of another person
-    Given I add "Accept" header equal to "application/json"
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
     {
@@ -202,8 +198,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can not set a nickname that used by another person
-    Given I add "Accept" header equal to "application/json"
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
     {
@@ -227,8 +222,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot set my nickname if it's too long
-    Given I add "Accept" header equal to "application/json"
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
@@ -254,8 +248,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot set my nickname if it contains not authorised caracters
-    Given I add "Accept" header equal to "application/json"
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
@@ -268,8 +261,7 @@ Feature:
     And the JSON node "detail" should be equal to "nickname: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -"
 
   Scenario: As a logged-in user I can set my nickname but not use it
-    Given I add "Accept" header equal to "application/json"
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
@@ -281,8 +273,7 @@ Feature:
     And the response should be in JSON
 
   Scenario: As a logged-in user I can set my nickname and use it
-    Given I add "Accept" header equal to "application/json"
-    And I am logged as "jacques.picard@en-marche.fr"
+    Given I am logged as "jacques.picard@en-marche.fr"
     And I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/adherents/me/anonymize" with body:
     """
