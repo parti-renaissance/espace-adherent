@@ -67,6 +67,20 @@ class Zone implements GeoInterface
     public const FOREIGN_DISTRICT = 'foreign_district';
     public const CONSULAR_DISTRICT = 'consular_district';
 
+    public const TYPES = [
+        Zone::CUSTOM,
+        Zone::FOREIGN_DISTRICT,
+        Zone::COUNTRY,
+        Zone::CONSULAR_DISTRICT,
+        Zone::REGION,
+        Zone::DEPARTMENT,
+        Zone::CITY,
+        Zone::DISTRICT,
+        Zone::CITY_COMMUNITY,
+        Zone::CANTON,
+        Zone::BOROUGH,
+    ];
+
     public const CANDIDATE_TYPES = [
         self::CANTON,
         self::DEPARTMENT,

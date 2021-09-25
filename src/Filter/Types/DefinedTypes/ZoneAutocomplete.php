@@ -10,7 +10,7 @@ class ZoneAutocomplete extends Autocomplete
     {
         parent::__construct($options['code'] ?? 'zones', $options['label'] ?? 'Zone géographique');
 
-        $this->setUrl('/api/v3/zone/autocompletion');
+        $this->setUrl('/api/v3/zone/autocomplete');
         $this->setQueryParam('q');
         $this->setValueParam('uuid');
         $this->setLabelParam('name');

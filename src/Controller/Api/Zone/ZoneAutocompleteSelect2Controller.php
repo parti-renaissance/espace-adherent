@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Zone;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
@@ -15,39 +15,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ZoneController extends AbstractController
+/**
+ * @Route("/zone/autocompletion", name="api_zone_autocomplete", condition="request.isXmlHttpRequest()", methods={"GET"})
+ * @Route("/v3/zone/autocompletion", name="api_v3_zone_autocomplete", methods={"GET"})
+ * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+ */
+class ZoneAutocompleteSelect2Controller extends AbstractController
 {
     use AccessDelegatorTrait;
 
     private const SUGGESTIONS_PER_TYPE = 5;
     private const ACTIVE_ONLY = true;
 
-    private const TYPES = [
-        Zone::CUSTOM,
-        Zone::FOREIGN_DISTRICT,
-        Zone::COUNTRY,
-        Zone::CONSULAR_DISTRICT,
-        Zone::REGION,
-        Zone::DEPARTMENT,
-        Zone::CITY,
-        Zone::DISTRICT,
-        Zone::CITY_COMMUNITY,
-        Zone::CANTON,
-        Zone::BOROUGH,
-    ];
-
-    private const CANDIDATE_TYPES = [
-        Zone::CANTON,
-        Zone::DEPARTMENT,
-        Zone::REGION,
-    ];
-
-    /**
-     * @Route("/zone/autocompletion", name="api_zone_autocomplete", condition="request.isXmlHttpRequest()", methods={"GET"})
-     * @Route("/v3/zone/autocompletion", name="api_v3_zone_autocomplete", methods={"GET"})
-     * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
-     */
-    public function autocomplete(
+    public function __invoke(
         Request $request,
         ManagedZoneProvider $managedZoneProvider,
         ZoneRepository $repository,
@@ -67,7 +47,7 @@ class ZoneController extends AbstractController
         $zones = $repository->searchByTermAndManagedZonesGroupedByType(
             $term,
             $managedZones,
-            AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType ? self::CANDIDATE_TYPES : self::TYPES,
+            AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType ? Zone::CANDIDATE_TYPES : Zone::TYPES,
             $activeOnly,
             $max
         );
@@ -87,7 +67,7 @@ class ZoneController extends AbstractController
      */
     private function normalizeZoneForSelect2(TranslatorInterface $translator, array $zones): array
     {
-        $results = array_fill_keys(self::TYPES, null);
+        $results = array_fill_keys(Zone::TYPES, null);
 
         foreach ($zones as $zone) {
             $type = $zone->getType();
