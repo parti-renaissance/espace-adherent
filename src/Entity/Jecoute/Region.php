@@ -2,6 +2,8 @@
 
 namespace App\Entity\Jecoute;
 
+use App\Entity\Adherent;
+use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,11 +18,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="jecoute_region")
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\RegionRepository")
  *
- * @UniqueEntity(fields={"zone"})
+ * @UniqueEntity(fields={"zone"}, message="jecoute_region.zone.not_unique")
  */
 class Region
 {
     use EntityTimestampableTrait;
+    use EntityAdministratorTrait;
 
     private const IMAGES_DIRECTORY = 'files/jemarche/regions';
 
@@ -136,6 +139,23 @@ class Region
      */
     private $zone;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Assert\Type("bool")
+     */
+    private $enabled;
+
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $author;
+
     public function __construct(
         UuidInterface $uuid = null,
         Zone $zone = null,
@@ -144,7 +164,8 @@ class Region
         string $primaryColor = null,
         string $logo = null,
         string $banner = null,
-        string $externalLink = null
+        string $externalLink = null,
+        bool $enabled = true
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->zone = $zone;
@@ -154,6 +175,7 @@ class Region
         $this->logo = $logo;
         $this->banner = $banner;
         $this->externalLink = $externalLink;
+        $this->enabled = $enabled;
     }
 
     public function __toString()
@@ -304,5 +326,25 @@ class Region
     public function setZone(?Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function getAuthor(): ?Adherent
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Adherent $author): void
+    {
+        $this->author = $author;
     }
 }

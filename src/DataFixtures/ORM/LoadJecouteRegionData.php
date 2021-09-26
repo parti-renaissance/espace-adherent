@@ -14,6 +14,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
     public const REGION_1_UUID = '88275043-adb5-463a-8a62-5248fe7aacbf';
     public const REGION_2_UUID = 'c91391e9-4a08-4d14-8960-6c3508c1dddc';
     public const REGION_3_UUID = '62c6bf4c-72c9-4a29-bd5e-bf27b8ee2228';
+    public const REGION_4_UUID = '00e75c62-caff-49c2-885c-e6e8d188d3af';
 
     public function load(ObjectManager $manager)
     {
@@ -48,6 +49,18 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
             'region-logo.jpg'
         ));
 
+        $manager->persist($this->createRegion(
+            self::REGION_4_UUID,
+            $this->getZoneEntity($manager, 81), // geo_country_FR - France
+            'Campagne nationale',
+            'Description de la campagne nationale',
+            RegionColorEnum::PURPLE,
+            'region-logo.jpg',
+            null,
+            null,
+            false
+        ));
+
         $manager->flush();
     }
 
@@ -64,7 +77,8 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
         string $primaryColor,
         string $logo,
         string $banner = null,
-        string $externalLink = null
+        string $externalLink = null,
+        bool $enabled = true
     ): Region {
         return new Region(
             Uuid::fromString($uuid),
@@ -74,7 +88,8 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
             $primaryColor,
             $logo,
             $banner,
-            $externalLink
+            $externalLink,
+            $enabled
         );
     }
 }

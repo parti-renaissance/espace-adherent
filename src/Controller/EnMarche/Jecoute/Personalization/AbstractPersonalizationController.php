@@ -47,7 +47,7 @@ abstract class AbstractPersonalizationController extends AbstractController
         if (!$zoneId) {
             $personalization = $this->regionRepository->findOneBy(['zone' => $zones[0]]);
             if (!$personalization) {
-                $personalization = new Region(Uuid::uuid4(), $zones[0]);
+                $personalization = $this->createPersonnalization($zones[0], $adherent);
                 $isNew = true;
             }
         }
@@ -58,7 +58,7 @@ abstract class AbstractPersonalizationController extends AbstractController
             $personalization = $this->regionRepository->findOneBy(['zone' => $zone]);
 
             if (!$personalization) {
-                $personalization = new Region(Uuid::uuid4(), $zone);
+                $personalization = $this->createPersonnalization($zone, $adherent);
                 $isNew = true;
             }
         }
@@ -79,7 +79,6 @@ abstract class AbstractPersonalizationController extends AbstractController
             $manager->flush();
 
             $this->addFlash('info', $isNew ? 'jecoute_region.create.success' : 'jecoute_region.edit.success');
-            $isNew = false;
 
             return $this->redirectToRegionRoute('edit', ['zone_id' => $zoneId]);
         }
@@ -89,19 +88,6 @@ abstract class AbstractPersonalizationController extends AbstractController
             'is_creation' => $isNew,
             'region' => $personalization,
         ]);
-    }
-
-    /**
-     * @Route(path="/{uuid}/supprimer", name="delete", methods={"GET"})
-     */
-    public function deleteJecoutePersonalization(Region $region, EntityManagerInterface $entityManager): Response
-    {
-        $entityManager->remove($region);
-        $entityManager->flush();
-
-        $this->addFlash('info', 'jecoute_region.delete.success');
-
-        return $this->redirectToRegionRoute('edit');
     }
 
     abstract protected function getSpaceName(): string;
@@ -122,5 +108,13 @@ abstract class AbstractPersonalizationController extends AbstractController
     protected function redirectToRegionRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_region_${subName}", $parameters);
+    }
+
+    private function createPersonnalization(Zone $zone, Adherent $adherent): Region
+    {
+        $personalization = new Region(Uuid::uuid4(), $zone);
+        $personalization->setAuthor($adherent);
+
+        return $personalization;
     }
 }
