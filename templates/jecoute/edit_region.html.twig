@@ -60,21 +60,11 @@
 
         {{ form_row(form.bannerFile) }}
 
+        {{ form_row(form.enabled) }}
+
         <div class="form__row text--center b__nudge--top">
             <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top">Enregistrer</button>
         </div>
-
-        {% if not is_creation %}
-            <div class="form__row text--center b__nudge--top">
-                <a href="{{ path("app_jecoute_#{space_name}_region_delete", {uuid: region.uuid}) }}"
-                   class="btn btn--ghosting--grey btn--large-and-full b__nudge--top em-confirm--trigger"
-                   data-confirm-content="Vous perderez les paramètres actuels."
-                   data-confirm-action="Supprimer la personnalisation"
-                >
-                    Supprimer la personnalisation
-                </a>
-            </div>
-        {% endif %}
 
         {{ form_end(form) }}
     </div>

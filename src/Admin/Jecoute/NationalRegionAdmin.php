@@ -5,8 +5,10 @@ namespace App\Admin\Jecoute;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Region;
 use App\Repository\Geo\ZoneRepository;
+use App\Repository\Jecoute\RegionRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -17,6 +19,18 @@ class NationalRegionAdmin extends AbstractRegionAdmin
 
     /** @var ZoneRepository */
     private $zoneRepository;
+
+    /** @var RegionRepository */
+    private $regionRepository;
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        parent::configureRoutes($collection);
+
+        if ($this->regionRepository->hasNationalCampaign()) {
+            $collection->remove('create');
+        }
+    }
 
     protected function getZoneTypes(): array
     {
@@ -59,5 +73,13 @@ class NationalRegionAdmin extends AbstractRegionAdmin
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;
+    }
+
+    /**
+     * @required
+     */
+    public function setRegionRepository(RegionRepository $regionRepository): void
+    {
+        $this->regionRepository = $regionRepository;
     }
 }
