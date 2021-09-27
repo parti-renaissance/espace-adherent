@@ -178,6 +178,7 @@ Feature:
         "data_corner"
       ],
       "features": [
+        "dashboard",
         "contacts",
         "messages"
       ]
