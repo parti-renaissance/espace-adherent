@@ -8,7 +8,6 @@ use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\RegionRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -23,13 +22,15 @@ class NationalRegionAdmin extends AbstractRegionAdmin
     /** @var RegionRepository */
     private $regionRepository;
 
-    protected function configureRoutes(RouteCollection $collection)
+    public function configureActionButtons($action, $object = null)
     {
-        parent::configureRoutes($collection);
+        $list = parent::configureActionButtons($action, $object);
 
         if ($this->regionRepository->hasNationalCampaign()) {
-            $collection->remove('create');
+            unset($list['create']);
         }
+
+        return $list;
     }
 
     protected function getZoneTypes(): array
