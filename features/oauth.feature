@@ -131,8 +131,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
 
   Scenario: Grant type not allowed
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                              |
       | client_secret | 2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs |
       | client_id     | f80ce2df-af6d-4ce4-8239-04cfcefd5a19               |
@@ -149,8 +148,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
 
   Scenario: Scope is not allowed for this client
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA= |
       | client_id     | 4122f4ce-f994-45f7-9ff5-f9f09ab3991e         |

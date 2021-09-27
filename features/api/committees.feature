@@ -25,8 +25,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can access the committee supervisors count managed by referent information
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -63,8 +62,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can get the most active committees in referent managed zone
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -100,8 +98,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can get the committee members count in referent managed zone
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -125,8 +122,7 @@ Feature:
     }
     """
 
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -150,8 +146,7 @@ Feature:
     }
     """
 
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -175,8 +170,7 @@ Feature:
     }
     """
 
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -200,8 +194,7 @@ Feature:
     }
     """
 
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -225,8 +218,7 @@ Feature:
     }
     """
 
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
@@ -251,8 +243,7 @@ Feature:
     """
 
     # Test get stats for committee with scheduled events but not managed by referent
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
+    Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
       | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
