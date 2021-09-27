@@ -19,6 +19,7 @@ use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -96,14 +97,15 @@ class AssetsController extends AbstractController
         string $latitude,
         string $longitude
     ): Response {
-        $coordinates = new Coordinates($latitude, $longitude);
-        $size = $request->query->has('algolia') ? self::WIDTH.'x'.self::HEIGHT : null;
-
-        if (!$contents = $mapProvider->get($coordinates, $size)) {
-            $contents = file_get_contents($this->createWhiteImage());
+        if ($request->query->has('algolia')) {
+            $size = self::WIDTH.'x'.self::HEIGHT;
         }
 
-        return new Response($contents, 200, ['content-type' => 'image/png']);
+        if ($contents = $mapProvider->get(new Coordinates($latitude, $longitude), $size ?? null)) {
+            return new Response($contents, Response::HTTP_OK, ['content-type' => 'image/png']);
+        }
+
+        return new BinaryFileResponse($this->createWhiteImage(), Response::HTTP_OK, ['content-type' => 'image/png']);
     }
 
     /**
@@ -199,9 +201,13 @@ class AssetsController extends AbstractController
      */
     public function timelineImageAction(Request $request, TimelineImageFactory $imageFactory): Response
     {
-        $locale = preg_match('#/en/#', $request->headers->get('referer')) ? 'en' : 'fr';
+        $locale = 'fr';
 
-        return new Response(file_get_contents($imageFactory->createImage($locale)), Response::HTTP_OK, [
+        if (preg_match('#/en/#', $request->headers->get('referer'))) {
+            $locale = 'en';
+        }
+
+        return new BinaryFileResponse($imageFactory->createImage($locale), Response::HTTP_OK, [
             'Content-Type' => 'image/jpeg',
         ]);
     }
