@@ -80,7 +80,10 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         $scopeFeatures = $scopeEntity->getFeatures();
 
         if ($this->delegatedAccess) {
-            $inheritedFeatures = [];
+            $inheritedFeatures = [
+                FeatureEnum::DASHBOARD,
+            ];
+
             foreach ($this->delegatedAccess->getAccesses() as $delegatedFeature) {
                 if (\array_key_exists($delegatedFeature, FeatureEnum::DELEGATED_ACCESSES_MAPPING)) {
                     $inheritedFeatures[] = FeatureEnum::DELEGATED_ACCESSES_MAPPING[$delegatedFeature];
