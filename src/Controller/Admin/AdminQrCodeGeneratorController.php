@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\QrCode;
 use App\QrCode\QrCodeEntityHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,8 +28,8 @@ class AdminQrCodeGeneratorController
         $this->qrCodeEntityHandler = $qrCodeEntityHandler;
     }
 
-    public function __invoke(QrCode $qrCode, string $_format): Response
+    public function __invoke(Request $request, QrCode $qrCode, string $_format): Response
     {
-        return $this->qrCodeEntityHandler->generateQrCode($qrCode, $_format);
+        return $this->qrCodeEntityHandler->generateQrCode($qrCode, $_format, $request->query->has('_download'));
     }
 }

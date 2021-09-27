@@ -22,16 +22,19 @@ class QrCodeResponseFactory
     public function createResponse(
         string $text,
         string $filename,
-        string $writerByName = self::DEFAULT_WRITER
+        string $writerByName = self::DEFAULT_WRITER,
+        bool $download = false
     ): QrCodeResponse {
         $response = new QrCodeResponse($this->getQrContent($text, $writerByName));
 
-        $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            sprintf('QR-%s.%s', Urlizer::urlize($filename), $writerByName)
-        );
+        if ($download) {
+            $disposition = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                sprintf('QR-%s.%s', Urlizer::urlize($filename), $writerByName)
+            );
 
-        $response->headers->set('Content-Disposition', $disposition);
+            $response->headers->set('Content-Disposition', $disposition);
+        }
 
         return $response;
     }
