@@ -178,11 +178,8 @@ Feature:
         "data_corner"
       ],
       "features": [
-        "dashboard",
         "contacts",
-        "messages",
-        "mobile_app",
-        "elections"
+        "messages"
       ]
     }
     """

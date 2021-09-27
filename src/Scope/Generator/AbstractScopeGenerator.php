@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\Scope as ScopeEntity;
 use App\Repository\ScopeRepository;
+use App\Scope\FeatureEnum;
 use App\Scope\Scope;
 
 abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
@@ -29,7 +30,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
             $this->getScopeName($scopeEntity),
             $this->getZones($this->delegatedAccess ? $this->delegatedAccess->getDelegator() : $adherent),
             $scopeEntity->getApps(),
-            $scopeEntity->getFeatures()
+            $this->getFeatures($scopeEntity)
         );
 
         $this->delegatedAccess = null;
@@ -72,5 +73,23 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         }
 
         return $name;
+    }
+
+    private function getFeatures(ScopeEntity $scopeEntity): array
+    {
+        $scopeFeatures = $scopeEntity->getFeatures();
+
+        if ($this->delegatedAccess) {
+            $inheritedFeatures = [];
+            foreach ($this->delegatedAccess->getAccesses() as $delegatedFeature) {
+                if (\array_key_exists($delegatedFeature, FeatureEnum::DELEGATED_ACCESSES_MAPPING)) {
+                    $inheritedFeatures[] = FeatureEnum::DELEGATED_ACCESSES_MAPPING[$delegatedFeature];
+                }
+            }
+
+            return array_values(array_intersect($scopeFeatures, $inheritedFeatures));
+        }
+
+        return $scopeFeatures;
     }
 }
