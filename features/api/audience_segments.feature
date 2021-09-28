@@ -212,7 +212,7 @@ Feature:
           "first_name": "Nouveau prénom",
           "last_name": "Nouveau nom",
           "gender": "male",
-          "zone": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+          "zone": "e3f21338-906e-11eb-a875-0242ac150002",
           "age_min": 25,
           "age_max": 35,
           "registered_since": "2018-01-01",
@@ -230,9 +230,9 @@ Feature:
         "is_certified": false,
         "scope": "referent",
         "zone": {
-          "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
-          "code": "75-1",
-          "name": "Paris (1)"
+          "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+          "code": "59350",
+          "name": "Lille"
         },
         "is_committee_member": true,
         "gender": "male",

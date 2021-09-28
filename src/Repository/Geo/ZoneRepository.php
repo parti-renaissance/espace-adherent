@@ -7,6 +7,7 @@ use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use App\Entity\ReferentTag;
+use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -15,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ZoneRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Zone::class);

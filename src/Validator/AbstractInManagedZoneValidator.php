@@ -42,9 +42,13 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
             throw new \InvalidArgumentException('No user provided');
         }
 
-        if ($managedZones) {
+        if (null !== $managedZones) {
             $managedZonesIds = array_map(function (Zone $zone) {return $zone->getId(); }, $managedZones);
-        } elseif (!$managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, $constraint->spaceType)) {
+        } else {
+            $managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, $constraint->spaceType);
+        }
+
+        if (!$managedZonesIds) {
             return;
         }
 

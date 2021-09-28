@@ -5,14 +5,10 @@ namespace App\Normalizer;
 use App\Entity\Geo\Zone;
 use App\Repository\Geo\ZoneRepository;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class ZoneDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+class ZoneFromUuidDenormalizer implements DenormalizerInterface
 {
-    use DenormalizerAwareTrait;
-
     private ZoneRepository $zoneRepository;
 
     public function __construct(ZoneRepository $zoneRepository)
@@ -20,12 +16,12 @@ class ZoneDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
         $this->zoneRepository = $zoneRepository;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = [])
     {
         return $this->zoneRepository->findOneByUuid($data);
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
         return Zone::class === $type && \is_string($data) && Uuid::isValid($data);
     }

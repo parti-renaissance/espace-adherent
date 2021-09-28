@@ -15,10 +15,14 @@ class ManagedZoneProvider
     public function getManagedZones(Adherent $adherent, string $spaceType): array
     {
         if (AdherentSpaceEnum::DEPUTY === $spaceType) {
-            return [$adherent->getManagedDistrict()->getReferentTag()->getZone()];
+            return $adherent->getManagedDistrict() ? [$adherent->getManagedDistrict()->getReferentTag()->getZone()] : [];
         }
 
         if (AdherentSpaceEnum::LRE === $spaceType) {
+            if (!$adherent->getLreArea()) {
+                return [];
+            }
+
             if ($adherent->getLreArea()->isAllTags()) {
                 return [];
             }
@@ -27,14 +31,18 @@ class ManagedZoneProvider
         }
 
         if (AdherentSpaceEnum::REFERENT === $spaceType) {
-            return $adherent->getManagedArea()->getZones()->toArray();
+            return $adherent->getManagedArea() ? $adherent->getManagedArea()->getZones()->toArray() : [];
         }
 
         if (AdherentSpaceEnum::SENATOR === $spaceType) {
-            return [$adherent->getSenatorArea()->getDepartmentTag()->getZone()];
+            return $adherent->getSenatorArea() ? [$adherent->getSenatorArea()->getDepartmentTag()->getZone()] : [];
         }
 
         if (AdherentSpaceEnum::SENATORIAL_CANDIDATE === $spaceType) {
+            if (!$adherent->getSenatorialCandidateManagedArea()) {
+                return [];
+            }
+
             $zones = [];
 
             /* @var ReferentTag $referentTag */
@@ -47,11 +55,11 @@ class ManagedZoneProvider
         }
 
         if (\in_array($spaceType, [AdherentSpaceEnum::CANDIDATE, AdherentSpaceEnum::CANDIDATE_JECOUTE], true)) {
-            return [$adherent->getCandidateManagedArea()->getZone()];
+            return $adherent->getCandidateManagedArea() ? [$adherent->getCandidateManagedArea()->getZone()] : [];
         }
 
         if (AdherentSpaceEnum::LEGISLATIVE_CANDIDATE === $spaceType) {
-            return [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()->getZone()];
+            return $adherent->getLegislativeCandidateManagedDistrict() ? [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()->getZone()] : [];
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid "%s" space type', $spaceType));
