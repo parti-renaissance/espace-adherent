@@ -51,6 +51,7 @@ class JecouteRiposteExtension implements QueryItemExtensionInterface, QueryColle
             ->andWhere("$alias.enabled = :true AND $alias.createdAt > :last_24")
             ->setParameter('true', true)
             ->setParameter('last_24', new \DateTime('-24 hours'))
+            ->orderBy("$alias.createdAt", 'DESC')
         ;
     }
 }
