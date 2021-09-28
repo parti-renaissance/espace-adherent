@@ -41,6 +41,11 @@ abstract class AbstractFilter implements FilterInterface
         return $this->options;
     }
 
+    public function setRequired(bool $value): void
+    {
+        $this->addOption('required', $value);
+    }
+
     protected function addOption(string $key, $value): void
     {
         $this->options[$key] = $value;

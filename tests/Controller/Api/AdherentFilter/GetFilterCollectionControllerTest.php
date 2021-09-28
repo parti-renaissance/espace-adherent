@@ -121,7 +121,8 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                             "multiple": true,
                             "query_param": "q",
                             "url": "/api/v3/zone/autocomplete",
-                            "value_param": "uuid"
+                            "value_param": "uuid",
+                            "required": false
                         },
                         "type": "autocomplete"
                     }
