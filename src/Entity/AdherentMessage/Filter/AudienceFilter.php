@@ -2,18 +2,26 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
+use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
+use App\Entity\ZoneableEntity;
+use App\Validator\ManagedZone;
 use App\Validator\ValidScope;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
+ * @ManagedZone(zoneGetMethodName="getZone")
  */
-class AudienceFilter extends AbstractAdherentFilter
+class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
 {
     use GeneralFilterTrait;
+    use EntityZoneTrait;
 
     /**
      * @var bool
@@ -43,13 +51,22 @@ class AudienceFilter extends AbstractAdherentFilter
     protected $isCertified;
 
     /**
-     * @var Zone
+     * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      *
      * @Groups({"audience_segment_read", "audience_segment_write"})
+     *
+     * @Assert\NotBlank
      */
     private $zone;
+
+    /**
+     * Managed zone collection, useful for validate selected zone ($zone property)
+     *
+     * @var Collection|Zone[]
+     */
+    protected $zones;
 
     /**
      * @var string|null
@@ -67,6 +84,11 @@ class AudienceFilter extends AbstractAdherentFilter
      * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $scope;
+
+    public function __construct()
+    {
+        $this->zones = new ArrayCollection();
+    }
 
     public function includeAdherentsNoCommittee(): ?bool
     {
