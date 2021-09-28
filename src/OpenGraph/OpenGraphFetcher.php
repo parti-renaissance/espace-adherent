@@ -37,7 +37,7 @@ class OpenGraphFetcher
 
         return [
             'type' => $openGraph->type,
-            'title' => EmojisRemover::remove($openGraph->title),
+            'title' => EmojisRemover::remove(str_replace(' on Twitter', '', $openGraph->title)),
             'description' => EmojisRemover::remove(trim($openGraph->description, '“')),
             'site_name' => EmojisRemover::remove($openGraph->siteName),
             'url' => $openGraph->url,
