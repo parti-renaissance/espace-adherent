@@ -15,6 +15,7 @@ use App\Filter\Types\Text;
  * @method self setValueParam(string $valueParam)
  * @method self setLabelParam(string $labelParam)
  * @method self setMultiple(bool $multiple)
+ * @method self setRequired(bool $value)
  */
 class FilterCollectionBuilder
 {

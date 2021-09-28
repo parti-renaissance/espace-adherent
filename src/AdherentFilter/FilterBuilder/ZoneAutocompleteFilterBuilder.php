@@ -19,6 +19,7 @@ class ZoneAutocompleteFilterBuilder implements AdherentFilterBuilderInterface
         return (new FilterCollectionBuilder())
             ->createFrom(ZoneAutocomplete::class, ['code' => FeatureEnum::MESSAGES === $feature ? 'zone' : 'zones'])
             ->setMultiple(FeatureEnum::MESSAGES !== $feature)
+            ->setRequired(FeatureEnum::MESSAGES === $feature)
             ->getFilters()
         ;
     }
