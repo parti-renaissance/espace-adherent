@@ -22,6 +22,7 @@
         "ext-apcu": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
+        "ext-gd": "*",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
