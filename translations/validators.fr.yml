@@ -539,3 +539,8 @@ phoning.campaign_history.finish_at.invalid: La date de fin doit être postérieu
 # Riposte
 #
 riposte.open_graph.can_not_fetch: Impossible de récupérer les metadatas de l'URL spécifiée.
+
+#
+# Jecoute
+#
+jecoute_region.zone.not_unique: Une campagne existe déjà pour cette zone.

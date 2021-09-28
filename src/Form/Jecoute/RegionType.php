@@ -8,6 +8,7 @@ use App\Form\CroppedImageType;
 use App\Jecoute\RegionColorEnum;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -61,6 +62,10 @@ class RegionType extends AbstractType
                 'label' => 'Bannière',
                 'image_path' => $region->hasBannerUploaded() ? $region->getBannerPathWithDirectory() : null,
                 'ratio' => CroppedImageType::RATIO_16_9,
+            ])
+            ->add('enabled', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Personnalisation active',
             ])
         ;
     }

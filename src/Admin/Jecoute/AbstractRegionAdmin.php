@@ -2,6 +2,7 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Entity\Administrator;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use App\Jecoute\RegionManager;
@@ -11,12 +12,14 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Security\Core\Security;
 
 abstract class AbstractRegionAdmin extends AbstractAdmin
 {
@@ -28,12 +31,24 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
     ];
 
     private $regionManager;
+    private $security;
 
-    public function __construct(string $code, string $class, string $baseControllerName, RegionManager $regionManager)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        RegionManager $regionManager,
+        Security $security
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->regionManager = $regionManager;
+        $this->security = $security;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('delete');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -77,6 +92,10 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
                     'label' => 'Lien',
                     'required' => false,
                 ])
+                ->add('enabled', CheckboxType::class, [
+                    'label' => 'Campagne active',
+                    'required' => false,
+                ])
             ->end()
             ->with('Fichiers', ['class' => 'col-md-6'])
                 ->add('logoFile', FileType::class, [
@@ -111,11 +130,13 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
             ->add('zone.code', 'color', [
                 'label' => 'Code',
             ])
+            ->add('enabled', null, [
+                'label' => 'Active',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
-                    'delete' => [],
                 ],
             ])
         ;
@@ -129,6 +150,11 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         parent::prePersist($region);
 
         $this->regionManager->handleFile($region);
+
+        /** @var Administrator $administrator */
+        $administrator = $this->security->getUser();
+
+        $region->setAdministrator($administrator);
     }
 
     /**
