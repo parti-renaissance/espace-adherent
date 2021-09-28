@@ -648,7 +648,7 @@
             <div class="media">
                 <div class="media-left">
                     {% if openGraph.image is defined and openGraph.image is not null %}
-                        <img class="media-object" style="width: 64px; height: 64px;" src="{{ openGraph.image }}">
+                        <img class="media-object" style="max-width: 100px;" src="{{ openGraph.image }}">
                     {% endif %}
                 </div>
                 <div class="media-body">

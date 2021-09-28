@@ -284,9 +284,6 @@ services:
             - '@api_platform.metadata.property.metadata_factory'
             - '@api_platform.path_segment_name_generator'
 
-    Symfony\Component\Panther\Client:
-        factory: ['App\Panther\ClientFactory', 'createSeleniumClient']
-
     App\OvhCloud\Driver:
         arguments:
             - '@app.http_client.ovh_cloud'

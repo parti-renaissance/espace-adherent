@@ -3,67 +3,45 @@
 namespace App\OpenGraph;
 
 use App\Utils\EmojisRemover;
-use App\Utils\PhpConfigurator;
-use Symfony\Component\Panther\Client;
+use Fusonic\OpenGraph\Consumer;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\HttpClient\NativeHttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
 
 class OpenGraphFetcher
 {
-    private const TIMEOUT_IN_SECONDS = 20;
+    private const HTTP_HEADERS = [
+        'User-Agent' => 'facebookexternalhit/1.1',
+        'Accept-Language' => 'fr-FR,fr;q=0.8',
+    ];
 
-    private $client;
+    private $consumer;
 
-    public function __construct(Client $client)
+    public function __construct()
     {
-        $this->client = $client;
+        $this->consumer = new Consumer(
+            new Psr18Client(new NativeHttpClient(['headers' => self::HTTP_HEADERS])),
+            new Psr17Factory()
+        );
     }
 
     public function fetch(string $url): ?array
     {
         try {
-            PhpConfigurator::setTimeLimit(30);
-
-            $this->client->request('GET', $this->buildUrl($url));
-
-            $crawler = $this->client->waitFor('//meta[@property="og:description"]', self::TIMEOUT_IN_SECONDS);
-
-            $metaTags = $crawler->filterXPath("//*/meta[starts-with(@property, 'og:')]");
-
-            $openGraph = [];
-            foreach ($metaTags as $metaTag) {
-                $property = substr($metaTag->getAttribute('property'), 3);
-                $content = EmojisRemover::remove($metaTag->getAttribute('content'));
-
-                $openGraph[$property] = $content;
-            }
-
-            return $openGraph;
+            $openGraph = $this->consumer->loadUrl($url);
         } catch (\Exception $e) {
-            $openGraph = null;
+            return null;
         }
 
-        return $openGraph;
-    }
+        $image = reset($openGraph->images);
 
-    private function buildUrl(string $url): string
-    {
-        $parts = parse_url($url);
-
-        if (isset($parts['query'])) {
-            parse_str($parts['query'], $parameters);
-        } else {
-            $parameters = [];
-        }
-
-        $parameters['lang'] = 'fr';
-
-        $parts['query'] = http_build_query($parameters);
-
-        return sprintf(
-            '%s://%s%s?%s',
-            $parts['scheme'],
-            $parts['host'],
-            $parts['path'] ?? null,
-            $parts['query']
-        );
+        return [
+            'type' => $openGraph->type,
+            'title' => EmojisRemover::remove($openGraph->title),
+            'description' => EmojisRemover::remove(trim($openGraph->description, '“')),
+            'site_name' => EmojisRemover::remove($openGraph->siteName),
+            'url' => $openGraph->url,
+            'image' => $image ? $image->url : null,
+        ];
     }
 }
