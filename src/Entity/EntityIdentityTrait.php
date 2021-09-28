@@ -47,6 +47,7 @@ trait EntityIdentityTrait
      *     "email_template_read",
      *     "email_template_list_read",
      *     "message_read_list",
+     *     "message_read",
      *     "event_list_read",
      *     "event_read",
      *     "audience_read",
