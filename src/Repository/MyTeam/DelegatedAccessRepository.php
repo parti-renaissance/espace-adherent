@@ -15,6 +15,11 @@ class DelegatedAccessRepository extends ServiceEntityRepository
         parent::__construct($registry, DelegatedAccess::class);
     }
 
+    public function findOneByUuid(string $uuid): ?DelegatedAccess
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
+
     public function removeFromDelegator(Adherent $adherent): void
     {
         $this->createQueryBuilder('da')
