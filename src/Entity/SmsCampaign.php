@@ -40,7 +40,7 @@ class SmsCampaign
     /**
      * @var AudienceSnapshot
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank
@@ -60,6 +60,13 @@ class SmsCampaign
      * @ORM\Column(type="integer", nullable=true)
      */
     private $recipientCount;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $adherentCount;
 
     /**
      * @var string|null
@@ -155,6 +162,16 @@ class SmsCampaign
     public function setRecipientCount(?int $recipientCount): void
     {
         $this->recipientCount = $recipientCount;
+    }
+
+    public function getAdherentCount(): ?int
+    {
+        return $this->adherentCount;
+    }
+
+    public function setAdherentCount(?int $adherentCount): void
+    {
+        $this->adherentCount = $adherentCount;
     }
 
     public function setResponsePayload(?string $responsePayload): void

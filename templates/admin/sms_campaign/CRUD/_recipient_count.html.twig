@@ -1,0 +1,7 @@
+{% apply spaceless %}
+    {{ object.getRecipientCount() }}
+
+    {% if object.getAdherentCount() != null %}
+        ({{ object.getAdherentCount() }} adhérent{{ object.getAdherentCount() > 1 ? 's' }})
+    {% endif %}
+{% endapply %}
