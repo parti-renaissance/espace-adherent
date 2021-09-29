@@ -1214,3 +1214,16 @@ sms_campaign.status.draft: 📝 Brouillon
 sms_campaign.status.sending: 💌 En cours d'envoi
 sms_campaign.status.done: ✅ Envoyée
 sms_campaign.status.error: ⛔ Erreur
+
+#
+# Help
+#
+help.markdown: Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a>
+
+#
+# CmsBlock
+#
+cms_block.name.unique: Un bloc statique existe déjà avec ce nom.
+cms_block.name.not_blank: Veuillez renseigner un nom pour ce bloc statique.
+cms_block.name.max_length: Le nom d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
+cms_block.description.max_length: La description d'un bloc statique ne doit pas dépasser {{ limit }} caractères.

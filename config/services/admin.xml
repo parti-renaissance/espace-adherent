@@ -53,6 +53,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.cms_block" class="App\Admin\CmsBlockAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Blocs statiques" group="Communication" />
+
+            <argument />
+            <argument>App\Entity\CmsBlock</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.clarification" class="App\Admin\ClarificationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Désintox" group="Communication" />
             <argument />
@@ -873,6 +881,9 @@
             <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>
 
+        <service id="app.admin.entity_administrator_blameable_extension" class="App\Admin\Extension\EntityAdministratorBlameableAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.cms_block" />
+        </service>
         <!--
         ######################################################
         # Politique
