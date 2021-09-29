@@ -1227,17 +1227,27 @@ SQL;
     }
 
     /** @return PaginatorInterface|Adherent[] */
-    public function findForSmsCampaign(SmsCampaign $smsCampaign, int $page = 1, int $limit = 100): PaginatorInterface
-    {
-        return $this->configurePaginator($this->createQueryBuilderForSmsCampaign($smsCampaign), $page, $limit);
+    public function findForSmsCampaign(
+        SmsCampaign $smsCampaign,
+        bool $uniquePhone,
+        int $page = 1,
+        int $limit = 100
+    ): PaginatorInterface {
+        return $this->configurePaginator($this->createQueryBuilderForSmsCampaign($smsCampaign, $uniquePhone), $page, $limit);
     }
 
-    public function createQueryBuilderForSmsCampaign(SmsCampaign $smsCampaign): QueryBuilder
+    public function createQueryBuilderForSmsCampaign(SmsCampaign $smsCampaign, bool $uniquePhone = false): QueryBuilder
     {
-        return $this->createQueryBuilderForAudience($smsCampaign->getAudience())
+        $qb = $this->createQueryBuilderForAudience($smsCampaign->getAudience())
             ->andWhere('adherent.phone LIKE :phone')
             ->setParameter('phone', '+33%')
         ;
+
+        if ($uniquePhone) {
+            $qb->groupBy('adherent.phone');
+        }
+
+        return $qb;
     }
 
     public function createQueryBuilderForAudience(AudienceInterface $audience): QueryBuilder

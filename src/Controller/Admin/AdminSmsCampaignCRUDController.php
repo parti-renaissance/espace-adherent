@@ -29,10 +29,11 @@ class AdminSmsCampaignCRUDController extends CRUDController
             return $this->redirectToList();
         }
 
-        $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign);
+        $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign, true);
 
         if ($paginator->getTotalItems() !== $smsCampaign->getRecipientCount()) {
             $smsCampaign->setRecipientCount($paginator->getTotalItems());
+            $smsCampaign->setAdherentCount($this->adherentRepository->findForSmsCampaign($smsCampaign, false)->getTotalItems());
             $this->entityManager->flush();
         }
 
@@ -50,7 +51,7 @@ class AdminSmsCampaignCRUDController extends CRUDController
             return $this->redirectToList();
         }
 
-        $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign);
+        $paginator = $this->adherentRepository->findForSmsCampaign($smsCampaign, true);
 
         if ($paginator->getTotalItems() < 1) {
             $this->addFlash('sonata_flash_error', 'Cette campagne ne vise aucun contact.');

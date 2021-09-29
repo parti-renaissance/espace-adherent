@@ -44,7 +44,7 @@ class SendSmsCampaignCommandHandler implements MessageHandlerInterface
         $phones = [];
         $count = 0;
 
-        $query = $this->adherentRepository->createQueryBuilderForSmsCampaign($smsCampaign)
+        $query = $this->adherentRepository->createQueryBuilderForSmsCampaign($smsCampaign, true)
             ->setMaxResults(500)
             ->getQuery()
         ;

@@ -1,0 +1,10 @@
+{% if object.isDraft() %}
+    <a
+            href="{{ admin.generateObjectUrl('delete', object, actions.link_parameters|default([])) }}"
+            class="btn btn-sm btn-default"
+            title="Supprimer"
+    >
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        Supprimer
+    </a>
+{% endif %}

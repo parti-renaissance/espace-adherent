@@ -12,11 +12,15 @@
                     </div>
 
                     <div class="box-body">
+                        {% if not object.getRecipientCount() %}
+                            <div class="alert alert-error">Aucun contact trouvé pour cette campagne</div>
+                        {% endif %}
+
                         <h4 class="text-bold">Contenu :</h4>
                         <div><pre>{{ object.getContent() }}</pre></div>
                         <h4 class="text-bold">Audience :</h4>
                         <p>{{ object.getAudience() }}</p>
-                        <p>Nombre de contacts trouvés : {{ object.getRecipientCount() }}</p>
+                        <p>Nombre de contacts trouvés : {% include 'admin/sms_campaign/CRUD/_recipient_count.html.twig' %}</p>
                     </div>
                 </div>
             </div>

@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
 class SmsCampaignAdmin extends AbstractAdmin
@@ -35,13 +36,15 @@ class SmsCampaignAdmin extends AbstractAdmin
             ->addIdentifier('title', null, ['label' => 'Titre'])
             ->add('content', null, ['label' => 'Contenu'])
             ->add('status', 'trans', ['label' => 'Statut', 'format' => 'sms_campaign.status.%s'])
-            ->add('recipientCount', null, ['label' => 'Nb contacts'])
+            ->add('administrator', null, ['label' => 'Auteur'])
+            ->add('recipientCount', null, ['label' => 'Nb contacts', 'template' => 'admin/sms_campaign/CRUD/list__recipient_count.html.twig'])
             ->add('createdAt', null, ['label' => 'Créée le'])
             ->add('sentAt', null, ['label' => 'Envoyée le'])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
                     'show' => [],
+                    'delete' => ['template' => 'admin/sms_campaign/CRUD/list__action_delete.html.twig'],
                     'edit' => ['template' => 'admin/sms_campaign/CRUD/list__action_edit.html.twig'],
                     'confirm' => ['template' => 'admin/sms_campaign/CRUD/list__action_confirm.html.twig'],
                 ],
@@ -74,14 +77,24 @@ class SmsCampaignAdmin extends AbstractAdmin
         $show
             ->add('title', null, ['label' => 'Titre'])
             ->add('content', null, ['label' => 'Contenu'])
+            ->add('administrator', null, ['label' => 'Auteur'])
             ->add('audience', null, ['label' => 'Audience'])
-            ->add('recipientCount', null, ['label' => 'Nombre de contact trouvé'])
+            ->add('recipientCount', null, ['label' => 'Nombre de contact trouvé', 'template' => 'admin/sms_campaign/CRUD/show__recipient_count.html.twig'])
             ->add('status', 'trans', ['label' => 'Statut', 'format' => 'sms_campaign.status.%s'])
             ->add('responsePayload', null, ['label' => 'Réponse'])
             ->add('externalId', null, ['label' => 'OVH ID'])
             ->add('createdAt', null, ['label' => 'Créée le'])
-            ->add('sendAt', null, ['label' => 'Envoyée le'])
+            ->add('sentAt', null, ['label' => 'Envoyée le'])
         ;
+    }
+
+    public function checkAccess($action, $object = null)
+    {
+        if ($object instanceof SmsCampaign && 'delete' === $action && !$object->isDraft()) {
+            throw new AccessDeniedException();
+        }
+
+        return parent::checkAccess($action, $object);
     }
 
     /** @param SmsCampaign $object */
@@ -100,8 +113,8 @@ class SmsCampaignAdmin extends AbstractAdmin
 
     private function updateRecipientCount(SmsCampaign $object): void
     {
-        $paginator = $this->adherentRepository->findForSmsCampaign($object);
-        $object->setRecipientCount($paginator->getTotalItems());
+        $object->setRecipientCount($this->adherentRepository->findForSmsCampaign($object, true)->getTotalItems());
+        $object->setAdherentCount($this->adherentRepository->findForSmsCampaign($object, false)->getTotalItems());
     }
 
     /** @required */
