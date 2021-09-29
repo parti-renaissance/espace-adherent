@@ -42,8 +42,32 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
         yield [false, false, false];
     }
 
-    private function getAdherentMock(bool $isDeputy = false, bool $isSenator = false): Adherent
+    /**
+     * @dataProvider provideDelegatedAdherent
+     */
+    public function testDelegatedAdherentIsGranted(
+        bool $isDelegatedDeputy,
+        bool $isDelegatedSenator,
+        bool $isGranted
+    ): void {
+        $adherent = $this->getAdherentMock(false, false, $isDelegatedDeputy, $isDelegatedSenator);
+
+        $this->assertGrantedForAdherent($isGranted, true, $adherent, DataCornerVoter::DATA_CORNER);
+    }
+
+    public function provideDelegatedAdherent(): iterable
     {
+        yield [true, false, true];
+        yield [false, true, true];
+        yield [false, false, false];
+    }
+
+    private function getAdherentMock(
+        bool $isDeputy = false,
+        bool $isSenator = false,
+        bool $isDelegatedDeputy = false,
+        bool $isDelegatedSenator = false
+    ): Adherent {
         $adherent = $this->createAdherentMock();
 
         $adherent->expects($this->any())
@@ -53,6 +77,14 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
         $adherent->expects($this->any())
             ->method('isSenator')
             ->willReturn($isSenator)
+        ;
+        $adherent->expects($this->any())
+            ->method('isDelegatedDeputy')
+            ->willReturn($isDelegatedDeputy)
+        ;
+        $adherent->expects($this->any())
+            ->method('isDelegatedSenator')
+            ->willReturn($isDelegatedSenator)
         ;
 
         return $adherent;
