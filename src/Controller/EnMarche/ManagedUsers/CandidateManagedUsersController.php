@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\AdherentSpace\AdherentSpaceEnum;
+use App\Entity\Adherent;
 use App\Form\ManagedUsers\CandidateManagedUsersFilterType;
 use App\ManagedUsers\ManagedUsersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,7 +23,7 @@ class CandidateManagedUsersController extends AbstractManagedUsersController
         return AdherentSpaceEnum::CANDIDATE;
     }
 
-    protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
+    protected function createFilterForm(ManagedUsersFilter $filter, Adherent $mainAdherent): FormInterface
     {
         return $this->createForm(CandidateManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
