@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\AdherentSpace\AdherentSpaceEnum;
+use App\Entity\Adherent;
 use App\Form\ManagedUsers\ReferentManagedUsersFilterType;
 use App\ManagedUsers\ManagedUsersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,15 +23,16 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
         return AdherentSpaceEnum::REFERENT;
     }
 
-    protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
+    protected function createFilterForm(ManagedUsersFilter $filter, Adherent $mainAdherent): FormInterface
     {
-        $adherent = $this->getUser();
+        $currentAdherent = $this->getUser();
 
         return $this->createForm(ReferentManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
             'space_type' => $this->getSpaceType(),
-            'for_referent' => $adherent && $adherent->isReferent(),
+            'fde_referent' => $mainAdherent->getManagedArea()->hasForeignTag(),
+            'for_referent' => $currentAdherent && $currentAdherent->isReferent(),
         ]);
     }
 }

@@ -139,6 +139,17 @@ class ReferentManagedArea
         return !empty($this->getTags()) ? implode(', ', $this->getReferentTagCodes()) : '';
     }
 
+    public function hasForeignTag(): bool
+    {
+        foreach ($this->tags as $tag) {
+            if ($tag->isCountryTag() || ($tag->isDistrictTag() && 0 === strpos($tag->getCode(), 'CIRCO_FDE'))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function hasFranceTag(): bool
     {
         foreach ($this->tags as $tag) {
