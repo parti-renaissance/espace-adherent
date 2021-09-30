@@ -186,7 +186,7 @@
             {% else %}
                 {{ include('adherent/_list_my_sections.html.twig') }}
             {% endif %}
-            {% if is_granted('DATA_CORNER') %}
+            {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
                 <li>
                     <a href="{{ data_corner_host }}" target="_blank" class="is-new">DataCorner</a>
                 </li>
