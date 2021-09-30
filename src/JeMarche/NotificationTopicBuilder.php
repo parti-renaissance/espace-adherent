@@ -25,7 +25,7 @@ class NotificationTopicBuilder
         $this->canaryMode = $canaryMode;
     }
 
-    public function buildTopic(?Zone $zone): string
+    public function buildTopic(?Zone $zone = null): string
     {
         return sprintf('%s_%s', $this->buildTopicPrefix(), $this->getTopic($zone));
     }

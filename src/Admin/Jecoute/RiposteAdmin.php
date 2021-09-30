@@ -4,6 +4,7 @@ namespace App\Admin\Jecoute;
 
 use App\Entity\Administrator;
 use App\Entity\Jecoute\Riposte;
+use App\Jecoute\RiposteHandler;
 use App\Riposte\RiposteOpenGraphHandler;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -29,6 +30,9 @@ class RiposteAdmin extends AbstractAdmin
     private $security;
     /** @var RiposteOpenGraphHandler */
     private $openGraphHandler;
+
+    /** @var RiposteHandler */
+    private $riposteHandler;
 
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -157,9 +161,24 @@ class RiposteAdmin extends AbstractAdmin
     }
 
     /**
+     * @param Riposte $object
+     */
+    public function postPersist($object)
+    {
+        parent::postPersist($object);
+
+        $this->dispatchNotification($object);
+    }
+
+    private function dispatchNotification(Riposte $riposte): void
+    {
+        $this->riposteHandler->handleNotification($riposte);
+    }
+
+    /**
      * @required
      */
-    public function setSecurity(Security $security)
+    public function setSecurity(Security $security): void
     {
         $this->security = $security;
     }
@@ -167,8 +186,16 @@ class RiposteAdmin extends AbstractAdmin
     /**
      * @required
      */
-    public function setOpenGraphHandler(RiposteOpenGraphHandler $openGraphHandler)
+    public function setOpenGraphHandler(RiposteOpenGraphHandler $openGraphHandler): void
     {
         $this->openGraphHandler = $openGraphHandler;
+    }
+
+    /**
+     * @required
+     */
+    public function setRiposteHandler(RiposteHandler $riposteHandler): void
+    {
+        $this->riposteHandler = $riposteHandler;
     }
 }

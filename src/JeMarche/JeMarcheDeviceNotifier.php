@@ -6,10 +6,12 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Jecoute\News;
+use App\Entity\Jecoute\Riposte;
 use App\JeMarche\Command\CommitteeEventCreationNotificationCommand;
 use App\JeMarche\Command\DefaultEventCreationNotificationCommand;
 use App\JeMarche\Command\EventReminderNotificationCommand;
 use App\JeMarche\Command\NewsCreatedNotificationCommand;
+use App\JeMarche\Command\RiposteCreatedNotificationCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class JeMarcheDeviceNotifier
@@ -19,6 +21,11 @@ class JeMarcheDeviceNotifier
     public function __construct(MessageBusInterface $bus)
     {
         $this->bus = $bus;
+    }
+
+    public function sendRiposteNotification(Riposte $riposte): void
+    {
+        $this->bus->dispatch(new RiposteCreatedNotificationCommand($riposte->getUuid()));
     }
 
     public function sendNewsNotification(News $news): void
