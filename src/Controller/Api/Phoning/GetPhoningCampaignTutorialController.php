@@ -2,15 +2,12 @@
 
 namespace App\Controller\Api\Phoning;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/v3/phoning_campaigns/tutorial", name="api_get_phoning_campaigns_tutorial", methods={"GET"})
- *
- * @Security("is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')")
  */
 class GetPhoningCampaignTutorialController extends AbstractController
 {

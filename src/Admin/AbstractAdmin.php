@@ -15,4 +15,9 @@ class AbstractAdmin extends SonataAdmin
     {
         return [];
     }
+
+    protected function configureDefaultSortValues(array &$sortValues)
+    {
+        $sortValues['_sort_order'] = 'DESC';
+    }
 }

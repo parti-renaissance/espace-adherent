@@ -2,6 +2,7 @@
 
 namespace App\Admin\Phoning;
 
+use App\Admin\AbstractAdmin;
 use App\Admin\Audience\AudienceAdmin;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Phoning\Campaign;
@@ -10,7 +11,6 @@ use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
 use Doctrine\ORM\EntityRepository;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -19,20 +19,22 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
 
 class CampaignAdmin extends AbstractAdmin
 {
-    private $security;
+    private Security $security;
 
-    public function __construct($code, $class, $baseControllerName = null, Security $security)
+    public function getFormBuilder()
     {
-        parent::__construct($code, $class, $baseControllerName);
+        if (!$this->isPermanent()) {
+            $this->formOptions['validation_groups'] = ['Default', 'regular_campaign'];
+        }
 
-        $this->security = $security;
+        return parent::getFormBuilder();
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -48,15 +50,22 @@ class CampaignAdmin extends AbstractAdmin
                     'filter_emojis' => true,
                     'attr' => ['class' => 'simplified-content-editor', 'rows' => 15],
                 ])
-                ->add('goal', NumberType::class, [
+                ->add('goal', IntegerType::class, [
+                    'attr' => ['min' => 1],
                     'label' => 'Objectif individuel',
                     'help' => 'Cet objectif sera affiché de manière identique à chaque appelant. L’objectif de la campagne sera calculé en multipliant l’objectif individuel par le nombre d’appelants.',
                 ])
-                ->add('finishAt', DatePickerType::class, [
-                    'label' => 'Date de fin',
-                    'error_bubbling' => true,
-                    'attr' => ['class' => 'width-140'],
-                ])
+        ;
+
+        if (!$this->isPermanent()) {
+            $formMapper->add('finishAt', DatePickerType::class, [
+                'label' => 'Date de fin',
+                'error_bubbling' => true,
+                'attr' => ['class' => 'width-140'],
+            ]);
+        }
+
+        $formMapper
                 ->add('team', EntityType::class, [
                     'label' => 'Équipe phoning',
                     'class' => Team::class,
@@ -72,11 +81,26 @@ class CampaignAdmin extends AbstractAdmin
                             ->innerJoin('team.members', 'member')
                         ;
                     },
+                    'required' => !$this->isPermanent(),
                 ])
             ->end()
-            ->with('Filtres')
+        ;
+
+        if (!$this->isPermanent()) {
+            $formMapper->with('Filtres')
                 ->add('audience', AudienceSnapshotType::class, ['label' => false])
             ->end()
+            ;
+
+            $formMapper->get('audience')->add('zones', AdminZoneAutocompleteType::class, [
+                'required' => false,
+                'multiple' => true,
+                'model_manager' => $this->getModelManager(),
+                'admin_code' => AudienceAdmin::SERVICE_CODE,
+            ]);
+        }
+
+        $formMapper
             ->with('Questionnaire')
                 ->add('survey', EntityType::class, [
                     'label' => 'Questionnaire nationale',
@@ -86,13 +110,6 @@ class CampaignAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        $formMapper->get('audience')->add('zones', AdminZoneAutocompleteType::class, [
-            'required' => false,
-            'multiple' => true,
-            'model_manager' => $this->getModelManager(),
-            'admin_code' => AudienceAdmin::SERVICE_CODE,
-        ]);
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)
@@ -126,6 +143,9 @@ class CampaignAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
             ->addIdentifier('title', null, [
                 'label' => 'Nom',
             ])
@@ -174,5 +194,21 @@ class CampaignAdmin extends AbstractAdmin
     public function prePersist($object)
     {
         $object->setAdministrator($this->security->getUser());
+    }
+
+    /** @required */
+    public function setSecurity(Security $security): void
+    {
+        $this->security = $security;
+    }
+
+    public function toString($object): string
+    {
+        return sprintf('%s%s', $object, $object->isPermanent() ? ' [Campagne permanente]' : '');
+    }
+
+    private function isPermanent(): bool
+    {
+        return $this->getSubject()->isPermanent();
     }
 }

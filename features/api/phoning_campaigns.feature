@@ -24,17 +24,15 @@ Feature:
       | GET     | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey                   |
       | GET     | /api/v3/phoning_campaigns/tutorial                                                      |
 
-  Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns
+  Scenario Outline: As a logged-in user with no correct rights I cannot get regular phoning campaigns (only permanent)
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
       | method  | url                                                                                   |
-      | GET     | /api/v3/phoning_campaigns/scores                                                      |
       | GET     | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/scores                 |
       | GET     | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config |
       | POST    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
-      | GET     | /api/v3/phoning_campaigns/tutorial                                                    |
 
   Scenario: As a logged-in user I can get my phoning campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -51,6 +49,7 @@ Feature:
         "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc",
         "nb_calls": 0,
         "nb_surveys": 0,
+        "permanent": false,
         "scoreboard": [
           {
             "firstName": "Jacques",
@@ -90,6 +89,7 @@ Feature:
         "uuid": "cc8f32ce-176c-42c8-a7e9-b854cc8fc61e",
         "nb_calls": 0,
         "nb_surveys": 0,
+        "permanent": false,
         "scoreboard": [
           {
             "firstName": "Jacques",
@@ -120,7 +120,18 @@ Feature:
             "caller": false
           }
         ]
-      }
+      },
+      {
+        "brief": "# Campagne permanente !\n**Campagne** pour passer des appels à ses contacts",
+        "finish_at": null,
+        "goal": 42,
+        "nb_calls": 0,
+        "nb_surveys": 0,
+        "permanent": true,
+        "scoreboard": [],
+        "title": "Campagne permanente",
+        "uuid": "b48af58c-51e8-4f1b-a432-deace2969fda"
+     }
     ]
     """
 
@@ -138,6 +149,7 @@ Feature:
         "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc",
         "nb_calls": 4,
         "nb_surveys": 3,
+        "permanent": false,
         "scoreboard": [
           {
             "firstName": "Jacques",

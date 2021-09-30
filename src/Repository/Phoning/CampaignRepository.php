@@ -21,8 +21,8 @@ class CampaignRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaign')
             ->addSelect('campaignHistory', 'dataSurvey')
-            ->innerJoin('campaign.team', 'team')
-            ->innerJoin('team.members', 'team_member')
+            ->leftJoin('campaign.team', 'team')
+            ->leftJoin('team.members', 'team_member')
             ->leftJoin(
                 'campaign.campaignHistories',
                 'campaignHistory',
@@ -34,13 +34,14 @@ class CampaignRepository extends ServiceEntityRepository
                 Join::WITH,
                 'dataSurvey.author = :adherent'
             )
-            ->where('campaign.finishAt > :now')
-            ->andWhere('team_member.adherent = :adherent')
+            ->andWhere('(campaign.permanent = true OR (team_member.adherent = :adherent AND campaign.finishAt > :now))')
             ->setParameters([
                 'adherent' => $adherent,
                 'send' => CampaignHistoryStatusEnum::SEND,
                 'now' => new \DateTime(),
             ])
+            ->orderBy('campaign.permanent', 'ASC')
+            ->addOrderBy('campaign.finishAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
