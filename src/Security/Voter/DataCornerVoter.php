@@ -26,10 +26,10 @@ class DataCornerVoter extends AbstractAdherentVoter
     {
         $codes = $this->findCodesGrantedForDataCorner();
 
-        return (\in_array(ScopeEnum::REFERENT, $codes) && ($adherent->isReferent() || $adherent->isDelegatedReferent()))
-            || (\in_array(ScopeEnum::DEPUTY, $codes) && ($adherent->isDeputy() || $adherent->isDelegatedDeputy()))
-            || (\in_array(ScopeEnum::CANDIDATE, $codes) && ($adherent->isHeadedRegionalCandidate() || $adherent->isDelegatedHeadedRegionalCandidate()))
-            || (\in_array(ScopeEnum::SENATOR, $codes) && ($adherent->isSenator() || $adherent->isDelegatedSenator()))
+        return (\in_array(ScopeEnum::REFERENT, $codes) && $adherent->isReferent())
+            || (\in_array(ScopeEnum::DEPUTY, $codes) && $adherent->isDeputy())
+            || (\in_array(ScopeEnum::CANDIDATE, $codes) && $adherent->isHeadedRegionalCandidate())
+            || (\in_array(ScopeEnum::SENATOR, $codes) && $adherent->isSenator())
             || (\in_array(ScopeEnum::NATIONAL, $codes) && $adherent->hasNationalRole())
         ;
     }

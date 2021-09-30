@@ -22,7 +22,7 @@
     {% endif %}
 {% endblock %}
 
-{% set has_datacorner_access = is_granted('DATA_CORNER') %}
+{% set has_datacorner_access = is_granted('ROLE_CANDIDATE_REGIONAL_HEADED') %}
 
 {% block manager_sidebar %}
     {{ include('candidate/_sidebar.html.twig') }}
