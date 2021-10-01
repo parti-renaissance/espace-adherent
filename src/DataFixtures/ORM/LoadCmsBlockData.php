@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\CmsBlock;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -22,7 +23,7 @@ MARKDOWN;
         ));
 
         $manager->persist($this->createCmsBlock(
-            'phoning-campaign-chart',
+            sprintf('chart-%s', AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN),
             'Charte pour les appelants'
         ));
 

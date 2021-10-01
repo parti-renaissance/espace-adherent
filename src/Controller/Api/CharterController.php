@@ -35,15 +35,17 @@ class CharterController extends AbstractController
         /* @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN === $type) {
-            if ($adherent->getCharters()->hasPhoningCampaignCharterAccepted()) {
+        $fileUrl = $translator->trans($translationKey = sprintf('%s.popup.file_url', $type));
+
+        if ($translationKey === $fileUrl) {
+            if ($adherent->getCharters()->hasCharterAcceptedForType($type)) {
                 return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
             }
 
             return $this->json(['content' => $cmsBlockManager->getContent(sprintf('chart-%s', $type))]);
         }
 
-        return $this->json(['pdf' => $translator->trans(sprintf('%s.popup.file_url', $type))]);
+        return $this->json(['pdf' => $fileUrl]);
     }
 
     /**
