@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
- *         "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"phoning_campaign_read"},
@@ -47,6 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "POST",
  *             "path": "/v3/phoning_campaigns/{uuid}/start",
  *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *             "controller": "App\Controller\Api\Phoning\StartCampaignController",
  *             "defaults": {"_api_receive": false},
  *         },
@@ -66,6 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "survey_get_subresource": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{id}/survey",
+ *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') or object.isPermanent()",
  *             "requirements": {"id": "%pattern_uuid%"},
  *         },
  *     },
@@ -113,9 +114,9 @@ class Campaign
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
      *
      * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
@@ -126,9 +127,9 @@ class Campaign
      * @var Team|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Team\Team")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"regular_campaign"})
      */
     private $team;
 
@@ -136,9 +137,9 @@ class Campaign
      * @var AudienceSnapshot|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"regular_campaign"})
      */
     private $audience;
 
@@ -158,6 +159,13 @@ class Campaign
      * @ORM\OneToMany(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="campaign", fetch="EXTRA_LAZY")
      */
     private $campaignHistories;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
+     */
+    private bool $permanent = false;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -326,6 +334,16 @@ class Campaign
 
     public function getGoalOverall(): int
     {
-        return (int) $this->goal * $this->getTeam()->getMembersCount();
+        return (int) $this->goal * ($this->getTeam() ? $this->getTeam()->getMembersCount() : 1);
+    }
+
+    public function isPermanent(): bool
+    {
+        return $this->permanent;
+    }
+
+    public function setPermanent(bool $value): void
+    {
+        $this->permanent = $value;
     }
 }

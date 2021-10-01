@@ -33,6 +33,7 @@ class SmsCampaignAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list)
     {
         $list
+            ->add('id', null, ['label' => 'ID'])
             ->addIdentifier('title', null, ['label' => 'Titre'])
             ->add('content', null, ['label' => 'Contenu'])
             ->add('status', 'trans', ['label' => 'Statut', 'format' => 'sms_campaign.status.%s'])

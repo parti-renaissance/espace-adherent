@@ -20,6 +20,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
     public const CAMPAIGN_3_UUID = 'fdc99fb4-0492-4488-a53d-b7aa02888ffe';
     public const CAMPAIGN_4_UUID = 'b5e1b850-faec-4da7-8da6-d64b94494668';
     public const CAMPAIGN_5_UUID = 'cc8f32ce-176c-42c8-a7e9-b854cc8fc61e';
+    public const CAMPAIGN_6_UUID = 'b48af58c-51e8-4f1b-a432-deace2969fda';
 
     public function load(ObjectManager $manager)
     {
@@ -109,6 +110,21 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $manager->persist($campaignFinished);
         $manager->persist($campaignNoAdherent);
         $manager->persist($campaignWithAllAudienceParameters);
+
+        $manager->persist($campaign = new Campaign(
+            Uuid::fromString(self::CAMPAIGN_6_UUID),
+            'Campagne permanente',
+            <<<BRIEF
+# Campagne permanente !
+**Campagne** pour passer des appels à ses contacts
+BRIEF,
+            null, // Team
+            null, // Audience
+            $nationalSurvey2,
+            42
+        ));
+
+        $campaign->setPermanent(true);
 
         $manager->flush();
     }
