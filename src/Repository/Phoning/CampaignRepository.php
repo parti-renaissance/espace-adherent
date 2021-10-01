@@ -34,11 +34,12 @@ class CampaignRepository extends ServiceEntityRepository
                 Join::WITH,
                 'dataSurvey.author = :adherent'
             )
-            ->andWhere('(campaign.permanent = true OR (team_member.adherent = :adherent AND campaign.finishAt > :now))')
+            ->andWhere('(campaign.permanent = :true OR (team_member.adherent = :adherent AND campaign.finishAt > :now))')
             ->setParameters([
                 'adherent' => $adherent,
                 'send' => CampaignHistoryStatusEnum::SEND,
                 'now' => new \DateTime(),
+                'true' => true,
             ])
             ->orderBy('campaign.permanent', 'ASC')
             ->addOrderBy('campaign.finishAt', 'DESC')

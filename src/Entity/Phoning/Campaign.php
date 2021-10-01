@@ -42,14 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
  *         },
- *         "start_campaign_for_one_adherent": {
- *             "method": "POST",
- *             "path": "/v3/phoning_campaigns/{uuid}/start",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
- *             "controller": "App\Controller\Api\Phoning\StartCampaignController",
- *             "defaults": {"_api_receive": false},
- *         },
  *     },
  *     collectionOperations={
  *         "get_my_phoning_campaigns_scores": {
@@ -66,7 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "survey_get_subresource": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{id}/survey",
- *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') or object.isPermanent()",
+ *             "access_control": "object.isPermanent() or is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *             "requirements": {"id": "%pattern_uuid%"},
  *         },
  *     },
@@ -329,7 +321,7 @@ class Campaign
 
     public function isFinished(): bool
     {
-        return $this->finishAt <= new \DateTime();
+        return null !== $this->finishAt && $this->finishAt <= new \DateTime();
     }
 
     public function getGoalOverall(): int
