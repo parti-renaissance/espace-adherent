@@ -30,14 +30,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/phoning_campaign_histories/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER') and is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
+ *             "access_control": "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
  *         },
  *         "post_reply": {
  *             "method": "POST",
  *             "path": "/v3/phoning_campaign_histories/{uuid}/reply",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Phoning\CampaignHistoryReplyController",
- *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *             "defaults": {"_api_receive": false},
  *             "normalization_context": {"groups": {"data_survey_read"}},
  *         },
@@ -58,10 +57,10 @@ class CampaignHistory implements DataSurveyAwareInterface
     private $caller;
 
     /**
-     * @var Adherent
+     * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Groups({"phoning_campaign_call_read"})
      */
@@ -200,7 +199,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     public static function createForCampaign(
         Campaign $campaign,
         Adherent $caller,
-        Adherent $adherent,
+        ?Adherent $adherent,
         UuidInterface $uuid = null
     ): self {
         $history = new self($campaign, $uuid);
@@ -222,7 +221,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         return $this->adherent;
     }
 
-    public function setAdherent(Adherent $adherent): void
+    public function setAdherent(?Adherent $adherent): void
     {
         $this->adherent = $adherent;
     }

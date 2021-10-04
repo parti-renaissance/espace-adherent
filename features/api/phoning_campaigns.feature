@@ -204,6 +204,18 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user, I can start a call for my contact (permanent campaign)
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    When I send a "POST" request to "/api/v3/phoning_campaigns/b48af58c-51e8-4f1b-a432-deace2969fda/start"
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+     "adherent": null,
+     "uuid": "@uuid@"
+    }
+    """
+
   Scenario: As a logged-in user with correct rights I cannot get a phone number to call if no available number
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
     When I send a "POST" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668/start"
