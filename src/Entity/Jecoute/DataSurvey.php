@@ -53,7 +53,7 @@ class DataSurvey implements AuthorInterface
      *
      * @Assert\NotBlank
      *
-     * @Groups({"data_survey_write:include_survey"})
+     * @Groups({App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP})
      */
     private $survey;
 

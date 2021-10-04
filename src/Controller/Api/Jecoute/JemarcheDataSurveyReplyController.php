@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class JemarcheDataSurveyReplyController extends AbstractReplyController
 {
+    public const DESERIALIZE_GROUP = 'data_survey_write:include_survey';
+
     public function __invoke(Request $request, JemarcheDataSurvey $jemarcheDataSurvey): Response
     {
         return $this->handleRequest($request, $jemarcheDataSurvey);
@@ -15,6 +17,6 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
 
     protected function getCustomDeserializeGroups(): array
     {
-        return ['data_survey_write:include_survey'];
+        return [self::DESERIALIZE_GROUP];
     }
 }
