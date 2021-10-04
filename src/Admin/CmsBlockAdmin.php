@@ -71,7 +71,6 @@ class CmsBlockAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
-                    'delete' => [],
                 ],
             ])
         ;

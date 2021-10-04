@@ -34,10 +34,20 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('createdByAdministrator', null, [
-                'label' => 'Créé par',
+            ->add('_blame', null, [
+                'label' => 'Auteur',
+                'virtual_field' => true,
+                'template' => 'admin/_list_administrator_blameable.html.twig',
             ])
         ;
+
+        $keys = $listMapper->keys();
+
+        if (false !== $actionKey = array_search('_action', $keys)) {
+            unset($keys[$actionKey]);
+
+            $listMapper->reorder($keys + ['_action']);
+        }
     }
 
     /**
@@ -47,8 +57,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
     {
         $administrator = $this->getAdministrator();
 
-        $object->setCreatedByAdministrator($administrator);
-        $object->setUpdatedByAdministrator($administrator);
+        $object->setCreatedByAdmintraiteistrator($administrator);
     }
 
     /**
