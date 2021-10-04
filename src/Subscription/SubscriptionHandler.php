@@ -87,6 +87,7 @@ class SubscriptionHandler
                 $allowMobileNotifications ? SubscriptionTypeEnum::DEFAULT_MOBILE_TYPES : []
             )
         );
+        $this->em->flush();
     }
 
     private function getEmailDefaultTypes(Adherent $adherent): array
@@ -103,6 +104,8 @@ class SubscriptionHandler
         $oldSubscriptionTypes = $adherent->getSubscriptionTypes();
 
         $this->subscriptionTypeRepository->addToAdherent($adherent, $newSubscriptionCodes);
+
+        $this->em->flush();
 
         $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldSubscriptionTypes);
     }

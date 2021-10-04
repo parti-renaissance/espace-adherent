@@ -3,21 +3,27 @@
 namespace App\Mailchimp\Webhook\Handler;
 
 use App\Mailchimp\Webhook\EventTypeEnum;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use App\Repository\SubscriptionTypeRepository;
+use App\Subscription\SubscriptionTypeEnum;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AdherentSubscribeHandler extends AbstractAdherentHandler
 {
-    private $em;
+    private EntityManagerInterface $em;
+    private SubscriptionTypeRepository $subscriptionTypeRepository;
 
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em, SubscriptionTypeRepository $subscriptionTypeRepository)
     {
         $this->em = $em;
+        $this->subscriptionTypeRepository = $subscriptionTypeRepository;
     }
 
     public function handle(array $data): void
     {
         if ($adherent = $this->getAdherent($data['email'])) {
             $adherent->setEmailUnsubscribed(false);
+
+            $this->subscriptionTypeRepository->addToAdherent($adherent, SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES);
 
             $this->em->flush();
         }

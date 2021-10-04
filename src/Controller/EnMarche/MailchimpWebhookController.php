@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MailchimpWebhookController extends AbstractController
 {
-    private $mailchimpWebhookKey;
+    private string $mailchimpWebhookKey;
 
     public function __construct(string $mailchimpWebhookKey)
     {
