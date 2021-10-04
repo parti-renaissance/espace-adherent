@@ -7,6 +7,7 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Security\Core\Security;
 
 class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
@@ -26,6 +27,15 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
             ])
             ->add('updatedByAdministrator', null, [
                 'label' => 'Modifié par',
+            ])
+        ;
+    }
+
+    public function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('createdByAdministrator', null, [
+                'label' => 'Créé par',
             ])
         ;
     }
