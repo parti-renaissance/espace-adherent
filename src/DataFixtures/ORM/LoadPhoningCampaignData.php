@@ -123,8 +123,8 @@ BRIEF,
             $nationalSurvey2,
             42
         ));
-
         $campaign->setPermanent(true);
+        $this->addReference('campaign-permanent', $campaign);
 
         $manager->flush();
     }
