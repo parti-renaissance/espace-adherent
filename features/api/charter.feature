@@ -10,6 +10,7 @@ Feature:
       | LoadAdherentData        |
       | LoadTeamData            |
       | LoadPhoningCampaignData |
+      | LoadCmsBlockData        |
 
   Scenario Outline: As a non logged-in user I can not manage charters
     Given I send a "<method>" request to "<url>"
@@ -40,7 +41,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "content": "**Texte de la charte** pour la *campagne* de phoning avec le Markdown"
+      "content": "# Lorem ipsum\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit."
     }
     """
 
