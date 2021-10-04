@@ -651,7 +651,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('deputy'));
-        $deputy_75_2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $deputy_75_2->setEmailUnsubscribed(true);
         $deputy_75_2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $deputy_75_2->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_2->addReferentTag($this->getReference('referent_tag_75002'));
