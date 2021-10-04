@@ -38,8 +38,8 @@ abstract class AbstractReplyController extends AbstractController
         }
 
         $this->serializer->deserialize($request->getContent(), DataSurvey::class, 'json', [
-            AbstractObjectNormalizer::GROUPS => ['data_survey_write'],
-            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $dataSurvey = new DataSurvey(),
+            AbstractObjectNormalizer::GROUPS => array_merge(['data_survey_write'], $this->getCustomDeserializeGroups()),
+            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $dataSurvey = $this->initializeDataSurvey($object),
         ]);
 
         $errors = $this->validator->validate($dataSurvey);
@@ -60,5 +60,15 @@ abstract class AbstractReplyController extends AbstractController
 
     protected function postHandleAction(): void
     {
+    }
+
+    protected function initializeDataSurvey(DataSurveyAwareInterface $object): DataSurvey
+    {
+        return new DataSurvey();
+    }
+
+    protected function getCustomDeserializeGroups(): array
+    {
+        return [];
     }
 }

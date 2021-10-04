@@ -17,6 +17,7 @@ use Ramsey\Uuid\Uuid;
 class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixtureInterface
 {
     public const HISTORY_1_UUID = '47bf09fb-db03-40c3-b951-6fe6bbe1f055';
+    public const HISTORY_2_UUID = 'a80248ff-384a-4f80-972a-177c3d0a77c4';
 
     public function load(ObjectManager $manager)
     {
@@ -163,6 +164,16 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             new \DateTime('-2 days')
         );
 
+        $manager->persist($this->createPhoningCampaignHistory(
+            $this->getReference('adherent-1'),
+            null,
+            $this->getReference('campaign-permanent'),
+            CampaignHistoryStatusEnum::SEND,
+            null,
+            new \DateTime('-2 days'),
+            Uuid::fromString(self::HISTORY_2_UUID)
+        ));
+
         $manager->persist($phoningDataSurvey1);
         $manager->persist($phoningDataSurvey2);
         $manager->persist($phoningDataSurvey3);
@@ -187,7 +198,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
 
     public function createPhoningCampaignHistory(
         Adherent $author,
-        Adherent $called,
+        ?Adherent $called,
         Campaign $campaign,
         string $status,
         Survey $survey = null,

@@ -68,6 +68,35 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can reply to a survey for permanent phoning campaign
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/v3/phoning_campaign_histories/a80248ff-384a-4f80-972a-177c3d0a77c4/reply" with body:
+    """
+    {
+      "answers":[
+        {
+          "surveyQuestion":6,
+          "textField":"Une nouvelle réponse libre d'un questionnaire national"
+        },
+        {
+          "surveyQuestion":7,
+          "selectedChoices":[
+            6,
+            4
+          ]
+        }
+      ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {"uuid": "@uuid@"}
+    """
+
   Scenario: As a logged-in user I can reply to a national survey for Jemarche data survey (new body structure)
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"

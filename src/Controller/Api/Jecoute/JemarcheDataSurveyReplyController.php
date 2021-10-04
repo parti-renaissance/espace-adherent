@@ -12,4 +12,9 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
     {
         return $this->handleRequest($request, $jemarcheDataSurvey);
     }
+
+    protected function getCustomDeserializeGroups(): array
+    {
+        return ['data_survey_write:include_survey'];
+    }
 }

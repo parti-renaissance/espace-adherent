@@ -53,7 +53,7 @@ class DataSurvey implements AuthorInterface
      *
      * @Assert\NotBlank
      *
-     * @Groups({"data_survey_write"})
+     * @Groups({"data_survey_write:include_survey"})
      */
     private $survey;
 
