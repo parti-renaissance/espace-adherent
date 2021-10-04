@@ -17,7 +17,7 @@ class MailchimpWebhookControllerTest extends WebTestCase
 
     public function testSubscribeAdherentViaMailchimpWebhook(): void
     {
-        $adherent = $this->getAdherentRepository()->findOneByEmail('deputy-75-2@en-marche-dev.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-female-f@en-marche-dev.fr');
 
         self::assertTrue($adherent->isEmailUnsubscribed());
         self::assertCount(0, $adherent->getSubscriptionTypeCodes());
@@ -26,7 +26,7 @@ class MailchimpWebhookControllerTest extends WebTestCase
             'type' => 'subscribe',
             'data' => [
                 'list_id' => '123',
-                'email' => 'deputy-75-2@en-marche-dev.fr',
+                'email' => 'adherent-female-f@en-marche-dev.fr',
             ],
         ];
 
