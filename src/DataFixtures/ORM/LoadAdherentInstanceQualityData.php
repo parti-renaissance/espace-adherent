@@ -6,7 +6,7 @@ use App\Entity\Instance\AdherentInstanceQuality;
 use App\Instance\InstanceQualityEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadAdherentInstanceQualityData extends Fixture implements DependentFixtureInterface
 {

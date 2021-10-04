@@ -4,9 +4,9 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Geo\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadGeoZoneData extends Fixture
 {

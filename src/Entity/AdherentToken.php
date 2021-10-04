@@ -32,21 +32,21 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     private $value;
 
     /**
-     * @var \DateTime|\DateTime
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var \DateTime|\DateTime
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
     private $expiredAt;
 
     /**
-     * @var \DateTime|\DateTime|null
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -95,7 +95,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         $timestamp = new \DateTime('now');
 
         return new static(
-            static::createUuid((string) $adherentUuid),
+            static::createUuid($adherentUuid),
             Uuid::fromString($adherentUuid),
             $timestamp,
             new \DateTime($lifetime),

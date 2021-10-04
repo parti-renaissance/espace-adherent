@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\AdherentTag;
 use App\Entity\AdherentTagEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadAdherentTagData extends Fixture
 {

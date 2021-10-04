@@ -10,7 +10,7 @@ use App\Image\ImageManager;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadNationalCouncilElectionData extends Fixture implements DependentFixtureInterface

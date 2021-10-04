@@ -6,7 +6,7 @@ use App\Entity\Instance\InstanceQuality;
 use App\Instance\InstanceQualityEnum;
 use App\Instance\InstanceQualityScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadInstanceQualityData extends Fixture
 {

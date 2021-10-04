@@ -32,7 +32,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
 class LoadAdherentData extends Fixture implements DependentFixtureInterface
@@ -446,7 +446,6 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent17->setPosition(ActivityPositions::EMPLOYED);
-        $adherent17->setStatus(Adherent::ENABLED);
         $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-lille', $adherent17);
 
@@ -465,7 +464,6 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent18->setPosition(ActivityPositions::EMPLOYED);
-        $adherent18->setStatus(Adherent::ENABLED);
         $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-roubaix', $adherent18);
 
@@ -485,7 +483,6 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '2018-01-03 08:47:54',
         ]);
         $adherent19->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent19->setStatus(Adherent::ENABLED);
         $this->addReference('adherent-20', $adherent19);
 
         $referent = $this->adherentFactory->createFromArray([

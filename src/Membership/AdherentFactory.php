@@ -96,7 +96,7 @@ class AdherentFactory
     }
 
     /**
-     * @param int|string|\DateTime $birthdate Valid date reprensentation
+     * @param int|string|\DateTime $birthdate Valid date representation
      */
     private function createBirthdate($birthdate): \DateTime
     {

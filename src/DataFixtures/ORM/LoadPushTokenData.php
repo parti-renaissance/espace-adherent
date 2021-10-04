@@ -8,7 +8,7 @@ use App\Entity\PushToken;
 use App\PushToken\PushTokenSourceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
 class LoadPushTokenData extends Fixture implements DependentFixtureInterface
