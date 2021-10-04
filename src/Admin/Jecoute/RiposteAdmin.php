@@ -132,6 +132,7 @@ class RiposteAdmin extends AbstractAdmin
             ])
             ->add('withNotification', null, [
                 'label' => 'Avec notification',
+                'disabled' => !$this->isCurrentRoute('create'),
             ])
             ->add('enabled', null, [
                 'label' => 'Active',
