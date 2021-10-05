@@ -29,7 +29,7 @@ class CmsBlockAdmin extends AbstractAdmin
                 'label' => 'Description',
                 'filter_emojis' => true,
                 'required' => false,
-                'help' => 'Champ interne pour les administrateurs seulement; ne sera jamais affiché aux utilisateurs.',
+                'help' => 'cms_block.description.help',
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
@@ -71,7 +71,6 @@ class CmsBlockAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
-                    'delete' => [],
                 ],
             ])
         ;

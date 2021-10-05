@@ -1,0 +1,28 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% macro display(administrator) %}
+    {% if is_granted('ROLE_ADMIN_ADMINISTRATORS') %}
+        <a href="{{ path('admin_app_administrator_edit', { id: administrator.id }) }}">
+            {{ administrator }}
+        </a>
+    {% else %}
+        {{ administrator }}
+    {% endif %}
+{% endmacro %}
+
+{% block field %}
+    {% set createdBy = object.createdByAdministrator %}
+    {% set updatedBy = object.updatedByAdministrator %}
+
+    {% if createdBy %}
+        Créé par: {{ _self.display(createdBy) }}
+    {% endif %}
+
+    {% if createdBy and updatedBy %}
+        <br>
+    {% endif %}
+
+    {% if updatedBy %}
+        Modifié par: {{ _self.display(updatedBy) }}
+    {% endif %}
+{% endblock %}
