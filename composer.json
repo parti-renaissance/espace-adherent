@@ -147,7 +147,7 @@
         "league/flysystem-memory": "^1.0",
         "pedrotroller/php-cs-custom-fixer": "^2.25",
         "phpstan/phpstan": "^0.12.66",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "9.5.10",
         "symfony/css-selector": "^3.4",
         "symfony/debug-bundle": "^4.4",
         "symfony/phpunit-bridge": "^5.3",
