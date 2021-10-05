@@ -88,7 +88,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     private $type;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(length=25)
      *
@@ -148,7 +148,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Choice(
      *     callback={"App\Phoning\CampaignHistoryEngagementEnum", "toArray"},
-     *     message="phoning.campaign_history.type.invalid_choice",
+     *     message="phoning.campaign_history.engagement.invalid_choice",
      *     strict=true
      * )
      *
@@ -246,7 +246,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(?string $status): void
     {
         $this->status = $status;
     }
