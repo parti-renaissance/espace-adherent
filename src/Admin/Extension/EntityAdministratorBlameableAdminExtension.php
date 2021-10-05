@@ -58,7 +58,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
     {
         $administrator = $this->getAdministrator();
 
-        $object->setCreatedByAdmintraiteistrator($administrator);
+        $object->setCreatedByAdministrator($administrator);
     }
 
     /**
