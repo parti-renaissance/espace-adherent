@@ -45,8 +45,9 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
 
         if (false !== $actionKey = array_search('_action', $keys)) {
             unset($keys[$actionKey]);
+            $keys[] = '_action';
 
-            $listMapper->reorder($keys + ['_action']);
+            $listMapper->reorder($keys);
         }
     }
 
