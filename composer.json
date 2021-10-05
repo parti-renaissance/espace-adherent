@@ -138,7 +138,7 @@
         "behat/symfony2-extension": "^2.1",
         "behatch/contexts": "^2.7",
         "bex/behat-skip-tests": "^1.2",
-        "coduo/php-matcher": "^5.0",
+        "coduo/php-matcher": "5.0.1",
         "dama/doctrine-test-bundle": "^6.5",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fabpot/goutte": "^3.2",
