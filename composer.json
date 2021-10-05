@@ -135,7 +135,7 @@
         "behat/mink-browserkit-driver": "1.3.4",
         "behat/mink-extension": "^2.2",
         "behat/mink-selenium2-driver": "^1.3",
-        "behat/symfony2-extension": "^2.1",
+        "behat/symfony2-extension": "2.1.5",
         "behatch/contexts": "^2.7",
         "bex/behat-skip-tests": "^1.2",
         "coduo/php-matcher": "^5.0",
