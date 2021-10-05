@@ -131,7 +131,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
 
   Scenario: Password authentication
-    Given I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=  |
@@ -147,8 +146,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error": "invalid_grant",
-      "error_description": "The user credentials were incorrect.",
-      "message": "The user credentials were incorrect."
+      "error_description": "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.",
+      "message": "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
     }
     """
     When I send a "POST" request to "/oauth/v2/token" with parameters:
@@ -162,6 +161,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       | password      | secret!12345                                 |
     Then the response should be in JSON
     And the response status code should be 200
+    And the JSON should be equal to:
     """
     {
       "token_type": "Bearer",
