@@ -1227,3 +1227,4 @@ cms_block.name.unique: Un bloc statique existe déjà avec ce nom.
 cms_block.name.not_blank: Veuillez renseigner un nom pour ce bloc statique.
 cms_block.name.max_length: Le nom d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
 cms_block.description.max_length: La description d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
+cms_block.description.help: Champ interne pour les administrateurs seulement; ne sera jamais affiché aux utilisateurs.
