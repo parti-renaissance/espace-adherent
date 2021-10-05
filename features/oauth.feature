@@ -130,6 +130,47 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     }
     """
 
+  Scenario: Password authentication
+    Given I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=  |
+      | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b         |
+      | grant_type    | password                                     |
+      | scope         | jecoute_surveys                              |
+      | device_id     | dd4SOCS-4UlCtO-gZiQGDA                       |
+      | username      | carl999@example.fr                           |
+      | password      | bad_password                                 |
+    Then the response should be in JSON
+    And the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "error": "invalid_grant",
+      "error_description": "The user credentials were incorrect.",
+      "message": "The user credentials were incorrect."
+    }
+    """
+    When I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=  |
+      | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b         |
+      | grant_type    | password                                     |
+      | scope         | jecoute_surveys                              |
+      | device_id     | dd4SOCS-4UlCtO-gZiQGDA                       |
+      | username      | carl999@example.fr                           |
+      | password      | secret!12345                                 |
+    Then the response should be in JSON
+    And the response status code should be 200
+    """
+    {
+      "token_type": "Bearer",
+      "expires_in": @integer@,
+      "access_token": "@string@",
+      "refresh_token": "@string@"
+    }
+    """
+
   Scenario: Grant type not allowed
     Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                              |
