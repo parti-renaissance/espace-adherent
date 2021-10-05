@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $adherentInterests: '%adherent_interests%'
+            $mailchimpSignUpHost: '%env(MAILCHIMP_SIGNUP_HOST)%'
 
     _instanceof:
         App\Mailchimp\Webhook\Handler\WebhookHandlerInterface:

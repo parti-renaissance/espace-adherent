@@ -16,18 +16,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ResubscribeEmailController extends AbstractController
 {
-    private $mailchimpSignUpHost;
-
-    public function __construct(string $mailchimpSignUpHost)
-    {
-        $this->mailchimpSignUpHost = $mailchimpSignUpHost;
-    }
-
     public function __invoke(UserInterface $adherent, SignUpHandler $signUpHandler): Response
     {
         return $this->json([
-            'url' => $this->mailchimpSignUpHost,
-            'payload' => base64_encode(json_encode($signUpHandler->generatePayload($adherent))),
+            'url' => $signUpHandler->getMailchimpSignUpHost(),
+            'payload' => $signUpHandler->generatePayload($adherent),
         ]);
     }
 }

@@ -134,7 +134,14 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         return $this->usedAt;
     }
 
-    public function consume(Adherent $adherent)
+    public function consume(Adherent $adherent): void
+    {
+        $this->validate($adherent);
+
+        $this->usedAt = new \DateTime('now');
+    }
+
+    public function validate(Adherent $adherent): void
     {
         if (null !== $this->usedAt) {
             throw new AdherentTokenAlreadyUsedException($this);
@@ -147,8 +154,6 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         if ($this->isExpired()) {
             throw new AdherentTokenExpiredException($this);
         }
-
-        $this->usedAt = new \DateTime('now');
     }
 
     private function isExpired(): bool

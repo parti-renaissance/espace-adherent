@@ -14,6 +14,7 @@ class SignUpHandler implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     private $subscriptionGroupId;
+    private $mailchimpSignUpHost;
     private $subscriptionIds;
     private $client;
     private $mailchimpOrgId;
@@ -21,11 +22,13 @@ class SignUpHandler implements LoggerAwareInterface
 
     public function __construct(
         HttpClientInterface $client,
+        string $mailchimpSignUpHost,
         int $subscriptionGroupId,
         array $subscriptionIds,
         string $mailchimpOrgId,
         string $listId
     ) {
+        $this->mailchimpSignUpHost = $mailchimpSignUpHost;
         $this->subscriptionGroupId = $subscriptionGroupId;
         $this->subscriptionIds = $subscriptionIds;
         $this->mailchimpOrgId = $mailchimpOrgId;
@@ -53,9 +56,14 @@ class SignUpHandler implements LoggerAwareInterface
         return false;
     }
 
-    public function generatePayload(Adherent $adherent): array
+    public function getMailchimpSignUpHost(): string
     {
-        return array_merge($this->getQueryData(), $this->getFormData($adherent));
+        return $this->mailchimpSignUpHost;
+    }
+
+    public function generatePayload(Adherent $adherent): string
+    {
+        return base64_encode(json_encode(array_merge($this->getQueryData(), $this->getFormData($adherent))));
     }
 
     private function getFormData(Adherent $adherent): array

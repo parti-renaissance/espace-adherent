@@ -42,7 +42,7 @@ interface AdherentExpirableTokenInterface
      * @throws AdherentTokenExpiredException     If the token is expired
      * @throws AdherentTokenMismatchException    If the adherent is not tied to this token
      */
-    public function consume(Adherent $adherent);
+    public function consume(Adherent $adherent): void;
 
     /**
      * Returns a string representation of the token type.

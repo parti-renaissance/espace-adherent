@@ -393,9 +393,11 @@ class App {
         });
     }
 
-    runResubscribeEmail() {
+    runResubscribeEmail({
+        redirectUrl = null, signupPayload = null, authenticated = true, callback = null,
+    }) {
         System.import('pages/resubscribe_email').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
+            module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback);
         });
     }
 }

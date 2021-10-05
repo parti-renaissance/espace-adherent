@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Réabonnement e-mail' %}
+{% block footer '' %}
+
+{% block content %}
+    <main class="l__wrapper font-roboto">
+        <section>
+            <div class="space--20-30 text--center">
+                {% if error %}
+                    <p>Votre lien est invalide.</p>
+
+                    <p>Vous pouvez vous réabonner depuis votre <a href="{{ path('app_user_set_email_notifications') }}">profil adhérent</a></p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if not error %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                App.runResubscribeEmail({
+                    signupPayload: {{ signup_payload|json_encode|raw }},
+                    authenticated: {{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'true' : 'false' }},
+                    callback: function (api) {
+                        api._createRequest(
+                            function () {},
+                            {url: '{{ url(
+                                    'app_adherent_profile_email_subscribe',
+                                    {
+                                        adherent_uuid: token.getAdherentUuid(),
+                                        email_subscribe_token: token.getValue(),
+                                        consume: true
+                                    }
+                                ) }}'
+                            }
+                        );
+                    },
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}

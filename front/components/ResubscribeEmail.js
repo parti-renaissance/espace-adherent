@@ -15,47 +15,86 @@ const getContent = (status) => {
     if ('success' === status) {
         return <div>
             <img className="modal-content__success" src={successImage} alt={'success image'}/>
-            <p>Vous êtes réabonné(e)</p>
+            <p>Félicitations, vous êtes réabonné(e) aux communications<br/>de La République En Marche.</p>
         </div>;
     }
 
     return <Loader wrapperClassName={'space--30-0'} />;
 };
-const ResubscribeEmail = ({ api }) => {
+
+const callMailchimp = ({
+    api, url, payload, callback,
+}) => {
+    api.sendResubscribeEmail(url, JSON.parse(window.atob(payload)), callback);
+};
+
+const ResubscribeEmail = ({
+    api, redirectUrl, authenticated, signupPayload, callback,
+}) => {
     const [status, setStatus] = useState('loading');
     let count = 0;
     let intervalId;
 
     useEffect(() => {
         if ('loading' === status) {
-            api.getResubscribeEmailPayload(({ url, payload }) => {
-                api.sendResubscribeEmail(
-                    url,
-                    JSON.parse(window.atob(payload)),
-                    (response) => setStatus(response.result && 'success' === response.result ? 'saved' : 'error')
-                );
-            });
-        } else if ('saved' === status) {
-            intervalId = setInterval(
-                () => {
-                    api.getMe((data) => {
-                        count += 1;
-                        if (false === data.email_unsubscribed || 5 < count) {
-                            clearInterval(intervalId);
-
-                            setStatus(false === data.email_unsubscribed ? 'success' : 'error');
-                        }
-                    });
+            const params = {
+                api,
+                callback: (response) => {
+                    if (null === response || !response.result || 'error' === response.result) {
+                        Raven.captureMessage(
+                            'Mailchimp resubscribe Email failed',
+                            { level: 'error', debug: true, extra: { response } }
+                        );
+                    }
+                    setStatus(response.result && 'success' === response.result ? 'saved' : 'error');
                 },
-                2000
-            );
+            };
+
+            if (signupPayload) {
+                callMailchimp(Object.assign(params, {
+                    url: signupPayload.url,
+                    payload: signupPayload.payload,
+                }));
+            } else {
+                api.getResubscribeEmailPayload(
+                    ({ url, payload }) => callMailchimp(Object.assign(params, { url, payload }))
+                );
+            }
+        } else if ('saved' === status) {
+            if (authenticated) {
+                intervalId = setInterval(
+                    () => {
+                        api.getMe((data) => {
+                            count += 1;
+                            if (false === data.email_unsubscribed || 5 < count) {
+                                clearInterval(intervalId);
+
+                                setStatus(false === data.email_unsubscribed ? 'success' : 'error');
+                            }
+                        });
+                    },
+                    2000
+                );
+            } else {
+                setStatus('success');
+            }
+        } else if ('success' === status) {
+            if ('function' === typeof callback) {
+                callback(api);
+            }
         }
     }, [status]);
 
     return <Modal
         key={status}
         contentCallback={() => <div className="text--center font-roboto">{getContent(status)}</div>}
-        closeCallback={() => document.location.reload()}
+        closeCallback={() => {
+            if (redirectUrl) {
+                document.location.href = redirectUrl;
+            } else {
+                document.location.reload();
+            }
+        }}
     />;
 };
 
@@ -63,4 +102,8 @@ export default ResubscribeEmail;
 
 ResubscribeEmail.propTypes = {
     api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
+    redirectUrl: PropTypes.string,
+    authenticated: PropTypes.bool,
+    signupPayload: PropTypes.instanceOf(Object),
+    callback: PropTypes.func,
 };
