@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb450882f25966a3bd629cbb9b4f1043",
+    "content-hash": "5dcd3dd2370c878046743c68605fed68",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
-            "version": "2.4.1",
+            "version": "2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "bfdc238ec7afebdffd9197435dba1be5d7c96cd7"
+                "reference": "c0290acaa044add7476da0f49c2df399a4d9fcfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/bfdc238ec7afebdffd9197435dba1be5d7c96cd7",
-                "reference": "bfdc238ec7afebdffd9197435dba1be5d7c96cd7",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/c0290acaa044add7476da0f49c2df399a4d9fcfd",
+                "reference": "c0290acaa044add7476da0f49c2df399a4d9fcfd",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,11 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2018-03-18T10:42:18+00:00"
+            "support": {
+                "issues": "https://github.com/a2lix/TranslationFormBundle/issues",
+                "source": "https://github.com/a2lix/TranslationFormBundle/tree/2.x"
+            },
+            "time": "2019-03-04T10:07:37+00:00"
         },
         {
             "name": "algolia/algoliasearch-client-php",
