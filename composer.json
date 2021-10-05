@@ -146,7 +146,7 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "league/flysystem-memory": "^1.0",
         "pedrotroller/php-cs-custom-fixer": "^2.25",
-        "phpstan/phpstan": "^0.12.66",
+        "phpstan/phpstan": "0.12.99",
         "phpunit/phpunit": "^9.5",
         "symfony/css-selector": "^3.4",
         "symfony/debug-bundle": "^4.4",
