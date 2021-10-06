@@ -3,7 +3,7 @@
 namespace App\QrCode;
 
 use App\Entity\QrCode;
-use Endroid\QrCode\Response\QrCodeResponse;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class QrCodeEntityHandler
