@@ -61,12 +61,16 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     /**
      * @ORM\Column(length=50, nullable=true)
      *
+     * @Assert\Length(max=50, maxMessage="common.first_name.max_length")
+     *
      * @Groups({"jemarche_data_survey_write"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Assert\Length(max=50, maxMessage="common.last_name.max_length")
      *
      * @Groups({"jemarche_data_survey_write"})
      */
@@ -141,6 +145,8 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
 
     /**
      * @ORM\Column(length=50, nullable=true)
+     *
+     * @Assert\Length(max=50)
      *
      * @Groups({"jemarche_data_survey_write"})
      */
