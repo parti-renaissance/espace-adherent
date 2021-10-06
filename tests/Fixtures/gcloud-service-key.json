@@ -3,7 +3,7 @@
   "project_id": "en-marche-test",
   "private_key_id": "",
   "private_key": "",
-  "client_email": "",
+  "client_email": "fake@enmarche.code",
   "client_id": "",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://accounts.google.com/o/oauth2/token",

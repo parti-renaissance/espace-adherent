@@ -57,7 +57,7 @@ class CommitteeFeedItem implements UserDocumentInterface
     private $published = true;
 
     /**
-     * @var \DateTime|\DateTime|null
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
      */

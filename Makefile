@@ -11,7 +11,7 @@ PHPUNIT_ARGS?=-v
 DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
+.PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
 .PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db tfp-db-init test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock
 
@@ -70,12 +70,14 @@ rabbitmq-fabric: wait-for-rabbitmq
 wait-for-db:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',3306)){break;}echo \"Waiting for MySQL\n\";sleep(1);}"
 
-db: vendor wait-for-db                                                                                 ## Reset the database and load fixtures
+db: db-init                                                                                 ## Reset the database and load fixtures
+	$(CONSOLE) doctrine:fixtures:load -n --no-debug
+
+db-init: vendor wait-for-db                                                                            ## Init the database
 	$(CONSOLE) doctrine:database:drop --force --if-exists --no-debug
 	$(CONSOLE) doctrine:database:create --if-not-exists --no-debug
 	$(CONSOLE) doctrine:database:import -n --no-debug -- dump/dump-2020.sql
 	$(CONSOLE) doctrine:migrations:migrate -n --no-debug
-	$(CONSOLE) doctrine:fixtures:load -n --no-debug
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
 	$(CONSOLE) doctrine:migration:diff --formatted --no-debug
@@ -149,12 +151,7 @@ tfp-db-init: wait-for-db                                                        
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 
-tfp-db: wait-for-db                                                                                    ## Init databases for tests
-	$(EXEC) rm -rf /tmp/data.db || true
-	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug
-	$(CONSOLE) doctrine:database:create --env=test --no-debug
-	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2020.sql
-	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
+tfp-db: tfp-db-init                                                                                     ## Init databases for tests
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 	$(CONSOLE) doctrine:fixtures:load --no-debug --env=test -n
 

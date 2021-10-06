@@ -197,6 +197,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $registeredAt;
 
     /**
+     * @var \DateTime|null
+     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $activatedAt;

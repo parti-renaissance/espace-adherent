@@ -8,7 +8,7 @@ use App\Entity\Team\Team;
 use App\Team\TypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
 class LoadTeamData extends Fixture implements DependentFixtureInterface

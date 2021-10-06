@@ -11,7 +11,7 @@ use App\Entity\Phoning\CampaignHistory;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
 class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixtureInterface

@@ -7,7 +7,7 @@ use App\Scope\AppEnum;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadScopeData extends Fixture
 {

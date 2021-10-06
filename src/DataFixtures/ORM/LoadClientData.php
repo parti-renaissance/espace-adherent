@@ -7,7 +7,7 @@ use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\Security\Voter\DataCornerVoter;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
 class LoadClientData extends Fixture
