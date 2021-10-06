@@ -56,10 +56,7 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
 
     public function support(string $type, string $listId): bool
     {
-        return
-            \in_array($type, [EventTypeEnum::UPDATE_PROFILE, EventTypeEnum::SUBSCRIBE], true)
-            && parent::support($type, $listId)
-        ;
+        return EventTypeEnum::UPDATE_PROFILE === $type && parent::support($type, $listId);
     }
 
     private function updateInterests(Adherent $adherent, array $data): void
