@@ -103,7 +103,7 @@ class CampaignAdmin extends AbstractAdmin
         $formMapper
             ->with('Questionnaire')
                 ->add('survey', EntityType::class, [
-                    'label' => 'Questionnaire nationale',
+                    'label' => 'Questionnaire national',
                     'placeholder' => '--',
                     'class' => NationalSurvey::class,
                     'choice_label' => 'name',
