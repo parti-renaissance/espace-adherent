@@ -84,6 +84,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     message="phoning.campaign_history.type.invalid_choice",
      *     strict=true
      * )
+     *
+     * @Groups({"phoning_campaign_history_write"})
      */
     private $type;
 
