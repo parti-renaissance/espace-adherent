@@ -521,13 +521,15 @@ Feature:
     {
       "survey":null,
       "type": "local",
-      "lastName":"Bonsoirini",
-      "firstName":"Ernestino",
+      "lastName":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "firstName":"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "emailAddress":"bonsoirini.fr",
       "agreedToStayInContact":true,
       "postalCode":"59",
       "profession":"bonsoir",
       "ageRange": "between_00_00",
+      "gender": "invalid_gender",
+      "genderOther": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "latitude": "bad_latitude",
       "longitude": "bad_longitude",
       "answers":[
@@ -572,6 +574,12 @@ Feature:
             }
           }
         },
+        "firstName": [
+          "Votre prénom ne peut pas dépasser 50 caractères."
+        ],
+        "lastName": [
+          "Votre nom ne peut pas dépasser 50 caractères."
+        ],
         "emailAddress":[
           "Cette valeur n'est pas une adresse email valide."
         ],
@@ -589,7 +597,13 @@ Feature:
         ],
         "postalCode": [
           "Vous devez saisir exactement 5 caractères."
-        ]
+        ],
+        "gender": [
+          "Cette valeur n'est pas valide."
+        ],
+        "genderOther": [
+          "Vous devez saisir au maximum 50 caractères."
+        ],
       }
     }
     """
