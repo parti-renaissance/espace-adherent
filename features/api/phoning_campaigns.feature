@@ -387,6 +387,7 @@ Feature:
         "need_sms_renewal": false,
         "engagement": "want_to_engage",
         "profession": "student",
+        "type": "in-app",
         "note": 4
     }
     """
