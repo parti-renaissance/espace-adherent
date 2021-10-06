@@ -10,5 +10,6 @@
       "labels": ["docker"]
     }
   ],
-  "rangeStrategy": "update-lockfile"
+  "rangeStrategy": "update-lockfile",
+  "rebaseWhen": "conflicted"
 }
