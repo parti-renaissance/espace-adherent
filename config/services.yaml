@@ -293,3 +293,8 @@ services:
 
     App\AdherentFilter\AdherentFiltersGenerator:
         arguments: [!tagged_iterator 'app.adherent_filter.builder']
+
+    App\Firebase\JeMarcheMessaging:
+        lazy: true
+        arguments:
+            $messaging: '@kreait_firebase.jemarche_app.messaging'
