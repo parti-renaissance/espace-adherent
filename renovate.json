@@ -2,6 +2,10 @@
   "extends": [
     "config:base"
   ],
+  "schedule": [
+    "after 10pm and before 5am every weekday", 
+    "every weekend"
+  ],
   "labels": ["dependencies"],
   "prConcurrentLimit": 5,
   "packageRules": [
