@@ -76,7 +76,7 @@
         "phpoffice/phpspreadsheet": "^1.16",
         "pixassociates/sortable-behavior-bundle": "^1.5",
         "predis/predis": "^1.1.0",
-        "ramsey/uuid": "^4.1",
+        "ramsey/uuid": "4.2.3",
         "ramsey/uuid-doctrine": "^1.6",
         "sabre/dav": "^4.1",
         "scheb/two-factor-bundle": "^4.11",
