@@ -18,6 +18,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     private const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
     public const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
     private const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
+    private const ACCESS_UUID_9 = '2c0107d4-75d6-4874-ad38-2060112c0049';
 
     public function load(ObjectManager $manager)
     {
@@ -112,8 +113,19 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         ]);
         $delegatedAccess8->setRestrictedCities(['77288', '59002']);
         $delegatedAccess8->setRestrictedCommittees([$this->getReference('committee-4')]);
+        $manager->persist($delegatedAccess8);
 
-        $manager->persist($delegatedAccess7);
+        // access from senatorial candidate
+        $delegatedAccess9 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_9));
+        $delegatedAccess9->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
+        $delegatedAccess9->setDelegator($this->getReference('senatorial-candidate')); // senatorial-candidate@en-marche-dev.fr
+        $delegatedAccess9->setRole('Candidat Sénateur délégué');
+        $delegatedAccess9->setType('senatorial_candidate');
+        $delegatedAccess9->setAccesses([
+            DelegatedAccess::ACCESS_ADHERENTS,
+            DelegatedAccess::ACCESS_MESSAGES,
+        ]);
+        $manager->persist($delegatedAccess9);
 
         $manager->flush();
     }
