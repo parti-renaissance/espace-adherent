@@ -40,7 +40,12 @@ class GeneralScopeGenerator
         foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
             $delegator = $delegatedAccess->getDelegator();
 
-            $generator = $this->getGenerator($delegatedAccess->getType(), $delegator);
+            try {
+                $generator = $this->getGenerator($delegatedAccess->getType(), $delegator);
+            } catch (NotFoundScopeGeneratorException $exception) { // Some delegated access types have no ScopeGenerator
+                continue;
+            }
+
             $generator->setDelegatedAccess($delegatedAccess);
 
             $scopes[] = $generator->generate($delegator);
@@ -73,7 +78,7 @@ class GeneralScopeGenerator
                 }
             }
 
-            throw new NotFoundScopeGeneratorException(sprintf('Scope generator not found for delegated access with uuid "%s".', $delegatedAccess->getUuid()->toString()));
+            throw new NotFoundScopeGeneratorException(sprintf('Scope generator not found for delegated access of type "%s" with uuid "%s".', $delegatedAccess->getType(), $delegatedAccess->getUuid()->toString()));
         }
 
         foreach ($this->generators as $generator) {

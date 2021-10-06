@@ -543,7 +543,7 @@ Feature:
         },
         {
           "surveyQuestion":3,
-          "textField":"Réponse non autorisé",
+          "textField":"Réponse non autorisée",
           "selectedChoices":[
             "1",
             "2"
@@ -616,7 +616,7 @@ Feature:
           },
           {
             "surveyQuestion":3,
-            "textField":"Réponse non autorisé",
+            "textField":"Réponse non autorisée",
             "selectedChoices":[
               "1",
               "2"
