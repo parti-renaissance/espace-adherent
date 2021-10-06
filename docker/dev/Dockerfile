@@ -79,7 +79,7 @@ RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gos
     addgroup enmarche && \
     adduser --home=/home/enmarche --shell=/bin/bash --ingroup=enmarche --disabled-password --quiet enmarche
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
 
 COPY php.ini /etc/php/7.4/cli/conf.d/50-setting.ini
 COPY php.ini /etc/php/7.4/fpm/conf.d/50-setting.ini
