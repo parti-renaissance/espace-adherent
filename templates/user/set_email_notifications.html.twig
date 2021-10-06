@@ -55,7 +55,7 @@
             Kernel.onLoad(function() {
                 on(dom('#resubscribe-trigger'), 'click', function (event) {
                     event.preventDefault();
-                    App.runResubscribeEmail();
+                    App.runResubscribeEmail({});
                 })
             });
         </script>
