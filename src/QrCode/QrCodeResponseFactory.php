@@ -4,7 +4,7 @@ namespace App\QrCode;
 
 use Endroid\QrCode\Factory\QrCodeFactory as BaseQrCodeFactory;
 use Endroid\QrCode\QrCodeInterface;
-use Endroid\QrCode\Response\QrCodeResponse;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
