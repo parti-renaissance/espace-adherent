@@ -37,7 +37,7 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         $dataSurvey4 = $this->createDataSurvey($adherent7, 'Roger', 'Camembert', GenderEnum::MALE, $nationalSurvey1);
         $dataSurvey5 = $this->createDataSurvey($adherent7, 'Sophie', 'Stiket', GenderEnum::FEMALE, $nationalSurvey1);
         $dataSurvey6 = $this->createDataSurvey($adherent7, 'Pierre', 'Feuilcizo', GenderEnum::MALE, $nationalSurvey1);
-        $dataSurvey7 = $this->createDataSurvey($adherent7, 'Maria', 'Mozzarella', GenderEnum::MALE, null, self::JEMARCHE_DATA_SURVEY_1_UUID);
+        $dataSurvey7 = $this->createDataSurvey($adherent7, 'Maria', 'Mozzarella', GenderEnum::MALE, null, 'maria@mozzarella.com', self::JEMARCHE_DATA_SURVEY_1_UUID);
 
         $manager->persist($dataSurvey1);
         $manager->persist($dataSurvey2);
@@ -63,12 +63,14 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         string $lastName,
         string $gender,
         Survey $survey = null,
+        string $emailAddress = null,
         string $uuid = null
     ): JemarcheDataSurvey {
         $jemarcheDataSurvey = new JemarcheDataSurvey($uuid ? Uuid::fromString($uuid) : null);
         $jemarcheDataSurvey->setGender($gender);
         $jemarcheDataSurvey->setFirstName($firstName);
         $jemarcheDataSurvey->setLastName($lastName);
+        $jemarcheDataSurvey->setEmailAddress($emailAddress);
 
         if ($survey) {
             $dataSurvey = new DataSurvey($survey);
