@@ -6,6 +6,9 @@
 {% block page_title 'S\'inscrire à la newsletter' %}
 {% block canonical_url url('newsletter_subscription') %}
 
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
 {% block content %}
 
     <main>
@@ -45,6 +48,19 @@
 
                     <div class="em-form__group em-form__group--cgu">
                         {{ form_row(form.personalDataCollection) }}
+                    </div>
+
+                    <div class="form__captcha">
+                        <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                        {% if recaptcha_public_key is not empty %}
+                            {% for flashMessage in app.flashes("error_recaptcha") %}
+                                <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                            {% endfor %}
+                            <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
+                        {% elseif app.debug %}
+                            <input type="hidden" name="g-recaptcha-response" value="fake" />
+                        {% endif %}
+                        {% do form.recaptcha.setRendered %}
                     </div>
 
                     <div class="em-form__group">

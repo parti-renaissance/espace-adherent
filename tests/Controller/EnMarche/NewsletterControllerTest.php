@@ -186,11 +186,18 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[personalDataCollection]' => true,
         ]));
 
+        $this->assertClientIsRedirectedTo('/newsletter?app_newsletter_subscription[email]=titouan.galopin@en-marche.fr&app_newsletter_subscription[postalCode]=10000&app_newsletter_subscription[personalDataCollection]=1', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertEquals('titouan.galopin@en-marche.fr', $crawler->filter('#app_newsletter_subscription_email')->text());
+
+
         // Subscription should have been saved
-        $this->assertCount(6, $this->subscriptionsRepository->findAll());
+        //$this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
-        $this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
+        //$this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
     }
 
     public function testInvitationAndRetry()

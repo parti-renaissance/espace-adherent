@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -93,6 +94,19 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
      * @ORM\Column(type="uuid", unique=true, nullable=true)
      */
     private $token;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
+     * @AssertRecaptcha
+     */
+    private $recaptcha;
+
+    /**
+     * @var bool
+     */
+    private $personalDataCollection = false;
 
     public function __construct(
         string $email = null,
@@ -201,5 +215,41 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
     public function setToken(?UuidInterface $token = null): void
     {
         $this->token = $token;
+    }
+
+    public function getRecaptcha(): ?string
+    {
+        return $this->recaptcha;
+    }
+
+    public function setRecaptcha(?string $recaptcha): void
+    {
+        $this->recaptcha = $recaptcha;
+    }
+
+    public function isPersonalDataCollection(): bool
+    {
+        return $this->personalDataCollection;
+    }
+
+    public function setPersonalDataCollection(bool $personalDataCollection): void
+    {
+        $this->personalDataCollection = $personalDataCollection;
+    }
+
+    public function updateFromArray(array $data): void
+    {
+        if ($data['email']) {
+            $this->email = $data['email'];
+        }
+        if ($data['postalCode']) {
+            $this->postalCode = $data['postalCode'];
+        }
+        if ($data['country']) {
+            $this->country = $data['country'];
+        }
+        if ($data['personalDataCollection']) {
+            $this->personalDataCollection = $data['personalDataCollection'] === '1';
+        }
     }
 }

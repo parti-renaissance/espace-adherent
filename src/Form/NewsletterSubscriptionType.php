@@ -7,6 +7,7 @@ use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,8 +34,17 @@ class NewsletterSubscriptionType extends AbstractType
             ->add('country', UnitedNationsCountryType::class, [
                 'required' => false,
             ])
-            ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
+            ->add('personalDataCollection', AcceptPersonalDataCollectType::class, [
+                'mapped' => true,
+            ])
         ;
+
+        if ($options['with_captcha']) {
+            $builder
+                ->add('recaptcha', HiddenType::class, [
+                    'label' => false,
+                ]);
+        }
 
         $builder->addModelTransformer(new CallbackTransformer(
             function ($data) {
@@ -58,6 +68,9 @@ class NewsletterSubscriptionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefined('with_captcha');
+        $resolver->setAllowedTypes('with_captcha', 'bool');
+        $resolver->setDefault('with_captcha', false);
         $resolver->setDefaults([
             'data_class' => NewsletterSubscription::class,
             'csrf_protection' => false,
