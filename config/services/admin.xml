@@ -487,6 +487,15 @@
             </call>
         </service>
 
+        <service id="app.admin.jecoute_data_survey" class="App\Admin\DataSurveyAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\DataSurvey</argument>
+            <argument />
+        </service>
+
+
         <service id="app.admin.poll.poll" class="App\Admin\Poll\NationalPollAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Sondages" group="Je marche app" />
 
