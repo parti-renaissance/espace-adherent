@@ -146,6 +146,7 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
+	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug
 	$(CONSOLE) doctrine:database:create --env=test --no-debug
 	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2020.sql
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
