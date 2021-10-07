@@ -1,6 +1,7 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":disableDependencyDashboard"
   ],
   "schedule": [
     "after 10pm and before 5am every weekday", 
