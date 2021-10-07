@@ -1,0 +1,28 @@
+{% extends base_template %}
+
+{% block content %}
+    <div class="sonata-ba-delete">
+        <div class="box box-success">
+            <div class="box-header">
+                <h3 class="box-title">Confirmation</h3>
+            </div>
+
+            <div class="box-body">
+                {{ (message ?? '')|raw }}
+            </div>
+
+            <div class="box-footer clearfix">
+                <form method="POST" action="{{ admin.generateObjectUrl(action, object ?? null) }}">
+                    <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+
+                    <a class="btn btn-danger" href="{{ admin.generateObjectUrl(cancel_action ?? 'list', object ?? null) }}">
+                        Non</a>
+                    ou
+                    <button type="submit" class="btn btn-success">
+                        Oui
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

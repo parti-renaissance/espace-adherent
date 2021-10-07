@@ -160,4 +160,9 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     {
         return new \DateTime('now') > $this->expiredAt;
     }
+
+    public function invalidate(): void
+    {
+        $this->expiredAt = new \DateTime();
+    }
 }

@@ -1,0 +1,5 @@
+{% if object.isEmailUnsubscribed() %}
+    <span class="label" style="background-color:#FFEC00;color:#293845;">Désabonné{{ object.isFemale() ? 'e' }}</span>
+{% else %}
+    <span class="label" style="background-color:#61E9D5;">Abonné{{ object.isFemale() ? 'e' }}</span>
+{% endif %}
