@@ -42,9 +42,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonatorIdentifierData |
     And I am on "/don"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
+    And I press "60 €"
     When I press "Je donne maintenant"
-    Then I should be on "/don/coordonnees?montant=50&abonnement=0"
+    Then I should be on "/don/coordonnees?montant=60&abonnement=0"
 
     When I fill in the following:
       | Nom                      | Jean                     |
