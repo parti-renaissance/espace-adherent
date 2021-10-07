@@ -7,12 +7,15 @@ use App\Adherent\AdherentExtractCommandHandler;
 use App\Adherent\BanManager;
 use App\Adherent\Certification\CertificationAuthorityManager;
 use App\Adherent\Certification\CertificationPermissions;
+use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Entity\Adherent;
+use App\Entity\AdherentEmailSubscribeToken;
 use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdminAdherentCRUDController extends CRUDController
 {
@@ -157,6 +160,27 @@ class AdminAdherentCRUDController extends CRUDController
 
         return $this->render('admin/adherent/extract/request.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function sendResubscribeEmailAction(Request $request, Adherent $adherent, MessageBusInterface $bus): Response
+    {
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $this->validateCsrfToken('admin.adherent.send_email');
+
+            $bus->dispatch(new SendResubscribeEmailCommand($adherent, AdherentEmailSubscribeToken::TRIGGER_SOURCE_ADMIN));
+
+            $this->addFlash('sonata_flash_success', 'E-mail a bien été envoyé');
+
+            return $this->redirect($this->admin->generateObjectUrl('edit', $adherent));
+        }
+
+        return $this->renderWithExtraParams('admin/CRUD/confirm.html.twig', [
+            'csrf_token' => $this->getCsrfToken('admin.adherent.send_email'),
+            'action' => 'send_resubscribe_email',
+            'message' => 'Êtes-vous sûr de vouloir envoyer un e-mail de réabonnement à <strong>'.$adherent->getFullName().'</strong> ?',
+            'object' => $adherent,
+            'cancel_action' => 'edit',
         ]);
     }
 }

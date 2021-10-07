@@ -664,3 +664,13 @@
         </div>
     {% endif %}
 {% endblock %}
+
+{% block app_admin_adherent_subscriptionTypes_entity_row %}
+    {% set object = form.parent.vars.data %}
+    <span class="text-bold">Abonnement Mailchimp</span>
+    <p>{{ include('admin/adherent/partial/_email_subscription_status.html.twig') }}</p>
+
+    {{ block('form_row') }}
+
+    <a href="{{ form.vars.sonata_admin.admin.generateObjectUrl('send_resubscribe_email', object) }}" class="btn btn-primary">Envoyer un email de réabonnement</a>
+{% endblock %}

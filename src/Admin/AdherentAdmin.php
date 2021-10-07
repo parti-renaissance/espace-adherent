@@ -64,6 +64,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
@@ -132,6 +133,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('certify', $this->getRouterIdParameter().'/certify')
             ->add('uncertify', $this->getRouterIdParameter().'/uncertify')
             ->add('extract', 'extract')
+            ->add('send_resubscribe_email', $this->getRouterIdParameter().'/send-resubscribe-email')
             ->remove('create')
             ->remove('delete')
         ;
@@ -351,12 +353,6 @@ class AdherentAdmin extends AbstractAdmin
                         'required' => false,
                         'multiple' => true,
                     ])
-                    ->add('subscriptionTypes', null, [
-                        'label' => 'Notifications via e-mail et mobile :',
-                        'choice_label' => 'label',
-                        'required' => false,
-                        'multiple' => true,
-                    ])
                     ->add('media', null, [
                         'label' => 'Photo',
                     ])
@@ -378,6 +374,14 @@ class AdherentAdmin extends AbstractAdmin
                         'attr' => [
                             'placeholder' => 'https://facebook.com/alexandre-dumoulin',
                         ],
+                    ])
+                ->end()
+                ->with('Abonnement', ['class' => 'col-md-6'])
+                    ->add('subscriptionTypes', null, [
+                        'label' => 'Notifications via e-mail et mobile :',
+                        'choice_label' => 'label',
+                        'required' => false,
+                        'multiple' => true,
                     ])
                 ->end()
                 ->with('Identité de l\'élu', [
@@ -561,6 +565,16 @@ class AdherentAdmin extends AbstractAdmin
             ->add('firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,
+            ])
+            ->add('emailUnsubscribed', ChoiceFilter::class, [
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Oui' => false,
+                        'Non' => true,
+                    ],
+                ],
+                'label' => 'Abonnement e-mail',
             ])
             ->add('certified', CallbackFilter::class, [
                 'label' => 'Certifié',
@@ -1271,6 +1285,10 @@ class AdherentAdmin extends AbstractAdmin
             ->add('type', null, [
                 'label' => 'Rôles',
                 'template' => 'admin/adherent/list_status.html.twig',
+            ])
+            ->add('emailUnsubscribed', null, [
+                'label' => 'Abonnement',
+                'template' => 'admin/adherent/list_email_subscription_status.html.twig',
             ])
             ->add('allMandates', null, [
                 'label' => 'Mandats',

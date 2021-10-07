@@ -17,6 +17,7 @@ class AdherentEmailSubscribeToken extends AdherentToken
     use EntityAdministratorBlameableTrait;
 
     public const TRIGGER_SOURCE_ADMIN = 'admin';
+    public const DURATION = '+6 months';
 
     /**
      * @ORM\Column(nullable=true)
