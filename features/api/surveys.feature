@@ -511,7 +511,7 @@ Feature:
       }
     }
     """
-@debug
+
   Scenario: As a logged-in user I cannot reply to a local survey with errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
