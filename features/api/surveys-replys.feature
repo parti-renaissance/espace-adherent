@@ -158,14 +158,14 @@ Feature:
     When I send a "POST" request to "/api/v3/jemarche_data_surveys" with body:
     """
     {
-      "lastName":"Bonsoirini Bonsoirini Bonsoirini Bonsoirini Bonsoirini",
-      "firstName":"Ernestino Ernestino Ernestino Ernestino Ernestino Ernestino",
-      "emailAddress":"ernestinobonsoirini",
-      "postalCode":"59",
+      "last_name":"Bonsoirini Bonsoirini Bonsoirini Bonsoirini Bonsoirini",
+      "first_name":"Ernestino Ernestino Ernestino Ernestino Ernestino Ernestino",
+      "email_address":"ernestinobonsoirini",
+      "postal_code":"59",
       "profession":"test",
-      "ageRange": "test",
+      "age_range": "test",
       "gender": "test",
-      "genderOther": "other other other other other other other other other other other other"
+      "gender_other": "other other other other other other other other other other other other"
     }
     """
     Then the response status code should be 400
@@ -224,15 +224,15 @@ Feature:
     When I send a "POST" request to "/api/v3/jemarche_data_surveys" with body:
     """
     {
-      "lastName":"Bonsoirini",
-      "firstName":"Ernestino",
-      "emailAddress":"ernestino@bonsoirini.fr",
-      "agreedToStayInContact":true,
-      "agreedToContactForJoin":true,
-      "agreedToTreatPersonalData":true,
-      "postalCode":"59000",
+      "last_name":"Bonsoirini",
+      "first_name":"Ernestino",
+      "email_address":"ernestino@bonsoirini.fr",
+      "agreed_to_stay_in_contact":true,
+      "agreed_to_contact_for_join":true,
+      "agreed_to_treat_personal_data":true,
+      "postal_code":"59000",
       "profession":"employees",
-      "ageRange": "between_25_39",
+      "age_range": "between_25_39",
       "gender": "male",
       "latitude": 48.856614,
       "longitude": 2.3522219
