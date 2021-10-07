@@ -296,5 +296,3 @@ services:
 
     App\Firebase\JeMarcheMessaging:
         lazy: true
-        arguments:
-            $messaging: '@kreait_firebase.jemarche_app.messaging'
