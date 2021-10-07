@@ -25,7 +25,7 @@
             Kernel.onLoad(function() {
                 App.runResubscribeEmail({
                     signupPayload: {{ signup_payload|json_encode|raw }},
-                    authenticated: {{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? 'true' : 'false' }},
+                    authenticated: {{ is_granted('ROLE_ADHERENT') ? 'true' : 'false' }},
                     callback: function (api) {
                         api._createRequest(
                             function () {},
