@@ -39,12 +39,6 @@ class NewsletterSubscriptionType extends AbstractType
             ])
         ;
 
-        if ($options['with_captcha']) {
-            $builder
-                ->add('recaptcha', HiddenType::class, [
-                    'label' => false,
-                ]);
-        }
 
         $builder->addModelTransformer(new CallbackTransformer(
             function ($data) {
@@ -68,9 +62,6 @@ class NewsletterSubscriptionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined('with_captcha');
-        $resolver->setAllowedTypes('with_captcha', 'bool');
-        $resolver->setDefault('with_captcha', false);
         $resolver->setDefaults([
             'data_class' => NewsletterSubscription::class,
             'csrf_protection' => false,

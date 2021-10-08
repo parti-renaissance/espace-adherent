@@ -180,21 +180,23 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
+        $crawler = $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
             'app_newsletter_subscription[personalDataCollection]' => true,
         ]));
 
-        $this->assertClientIsRedirectedTo('/newsletter?app_newsletter_subscription[email]=titouan.galopin@en-marche.fr&app_newsletter_subscription[postalCode]=10000&app_newsletter_subscription[personalDataCollection]=1', $this->client);
+        $form = $crawler->selectButton("Je m'inscris")->form();
 
-        $crawler = $this->client->followRedirect();
+        $this->assertEquals('titouan.galopin@en-marche.fr', $form->get('app_newsletter_subscription[email]')->getValue());
+        $this->assertEquals('10000', $form->get('app_newsletter_subscription[postalCode]')->getValue());
 
-        $this->assertEquals('titouan.galopin@en-marche.fr', $crawler->filter('#app_newsletter_subscription_email')->text());
-
+        $this->client->submit($form, [
+            'g-recaptcha-response' => 'fake',
+        ]);
 
         // Subscription should have been saved
-        //$this->assertCount(6, $this->subscriptionsRepository->findAll());
+        $this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
         //$this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
