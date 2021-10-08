@@ -1015,6 +1015,15 @@
 
 // Donation section - Why donate ?
 .donation-why {
+    padding-top: 50px;
+
+    @media (min-width: $mobile) {
+        padding-top: 75px;
+    }
+
+    @media (min-width: $tablet) {
+        padding-top: 0;
+    }
 
     &__content {
         width: 100%;
