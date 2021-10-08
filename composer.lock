@@ -18002,31 +18002,32 @@
         },
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v6.5.0",
+            "version": "v6.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "a43f79239f446bb85ffa34e799878156a43b590b"
+                "reference": "8cfd3f9a4cc0f26101e6170f592900384b78b799"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/a43f79239f446bb85ffa34e799878156a43b590b",
-                "reference": "a43f79239f446bb85ffa34e799878156a43b590b",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/8cfd3f9a4cc0f26101e6170f592900384b78b799",
+                "reference": "8cfd3f9a4cc0f26101e6170f592900384b78b799",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^2.9.3 || ^3.0",
                 "doctrine/doctrine-bundle": "^1.11 || ^2.0",
                 "php": "^7.1 || ^8.0",
-                "symfony/framework-bundle": "^3.4 || ^4.4 || ^5.1"
+                "symfony/cache": "^4.4 || ^5.2",
+                "symfony/framework-bundle": "^4.4 || ^5.2"
             },
             "require-dev": {
                 "behat/behat": "^3.0",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^0.12.85",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-                "symfony/phpunit-bridge": "^5.1",
-                "symfony/process": "^3.4 || ^4.4 || ^5.1",
-                "symfony/yaml": "^3.4 || ^4.4 || ^5.1"
+                "symfony/phpunit-bridge": "^5.2",
+                "symfony/process": "^4.4 || ^5.2",
+                "symfony/yaml": "^4.4 || ^5.2"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -18059,9 +18060,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dmaicher/doctrine-test-bundle/issues",
-                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v6.5.0"
+                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v6.6.0"
             },
-            "time": "2020-12-12T16:34:54+00:00"
+            "time": "2021-06-01T18:12:34+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
