@@ -43,7 +43,9 @@ class NewsletterControllerTest extends WebTestCase
         $crawler = $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
-        ]));
+        ]), [
+            'g-recaptcha-response' => 'fake',
+        ]);
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(1, $errors = $crawler->filter('.form__errors'));
@@ -53,7 +55,10 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
             'app_newsletter_subscription[personalDataCollection]' => true,
-        ]));
+        ]),
+            [
+                'g-recaptcha-response' => 'fake',
+            ]);
 
         // Subscription should have been saved
         $this->assertCount(6, $subscriptions = $this->subscriptionsRepository->findAll());
@@ -79,7 +84,9 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '20000',
             'app_newsletter_subscription[personalDataCollection]' => true,
-        ]));
+        ]), [
+            'g-recaptcha-response' => 'fake',
+        ]);
 
         // Subscription should not have been saved
         $this->assertCount(6, $subscriptions = $this->subscriptionsRepository->findAll());
@@ -111,6 +118,7 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '10000',
             'app_newsletter_subscription[personalDataCollection]' => true,
+            'g-recaptcha-response' => 'fake',
         ]));
 
         /** @var NewsletterSubscription $subscription */
@@ -142,7 +150,9 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '20000',
             'app_newsletter_subscription[personalDataCollection]' => true,
-        ]));
+        ]), [
+            'g-recaptcha-response' => 'fake',
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -162,7 +172,9 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[email]' => 'jacques.picard@en-marche.fr',
             'app_newsletter_subscription[postalCode]' => '92100',
             'app_newsletter_subscription[personalDataCollection]' => true,
-        ]));
+        ]), [
+            'g-recaptcha-response' => 'fake',
+        ]);
 
         // Subscription should not have been saved
         $this->assertCount(5, $this->subscriptionsRepository->findAll());
@@ -199,7 +211,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
-        //$this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
+        $this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
     }
 
     public function testInvitationAndRetry()
@@ -288,7 +300,9 @@ class NewsletterControllerTest extends WebTestCase
             'app_newsletter_subscription[email]' => 'abc@en-marche-dev.fr',
             'app_newsletter_subscription[postalCode]' => '59000',
             'app_newsletter_subscription[personalDataCollection]' => true,
-        ]));
+        ]), [
+            'g-recaptcha-response' => 'fake',
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 

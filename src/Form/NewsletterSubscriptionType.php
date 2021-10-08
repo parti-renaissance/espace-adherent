@@ -7,7 +7,6 @@ use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,7 +38,6 @@ class NewsletterSubscriptionType extends AbstractType
             ])
         ;
 
-
         $builder->addModelTransformer(new CallbackTransformer(
             function ($data) {
                 return $data;
@@ -50,6 +48,7 @@ class NewsletterSubscriptionType extends AbstractType
                     if ($existingSubscription) {
                         $existingSubscription->setCountry($subscription->getCountry());
                         $existingSubscription->setPostalCode($subscription->getPostalCode());
+                        $existingSubscription->setRecaptcha($subscription->getRecaptcha());
 
                         return $existingSubscription;
                     }

@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
-use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -242,14 +242,17 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
         if ($data['email']) {
             $this->email = $data['email'];
         }
+
         if ($data['postalCode']) {
             $this->postalCode = $data['postalCode'];
         }
+
         if ($data['country']) {
             $this->country = $data['country'];
         }
+
         if ($data['personalDataCollection']) {
-            $this->personalDataCollection = $data['personalDataCollection'] === '1';
+            $this->personalDataCollection = '1' === $data['personalDataCollection'];
         }
     }
 }
