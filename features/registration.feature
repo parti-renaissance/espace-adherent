@@ -359,10 +359,9 @@ Feature:
       | Nationalité        | FR               |
     And I press "Créer mon compte"
     Then the response status code should be 200
-    And I should see 7 ".form__error" elements
+    And I should see 6 ".form__error" elements
     And I should see "Les adresses email ne correspondent pas."
     And I should see "Votre mot de passe doit comporter au moins 8 caractères."
-    And I should see "Vous avez été détecté en tant que robot, pourriez-vous réessayer ?"
     And I should see "Le code postal doit contenir moins de 15 caractères"
     And I should see "Cette valeur n'est pas un code postal français valide."
     And I should see "Votre prénom doit comporter au moins 2 caractères."
