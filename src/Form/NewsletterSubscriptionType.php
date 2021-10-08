@@ -32,6 +32,7 @@ class NewsletterSubscriptionType extends AbstractType
             ])
             ->add('country', UnitedNationsCountryType::class, [
                 'required' => false,
+                'preferred_choices' => ['FR'],
             ])
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class, [
                 'mapped' => true,
@@ -48,8 +49,6 @@ class NewsletterSubscriptionType extends AbstractType
                     if ($existingSubscription) {
                         $existingSubscription->setCountry($subscription->getCountry());
                         $existingSubscription->setPostalCode($subscription->getPostalCode());
-                        $existingSubscription->setRecaptcha($subscription->getRecaptcha());
-                        $existingSubscription->setRequiredRecaptcha($subscription->isRequiredRecaptcha());
 
                         return $existingSubscription;
                     }
