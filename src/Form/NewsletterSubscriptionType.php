@@ -49,6 +49,7 @@ class NewsletterSubscriptionType extends AbstractType
                         $existingSubscription->setCountry($subscription->getCountry());
                         $existingSubscription->setPostalCode($subscription->getPostalCode());
                         $existingSubscription->setRecaptcha($subscription->getRecaptcha());
+                        $existingSubscription->setRequiredRecaptcha($subscription->isRequiredRecaptcha());
 
                         return $existingSubscription;
                     }

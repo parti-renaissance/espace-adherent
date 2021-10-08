@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\RecaptchaObject as AssertRecaptchaObject;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -12,6 +12,7 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @AssertRecaptchaObject
  * @AssertUniqueEntity(fields={"email"}, message="neswletter.already_registered")
  *
  * @ORM\Table(name="newsletter_subscriptions")
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class NewsletterSubscription implements EntitySoftDeletedInterface
+class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaObjectInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -97,11 +98,13 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
      */
     private $recaptcha;
+
+    /**
+     * @var bool
+     */
+    private $requiredRecaptcha = false;
 
     /**
      * @var bool
@@ -254,5 +257,15 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
         if ($data['personalDataCollection']) {
             $this->personalDataCollection = '1' === $data['personalDataCollection'];
         }
+    }
+
+    public function isRequiredRecaptcha(): bool
+    {
+        return $this->requiredRecaptcha;
+    }
+
+    public function setRequiredRecaptcha(bool $requiredRecaptcha): void
+    {
+        $this->requiredRecaptcha = $requiredRecaptcha;
     }
 }

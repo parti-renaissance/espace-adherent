@@ -24,7 +24,7 @@
                 </p>
 
                 <div class="newsletter-page__form">
-                    {{ form_start(form, { attr: { class: 'em-form'} }) }}
+                    {{ form_start(form, {action: path('newsletter_subscription', {fromWidget: 0}) ,attr: { class: 'em-form'} }) }}
 
                     {{ form_errors(form) }}
 

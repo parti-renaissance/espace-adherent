@@ -34,6 +34,8 @@ class NewsletterController extends AbstractController
     ): Response {
         $this->disableInProduction();
 
+        $fromWidget = '1' === $request->query->get('fromWidget');
+
         if ($email = $request->query->get('mail')) {
             $subscription = $newsletterSubscriptionRepository->findOneNotConfirmedByEmail($email);
             if ($subscription) {
@@ -59,15 +61,16 @@ class NewsletterController extends AbstractController
             );
         }
 
-        if ($queryData = $request->query->get('app_newsletter_subscription')) {
-            $subscription->updateFromArray($queryData);
-        }
+        /*        if ($queryData = $request->query->get('app_newsletter_subscription')) {
+                    $subscription->updateFromArray($queryData);
+                }*/
 
+        $subscription->setRequiredRecaptcha(true);
         $subscription->setRecaptcha($request->request->get('g-recaptcha-response'));
         $form = $this->createForm(NewsletterSubscriptionType::class, $subscription);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (!$fromWidget && $form->isSubmitted() && $form->isValid()) {
             $newsletterSubscriptionHandler->subscribe($subscription);
 
             return $this->redirectToRoute('app_newsletter_subscription_mail_sent');
