@@ -37,6 +37,7 @@ class AdherentMessageControllerTest extends AbstractWebCaseTest
                 'label' => 'Label du message qui permet de le retrouver ds la liste des messages envoyés',
                 'subject' => "L'objet du mail",
                 'content' => '<table>...</table>',
+                'json_content' => '{"foo": "bar", "items": [1, 2, true, "hello world"]}',
             ])
         );
 
@@ -48,8 +49,25 @@ class AdherentMessageControllerTest extends AbstractWebCaseTest
         self::assertArrayHasKey('uuid', $data);
 
         $this->client->request(
+            Request::METHOD_GET,
+            self::URL.'/'.($uuid = $data['uuid']).'/content',
+            [],
+            [],
+            ['HTTP_AUTHORIZATION' => "Bearer $token"],
+        );
+
+        $response = $this->client->getResponse();
+        $data = json_decode($response->getContent(), true);
+
+        self::assertSame([
+            'subject' => 'L\'objet du mail',
+            'content' => '<table>...</table>',
+            'json_content' => '{"foo": "bar", "items": [1, 2, true, "hello world"]}',
+        ], $data);
+
+        $this->client->request(
             Request::METHOD_PUT,
-            self::URL.'/'.$data['uuid'].'/filter',
+            self::URL.'/'.$uuid.'/filter',
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $token", 'CONTENT_TYPE' => 'application/json'],

@@ -61,6 +61,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
+ *         "get_content": {
+ *             "method": "GET",
+ *             "path": "/v3/adherent_messages/{id}/content",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {"groups": {"message_read_content"}},
+ *         },
  *         "put": {
  *             "path": "/v3/adherent_messages/{id}",
  *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
@@ -123,7 +130,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      *
      * @ORM\Column
      *
-     * @Groups({"message_read", "message_read_list", "message_write"})
+     * @Groups({"message_read", "message_read_list", "message_write", "message_read_content"})
      *
      * @Assert\NotBlank
      */
@@ -134,11 +141,22 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      *
      * @ORM\Column(type="text")
      *
-     * @Groups({"message_write"})
+     * @Groups({"message_write", "message_read_content"})
      *
      * @Assert\NotBlank
      */
     private $content;
+
+    /**
+     * JSON representation of message content (using by Unlayer JS lib)
+     *
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups({"message_write", "message_read_content"})
+     */
+    private $jsonContent;
 
     /**
      * @var string
@@ -237,6 +255,16 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    public function getJsonContent(): ?string
+    {
+        return $this->jsonContent;
+    }
+
+    public function setJsonContent(?string $jsonContent): void
+    {
+        $this->jsonContent = $jsonContent;
     }
 
     public function setLabel(string $label): void
