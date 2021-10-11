@@ -2,12 +2,12 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Mailchimp\Webhook\EventTypeEnum;
-use App\Mailchimp\Webhook\WebhookHandler;
+use App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,18 +22,10 @@ class MailchimpWebhookController extends AbstractController
         $this->mailchimpWebhookKey = $mailchimpWebhookKey;
     }
 
-    public function __invoke(string $key, Request $request, WebhookHandler $handler, LoggerInterface $logger): Response
+    public function __invoke(string $key, Request $request, MessageBusInterface $bus, LoggerInterface $logger): Response
     {
-        if ($key === $this->mailchimpWebhookKey) {
-            $data = (array) $request->request->get('data', []);
-
-            $listId = $data['list_id'] ?? null;
-
-            if (null === $listId) {
-                $logger->error('[Mailchimp Webhook] list id is not found', ['request' => $request->request->all()]);
-            } elseif ($request->isMethod(Request::METHOD_POST) && EventTypeEnum::isValid($type = $request->request->get('type'))) {
-                $handler->handle($type, $listId, $data);
-            }
+        if ($key === $this->mailchimpWebhookKey && $request->isMethod(Request::METHOD_POST)) {
+            $bus->dispatch(new CatchMailchimpWebhookCallCommand($request->request->all()));
         } else {
             $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));
         }

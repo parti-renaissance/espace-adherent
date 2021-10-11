@@ -29,7 +29,7 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
                     'interrupted' => self::transformStatusArray(CampaignHistoryStatusEnum::INTERRUPTED_STATUS),
                 ],
                 'satisfaction_questions' => $adherent ? array_merge(
-                    ($adherent->isEmailUnsubscribed() ?
+                    (!$adherent->isEmailSubscribed() ?
                         [
                             'code' => 'need_email_renewal',
                             'label' => 'Souhaitez-vous vous réabonner à nos emails ?',

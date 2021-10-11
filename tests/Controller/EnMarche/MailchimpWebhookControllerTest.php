@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use App\Mailchimp\Contact\ContactStatusEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -19,7 +20,7 @@ class MailchimpWebhookControllerTest extends WebTestCase
     {
         $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-female-f@en-marche-dev.fr');
 
-        self::assertTrue($adherent->isEmailUnsubscribed());
+        self::assertFalse($adherent->isEmailSubscribed());
         self::assertCount(0, $adherent->getSubscriptionTypeCodes());
 
         $data = [
@@ -34,7 +35,28 @@ class MailchimpWebhookControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        self::assertFalse($adherent->isEmailUnsubscribed());
+        self::assertTrue($adherent->isEmailSubscribed());
         self::assertCount(7, $adherent->getSubscriptionTypeCodes());
+    }
+
+    public function testCleanAdherentViaMailchimpWebhook(): void
+    {
+        $adherent = $this->getAdherentRepository()->findOneByEmail('adherent-male-a@en-marche-dev.fr');
+
+        self::assertSame(ContactStatusEnum::SUBSCRIBED, $adherent->getMailchimpStatus());
+
+        $data = [
+            'type' => 'cleaned',
+            'data' => [
+                'list_id' => '123',
+                'email' => 'adherent-male-a@en-marche-dev.fr',
+            ],
+        ];
+
+        $this->client->request(Request::METHOD_POST, self::URL, $data);
+
+        self::assertResponseIsSuccessful();
+
+        self::assertSame(ContactStatusEnum::CLEANED, $adherent->getMailchimpStatus());
     }
 }

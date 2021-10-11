@@ -90,7 +90,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setInterests($this->buildInterestArray($adherent))
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
-            ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
+            ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setZones($adherent->getZones())
             ->setTeamCode($adherent)
             ->setIsCertified($adherent->isCertified())

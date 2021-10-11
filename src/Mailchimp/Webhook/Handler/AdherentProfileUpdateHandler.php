@@ -7,7 +7,6 @@ use App\Mailchimp\Webhook\EventTypeEnum;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Subscription\SubscriptionHandler;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
@@ -17,19 +16,16 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
 {
     use LoggerAwareTrait;
 
-    private $interests;
-    private $manager;
-    private $subscriptionHandler;
-    private $dispatcher;
+    private array $interests;
+    private SubscriptionHandler $subscriptionHandler;
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(
-        ObjectManager $manager,
         SubscriptionHandler $subscriptionHandler,
         array $adherentInterests,
         LoggerInterface $logger,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->manager = $manager;
         $this->subscriptionHandler = $subscriptionHandler;
         $this->interests = $adherentInterests;
         $this->logger = $logger;
@@ -86,7 +82,7 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
 
         $adherent->setInterests(array_keys(array_intersect($this->interests, $interestLabels)));
 
-        $this->manager->flush();
+        $this->entityManager->flush();
     }
 
     private function updateSubscriptions(Adherent $adherent, array $data): void

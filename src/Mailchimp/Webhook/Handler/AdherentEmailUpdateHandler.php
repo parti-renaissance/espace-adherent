@@ -7,7 +7,7 @@ use App\Membership\AdherentChangeEmailHandler;
 
 class AdherentEmailUpdateHandler extends AbstractAdherentHandler
 {
-    private $adherentChangeEmailHandler;
+    private AdherentChangeEmailHandler $adherentChangeEmailHandler;
 
     public function __construct(AdherentChangeEmailHandler $adherentChangeEmailHandler)
     {

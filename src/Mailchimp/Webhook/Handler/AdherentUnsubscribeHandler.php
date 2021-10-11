@@ -10,8 +10,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentUnsubscribeHandler extends AbstractAdherentHandler
 {
-    private $subscriptionHandler;
-    private $dispatcher;
+    private SubscriptionHandler $subscriptionHandler;
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(SubscriptionHandler $handler, EventDispatcherInterface $dispatcher)
     {

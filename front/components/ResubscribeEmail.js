@@ -66,10 +66,10 @@ const ResubscribeEmail = ({
                     () => {
                         api.getMe((data) => {
                             count += 1;
-                            if (false === data.email_unsubscribed || 5 < count) {
+                            if (!!data.email_subscribed || 5 < count) {
                                 clearInterval(intervalId);
 
-                                setStatus(false === data.email_unsubscribed ? 'success' : 'error');
+                                setStatus(data.email_subscribed ? 'success' : 'error');
                             }
                         });
                     },

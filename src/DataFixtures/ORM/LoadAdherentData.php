@@ -253,6 +253,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
+        $adherent7->clean();
         $adherent7->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent7->addReferentTag($this->getReference('referent_tag_77'));
         $adherent7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));

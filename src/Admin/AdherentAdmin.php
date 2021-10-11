@@ -44,6 +44,7 @@ use App\Form\GenderType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Intl\UnitedNationsBundle;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\Mandates;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
@@ -566,13 +567,13 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'Prénom',
                 'show_filter' => true,
             ])
-            ->add('emailUnsubscribed', ChoiceFilter::class, [
+            ->add('mailchimpStatus', ChoiceFilter::class, [
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => [
-                        'Oui' => false,
-                        'Non' => true,
-                    ],
+                    'choices' => ContactStatusEnum::values(),
+                    'choice_label' => function (string $label) {
+                        return 'mailchimp_contact.status.'.$label;
+                    },
                 ],
                 'label' => 'Abonnement e-mail',
             ])
@@ -1286,7 +1287,7 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'Rôles',
                 'template' => 'admin/adherent/list_status.html.twig',
             ])
-            ->add('emailUnsubscribed', null, [
+            ->add('mailchimpStatus', null, [
                 'label' => 'Abonnement',
                 'template' => 'admin/adherent/list_email_subscription_status.html.twig',
             ])

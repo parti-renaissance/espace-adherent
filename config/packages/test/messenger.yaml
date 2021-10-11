@@ -10,3 +10,4 @@ framework:
 
         routing:
             App\Messenger\Message\AbstractUuidAsynchronousMessage: sync
+            App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand: sync

@@ -32,6 +32,8 @@ use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
 use App\Geocoder\GeoPointInterface;
+use App\Mailchimp\Contact\ContactStatusEnum;
+use App\Mailchimp\Contact\MailchimpCleanableContactInterface;
 use App\Membership\ActivityPositions;
 use App\Membership\MembershipInterface;
 use App\Membership\MembershipRequest;
@@ -96,7 +98,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface, UuidEntityInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -539,8 +541,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": 0})
-     *
-     * @SymfonySerializer\Groups({"user_profile"})
      */
     private $emailUnsubscribed = false;
 
@@ -753,6 +753,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $voteInspector = false;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
 
     public function __construct()
     {
@@ -2219,11 +2224,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->postAddress->getCityName();
     }
 
-    public function isEmailUnsubscribed(): bool
-    {
-        return $this->emailUnsubscribed;
-    }
-
     public function setEmailUnsubscribed(bool $value): void
     {
         if ($value) {
@@ -2231,6 +2231,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $this->emailUnsubscribed = $value;
+        $this->mailchimpStatus = $value ? ContactStatusEnum::UNSUBSCRIBED : ContactStatusEnum::SUBSCRIBED;
     }
 
     private function isAdherentMessageRedactor(array $roles): bool
@@ -2936,5 +2937,23 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getTeamMemberships(): Collection
     {
         return $this->teamMemberships;
+    }
+
+    public function getMailchimpStatus(): ?string
+    {
+        return $this->mailchimpStatus;
+    }
+
+    public function clean(): void
+    {
+        $this->mailchimpStatus = ContactStatusEnum::CLEANED;
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"user_profile"})
+     */
+    public function isEmailSubscribed(): bool
+    {
+        return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
     }
 }

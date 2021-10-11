@@ -3,32 +3,17 @@
 namespace App\Mailchimp\Webhook\Handler;
 
 use App\Entity\Adherent;
-use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\MailchimpSubscriptionLabelMapping;
 use App\Repository\AdherentRepository;
 
-abstract class AbstractAdherentHandler implements WebhookHandlerInterface
+abstract class AbstractAdherentHandler extends AbstractHandler
 {
-    /** @var AdherentRepository */
-    private $repository;
+    private AdherentRepository $adherentRepository;
 
-    /** @var MailchimpObjectIdMapping */
-    protected $mailchimpObjectIdMapping;
-
-    /**
-     * @required
-     */
-    public function setRepository(AdherentRepository $repository): void
+    /** @required */
+    public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
-        $this->repository = $repository;
-    }
-
-    /**
-     * @required
-     */
-    public function setMailchimpObjectIdMapping(MailchimpObjectIdMapping $mailchimpObjectIdMapping): void
-    {
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
+        $this->adherentRepository = $adherentRepository;
     }
 
     public function support(string $type, string $listId): bool
@@ -38,7 +23,13 @@ abstract class AbstractAdherentHandler implements WebhookHandlerInterface
 
     protected function getAdherent(string $email): ?Adherent
     {
-        return $this->repository->findOneByEmail($email);
+        if (!$adherent = $this->adherentRepository->findOneByEmail($email)) {
+            return null;
+        }
+
+        $this->entityManager->refresh($adherent);
+
+        return $adherent;
     }
 
     protected function calculateNewSubscriptionTypes(array $adherentSubscriptionTypeCodes, array $mcLabels): array
