@@ -50,6 +50,7 @@ class DataSurveyAdmin extends AbstractAdmin
         $datagridMapper
             ->add('survey', null, [
                 'label' => 'Questionnaire',
+                'show_filter' => true,
             ])
         ;
     }

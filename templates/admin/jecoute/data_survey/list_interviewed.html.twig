@@ -5,7 +5,7 @@
         {{ object.jemarcheDataSurvey.firstName }} {{ object.jemarcheDataSurvey.lastName }}
         <br />
         {{ object.jemarcheDataSurvey.emailAddress }}
-    {% elseif object.isOfCampaignHistory %}
+    {% elseif object.isOfCampaignHistory and object.campaignHistory.adherent %}
         <a href="{{ path('admin_app_adherent_show', { id: object.campaignHistory.adherent.id }) }}">
             {{ object.campaignHistory.adherent.fullName }}
         </a>
