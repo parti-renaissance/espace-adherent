@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Validator\RecaptchaObject as AssertRecaptchaObject;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -12,7 +11,6 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertRecaptchaObject
  * @AssertUniqueEntity(fields={"email"}, message="neswletter.already_registered")
  *
  * @ORM\Table(name="newsletter_subscriptions")
@@ -20,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaObjectInterface
+class NewsletterSubscription implements EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -100,11 +98,6 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaObj
      * @var string|null
      */
     private $recaptcha;
-
-    /**
-     * @var bool
-     */
-    private $requiredRecaptcha = false;
 
     /**
      * @var bool
@@ -238,34 +231,5 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaObj
     public function setPersonalDataCollection(bool $personalDataCollection): void
     {
         $this->personalDataCollection = $personalDataCollection;
-    }
-
-    public function updateFromArray(array $data): void
-    {
-        if ($data['email']) {
-            $this->email = $data['email'];
-        }
-
-        if ($data['postalCode']) {
-            $this->postalCode = $data['postalCode'];
-        }
-
-        if ($data['country']) {
-            $this->country = $data['country'];
-        }
-
-        if ($data['personalDataCollection']) {
-            $this->personalDataCollection = '1' === $data['personalDataCollection'];
-        }
-    }
-
-    public function isRequiredRecaptcha(): bool
-    {
-        return $this->requiredRecaptcha;
-    }
-
-    public function setRequiredRecaptcha(bool $requiredRecaptcha): void
-    {
-        $this->requiredRecaptcha = $requiredRecaptcha;
     }
 }
