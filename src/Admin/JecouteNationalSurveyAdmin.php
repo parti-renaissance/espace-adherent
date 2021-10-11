@@ -83,6 +83,9 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
+                    'stats' => [
+                        'template' => 'admin/jecoute/list_action_stats.html.twig',
+                    ],
                 ],
             ])
         ;

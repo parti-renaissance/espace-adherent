@@ -5,6 +5,7 @@ namespace App\Entity\Jecoute;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\Phoning\CampaignHistory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -56,6 +57,20 @@ class DataSurvey implements AuthorInterface
      * @Groups({App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP})
      */
     private $survey;
+
+    /**
+     * @var JemarcheDataSurvey|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\JemarcheDataSurvey", mappedBy="dataSurvey")
+     */
+    private $jemarcheDataSurvey;
+
+    /**
+     * @var CampaignHistory|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="dataSurvey")
+     */
+    private $campaignHistory;
 
     public function __construct(Survey $survey = null)
     {
@@ -110,5 +125,25 @@ class DataSurvey implements AuthorInterface
     public function setSurvey(Survey $survey): void
     {
         $this->survey = $survey;
+    }
+
+    public function getJemarcheDataSurvey(): ?JemarcheDataSurvey
+    {
+        return $this->jemarcheDataSurvey;
+    }
+
+    public function isOfJemarcheDataSurvey(): bool
+    {
+        return (bool) $this->jemarcheDataSurvey;
+    }
+
+    public function getCampaignHistory(): ?CampaignHistory
+    {
+        return $this->campaignHistory;
+    }
+
+    public function isOfCampaignHistory(): bool
+    {
+        return (bool) $this->campaignHistory;
     }
 }

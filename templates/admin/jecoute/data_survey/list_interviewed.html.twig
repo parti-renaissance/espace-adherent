@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.isOfJemarcheDataSurvey %}
+        {{ object.jemarcheDataSurvey.firstName }} {{ object.jemarcheDataSurvey.lastName }}
+        <br />
+        {{ object.jemarcheDataSurvey.emailAddress }}
+    {% elseif object.isOfCampaignHistory and object.campaignHistory.adherent %}
+        <a href="{{ path('admin_app_adherent_show', { id: object.campaignHistory.adherent.id }) }}">
+            {{ object.campaignHistory.adherent.fullName }}
+        </a>
+        <br />
+        {{ object.campaignHistory.adherent.emailAddress }}
+    {% endif %}
+{% endblock %}

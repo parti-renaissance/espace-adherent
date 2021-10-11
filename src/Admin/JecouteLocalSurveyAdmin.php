@@ -108,6 +108,9 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
+                    'stats' => [
+                        'template' => 'admin/jecoute/list_action_stats.html.twig',
+                    ],
                 ],
             ])
         ;

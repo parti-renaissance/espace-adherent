@@ -5,6 +5,7 @@ namespace App\Entity\Phoning;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use App\Entity\Jecoute\DataSurveyAwareTrait;
 use App\Phoning\CampaignHistoryStatusEnum;
@@ -191,6 +192,16 @@ class CampaignHistory implements DataSurveyAwareInterface
      * )
      */
     private $finishAt;
+
+    /**
+     * @var DataSurvey|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="campaignHistory")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Assert\Valid
+     */
+    private $dataSurvey;
 
     public function __construct(Campaign $campaign, UuidInterface $uuid = null)
     {
