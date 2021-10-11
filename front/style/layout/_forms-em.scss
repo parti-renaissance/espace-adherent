@@ -256,6 +256,12 @@
             @include em-form-legend;
         }
 
+        .em-form__checkbox-legend {
+            @include em-form-legend;
+            margin: 0 0 0 35px;
+            font-style: italic;
+        }
+
         .em-form--error {
             @include em-form-error;
         }

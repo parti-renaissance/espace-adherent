@@ -124,6 +124,8 @@ class ReferentControllerTest extends WebTestCase
         $data['event_command']['description'] = 'Premier événement en Suisse';
         $data['event_command']['capacity'] = 100;
         $data['event_command']['timeZone'] = 'Europe/Zurich';
+        $data['event_command']['private'] = true;
+        $data['event_command']['electoral'] = true;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Enregistrer')->form(), $data);
 

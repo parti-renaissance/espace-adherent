@@ -388,6 +388,20 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     protected $reminded = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    protected $private = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    protected $electoral = false;
+
+    /**
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
@@ -719,7 +733,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
         ?string $visioUrl = null,
-        int $capacity = null
+        int $capacity = null,
+        bool $private = false,
+        bool $electoral = false
     ): void {
         $this->setName($name);
         $this->capacity = $capacity;
@@ -727,6 +743,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->description = $description;
+        $this->private = $private;
+        $this->electoral = $electoral;
         $this->setVisioUrl($visioUrl);
 
         if (!$this->postAddress->equals($address)) {
@@ -762,5 +780,25 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function setReminded(bool $reminded): void
     {
         $this->reminded = $reminded;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->private;
+    }
+
+    public function setPrivate(bool $private): void
+    {
+        $this->private = $private;
+    }
+
+    public function isElectoral(): bool
+    {
+        return $this->electoral;
+    }
+
+    public function setElectoral(bool $electoral): void
+    {
+        $this->electoral = $electoral;
     }
 }

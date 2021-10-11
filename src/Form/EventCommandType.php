@@ -8,6 +8,7 @@ use App\Event\EventCommand;
 use App\Repository\EventCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -33,6 +34,17 @@ class EventCommandType extends AbstractType
                 },
             ])
         ;
+
+        if (isset($options['extra_fields']) && $options['extra_fields']) {
+            $builder
+                ->add('private', CheckboxType::class, [
+                    'required' => false,
+                ])
+                ->add('electoral', CheckboxType::class, [
+                    'required' => false,
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -41,8 +53,10 @@ class EventCommandType extends AbstractType
             ->setDefaults([
                 'data_class' => EventCommand::class,
                 'event_group_category' => null,
+                'extra_fields' => true,
             ])
             ->setAllowedTypes('event_group_category', ['null', EventGroupCategory::class])
+            ->setAllowedTypes('extra_fields', 'bool')
         ;
     }
 }

@@ -45,6 +45,16 @@ class EventCommand extends BaseEventCommand
      */
     private $coalition;
 
+    /**
+     * @var bool
+     */
+    protected $private = false;
+
+    /**
+     * @var bool
+     */
+    protected $electoral = false;
+
     public function __construct(
         ?Adherent $author,
         Committee $committee = null,
@@ -82,9 +92,10 @@ class EventCommand extends BaseEventCommand
         );
 
         $command->setMode($event->getMode());
-
-        $command->category = $event->getCategory();
-        $command->capacity = $event->getCapacity();
+        $command->setCategory($event->getCategory());
+        $command->setCapacity($event->getCapacity());
+        $command->setPrivate($event->isPrivate());
+        $command->setElectoral($event->isElectoral());
 
         return $command;
     }
@@ -131,5 +142,25 @@ class EventCommand extends BaseEventCommand
     protected function getCategoryClass(): string
     {
         return EventCategory::class;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->private;
+    }
+
+    public function setPrivate(bool $private): void
+    {
+        $this->private = $private;
+    }
+
+    public function isElectoral(): bool
+    {
+        return $this->electoral;
+    }
+
+    public function setElectoral(bool $electoral): void
+    {
+        $this->electoral = $electoral;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche\EventManager;
 
+use App\Entity\Event\BaseEvent;
 use App\Entity\Notification;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -11,6 +12,7 @@ class ReferentEventManagerControllerTest extends WebTestCase
     use ControllerTestTrait;
 
     private $notificationRepository;
+    private $eventRepository;
 
     public function testListEvents(): void
     {
@@ -45,6 +47,8 @@ class ReferentEventManagerControllerTest extends WebTestCase
             'event_command[address][cityName]' => 'Clichy',
             'event_command[address][country]' => 'FR',
             'event_command[description]' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'event_command[private]' => true,
+            'event_command[electoral]' => true,
         ]));
         $this->assertResponseIsSuccessful();
         $errors = $crawler->filter('.form__errors > li');
@@ -63,6 +67,20 @@ class ReferentEventManagerControllerTest extends WebTestCase
         self::assertSame('staging_jemarche_department_92', $notification->getTopic());
         self::assertEmpty($notification->getTokens());
         self::assertNotNull($notification->getDelivered());
+
+        /** @var BaseEvent $event */
+        $event = $this->eventRepository->createQueryBuilder('event')
+            ->setMaxResults(1)
+            ->orderBy('event.createdAt', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+        $this->assertInstanceOf(BaseEvent::class, $event);
+
+        self::assertSame('My new referent event', $event->getName());
+        self::assertSame('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', $event->getDescription());
+        self::assertTrue($event->isPrivate());
+        self::assertTrue($event->isElectoral());
     }
 
     protected function setUp(): void
@@ -70,6 +88,7 @@ class ReferentEventManagerControllerTest extends WebTestCase
         parent::setUp();
 
         $this->notificationRepository = $this->getRepository(Notification::class);
+        $this->eventRepository = $this->getRepository(BaseEvent::class);
     }
 
     protected function tearDown(): void
@@ -77,5 +96,6 @@ class ReferentEventManagerControllerTest extends WebTestCase
         parent::tearDown();
 
         $this->notificationRepository = null;
+        $this->eventRepository = null;
     }
 }

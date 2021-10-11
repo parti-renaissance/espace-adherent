@@ -589,3 +589,22 @@
         }
     }
 }
+
+.table-label {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-size: 13px;
+    border: none;
+    white-space: nowrap;
+
+    &__green {
+        color: $green--pale;
+        background-color: $status-green;
+    }
+
+    &__silver-grey {
+        color: $pale-grey;
+        background-color: $silver-grey;
+    }
+}
