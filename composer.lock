@@ -457,27 +457,27 @@
         },
         {
             "name": "beberlei/doctrineextensions",
-            "version": "v1.2.2",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/DoctrineExtensions.git",
-                "reference": "53da6deefe33cff09737bdcc73ac6dbb4423691f"
+                "reference": "008f162f191584a6c37c03a803f718802ba9dd9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/53da6deefe33cff09737bdcc73ac6dbb4423691f",
-                "reference": "53da6deefe33cff09737bdcc73ac6dbb4423691f",
+                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/008f162f191584a6c37c03a803f718802ba9dd9a",
+                "reference": "008f162f191584a6c37c03a803f718802ba9dd9a",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "doctrine/orm": "^2.7",
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "doctrine/orm": "^2.6",
                 "friendsofphp/php-cs-fixer": "^2.14",
                 "nesbot/carbon": "*",
-                "phpunit/phpunit": "^7.0 || ^8.0",
-                "symfony/yaml": "^4.2",
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "symfony/yaml": "^4.2 || ^5.0",
                 "zf1/zend-date": "^1.12",
                 "zf1/zend-registry": "^1.12"
             },
@@ -498,16 +498,19 @@
                 },
                 {
                     "name": "Steve Lacey",
-                    "email": "steve@stevelacey.net"
+                    "email": "steve@steve.ly"
                 }
             ],
-            "description": "A set of extensions to Doctrine 2 that add support for additional query functions available in MySQL and Oracle.",
+            "description": "A set of extensions to Doctrine 2 that add support for additional query functions available in MySQL, Oracle, PostgreSQL and SQLite.",
             "keywords": [
                 "database",
                 "doctrine",
                 "orm"
             ],
-            "time": "2019-06-24T06:58:56+00:00"
+            "support": {
+                "source": "https://github.com/beberlei/DoctrineExtensions/tree/v1.3.0"
+            },
+            "time": "2020-11-29T07:37:23+00:00"
         },
         {
             "name": "behat/transliterator",
