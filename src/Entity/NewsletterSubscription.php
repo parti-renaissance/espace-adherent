@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -93,6 +94,19 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
      * @ORM\Column(type="uuid", unique=true, nullable=true)
      */
     private $token;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Subscription"})
+     * @AssertRecaptcha(groups={"Subscription"})
+     */
+    private $recaptcha;
+
+    /**
+     * @var bool
+     */
+    private $personalDataCollection = false;
 
     public function __construct(
         string $email = null,
@@ -201,5 +215,25 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
     public function setToken(?UuidInterface $token = null): void
     {
         $this->token = $token;
+    }
+
+    public function getRecaptcha(): ?string
+    {
+        return $this->recaptcha;
+    }
+
+    public function setRecaptcha(?string $recaptcha): void
+    {
+        $this->recaptcha = $recaptcha;
+    }
+
+    public function isPersonalDataCollection(): bool
+    {
+        return $this->personalDataCollection;
+    }
+
+    public function setPersonalDataCollection(bool $personalDataCollection): void
+    {
+        $this->personalDataCollection = $personalDataCollection;
     }
 }
