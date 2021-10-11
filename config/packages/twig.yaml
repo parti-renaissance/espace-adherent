@@ -26,7 +26,6 @@ twig:
         data_corner_host:       "%env(DATA_CORNER_HOST)%"
         enable_assessor_space:  "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         enable_municipal_space: "%env(bool:ENABLE_MUNICIPAL_SPACE)%"
-        enable_facebook_pixel:  "%env(bool:ENABLE_FACEBOOK_PIXEL)%"
         cookiebot_cbid:         "%env(COOKIEBOT_CBID)%"
 
     form_themes:
