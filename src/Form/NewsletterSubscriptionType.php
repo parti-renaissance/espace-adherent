@@ -49,6 +49,7 @@ class NewsletterSubscriptionType extends AbstractType
                     if ($existingSubscription) {
                         $existingSubscription->setCountry($subscription->getCountry());
                         $existingSubscription->setPostalCode($subscription->getPostalCode());
+                        $existingSubscription->setRecaptcha($subscription->getRecaptcha());
 
                         return $existingSubscription;
                     }
@@ -64,6 +65,7 @@ class NewsletterSubscriptionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => NewsletterSubscription::class,
             'csrf_protection' => false,
+            'validation_groups' => ['Default', 'Subscription'],
         ]);
     }
 

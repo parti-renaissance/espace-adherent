@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -96,6 +97,9 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
 
     /**
      * @var string|null
+     *
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Subscription"})
+     * @AssertRecaptcha(groups={"Subscription"})
      */
     private $recaptcha;
 

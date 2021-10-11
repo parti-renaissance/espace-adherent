@@ -59,12 +59,11 @@ class NewsletterController extends AbstractController
             );
         }
 
+        $subscription->setRecaptcha($request->request->get('g-recaptcha-response'));
         $form = $this
             ->createForm(NewsletterSubscriptionType::class, $subscription)
             ->handleRequest($request)
         ;
-
-        $subscription->setRecaptcha($request->request->get('g-recaptcha-response'));
 
         if ($request->request->has('g-recaptcha-response') && $form->isSubmitted() && $form->isValid()) {
             $newsletterSubscriptionHandler->subscribe($subscription);
