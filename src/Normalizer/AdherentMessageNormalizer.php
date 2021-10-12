@@ -13,14 +13,14 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 {
     use NormalizerAwareTrait;
 
+    private const ALREADY_CALLED = 'ADHERENT_MESSAGE_NORMALIZER_ALREADY_CALLED';
+
     private StatisticsAggregator $statisticsAggregator;
 
     public function __construct(StatisticsAggregator $statisticsAggregator)
     {
         $this->statisticsAggregator = $statisticsAggregator;
     }
-
-    private const ALREADY_CALLED = 'ADHERENT_MESSAGE_NORMALIZER_ALREADY_CALLED';
 
     /** @var AbstractAdherentMessage */
     public function normalize($object, $format = null, array $context = [])

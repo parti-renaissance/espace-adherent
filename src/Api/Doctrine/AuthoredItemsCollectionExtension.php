@@ -26,7 +26,9 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
     ) {
         if (
             !is_a($resourceClass, AuthoredItemsCollectionInterface::class, true)
-            || (is_a($resourceClass, AbstractAdherentMessage::class, true) && 'get' == $operationName)
+            // Do not activate this extension on this operation since it's a custom logic regarding the author
+            // @See App\Normalizer\AdherentMessageNormalizer
+            || (is_a($resourceClass, AbstractAdherentMessage::class, true) && 'get' === $operationName)
         ) {
             return;
         }
