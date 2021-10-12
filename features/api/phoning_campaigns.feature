@@ -251,7 +251,7 @@ Feature:
             "finished": [
                 {
                     "code": "answered",
-                    "label": "Il accepte de répondre aux questions"
+                    "label": "Accepte de répondre aux questions"
                 },
                 {
                     "code": "to-unsubscribe",

@@ -19,7 +19,7 @@ class CampaignHistoryStatusEnum extends Enum
 
     public const LABELS = [
         self::SEND => 'Numéro de téléphone envoyé',
-        self::ANSWERED => 'Il accepte de répondre aux questions',
+        self::ANSWERED => 'Accepte de répondre aux questions',
         self::TO_UNSUBSCRIBE => 'Ne souhaite plus être rappelé',
         self::TO_UNJOIN => 'Souhaite désadhérer',
         self::NOT_RESPOND => 'N\'a pa répondu au téléphone',
