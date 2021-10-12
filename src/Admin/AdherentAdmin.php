@@ -513,6 +513,12 @@ class AdherentAdmin extends AbstractAdmin
                         },
                     ])
                 ->end()
+                ->with('Responsable d\'appel', ['class' => 'col-md-6'])
+                    ->add('teamPhoningNationalManagerRole', null, [
+                        'label' => 'Rôle Responsable équipe d\'appel',
+                        'required' => false,
+                    ])
+                ->end()
                 ->with('Zone expérimentale 🚧', [
                     'class' => 'col-md-6',
                     'box_class' => 'box box-warning',
