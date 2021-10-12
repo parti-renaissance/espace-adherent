@@ -51,7 +51,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/adherent_messages",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR')",
  *         },
  *         "post": {
  *             "path": "/v3/adherent_messages",
