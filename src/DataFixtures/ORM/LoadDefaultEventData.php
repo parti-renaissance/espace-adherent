@@ -40,10 +40,10 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event1->setOrganizer($referent);
 
         $event2 = new DefaultEvent(Uuid::fromString(self::EVENT_2_UUID));
-        $event2->setName('Nouvel événement online');
-        $event2->setDescription('Description du nouvel événement online privé et électral');
+        $event2->setName('Nouvel événement online privé et électoral');
+        $event2->setDescription('Description du nouvel événement online privé et électoral');
         $event2->setPublished(true);
-        $event2->setBeginAt((new \DateTime('now'))->modify('+2 hour'));
+        $event2->setBeginAt((new \DateTime('now'))->modify('+2 hours'));
         $event2->setFinishAt((new \DateTime('now'))->modify('+3 hours'));
         $event2->setCapacity(50);
         $event2->setStatus(BaseEvent::STATUS_SCHEDULED);

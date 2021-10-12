@@ -392,14 +392,14 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    protected $private = false;
+    private $private = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    protected $electoral = false;
+    private $electoral = false;
 
     /**
      * @var int|null

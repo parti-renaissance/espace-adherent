@@ -48,12 +48,12 @@ class EventCommand extends BaseEventCommand
     /**
      * @var bool
      */
-    protected $private = false;
+    private $private = false;
 
     /**
      * @var bool
      */
-    protected $electoral = false;
+    private $electoral = false;
 
     public function __construct(
         ?Adherent $author,

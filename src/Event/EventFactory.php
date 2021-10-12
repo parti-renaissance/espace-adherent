@@ -231,7 +231,7 @@ class EventFactory
             $command->getVisioUrl(),
             $command->getCapacity(),
             $command->isPrivate(),
-            $command->isElectoral(),
+            $command->isElectoral()
         );
 
         if ($event instanceof CommitteeEvent) {
