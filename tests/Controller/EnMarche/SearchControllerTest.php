@@ -72,6 +72,25 @@ class SearchControllerTest extends WebTestCase
         $this->assertSame('1', trim($crawler->filter('.listing__paginator li a')->text()));
     }
 
+    public function testListEventsAsAdherent()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(5, $crawler->filter('div.search__results__row')->count());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
+
+        $this->assertSame(1, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame('Conférence-débat', $crawler->filter('.search__results__info .search__results__tag div')->text());
+        $this->assertSame('Réunion de réflexion évryenne', trim($crawler->filter('.search__results__info .search__results__meta h2 a')->text()));
+
+        $this->client->request(Request::METHOD_GET, '/evenements/categorie/inexistante');
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/evenements', $this->client);
+    }
+
     public function testListEventsByCategory()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');

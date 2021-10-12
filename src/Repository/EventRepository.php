@@ -46,7 +46,7 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, $className);
     }
 
-    public function countElements(bool $onlyPublished = true): int
+    public function countElements(bool $onlyPublished = true, bool $withPrivate = false): int
     {
         $qb = $this
             ->createQueryBuilder('e')
@@ -60,6 +60,10 @@ class EventRepository extends ServiceEntityRepository
                 ->setParameter('published', true)
                 ->setParameter('enabled', BaseEventCategory::ENABLED)
             ;
+        }
+
+        if (!$withPrivate) {
+            $qb->andWhere('e.private = false');
         }
 
         return (int) $qb->getQuery()
@@ -81,20 +85,6 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('slug', $slug)
             ->setParameter('published', true)
             ->setParameter('status', Committee::APPROVED)
-            ->getQuery()
-        ;
-
-        return $query->getOneOrNullResult();
-    }
-
-    public function findMostRecentEvent(): ?CommitteeEvent
-    {
-        $query = $this
-            ->createQueryBuilder('ce')
-            ->where('ce.published = :published')
-            ->setParameter('published', true)
-            ->orderBy('ce.createdAt', 'DESC')
-            ->setMaxResults(1)
             ->getQuery()
         ;
 
@@ -198,9 +188,9 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @return CommitteeEvent[]
      */
-    public function findUpcomingEvents(int $category = null): array
+    public function findUpcomingEvents(int $category = null, bool $withPrivate = false): array
     {
-        $qb = $this->createUpcomingEventsQueryBuilder();
+        $qb = $this->createUpcomingEventsQueryBuilder($withPrivate);
 
         if ($category) {
             $qb->andWhere('ec.id = :category')->setParameter('category', $category);
@@ -209,14 +199,14 @@ class EventRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function countUpcomingEvents(): int
+    public function countUpcomingEvents(bool $withPrivate = false): int
     {
-        return (int) $this
-            ->createUpcomingEventsQueryBuilder()
+        $qb = $this
+            ->createUpcomingEventsQueryBuilder($withPrivate)
             ->select('COUNT(e.id)')
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function findEventsByOrganizer(Adherent $organizer): array
@@ -268,13 +258,10 @@ class EventRepository extends ServiceEntityRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
-    private function createUpcomingEventsQueryBuilder(): QueryBuilder
+    private function createUpcomingEventsQueryBuilder(bool $withPrivate = false): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('e');
-
-        return $qb
-            ->select('e', 'ec', 'c', 'o')
-            ->leftJoin('e.category', 'ec')
+        $qb = $this->createQueryBuilder('e')->select('e', 'ec', 'c', 'o');
+        $qb->leftJoin('e.category', 'ec')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.published = :published')
@@ -286,6 +273,12 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('today', date('Y-m-d'))
             ->setParameter('status', BaseEventCategory::ENABLED)
         ;
+
+        if (!$withPrivate) {
+            $qb->andWhere('e.private = false');
+        }
+
+        return $qb;
     }
 
     public function countSitemapEvents(): int
@@ -323,51 +316,6 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.published = :published')
             ->setParameter('status', Committee::APPROVED)
             ->setParameter('published', true)
-        ;
-    }
-
-    /**
-     * @return CommitteeEvent[]
-     */
-    public function searchEvents(SearchParametersFilter $search): array
-    {
-        if ($coordinates = $search->getCityCoordinates()) {
-            $qb = $this
-                ->createNearbyQueryBuilder($coordinates)
-                ->andWhere($this->getNearbyExpression().' < :distance_max')
-                ->andWhere('n.beginAt > :today')
-                ->setParameter('distance_max', $search->getRadius())
-                ->setParameter('today', new \DateTime('today'))
-                ->orderBy('n.beginAt', 'asc')
-                ->addOrderBy('distance_between', 'asc')
-            ;
-        } else {
-            $qb = $this->createQueryBuilder('n');
-        }
-
-        $qb->andWhere('n.published = :published')
-            ->setParameter('published', true)
-        ;
-
-        if (!empty($query = $search->getQuery())) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
-
-        if ($category = $search->getEventCategory()) {
-            $qb->andWhere('n.category = :category');
-            $qb->setParameter('category', $category);
-        }
-
-        if ($search->getReferentEvents()) {
-            $qb->andWhere('n.committee IS NULL');
-        }
-
-        return $qb
-            ->setFirstResult($search->getOffset())
-            ->setMaxResults($search->getMaxResults())
-            ->getQuery()
-            ->getResult()
         ;
     }
 
@@ -413,6 +361,7 @@ WHERE (events.address_latitude IS NOT NULL
     __filter_query__ 
     __filter_category__
     __filter_referent_events__
+    __filter_private__
 ORDER BY events.begin_at ASC, distance ASC 
 LIMIT :max_results 
 OFFSET :first_result
@@ -430,9 +379,13 @@ SQL;
             $filterReferentEvents = 'AND events.committee_id IS NULL';
         }
 
+        if (!$search->getWithPrivate()) {
+            $filterPrivate = 'AND events.private = false';
+        }
+
         $sql = preg_replace(
-            ['/__filter_query__/', '/__filter_category__/', '/__filter_referent_events__/'],
-            [$filterQuery ?? '', $filterCategory ?? '', $filterReferentEvents ?? ''],
+            ['/__filter_query__/', '/__filter_category__/', '/__filter_referent_events__/', '/__filter_private__/'],
+            [$filterQuery ?? '', $filterCategory ?? '', $filterReferentEvents ?? '', $filterPrivate ?? ''],
             $sql
         );
 

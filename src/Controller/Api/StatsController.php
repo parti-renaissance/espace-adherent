@@ -22,7 +22,7 @@ class StatsController extends AbstractController
     ): Response {
         return new JsonResponse([
             'userCount' => $adherentRepository->countAdherents(),
-            'eventCount' => $eventRepository->countElements(),
+            'eventCount' => $eventRepository->countElements(true, true),
             'committeeCount' => $committeeRepository->countElements(),
         ]);
     }

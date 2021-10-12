@@ -66,6 +66,7 @@ class SearchParametersFilter
     private $maxResults;
     private $eventCategory;
     private $referentEvents = false;
+    private $withPrivate = false;
     private $cache;
 
     public function __construct(Geocoder $geocoder, AdapterInterface $cache)
@@ -209,6 +210,16 @@ class SearchParametersFilter
     public function setReferentEvents(bool $referentEvents): void
     {
         $this->referentEvents = $referentEvents;
+    }
+
+    public function getWithPrivate(): bool
+    {
+        return $this->withPrivate;
+    }
+
+    public function setWithPrivate(bool $withPrivate): void
+    {
+        $this->withPrivate = $withPrivate;
     }
 
     public function isTypeCommittees(): bool

@@ -28,7 +28,10 @@ class EventsController extends AbstractController
      */
     public function getUpcomingCommitteesEventsAction(Request $request, EventProvider $provider): Response
     {
-        return new JsonResponse($provider->getUpcomingEvents($request->query->getInt('type')));
+        return new JsonResponse($provider->getUpcomingEvents(
+            $request->query->getInt('type'),
+            $this->getUser() instanceof Adherent
+        ));
     }
 
     /**
