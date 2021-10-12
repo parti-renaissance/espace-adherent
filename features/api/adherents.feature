@@ -138,7 +138,7 @@ Feature:
         }
       ],
       "emailAddress": "referent-75-77@en-marche-dev.fr",
-      "email_unsubscribed": false,
+      "email_subscribed": true,
       "firstName": "Referent75and77",
       "lastName": "Referent75and77",
       "zipCode": "75001",
@@ -173,7 +173,7 @@ Feature:
       "certified": true,
       "detailed_roles": [],
       "emailAddress":"jacques.picard@en-marche.fr",
-      "email_unsubscribed": false,
+      "email_subscribed": true,
       "firstName":"Jacques",
       "lastName":"Picard",
       "zipCode":"75008"

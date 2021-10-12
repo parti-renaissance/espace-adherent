@@ -7,7 +7,7 @@ use App\Mailchimp\Webhook\EventTypeEnum;
 
 class ElectedRepresentativeSubscribeHandler extends AbstractElectedRepresentativeHandler
 {
-    private $subscriptionHandler;
+    private ElectedRepresentativeSubscriptionHandler $subscriptionHandler;
 
     public function __construct(ElectedRepresentativeSubscriptionHandler $subscriptionHandler)
     {

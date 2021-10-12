@@ -2,31 +2,16 @@
 
 namespace App\Mailchimp\Webhook\Handler;
 
-use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 
-abstract class AbstractElectedRepresentativeHandler implements WebhookHandlerInterface
+abstract class AbstractElectedRepresentativeHandler extends AbstractHandler
 {
-    /** @var ElectedRepresentativeRepository */
-    private $repository;
+    private ElectedRepresentativeRepository $repository;
 
-    /** @var MailchimpObjectIdMapping */
-    protected $mailchimpObjectIdMapping;
-
-    /**
-     * @required
-     */
+    /** @required */
     public function setRepository(ElectedRepresentativeRepository $repository): void
     {
         $this->repository = $repository;
-    }
-
-    /**
-     * @required
-     */
-    public function setMailchimpObjectIdMapping(MailchimpObjectIdMapping $mailchimpObjectIdMapping): void
-    {
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
     public function support(string $type, string $listId): bool

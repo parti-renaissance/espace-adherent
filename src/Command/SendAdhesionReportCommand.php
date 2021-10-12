@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Adherent;
 use App\Entity\ReferentTag;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdhesionReportMessage;
 use App\Repository\AdherentRepository;
@@ -147,8 +148,8 @@ class SendAdhesionReportCommand extends Command
 
         $countSubscribedNewAdherents = $qb
             ->innerJoin('a.subscriptionTypes', 'subscriptionType')
-            ->andWhere('subscriptionType.code = :subscription_code AND a.emailUnsubscribed = :false')
-            ->setParameter('false', false)
+            ->andWhere('subscriptionType.code = :subscription_code AND a.mailchimpStatus = :mailchimp_status')
+            ->setParameter('mailchimp_status', ContactStatusEnum::SUBSCRIBED)
             ->setParameter('subscription_code', $type)
             ->getQuery()
             ->getSingleScalarResult()

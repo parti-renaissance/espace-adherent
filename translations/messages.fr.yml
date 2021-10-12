@@ -1228,3 +1228,8 @@ cms_block.name.not_blank: Veuillez renseigner un nom pour ce bloc statique.
 cms_block.name.max_length: Le nom d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
 cms_block.description.max_length: La description d'un bloc statique ne doit pas dépasser {{ limit }} caractères.
 cms_block.description.help: Champ interne pour les administrateurs seulement; ne sera jamais affiché aux utilisateurs.
+
+# Mailchimp status
+mailchimp_contact.status.subscribed: Abonné
+mailchimp_contact.status.unsubscribed: Désabonné
+mailchimp_contact.status.cleaned: Cleaned
