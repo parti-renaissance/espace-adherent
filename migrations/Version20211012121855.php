@@ -14,7 +14,7 @@ final class Version20211012121855 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE adherents ADD team_phoning_national_manager_role TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE adherents ADD team_phoning_national_manager_role TINYINT(1) DEFAULT \'0\' NOT NULL');
     }
 
     public function down(Schema $schema): void
