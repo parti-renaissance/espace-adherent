@@ -116,7 +116,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    private function withMessageType(QueryBuilder $queryBuilder, string $messageType, string $alias = 'message'): self
+    public function withMessageType(QueryBuilder $queryBuilder, string $messageType, string $alias = 'message'): self
     {
         if (!AdherentMessageTypeEnum::isValid($messageType)) {
             throw new \InvalidArgumentException('Message type is invalid');
@@ -130,7 +130,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return $this;
     }
 
-    private function withAuthor(QueryBuilder $queryBuilder, Adherent $adherent, string $alias = 'message'): self
+    public function withAuthor(QueryBuilder $queryBuilder, Adherent $adherent, string $alias = 'message'): self
     {
         $queryBuilder
             ->andWhere("$alias.author = :author")
@@ -140,7 +140,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         return $this;
     }
 
-    private function withStatus(QueryBuilder $queryBuilder, string $status, string $alias = 'message'): self
+    public function withStatus(QueryBuilder $queryBuilder, string $status, string $alias = 'message'): self
     {
         $queryBuilder
             ->andWhere("$alias.status = :status")
@@ -215,10 +215,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         ;
 
         if ($status) {
-            $queryBuilder
-                ->andWhere('message.status = :status')
-                ->setParameter('status', $status)
-            ;
+            $this->withStatus($queryBuilder, $status);
         }
 
         return $queryBuilder;

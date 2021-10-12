@@ -92,7 +92,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         switch ($class) {
             case ReferentAdherentMessage::class:
             case CommitteeAdherentMessage::class:
-                return $this->getReference('adherent-8');
+                return $this->getReference('adherent-8'); // referent@en-marche-dev.fr
             case DeputyAdherentMessage::class:
                 return $this->getReference('deputy-75-1');
         }
