@@ -75,6 +75,14 @@ class RequestBuilder implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
+    public function createReplaceEmailRequest(string $oldEmail, string $newEmail): MemberRequest
+    {
+        $request = new MemberRequest($oldEmail);
+        $request->setEmailAddress($newEmail);
+
+        return $request;
+    }
+
     public function updateFromAdherent(Adherent $adherent): self
     {
         return $this

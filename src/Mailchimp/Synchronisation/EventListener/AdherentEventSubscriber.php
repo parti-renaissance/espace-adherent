@@ -118,7 +118,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     public function onDelete(UserEvent $event): void
     {
-        $this->dispatch(new AdherentDeleteCommand($event->getUser()->getEmailAddress()));
+        $this->dispatch(new AdherentDeleteCommand($event->getUser()->getEmailAddress(), $event->getUser()->getId()));
         $this->dispatch(new RemoveCoalitionMemberCommand($event->getUser()->getEmailAddress()));
     }
 

@@ -17,6 +17,6 @@ class AdherentDeleteCommandHandler implements MessageHandlerInterface
 
     public function __invoke(AdherentDeleteCommand $command): void
     {
-        $this->manager->deleteMember($command->getEmail());
+        $this->manager->deleteMember($command);
     }
 }

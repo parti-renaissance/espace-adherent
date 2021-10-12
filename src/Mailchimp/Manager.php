@@ -19,6 +19,7 @@ use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\MailchimpSegment\SegmentRequestBuilder;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
+use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
@@ -383,9 +384,26 @@ class Manager implements LoggerAwareInterface
         $this->driver->deleteSegmentMember($segmentId, $mail);
     }
 
-    public function deleteMember(string $mail): void
+    public function deleteMember(AdherentDeleteCommand $command): void
     {
-        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getMainListId());
+        $listId = $this->mailchimpObjectIdMapping->getMainListId();
+
+        // Replace contact email before permanently delete it
+        /** @var RequestBuilder $requestBuilder */
+        $requestBuilder = $this->requestBuildersLocator->get(RequestBuilder::class);
+
+        $request = $requestBuilder->createReplaceEmailRequest($command->getEmail(), sprintf(
+            $newEmail = 'no-reply-mailchimp-contact+deleted-contact%d@en-marche.fr',
+            $command->getAdherentId() ?: random_int(1, \PHP_INT_MAX)
+        ));
+        $request->setUnsubscriptionRequest();
+
+        $emailToDelete = $command->getEmail();
+        if ($this->driver->editMember($request, $listId)) {
+            $emailToDelete = $newEmail;
+        }
+
+        $this->driver->deleteMember($emailToDelete, $listId);
     }
 
     public function archiveElectedRepresentative(string $mail): void
