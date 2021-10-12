@@ -4,6 +4,7 @@ namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AuthoredItemsCollectionInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
@@ -23,7 +24,10 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
         string $resourceClass,
         string $operationName = null
     ) {
-        if (!is_a($resourceClass, AuthoredItemsCollectionInterface::class, true)) {
+        if (
+            !is_a($resourceClass, AuthoredItemsCollectionInterface::class, true)
+            || (is_a($resourceClass, AbstractAdherentMessage::class, true) && 'get' == $operationName)
+        ) {
             return;
         }
 
