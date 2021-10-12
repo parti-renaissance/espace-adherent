@@ -77,11 +77,6 @@ Feature:
     And I should see "En Marche Paris 8"
     And I should see "En Marche Dammarie-les-Lys"
 
-    # As an animator, I should have an activity section
-    Then I should see "Activité récente"
-    And I should see "A participé à l'événement \"Meeting de Singapour\""
-    And I should see "A créé l'événement \"Événement de la catégorie masquée\""
-
   # Coordinator de comité
   Scenario: As a committee coordinator, I should have a link to go to my own space
     Given I am logged as "coordinateur@en-marche-dev.fr"
