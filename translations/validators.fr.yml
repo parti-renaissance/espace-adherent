@@ -50,7 +50,7 @@ common.phone_number.invalid: Ce numéro de téléphone est invalide.
 
 common.conditions.not_accepted: Vous devez accepter la charte.
 
-common.recaptcha.invalid_message: Vous avez été détecté en tant que robot, pourriez-vous réessayer ?
+common.recaptcha.invalid_message: Merci de confirmer le captcha avant de continuer.
 
 common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
 
