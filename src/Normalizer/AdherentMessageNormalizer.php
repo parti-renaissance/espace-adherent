@@ -56,13 +56,13 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         $author = $message->getAuthor();
 
         switch ($message->getType()) {
-            case AdherentMessageTypeEnum::REFERENT:
+            case AdherentMessageTypeEnum::REFERENT && $author->isReferent():
                 return $author->getManagedArea()->getZones()->toArray();
-            case AdherentMessageTypeEnum::CANDIDATE:
+            case AdherentMessageTypeEnum::CANDIDATE && $author->isCandidate():
                 return [$author->getCandidateManagedArea()->getZone()];
-            case AdherentMessageTypeEnum::SENATOR:
+            case AdherentMessageTypeEnum::SENATOR && $author->isSenator():
                 return [$author->getSenatorArea()->getDepartmentTag()->getZone()];
-            case AdherentMessageTypeEnum::DEPUTY:
+            case AdherentMessageTypeEnum::DEPUTY && $author->isDeputy():
                 return [$author->getManagedDistrict()->getReferentTag()->getZone()];
             default:
                 return [];

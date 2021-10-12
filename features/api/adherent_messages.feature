@@ -138,4 +138,5 @@ Feature:
     Examples:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
+      # senateur@en-marche-dev.fr has a delegated access from referent@en-marche-dev.fr and should see the same messages
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

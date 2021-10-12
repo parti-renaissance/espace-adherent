@@ -4,7 +4,7 @@ namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\Adherent;
 use App\Entity\AuthoredItemsCollectionInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
@@ -22,20 +22,22 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        string $operationName = null,
+        array $context = []
     ) {
+        $user = $this->security->getUser();
+
         if (
-            !is_a($resourceClass, AuthoredItemsCollectionInterface::class, true)
-            // Do not activate this extension on this operation since it's a custom logic regarding the author
-            // @See App\Normalizer\AdherentMessageNormalizer
-            || (is_a($resourceClass, AbstractAdherentMessage::class, true) && 'get' === $operationName)
+            !$user instanceof Adherent
+            || !is_a($resourceClass, AuthoredItemsCollectionInterface::class, true)
+            || (isset($context['authored_items_collection']) && false === $context['authored_items_collection'])
         ) {
             return;
         }
 
         $queryBuilder
             ->andWhere($queryBuilder->getRootAliases()[0].'.author = :author')
-            ->setParameter('author', $this->security->getUser())
+            ->setParameter('author', $user)
         ;
     }
 }
