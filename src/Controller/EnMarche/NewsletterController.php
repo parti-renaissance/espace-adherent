@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
-use App\Controller\CanaryControllerTrait;
 use App\Entity\NewsletterSubscription;
 use App\Form\NewsletterInvitationType;
 use App\Form\NewsletterSubscriptionType;
@@ -21,8 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewsletterController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/newsletter", name="newsletter_subscription", methods={"GET", "POST"})
      */
@@ -32,8 +29,6 @@ class NewsletterController extends AbstractController
         NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
         NewsletterSubscriptionHandler $newsletterSubscriptionHandler
     ): Response {
-        $this->disableInProduction();
-
         if ($email = $request->query->get('mail')) {
             $subscription = $newsletterSubscriptionRepository->findOneNotConfirmedByEmail($email);
             if ($subscription) {
