@@ -117,6 +117,8 @@ class LoadCommitteeEventData extends Fixture implements DependentFixtureInterfac
             'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
             'is_for_legislatives' => true,
+            'private' => true,
+            'electoral' => true,
         ]);
         $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event1->incrementParticipantsCount();

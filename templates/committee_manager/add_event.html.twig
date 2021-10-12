@@ -99,6 +99,28 @@
                 {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity' } }) }}
             </div>
 
+            <div class="em-form__group">
+                <div class="form__checkbox" id="event-private-field">
+                    {{ form_errors(form.private) }}
+                    {{ form_widget(form.private) }}
+                    {{ form_label(form.private, 'Cet événement est privé') }}
+                </div>
+                <div class="em-form__checkbox-legend">
+                    Un événement privé ne sera affiché qu’aux adhérents connectés sur le site et l'application mobile.
+                </div>
+            </div>
+
+            <div class="em-form__group">
+                <div class="form__checkbox" id="event-electoral-field">
+                    {{ form_errors(form.electoral) }}
+                    {{ form_widget(form.electoral) }}
+                    {{ form_label(form.electoral, 'Cet événement concerne la campagne présidentielle') }}
+                </div>
+                <div class="em-form__checkbox-legend">
+                    Il la concerne, si celui-ci est public et vise à convaincre des électeurs de voter Emmanuel Macron.
+                </div>
+            </div>
+
             <div class="form__row text--center b__nudge--top-50">
                 <button type="submit" class="btn btn--blue btn--large-and-full">Créer cet événement</button>
             </div>

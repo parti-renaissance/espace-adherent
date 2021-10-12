@@ -110,6 +110,12 @@ class EventAdmin extends AbstractAdmin
                 ->add('published', null, [
                     'label' => 'Publié',
                 ])
+                ->add('private', null, [
+                    'label' => 'Privé',
+                ])
+                ->add('electoral', null, [
+                    'label' => 'Électoral',
+                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', null, [
@@ -186,6 +192,12 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('published', null, [
                     'label' => 'Publié',
+                ])
+                ->add('private', null, [
+                    'label' => 'Privé',
+                ])
+                ->add('electoral', null, [
+                    'label' => 'Électoral',
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
@@ -283,6 +295,12 @@ class EventAdmin extends AbstractAdmin
             ->add('published', BooleanFilter::class, [
                 'label' => 'Publié',
             ])
+            ->add('private', BooleanFilter::class, [
+                'label' => 'Privé',
+            ])
+            ->add('electoral', BooleanFilter::class, [
+                'label' => 'Électoral',
+            ])
         ;
     }
 
@@ -316,6 +334,12 @@ class EventAdmin extends AbstractAdmin
             ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/event/list_status.html.twig',
+            ])
+            ->add('private', null, [
+                'label' => 'Privé',
+            ])
+            ->add('electoral', null, [
+                'label' => 'Électoral',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

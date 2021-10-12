@@ -154,6 +154,8 @@ class EventFactory
         $event->setTimeZone($command->getTimeZone());
         $event->setVisioUrl($command->getVisioUrl());
         $event->setImage($command->getImage());
+        $event->setPrivate($command->isPrivate());
+        $event->setElectoral($command->isElectoral());
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
@@ -228,6 +230,8 @@ class EventFactory
             $command->getFinishAt(),
             $command->getVisioUrl(),
             $command->getCapacity(),
+            $command->isPrivate(),
+            $command->isElectoral()
         );
 
         if ($event instanceof CommitteeEvent) {

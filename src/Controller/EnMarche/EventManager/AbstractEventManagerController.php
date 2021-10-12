@@ -12,6 +12,7 @@ use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
+use App\Event\EventManagerSpaceEnum;
 use App\Form\EventCommandType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -144,6 +145,7 @@ abstract class AbstractEventManagerController extends AbstractController
             [
                 'event_group_category' => $this->getEventGroupCategory(),
                 'image_path' => $event ? $event->getImagePath() : null,
+                'extra_fields' => EventManagerSpaceEnum::COALITION_MODERATOR !== $this->getSpaceType(),
             ]
         );
     }

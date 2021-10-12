@@ -96,6 +96,14 @@
                                 {% else %}
                                     <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}</a>
                                 {% endif %}
+                                {% if event is not instanceof('App\\Entity\\Event\\CoalitionEvent') %}
+                                    {% if event.isPrivate %}
+                                        <span class="table-label table-label__silver-grey">privé</span>
+                                    {% endif %}
+                                    {% if event.isElectoral %}
+                                        <span class="table-label table-label__green">électoral</span>
+                                    {% endif %}
+                                {% endif %}
                             </td>
                             <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
                             <td>
