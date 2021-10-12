@@ -61,13 +61,12 @@ Feature:
       "OK"
     """
 
-@debug
   Scenario Outline: As a logged-in (delegated) referent I can retrive my messages
     Given I am logged with "<user>" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/adherent_messages?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
+    And the JSON should be a superset of:
     """
     {
         "metadata": {
@@ -85,7 +84,25 @@ Feature:
                 "status": "draft",
                 "recipient_count": 0,
                 "synchronized": false,
-                "from_name": "Referent Referent | La République En Marche !"
+                "from_name": "Referent Referent | La République En Marche !",
+                "statistics": {
+                    "click_rate": 0,
+                    "clicks": 0,
+                    "open_rate": 0,
+                    "opens": 0,
+                    "sent": 0,
+                    "unsubscribe": 0,
+                    "unsubscribe_rate": 0
+                },
+                "zones": [
+                    {
+                      "code": "13",
+                      "name": "Bouches-du-Rhône",
+                      "postal_code": [],
+                      "type": "department",
+                      "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
+                    }
+                ]
             },
             {
                 "uuid": "@uuid@",
@@ -94,7 +111,25 @@ Feature:
                 "status": "draft",
                 "recipient_count": 0,
                 "synchronized": true,
-                "from_name": "Referent Referent | La République En Marche !"
+                "from_name": "Referent Referent | La République En Marche !",
+                "statistics": {
+                    "click_rate": 0,
+                    "clicks": 0,
+                    "open_rate": 0,
+                    "opens": 0,
+                    "sent": 0,
+                    "unsubscribe": 0,
+                    "unsubscribe_rate": 0
+                },
+                "zones": [
+                    {
+                      "code": "13",
+                      "name": "Bouches-du-Rhône",
+                      "postal_code": [],
+                      "type": "department",
+                      "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
+                    }
+                ]
             }
         ]
     }

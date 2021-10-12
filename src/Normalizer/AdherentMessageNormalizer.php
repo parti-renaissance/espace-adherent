@@ -33,6 +33,11 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
         if (\in_array('message_read_list', $groups, true)) {
             $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
+            $data['zones'] = $this->normalizer->normalize(
+                $this->getZonesFromMessage($object),
+                $format,
+                array_merge($context, ['groups' => ['zone_read']])
+            );
         }
 
         return $data;
@@ -48,11 +53,19 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
     private function getZonesFromMessage(AbstractAdherentMessage $message): array
     {
+        $author = $message->getAuthor();
+
         switch ($message->getType()) {
             case AdherentMessageTypeEnum::REFERENT:
-
+                return $author->getManagedArea()->getZones()->toArray();
+            case AdherentMessageTypeEnum::CANDIDATE:
+                return [$author->getCandidateManagedArea()->getZone()];
+            case AdherentMessageTypeEnum::SENATOR:
+                return [$author->getSenatorArea()->getDepartmentTag()->getZone()];
+            case AdherentMessageTypeEnum::DEPUTY:
+                return [$author->getManagedDistrict()->getReferentTag()->getZone()];
+            default:
+                return [];
         }
-
-        foreach ($message->getMailchimpCampaigns())
     }
 }
