@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\AdherentEmailSubscribeToken;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadAdherentEmailSubscribeTokenData extends Fixture implements DependentFixtureInterface
+class LoadAdherentEmailSubscribeTokenData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

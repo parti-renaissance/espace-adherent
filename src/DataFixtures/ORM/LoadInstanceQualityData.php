@@ -5,10 +5,9 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Instance\InstanceQuality;
 use App\Instance\InstanceQualityEnum;
 use App\Instance\InstanceQualityScopeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadInstanceQualityData extends Fixture
+class LoadInstanceQualityData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

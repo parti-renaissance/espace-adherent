@@ -5,12 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Content\MediaFactory;
 use App\Content\PageFactory;
 use App\Entity\Page;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadPageData extends Fixture
+class LoadPageData extends AbstractFixtures
 {
     private $pageFactory;
     private $mediaFactory;

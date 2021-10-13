@@ -9,13 +9,12 @@ use App\Entity\Coalition\Coalition;
 use App\Entity\FollowerInterface;
 use App\Entity\Geo\Zone;
 use App\Image\ImageManagerInterface;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadCauseData extends Fixture implements DependentFixtureInterface
+class LoadCauseData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const CAUSE_1_UUID = '55056e7c-2b5f-4ef6-880e-cde0511f79b2';
     public const CAUSE_2_UUID = '017491f9-1953-482e-b491-20418235af1f';

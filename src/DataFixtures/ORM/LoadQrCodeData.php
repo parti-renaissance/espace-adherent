@@ -4,12 +4,11 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Administrator;
 use App\Entity\QrCode;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadQrCodeData extends Fixture implements DependentFixtureInterface
+class LoadQrCodeData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const QR_CODE_1_UUID = '5d54f136-dce3-41fd-9a19-f8274f1cc2a9';
     public const QR_CODE_2_UUID = '9324d566-5f5a-449a-873e-e204154ff939';

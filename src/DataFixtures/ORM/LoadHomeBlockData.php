@@ -6,12 +6,11 @@ use App\Content\HomeBlockFactory;
 use App\Content\MediaFactory;
 use App\Entity\HomeBlock;
 use App\Entity\Media;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadHomeBlockData extends Fixture
+class LoadHomeBlockData extends AbstractFixtures
 {
     private $mediaFactory;
     private $homeBlockFactory;

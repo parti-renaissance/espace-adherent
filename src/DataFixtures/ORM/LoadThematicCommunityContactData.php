@@ -7,10 +7,9 @@ use App\Entity\JobEnum;
 use App\Entity\ThematicCommunity\Contact;
 use App\Jecoute\GenderEnum;
 use App\Utils\PhoneNumberUtils;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadThematicCommunityContactData extends Fixture
+class LoadThematicCommunityContactData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

@@ -1,0 +1,10 @@
+connection: default
+em: default
+
+migrations_paths:
+    Migrations: '../../migrations'
+
+table_storage:
+    table_name: 'migrations'
+
+transactional: true

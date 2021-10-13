@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ApplicationRequest\TechnicalSkill;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadApplicationRequestTechnicalSkillData extends Fixture
+class LoadApplicationRequestTechnicalSkillData extends AbstractFixtures
 {
     private const SKILLS = [
         'application-skill-01' => 'Communication',

@@ -5,12 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Event\MunicipalEvent;
 use App\Entity\PostAddress;
 use Cake\Chronos\Chronos;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadMunicipalEventData extends Fixture implements DependentFixtureInterface
+class LoadMunicipalEventData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

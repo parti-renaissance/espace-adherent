@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\InternalApiApplication;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadInternalApiApplicationData extends Fixture
+class LoadInternalApiApplicationData extends AbstractFixtures
 {
     public const INTERNAL_API_APPLICATION_01_UUID = '50594332-7766-47de-b1f1-72d4328d8ec0';
     public const INTERNAL_API_APPLICATION_02_UUID = '3e50211c-ce07-487d-86ce-f5118acdbdad';

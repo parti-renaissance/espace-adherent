@@ -6,11 +6,10 @@ use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadPoliticalCommitteeMembershipData extends Fixture implements DependentFixtureInterface
+class LoadPoliticalCommitteeMembershipData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

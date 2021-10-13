@@ -9,12 +9,11 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\CertificationRequest;
 use App\Entity\Reporting\AdherentCertificationHistory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadCertificationData extends Fixture implements DependentFixtureInterface
+class LoadCertificationData extends AbstractFixtures implements DependentFixtureInterface
 {
     private $certificationManager;
 

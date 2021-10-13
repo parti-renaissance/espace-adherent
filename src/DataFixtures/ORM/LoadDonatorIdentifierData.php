@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\DonatorIdentifier;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadDonatorIdentifierData extends Fixture
+class LoadDonatorIdentifierData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

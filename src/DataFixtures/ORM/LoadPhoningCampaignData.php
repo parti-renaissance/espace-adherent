@@ -8,12 +8,11 @@ use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\ValueObject\Genders;
 use Cake\Chronos\Chronos;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterface
+class LoadPhoningCampaignData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const CAMPAIGN_1_UUID = '4ebb184c-24d9-4aeb-bb36-afe44f294387';
     public const CAMPAIGN_2_UUID = '4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc';

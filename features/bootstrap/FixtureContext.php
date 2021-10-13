@@ -7,20 +7,27 @@ use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 
 class FixtureContext extends RawMinkContext
 {
     use KernelDictionary;
 
-    private $executor;
-    private $purger;
-    private $fixturesLoader;
+    private SymfonyFixturesLoader $fixturesLoader;
+    private ORMPurger $purger;
+    private ORMExecutor $executor;
+    private ORMPurger $pgsqlPurger;
+    private ORMExecutor $pgsqlExecutor;
 
-    public function __construct(SymfonyFixturesLoader $fixturesLoader, EntityManager $manager)
+    public function __construct(SymfonyFixturesLoader $fixturesLoader, ManagerRegistry $managerRegistry)
     {
         $this->fixturesLoader = $fixturesLoader;
-        $this->executor = new ORMExecutor($manager, $this->purger = new ORMPurger($manager));
+
+        $defaultManager = $managerRegistry->getManager('default');
+        $pgsqlManager = $managerRegistry->getManager('pgsql');
+
+        $this->executor = new ORMExecutor($defaultManager, $this->purger = new ORMPurger($defaultManager));
+        $this->pgsqlExecutor = new ORMExecutor($pgsqlManager, $this->pgsqlPurger = new ORMPurger($pgsqlManager));
     }
 
     /**
@@ -29,6 +36,7 @@ class FixtureContext extends RawMinkContext
     public function clearDatabase()
     {
         $this->purger->purge();
+        $this->pgsqlPurger->purge();
     }
 
     /**
@@ -47,6 +55,24 @@ class FixtureContext extends RawMinkContext
         }
 
         $this->executor->execute($fixtures);
+    }
+
+    /**
+     * @Given the following Pgsql fixtures are loaded:
+     */
+    public function theFollowingPgsqlFixturesAreLoaded(TableNode $classnames): void
+    {
+        $fixtures = [];
+
+        foreach ($classnames->getRows() as $classname) {
+            $this->loadFixture('App\\DataFixturesPgsql\\'.$classname[0], $fixtures);
+        }
+
+        if (!$fixtures) {
+            throw new InvalidArgumentException(sprintf('Could not find any Pgsql fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures)));
+        }
+
+        $this->pgsqlExecutor->execute($fixtures);
     }
 
     private function loadFixture(string $className, array &$fixtures): void

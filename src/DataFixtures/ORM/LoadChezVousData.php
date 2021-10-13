@@ -12,11 +12,10 @@ use App\Entity\ChezVous\Marker;
 use App\Entity\ChezVous\Measure;
 use App\Entity\ChezVous\Region;
 use Cocur\Slugify\Slugify;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadChezVousData extends Fixture implements DependentFixtureInterface
+class LoadChezVousData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const REGIONS = [
         '1' => 'Guadeloupe',

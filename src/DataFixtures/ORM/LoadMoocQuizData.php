@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Mooc\MoocQuizElement;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadMoocQuizData extends Fixture
+class LoadMoocQuizData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

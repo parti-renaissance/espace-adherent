@@ -2,6 +2,7 @@ api_platform:
     name_converter: serializer.name_converter.camel_case_to_snake_case
     resource_class_directories:
         - '%kernel.project_dir%/src/Entity'
+        - '%kernel.project_dir%/src/EntityPgsql'
     enable_docs: true
     enable_swagger_ui: true
     enable_entrypoint: false

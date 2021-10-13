@@ -5,12 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Jecoute\JecouteSpaceEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
+class LoadJecouteNewsData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const NEWS_1_UUID = '16373659-fed1-443c-a956-a257e2c2bae4';
     public const NEWS_2_UUID = '0bc3f920-da90-4773-80e1-a388005926fc';

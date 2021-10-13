@@ -6,10 +6,9 @@ use App\Entity\Timeline\Manifesto;
 use App\Entity\Timeline\Measure;
 use App\Entity\Timeline\Profile;
 use App\Entity\Timeline\Theme;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadTimelineData extends Fixture
+class LoadTimelineData extends AbstractFixtures
 {
     public const PROFILES = [
         'TP001' => [

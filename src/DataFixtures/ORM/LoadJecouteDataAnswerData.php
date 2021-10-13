@@ -6,11 +6,10 @@ use App\Entity\Jecoute\Choice;
 use App\Entity\Jecoute\DataAnswer;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInterface
+class LoadJecouteDataAnswerData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

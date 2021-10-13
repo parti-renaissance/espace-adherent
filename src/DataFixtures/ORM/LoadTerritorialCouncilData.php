@@ -4,11 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Repository\ReferentTagRepository;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilData extends Fixture implements DependentFixtureInterface
+class LoadTerritorialCouncilData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const NAME_CORSE = 'Conseil territorial de la Corse';
 

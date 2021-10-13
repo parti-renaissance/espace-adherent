@@ -14,11 +14,10 @@ use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCommitteeEventData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeEventData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
     public const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';

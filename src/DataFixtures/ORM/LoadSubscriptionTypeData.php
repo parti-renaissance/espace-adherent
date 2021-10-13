@@ -4,10 +4,9 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\SubscriptionType;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadSubscriptionTypeData extends Fixture
+class LoadSubscriptionTypeData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

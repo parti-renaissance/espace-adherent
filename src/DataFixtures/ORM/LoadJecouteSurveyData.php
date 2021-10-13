@@ -9,12 +9,11 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Question;
 use App\Entity\Jecoute\SurveyQuestion;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
+class LoadJecouteSurveyData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const SURVEY_NATIONAL_1 = '13814039-1dd2-11b2-9bfd-78ea3dcdf0d9';
     public const SURVEY_NATIONAL_2 = '1f07832c-2a69-1e80-a33a-d5f9460e838f';

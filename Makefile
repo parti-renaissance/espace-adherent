@@ -22,9 +22,9 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up config/packages/assets_version.yaml db rabbitmq-fabric public/built var/public.key perm  ## Install and start the project
+start: build up config/packages/assets_version.yaml db pgsql rabbitmq-fabric public/built var/public.key perm  ## Install and start the project
 
-start-mac: build up config/packages/assets_version.yaml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
+start-mac: build up config/packages/assets_version.yaml db pgsql rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill || true
@@ -70,32 +70,66 @@ rabbitmq-fabric: wait-for-rabbitmq
 wait-for-db:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',3306)){break;}echo \"Waiting for MySQL\n\";sleep(1);}"
 
-db: db-init                                                                                 ## Reset the database and load fixtures
-	$(CONSOLE) doctrine:fixtures:load -n --no-debug
+db: db-init                                                                                       ## Reset the database and load fixtures
+	$(CONSOLE) doctrine:fixtures:load --group=default -n --no-debug
 
-db-init: vendor wait-for-db                                                                            ## Init the database
+db-init: vendor wait-for-db                                                                       # Init the database
 	$(CONSOLE) doctrine:database:drop --force --if-exists --no-debug
 	$(CONSOLE) doctrine:database:create --if-not-exists --no-debug
 	$(CONSOLE) doctrine:database:import -n --no-debug -- dump/dump-2020.sql
-	$(CONSOLE) doctrine:migrations:migrate -n --no-debug
+	$(CONSOLE) doctrine:migrations:migrate --configuration=config/migrations/default.yaml -n --no-debug
 
-db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
-	$(CONSOLE) doctrine:migration:diff --formatted --no-debug
+db-diff: vendor wait-for-db                                                                       ## Generate a migration by comparing your current database to your mapping information
+	$(CONSOLE) doctrine:migration:diff --configuration=config/migrations/default.yaml --formatted --no-debug
 
-db-diff-dump: vendor wait-for-db                                                                       ## Generate a migration by comparing your current database to your mapping information and display it in console
+db-diff-dump: vendor wait-for-db                                                                  ## Generate a migration by comparing your current database to your mapping information and display it in console
 	$(CONSOLE) doctrine:schema:update --dump-sql
 
-db-migrate: vendor wait-for-db                                                                         ## Migrate database schema to the latest available version
-	$(CONSOLE) doctrine:migration:migrate -n --no-debug
+db-migrate: vendor wait-for-db                                                                    ## Migrate database schema to the latest available version
+	$(CONSOLE) doctrine:migration:migrate --configuration=config/migrations/default.yaml -n --no-debug
 
-db-rollback: vendor wait-for-db                                                                        ## Rollback the latest executed migration
-	$(CONSOLE) doctrine:migration:migrate prev -n --no-debug
+db-rollback: vendor wait-for-db                                                                   ## Rollback the latest executed migration
+	$(CONSOLE) doctrine:migration:migrate --configuration=config/migrations/default.yaml prev -n --no-debug
 
-db-load: vendor wait-for-db                                                                            ## Reset the database fixtures
-	$(CONSOLE) doctrine:fixtures:load -n --no-debug
+db-load: vendor wait-for-db                                                                       ## Reset the database fixtures
+	$(CONSOLE) doctrine:fixtures:load --group=default -n --no-debug
 
-db-validate: vendor wait-for-db                                                                        ## Check the ORM mapping
+db-validate: vendor wait-for-db                                                                   ## Check the ORM mapping
 	$(CONSOLE) doctrine:schema:validate --no-debug
+
+
+##
+## PostgreSQL
+##---------------------------------------------------------------------------
+
+wait-for-pgsql:
+	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('pgsql',5432)){break;}echo \"Waiting for PostgreSQL\n\";sleep(1);}"
+
+pgsql: pgsql-init                                                                                 ## Reset the database and load fixtures
+	$(CONSOLE) doctrine:fixtures:load --em=pgsql --group=pgsql -n --no-debug
+
+pgsql-init: vendor wait-for-pgsql                                                                 ## Init the database
+	$(CONSOLE) doctrine:database:drop --connection=pgsql --force --if-exists --no-debug
+	$(CONSOLE) doctrine:database:create --connection=pgsql --if-not-exists --no-debug
+	$(CONSOLE) doctrine:migrations:migrate --configuration=config/migrations/pgsql.yaml -n --no-debug
+
+pgsql-diff: vendor wait-for-pgsql                                                                 ## Generate a migration by comparing your current database to your mapping information
+	$(CONSOLE) doctrine:migration:diff --configuration=config/migrations/pgsql.yaml --formatted --no-debug
+
+pgsql-diff-dump: vendor wait-for-pgsql                                                            ## Generate a migration by comparing your current database to your mapping information and display it in console
+	$(CONSOLE) doctrine:schema:update --em=pgsql --dump-sql
+
+pgsql-migrate: vendor wait-for-pgsql                                                              ## Migrate database schema to the latest available version
+	$(CONSOLE) doctrine:migration:migrate --configuration=config/migrations/pgsql.yaml -n --no-debug
+
+pgsql-rollback: vendor wait-for-pgsql                                                             ## Rollback the latest executed migration
+	$(CONSOLE) doctrine:migration:migrate --configuration=config/migrations/pgsql.yaml prev -n --no-debug
+
+pgsql-load: vendor wait-for-pgsql                                                                 ## Reset the database fixtures
+	$(CONSOLE) doctrine:fixtures:load --em=pgsql --group=pgsql -n --no-debug
+
+pgsql-validate: vendor wait-for-pgsql                                                             ## Check the ORM mapping
+	$(CONSOLE) doctrine:schema:validate --em=pgsql --no-debug
 
 
 ##
@@ -133,28 +167,36 @@ test-debug:                                                                     
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
-tu: vendor config/packages/assets_version.yaml                                                               ## Run the PHP unit tests
+tu: vendor config/packages/assets_version.yaml                                                         ## Run the PHP unit tests
 	$(PHPUNIT) --exclude-group functional
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
 
-tfp: assets-prod vendor perm tfp-rabbitmq tfp-db                                            ## Prepare the PHP functional tests
+tfp: assets-prod vendor perm tfp-rabbitmq tfp-db                                                       ## Prepare the PHP functional tests
 
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true
 	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
-tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
+tfp-db-init: wait-for-db wait-for-pgsql                                                                ## Init databases for tests
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug
 	$(CONSOLE) doctrine:database:create --env=test --no-debug
 	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2020.sql
-	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
+	$(CONSOLE) doctrine:migration:migrate --configuration=config/migrations/default.yaml -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
+
+	$(CONSOLE) doctrine:database:drop --connection=pgsql --force --if-exists --env=test --no-debug
+	$(CONSOLE) doctrine:database:create --connection=pgsql --env=test --no-debug
+	$(CONSOLE) doctrine:migration:migrate --configuration=config/migrations/pgsql.yaml -n --no-debug --env=test
+	$(CONSOLE) doctrine:schema:validate --em=pgsql --no-debug --env=test
 
 tfp-db: tfp-db-init                                                                                     ## Init databases for tests
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
-	$(CONSOLE) doctrine:fixtures:load --no-debug --env=test -n
+	$(CONSOLE) doctrine:fixtures:load --group=default --no-debug --env=test -n
+
+	$(CONSOLE) doctrine:schema:validate --em=pgsql --no-debug --env=test
+	$(CONSOLE) doctrine:fixtures:load --em=pgsql --group=pgsql --no-debug --env=test -n
 
 tj: node_modules                                                                                       ## Run the Javascript tests
 	$(EXEC) yarn test

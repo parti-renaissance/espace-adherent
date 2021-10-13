@@ -6,10 +6,9 @@ use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Jecoute\Choice;
 use App\Entity\Jecoute\Question;
 use App\Jecoute\SurveyQuestionTypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadJecouteQuestionData extends Fixture
+class LoadJecouteQuestionData extends AbstractFixtures
 {
     public const QUESTIONS = [
         'question-1' => [

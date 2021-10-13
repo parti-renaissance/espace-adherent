@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\MyEuropeChoice;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadMyEuropeData extends Fixture
+class LoadMyEuropeData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

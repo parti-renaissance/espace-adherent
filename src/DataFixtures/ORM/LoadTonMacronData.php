@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\TonMacronChoice;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadTonMacronData extends Fixture
+class LoadTonMacronData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

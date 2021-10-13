@@ -6,11 +6,10 @@ use App\Committee\CommitteeFactory;
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\CommitteeElection;
 use App\Entity\PostAddress;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCommitteeData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';

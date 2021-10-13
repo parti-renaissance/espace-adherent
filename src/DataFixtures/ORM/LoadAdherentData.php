@@ -29,13 +29,12 @@ use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositions;
 use App\Membership\AdherentFactory;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAdherentData extends Fixture implements DependentFixtureInterface
+class LoadAdherentData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     public const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';

@@ -6,12 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\PushToken;
 use App\PushToken\PushTokenSourceEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadPushTokenData extends Fixture implements DependentFixtureInterface
+class LoadPushTokenData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const PUSH_TOKEN_1_UUID = '5a650f97-2100-4800-913e-17d82f69b7a3';
     public const PUSH_TOKEN_2_UUID = 'aa429e50-f55a-4da7-b1e6-3c12a55e031a';

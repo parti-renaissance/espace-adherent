@@ -5,11 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Designation\DesignationZoneEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadDesignationData extends Fixture implements DependentFixtureInterface
+class LoadDesignationData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

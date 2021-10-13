@@ -9,12 +9,11 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\Transaction;
 use Cocur\Slugify\SlugifyInterface;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDonationData extends Fixture implements DependentFixtureInterface
+class LoadDonationData extends AbstractFixtures implements DependentFixtureInterface
 {
     private $slugify;
 

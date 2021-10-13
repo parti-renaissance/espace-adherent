@@ -6,11 +6,10 @@ use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadManagedUserData extends Fixture implements DependentFixtureInterface
+class LoadManagedUserData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

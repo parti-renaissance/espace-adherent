@@ -64,6 +64,10 @@ version: "3.9"
 #        ports:
 #            - "3306:3306"
 
+#    pgsql:
+#        ports:
+#            - "5432:5432"
+
 #    blackfire:
 #        image: blackfire/blackfire
 #        environment:

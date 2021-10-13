@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\BoardMember\Role;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadBoardMemberRoleData extends Fixture
+class LoadBoardMemberRoleData extends AbstractFixtures
 {
     public const BOARD_MEMBER_ROLES = [
         'adherent' => 'Adhérent(e) membre de la société civile',

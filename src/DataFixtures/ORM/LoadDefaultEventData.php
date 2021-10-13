@@ -6,12 +6,11 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
+class LoadDefaultEventData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const EVENT_1_UUID = '5cab27a7-dbb3-4347-9781-566dad1b9eb5';
     private const EVENT_2_UUID = '2b7238f9-10ca-4a39-b8a4-ad7f438aa95f';

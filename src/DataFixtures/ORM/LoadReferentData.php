@@ -5,10 +5,9 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Referent;
 use App\Entity\ReferentArea;
 use App\ValueObject\Genders;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadReferentData extends Fixture
+class LoadReferentData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

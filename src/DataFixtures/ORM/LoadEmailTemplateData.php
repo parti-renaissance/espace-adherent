@@ -4,12 +4,11 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\EmailTemplate\EmailTemplate;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
+class LoadEmailTemplateData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const EMAIL_TEMPLATE_1_UUID = 'ba5a7294-f7a6-4710-88c8-9ceb67ad61ce';
     public const EMAIL_TEMPLATE_2_UUID = '825c3c30-f4bd-42b5-8adf-29926a02a4af';

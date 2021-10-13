@@ -7,10 +7,9 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\PostAddress;
 use App\Membership\AdherentFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadUserData extends Fixture
+class LoadUserData extends AbstractFixtures
 {
     public const USER_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9699';
     public const USER_2_UUID = '413bd28f-57c9-efc8-8ab7-2106c8be9690';

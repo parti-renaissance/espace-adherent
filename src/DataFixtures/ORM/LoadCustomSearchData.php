@@ -4,12 +4,11 @@ namespace App\DataFixtures\ORM;
 
 use App\Content\CustomSearchResultFactory;
 use App\Content\MediaFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadCustomSearchData extends Fixture
+class LoadCustomSearchData extends AbstractFixtures
 {
     private $customSearchResultFactory;
     private $mediaFactory;

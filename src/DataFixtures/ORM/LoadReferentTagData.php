@@ -5,10 +5,9 @@ namespace App\DataFixtures\ORM;
 use App\Entity\ReferentTag;
 use App\Intl\UnitedNationsBundle;
 use App\Repository\ReferentTagRepository;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadReferentTagData extends Fixture
+class LoadReferentTagData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

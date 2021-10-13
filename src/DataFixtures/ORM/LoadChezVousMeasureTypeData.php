@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ChezVous\MeasureType;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadChezVousMeasureTypeData extends Fixture
+class LoadChezVousMeasureTypeData extends AbstractFixtures
 {
     private const TYPES = [
         [

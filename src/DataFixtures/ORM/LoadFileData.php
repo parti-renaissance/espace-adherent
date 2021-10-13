@@ -7,11 +7,10 @@ use App\Entity\Filesystem\File;
 use App\Entity\Filesystem\FilePermission;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Filesystem\FileTypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadFileData extends Fixture implements DependentFixtureInterface
+class LoadFileData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

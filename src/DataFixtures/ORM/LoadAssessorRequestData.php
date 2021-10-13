@@ -5,12 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Assessor\AssessorRequestFactory;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\VotePlace;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAssessorRequestData extends Fixture implements DependentFixtureInterface
+class LoadAssessorRequestData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const ASSESSOR_REQUEST_1_UUID = 'be61ba07-c8e7-4533-97e1-0ab215cd752c';
     private const ASSESSOR_REQUEST_2_UUID = '91b8d3a3-6757-4cf6-becc-5e3786bbbf5a';

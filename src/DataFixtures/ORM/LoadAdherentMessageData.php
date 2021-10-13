@@ -12,13 +12,12 @@ use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
 
-class LoadAdherentMessageData extends Fixture implements DependentFixtureInterface
+class LoadAdherentMessageData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const MESSAGE_01_UUID = '969b1f08-53ec-4a7d-8d6e-7654a001b13f';
 

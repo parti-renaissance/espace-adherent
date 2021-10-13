@@ -9,11 +9,10 @@ use App\Entity\Election\CityManager;
 use App\Entity\Election\CityPartner;
 use App\Entity\Election\CityPrevision;
 use App\Utils\PhoneNumberUtils;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadElectionCityCardData extends Fixture implements DependentFixtureInterface
+class LoadElectionCityCardData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {

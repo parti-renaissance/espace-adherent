@@ -102,6 +102,7 @@ services:
             - '../src/Mailchimp'
             - '../src/DependencyInjection'
             - '../src/Entity'
+            - '../src/EntityPgsql'
             - '../src/Security'
             - '../src/Kernel.php'
 

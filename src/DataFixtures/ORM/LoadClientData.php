@@ -6,11 +6,10 @@ use App\Entity\OAuth\Client;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\Security\Voter\DataCornerVoter;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadClientData extends Fixture
+class LoadClientData extends AbstractFixtures
 {
     public const CLIENT_01_UUID = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19';
     public const CLIENT_02_UUID = '661cc3b7-322d-4441-a510-ab04eda71737';

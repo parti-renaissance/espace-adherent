@@ -4,13 +4,12 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Coalition\Coalition;
 use App\Image\ImageManagerInterface;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadCoalitionData extends Fixture implements DependentFixtureInterface
+class LoadCoalitionData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const COALITION_1_UUID = 'd5289058-2a35-4cf0-8f2f-a683d97d8315';
     public const COALITION_2_UUID = '09d700f8-8813-4c3c-9bee-ff18d2051bba';

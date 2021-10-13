@@ -4,10 +4,9 @@ namespace App\DataFixtures\ORM;
 
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\CmsBlock;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCmsBlockData extends Fixture
+class LoadCmsBlockData extends AbstractFixtures
 {
     private const MARKDOWN_CONTENT = <<<MARKDOWN
 # Lorem ipsum

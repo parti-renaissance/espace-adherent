@@ -9,12 +9,11 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Phoning\CampaignHistoryStatusEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixtureInterface
+class LoadPhoningCampaignHistoryData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const HISTORY_1_UUID = '47bf09fb-db03-40c3-b951-6fe6bbe1f055';
     public const HISTORY_2_UUID = 'a80248ff-384a-4f80-972a-177c3d0a77c4';

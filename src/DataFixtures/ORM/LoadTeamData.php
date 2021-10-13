@@ -6,12 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\Team\Member;
 use App\Entity\Team\Team;
 use App\Team\TypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadTeamData extends Fixture implements DependentFixtureInterface
+class LoadTeamData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const TEAM_1_UUID = '3deeb1f5-819e-4629-85a1-eb75c916ce2f';
     public const TEAM_2_UUID = '6434f2ac-edd0-412a-9c4b-99ab4b039146';

@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Content\LiveLinkFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadLiveLinkData extends Fixture
+class LoadLiveLinkData extends AbstractFixtures
 {
     private $factory;
 

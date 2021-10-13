@@ -4,10 +4,9 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Election;
 use App\Entity\ElectionRound;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadElectionData extends Fixture
+class LoadElectionData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

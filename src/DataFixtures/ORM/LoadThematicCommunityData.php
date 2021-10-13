@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ThematicCommunity\ThematicCommunity;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadThematicCommunityData extends Fixture
+class LoadThematicCommunityData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

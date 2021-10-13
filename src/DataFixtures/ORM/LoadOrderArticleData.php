@@ -4,14 +4,13 @@ namespace App\DataFixtures\ORM;
 
 use App\Content\MediaFactory;
 use App\Content\OrderArticleFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
+class LoadOrderArticleData extends AbstractFixtures implements DependentFixtureInterface
 {
     private $orderArticleFactory;
     private $mediaFactory;

@@ -8,12 +8,11 @@ use App\Entity\Instance\NationalCouncil\Candidacy;
 use App\Entity\Instance\NationalCouncil\Election;
 use App\Image\ImageManager;
 use App\ValueObject\Genders;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadNationalCouncilElectionData extends Fixture implements DependentFixtureInterface
+class LoadNationalCouncilElectionData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const AVATARS = [
         Genders::MALE => [

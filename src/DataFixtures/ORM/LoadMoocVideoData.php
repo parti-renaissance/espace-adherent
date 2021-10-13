@@ -5,10 +5,9 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Mooc\AttachmentLink;
 use App\Entity\Mooc\MoocVideoElement;
 use Cake\Chronos\MutableDateTime;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadMoocVideoData extends Fixture
+class LoadMoocVideoData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

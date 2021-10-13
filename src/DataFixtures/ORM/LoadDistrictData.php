@@ -5,11 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Deputy\LightFileDistrictLoader;
 use App\Entity\District;
 use App\Entity\ReferentTag;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadDistrictData extends Fixture implements DependentFixtureInterface
+class LoadDistrictData extends AbstractFixtures implements DependentFixtureInterface
 {
     private $districtLoader;
 

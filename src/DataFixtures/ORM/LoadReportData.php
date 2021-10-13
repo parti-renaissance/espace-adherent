@@ -4,11 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Report\CommitteeReport;
 use App\Entity\Report\ReportReasonEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadReportData extends Fixture implements DependentFixtureInterface
+class LoadReportData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

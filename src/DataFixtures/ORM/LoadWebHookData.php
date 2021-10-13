@@ -5,11 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\WebHook\WebHook;
 use App\WebHook\Event;
 use App\WebHook\Service;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadWebHookData extends Fixture implements DependentFixtureInterface
+class LoadWebHookData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

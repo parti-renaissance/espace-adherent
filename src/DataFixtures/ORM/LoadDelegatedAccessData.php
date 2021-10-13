@@ -3,12 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\MyTeam\DelegatedAccess;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterface
+class LoadDelegatedAccessData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const ACCESS_UUID_1 = '2e80d106-4bcb-4b28-97c9-3856fc235b27';
     private const ACCESS_UUID_2 = 'f4ce89da-1272-4a01-a47e-4ce5248ce018';

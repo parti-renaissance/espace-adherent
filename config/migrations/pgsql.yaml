@@ -1,0 +1,10 @@
+connection: pgsql
+em: pgsql
+
+migrations_paths:
+  MigrationsPgsql: '../../migrations_pgsql'
+
+table_storage:
+  table_name: 'migrations'
+
+transactional: true

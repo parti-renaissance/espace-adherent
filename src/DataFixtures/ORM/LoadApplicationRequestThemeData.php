@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ApplicationRequest\Theme;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadApplicationRequestThemeData extends Fixture
+class LoadApplicationRequestThemeData extends AbstractFixtures
 {
     private const THEMES = [
         'application-theme-01' => 'Urbanisme',

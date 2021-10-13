@@ -21,13 +21,12 @@ use App\Entity\VotingPlatform\VotersList;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use App\VotingPlatform\Election\ResultCalculator;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
 
-class LoadVotingPlatformElectionData extends Fixture implements DependentFixtureInterface
+class LoadVotingPlatformElectionData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const ELECTION_UUID1 = 'd678c30a-a94b-4ecf-8cfc-0e06d1fb16df';
     public const ELECTION_UUID2 = '278ec098-e5f2-45e3-9faf-a9b2cb9305fd';

@@ -6,12 +6,11 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadTerritorialCouncilMembershipData extends Fixture implements DependentFixtureInterface
+class LoadTerritorialCouncilMembershipData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const MEMBERSHIP_UUID1 = 'ad3780fe-d607-4d01-bc1a-d537fe351908';
 

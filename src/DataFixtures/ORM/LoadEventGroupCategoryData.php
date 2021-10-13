@@ -4,10 +4,9 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventGroupCategory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadEventGroupCategoryData extends Fixture
+class LoadEventGroupCategoryData extends AbstractFixtures
 {
     public function load(ObjectManager $manager): void
     {

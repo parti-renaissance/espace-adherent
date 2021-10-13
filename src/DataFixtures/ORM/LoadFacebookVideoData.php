@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\FacebookVideo;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class LoadFacebookVideoData extends Fixture
+class LoadFacebookVideoData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

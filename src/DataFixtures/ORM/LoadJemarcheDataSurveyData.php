@@ -8,12 +8,11 @@ use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\GenderEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInterface
+class LoadJemarcheDataSurveyData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const JEMARCHE_DATA_SURVEY_1_UUID = '5191f388-ccb0-4a93-b7f9-a15f107287fb';
 

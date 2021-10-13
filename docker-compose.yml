@@ -12,6 +12,7 @@ services:
         build: docker/dev
         depends_on:
             - db
+            - pgsql
             - redis
             - rabbitmq
         volumes:
@@ -23,6 +24,13 @@ services:
             - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: root
+
+    pgsql:
+        image: mdillon/postgis:11
+        environment:
+            POSTGRES_DB: enmarche
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
 
     redis:
         image: redis:3.2

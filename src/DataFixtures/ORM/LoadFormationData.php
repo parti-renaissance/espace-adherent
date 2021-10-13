@@ -7,13 +7,12 @@ use App\Entity\Formation\Axe;
 use App\Entity\Formation\Module;
 use App\Entity\Formation\Path;
 use App\Entity\Media;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadFormationData extends Fixture
+class LoadFormationData extends AbstractFixtures
 {
     private $faker;
     private $mediaFactory;

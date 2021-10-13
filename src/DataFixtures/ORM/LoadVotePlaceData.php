@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\VotePlace\VotePlaceFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadVotePlaceData extends Fixture
+class LoadVotePlaceData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

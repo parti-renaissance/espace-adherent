@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Newsletter\NewsletterSubscriptionFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadNewsletterSubscriptionData extends Fixture implements OrderedFixtureInterface
+class LoadNewsletterSubscriptionData extends AbstractFixtures implements OrderedFixtureInterface
 {
     private $newsletterSubscriptionFactory;
 

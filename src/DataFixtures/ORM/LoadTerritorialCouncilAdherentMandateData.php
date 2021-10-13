@@ -6,11 +6,10 @@ use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\ValueObject\Genders;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilAdherentMandateData extends Fixture implements DependentFixtureInterface
+class LoadTerritorialCouncilAdherentMandateData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

@@ -6,12 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Jecoute\Riposte;
 use App\Riposte\RiposteOpenGraphHandler;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterface
+class LoadJecouteRiposteData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const RIPOSTE_1_UUID = '220bd36e-4ac4-488a-8473-8e99a71efba4';
     public const RIPOSTE_2_UUID = 'ff4a352e-9762-4da7-b9f3-a8bfdbce63c1';

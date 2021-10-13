@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\DonatorTag;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadDonatorTagData extends Fixture
+class LoadDonatorTagData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

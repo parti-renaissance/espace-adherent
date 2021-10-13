@@ -4,11 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadNationalCouncilAdherentMandateData extends Fixture implements DependentFixtureInterface
+class LoadNationalCouncilAdherentMandateData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

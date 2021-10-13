@@ -5,11 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilElectionData extends Fixture implements DependentFixtureInterface
+class LoadTerritorialCouncilElectionData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

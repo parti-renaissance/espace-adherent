@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ElectedRepresentative\ZoneCategory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadZoneCategoryData extends Fixture
+class LoadZoneCategoryData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

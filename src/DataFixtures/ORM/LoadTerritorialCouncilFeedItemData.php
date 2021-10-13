@@ -4,11 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilFeedItemData extends Fixture implements DependentFixtureInterface
+class LoadTerritorialCouncilFeedItemData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

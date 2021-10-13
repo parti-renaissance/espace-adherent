@@ -10,12 +10,11 @@ use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\NationalPoll;
 use App\Entity\Poll\Poll;
 use App\Entity\Poll\Vote;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadPollData extends Fixture implements DependentFixtureInterface
+class LoadPollData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const NATIONAL_POLL_01_UUID = '8adca369-938c-450b-92e9-9c2b1f206fa3';
     public const LOCAL_POLL_01_UUID = '655d7534-9592-4aed-83e6-cad8fbb3668f';

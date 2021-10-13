@@ -6,12 +6,11 @@ use App\Entity\Audience\Audience;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
 use App\ValueObject\Genders;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAudienceData extends Fixture implements DependentFixtureInterface
+class LoadAudienceData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const AUDIENCE_1_UUID = '4fe24658-000c-4223-87be-d09129c1e191';
     public const AUDIENCE_2_UUID = 'bd298079-f763-4c7a-9a8a-a243d01d0e31';

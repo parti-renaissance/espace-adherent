@@ -4,13 +4,12 @@ namespace App\DataFixtures\ORM;
 
 use App\Content\ClarificationFactory;
 use App\Content\MediaFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadClarificationData extends Fixture
+class LoadClarificationData extends AbstractFixtures
 {
     private $clarificationFactory;
     private $mediaFactory;

@@ -16,12 +16,11 @@ use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
 use App\Entity\ElectedRepresentative\SocialNetworkLink;
 use App\Utils\PhoneNumberUtils;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadElectedRepresentativeData extends Fixture implements DependentFixtureInterface
+class LoadElectedRepresentativeData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const ELECTED_REPRESENTATIVE_1_UUID = '34b0b236-b72e-4161-8f9f-7f23f935758f';
     public const ELECTED_REPRESENTATIVE_2_UUID = '4b8bb9fd-0645-47fd-bb9a-3515bf46618a';

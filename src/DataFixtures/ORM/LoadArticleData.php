@@ -5,14 +5,13 @@ namespace App\DataFixtures\ORM;
 use App\Content\ArticleFactory;
 use App\Content\MediaFactory;
 use App\Entity\ArticleCategory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadArticleData extends Fixture
+class LoadArticleData extends AbstractFixtures
 {
     private $articleFactory;
     private $mediaFactory;

@@ -8,12 +8,11 @@ use App\Entity\AdherentMessage\Segment\AudienceSegment;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
 use App\ValueObject\Genders;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterface
+class LoadAudienceSegmentData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const SEGMENT_1_UUID = '830d230f-67fb-4217-9986-1a3ed7d3d5e7';
     public const SEGMENT_2_UUID = 'f6c36dd7-0517-4caf-ba6f-ec6822f2ec12';

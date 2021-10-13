@@ -5,12 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Content\MediaFactory;
 use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadSocialShareData extends Fixture
+class LoadSocialShareData extends AbstractFixtures
 {
     private $mediaFactory;
     private $storage;

@@ -5,11 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\Election\MinistryListTotalResult;
 use App\Entity\Election\MinistryVoteResult;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadMinistryVoteResultData extends Fixture implements DependentFixtureInterface
+class LoadMinistryVoteResultData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {

@@ -4,11 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\ElectedRepresentative\Zone;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadZoneData extends Fixture implements DependentFixtureInterface
+class LoadZoneData extends AbstractFixtures implements DependentFixtureInterface
 {
     private const CITIES = [
         '06000' => 'Nice (06000,06100,06200,06300)',

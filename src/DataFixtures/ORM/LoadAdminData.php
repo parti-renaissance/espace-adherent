@@ -3,10 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Admin\AdministratorFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadAdminData extends Fixture
+class LoadAdminData extends AbstractFixtures
 {
     private $administratorFactory;
 

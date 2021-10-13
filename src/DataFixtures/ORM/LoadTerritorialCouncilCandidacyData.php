@@ -8,12 +8,11 @@ use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Image\ImageManager;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFixtureInterface
+class LoadTerritorialCouncilCandidacyData extends AbstractFixtures implements DependentFixtureInterface
 {
     private $imageManager;
 

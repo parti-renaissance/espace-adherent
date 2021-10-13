@@ -4,10 +4,9 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadUserListDefinitionData extends Fixture
+class LoadUserListDefinitionData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

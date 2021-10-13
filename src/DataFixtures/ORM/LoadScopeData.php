@@ -6,10 +6,9 @@ use App\Entity\Scope;
 use App\Scope\AppEnum;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadScopeData extends Fixture
+class LoadScopeData extends AbstractFixtures
 {
     public function load(ObjectManager $manager)
     {

@@ -5,11 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadInstitutionalEventData extends Fixture implements DependentFixtureInterface
+class LoadInstitutionalEventData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const INSTITUTIONAL_EVENT_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15e';
 

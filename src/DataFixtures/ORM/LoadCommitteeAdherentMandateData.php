@@ -4,11 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeAdherentMandateData extends AbstractFixtures implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

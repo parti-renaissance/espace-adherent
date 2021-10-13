@@ -8,7 +8,7 @@ services:
         public: false
 
     App\DataFixtures\:
-        resource: '../src/DataFixtures/'
+        resource: '%kernel.project_dir%/src/DataFixtures/'
 
     Tests\App\Test\Geocoder\DummyGeocoder: ~
 

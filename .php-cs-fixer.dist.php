@@ -5,6 +5,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/tests')
     ->in(__DIR__.'/config')
     ->in(__DIR__.'/migrations')
+    ->in(__DIR__.'/migrations_pgsql')
     ->in(__DIR__.'/features/bootstrap')
 ;
 
