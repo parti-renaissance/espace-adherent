@@ -392,8 +392,8 @@ class Manager implements LoggerAwareInterface
         /** @var RequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator->get(RequestBuilder::class);
 
-        $request = $requestBuilder->createReplaceEmailRequest($command->getEmail(), sprintf(
-            $newEmail = 'no-reply-mailchimp-contact+deleted-contact%d@en-marche.fr',
+        $request = $requestBuilder->createReplaceEmailRequest($command->getEmail(), $newEmail = sprintf(
+            'no-reply-mailchimp-contact+deleted-contact%d@en-marche.fr',
             $command->getAdherentId() ?: random_int(1, \PHP_INT_MAX)
         ));
         $request->setUnsubscriptionRequest();
