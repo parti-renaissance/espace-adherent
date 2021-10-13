@@ -34,7 +34,7 @@
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">
-            <argument>%env(MAXMIND_USER_ID)%</argument>
+            <argument>%env(int:MAXMIND_USER_ID)%</argument>
             <argument>%env(MAXMIND_LICENSE_KEY)%</argument>
         </service>
         <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
