@@ -7,17 +7,16 @@ use App\Entity\Geo\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-final class DepartmentRepository extends ServiceEntityRepository
+final class DepartmentRepository extends ServiceEntityRepository implements LoggerAwareInterface
 {
-    private LoggerInterface $logger;
+    use LoggerAwareTrait;
 
-    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Department::class);
-
-        $this->logger = $logger;
     }
 
     /**
@@ -30,28 +29,22 @@ final class DepartmentRepository extends ServiceEntityRepository
 
     public function findOneForJecoute(string $postalCode): ?Department
     {
-        $queryBuilder = $this
+        $departments = $this
             ->createQueryBuilder('department')
             ->innerJoin(City::class, 'city', Join::WITH, 'department = city.department')
             ->andWhere('city.postalCode LIKE :postal_code')
             ->setParameter('postal_code', '%'.$postalCode.'%')
             ->innerJoin('department.region', 'region')
-        ;
-
-        $count = (clone $queryBuilder)
-            ->select('COUNT(DISTINCT(department))')
+            // Let's just see if we have more than one result to log an error
+            ->setMaxResults(2)
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getResult()
         ;
 
-        if ($count > 1) {
+        if (\count($departments) > 1) {
             $this->logger->error(sprintf('Found more than one department for postalCode "%s".', $postalCode));
         }
 
-        return $queryBuilder
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $departments[0] ?? null;
     }
 }
