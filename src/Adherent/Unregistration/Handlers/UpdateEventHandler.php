@@ -3,28 +3,17 @@
 namespace App\Adherent\Unregistration\Handlers;
 
 use App\Entity\Adherent;
-use App\Repository\CauseEventRepository;
-use App\Repository\CoalitionEventRepository;
+use App\Event\EventTypeEnum;
 use App\Repository\EventRepository;
-use App\Repository\InstitutionalEventRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
 {
-    private $eventRepository;
-    private $institutionalEventRepository;
-    private $coalitionEventRepository;
-    private $causeEventRepository;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(
-        EventRepository $eventRepository,
-        InstitutionalEventRepository $institutionalEventRepository,
-        CoalitionEventRepository $coalitionEventRepository,
-        CauseEventRepository $causeEventRepository
-    ) {
-        $this->eventRepository = $eventRepository;
-        $this->institutionalEventRepository = $institutionalEventRepository;
-        $this->coalitionEventRepository = $coalitionEventRepository;
-        $this->causeEventRepository = $causeEventRepository;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
     }
 
     public function supports(Adherent $adherent): bool
@@ -34,13 +23,8 @@ class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
 
     public function handle(Adherent $adherent): void
     {
-        foreach ([
-            $this->eventRepository,
-            $this->institutionalEventRepository,
-            $this->coalitionEventRepository,
-            $this->causeEventRepository,
-        ] as $repository) {
-            $this->updateEvents($repository, $adherent);
+        foreach (EventTypeEnum::CLASSES as $class) {
+            $this->updateEvents($this->entityManager->getRepository($class), $adherent);
         }
     }
 
