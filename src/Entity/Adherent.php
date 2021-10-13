@@ -759,6 +759,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private ?string $mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $teamPhoningNationalManagerRole = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -995,6 +1002,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->hasNationalRole()) {
             $roles[] = 'ROLE_NATIONAL';
+        }
+
+        if ($this->hasTeamPhoningNationalManagerRole()) {
+            $roles[] = 'ROLE_TEAM_PHONING_MANAGER';
         }
 
         if ($this->isElectionResultsReporter()) {
@@ -2955,5 +2966,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isEmailSubscribed(): bool
     {
         return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
+    }
+
+    public function hasTeamPhoningNationalManagerRole(): bool
+    {
+        return $this->teamPhoningNationalManagerRole;
+    }
+
+    public function setTeamPhoningNationalManagerRole(bool $phoningNationalManagerRole): void
+    {
+        $this->teamPhoningNationalManagerRole = $phoningNationalManagerRole;
     }
 }

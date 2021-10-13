@@ -409,6 +409,8 @@ security:
 
         ROLE_VOTE_INSPECTOR:
             - ROLE_NATIONAL_COUNCIL_MEMBER
+        ROLE_TEAM_PHONING_MANAGER:
+            - ROLE_AUDIENCE
 
     access_decision_manager:
         strategy: unanimous

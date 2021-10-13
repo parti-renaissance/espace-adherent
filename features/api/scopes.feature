@@ -53,6 +53,14 @@ Feature:
         ]
       },
       {
+        "code": "phoning_national_manager",
+        "name": "Responsable équipe d'appel",
+        "zones": [],
+        "apps": [
+          "data_corner"
+        ]
+      },
+      {
         "code": "phoning",
         "name": "Appelant",
         "zones": [],

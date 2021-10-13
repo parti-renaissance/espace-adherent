@@ -61,6 +61,8 @@ class AdherentRoleEnum extends Enum
     public const COALITION_MODERATOR = 'coalition_moderator';
     public const CAUSE_AUTHOR = 'cause_author';
 
+    public const ROLE_TEAM_PHONING_MANAGER = 'role_team_phoning_manager';
+
     public static function getCandidates(): array
     {
         return [

@@ -149,3 +149,7 @@
 {% if object.isApprovedCauseAuthor %}
     <span class="label label-primary" style="padding: 2px;">Porteur de cause ✊</span><br/>
 {% endif %}
+
+{% if object.hasTeamPhoningNationalManagerRole %}
+    <span class="label label-primary" style="padding: 2px;">Responsable équipe d'appel</span>
+{% endif %}
