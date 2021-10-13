@@ -88,7 +88,8 @@ Feature:
         "contacts",
         "messages",
         "mobile_app",
-        "elections"
+        "elections",
+        "ripostes"
       ]
     }
     """

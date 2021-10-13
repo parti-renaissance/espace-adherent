@@ -63,7 +63,7 @@ class GetRipostesControllerTest extends AbstractWebCaseTest
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_GET, self::URI, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
+        $this->client->request(Request::METHOD_GET, self::URI.'?scope=national', [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
 
         $this->isSuccessful($this->client->getResponse());
         static::assertJson($this->client->getResponse()->getContent());

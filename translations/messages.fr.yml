@@ -1196,6 +1196,7 @@ scope.feature.contacts: Contacts
 scope.feature.messages: Messagerie
 scope.feature.mobile_app: Application Mobile
 scope.feature.elections: Elections
+scope.feature.ripostes: Ripostes
 
 scope.app.data_corner: DataCorner
 
