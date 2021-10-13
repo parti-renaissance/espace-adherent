@@ -5,10 +5,11 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\PushToken;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
-class PushTokenRepository extends EventRepository
+class PushTokenRepository extends ServiceEntityRepository
 {
     use GeoZoneTrait;
 

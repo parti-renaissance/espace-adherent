@@ -7,13 +7,13 @@ use App\Entity\Adherent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\Geo\Zone;
-use App\Repository\AbstractAdherentTokenRepository;
+use App\Repository\EventRepository;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DefaultEventRepository extends AbstractAdherentTokenRepository
+class DefaultEventRepository extends EventRepository
 {
     use GeoZoneTrait;
     use PaginatorTrait;
