@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\SerializerStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -25,7 +26,9 @@ class MailchimpWebhookController extends AbstractController
     public function __invoke(string $key, Request $request, MessageBusInterface $bus, LoggerInterface $logger): Response
     {
         if ($key === $this->mailchimpWebhookKey && $request->isMethod(Request::METHOD_POST)) {
-            $bus->dispatch(new CatchMailchimpWebhookCallCommand($request->request->all()));
+            $bus->dispatch(new CatchMailchimpWebhookCallCommand($request->request->all()), [
+                new SerializerStamp(['groups' => ['command_read']]),
+            ]);
         } else {
             $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));
         }
