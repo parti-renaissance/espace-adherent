@@ -7,9 +7,13 @@ use App\Entity\Geo\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-final class DepartmentRepository extends ServiceEntityRepository
+final class DepartmentRepository extends ServiceEntityRepository implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Department::class);
@@ -25,14 +29,22 @@ final class DepartmentRepository extends ServiceEntityRepository
 
     public function findOneForJecoute(string $postalCode): ?Department
     {
-        return $this
+        $departments = $this
             ->createQueryBuilder('department')
             ->innerJoin(City::class, 'city', Join::WITH, 'department = city.department')
             ->andWhere('city.postalCode LIKE :postal_code')
             ->setParameter('postal_code', '%'.$postalCode.'%')
             ->innerJoin('department.region', 'region')
+            // Let's just see if we have more than one result to log an error
+            ->setMaxResults(2)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
+
+        if (\count($departments) > 1) {
+            $this->logger->error(sprintf('Found more than one department for postalCode "%s".', $postalCode));
+        }
+
+        return $departments[0] ?? null;
     }
 }
