@@ -3,16 +3,18 @@
 namespace App\Mailchimp\Webhook\Command;
 
 use App\Messenger\Message\AsynchronousMessageInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class CatchMailchimpWebhookCallCommand implements AsynchronousMessageInterface
 {
     private array $payload;
 
-    public function __construct(array $data)
+    public function __construct(array $payload)
     {
-        $this->payload = $data;
+        $this->payload = $payload;
     }
 
+    /** @Groups({"command_read"}) */
     public function getPayload(): array
     {
         return $this->payload;

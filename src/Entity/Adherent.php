@@ -2958,6 +2958,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function clean(): void
     {
         $this->mailchimpStatus = ContactStatusEnum::CLEANED;
+        $this->subscriptionTypes->clear();
     }
 
     /**

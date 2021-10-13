@@ -17,6 +17,10 @@ class AdherentEmailUpdateHandler extends AbstractAdherentHandler
     public function handle(array $data): void
     {
         if ($adherent = $this->getAdherent($data['old_email'])) {
+            if ($adherent->isToDelete()) {
+                return;
+            }
+
             $this->adherentChangeEmailHandler->handleRequest($adherent, $data['new_email']);
         }
     }
