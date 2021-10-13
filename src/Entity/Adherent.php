@@ -1004,10 +1004,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_NATIONAL';
         }
 
-        if ($this->hasTeamPhoningNationalManagerRole()) {
-            $roles[] = 'ROLE_TEAM_PHONING_MANAGER';
-        }
-
         if ($this->isElectionResultsReporter()) {
             $roles[] = 'ROLE_ELECTION_RESULTS_REPORTER';
         }

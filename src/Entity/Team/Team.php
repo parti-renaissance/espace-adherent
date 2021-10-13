@@ -2,6 +2,7 @@
 
 namespace App\Entity\Team;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
@@ -14,9 +15,28 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"team_read"}
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"team_write"}
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get_phoning_teams": {
+ *             "path": "/v3/teams/phoning",
+ *             "method": "GET",
+ *             "access_control": "is_granted('HAS_FEATURE_TEAM')",
+ *         }
+ *     },
+ *     itemOperations={}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="team_type_name_unique", columns={"type", "name"}),
@@ -56,6 +76,7 @@ class Team
      *     minMessage="team.name.min_length",
      *     maxMessage="team.name.max_length"
      * )
+     * @SymfonySerializer\Groups({"team_read"})
      */
     private $name;
 
@@ -137,6 +158,10 @@ class Team
         $this->members->removeElement($member);
     }
 
+    /**
+     * @SymfonySerializer\Groups({"team_read"})
+     * @SymfonySerializer\SerializedName("members_count")
+     */
     public function getMembersCount(): int
     {
         return $this->members->count();

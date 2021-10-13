@@ -216,6 +216,9 @@
         <service id="App\Api\Doctrine\AuthoredItemsCollectionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
+        <service id="App\Api\Doctrine\PhoningTeamExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
 
         <!-- Mailchimp -->
         <service id="App\Mailchimp\Driver">
