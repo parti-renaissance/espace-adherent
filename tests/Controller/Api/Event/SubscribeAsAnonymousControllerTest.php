@@ -56,6 +56,19 @@ class SubscribeAsAnonymousControllerTest extends WebTestCase
         $this->assertCountMails(0, $messageClass, 'j.hey@en-marche-dev.fr');
     }
 
+    /** @dataProvider providePrivateEvents */
+    public function testAnonymousCannotSubscribeOnPrivateEvent(string $eventUuid, string $messageClass)
+    {
+        $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
+            'first_name' => 'Joe',
+            'last_name' => 'Hey',
+            'email_address' => 'j.hey@en-marche-dev.fr',
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
+        $this->assertCountMails(0, $messageClass, 'j.hey@en-marche-dev.fr');
+    }
+
     public function provideEvents(): iterable
     {
         yield [LoadCoalitionEventData::EVENT_1_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
@@ -68,5 +81,10 @@ class SubscribeAsAnonymousControllerTest extends WebTestCase
         yield [LoadCoalitionEventData::EVENT_6_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCauseEventData::EVENT_4_UUID, 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_6_UUID, 'EventRegistrationConfirmationMessage'];
+    }
+
+    public function providePrivateEvents(): iterable
+    {
+        yield [LoadCommitteeEventData::EVENT_3_UUID, 'EventRegistrationConfirmationMessage'];
     }
 }

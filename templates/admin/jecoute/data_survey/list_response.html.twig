@@ -5,10 +5,11 @@
 {% block field %}
     {% set surveyQuestion = object.survey.questions[questionKey] %}
     {% set dataAnswer = surveyQuestion.getDataAnswersFor(surveyQuestion, object) %}
-    {% if not dataAnswer %}
-    {% elseif surveyQuestion.question.isChoiceType %}
-        {{ dataAnswer.selectedChoices|join('<br/>')|raw }}
-    {% else %}
-        {{ dataAnswer.textField }}
+    {% if dataAnswer %}
+        {% if surveyQuestion.question.isChoiceType %}
+            {{ dataAnswer.selectedChoices|join('<br/>')|raw }}
+        {% else %}
+            {{ dataAnswer.textField }}
+        {% endif %}
     {% endif %}
 {% endblock %}

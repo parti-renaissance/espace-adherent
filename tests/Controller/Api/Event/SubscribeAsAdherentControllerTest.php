@@ -89,6 +89,8 @@ class SubscribeAsAdherentControllerTest extends WebTestCase
         yield [LoadCoalitionEventData::EVENT_1_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCauseEventData::EVENT_1_UUID, 'carl999@example.fr', 'CoalitionsEventRegistrationConfirmationMessage'];
         yield [LoadCommitteeEventData::EVENT_1_UUID, 'carl999@example.fr', 'EventRegistrationConfirmationMessage'];
+        // private event
+        yield [LoadCommitteeEventData::EVENT_3_UUID, 'carl999@example.fr', 'EventRegistrationConfirmationMessage'];
     }
 
     public function provideCancelledEvents(): iterable
