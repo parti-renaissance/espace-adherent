@@ -151,7 +151,7 @@ Feature:
     """
     {
       "token_type": "Bearer",
-      "expires_in": 3600,
+      "expires_in": "@integer@.lowerThan(3601).greaterThan(3595)",
       "access_token": "@string@",
       "refresh_token": "@string@"
     }
