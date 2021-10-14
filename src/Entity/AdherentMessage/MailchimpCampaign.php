@@ -61,6 +61,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      * @var AdherentMessageInterface|AbstractAdherentMessage
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\AdherentMessage\AbstractAdherentMessage", inversedBy="mailchimpCampaigns")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $message;
 
