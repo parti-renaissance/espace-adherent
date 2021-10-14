@@ -4,13 +4,12 @@ namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Api\Doctrine\AuthoredItemsCollectionExtension;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Repository\AdherentMessageRepository;
 use App\Scope\GeneralScopeGenerator;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Security;
 
 final class AdherentMessageScopeFilter extends AbstractContextAwareFilter
@@ -21,22 +20,7 @@ final class AdherentMessageScopeFilter extends AbstractContextAwareFilter
     private GeneralScopeGenerator $generalScopeGenerator;
     private Security $security;
     private AdherentMessageRepository $adherentMessageRepository;
-
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        $requestStack = null,
-        LoggerInterface $logger = null,
-        array $properties = null,
-        GeneralScopeGenerator $generalScopeGenerator,
-        Security $security,
-        AdherentMessageRepository $adherentMessageRepository
-    ) {
-        parent::__construct($managerRegistry, $requestStack, $logger, $properties);
-
-        $this->generalScopeGenerator = $generalScopeGenerator;
-        $this->security = $security;
-        $this->adherentMessageRepository = $adherentMessageRepository;
-    }
+    private AuthoredItemsCollectionExtension $authoredItemsCollectionExtension;
 
     protected function filterProperty(
         string $property,
@@ -50,7 +34,7 @@ final class AdherentMessageScopeFilter extends AbstractContextAwareFilter
 
         if (
             (!$user instanceof Adherent)
-            || AbstractAdherentMessage::class !== $resourceClass
+            || !is_a($resourceClass, AbstractAdherentMessage::class, true)
             || self::PROPERTY_NAME !== $property
             || !\in_array($operationName, self::OPERATION_NAMES, true)
         ) {
@@ -71,6 +55,8 @@ final class AdherentMessageScopeFilter extends AbstractContextAwareFilter
             ->withMessageType($queryBuilder, $scopeGenerator->getCode(), $alias)
             ->withAuthor($queryBuilder, $author, $alias)
         ;
+
+        $this->authoredItemsCollectionExtension->setSkip(true);
     }
 
     public function getDescription(string $resourceClass): array
@@ -82,5 +68,38 @@ final class AdherentMessageScopeFilter extends AbstractContextAwareFilter
                 'required' => false,
             ],
         ];
+    }
+
+    /**
+     * @required
+     */
+    public function setGeneralScopeGenerator(GeneralScopeGenerator $generalScopeGenerator): void
+    {
+        $this->generalScopeGenerator = $generalScopeGenerator;
+    }
+
+    /**
+     * @required
+     */
+    public function setSecurity(Security $security): void
+    {
+        $this->security = $security;
+    }
+
+    /**
+     * @required
+     */
+    public function setAdherentMessageRepository(AdherentMessageRepository $adherentMessageRepository): void
+    {
+        $this->adherentMessageRepository = $adherentMessageRepository;
+    }
+
+    /**
+     * @required
+     */
+    public function setAuthoredItemsCollectionExtension(
+        AuthoredItemsCollectionExtension $authoredItemsCollectionExtension
+    ): void {
+        $this->authoredItemsCollectionExtension = $authoredItemsCollectionExtension;
     }
 }
