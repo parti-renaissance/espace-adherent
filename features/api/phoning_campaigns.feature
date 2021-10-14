@@ -383,7 +383,7 @@ Feature:
     {
         "status": "completed",
         "postal_code_checked": true,
-        "need_email_renewal": false,
+        "need_email_renewal": true,
         "need_sms_renewal": false,
         "engagement": "want_to_engage",
         "profession": "student",
@@ -392,6 +392,49 @@ Feature:
     }
     """
     Then the response status code should be 200
+    And I should have 1 email "PhoningCampaignAdherentActionSummaryMessage" for "adherent-male-39@en-marche-dev.fr" with payload:
+    """
+    {
+        "template_name": "phoning-campaign-adherent-action-summary",
+        "template_content": [],
+        "message": {
+            "subject": "[Désignations] Une candidature a été retirée",
+            "from_email": "contact@en-marche.fr",
+            "from_name": "La République En Marche !",
+            "merge_vars": [
+             {
+                 "rcpt": "adherent-male-39@en-marche-dev.fr",
+                 "vars": [
+                     {
+                         "content": "Adherent 39",
+                         "name": "first_name"
+                     },
+                     {
+                         "content": "http://test.enmarche.code/reabonnement-email/@uuid@/@string@",
+                         "name": "email_subscribe_url"
+                     },
+                     {
+                         "content": null,
+                         "name": "sms_preference_url"
+                     },
+                     {
+                         "content": null,
+                         "name": "edit_profil_url"
+                     }
+                 ]
+             }
+         ],
+         "subject": "Suite à notre appel",
+         "to": [
+             {
+                 "email": "adherent-male-39@en-marche-dev.fr",
+                 "name": "Adherent 39 Fa39ke",
+                 "type": "to"
+             }
+         ]
+        }
+    }
+    """
     And the JSON should be equal to:
     """
     {

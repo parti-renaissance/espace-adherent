@@ -143,9 +143,9 @@ class RabbitMqContext implements Context
         $channel = $this->container->get('old_sound_rabbit_mq.connection.default')->channel();
 
         // We use the same name for queue and producer.
-        list(, $count) = $channel->queue_declare($queue, false, true, false, false);
+        $result = $channel->queue_declare($queue, false, true, false, false);
 
-        return $count;
+        return $result[1] ?? 0;
     }
 
     public function getMessages(string $queue): array

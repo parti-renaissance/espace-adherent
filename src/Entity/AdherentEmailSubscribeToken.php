@@ -17,6 +17,8 @@ class AdherentEmailSubscribeToken extends AdherentToken
     use EntityAdministratorBlameableTrait;
 
     public const TRIGGER_SOURCE_ADMIN = 'admin';
+    public const TRIGGER_SOURCE_PHONING = 'phoning';
+
     public const DURATION = '+6 months';
 
     /**
