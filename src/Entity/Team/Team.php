@@ -2,7 +2,9 @@
 
 namespace App\Entity\Team;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Filter\TeamsTypeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
@@ -29,9 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  *     collectionOperations={
- *         "get_phoning_teams": {
- *             "path": "/v3/teams/phoning",
- *             "method": "GET",
+ *         "get": {
+ *             "path": "/v3/teams",
  *             "access_control": "is_granted('HAS_FEATURE_TEAM')",
  *         }
  *     },
@@ -47,6 +48,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="team.type_name.already_exists",
  *     errorPath="name"
  * )
+ *
+ * @ApiFilter(TeamsTypeFilter::class)
  */
 class Team
 {
