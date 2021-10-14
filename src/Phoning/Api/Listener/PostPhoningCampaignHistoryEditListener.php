@@ -4,19 +4,23 @@ namespace App\Phoning\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Phoning\CampaignHistory;
+use App\Phoning\Command\SendAdherentActionSummaryCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private MessageBusInterface $bus;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, MessageBusInterface $bus)
     {
         $this->entityManager = $entityManager;
+        $this->bus = $bus;
     }
 
     public static function getSubscribedEvents()
@@ -41,5 +45,9 @@ class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
         }
 
         $this->entityManager->flush();
+
+        if (($campaignHistory->isPostalCodeChecked() + $campaignHistory->getNeedEmailRenewal() + $campaignHistory->getNeedSmsRenewal()) > 1) {
+            $this->bus->dispatch(new SendAdherentActionSummaryCommand($campaignHistory));
+        }
     }
 }

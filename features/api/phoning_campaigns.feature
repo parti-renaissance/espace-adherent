@@ -383,7 +383,7 @@ Feature:
     {
         "status": "completed",
         "postal_code_checked": true,
-        "need_email_renewal": false,
+        "need_email_renewal": true,
         "need_sms_renewal": false,
         "engagement": "want_to_engage",
         "profession": "student",
@@ -399,6 +399,7 @@ Feature:
         "uuid": "47bf09fb-db03-40c3-b951-6fe6bbe1f055"
     }
     """
+    And "mailer_transactional" should have 1 message
 
   Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
