@@ -46,7 +46,10 @@ class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
 
         $this->entityManager->flush();
 
-        if (($campaignHistory->isPostalCodeChecked() + $campaignHistory->getNeedEmailRenewal() + $campaignHistory->getNeedSmsRenewal()) > 1) {
+        if (
+            $campaignHistory->getAdherent()
+            && ($campaignHistory->isPostalCodeChecked() + $campaignHistory->getNeedEmailRenewal() + $campaignHistory->getNeedSmsRenewal()) > 0
+        ) {
             $this->bus->dispatch(new SendAdherentActionSummaryCommand($campaignHistory));
         }
     }
