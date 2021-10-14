@@ -20,17 +20,20 @@ class EventRepositoryTest extends AbstractKernelTestCase
 
     public function testCountEvents()
     {
-        $this->assertSame(20, $this->repository->countElements());
+        $this->assertSame(19, $this->repository->countElements(true, false));
+        $this->assertSame(20, $this->repository->countElements(true, true));
     }
 
     public function testFindUpcomingEvents()
     {
-        $this->assertCount(10, $this->repository->findUpcomingEvents());
+        $this->assertCount(10, $this->repository->findUpcomingEvents(null, true));
+        $this->assertCount(9, $this->repository->findUpcomingEvents(null, false));
     }
 
     public function testCountUpcomingEvents()
     {
-        $this->assertSame(10, $this->repository->countUpcomingEvents());
+        $this->assertSame(10, $this->repository->countUpcomingEvents(true));
+        $this->assertSame(9, $this->repository->countUpcomingEvents(false));
     }
 
     public function testSearchAllEvents()
@@ -44,7 +47,7 @@ class EventRepositoryTest extends AbstractKernelTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(6, \count($this->repository->searchAllEvents($search)));
+        $this->assertSame(5, \count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',

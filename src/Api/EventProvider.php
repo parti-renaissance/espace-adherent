@@ -20,11 +20,11 @@ class EventProvider
     /**
      * @throws EventException
      */
-    public function getUpcomingEvents(int $type = null): array
+    public function getUpcomingEvents(int $type = null, bool $withPrivate = false): array
     {
         $data = [];
 
-        foreach ($this->repository->findUpcomingEvents($type) as $event) {
+        foreach ($this->repository->findUpcomingEvents($type, $withPrivate) as $event) {
             if (!$event->isGeocoded()) {
                 continue;
             }

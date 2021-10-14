@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
+use App\Entity\Adherent;
 use App\Entity\EntityPostAddressTrait;
 use App\Geocoder\Exception\GeocodingException;
 use App\Repository\CommitteeRepository;
@@ -57,6 +58,10 @@ class SearchController extends AbstractController
         $user = $this->getUser();
         if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
             $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+        }
+
+        if ($user instanceof Adherent) {
+            $search->setWithPrivate(true);
         }
 
         try {

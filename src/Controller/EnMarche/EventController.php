@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @Route("/evenements/{slug}", name="app_committee_event")
  * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
+ * @Security("is_granted('CAN_ACCESS_EVENT', event)")
  */
 class EventController extends AbstractController
 {

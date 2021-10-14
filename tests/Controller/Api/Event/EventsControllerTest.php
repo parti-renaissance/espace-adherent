@@ -38,8 +38,8 @@ class EventsControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('position', $content);
-        $this->assertEachJsonItemContainsKey('committee_name', $content, [0, 5]);
-        $this->assertEachJsonItemContainsKey('committee_url', $content, [0, 5]);
+        $this->assertEachJsonItemContainsKey('committee_name', $content, [0, 4]);
+        $this->assertEachJsonItemContainsKey('committee_url', $content, [0, 4]);
     }
 
     /**

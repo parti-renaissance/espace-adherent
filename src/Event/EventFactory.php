@@ -67,6 +67,9 @@ class EventFactory
             $event->setVisioUrl($data['visio_url']);
         }
 
+        $event->setPrivate($data['private'] ?? false);
+        $event->setElectoral($data['electoral'] ?? false);
+
         $this->referentTagManager->assignReferentLocalTags($event);
 
         foreach ($this->zoneMatcher->match($event->getPostAddressModel()) as $zone) {

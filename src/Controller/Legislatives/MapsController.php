@@ -2,6 +2,7 @@
 
 namespace App\Controller\Legislatives;
 
+use App\Entity\Adherent;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class MapsController extends AbstractController
     public function eventsAction(EventRepository $repository): Response
     {
         return $this->render('legislatives/map_events.html.twig', [
-            'eventCount' => $repository->countUpcomingEvents(),
+            'eventCount' => $repository->countUpcomingEvents($this->getUser() instanceof Adherent),
         ]);
     }
 }

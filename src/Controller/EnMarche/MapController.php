@@ -20,7 +20,8 @@ class MapController extends AbstractController
 
         return $this->render('map/committees.html.twig', [
             'userCount' => $doctrine->getRepository(Adherent::class)->countAdherents(),
-            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)->countElements(),
+            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)
+                ->countElements(true, $this->getUser() instanceof Adherent),
             'committeeCount' => $doctrine->getRepository(Committee::class)->countElements(),
         ]);
     }
@@ -31,7 +32,7 @@ class MapController extends AbstractController
         $doctrine = $this->getDoctrine();
 
         return $this->render('map/events.html.twig', [
-            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)->countUpcomingEvents(),
+            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)->countUpcomingEvents($this->getUser() instanceof Adherent),
             'categories' => $doctrine->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
         ]);
     }
