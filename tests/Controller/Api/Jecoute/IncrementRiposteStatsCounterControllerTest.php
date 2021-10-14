@@ -7,6 +7,7 @@ use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadJecouteRiposteData;
 use App\Entity\Jecoute\Riposte;
 use App\OAuth\Model\GrantTypeEnum;
+use App\OAuth\Model\Scope;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractWebCaseTest;
 use Tests\App\Controller\ApiControllerTestTrait;
@@ -21,7 +22,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractWebCaseTest
     use ApiControllerTestTrait;
     use ControllerTestTrait;
 
-    private const URI = '/api/v3/ripostes/%s/action/%s';
+    private const URI = '/api/v3/ripostes/%s/action/%s?scope=national';
 
     private $riposteRepository;
 
@@ -35,10 +36,10 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractWebCaseTest
         $this->assertRiposteStats($riposte, $action, 0);
 
         $accessToken = $this->getAccessToken(
-            LoadClientData::CLIENT_12_UUID,
-            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
+            LoadClientData::CLIENT_10_UUID,
+            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
             GrantTypeEnum::PASSWORD,
-            null,
+            Scope::JEMARCHE_APP,
             'deputy@en-marche-dev.fr',
             LoadAdherentData::DEFAULT_PASSWORD
         );

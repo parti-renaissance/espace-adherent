@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "pagination_enabled": false,
- *         "access_control": "is_granted('ROLE_NATIONAL') or (is_granted('ROLE_ADHERENT') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
+ *         "access_control": "is_granted('HAS_FEATURE_RIPOSTES')",
  *         "normalization_context": {"groups": {"riposte_read"}},
  *         "denormalization_context": {"groups": {"riposte_write"}},
  *     },
@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/ripostes",
  *             "normalization_context": {"groups": {"riposte_list_read"}},
+ *             "access_control": "is_granted('HAS_FEATURE_RIPOSTES') or (is_granted('ROLE_ADHERENT') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
  *         },
  *         "post": {
  *             "path": "/v3/ripostes",
@@ -41,6 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/ripostes/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"riposte_read"}},
+ *             "access_control": "is_granted('HAS_FEATURE_RIPOSTES') or (is_granted('ROLE_ADHERENT') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
  *         },
  *         "put": {
  *             "path": "/v3/ripostes/{id}",
@@ -56,6 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Jecoute\IncrementRiposteStatsCounterController",
  *             "defaults": {"_api_receive": false},
+ *             "access_control": "is_granted('HAS_FEATURE_RIPOSTES') or (is_granted('ROLE_ADHERENT') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
  *         },
  *     }
  * )
