@@ -10,6 +10,8 @@ use Doctrine\ORM\QueryBuilder;
 
 class PhoningTeamExtension implements QueryCollectionExtensionInterface
 {
+    public const ACTIONS = ['get_phoning_teams'];
+
     public function applyToCollection(
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
@@ -21,11 +23,10 @@ class PhoningTeamExtension implements QueryCollectionExtensionInterface
 
     public function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass, string $operationName): void
     {
-        if (Team::class !== $resourceClass) {
-            return;
-        }
-
-        if ('get_phoning_teams' !== $operationName) {
+        if (
+            !is_a($resourceClass, Team::class, true)
+            || !\in_array($operationName, self::ACTIONS, true)
+        ) {
             return;
         }
 
