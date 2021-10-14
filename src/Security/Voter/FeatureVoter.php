@@ -11,10 +11,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class FeatureVoter extends Voter
 {
-    /** @var AuthorizationChecker */
-    private $authorizationChecker;
-    /** @var RequestStack */
-    private $requestStack;
+    private AuthorizationChecker $authorizationChecker;
+    private RequestStack $requestStack;
 
     public function __construct(AuthorizationChecker $authorizationChecker, RequestStack $requestStack)
     {
