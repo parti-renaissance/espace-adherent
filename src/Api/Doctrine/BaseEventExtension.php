@@ -5,12 +5,21 @@ namespace App\Api\Doctrine;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Security;
 
 class BaseEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function applyToItem(
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
@@ -23,7 +32,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
-        $this->modifyQuery($queryBuilder, BaseEvent::STATUSES);
+        $this->modifyQuery($queryBuilder, BaseEvent::STATUSES, $operationName);
     }
 
     public function applyToCollection(
@@ -36,14 +45,16 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
-        $alias = $queryBuilder->getRootAliases()[0];
-        $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $alias);
+        $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
     }
 
-    private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, string $alias = null): void
+    private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, string $operationName = null): void
     {
-        if (!$alias) {
-            $alias = $queryBuilder->getRootAliases()[0];
+        $alias = $queryBuilder->getRootAliases()[0];
+
+        if (\in_array($operationName, ['get_public', 'get'])
+            && !$this->security->getUser() instanceof Adherent) {
+            $queryBuilder->andWhere("$alias.private = false");
         }
 
         $queryBuilder
