@@ -74,7 +74,11 @@ Feature:
           "description": "Dummy OpenGraph description"
         },
         "uuid": "220bd36e-4ac4-488a-8473-8e99a71efba4",
-        "created_at": "@string@.isDateTime()"
+        "created_at": "@string@.isDateTime()",
+        "nb_ripostes": 1,
+        "nb_source_views": 1,
+        "nb_views": 1,
+        "nd_detail_views": 1
       },
       {
         "title": "La riposte avec URL et sans notification",
@@ -91,7 +95,11 @@ Feature:
           "description": "Dummy OpenGraph description"
         },
         "uuid": "ff4a352e-9762-4da7-b9f3-a8bfdbce63c1",
-        "created_at": "@string@.isDateTime()"
+        "created_at": "@string@.isDateTime()",
+        "nb_ripostes": 1,
+        "nb_source_views": 0,
+        "nb_views": 1,
+        "nd_detail_views": 0
       },
       {
         "title": "La riposte d'aujourd'hui désactivée",
@@ -108,7 +116,11 @@ Feature:
           "description": "Dummy OpenGraph description"
         },
         "uuid": "10ac465f-a2f9-44f1-9d80-8f2653a1b496",
-        "created_at": "@string@.isDateTime()"
+        "created_at": "@string@.isDateTime()",
+        "nb_ripostes": 0,
+        "nb_source_views": 0,
+        "nb_views": 0,
+        "nd_detail_views": 0
       },
       {
         "title": "La riposte d'avant-hier avec un URL et notification",
@@ -125,7 +137,11 @@ Feature:
           "description": "Dummy OpenGraph description"
         },
         "uuid": "80b2eb70-38c3-425e-8c1d-a90e84e1a4b3",
-        "created_at": "@string@.isDateTime()"
+        "created_at": "@string@.isDateTime()",
+        "nb_ripostes": 0,
+        "nb_source_views": 0,
+        "nb_views": 0,
+        "nd_detail_views": 0
       }
     ]
     """
@@ -195,7 +211,11 @@ Feature:
         "description": "Dummy OpenGraph description"
       },
       "uuid": "220bd36e-4ac4-488a-8473-8e99a71efba4",
-      "created_at": "@string@.isDateTime()"
+      "created_at": "@string@.isDateTime()",
+      "nb_ripostes": 1,
+      "nb_source_views": 1,
+      "nb_views": 1,
+      "nd_detail_views": 1
     }
     """
 
@@ -315,7 +335,11 @@ Feature:
         "title": "Dummy OpenGraph title",
         "type": "Dummy OpenGraph type",
         "url": "https://aujourdhui.fr"
-      }
+      },
+      "nb_ripostes": 0,
+      "nb_source_views": 0,
+      "nb_views": 0,
+      "nd_detail_views": 0
     }
     """
 
@@ -350,7 +374,11 @@ Feature:
         "title": "Dummy OpenGraph title",
         "type": "Dummy OpenGraph type",
         "url": "https://nouveau.fr"
-      }
+      },
+      "nb_ripostes": 1,
+      "nb_source_views": 1,
+      "nb_views": 1,
+      "nd_detail_views": 1
     }
     """
 
