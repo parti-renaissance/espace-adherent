@@ -57,9 +57,9 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractWebCaseTest
 
     public function provideRiposteActions(): \Generator
     {
-        yield [LoadJecouteRiposteData::RIPOSTE_1_UUID, Riposte::ACTION_DETAIL_VIEW];
-        yield [LoadJecouteRiposteData::RIPOSTE_1_UUID, Riposte::ACTION_SOURCE_VIEW];
-        yield [LoadJecouteRiposteData::RIPOSTE_1_UUID, Riposte::ACTION_RIPOSTE];
+        yield [LoadJecouteRiposteData::RIPOSTE_3_UUID, Riposte::ACTION_DETAIL_VIEW];
+        yield [LoadJecouteRiposteData::RIPOSTE_3_UUID, Riposte::ACTION_SOURCE_VIEW];
+        yield [LoadJecouteRiposteData::RIPOSTE_3_UUID, Riposte::ACTION_RIPOSTE];
     }
 
     protected function setUp(): void

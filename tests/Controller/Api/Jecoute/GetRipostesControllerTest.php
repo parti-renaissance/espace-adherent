@@ -44,12 +44,19 @@ class GetRipostesControllerTest extends AbstractWebCaseTest
 
         $this->assertCount(2, $result);
 
-        $riposte = $this->riposteRepository->findOneBy(['uuid' => $result[0]['uuid']]);
+        $riposte1 = $this->riposteRepository->findOneBy(['uuid' => $result[0]['uuid']]);
 
-        $this->assertSame(1, $riposte->getNbViews());
-        $this->assertSame(0, $riposte->getNdDetailViews());
-        $this->assertSame(0, $riposte->getNbSourceViews());
-        $this->assertSame(0, $riposte->getNbRipostes());
+        $this->assertSame(2, $riposte1->getNbViews());
+        $this->assertSame(1, $riposte1->getNdDetailViews());
+        $this->assertSame(1, $riposte1->getNbSourceViews());
+        $this->assertSame(1, $riposte1->getNbRipostes());
+
+        $riposte3 = $this->riposteRepository->findOneBy(['uuid' => $result[1]['uuid']]);
+
+        $this->assertSame(2, $riposte3->getNbViews());
+        $this->assertSame(0, $riposte3->getNdDetailViews());
+        $this->assertSame(0, $riposte3->getNbSourceViews());
+        $this->assertSame(1, $riposte3->getNbRipostes());
     }
 
     public function testNoIncrementStatsWhileGettingRipostes(): void
@@ -71,12 +78,19 @@ class GetRipostesControllerTest extends AbstractWebCaseTest
 
         $this->assertCount(4, $result);
 
-        $riposte = $this->riposteRepository->findOneBy(['uuid' => $result[0]['uuid']]);
+        $riposte1 = $this->riposteRepository->findOneBy(['uuid' => $result[0]['uuid']]);
 
-        $this->assertSame(0, $riposte->getNbViews());
-        $this->assertSame(0, $riposte->getNdDetailViews());
-        $this->assertSame(0, $riposte->getNbSourceViews());
-        $this->assertSame(0, $riposte->getNbRipostes());
+        $this->assertSame(1, $riposte1->getNbViews());
+        $this->assertSame(1, $riposte1->getNdDetailViews());
+        $this->assertSame(1, $riposte1->getNbSourceViews());
+        $this->assertSame(1, $riposte1->getNbRipostes());
+
+        $riposte3 = $this->riposteRepository->findOneBy(['uuid' => $result[2]['uuid']]);
+
+        $this->assertSame(0, $riposte3->getNbViews());
+        $this->assertSame(0, $riposte3->getNdDetailViews());
+        $this->assertSame(0, $riposte3->getNbSourceViews());
+        $this->assertSame(0, $riposte3->getNbRipostes());
     }
 
     protected function setUp(): void

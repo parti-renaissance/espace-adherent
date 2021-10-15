@@ -33,6 +33,10 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             'Le texte de la plus récente riposte d\'aujourd\'hui avec un lien http://riposte.fr',
             'https://a-repondre.fr',
         );
+        $riposteTodayLast->incrementNbRipostes();
+        $riposteTodayLast->incrementNbSourceViews();
+        $riposteTodayLast->incrementNbViews();
+        $riposteTodayLast->incrementNdDetailViews();
 
         $riposte12hoursWithoutNotification = $this->createRiposte(
             self::RIPOSTE_2_UUID,
@@ -44,6 +48,8 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             true,
             $this->getReference('deputy-75-1')
         );
+        $riposte12hoursWithoutNotification->incrementNbRipostes();
+        $riposte12hoursWithoutNotification->incrementNbViews();
 
         $riposteTodayDisabled = $this->createRiposte(
             self::RIPOSTE_3_UUID,

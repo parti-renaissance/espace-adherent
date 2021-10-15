@@ -14,7 +14,7 @@ final class JecouteRiposteDenormalizer implements DenormalizerInterface, Denorma
 
     private const ALREADY_CALLED = 'JECOUTE_RIPOSTE_DENORMALIZER_ALREADY_CALLED';
 
-    private $riposteOpenGraphHandler;
+    private RiposteOpenGraphHandler $riposteOpenGraphHandler;
 
     public function __construct(RiposteOpenGraphHandler $riposteOpenGraphHandler)
     {

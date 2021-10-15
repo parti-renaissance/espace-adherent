@@ -154,6 +154,8 @@ class Riposte implements AuthorInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"riposte_kpi"})
      */
     private $nbViews = 0;
 
@@ -161,6 +163,8 @@ class Riposte implements AuthorInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"riposte_kpi"})
      */
     private $ndDetailViews = 0;
 
@@ -168,6 +172,8 @@ class Riposte implements AuthorInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"riposte_kpi"})
      */
     private $nbSourceViews = 0;
 
@@ -175,6 +181,8 @@ class Riposte implements AuthorInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"riposte_kpi"})
      */
     private $nbRipostes = 0;
 
