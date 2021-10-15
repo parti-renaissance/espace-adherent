@@ -80,7 +80,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractWebCaseTest
     {
         switch ($action) {
             case Riposte::ACTION_DETAIL_VIEW:
-                $this->assertSame($count, $riposte->getNdDetailViews());
+                $this->assertSame($count, $riposte->getNbDetailViews());
 
                 break;
             case Riposte::ACTION_SOURCE_VIEW:

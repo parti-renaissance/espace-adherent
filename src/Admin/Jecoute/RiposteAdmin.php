@@ -93,7 +93,7 @@ class RiposteAdmin extends AbstractAdmin
                 'label' => 'Nb de vues',
                 'header_style' => 'max-width: 70px',
             ])
-            ->add('ndDetailViews', null, [
+            ->add('nbDetailViews', null, [
                 'label' => 'Nb de vues détaillées',
                 'header_style' => 'max-width: 70px',
             ])

@@ -78,7 +78,7 @@ Feature:
         "nb_ripostes": 1,
         "nb_source_views": 1,
         "nb_views": 1,
-        "nd_detail_views": 1
+        "nb_detail_views": 1
       },
       {
         "title": "La riposte avec URL et sans notification",
@@ -99,7 +99,7 @@ Feature:
         "nb_ripostes": 1,
         "nb_source_views": 0,
         "nb_views": 1,
-        "nd_detail_views": 0
+        "nb_detail_views": 0
       },
       {
         "title": "La riposte d'aujourd'hui désactivée",
@@ -120,7 +120,7 @@ Feature:
         "nb_ripostes": 0,
         "nb_source_views": 0,
         "nb_views": 0,
-        "nd_detail_views": 0
+        "nb_detail_views": 0
       },
       {
         "title": "La riposte d'avant-hier avec un URL et notification",
@@ -141,7 +141,7 @@ Feature:
         "nb_ripostes": 0,
         "nb_source_views": 0,
         "nb_views": 0,
-        "nd_detail_views": 0
+        "nb_detail_views": 0
       }
     ]
     """
@@ -215,7 +215,7 @@ Feature:
       "nb_ripostes": 1,
       "nb_source_views": 1,
       "nb_views": 1,
-      "nd_detail_views": 1
+      "nb_detail_views": 1
     }
     """
 
@@ -339,7 +339,7 @@ Feature:
       "nb_ripostes": 0,
       "nb_source_views": 0,
       "nb_views": 0,
-      "nd_detail_views": 0
+      "nb_detail_views": 0
     }
     """
 
@@ -378,7 +378,7 @@ Feature:
       "nb_ripostes": 1,
       "nb_source_views": 1,
       "nb_views": 1,
-      "nd_detail_views": 1
+      "nb_detail_views": 1
     }
     """
 

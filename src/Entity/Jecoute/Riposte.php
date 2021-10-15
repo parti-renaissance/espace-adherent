@@ -166,7 +166,7 @@ class Riposte implements AuthorInterface
      *
      * @Groups({"riposte_kpi"})
      */
-    private $ndDetailViews = 0;
+    private $nbDetailViews = 0;
 
     /**
      * @var int|null
@@ -283,14 +283,14 @@ class Riposte implements AuthorInterface
         ++$this->nbViews;
     }
 
-    public function getNdDetailViews(): ?int
+    public function getNbDetailViews(): ?int
     {
-        return $this->ndDetailViews;
+        return $this->nbDetailViews;
     }
 
-    public function incrementNdDetailViews(): void
+    public function incrementNbDetailViews(): void
     {
-        ++$this->ndDetailViews;
+        ++$this->nbDetailViews;
     }
 
     public function getNbSourceViews(): ?int
