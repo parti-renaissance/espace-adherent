@@ -24,7 +24,7 @@ trait EntityNameSlugTrait
      *     "cause_write",
      *     "event_read",
      * })
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"committee_read"})
      */
     protected $name;
 
@@ -51,7 +51,7 @@ trait EntityNameSlugTrait
      *     "event_list_read",
      *     "event_read",
      * })
-     * @JMS\Groups({"public", "committee_read"})
+     * @JMS\Groups({"committee_read"})
      */
     protected $slug;
 

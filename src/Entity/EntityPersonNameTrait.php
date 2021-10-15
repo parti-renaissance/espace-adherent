@@ -25,7 +25,7 @@ trait EntityPersonNameTrait
      *     "event_list_read",
      * })
      *
-     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("firstName")
      */
     private $firstName = '';
@@ -46,7 +46,7 @@ trait EntityPersonNameTrait
      *     "event_list_read",
      * })
      *
-     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("lastName")
      */
     private $lastName = '';

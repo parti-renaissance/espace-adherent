@@ -98,11 +98,6 @@
             <argument type="service" id="old_sound_rabbit_mq.deputy_message_dispatcher_producer" />
         </service>
 
-        <!-- User subscriber -->
-        <service id="App\Membership\EventListener\UserSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-
         <!-- Event subscriber -->
         <service id="App\Event\EventListener\ApiSyncEventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>

@@ -46,7 +46,7 @@ trait EntityReferentTagTrait
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("tags")
-     * @JMS\Groups({"public", "committee_read", "event_read"})
+     * @JMS\Groups({"committee_read", "event_read"})
      */
     public function getReferentTagsCodes(): array
     {

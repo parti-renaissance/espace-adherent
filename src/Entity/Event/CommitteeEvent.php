@@ -133,7 +133,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("committeeUuid")
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      */
     public function getCommitteeUuidAsString(): ?string
     {
@@ -147,7 +147,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("categoryName")
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      */
     public function getEventCategoryName(): ?string
     {
@@ -166,7 +166,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("organizerUuid")
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      */
     public function getOrganizerUuid(): ?string
     {
