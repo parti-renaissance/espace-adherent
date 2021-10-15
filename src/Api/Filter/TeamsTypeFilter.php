@@ -33,6 +33,10 @@ class TeamsTypeFilter extends AbstractContextAwareFilter
             return;
         }
 
+        if (!isset(self::TYPES_MAPPING[$value])) {
+            throw new \InvalidArgumentException(sprintf('could not found %s in types mapping array', $value));
+        }
+
         $alias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
