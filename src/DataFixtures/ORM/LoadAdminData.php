@@ -69,6 +69,7 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_RIPOSTES',
             'ROLE_ADMIN_TEAMS',
             'ROLE_ADMIN_PHONING_CAMPAIGNS',
+            'ROLE_ADMIN_PAP_CAMPAIGNS',
             'ROLE_ADMIN_QR_CODES',
             'ROLE_ADMIN_CMS_BLOCKS',
         ];
