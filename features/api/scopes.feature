@@ -97,7 +97,9 @@ Feature:
         "messages",
         "mobile_app",
         "elections",
-        "ripostes"
+        "ripostes",
+        "phoning",
+        "team"
       ]
     }
     """

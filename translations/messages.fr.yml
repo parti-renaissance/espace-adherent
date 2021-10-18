@@ -1198,8 +1198,11 @@ scope.feature.messages: Messagerie
 scope.feature.mobile_app: Application Mobile
 scope.feature.elections: Elections
 scope.feature.ripostes: Ripostes
+scope.feature.phoning: Appelant
+scope.feature.team: Equipes
 
 scope.app.data_corner: DataCorner
+scope.app.jemarche: Je m'engage
 
 #
 # Team

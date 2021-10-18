@@ -14,6 +14,7 @@ class FeatureEnum extends Enum
     public const ELECTIONS = 'elections';
     public const PHONING = 'phoning';
     public const RIPOSTES = 'ripostes';
+    public const TEAM = 'team';
 
     public const ALL = [
         self::DASHBOARD,
@@ -22,6 +23,8 @@ class FeatureEnum extends Enum
         self::MOBILE_APP,
         self::ELECTIONS,
         self::RIPOSTES,
+        self::PHONING,
+        self::TEAM,
     ];
 
     public const DELEGATED_ACCESSES_MAPPING = [
