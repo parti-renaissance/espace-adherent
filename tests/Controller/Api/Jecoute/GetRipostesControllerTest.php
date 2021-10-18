@@ -85,12 +85,12 @@ class GetRipostesControllerTest extends AbstractWebCaseTest
         $this->assertSame(1, $riposte1->getNbSourceViews());
         $this->assertSame(1, $riposte1->getNbRipostes());
 
-        $riposte3 = $this->riposteRepository->findOneBy(['uuid' => $result[2]['uuid']]);
+        $riposte2 = $this->riposteRepository->findOneBy(['uuid' => $result[1]['uuid']]);
 
-        $this->assertSame(0, $riposte3->getNbViews());
-        $this->assertSame(0, $riposte3->getNbDetailViews());
-        $this->assertSame(0, $riposte3->getNbSourceViews());
-        $this->assertSame(0, $riposte3->getNbRipostes());
+        $this->assertSame(0, $riposte2->getNbViews());
+        $this->assertSame(0, $riposte2->getNbDetailViews());
+        $this->assertSame(0, $riposte2->getNbSourceViews());
+        $this->assertSame(0, $riposte2->getNbRipostes());
     }
 
     protected function setUp(): void
