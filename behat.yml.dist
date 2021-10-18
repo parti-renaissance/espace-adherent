@@ -22,6 +22,8 @@ default:
                     doctrine: "@doctrine"
                     dispatcher: "@event_dispatcher"
                 - EmailContext
+                - NotificationContext:
+                    notificationRepository: "@App\\Repository\\NotificationRepository"
                 - ReferentTagContext:
                     adherentRepository: "@App\\Repository\\AdherentRepository"
                 - SecurityContext

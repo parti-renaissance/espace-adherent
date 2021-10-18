@@ -307,12 +307,13 @@ Feature:
 
   Scenario: As a logged-in user I can create a riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui",
-      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui",
       "source_url": "aujourdhui.fr",
       "with_notification": true
     }
@@ -322,7 +323,7 @@ Feature:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui",
-      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui",
       "source_url": "https://aujourdhui.fr",
       "with_notification": true,
       "enabled": true,
@@ -342,6 +343,11 @@ Feature:
       "nb_detail_views": 0
     }
     """
+    And I should have 1 notification "RiposteCreatedNotification" with data:
+      | key   | value                                         |
+      | topic | staging_jemarche_global                       |
+      | title | Une nouvelle riposte d'aujourd'hui            |
+      | body  | Le texte de la nouvelle riposte d'aujourd'hui |
 
   Scenario: As a logged-in user I can edit a riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -381,6 +387,7 @@ Feature:
       "nb_detail_views": 1
     }
     """
+    And I should have 0 notification
 
   Scenario: As a logged-in user I cannot increment number of invalid action on a riposte
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
