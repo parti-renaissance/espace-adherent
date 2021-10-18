@@ -111,7 +111,7 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Publié',
                 ])
                 ->add('private', null, [
-                    'label' => 'Privé',
+                    'label' => 'Réservé aux adhérents',
                 ])
                 ->add('electoral', null, [
                     'label' => 'Électoral',
@@ -194,7 +194,7 @@ class EventAdmin extends AbstractAdmin
                     'label' => 'Publié',
                 ])
                 ->add('private', null, [
-                    'label' => 'Privé',
+                    'label' => 'Réservé aux adhérents',
                 ])
                 ->add('electoral', null, [
                     'label' => 'Électoral',
@@ -296,7 +296,7 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Publié',
             ])
             ->add('private', BooleanFilter::class, [
-                'label' => 'Privé',
+                'label' => 'Réservé aux adhérents',
             ])
             ->add('electoral', BooleanFilter::class, [
                 'label' => 'Électoral',
@@ -336,7 +336,7 @@ class EventAdmin extends AbstractAdmin
                 'template' => 'admin/event/list_status.html.twig',
             ])
             ->add('private', null, [
-                'label' => 'Privé',
+                'label' => 'Réservé aux adhérents',
             ])
             ->add('electoral', null, [
                 'label' => 'Électoral',

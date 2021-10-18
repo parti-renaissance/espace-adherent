@@ -28,6 +28,30 @@ class SearchControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
+    public function testSearchEvents()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/recherche', [
+            'r' => 25,
+            'c' => 'Melun, France',
+            't' => 'events',
+            'offset' => 0,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(2, $crawler->filter('.search__results__row'));
+
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/recherche', [
+            'r' => 25,
+            'c' => 'Melun, France',
+            't' => 'events',
+            'offset' => 0,
+        ]);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(3, $crawler->filter('.search__results__row'));
+    }
+
     /**
      * @dataProvider providerPathSearchPage
      */
