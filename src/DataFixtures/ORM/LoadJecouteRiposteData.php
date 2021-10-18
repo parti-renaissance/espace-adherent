@@ -36,7 +36,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         $riposteTodayLast->incrementNbRipostes();
         $riposteTodayLast->incrementNbSourceViews();
         $riposteTodayLast->incrementNbViews();
-        $riposteTodayLast->incrementNdDetailViews();
+        $riposteTodayLast->incrementNbDetailViews();
 
         $riposte12hoursWithoutNotification = $this->createRiposte(
             self::RIPOSTE_2_UUID,

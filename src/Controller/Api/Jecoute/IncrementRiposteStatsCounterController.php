@@ -14,7 +14,7 @@ class IncrementRiposteStatsCounterController extends AbstractController
     {
         switch ($action) {
             case Riposte::ACTION_DETAIL_VIEW:
-                $riposte->incrementNdDetailViews();
+                $riposte->incrementNbDetailViews();
 
                 break;
             case Riposte::ACTION_SOURCE_VIEW:
