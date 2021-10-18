@@ -64,6 +64,7 @@ trait EntityIdentityTrait
      *     "data_survey_read",
      *     "jemarche_data_survey_read",
      *     "team_read",
+     *     "team_list_read",
      * })
      *
      * @ApiProperty(
