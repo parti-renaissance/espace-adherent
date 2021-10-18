@@ -24,6 +24,7 @@ default:
                 - EmailContext
                 - NotificationContext:
                     notificationRepository: "@App\\Repository\\NotificationRepository"
+                    propertyAccessor: "@Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface"
                 - ReferentTagContext:
                     adherentRepository: "@App\\Repository\\AdherentRepository"
                 - SecurityContext
