@@ -108,7 +108,7 @@ class CampaignAdmin extends AbstractAdmin
                 'template' => 'admin/pap/campaign/list_goal.html.twig',
             ])
             ->add('beginAt', null, [
-                'label' => 'Date de fin',
+                'label' => 'Date de début',
             ])
             ->add('finishAt', null, [
                 'label' => 'Date de fin',

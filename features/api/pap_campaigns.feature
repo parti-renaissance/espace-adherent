@@ -126,3 +126,53 @@ Feature:
         "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb"
     }
     """
+
+  Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    And I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user with correct rights I can get a campaign survey
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    And I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "id":1,
+      "uuid":"@uuid@",
+      "type": "national",
+      "questions":[
+        {
+          "id":6,
+          "type":"simple_field",
+          "content":"Une première question du 1er questionnaire national ?",
+          "choices":[]
+        },
+        {
+          "id":7,
+          "type":"multiple_choice",
+          "content":"Une deuxième question du 1er questionnaire national ?",
+          "choices":[
+            {
+              "id":5,
+              "content":"Réponse nationale A"
+            },
+            {
+              "id":6,
+              "content":"Réponse nationale B"
+            },
+            {
+              "id":7,
+              "content":"Réponse nationale C"
+            },
+            {
+              "id":8,
+              "content":"Réponse nationale D"
+            }
+          ]
+        }
+      ],
+      "name":"Questionnaire national numéro 1"
+    }
+    """
