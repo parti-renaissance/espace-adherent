@@ -6,7 +6,10 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\TeamsTypeFilter;
 use App\Entity\Adherent;
-use App\Entity\EntityAdministratorTrait;
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Team\TypeEnum;
@@ -23,20 +26,32 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
+ *         "order": {"createdAt": "DESC"},
  *         "normalization_context": {
  *             "groups": {"team_read"}
  *         },
  *         "denormalization_context": {
  *             "groups": {"team_write"}
  *         },
+ *         "access_control": "is_granted('HAS_FEATURE_TEAM')"
  *     },
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/teams",
- *             "access_control": "is_granted('HAS_FEATURE_TEAM')",
+ *             "normalization_context": {
+ *                 "groups": {"team_list_read"}
+ *             }
+ *         },
+ *         "post": {
+ *             "path": "/v3/teams",
  *         }
  *     },
- *     itemOperations={}
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/teams/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"}
+ *         }
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
@@ -51,11 +66,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(TeamsTypeFilter::class)
  */
-class Team
+class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use EntityAdministratorTrait;
+    use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
 
     /**
      * @var string|null
@@ -79,7 +95,7 @@ class Team
      *     minMessage="team.name.min_length",
      *     maxMessage="team.name.max_length"
      * )
-     * @SymfonySerializer\Groups({"team_read"})
+     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
      */
     private $name;
 
@@ -162,12 +178,21 @@ class Team
     }
 
     /**
-     * @SymfonySerializer\Groups({"team_read"})
+     * @SymfonySerializer\Groups({"team_list_read"})
      * @SymfonySerializer\SerializedName("members_count")
      */
     public function getMembersCount(): int
     {
         return $this->members->count();
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"team_read", "team_list_read"})
+     * @SymfonySerializer\SerializedName("creator")
+     */
+    public function getCreator(): string
+    {
+        return null !== $this->createdByAdherent ? $this->createdByAdherent->getPartialName() : 'Admin';
     }
 
     public function isPhoning(): bool
