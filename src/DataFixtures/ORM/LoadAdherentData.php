@@ -629,6 +629,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles->add($this->getReference('deputy'));
         $deputy_75_1->setNationalRole(true);
         $deputy_75_1->setPhoningManagerRole(true);
+        $deputy_75_1->setPapNationalManagerRole(true);
         $deputy_75_1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));

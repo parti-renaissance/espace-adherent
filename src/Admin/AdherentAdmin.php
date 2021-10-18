@@ -519,6 +519,12 @@ class AdherentAdmin extends AbstractAdmin
                         'required' => false,
                     ])
                 ->end()
+                ->with('Porte-à-porte', ['class' => 'col-md-6'])
+                    ->add('papNationalManagerRole', null, [
+                        'label' => 'Responsable National PAP',
+                        'required' => false,
+                    ])
+                ->end()
                 ->with('Zone expérimentale 🚧', [
                     'class' => 'col-md-6',
                     'box_class' => 'box box-warning',
@@ -882,6 +888,12 @@ class AdherentAdmin extends AbstractAdmin
                     if (\in_array(AdherentRoleEnum::ROLE_PHONING_MANAGER, $value['value'], true)) {
                         $where->add("$alias.phoningManagerRole = :phoningManagerRole");
                         $qb->setParameter('phoningManagerRole', true);
+                    }
+
+                    // PAP national Role
+                    if (\in_array(AdherentRoleEnum::ROLE_PAP_NATIONAL_MANAGER, $value['value'], true)) {
+                        $where->add("$alias.papNationalManagerRole = :papNationalManagerRole");
+                        $qb->setParameter('papNationalManagerRole', true);
                     }
 
                     if ($delegatedTypes = array_intersect(

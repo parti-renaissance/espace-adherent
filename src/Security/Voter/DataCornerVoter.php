@@ -32,6 +32,7 @@ class DataCornerVoter extends AbstractAdherentVoter
             || (\in_array(ScopeEnum::SENATOR, $codes) && $adherent->isSenator())
             || (\in_array(ScopeEnum::NATIONAL, $codes) && $adherent->hasNationalRole())
             || (\in_array(ScopeEnum::PHONING_NATIONAL_MANAGER, $codes) && $adherent->hasPhoningManagerRole())
+            || (\in_array(ScopeEnum::PAP_NATIONAL_MANAGER, $codes) && $adherent->hasPapNationalManagerRole())
         ;
     }
 

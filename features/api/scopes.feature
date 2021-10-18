@@ -53,6 +53,14 @@ Feature:
         ]
       },
       {
+        "code": "pap_national_manager",
+        "name": "Responsable National PAP",
+        "zones": [],
+        "apps": [
+          "data_corner"
+        ]
+      },
+      {
         "code": "phoning_national_manager",
         "name": "Responsable Phoning",
         "zones": [],
@@ -99,6 +107,7 @@ Feature:
         "elections",
         "ripostes",
         "phoning",
+        "pap",
         "team"
       ]
     }

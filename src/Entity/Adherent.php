@@ -766,6 +766,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $phoningManagerRole = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $papNationalManagerRole = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -2967,5 +2974,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setPhoningManagerRole(bool $phoningManagerRole): void
     {
         $this->phoningManagerRole = $phoningManagerRole;
+    }
+
+    public function hasPapNationalManagerRole(): bool
+    {
+        return $this->papNationalManagerRole;
+    }
+
+    public function setPapNationalManagerRole(bool $papNationalManagerRole): void
+    {
+        $this->papNationalManagerRole = $papNationalManagerRole;
     }
 }
