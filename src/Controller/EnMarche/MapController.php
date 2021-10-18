@@ -5,7 +5,8 @@ namespace App\Controller\EnMarche;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent;
-use App\Entity\Event\EventCategory;
+use App\Repository\EventCategoryRepository;
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,13 +28,11 @@ class MapController extends AbstractController
     }
 
     // Unlike the other actions of this class the route of this action is defined in the config to prevent another route to match his path
-    public function eventsAction()
+    public function eventsAction(EventRepository $eventRepository, EventCategoryRepository $eventCategoryRepository)
     {
-        $doctrine = $this->getDoctrine();
-
         return $this->render('map/events.html.twig', [
-            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)->countUpcomingEvents($this->getUser() instanceof Adherent),
-            'categories' => $doctrine->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
+            'eventCount' => $eventRepository->countUpcomingEvents($this->getUser() instanceof Adherent),
+            'categories' => $eventCategoryRepository->findAllEnabledOrderedByName(),
         ]);
     }
 }

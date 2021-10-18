@@ -111,6 +111,10 @@ class SearchController extends AbstractController
     {
         $search = $this->searchParametersFilter->handleRequest($request);
 
+        if ($this->getUser() instanceof Adherent) {
+            $search->setWithPrivate(true);
+        }
+
         try {
             $results = $this->searchResultsProvidersManager->find($search);
         } catch (GeocodingException $exception) {
