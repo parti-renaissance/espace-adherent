@@ -56,7 +56,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             'La riposte d\'aujourd\'hui désactivée',
             'Le texte de la riposte d\'aujourd\'hui désactivée',
             'https://a-repondre.fr',
-            'now',
+            '-2 hours',
             true,
             false
         );
