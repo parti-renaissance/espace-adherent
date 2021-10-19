@@ -120,3 +120,52 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a logged-in user with phoning team manager right I can update phoning team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager" with body:
+    """
+    {
+      "name": "Equipe d'appel - IDF"
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Equipe d'appel - IDF",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "creator": "Admin",
+      "members": [
+        {
+          "uuid": "3b05dde9-acd0-43b7-83a5-a67cda9a7946",
+          "first_name": "Lucie",
+          "last_name": "Olivera",
+          "registred_at": "2017-01-18T13:15:28+01:00",
+          "postal_code": "75009"
+        },
+        {
+          "uuid": "5a0d85bf-2c66-4bc3-aa29-c07b03951bc4",
+          "first_name": "Jacques",
+          "last_name": "Picard",
+          "registred_at": "2017-01-03T08:47:54+01:00",
+          "postal_code": "75008"
+        },
+        {
+          "uuid": "a33fa2f6-e7ee-4755-a399-bfc93015529e",
+          "first_name": "Pierre",
+          "last_name": "Kiroule",
+          "registred_at": "2017-04-09T06:20:38+02:00",
+          "postal_code": "10019"
+        },
+        {
+          "uuid": "76dd7e44-1a7e-4d2f-bdd8-018690ac5211",
+          "first_name": "Député",
+          "last_name": "PARIS I",
+          "registred_at": "2017-06-01T09:26:31+02:00",
+          "postal_code": "75008"
+        }
+      ]
+    }
+    """

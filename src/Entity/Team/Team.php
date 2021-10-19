@@ -50,6 +50,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/teams/{id}",
  *             "requirements": {"id": "%pattern_uuid%"}
+ *         },
+ *         "put": {
+ *             "path": "/v3/teams/{id}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         }
  *     }
  * )
