@@ -23,14 +23,14 @@ class ApiSyncEventSubscriber implements EventSubscriberInterface
 
     public function publishEventCreated(EventEvent $event): void
     {
-        if ($event instanceof CommitteeEventEvent) {
+        if ($event instanceof CommitteeEventEvent && !$event->getEvent()->isPrivate()) {
             $this->producer->publish($this->serialize($event), Events::EVENT_CREATED);
         }
     }
 
     public function publishEventUpdated(EventEvent $event): void
     {
-        if ($event instanceof CommitteeEventEvent) {
+        if ($event instanceof CommitteeEventEvent && !$event->getEvent()->isPrivate()) {
             $this->producer->publish($this->serialize($event), Events::EVENT_UPDATED);
         }
     }
