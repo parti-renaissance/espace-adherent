@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
+ *         "order": {"createdAt": "DESC"},
  *         "pagination_enabled": false,
  *         "access_control": "is_granted('HAS_FEATURE_RIPOSTES')",
  *         "normalization_context": {"groups": {"riposte_read"}},

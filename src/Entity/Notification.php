@@ -8,7 +8,7 @@ use App\Firebase\Notification\TopicNotificationInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
  */
 class Notification
 {

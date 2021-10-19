@@ -56,6 +56,7 @@ Feature:
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/ripostes?scope=national"
     Then the response status code should be 200
+    Then print last JSON response
     And the JSON should be equal to:
     """
     [
@@ -81,27 +82,6 @@ Feature:
         "nb_detail_views": 1
       },
       {
-        "title": "La riposte avec URL et sans notification",
-        "body": "Le texte de la riposte avec URL et sans notification",
-        "source_url": "https://a-repondre.fr",
-        "with_notification": false,
-        "enabled": true,
-        "open_graph": {
-          "url": "https://a-repondre.fr",
-          "type": "Dummy OpenGraph type",
-          "image": "https://dummy-opengraph.com/image.jpg",
-          "title": "Dummy OpenGraph title",
-          "site_name": "Dummy OpenGraph site name",
-          "description": "Dummy OpenGraph description"
-        },
-        "uuid": "ff4a352e-9762-4da7-b9f3-a8bfdbce63c1",
-        "created_at": "@string@.isDateTime()",
-        "nb_ripostes": 1,
-        "nb_source_views": 0,
-        "nb_views": 1,
-        "nb_detail_views": 0
-      },
-      {
         "title": "La riposte d'aujourd'hui désactivée",
         "body": "Le texte de la riposte d'aujourd'hui désactivée",
         "source_url": "https://a-repondre.fr",
@@ -120,6 +100,27 @@ Feature:
         "nb_ripostes": 0,
         "nb_source_views": 0,
         "nb_views": 0,
+        "nb_detail_views": 0
+      },
+      {
+        "title": "La riposte avec URL et sans notification",
+        "body": "Le texte de la riposte avec URL et sans notification",
+        "source_url": "https://a-repondre.fr",
+        "with_notification": false,
+        "enabled": true,
+        "open_graph": {
+          "url": "https://a-repondre.fr",
+          "type": "Dummy OpenGraph type",
+          "image": "https://dummy-opengraph.com/image.jpg",
+          "title": "Dummy OpenGraph title",
+          "site_name": "Dummy OpenGraph site name",
+          "description": "Dummy OpenGraph description"
+        },
+        "uuid": "ff4a352e-9762-4da7-b9f3-a8bfdbce63c1",
+        "created_at": "@string@.isDateTime()",
+        "nb_ripostes": 1,
+        "nb_source_views": 0,
+        "nb_views": 1,
         "nb_detail_views": 0
       },
       {
@@ -150,6 +151,7 @@ Feature:
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/ripostes"
     Then the response status code should be 200
+    Then print last JSON response
     And the JSON should be equal to:
     """
     [
@@ -307,12 +309,13 @@ Feature:
 
   Scenario: As a logged-in user I can create a riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui",
-      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui",
       "source_url": "aujourdhui.fr",
       "with_notification": true
     }
@@ -322,7 +325,7 @@ Feature:
     """
     {
       "title": "Une nouvelle riposte d'aujourd'hui",
-      "body": "Le texte de la nouvelle riposte d'aujourd'hui ",
+      "body": "Le texte de la nouvelle riposte d'aujourd'hui",
       "source_url": "https://aujourdhui.fr",
       "with_notification": true,
       "enabled": true,
@@ -342,6 +345,11 @@ Feature:
       "nb_detail_views": 0
     }
     """
+    And I should have 1 notification "RiposteCreatedNotification" with data:
+      | key   | value                                         |
+      | topic | staging_jemarche_global                       |
+      | title | Une nouvelle riposte d'aujourd'hui            |
+      | body  | Le texte de la nouvelle riposte d'aujourd'hui |
 
   Scenario: As a logged-in user I can edit a riposte
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -381,6 +389,7 @@ Feature:
       "nb_detail_views": 1
     }
     """
+    And I should have 0 notification
 
   Scenario: As a logged-in user I cannot increment number of invalid action on a riposte
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
