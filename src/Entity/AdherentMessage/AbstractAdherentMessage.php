@@ -2,11 +2,13 @@
 
 namespace App\Entity\AdherentMessage;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Validator\ValidAuthorRoleMessageType;
@@ -49,6 +51,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/adherent_messages",
+ *             "normalization_context": {
+ *                 "authored_items_collection": false,
+ *                 "groups": {"message_read_list"}
+ *             },
  *         },
  *         "post": {
  *             "path": "/v3/adherent_messages",
@@ -97,6 +103,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
+ *
+ * @ApiFilter(AdherentMessageScopeFilter::class)
  *
  * @ValidAuthorRoleMessageType
  */
