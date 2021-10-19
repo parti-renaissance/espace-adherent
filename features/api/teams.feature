@@ -1,8 +1,8 @@
 @api
 Feature:
-  In order to see phoning teams
+  In order to see teams
   As a logged-in user
-  I should be able to access API phoning teams
+  I should be able to access API teams
 
   Background:
     Given the following fixtures are loaded:
@@ -11,12 +11,12 @@ Feature:
       | LoadScopeData                   |
       | LoadTeamData                    |
 
-  Scenario: As a logged-in user without phoning team manager right I can not get phoning teams
+  Scenario: As a logged-in user without phoning team manager right I can not get teams
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/teams?scope=phoning_national_manager"
     Then the response status code should be 403
 
-  Scenario: As a logged-in user with phoning team manager right I can get only phoning teams
+  Scenario: As a logged-in user with phoning team manager right I can get only teams
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/teams?scope=phoning_national_manager"
     Then the response status code should be 200
@@ -47,7 +47,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user without phoning team manager right I can not create phoning team
+  Scenario: As a logged-in user without phoning team manager right I can not create team
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
@@ -58,7 +58,7 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a logged-in user with phoning team manager right I can create phoning team
+  Scenario: As a logged-in user with phoning team manager right I can create team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
@@ -78,7 +78,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user with phoning team manager right I can get a phoning team
+  Scenario: As a logged-in user with phoning team manager right I can get a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 200
@@ -121,7 +121,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user with phoning team manager right I can update phoning team
+  Scenario: As a logged-in user with phoning team manager right I can update team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager" with body:

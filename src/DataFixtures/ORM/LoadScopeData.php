@@ -19,7 +19,7 @@ class LoadScopeData extends Fixture
         $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National'));
         $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat', FeatureEnum::ALL, []));
         $manager->persist($this->createScope(ScopeEnum::PHONING, 'Appelant', [], [AppEnum::JEMARCHE]));
-        $manager->persist($this->createScope(ScopeEnum::PHONING_NATIONAL_MANAGER, 'Responsable équipe d\'appel', [FeatureEnum::TEAM]));
+        $manager->persist($this->createScope(ScopeEnum::PHONING_NATIONAL_MANAGER, 'Responsable Phoning', [FeatureEnum::TEAM]));
 
         $manager->flush();
     }
