@@ -30,7 +30,7 @@
         "ext-pdo": "*",
         "ext-zip": "*",
         "a2lix/translation-form-bundle": "^2.1",
-        "algolia/search-bundle": "^4.1",
+        "algolia/search-bundle": "^5.0",
         "api-platform/core": "2.2.10",
         "beberlei/doctrineextensions": "^1.2",
         "cakephp/chronos": "^2.1",
