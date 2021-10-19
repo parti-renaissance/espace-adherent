@@ -91,7 +91,6 @@ Feature:
       "members": [
         {
           "uuid": "3b05dde9-acd0-43b7-83a5-a67cda9a7946",
-          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
           "first_name": "Lucie",
           "last_name": "Olivera",
           "registred_at": "2017-01-18T13:15:28+01:00",
@@ -99,7 +98,6 @@ Feature:
         },
         {
           "uuid": "5a0d85bf-2c66-4bc3-aa29-c07b03951bc4",
-          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
           "last_name": "Picard",
           "registred_at": "2017-01-03T08:47:54+01:00",
@@ -107,7 +105,6 @@ Feature:
         },
         {
           "uuid": "a33fa2f6-e7ee-4755-a399-bfc93015529e",
-          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
           "first_name": "Pierre",
           "last_name": "Kiroule",
           "registred_at": "2017-04-09T06:20:38+02:00",
@@ -115,7 +112,6 @@ Feature:
         },
         {
           "uuid": "76dd7e44-1a7e-4d2f-bdd8-018690ac5211",
-          "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
           "first_name": "Député",
           "last_name": "PARIS I",
           "registred_at": "2017-06-01T09:26:31+02:00",
