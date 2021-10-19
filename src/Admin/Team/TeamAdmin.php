@@ -2,7 +2,6 @@
 
 namespace App\Admin\Team;
 
-use App\Entity\Administrator;
 use App\Entity\Team\Team;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
@@ -16,11 +15,9 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Security\Core\Security;
 
 class TeamAdmin extends AbstractAdmin
 {
-    private $security;
     private $teamMemberHistoryManager;
 
     /** @var Team|null */
@@ -30,12 +27,10 @@ class TeamAdmin extends AbstractAdmin
         $code,
         $class,
         $baseControllerName = null,
-        Security $security,
         TeamMemberHistoryManager $teamMemberHistoryManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->security = $security;
         $this->teamMemberHistoryManager = $teamMemberHistoryManager;
     }
 
@@ -124,17 +119,6 @@ class TeamAdmin extends AbstractAdmin
         }
 
         parent::setSubject($subject);
-    }
-
-    /**
-     * @param Team $object
-     */
-    public function prePersist($object)
-    {
-        /** @var Administrator $administrator */
-        $administrator = $this->security->getUser();
-
-        $object->setAdministrator($administrator);
     }
 
     /**
