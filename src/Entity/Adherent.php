@@ -2336,11 +2336,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isPhoningCampaignTeamMember(): bool
     {
-        if (!$this->memberships->isEmpty()) {
-            return true;
-        }
-
-        return false;
+        return !$this->teamMemberships->isEmpty();
     }
 
     public function hasFormationSpaceAccess(): bool
