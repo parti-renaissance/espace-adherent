@@ -156,7 +156,7 @@ class Riposte implements AuthorInterface
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      *
-     * @Groups({"riposte_kpi"})
+     * @Groups({"riposte_read_dc"})
      */
     private $nbViews = 0;
 
@@ -165,7 +165,7 @@ class Riposte implements AuthorInterface
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      *
-     * @Groups({"riposte_kpi"})
+     * @Groups({"riposte_read_dc"})
      */
     private $nbDetailViews = 0;
 
@@ -174,7 +174,7 @@ class Riposte implements AuthorInterface
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      *
-     * @Groups({"riposte_kpi"})
+     * @Groups({"riposte_read_dc"})
      */
     private $nbSourceViews = 0;
 
@@ -183,7 +183,7 @@ class Riposte implements AuthorInterface
      *
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      *
-     * @Groups({"riposte_kpi"})
+     * @Groups({"riposte_read_dc"})
      */
     private $nbRipostes = 0;
 
@@ -312,6 +312,14 @@ class Riposte implements AuthorInterface
     public function incrementNbRipostes(): void
     {
         ++$this->nbRipostes;
+    }
+
+    /**
+     * @Groups({"riposte_read_dc"})
+     */
+    public function getCreator(): string
+    {
+        return $this->author ? $this->author->getFullName() : 'Admin';
     }
 
     public function __toString(): string

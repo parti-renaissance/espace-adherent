@@ -79,7 +79,8 @@ Feature:
         "nb_ripostes": 1,
         "nb_source_views": 1,
         "nb_views": 1,
-        "nb_detail_views": 1
+        "nb_detail_views": 1,
+        "creator": "Admin"
       },
       {
         "title": "La riposte d'aujourd'hui désactivée",
@@ -100,7 +101,8 @@ Feature:
         "nb_ripostes": 0,
         "nb_source_views": 0,
         "nb_views": 0,
-        "nb_detail_views": 0
+        "nb_detail_views": 0,
+        "creator": "Admin"
       },
       {
         "title": "La riposte avec URL et sans notification",
@@ -121,7 +123,8 @@ Feature:
         "nb_ripostes": 1,
         "nb_source_views": 0,
         "nb_views": 1,
-        "nb_detail_views": 0
+        "nb_detail_views": 0,
+        "creator": "Député PARIS I"
       },
       {
         "title": "La riposte d'avant-hier avec un URL et notification",
@@ -142,7 +145,8 @@ Feature:
         "nb_ripostes": 0,
         "nb_source_views": 0,
         "nb_views": 0,
-        "nb_detail_views": 0
+        "nb_detail_views": 0,
+        "creator": "Admin"
       }
     ]
     """
@@ -217,7 +221,8 @@ Feature:
       "nb_ripostes": 1,
       "nb_source_views": 1,
       "nb_views": 1,
-      "nb_detail_views": 1
+      "nb_detail_views": 1,
+      "creator": "Admin"
     }
     """
 
@@ -342,7 +347,8 @@ Feature:
       "nb_ripostes": 0,
       "nb_source_views": 0,
       "nb_views": 0,
-      "nb_detail_views": 0
+      "nb_detail_views": 0,
+      "creator": "Député PARIS I"
     }
     """
     And I should have 1 notification "RiposteCreatedNotification" with data:
@@ -386,7 +392,8 @@ Feature:
       "nb_ripostes": 1,
       "nb_source_views": 1,
       "nb_views": 1,
-      "nb_detail_views": 1
+      "nb_detail_views": 1,
+      "creator": "Admin"
     }
     """
     And I should have 0 notification
