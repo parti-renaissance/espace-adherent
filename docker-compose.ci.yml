@@ -18,4 +18,4 @@ services:
             - 5900:5900
 
     rabbitmq:
-        image: rabbitmq:3.8.3-alpine
+        image: rabbitmq:3.9.8-alpine
