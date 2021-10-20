@@ -28,7 +28,7 @@ class RiposteGroupsContextBuilder implements SerializerContextBuilderInterface
         if (Riposte::class === $resourceClass
             && !$this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
         ) {
-            $context['groups'][] = 'riposte_kpi';
+            $context['groups'][] = 'riposte_read_dc';
         }
 
         return $context;
