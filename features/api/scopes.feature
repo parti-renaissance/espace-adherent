@@ -54,7 +54,7 @@ Feature:
       },
       {
         "code": "phoning_national_manager",
-        "name": "Responsable équipe d'appel",
+        "name": "Responsable Phoning",
         "zones": [],
         "apps": [
           "data_corner"

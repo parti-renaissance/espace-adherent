@@ -515,7 +515,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles = new ArrayCollection();
         $roles->add($this->getReference('referent'));
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
-        $referent->setTeamPhoningNationalManagerRole(true);
+        $referent->setPhoningManagerRole(true);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addReferentTag($this->getReference('referent_tag_77'));
         $referent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
@@ -628,7 +628,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles = new ArrayCollection();
         $roles->add($this->getReference('deputy'));
         $deputy_75_1->setNationalRole(true);
-        $deputy_75_1->setTeamPhoningNationalManagerRole(true);
+        $deputy_75_1->setPhoningManagerRole(true);
         $deputy_75_1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));

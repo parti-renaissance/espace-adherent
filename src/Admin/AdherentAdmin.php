@@ -514,8 +514,8 @@ class AdherentAdmin extends AbstractAdmin
                     ])
                 ->end()
                 ->with('Responsable d\'appel', ['class' => 'col-md-6'])
-                    ->add('teamPhoningNationalManagerRole', null, [
-                        'label' => 'Rôle Responsable équipe d\'appel',
+                    ->add('phoningManagerRole', null, [
+                        'label' => 'Rôle Responsable phoning',
                         'required' => false,
                     ])
                 ->end()
@@ -878,10 +878,10 @@ class AdherentAdmin extends AbstractAdmin
                         $qb->setParameter('nationalRole', true);
                     }
 
-                    // Team phoning national Role
-                    if (\in_array(AdherentRoleEnum::ROLE_TEAM_PHONING_MANAGER, $value['value'], true)) {
-                        $where->add("$alias.teamPhoningNationalManagerRole = :teamPhoningNationalManagerRole");
-                        $qb->setParameter('teamPhoningNationalManagerRole', true);
+                    // Phoning national Role
+                    if (\in_array(AdherentRoleEnum::ROLE_PHONING_MANAGER, $value['value'], true)) {
+                        $where->add("$alias.phoningManagerRole = :phoningManagerRole");
+                        $qb->setParameter('phoningManagerRole', true);
                     }
 
                     if ($delegatedTypes = array_intersect(

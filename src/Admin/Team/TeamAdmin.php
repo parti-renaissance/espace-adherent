@@ -5,13 +5,11 @@ namespace App\Admin\Team;
 use App\Entity\Team\Team;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
-use App\Form\Admin\Team\TeamTypeType;
 use App\Team\TeamMemberHistoryManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,9 +36,6 @@ class TeamAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
-                ->add('type', TeamTypeType::class, [
-                    'label' => 'Type',
-                ])
                 ->add('name', TextType::class, [
                     'label' => 'Nom',
                     'filter_emojis' => true,
@@ -65,14 +60,6 @@ class TeamAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
-            ->add('type', ChoiceFilter::class, [
-                'show_filter' => true,
-                'label' => 'Type',
-                'field_type' => TeamTypeType::class,
-                'field_options' => [
-                    'multiple' => true,
-                ],
-            ])
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,
@@ -88,10 +75,6 @@ class TeamAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('type', null, [
-                'label' => 'Type',
-                'template' => 'admin/team/_list_type.html.twig',
-            ])
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])

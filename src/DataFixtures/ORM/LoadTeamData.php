@@ -5,7 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Team\Member;
 use App\Entity\Team\Team;
-use App\Team\TypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,13 +25,15 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $team1 = $this->createTeam(self::TEAM_1_UUID, TypeEnum::PHONING, 'Première équipe de phoning');
+        $team1 = $this->createTeam(self::TEAM_1_UUID, 'Première équipe de phoning');
+        $team1->setCreatedAt(new \DateTime('-12 hours'));
         $team1->addMember($this->createMember(self::MEMBER_1_UUID, $this->getReference('adherent-1')));
         $team1->addMember($this->createMember(self::MEMBER_2_UUID, $this->getReference('adherent-3')));
         $team1->addMember($this->createMember(self::MEMBER_3_UUID, $this->getReference('adherent-12')));
         $this->setReference('team-1', $team1);
 
-        $team2 = $this->createTeam(self::TEAM_2_UUID, TypeEnum::PHONING, 'Deuxième équipe de phoning');
+        $team2 = $this->createTeam(self::TEAM_2_UUID, 'Deuxième équipe de phoning');
+        $team2->setCreatedAt(new \DateTime('-9 hours'));
         $team2->addMember($this->createMember(self::MEMBER_4_UUID, $this->getReference('adherent-4')));
         $team2->addMember($this->createMember(self::MEMBER_5_UUID, $this->getReference('adherent-3')));
         $team2->addMember($this->createMember(self::MEMBER_6_UUID, $this->getReference('adherent-12')));
@@ -53,9 +54,9 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    private function createTeam(string $uuid, string $type, string $name): Team
+    private function createTeam(string $uuid, string $name): Team
     {
-        return new Team(Uuid::fromString($uuid), $type, $name);
+        return new Team(Uuid::fromString($uuid), $name);
     }
 
     private function createMember(string $uuid, Adherent $adherent): Member
