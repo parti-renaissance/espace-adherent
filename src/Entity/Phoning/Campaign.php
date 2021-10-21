@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="phoning_campaign")
  *
  * @ApiResource(
+ *     shortName="PhoningCampaign",
  *     attributes={
  *         "normalization_context": {
  *             "iri": true,

@@ -33,8 +33,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={},
  *     subresourceOperations={
- *         "api_campaigns_survey_get_subresource": {
+ *         "api_phoning_campaigns_survey_get_subresource": {
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
+ *         },
+ *         "api_pap_campaigns_survey_get_subresource": {
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *         },
  *     },
  * )
