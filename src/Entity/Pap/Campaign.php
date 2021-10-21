@@ -27,7 +27,7 @@ class Campaign
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Length(max="255")
+     * @Assert\Length(max=255)
      */
     private $title;
 
@@ -70,7 +70,7 @@ class Campaign
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\NotBlank
      */
@@ -104,7 +104,7 @@ class Campaign
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
@@ -114,7 +114,7 @@ class Campaign
         return $this->brief;
     }
 
-    public function setBrief(string $brief): void
+    public function setBrief(?string $brief): void
     {
         $this->brief = $brief;
     }

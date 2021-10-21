@@ -11,7 +11,7 @@ final class Version20211019115348 extends AbstractMigration
     {
         $this->addSql('CREATE TABLE pap_campaign (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-          survey_id INT UNSIGNED NOT NULL,
+          survey_id INT UNSIGNED DEFAULT NULL,
           administrator_id INT DEFAULT NULL,
           title VARCHAR(255) NOT NULL,
           brief LONGTEXT DEFAULT NULL,
@@ -28,7 +28,9 @@ final class Version20211019115348 extends AbstractMigration
         $this->addSql('ALTER TABLE
           pap_campaign
         ADD
-          CONSTRAINT FK_15CB2432B3FE509D FOREIGN KEY (survey_id) REFERENCES jecoute_survey (id)');
+          CONSTRAINT FK_15CB2432B3FE509D FOREIGN KEY (survey_id) REFERENCES jecoute_survey (id) ON DELETE
+        SET
+          NULL');
         $this->addSql('ALTER TABLE
           pap_campaign
         ADD
