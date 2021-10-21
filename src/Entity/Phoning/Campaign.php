@@ -76,7 +76,7 @@ class Campaign
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Length(max="255")
+     * @Assert\Length(max=255)
      *
      * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */

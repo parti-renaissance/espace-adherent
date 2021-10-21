@@ -172,6 +172,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
     {
         return [
             LoadJecouteSurveyData::class,
+            LoadJemarcheDataSurveyData::class,
             LoadAdherentData::class,
             LoadJecouteQuestionData::class,
             LoadJecouteSuggestedQuestionData::class,

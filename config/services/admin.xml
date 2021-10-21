@@ -392,22 +392,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.phoning.campaign" class="App\Admin\Phoning\CampaignAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Campagnes de Phoning" group="Territoires" />
-
-            <argument />
-            <argument>App\Entity\Phoning\Campaign</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.phoning.campaign_history" class="App\Admin\Phoning\CampaignHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Appels passés" group="Territoires" />
-
-            <argument />
-            <argument>App\Entity\Phoning\CampaignHistory</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Je marche app
@@ -514,6 +498,40 @@
 
             <argument />
             <argument>App\Entity\Jecoute\Riposte</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
+        # Phoning
+        ######################################################
+        -->
+        <service id="app.admin.phoning.campaign" class="App\Admin\Phoning\CampaignAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Campagnes" group="Phoning" />
+
+            <argument />
+            <argument>App\Entity\Phoning\Campaign</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.phoning.campaign_history" class="App\Admin\Phoning\CampaignHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Appels passés" group="Phoning" />
+
+            <argument />
+            <argument>App\Entity\Phoning\CampaignHistory</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
+        # Porte-à-porte
+        ######################################################
+        -->
+        <service id="app.admin.pap.campaign" class="App\Admin\Pap\CampaignAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Campagnes" group="Porte-à-porte" />
+
+            <argument />
+            <argument>App\Entity\Pap\Campaign</argument>
             <argument />
         </service>
 
