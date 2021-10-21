@@ -878,7 +878,7 @@ class AdherentAdmin extends AbstractAdmin
                         $qb->setParameter('nationalRole', true);
                     }
 
-                    // Team phoning national Role
+                    // Phoning national Role
                     if (\in_array(AdherentRoleEnum::ROLE_PHONING_MANAGER, $value['value'], true)) {
                         $where->add("$alias.phoningManagerRole = :phoningManagerRole");
                         $qb->setParameter('phoningManagerRole', true);
