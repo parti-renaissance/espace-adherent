@@ -284,3 +284,43 @@ Feature:
     """
     Then the response status code should be 200
     And the response should be in JSON
+
+  Scenario: As a logged-in user I get empty result when query value is null
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "api/v3/adherents/autocomplete?q="
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    []
+    """
+
+  Scenario: As a logged-in user I can search an adherent with autocomplete search
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "api/v3/adherents/autocomplete?q=petit"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "registered_at": "@string@.isDateTime()",
+        "uuid": "@uuid@",
+        "first_name": "Adrien",
+        "last_name": "Petit",
+        "postal_code": "77000"
+      },
+      {
+        "registered_at": "@string@.isDateTime()",
+        "uuid": "@uuid@",
+        "first_name": "Agathe",
+        "last_name": "Petit",
+        "postal_code": "77000"
+      },
+      {
+        "registered_at": "@string@.isDateTime()",
+        "uuid": "@uuid@",
+        "first_name": "Étienne",
+        "last_name": "Petit",
+        "postal_code": "77000"
+      }
+    ]
+    """

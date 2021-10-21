@@ -23,6 +23,7 @@ trait EntityPersonNameTrait
      *     "profile_read",
      *     "event_read",
      *     "event_list_read",
+     *     "adherent_autocomplete",
      * })
      *
      * @JMS\Groups({"adherent_change_diff", "public"})
@@ -44,6 +45,7 @@ trait EntityPersonNameTrait
      *     "cause_read",
      *     "event_read",
      *     "event_list_read",
+     *     "adherent_autocomplete",
      * })
      *
      * @JMS\Groups({"adherent_change_diff", "public"})

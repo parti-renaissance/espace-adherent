@@ -195,6 +195,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @SymfonySerializer\Groups({"adherent_autocomplete"})
      */
     private $registeredAt;
 
