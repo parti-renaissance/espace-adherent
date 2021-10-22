@@ -175,28 +175,8 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "gender: Vous devez sélectionner le choix Autre ou ne pas saisir d'autre genre.\nfirst_name: Votre prénom ne peut pas dépasser 50 caractères.\nlast_name: Votre nom ne peut pas dépasser 50 caractères.\nemail_address: Cette valeur n'est pas une adresse email valide.\npostal_code: Vous devez saisir exactement 5 caractères.\nprofession: Cette valeur doit être l'un des choix proposés.\nage_range: Cette valeur doit être l'un des choix proposés.\ngender: Cette valeur doit être l'un des choix proposés.\ngender_other: Vous devez saisir au maximum 50 caractères.",
+      "detail": "profession: Cette valeur doit être l'un des choix proposés.\nage_range: Cette valeur doit être l'un des choix proposés.\ngender: Cette valeur doit être l'un des choix proposés.",
       "violations": [
-        {
-          "propertyPath": "gender",
-          "message": "Vous devez sélectionner le choix Autre ou ne pas saisir d'autre genre."
-        },
-        {
-          "message": "Votre prénom ne peut pas dépasser 50 caractères.",
-          "propertyPath": "first_name"
-        },
-        {
-          "message": "Votre nom ne peut pas dépasser 50 caractères.",
-          "propertyPath": "last_name"
-        },
-        {
-          "propertyPath": "email_address",
-          "message": "Cette valeur n'est pas une adresse email valide."
-        },
-        {
-          "propertyPath": "postal_code",
-          "message": "Vous devez saisir exactement 5 caractères."
-        },
         {
           "propertyPath": "profession",
           "message": "Cette valeur doit être l'un des choix proposés."
@@ -208,10 +188,6 @@ Feature:
         {
           "propertyPath": "gender",
           "message": "Cette valeur doit être l'un des choix proposés."
-        },
-        {
-          "message": "Vous devez saisir au maximum 50 caractères.",
-          "propertyPath": "gender_other"
         }
       ]
     }
