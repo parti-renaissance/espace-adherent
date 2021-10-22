@@ -537,6 +537,11 @@ phoning.campaign_history.status.invalid_choice: Le statut n'est pas valide.
 phoning.campaign_history.finish_at.invalid: La date de fin doit être postérieure à la date de début.
 
 #
+# Pap
+#
+pap.campaign_history.status.invalid_choice: Le statut n'est pas valide.
+
+#
 # Riposte
 #
 riposte.open_graph.can_not_fetch: Impossible de récupérer les metadatas de l'URL spécifiée.
