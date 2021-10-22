@@ -54,7 +54,7 @@ class JemarcheDataSurveyAnswerHandler
 
         $email = $dataSurvey->getEmailAddress();
         if ($email && $this->isValidEmail($email)) {
-            $this->bus->dispatch(new JemarcheDataSurveyCreateCommand($dataSurvey->getEmailAddress()));
+            $this->bus->dispatch(new JemarcheDataSurveyCreateCommand($email));
         }
     }
 

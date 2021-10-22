@@ -58,7 +58,7 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
 
         $email = $this->jemarcheDataSurvey->getEmailAddress();
         if ($email && $this->isValidEmail($email)) {
-            $this->bus->dispatch(new JemarcheDataSurveyCreateCommand($this->jemarcheDataSurvey->getEmailAddress()));
+            $this->bus->dispatch(new JemarcheDataSurveyCreateCommand($email));
         }
     }
 
