@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Device;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Validator\JemarcheDataSurveyConstraint;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -44,7 +43,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
- * @JemarcheDataSurveyConstraint
  */
 class JemarcheDataSurvey implements DataSurveyAwareInterface
 {
@@ -59,28 +57,21 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     private $device;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Length(max=50, maxMessage="common.first_name.max_length")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"jemarche_data_survey_write"})
      */
     private $firstName;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Length(max=50, maxMessage="common.last_name.max_length")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"jemarche_data_survey_write"})
      */
     private $lastName;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Email
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"jemarche_data_survey_write"})
      */
@@ -108,9 +99,7 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     private $agreedToTreatPersonalData = false;
 
     /**
-     * @ORM\Column(length=5, nullable=true)
-     *
-     * @Assert\Length(min=5, max=5)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"jemarche_data_survey_write"})
      */
@@ -144,9 +133,7 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     private $gender;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Length(max=50)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"jemarche_data_survey_write"})
      */
