@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="jecoute_data_answer")
@@ -33,9 +32,7 @@ class DataAnswer
     private $surveyQuestion;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"data_survey_write"})
      */

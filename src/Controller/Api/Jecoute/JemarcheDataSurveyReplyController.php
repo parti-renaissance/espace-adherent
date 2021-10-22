@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class JemarcheDataSurveyReplyController extends AbstractReplyController
@@ -54,7 +55,9 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
     protected function dispatch(): void
     {
         $this->dispatcher->dispatch(new JemarcheDataSurveyEvent($this->jemarcheDataSurvey), SurveyEvents::JEMARCHE_DATA_SURVEY_ANSWERED);
-        if ($this->jemarcheDataSurvey->getEmailAddress()) {
+
+        $email = $this->jemarcheDataSurvey->getEmailAddress();
+        if ($email && $this->isValidEmail($email)) {
             $this->bus->dispatch(new JemarcheDataSurveyCreateCommand($this->jemarcheDataSurvey->getEmailAddress()));
         }
     }
@@ -62,5 +65,12 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
     protected function getCustomDeserializeGroups(): array
     {
         return [self::DESERIALIZE_GROUP];
+    }
+
+    private function isValidEmail(string $email): bool
+    {
+        $errors = $this->validator->validate($email, new Assert\Email());
+
+        return 0 !== \count($errors);
     }
 }

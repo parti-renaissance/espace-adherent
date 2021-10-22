@@ -574,15 +574,6 @@ Feature:
             }
           }
         },
-        "firstName": [
-          "Votre prénom ne peut pas dépasser 50 caractères."
-        ],
-        "lastName": [
-          "Votre nom ne peut pas dépasser 50 caractères."
-        ],
-        "emailAddress":[
-          "Cette valeur n'est pas une adresse email valide."
-        ],
         "profession":[
           "Cette valeur n'est pas valide."
         ],
@@ -595,14 +586,8 @@ Feature:
         "longitude": [
           "Cette valeur n'est pas valide."
         ],
-        "postalCode": [
-          "Vous devez saisir exactement 5 caractères."
-        ],
         "gender": [
           "Cette valeur n'est pas valide."
-        ],
-        "genderOther": [
-          "Vous devez saisir au maximum 50 caractères."
         ]
       }
     }
@@ -669,9 +654,6 @@ Feature:
             }
           }
         },
-        "emailAddress":[
-          "Cette valeur n'est pas une adresse email valide."
-        ],
         "profession":[
           "Cette valeur n'est pas valide."
         ],
@@ -683,15 +665,12 @@ Feature:
         ],
         "longitude": [
           "Cette valeur n'est pas valide."
-        ],
-        "postalCode": [
-          "Vous devez saisir exactement 5 caractères."
         ]
       }
     }
     """
 
-  Scenario: As a logged-in user I cannot reply to a local survey with custom validations errors
+  Scenario: As a logged-in user I can reply to a local survey with custom validations errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
@@ -706,7 +685,7 @@ Feature:
       "agreedToStayInContact":false,
       "agreedToContactForJoin":true,
       "postalCode": "59000",
-      "ageRange" : "foobar",
+      "ageRange": "between_25_39",
       "gender" : "other",
       "answers":[
         {
@@ -729,22 +708,11 @@ Feature:
       ]
     }
     """
-    Then the response status code should be 400
+    Then the response status code should be 201
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
-      "status": "error",
-      "errors": {
-        "ageRange": [
-          "Cette valeur n'est pas valide."
-        ],
-        "genderOther": [
-          "Vous avez sélectionné un autre choix, ce champ est donc obligatoire."
-        ],
-        "agreedToStayInContact": [
-          "Si vous acceptez d'adhérer, vous devez accepter que l'on vous contacte."
-        ]
-      }
+      "status": "ok"
     }
     """
