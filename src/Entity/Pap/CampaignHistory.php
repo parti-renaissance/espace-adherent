@@ -41,6 +41,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and object.getQuestioner() == user",
  *         },
+ *         "post_reply": {
+ *             "method": "POST",
+ *             "path": "/v3/pap_campaign_histories/{uuid}/reply",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Pap\CampaignHistoryReplyController",
+ *             "defaults": {"_api_receive": false},
+ *             "normalization_context": {"groups": {"data_survey_read"}},
+ *         },
  *     },
  * )
  */
