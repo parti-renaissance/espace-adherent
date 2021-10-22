@@ -1470,7 +1470,7 @@ SQL;
             return [];
         }
 
-        $qb = $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('a')
             ->Where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
             ->andWhere('a.adherent = :true')
             ->andWhere('a.status = :status')
@@ -1478,8 +1478,8 @@ SQL;
             ->setParameter('status', Adherent::ENABLED)
             ->setParameter('true', true)
             ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
         ;
-
-        return $qb->getQuery()->getResult();
     }
 }

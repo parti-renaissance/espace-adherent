@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  *@Route("/v3/adherents/autocomplete", name="api_adherent_autocomplete", methods={"GET"})
  *
- * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
+ * @Security("is_granted('HAS_FEATURE_TEAM')")
  */
 class AdherentAutocompleteController extends AbstractController
 {
