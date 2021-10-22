@@ -1472,10 +1472,11 @@ SQL;
 
         $qb = $this->createQueryBuilder('a')
             ->Where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
-            ->andWhere('a.adherent = 1')
+            ->andWhere('a.adherent = :true')
             ->andWhere('a.status = :status')
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%'.strtolower(trim($name)).'%')
             ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('true', true)
             ->setMaxResults($limit)
         ;
 
