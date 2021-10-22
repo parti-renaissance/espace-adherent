@@ -34,4 +34,17 @@ class ProfessionEnum extends Enum
             self::JOBSEEKER,
         ];
     }
+
+    public static function choices(): array
+    {
+        return [
+            self::EMPLOYEES => 'Employé',
+            self::WORKERS => 'Ouvrier',
+            self::MANAGERIAL_STAFF => 'Cadre',
+            self::INTERMEDIATE_PROFESSIONS => 'Profession intérimaire',
+            self::SELF_CONTRACTOR => 'Indépendant et professions libérales',
+            self::RETIREES => 'Retraité',
+            self::STUDENT => 'Étudiant',
+        ];
+    }
 }

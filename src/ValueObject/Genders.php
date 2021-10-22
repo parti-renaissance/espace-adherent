@@ -20,6 +20,11 @@ final class Genders
         self::MALE,
     ];
 
+    public const MALE_FEMALE_LABELS = [
+        self::FEMALE => 'Femme',
+        self::MALE => 'Homme',
+    ];
+
     public const CHOICES = [
         'common.gender.woman' => self::FEMALE,
         'common.gender.man' => self::MALE,

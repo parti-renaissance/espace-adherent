@@ -176,3 +176,132 @@ Feature:
       "name":"Questionnaire national numéro 1"
     }
     """
+
+  Scenario: As a logged-in user with correct rights I can get a campaign survey config
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    And I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey-config"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "before_survey": {
+            "address": [
+                {
+                    "code": "building",
+                    "label": "Batiment",
+                    "type": "text"
+                },
+                {
+                    "code": "floor",
+                    "label": "Étage",
+                    "type": "number"
+                },
+                {
+                    "code": "door",
+                    "label": "Porte",
+                    "type": "text"
+                }
+            ],
+            "door_status": [
+                [
+                    {
+                        "code": "door_open",
+                        "label": "Porte ouverte"
+                    },
+                    {
+                        "code": "door_closed",
+                        "label": "Porte fermée"
+                    }
+                ]
+            ],
+            "response_status": [
+                [
+                    {
+                        "code": "accept_to_answer",
+                        "label": "Accepte de répondre aux questions"
+                    },
+                    {
+                        "code": "dont_accept_to_answer",
+                        "label": "N'accepte pas"
+                    },
+                    {
+                        "code": "contact_later",
+                        "label": "Repasser plus tard"
+                    }
+                ]
+            ]
+        },
+        "after_survey": [
+            [
+                {
+                    "code": "gender",
+                    "label": "Genre",
+                    "type": "choice",
+                    "choices": {
+                        "female": "Femme",
+                        "male": "Homme"
+                    }
+                },
+                {
+                    "code": "age_range",
+                    "label": "Tranche d'âge",
+                    "type": "choice",
+                    "choices": {
+                        "less_than_20": "-20 ans",
+                        "between_20_24": "20-24 ans",
+                        "between_25_39": "25-39 ans",
+                        "between_40_54": "40-54 ans",
+                        "between_55_64": "55-64 ans",
+                        "between_65_80": "65-80 ans",
+                        "greater_than_80": "80+ ans"
+                    }
+                },
+                {
+                    "code": "profession",
+                    "label": "Métier",
+                    "type": "choice",
+                    "choices": {
+                        "employees": "Employé",
+                        "workers": "Ouvrier",
+                        "managerial staff": "Cadre",
+                        "intermediate_professions": "Profession intérimaire",
+                        "self_contractor": "Indépendant et professions libérales",
+                        "retirees": "Retraité",
+                        "student": "Étudiant"
+                    }
+                }
+            ],
+            {
+                "to_contact": {
+                    "code": "to_contact",
+                    "label": "Souhaite être recontacté ?",
+                    "type": "boolean"
+                },
+                "contact": [
+                    {
+                        "code": "first_name",
+                        "label": "Prénom",
+                        "type": "text"
+                    },
+                    {
+                        "code": "last_name",
+                        "label": "Nom",
+                        "type": "text"
+                    },
+                    {
+                        "code": "email_address",
+                        "label": "Email",
+                        "type": "text"
+                    }
+                ]
+            },
+            [
+                {
+                    "code": "to_join",
+                    "label": "Souhaite adhérer ?",
+                    "type": "boolean"
+                }
+            ]
+        ]
+    }
+    """
