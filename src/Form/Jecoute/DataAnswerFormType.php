@@ -18,6 +18,7 @@ class DataAnswerFormType extends AbstractType
         $builder
             ->add('textField', TextType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('surveyQuestion', EntityType::class, [
                 'class' => SurveyQuestion::class,

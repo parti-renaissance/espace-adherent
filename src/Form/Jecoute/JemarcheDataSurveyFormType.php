@@ -23,14 +23,19 @@ class JemarcheDataSurveyFormType extends AbstractType
             ->add('dataSurvey', DataSurveyFormType::class)
             ->add('lastName', TextType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('firstName', TextType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('emailAddress', EmailType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
-            ->add('postalCode', TextType::class)
+            ->add('postalCode', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('profession', ChoiceType::class, [
                 'choices' => ProfessionEnum::all(),
             ])
@@ -40,7 +45,9 @@ class JemarcheDataSurveyFormType extends AbstractType
             ->add('gender', ChoiceType::class, [
                 'choices' => GenderEnum::all(),
             ])
-            ->add('genderOther', TextType::class)
+            ->add('genderOther', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('agreedToStayInContact', CheckboxType::class)
             ->add('agreedToContactForJoin', CheckboxType::class)
             ->add('agreedToTreatPersonalData', CheckboxType::class)
