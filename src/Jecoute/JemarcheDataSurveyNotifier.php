@@ -43,7 +43,7 @@ class JemarcheDataSurveyNotifier implements EventSubscriberInterface
 
     public function canNotify(JemarcheDataSurvey $dataSurvey): bool
     {
-        if (!$email = $dataSurvey->getEmailAddress()) {
+        if (!$dataSurvey->getAgreedToContactForJoin() || !$email = $dataSurvey->getEmailAddress()) {
             return false;
         }
 
