@@ -164,7 +164,7 @@ workflows:
             - deployment:
                 requires:
                     - phpunit
-                    #- behat
+                    - behat
                 filters:
                     branches:
                         only:
