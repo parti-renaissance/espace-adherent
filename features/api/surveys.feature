@@ -437,6 +437,52 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can reply to a national survey without agreeing to join
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+    """
+    {
+      "survey":1,
+      "type": "national",
+      "lastName":"Bonsoirini",
+      "firstName":"Ernestino",
+      "emailAddress":"ernestino2@bonsoirini.fr",
+      "agreedToStayInContact":true,
+      "agreedToContactForJoin":false,
+      "agreedToTreatPersonalData":true,
+      "postalCode":"59000",
+      "profession":"employees",
+      "ageRange": "between_25_39",
+      "gender": "male",
+      "latitude": 48.856614,
+      "longitude": 2.3522219,
+      "answers":[
+        {
+          "surveyQuestion":6,
+          "textField":"Réponse libre d'un questionnaire national"
+        },
+        {
+          "surveyQuestion":7,
+          "selectedChoices":[
+            "5",
+            "6"
+          ]
+        }
+      ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "status": "ok"
+    }
+    """
+    And I should have 0 email
+
   Scenario: As a logged-in user I can reply to a local survey
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
