@@ -126,30 +126,7 @@ Feature:
     """
     {"uuid": "@uuid@"}
     """
-    And I should have 1 email "DataSurveyAnsweredMessage" for "maria@mozzarella.com" with payload:
-    """
-    {
-      "template_name": "data-survey-answered",
-      "template_content": [],
-      "message": {
-        "subject": "Votre adhésion à La République En Marche !",
-        "from_email": "contact@en-marche.fr",
-        "global_merge_vars": [
-          {
-            "name": "first_name",
-            "content": "Maria"
-          }
-        ],
-        "from_name": "La République En Marche !",
-        "to": [
-          {
-            "email": "maria@mozzarella.com",
-            "type": "to"
-          }
-        ]
-      }
-    }
-    """
+    And I should have 0 email
 
   Scenario: As a logged-in user I cannot reply to a national survey with invalid data
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
