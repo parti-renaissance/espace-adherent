@@ -162,8 +162,8 @@ workflows:
                     - build
 
             - deployment:
-                #requires:
-                    #- phpunit
+                requires:
+                    - phpunit
                     #- behat
                 filters:
                     branches:
