@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "pagination_enabled": false,
- *         "access_control": "is_granted('HAS_FEATURE_PAP') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *         "access_control": "is_granted('HAS_FEATURE_PAP') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT'))",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"pap_campaign_read"},
@@ -117,7 +117,7 @@ class Campaign
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
      *

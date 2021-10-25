@@ -5,20 +5,19 @@ namespace App\Pap\Api\Listener;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Adherent;
 use App\Entity\Pap\CampaignHistory;
-use App\OAuth\Model\DeviceApiUser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 class PreWritePapCampaignHistoryListener implements EventSubscriberInterface
 {
-    private TokenStorageInterface $tokenStorage;
+    private Security $security;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(Security $security)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
     }
 
     public static function getSubscribedEvents()
@@ -35,15 +34,21 @@ class PreWritePapCampaignHistoryListener implements EventSubscriberInterface
         }
 
         if ($event->getRequest()->isMethod(Request::METHOD_PUT)
-            && $campaignHistory->isFinishedStatus()) {
+            && $campaignHistory->isFinishedStatus()
+            && null === $campaignHistory->getFinishAt()
+        ) {
             $campaignHistory->setFinishAt(new \DateTime());
         }
 
-        $user = $this->tokenStorage->getToken()->getUser();
-        if ($user instanceof Adherent) {
-            $campaignHistory->setQuestioner($user);
-        } elseif ($user instanceof DeviceApiUser) {
-            $campaignHistory->setDevice($user);
+        if (null !== $campaignHistory->getQuestioner()) {
+            return;
         }
+
+        $user = $this->security->getUser();
+        if (!$user instanceof Adherent) {
+            throw new \RuntimeException('User is not a connected adherent');
+        }
+
+        $campaignHistory->setQuestioner($this->security->getUser());
     }
 }

@@ -30,6 +30,11 @@ Feature:
       | GET     | /api/v3/pap_campaigns/932d67d1-2da6-4695-82f6-42afc20f2e41    |
       | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb    |
 
+  Scenario: As a JeMarche App user I cannot update not my PAP campaign
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da"
+    Then the response status code should be 403
+
   Scenario: As a logged-in user I can get active PAP campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/pap_campaigns"
@@ -335,19 +340,11 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "status: Le statut n'est pas valide.\nfloor: Cette valeur ne doit pas être nulle.\ndoor: Cette valeur ne doit pas être nulle.",
+        "detail": "status: Le statut n'est pas valide.",
         "violations": [
             {
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
-            },
-            {
-                "propertyPath": "floor",
-                "message": "Cette valeur ne doit pas être nulle."
-            },
-            {
-                "propertyPath": "door",
-                "message": "Cette valeur ne doit pas être nulle."
             }
         ]
     }
@@ -375,7 +372,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can update a pap campaign history
+  Scenario: As a logged-in user I can update my pap campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:

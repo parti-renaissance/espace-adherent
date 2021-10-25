@@ -3,9 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
-use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
-use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
@@ -21,8 +19,6 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
 
     public function load(ObjectManager $manager)
     {
-        /** @var NationalSurvey $nationalSurvey1 */
-        $nationalSurvey1 = $this->getReference('national-survey-1');
         /** @var Campaign $campaign1 */
         $campaign1 = $this->getReference('pap-campaign-1');
         /** @var Campaign $campaign2 */
@@ -36,9 +32,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             CampaignHistoryStatusEnum::DOOR_OPEN,
             $adherent3,
             null,
-            null,
             new \DateTime('-5 minutes'),
-            Uuid::fromString(self::HISTORY_1_UUID)
+            self::HISTORY_1_UUID
         ));
 
         $manager->persist($this->createPapCampaignHistory(
@@ -54,17 +49,15 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         Campaign $campaign,
         string $status,
         Adherent $questioner = null,
-        Device $device = null,
         Survey $survey = null,
-        \DateTime $begitAt = null,
+        \DateTime $createdAt = null,
         string $uuid = null
     ): CampaignHistory {
         $campaignHistory = new CampaignHistory($uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
         $campaignHistory->setCampaign($campaign);
         $campaignHistory->setStatus($status);
-        $campaignHistory->setBeginAt($begitAt ?? new \DateTime('-10 minutes'));
+        $campaignHistory->setCreatedAt($createdAt ?? new \DateTime('-10 minutes'));
         $campaignHistory->setQuestioner($questioner);
-        $campaignHistory->setDevice($device);
 
         if ($survey) {
             $dataSurvey = new DataSurvey($survey);

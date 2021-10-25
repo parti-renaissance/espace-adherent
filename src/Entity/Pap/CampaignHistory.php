@@ -4,8 +4,8 @@ namespace App\Entity\Pap;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
-use App\Entity\Device;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use App\Entity\Jecoute\DataSurveyAwareTrait;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"pap_campaign_history_read"},
  *         },
  *         "denormalization_context": {"groups": {"pap_campaign_history_write"}},
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT')",
  *     },
  *     collectionOperations={
  *         "post": {
@@ -39,14 +39,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/pap_campaign_histories/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and object.getQuestioner() == user",
  *         },
  *     },
  * )
  */
 class CampaignHistory implements DataSurveyAwareInterface
 {
-    use EntityIdentityTrait;
     use DataSurveyAwareTrait;
+    use EntityIdentityTrait;
+    use EntityTimestampableTrait;
 
     /**
      * @var Adherent|null
@@ -55,12 +57,6 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $questioner;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $device;
 
     /**
      * @var Adherent|null
@@ -99,7 +95,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(length=25, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
@@ -110,8 +106,6 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
      *
-     * @Assert\NotNull
-     *
      * @Groups({"pap_campaign_history_write"})
      */
     private $floor;
@@ -119,27 +113,21 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\NotNull
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
     private $door;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Length(max=50, maxMessage="common.first_name.max_length")
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
     private $firstName;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Length(max=50, maxMessage="common.last_name.max_length")
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
@@ -205,16 +193,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     private $toJoin;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotBlank
-     * @Assert\DateTime
-     */
-    private $beginAt;
-
-    /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -236,7 +214,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-        $this->beginAt = new \DateTime();
     }
 
     public function getQuestioner(): ?Adherent
@@ -247,16 +224,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setQuestioner(?Adherent $questioner): void
     {
         $this->questioner = $questioner;
-    }
-
-    public function getDevice(): ?Device
-    {
-        return $this->device;
-    }
-
-    public function setDevice(?Device $device): void
-    {
-        $this->device = $device;
     }
 
     public function getAdherent(): ?Adherent
@@ -309,7 +276,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         return $this->floor;
     }
 
-    public function setFloor(?string $floor): void
+    public function setFloor(?int $floor): void
     {
         $this->floor = $floor;
     }
@@ -402,16 +369,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setToJoin(?bool $toJoin): void
     {
         $this->toJoin = $toJoin;
-    }
-
-    public function getBeginAt(): \DateTimeInterface
-    {
-        return $this->beginAt;
-    }
-
-    public function setBeginAt(\DateTimeInterface $beginAt): void
-    {
-        $this->beginAt = $beginAt;
     }
 
     public function getFinishAt(): ?\DateTimeInterface
