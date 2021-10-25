@@ -10,6 +10,7 @@ use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
+use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
@@ -96,6 +97,13 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
+    public function hasPapCampaignCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof PapCampaignCharter;
+        });
+    }
+
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
@@ -131,6 +139,9 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN:
                 return $this->hasPhoningCampaignCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_PAP_CAMPAIGN:
+                return $this->hasPapCampaignCharterAccepted();
         }
 
         return false;

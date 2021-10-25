@@ -17,4 +17,5 @@ class AdherentCharterTypeEnum extends Enum
     public const TYPE_CANDIDATE = 'candidate';
     public const TYPE_THEMATIC_COMMUNITY_CHIEF = 'thematic_community_chief';
     public const TYPE_PHONING_CAMPAIGN = 'phoning_campaign';
+    public const TYPE_PAP_CAMPAIGN = 'pap_campaign';
 }
