@@ -26,4 +26,17 @@ class AgeRangeEnum extends Enum
             self::GREATER_THAN_80,
         ];
     }
+
+    public static function choices(): array
+    {
+        return [
+            self::LESS_THAN_20 => '-20 ans',
+            self::BETWEEN_20_24 => '20-24 ans',
+            self::BETWEEN_25_39 => '25-39 ans',
+            self::BETWEEN_40_54 => '40-54 ans',
+            self::BETWEEN_55_64 => '55-64 ans',
+            self::BETWEEN_65_80 => '65-80 ans',
+            self::GREATER_THAN_80 => '80+ ans',
+        ];
+    }
 }
