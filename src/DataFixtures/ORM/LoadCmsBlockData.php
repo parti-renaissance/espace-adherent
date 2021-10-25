@@ -23,6 +23,12 @@ MARKDOWN;
         ));
 
         $manager->persist($this->createCmsBlock(
+            'pap-campaign-tutorial',
+            'Tutorial pour les campagnes de PAP',
+            '**Texte du tutoriel** pour la *campagne* de PAP avec le Markdown'
+        ));
+
+        $manager->persist($this->createCmsBlock(
             sprintf('chart-%s', AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN),
             'Charte pour les appelants'
         ));
