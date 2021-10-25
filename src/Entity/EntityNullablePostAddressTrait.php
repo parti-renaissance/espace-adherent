@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Intl\Countries;
 
 trait EntityNullablePostAddressTrait
@@ -26,11 +25,6 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
-    /**
-     * @JMS\Groups({"public"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("country")
-     */
     public function getCountry(): ?string
     {
         return $this->postAddress ? $this->postAddress->getCountry() : null;
@@ -41,30 +35,16 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress && $this->postAddress->getCountry() ? Countries::getName($this->postAddress->getCountry()) : null;
     }
 
-    /**
-     * @JMS\Groups({"public"})
-     * @JMS\VirtualProperty
-     */
     public function getAddress(): ?string
     {
         return $this->postAddress ? $this->postAddress->getAddress() : null;
     }
 
-    /**
-     * @JMS\Groups({"public"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("zipCode")
-     */
     public function getPostalCode(): ?string
     {
         return $this->postAddress ? $this->postAddress->getPostalCode() : null;
     }
 
-    /**
-     * @JMS\Groups({"public"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("city")
-     */
     public function getCityName(): ?string
     {
         return $this->postAddress ? $this->postAddress->getCityName() : null;
@@ -80,21 +60,11 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress ? $this->postAddress->getInseeCode() : null;
     }
 
-    /**
-     * @JMS\Groups({"public"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("latitude")
-     */
     public function getLatitude(): ?float
     {
         return $this->postAddress ? $this->postAddress->getLatitude() : null;
     }
 
-    /**
-     * @JMS\Groups({"public"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("longitude")
-     */
     public function getLongitude(): ?float
     {
         return $this->postAddress ? $this->postAddress->getLongitude() : null;

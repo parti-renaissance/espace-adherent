@@ -33,7 +33,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "public", "committee_read"})
+     * @JMS\Groups({"adherent_change_diff", "committee_read"})
      * @JMS\VirtualProperty
      *
      * @SymfonySerializer\Groups({"user_profile"})
@@ -58,7 +58,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read"})
+     * @JMS\Groups({"adherent_change_diff", "user_profile", "committee_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      *

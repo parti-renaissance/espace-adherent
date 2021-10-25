@@ -46,8 +46,6 @@ class ReferentTag
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @JMSSerializer\Groups("public")
      */
     private $name;
 
@@ -60,7 +58,7 @@ class ReferentTag
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      *
-     * @JMSSerializer\Groups({"adherent_change_diff", "public"})
+     * @JMSSerializer\Groups({"adherent_change_diff"})
      * @SymfonySerializer\Groups({"read_api"})
      */
     private $code;

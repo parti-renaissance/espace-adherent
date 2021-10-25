@@ -156,7 +156,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column
      *
-     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("emailAddress")
      *
      * @SymfonySerializer\Groups({"user_profile", "profile_read"})
@@ -877,21 +877,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $email);
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid")
-     * @JMS\Groups({"public"})
-     */
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("subscriptionExternalIds")
-     * @JMS\Groups({"public"})
-     */
     public function getSubscriptionExternalIds(): array
     {
         return array_values(array_filter(array_map(function (SubscriptionType $subscription) {
@@ -2229,7 +2219,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\Groups({"adherent_change_diff"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
      *

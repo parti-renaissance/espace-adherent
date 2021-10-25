@@ -26,7 +26,7 @@ trait EntityPersonNameTrait
      *     "adherent_autocomplete",
      * })
      *
-     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("firstName")
      */
     private $firstName = '';
@@ -48,7 +48,7 @@ trait EntityPersonNameTrait
      *     "adherent_autocomplete",
      * })
      *
-     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("lastName")
      */
     private $lastName = '';

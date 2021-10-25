@@ -22,7 +22,7 @@ class FeatureVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return 0 === strpos($attribute, 'HAS_FEATURE_') && ($request = $this->requestStack->getMasterRequest());
+        return 0 === strpos($attribute, 'HAS_FEATURE_') && $this->requestStack->getMasterRequest();
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

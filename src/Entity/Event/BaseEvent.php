@@ -248,7 +248,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=100)
      *
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
@@ -277,7 +277,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
-     * @JMS\Groups({"public", "event_read", "event_list_read"})
+     * @JMS\Groups({"event_read", "event_list_read"})
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
@@ -300,7 +300,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=50)
      *
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      * @JMS\SerializedName("timeZone")
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
@@ -315,7 +315,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      * @JMS\SerializedName("beginAt")
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
@@ -329,7 +329,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      * @JMS\SerializedName("finishAt")
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
@@ -355,7 +355,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      * @JMS\SerializedName("participantsCount")
      *
      * @SymfonySerializer\Groups({"event_read", "event_list_read"})
@@ -367,7 +367,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=20)
      *
-     * @JMS\Groups({"public", "event_read", "event_list_read"})
+     * @JMS\Groups({"event_read", "event_list_read"})
      *
      * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      */
@@ -406,7 +406,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
@@ -663,7 +663,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"public", "event_read"})
+     * @JMS\Groups({"event_read"})
      */
     public function getUuidAsString(): string
     {
