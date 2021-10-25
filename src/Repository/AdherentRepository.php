@@ -1460,4 +1460,26 @@ SQL;
             ->getResult()
         ;
     }
+
+    /**
+     * @return Adherent[]
+     */
+    public function findAdherentByAutocompletion(?string $name, int $limit = 10): array
+    {
+        if (!$name) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('a')
+            ->Where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
+            ->andWhere('a.adherent = :true')
+            ->andWhere('a.status = :status')
+            ->setParameter('name', '%'.strtolower(trim($name)).'%')
+            ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('true', true)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
