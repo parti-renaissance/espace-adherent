@@ -9,6 +9,7 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
 use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
+use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentResetPasswordToken;
@@ -151,6 +152,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->addCharter(new CandidateCharter());
         $adherent3->addCharter(new CommitteeHostCharter());
         $adherent3->addCharter(new PhoningCampaignCharter());
+        $adherent3->addCharter(new PapCampaignCharter());
         $adherent3->setCoalitionModeratorRole(new CoalitionModeratorRoleAssociation());
         $adherent3->certify();
         $this->addReference('adherent-3', $adherent3);
