@@ -48,7 +48,7 @@ cc:                                                                             
 	$(CONSOLE) cache:clear --no-warmup
 	$(CONSOLE) cache:warmup
 
-tfp-cc:                                                                                                    ## Clear the cache in dev env
+tfp-cc:                                                                                                    ## Clear the cache in test env
 	$(CONSOLE) cache:clear --env=test --no-warmup
 	$(CONSOLE) cache:warmup --env=test
 

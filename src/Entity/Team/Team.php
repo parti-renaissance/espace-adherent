@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "put": {
  *             "path": "/v3/teams/{id}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "requirements": {"id": "%pattern_uuid%"},
  *         }
  *     }
  * )
