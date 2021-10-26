@@ -10,6 +10,7 @@ Feature:
       | LoadClientData              |
       | LoadScopeData               |
       | LoadPapCampaignData         |
+      | LoadPapCampaignHistoryData  |
       | LoadCmsBlockData            |
 
   Scenario Outline: As a non logged-in user I cannot get and manage PAP campaigns
@@ -28,6 +29,11 @@ Feature:
       | method  | url                                                           |
       | GET     | /api/v3/pap_campaigns/932d67d1-2da6-4695-82f6-42afc20f2e41    |
       | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb    |
+
+  Scenario: As a JeMarche App user I cannot update not my PAP campaign
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da"
+    Then the response status code should be 403
 
   Scenario: As a logged-in user I can get active PAP campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -315,5 +321,82 @@ Feature:
     """
     {
       "content": "**Texte du tutoriel** pour la *campagne* de PAP avec le Markdown"
+    }
+    """
+
+  Scenario: As a logged-in user I cannot post a pap campaign history with wrong data
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
+    """
+    {
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "status": "invalid"
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "status: Le statut n'est pas valide.",
+        "violations": [
+            {
+                "propertyPath": "status",
+                "message": "Le statut n'est pas valide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can post a pap campaign history
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
+    """
+    {
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "status": "door_closed",
+        "building": "A",
+        "floor": 1,
+        "door": "3"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "status": "door_closed"
+    }
+    """
+
+  Scenario: As a logged-in user I can update my pap campaign history
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
+    """
+    {
+        "status": "accept_to_answer",
+        "building": "C",
+        "floor": 2,
+        "door": "23",
+        "firstName": "Maria",
+        "lastName": "Curei",
+        "emailAddress": "maria.curie@test.com",
+        "gender": "female",
+        "ageRange": "between_40_54",
+        "profession": "self_contractor",
+        "toContact": true,
+        "toJoin": false
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da",
+        "status": "accept_to_answer"
     }
     """

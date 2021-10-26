@@ -67,6 +67,7 @@ trait EntityIdentityTrait
      *     "team_list_read",
      *     "pap_campaign_read",
      *     "adherent_autocomplete",
+     *     "pap_campaign_history_read",
      * })
      *
      * @ApiProperty(

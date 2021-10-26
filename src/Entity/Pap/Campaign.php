@@ -8,6 +8,8 @@ use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Jecoute\Survey;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -23,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "pagination_enabled": false,
- *         "access_control": "is_granted('HAS_FEATURE_PAP') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *         "access_control": "is_granted('HAS_FEATURE_PAP') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT'))",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"pap_campaign_read"},
@@ -115,13 +117,20 @@ class Campaign
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
      *
      * @ApiSubresource
      */
     private $survey;
+
+    /**
+     * @var Collection|CampaignHistory[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="campaign", fetch="EXTRA_LAZY")
+     */
+    private $campaignHistories;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -139,6 +148,7 @@ class Campaign
         $this->goal = $goal;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
+        $this->campaignHistories = new ArrayCollection();
     }
 
     public function __toString(): string

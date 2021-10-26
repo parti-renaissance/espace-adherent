@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="phoning_campaign_history")
  *
  * @ApiResource(
+ *     shortName="PhoningCampaignHistory",
  *     attributes={
  *         "normalization_context": {
  *             "iri": true,
