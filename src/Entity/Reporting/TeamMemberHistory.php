@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Team\Team;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(indexes={
@@ -141,7 +142,7 @@ class TeamMemberHistory
         return self::ACTION_REMOVE === $this->action;
     }
 
-    public static function createAdd(Team $team, Adherent $adherent, $user = null): self
+    public static function createAdd(Team $team, Adherent $adherent, UserInterface $user = null): self
     {
         if ($user instanceof Adherent) {
             return new self($team, $adherent, self::ACTION_ADD, null, $user);
@@ -150,7 +151,7 @@ class TeamMemberHistory
         return new self($team, $adherent, self::ACTION_ADD, $user);
     }
 
-    public static function createRemove(Team $team, Adherent $adherent, $user): self
+    public static function createRemove(Team $team, Adherent $adherent, UserInterface $user): self
     {
         if ($user instanceof Adherent) {
             return new self($team, $adherent, self::ACTION_REMOVE, null, $user);
