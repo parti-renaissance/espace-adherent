@@ -33,7 +33,7 @@ class Voter
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private ?\DateTimeInterface $birthdate;
+    private ?\DateTimeInterface $birthdate = null;
 
     /**
      * @ORM\Column(length=10, nullable=true)
