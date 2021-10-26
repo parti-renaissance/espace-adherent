@@ -400,3 +400,54 @@ Feature:
         "status": "accept_to_answer"
     }
     """
+
+  Scenario: As a logged-in user I can post a pap campaign history
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
+    """
+    {
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "status": "door_closed",
+        "building": "A",
+        "floor": 1,
+        "door": "3"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "status": "door_closed"
+    }
+    """
+
+  Scenario: As a logged-in user I can update a pap campaign history
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
+    """
+    {
+        "status": "accept_to_answer",
+        "building": "C",
+        "floor": 2,
+        "door": "23",
+        "firstName": "Maria",
+        "lastName": "Curei",
+        "emailAddress": "maria.curie@test.com",
+        "gender": "female",
+        "ageRange": "between_40_54",
+        "profession": "self_contractor",
+        "toContact": true,
+        "toJoin": false
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da",
+        "status": "accept_to_answer"
+    }
+    """

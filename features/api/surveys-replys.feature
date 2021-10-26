@@ -6,6 +6,7 @@ Feature:
       | LoadClientData                  |
       | LoadOAuthTokenData              |
       | LoadPhoningCampaignHistoryData  |
+      | LoadPapCampaignHistoryData      |
       | LoadJemarcheDataSurveyData      |
 
   Scenario: As a logged-in user I can reply to a national survey for phoning campaign (new body structure)
@@ -78,7 +79,7 @@ Feature:
       "answers":[
         {
           "surveyQuestion":6,
-          "textField":"Une nouvelle réponse libre d'un questionnaire national"
+          "textField":"Une nouvelle réponse libre à un questionnaire national"
         },
         {
           "surveyQuestion":7,
@@ -108,7 +109,7 @@ Feature:
       "answers":[
         {
           "surveyQuestion":6,
-          "textField":"Une nouvelle réponse libre d'un questionnaire national"
+          "textField":"Une nouvelle réponse libre à un questionnaire national"
         },
         {
           "surveyQuestion":7,
@@ -196,4 +197,64 @@ Feature:
     And the JSON should be equal to:
     """
     {"uuid": "@uuid@"}
+    """
+
+  Scenario: As a logged-in user I can reply to a national survey for pap campaign (new body structure)
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da/reply" with body:
+    """
+    {
+      "survey":"13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "answers":[
+        {
+          "surveyQuestion":6,
+          "textField":"Réponse libre à un questionnaire national de la campagne de PAP"
+        },
+        {
+          "surveyQuestion":7,
+          "selectedChoices":[
+            11,
+            12
+          ]
+        }
+      ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {"uuid": "@uuid@"}
+    """
+    When I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da/reply" with body:
+    """
+    {
+      "survey":"13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "answers":[
+        {
+          "surveyQuestion":6,
+          "textField":"Une nouvelle réponse libre à un questionnaire national"
+        },
+        {
+          "surveyQuestion":7,
+          "selectedChoices":[
+            5,
+            6
+          ]
+        }
+      ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "code": "already_replied",
+      "message": "La réponse a été déjà envoyée"
+    }
     """
