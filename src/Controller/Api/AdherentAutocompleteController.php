@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdherentAutocompleteController extends AbstractController
 {
-    private const MAX_RESULT = 100;
+    private const MAX_RESULT = 30;
 
     public function __invoke(Request $request, AdherentRepository $repository): JsonResponse
     {

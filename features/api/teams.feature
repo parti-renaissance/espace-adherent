@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to see teams
   As a logged-in user
@@ -17,13 +17,14 @@ Feature:
     Then the response status code should be 403
 
     Examples:
-      | method | url                                                                                       |
-      | GET    | /api/v3/teams?scope=phoning_national_manager                                              |
-      | GET    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager         |
-      | GET    | /api/v3/adherents/autocomplete?q=petit&scope=phoning_national_manager                     |
-      | GET    | /api/v3/adherents/autocomplete?q=petit&scope=phoning_national_manager                     |
-      | PUT    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager         |
-      | PUT    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members?scope=phoning_national_manager |
+      | method | url                                                                                                                            |
+      | GET    | /api/v3/teams?scope=phoning_national_manager                                                                                   |
+      | GET    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager                                              |
+      | GET    | /api/v3/adherents/autocomplete?q=petit&scope=phoning_national_manager                                                          |
+      | GET    | /api/v3/adherents/autocomplete?q=petit&scope=phoning_national_manager                                                          |
+      | PUT    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager                                              |
+      | PUT    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager                                  |
+      | DELETE | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager |
 
   Scenario: As a logged-in user with phoning team manager right I can get only teams
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -236,21 +237,9 @@ Feature:
   Scenario: As a logged-in user with phoning team manager right I can add an adherent to a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members?scope=phoning_national_manager" with body:
+    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [
-      {
-        "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
-      },
-      {
-        "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
-      },
-      {
-        "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7"
-      },
-      {
-        "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404"
-      },
       {
         "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
       }
@@ -303,23 +292,18 @@ Feature:
     }
     """
 
+  Scenario: As an anonymous I can not remove an adherent from a team
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
+    Then the response status code should be 401
+
+  Scenario: As a logged-in user with phoning team manager right I can not remove an adherent who does not exist from a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-17816bf2d819?scope=phoning_national_manager"
+    Then the response status code should be 404
+
   Scenario: As a logged-in user with phoning team manager right I can remove an adherent from a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members?scope=phoning_national_manager" with body:
-    """
-    [
-      {
-        "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
-      },
-      {
-        "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
-      },
-      {
-        "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7"
-      }
-    ]
-    """
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -356,21 +340,9 @@ Feature:
   Scenario: As a logged-in user with phoning team manager right I can not add an adherent twice
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members?scope=phoning_national_manager" with body:
+    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [
-      {
-        "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
-      },
-      {
-        "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
-      },
-      {
-        "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7"
-      },
-      {
-        "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404"
-      },
       {
         "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
       }
