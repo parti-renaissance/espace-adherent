@@ -98,6 +98,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      *     orphanRemoval=true,
      *     fetch="EXTRA_LAZY"
      * )
+     * @ORM\OrderBy({"createdAt": "DESC"})
      *
      * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
@@ -183,5 +184,16 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
         }
 
         return false;
+    }
+
+    public function getMember(Adherent $adherent): ?Member
+    {
+        foreach ($this->members as $member) {
+            if ($member->getAdherent() === $adherent) {
+                return $member;
+            }
+        }
+
+        return null;
     }
 }

@@ -25,7 +25,7 @@ class TeamMembersNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         $data['members'] = array_map(function (Member $member) {
             return [
-                'uuid' => $member->getUuid(),
+                'adherent_uuid' => $member->getAdherent()->getUuid(),
                 'first_name' => $member->getAdherent()->getFirstName(),
                 'last_name' => $member->getAdherent()->getLastName(),
                 'registred_at' => $member->getAdherent()->getRegisteredAt()->format('c'),
