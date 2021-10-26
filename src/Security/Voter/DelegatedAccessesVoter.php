@@ -5,10 +5,8 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class DelegatedAccessesVoter extends Voter
+class DelegatedAccessesVoter extends AbstractAdherentVoter
 {
     private const HAS_DELEGATED_ACCESS_ANY = 'HAS_DELEGATED_ACCESS_ANY';
     private const HAS_DELEGATED_ACCESS_EVENTS = 'HAS_DELEGATED_ACCESS_EVENTS';
@@ -36,14 +34,9 @@ class DelegatedAccessesVoter extends Voter
         return 0 === strpos($attribute, 'HAS_DELEGATED_ACCESS_');
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $user = $token->getUser();
-        if (!$user instanceof Adherent) {
-            return false;
-        }
-
-        $delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));
+        $delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));
 
         if (null === $delegatedAccess) {
             return false;

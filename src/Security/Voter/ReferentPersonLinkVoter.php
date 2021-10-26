@@ -2,13 +2,13 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Adherent;
 use App\Repository\ReferentRepository;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class ReferentPersonLinkVoter extends Voter
+class ReferentPersonLinkVoter extends AbstractAdherentVoter
 {
     public const IS_ROOT_REFERENT = 'IS_ROOT_REFERENT';
+
     private $referentRepository;
 
     public function __construct(ReferentRepository $referentRepository)
@@ -23,8 +23,8 @@ class ReferentPersonLinkVoter extends Voter
         );
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $this->referentRepository->exists($token->getUser()->getEmailAddress());
+        return $this->referentRepository->exists($adherent->getEmailAddress());
     }
 }
