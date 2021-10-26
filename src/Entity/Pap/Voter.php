@@ -18,42 +18,55 @@ class Voter
     /**
      * @ORM\Column(nullable=true)
      */
-    private ?string $firstName = null;
+    private ?string $firstName;
 
     /**
      * @ORM\Column(nullable=true)
      */
-    private ?string $lastName = null;
+    private ?string $lastName;
 
     /**
      * @ORM\Column(nullable=true)
      */
-    private ?string $gender = null;
+    private ?string $gender;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private ?\DateTimeInterface $birthdate = null;
+    private ?\DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(length=10, nullable=true)
      */
-    private ?string $votePlace = null;
+    private ?string $votePlace;
 
     /**
      * @ORM\Column(length=5, nullable=true)
      */
-    private ?string $source = null;
+    private ?string $source;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Address", inversedBy="voters")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private ?Address $address = null;
+    private ?Address $address;
 
-    public function __construct(UuidInterface $uuid = null)
-    {
+    public function __construct(
+        UuidInterface $uuid = null,
+        string $firstName = null,
+        string $lastName = null,
+        string $gender = null,
+        \DateTimeInterface $birthdate = null,
+        string $votePlace = null,
+        string $source = null
+    ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->gender = $gender;
+        $this->birthdate = $birthdate;
+        $this->votePlace = $votePlace;
+        $this->source = $source;
     }
 
     public function getFirstName(): ?string
