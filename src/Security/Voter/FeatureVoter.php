@@ -5,12 +5,13 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\Exception\ScopeExceptionInterface;
+use App\Scope\FeatureEnum;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class FeatureVoter extends Voter
+class FeatureVoter extends AbstractAdherentVoter
 {
+    public const PERMISSION = 'IS_FEATURE_GRANTED';
+
     private AuthorizationChecker $authorizationChecker;
     private RequestStack $requestStack;
 
@@ -22,21 +23,20 @@ class FeatureVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        return 0 === strpos($attribute, 'HAS_FEATURE_') && $this->requestStack->getMasterRequest();
+        return self::PERMISSION === $attribute && $this->requestStack->getMasterRequest();
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $user = $token->getUser();
-        if (!$user instanceof Adherent) {
-            return false;
+        if (!FeatureEnum::isValid($subject)) {
+            throw new \InvalidArgumentException('Invalid feature: '.$subject);
         }
 
         try {
             return $this->authorizationChecker->isFeatureGranted(
                 $this->requestStack->getMasterRequest(),
-                $user,
-                mb_strtolower(str_replace('HAS_FEATURE_', '', $attribute))
+                $adherent,
+                $subject
             );
         } catch (ScopeExceptionInterface $exception) {
             return false;

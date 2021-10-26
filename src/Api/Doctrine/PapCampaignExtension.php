@@ -6,6 +6,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInter
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Pap\Campaign;
+use App\Scope\FeatureEnum;
+use App\Security\Voter\FeatureVoter;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
@@ -41,7 +43,7 @@ class PapCampaignExtension implements QueryItemExtensionInterface, QueryCollecti
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void
     {
         if (Campaign::class !== $resourceClass
-            || $this->security->isGranted('HAS_FEATURE_PAP')) {
+            || $this->security->isGranted(FeatureVoter::PERMISSION, FeatureEnum::PAP)) {
             return;
         }
 

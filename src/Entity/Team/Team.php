@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "denormalization_context": {
  *             "groups": {"team_write"}
  *         },
- *         "access_control": "is_granted('HAS_FEATURE_TEAM')"
+ *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'team')"
  *     },
  *     collectionOperations={
  *         "get": {
