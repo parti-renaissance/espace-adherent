@@ -47,7 +47,7 @@ class TeamMemberManagementHandler
         $team->setUpdatedByAdherent($adherent);
 
         $this->entityManager->flush();
-        $this->entityManager->refresh($team);
+        $team->reorderMembersCollection();
     }
 
     private function handleMembersToAdd(

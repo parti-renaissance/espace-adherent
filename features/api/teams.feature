@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to see teams
   As a logged-in user
@@ -129,6 +129,16 @@ Feature:
       ]
     }
     """
+
+  Scenario: As an anonymous I can not update a team
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager" with body:
+    """
+    {
+      "name": "Equipe d'appel - IDF"
+    }
+    """
+    Then the response status code should be 401
 
   Scenario: As a logged-in user with phoning team manager right I can update team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"

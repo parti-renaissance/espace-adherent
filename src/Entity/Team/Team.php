@@ -13,6 +13,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -195,5 +196,10 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
         }
 
         return null;
+    }
+
+    public function reorderMembersCollection(): void
+    {
+        $this->members = new ArrayCollection(array_values($this->members->matching(Criteria::create()->orderBy(['createdAt' => 'DESC']))->toArray()));
     }
 }
