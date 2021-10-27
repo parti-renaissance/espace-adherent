@@ -38,7 +38,7 @@
         "creof/doctrine2-spatial": "^1.2",
         "csa/guzzle-bundle": "^3.1",
         "danhunsaker/flysystem-redis": "^1.0",
-        "doctrine/dbal": "^2.13.0",
+        "doctrine/dbal": "^3.0.0",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "egulias/email-validator": "^3.0",
