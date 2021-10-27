@@ -31,8 +31,6 @@ class Voter
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"pap_address_voter_list"})
      */
     private ?string $firstName;
 
@@ -101,6 +99,15 @@ class Voter
     public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
+    }
+
+    public function getFirstNameInitial(): ?string
+    {
+        if (!$this->firstName) {
+            return null;
+        }
+
+        return strtoupper($this->firstName[0]).'.';
     }
 
     public function getLastName(): ?string

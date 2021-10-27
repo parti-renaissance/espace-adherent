@@ -109,6 +109,13 @@ class Address
      */
     private Collection $voters;
 
+    /**
+     * Used when listing addresses relative to a specific position.
+     *
+     * @Groups({"pap_address_list"})
+     */
+    private ?float $distance = null;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $number = null,
@@ -236,5 +243,15 @@ class Address
     public function getVotersCount(): int
     {
         return $this->voters->count();
+    }
+
+    public function getDistance(): ?float
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?float $distance): void
+    {
+        $this->distance = floor($distance * 1000);
     }
 }

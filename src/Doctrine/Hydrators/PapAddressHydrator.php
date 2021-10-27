@@ -31,6 +31,7 @@ class PapAddressHydrator extends AbstractHydrator
         $address->setCityName($row['city_name']);
         $address->setLatitude($row['latitude']);
         $address->setLongitude($row['longitude']);
+        $address->setDistance($row['distance'] ?? null);
 
         $result[] = $address;
     }

@@ -47,22 +47,26 @@ Feature:
       {
         "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
         "latitude": 48.878708,
-        "longitude": 2.319111
+        "longitude": 2.319111,
+        "distance": 258
       },
       {
         "uuid": "ccfd846a-5439-42ad-85ce-286baf4e7269",
         "latitude": 48.879078,
-        "longitude": 2.318631
+        "longitude": 2.318631,
+        "distance": 312
       },
       {
         "uuid": "04e1d76f-c727-4612-afab-2dec2d71a480",
         "latitude": 48.879166,
-        "longitude": 2.318761
+        "longitude": 2.318761,
+        "distance": 313
       },
       {
         "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2",
         "latitude": 48.879246,
-        "longitude": 2.318427
+        "longitude": 2.318427,
+        "distance": 336
       }
     ]
     """
@@ -94,7 +98,7 @@ Feature:
     [
       {
         "uuid": "bdb9d49c-20f5-44c0-bc4a-d8b75f85ee95",
-        "first_name": "John",
+        "first_name": "J.",
         "last_name": "Doe",
         "gender": "male",
         "birthdate": "@string@.isDateTime()",
@@ -102,7 +106,7 @@ Feature:
       },
       {
         "uuid": "0cf560f0-c5ec-43ef-9ea1-b6fd2a2dc339",
-        "first_name": "Jane",
+        "first_name": "J.",
         "last_name": "Doe",
         "gender": "female",
         "birthdate": "@string@.isDateTime()",
