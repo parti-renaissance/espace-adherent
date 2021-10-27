@@ -16,12 +16,14 @@ class FeatureEnum extends Enum
     public const PAP = 'pap';
     public const RIPOSTES = 'ripostes';
     public const TEAM = 'team';
+    public const NEWS = 'news';
 
     public const ALL = [
         self::DASHBOARD,
         self::CONTACTS,
         self::MESSAGES,
         self::MOBILE_APP,
+        self::NEWS,
         self::ELECTIONS,
         self::RIPOSTES,
         self::PHONING,
