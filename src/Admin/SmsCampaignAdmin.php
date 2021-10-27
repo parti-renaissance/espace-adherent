@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Admin\Audience\AudienceAdmin;
+use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\SmsCampaign;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
@@ -11,7 +12,10 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
@@ -71,6 +75,16 @@ class SmsCampaignAdmin extends AbstractAdmin
             'model_manager' => $this->getModelManager(),
             'admin_code' => AudienceAdmin::SERVICE_CODE,
         ]);
+
+        $form->get('audience')->add('hasSmsSubscription', BooleanType::class, [
+            'label' => 'Abonné aux SMS',
+            'disabled' => true,
+        ]);
+        $form->get('audience')->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /** @var AudienceSnapshot $audience */
+            $audience = $event->getData();
+            $audience->setHasSmsSubscription(true);
+        });
     }
 
     protected function configureShowFields(ShowMapper $show)
