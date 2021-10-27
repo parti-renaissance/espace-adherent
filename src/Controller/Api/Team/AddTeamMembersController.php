@@ -29,6 +29,7 @@ class AddTeamMembersController extends AbstractController
         $newMembers = $serializer->deserialize($request->getContent(), 'App\Api\DTO\AdherentUuid[]', JsonEncoder::FORMAT);
 
         $teamMemberManagementHandler->handleMembersToAdd($team, $newMembers);
+        $team->reorderMembersCollection();
 
         return $this->json(
             $team,

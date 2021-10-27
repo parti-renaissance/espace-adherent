@@ -48,7 +48,6 @@ class TeamMemberManagementHandler
 
         $team->setUpdatedByAdherent($teamManager);
         $this->entityManager->flush();
-        $team->reorderMembersCollection();
     }
 
     public function handleMemberToRemove(Team $team, Adherent $adherent): void
@@ -65,7 +64,6 @@ class TeamMemberManagementHandler
 
             $team->setUpdatedByAdherent($teamManager);
             $this->entityManager->flush();
-            $team->reorderMembersCollection();
         }
     }
 }
