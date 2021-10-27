@@ -1,5 +1,4 @@
 @api
-@debug
 Feature:
   In order to to complete PAP campaigns
   I should be able to retrieve addresses for a given position and additional datas
@@ -9,6 +8,15 @@ Feature:
       | LoadAdherentData   |
       | LoadClientData     |
       | LoadPapAddressData |
+
+  Scenario Outline: As an anonymous I can not get address and voters information
+    When I send a "GET" request to "<url>"
+    Then the response status code should be 401
+    Examples:
+    | url |
+    | /api/v3/pap/address/near?latitude=48.879001640&&longitude=2.3187434&zoom=15 |
+    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                    |
+    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters             |
 
   Scenario Outline: As a logged-in user I can retrieve addresses near a given position ordered by distance
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -64,6 +72,7 @@ Feature:
     When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
     Then the response status code should be 200
     And the response should be in JSON
+    And the JSON should be equal to:
     """
     {
       "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
@@ -77,7 +86,27 @@ Feature:
 
   Scenario: As a logged-in user I can retrieve the voter list for a given address identifier
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
-    When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voter"
+    When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters"
     Then the response status code should be 200
     And the response should be in JSON
-    Then print last JSON response
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "uuid": "bdb9d49c-20f5-44c0-bc4a-d8b75f85ee95",
+        "first_name": "John",
+        "last_name": "Doe",
+        "gender": "male",
+        "birthdate": "@string@.isDateTime()",
+        "vote_place": "75108_0001"
+      },
+      {
+        "uuid": "0cf560f0-c5ec-43ef-9ea1-b6fd2a2dc339",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "gender": "female",
+        "birthdate": "@string@.isDateTime()",
+        "vote_place": "75108_0001"
+      }
+    ]
+    """

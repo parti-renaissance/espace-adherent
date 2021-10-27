@@ -38,11 +38,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *     },
  *     subresourceOperations={
- *         "voter_get_subresource": {
+ *         "voters_get_subresource": {
  *             "method": "GET",
  *             "path": "/v3/pap/address/{id}/voters",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"pap_address_voter_list"}},
  *         },
  *     },
  * )
@@ -107,8 +106,6 @@ class Address
      * @ORM\OneToMany(targetEntity="App\Entity\Pap\Voter", mappedBy="address", cascade={"all"}, fetch="EXTRA_LAZY")
      *
      * @ApiSubresource
-     *
-     * @Groups({"pap_address_voters_list"})
      */
     private Collection $voters;
 

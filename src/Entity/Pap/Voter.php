@@ -14,6 +14,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="pap_voter")
  *
  * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"pap_address_voter_list"},
+ *             "iri": true,
+ *         },
+ *         "pagination_enabled": false,
+ *     },
  *     collectionOperations={},
  *     itemOperations={},
  * )
@@ -31,21 +38,29 @@ class Voter
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_address_voter_list"})
      */
     private ?string $lastName;
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_address_voter_list"})
      */
     private ?string $gender;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({"pap_address_voter_list"})
      */
     private ?\DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(length=10, nullable=true)
+     *
+     * @Groups({"pap_address_voter_list"})
      */
     private ?string $votePlace;
 

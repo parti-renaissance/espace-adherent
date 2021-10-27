@@ -21,9 +21,9 @@ class AddressNearController extends AbstractController
         }
 
         $addresses = $addressRepository->findNear(
-            $request->query->get('latitude'),
-            $request->query->get('longitude'),
-            $request->query->get('zoom')
+            $request->query->filter('latitude', null, \FILTER_VALIDATE_FLOAT),
+            $request->query->filter('longitude', null, \FILTER_VALIDATE_FLOAT),
+            $request->query->getInt('zoom')
         );
 
         return $this->json($addresses, Response::HTTP_OK, [], ['groups' => ['pap_address_list']]);

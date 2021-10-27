@@ -37,8 +37,8 @@ class LoadPapAddressData extends Fixture
             48.878708,
             2.319111
         );
-        $address->addVoter($this->createVoter(self::VOTER_01_UUID, 'John', 'Doe', Genders::MALE, '-30 years'));
-        $address->addVoter($this->createVoter(self::VOTER_02_UUID, 'Jane', 'Doe', Genders::FEMALE, '-29 years'));
+        $address->addVoter($this->createVoter(self::VOTER_01_UUID, 'John', 'Doe', Genders::MALE, '-30 years', '75108_0001'));
+        $address->addVoter($this->createVoter(self::VOTER_02_UUID, 'Jane', 'Doe', Genders::FEMALE, '-29 years', '75108_0001'));
         $manager->persist($address);
 
         $address = $this->createAddress(
@@ -52,7 +52,7 @@ class LoadPapAddressData extends Fixture
             48.879078,
             2.318631
         );
-        $address->addVoter($this->createVoter(self::VOTER_03_UUID, 'Jack', 'Doe', Genders::MALE, '-55 years'));
+        $address->addVoter($this->createVoter(self::VOTER_03_UUID, 'Jack', 'Doe', Genders::MALE, '-55 years', '75108_0001'));
         $manager->persist($address);
 
         $address = $this->createAddress(
@@ -66,9 +66,9 @@ class LoadPapAddressData extends Fixture
             48.879246,
             2.318427
         );
-        $address->addVoter($this->createVoter(self::VOTER_04_UUID, 'Mickaël', 'Doe', Genders::MALE, '-44 years'));
-        $address->addVoter($this->createVoter(self::VOTER_05_UUID, 'Mickaëla', 'Doe', Genders::FEMALE, '-45 years'));
-        $address->addVoter($this->createVoter(self::VOTER_06_UUID, 'Mickaël Jr', 'Doe', Genders::MALE, '-22 years'));
+        $address->addVoter($this->createVoter(self::VOTER_04_UUID, 'Mickaël', 'Doe', Genders::MALE, '-44 years', '75108_0001'));
+        $address->addVoter($this->createVoter(self::VOTER_05_UUID, 'Mickaëla', 'Doe', Genders::FEMALE, '-45 years', '75108_0001'));
+        $address->addVoter($this->createVoter(self::VOTER_06_UUID, 'Mickaël Jr', 'Doe', Genders::MALE, '-22 years', '75108_0001'));
         $manager->persist($address);
 
         $address = $this->createAddress(
@@ -82,7 +82,7 @@ class LoadPapAddressData extends Fixture
             48.879166,
             2.318761
         );
-        $address->addVoter($this->createVoter(self::VOTER_07_UUID, 'Patrick', 'Simpson Jones', Genders::MALE, '-70 years'));
+        $address->addVoter($this->createVoter(self::VOTER_07_UUID, 'Patrick', 'Simpson Jones', Genders::MALE, '-70 years', '75108_0001'));
         $manager->persist($address);
 
         $manager->flush();
@@ -117,14 +117,16 @@ class LoadPapAddressData extends Fixture
         string $firstName,
         string $lastName,
         string $gender,
-        string $birthdate
+        string $birthdate,
+        string $votePlace = null
     ): Voter {
         return new Voter(
             Uuid::fromString($uuid),
             $firstName,
             $lastName,
             $gender,
-            new \DateTime($birthdate)
+            new \DateTime($birthdate),
+            $votePlace
         );
     }
 }
