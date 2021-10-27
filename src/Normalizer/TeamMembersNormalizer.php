@@ -28,7 +28,7 @@ class TeamMembersNormalizer implements NormalizerInterface, NormalizerAwareInter
                 'adherent_uuid' => $member->getAdherent()->getUuid(),
                 'first_name' => $member->getAdherent()->getFirstName(),
                 'last_name' => $member->getAdherent()->getLastName(),
-                'registred_at' => $member->getAdherent()->getRegisteredAt()->format('c'),
+                'registered_at' => $member->getAdherent()->getRegisteredAt()->format('c'),
                 'postal_code' => $member->getAdherent()->getPostalCode(),
             ];
         }, $object->getMembers()->toArray());
