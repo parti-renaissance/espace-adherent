@@ -51,7 +51,7 @@ doctrine:
                 cos: DoctrineExtensions\Query\Mysql\Cos
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
-                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\GeomFromText
+                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STGeomFromText
                 st_within: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STWithin
                 point: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point
             string_functions:

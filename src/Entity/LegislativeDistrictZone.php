@@ -60,7 +60,7 @@ class LegislativeDistrictZone
     private $areaType = self::TYPE_DEPARTMENT;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
+     * @ORM\Column(type="smallint", name="`rank`", options={"unsigned": true})
      */
     private $rank;
 

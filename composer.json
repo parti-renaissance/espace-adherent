@@ -35,7 +35,7 @@
         "beberlei/doctrineextensions": "^1.2",
         "cakephp/chronos": "^2.1",
         "cocur/slugify": "^4.0",
-        "creof/doctrine2-spatial": "^1.2",
+        "creof/doctrine2-spatial": "^1.2.1",
         "csa/guzzle-bundle": "^3.1",
         "danhunsaker/flysystem-redis": "^1.0",
         "doctrine/dbal": "^2.13.0",
@@ -191,6 +191,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/ottaviano/cartographer"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EnMarche/doctrine2-spatial"
         }
     ],
     "conflict": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd1c55a6f2f26277fe9f5583898c6b87",
+    "content-hash": "fcf4f2fd8d09d657d58e5fad0a800a5c",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -905,16 +905,16 @@
         },
         {
             "name": "creof/doctrine2-spatial",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/creof/doctrine2-spatial.git",
-                "reference": "58ea5fae1c1b450ee08d7dac25cd9e8f5e6fdebd"
+                "url": "https://github.com/EnMarche/doctrine2-spatial.git",
+                "reference": "967cb9ce5d133d50209ed208b4dadbf45030a240"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creof/doctrine2-spatial/zipball/58ea5fae1c1b450ee08d7dac25cd9e8f5e6fdebd",
-                "reference": "58ea5fae1c1b450ee08d7dac25cd9e8f5e6fdebd",
+                "url": "https://api.github.com/repos/EnMarche/doctrine2-spatial/zipball/967cb9ce5d133d50209ed208b4dadbf45030a240",
+                "reference": "967cb9ce5d133d50209ed208b4dadbf45030a240",
                 "shasum": ""
             },
             "require": {
@@ -934,7 +934,6 @@
                     "CrEOF\\Spatial": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -958,7 +957,10 @@
                 "postgresql",
                 "spatial"
             ],
-            "time": "2017-07-13T16:48:25+00:00"
+            "support": {
+                "source": "https://github.com/EnMarche/doctrine2-spatial/tree/1.2.1"
+            },
+            "time": "2021-10-27T13:27:22+00:00"
         },
         {
             "name": "creof/geo-parser",
@@ -21209,5 +21211,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
