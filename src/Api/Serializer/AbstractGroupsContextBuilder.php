@@ -21,8 +21,8 @@ abstract class AbstractGroupsContextBuilder implements SerializerContextBuilderI
 
     public function createFromRequest(Request $request, bool $normalization, array $extractedAttributes = null): array
     {
-        return $this->updateContext($this->decorated->createFromRequest($request, $normalization, $extractedAttributes));
+        return $this->updateContext($this->decorated->createFromRequest($request, $normalization, $extractedAttributes), $request);
     }
 
-    abstract protected function updateContext(array $context): array;
+    abstract protected function updateContext(array $context, Request $request): array;
 }

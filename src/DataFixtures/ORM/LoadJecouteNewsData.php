@@ -19,6 +19,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
     public const NEWS_4_UUID = 'b2b8e6a3-f5a9-4b34-a761-37438c3c3602';
     public const NEWS_5_UUID = '6c70f8e8-6bce-4376-8b9e-3ce342880673';
     public const NEWS_6_UUID = '560bab7a-d624-47d6-bf5e-3864c2406daf';
+    public const NEWS_7_UUID = '25632c43-c224-4745-84d7-09dfa8249367';
 
     public function load(ObjectManager $manager)
     {
@@ -69,7 +70,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($this->createNews(
             self::NEWS_5_UUID,
-            'Nouvelle actualité non publié à 92 du référent délégué',
+            'Nouvelle actualité non publiée à 59 du référent délégué',
             'Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.',
             null,
             'https://referent.en-marche.fr',
@@ -86,7 +87,25 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             'Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.',
             null,
             'https://referent.en-marche.fr',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            null,
+            true,
+            true,
+            null,
+            new \DateTime('-1 minute')
+        ));
+
+        $manager->persist($this->createNews(
+            self::NEWS_7_UUID,
+            'Une actualité à 75',
+            'Quisque interdum lectus et ultrices rhoncus. Cras nunc diam, rutrum eget velit vel, cursus varius justo.',
+            null,
+            'https://75.en-marche.fr',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'),
+            JecouteSpaceEnum::REFERENT_SPACE,
+            true,
+            true,
+            $this->getReference('adherent-19')
         ));
 
         $manager->flush();
@@ -102,7 +121,8 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
         string $space = null,
         bool $notification = true,
         bool $published = true,
-        Adherent $author = null
+        Adherent $author = null,
+        \DateTime $createdAt = null
     ): News {
         $news = new News(
             Uuid::fromString($uuid),
@@ -115,6 +135,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             $published
         );
         $news->setSpace($space);
+        $news->setCreatedAt($createdAt ?? new \DateTime());
         if ($author) {
             $news->setAuthor($author);
         }

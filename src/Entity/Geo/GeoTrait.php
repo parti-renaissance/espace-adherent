@@ -37,6 +37,7 @@ trait GeoTrait
      *     "survey_list",
      *     "scopes",
      *     "scope",
+     *     "jecoute_news_read_dc",
      *     "audience_read",
      *     "audience_segment_read"
      * })
@@ -55,6 +56,7 @@ trait GeoTrait
      *     "survey_list",
      *     "scopes",
      *     "scope",
+     *     "jecoute_news_read_dc",
      *     "audience_read",
      *     "audience_segment_read"
      * })

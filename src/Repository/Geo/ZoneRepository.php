@@ -269,10 +269,14 @@ class ZoneRepository extends ServiceEntityRepository
 
     public function isInZones(array $zones, array $parents): bool
     {
+        if (!empty(array_intersect($zones, $parents))) {
+            return true;
+        }
+
         $count = (int) $this->createQueryBuilder('zone')
             ->select('COUNT(1)')
             ->innerJoin('zone.parents', 'parent')
-            ->where('zone IN (:parents) OR (zone IN (:zones) AND parent IN (:parents))')
+            ->where('zone IN (:zones) AND parent IN (:parents)')
             ->setParameter('zones', $zones)
             ->setParameter('parents', $parents)
             ->getQuery()
