@@ -13,6 +13,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -50,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "put": {
  *             "path": "/v3/teams/{id}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "requirements": {"id": "%pattern_uuid%"},
  *         }
  *     }
  * )
@@ -98,6 +99,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      *     orphanRemoval=true,
      *     fetch="EXTRA_LAZY"
      * )
+     * @ORM\OrderBy({"createdAt": "DESC"})
      *
      * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
@@ -183,5 +185,21 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
         }
 
         return false;
+    }
+
+    public function getMember(Adherent $adherent): ?Member
+    {
+        foreach ($this->members as $member) {
+            if ($member->getAdherent() === $adherent) {
+                return $member;
+            }
+        }
+
+        return null;
+    }
+
+    public function reorderMembersCollection(): void
+    {
+        $this->members = new ArrayCollection(array_values($this->members->matching(Criteria::create()->orderBy(['createdAt' => 'DESC']))->toArray()));
     }
 }

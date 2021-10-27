@@ -17,14 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdherentAutocompleteController extends AbstractController
 {
-    private const MAX_RESULT = 100;
-
     public function __invoke(Request $request, AdherentRepository $repository): JsonResponse
     {
         $query = $request->query->get('q');
+        $maxResult = $request->query->getInt('max_result', 10);
 
         return $this->json(
-            $repository->findAdherentByAutocompletion($query, self::MAX_RESULT),
+            $repository->findAdherentByAutocompletion($query, $maxResult > 100 ? 100 : $maxResult),
             Response::HTTP_OK,
             [],
             ['groups' => ['adherent_autocomplete']]

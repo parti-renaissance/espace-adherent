@@ -1474,6 +1474,7 @@ SQL;
             ->Where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
             ->andWhere('a.adherent = :true')
             ->andWhere('a.status = :status')
+            ->andWhere('a.source IS NULL')
             ->setParameter('name', '%'.strtolower(trim($name)).'%')
             ->setParameter('status', Adherent::ENABLED)
             ->setParameter('true', true)
