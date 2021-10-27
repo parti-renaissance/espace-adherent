@@ -4,57 +4,138 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd1c55a6f2f26277fe9f5583898c6b87",
+    "content-hash": "47bd98c994911b2a67cff02bb9a40069",
     "packages": [
         {
-            "name": "a2lix/translation-form-bundle",
-            "version": "2.4.3",
+            "name": "a2lix/auto-form-bundle",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "c0290acaa044add7476da0f49c2df399a4d9fcfd"
+                "url": "https://github.com/a2lix/AutoFormBundle.git",
+                "reference": "ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/c0290acaa044add7476da0f49c2df399a4d9fcfd",
-                "reference": "c0290acaa044add7476da0f49c2df399a4d9fcfd",
+                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b",
+                "reference": "ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0",
-                "symfony/config": "^2.3 || ^3.0 || ^4.0",
-                "symfony/dependency-injection": "^2.3 || ^3.0 || ^4.0",
-                "symfony/event-dispatcher": "^2.3 || ^3.0 || ^4.0",
-                "symfony/form": "^2.3 || ^3.0 || ^4.0",
-                "symfony/http-foundation": "^2.3 || ^3.0 || ^4.0",
-                "symfony/http-kernel": "^2.3 || ^3.0 || ^4.0",
-                "symfony/options-resolver": "^2.3 || ^3.0 || ^4.0"
+                "doctrine/persistence": "^1.3|^2.0",
+                "php": ">=7.2.5",
+                "symfony/config": "^3.4.30|^4.3|^5.0",
+                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0",
+                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0",
+                "symfony/form": "^3.4.30|^4.3|^5.0",
+                "symfony/http-kernel": "^3.4.30|^4.3|^5.0"
             },
             "require-dev": {
-                "doctrine/common": "^2.3",
-                "doctrine/doctrine-bundle": "^1.0",
-                "doctrine/orm": "^2.4",
-                "gedmo/doctrine-extensions": "^2.4",
-                "knplabs/doctrine-behaviors": "^1.0",
-                "matthiasnoback/symfony-dependency-injection-test": "^0.7 || ^1.2",
-                "symfony/doctrine-bridge": "^2.3.5 || ^3.0 || ^4.0",
-                "symfony/phpunit-bridge": "^4.0",
-                "symfony/validator": "^2.3 || ^3.0 || ^4.0"
+                "doctrine/orm": "^2.7",
+                "edgedesign/phpqa": "^1.23.3",
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "phpstan/phpstan": "^0.12",
+                "sensiolabs/security-checker": "^6.0",
+                "symfony/phpunit-bridge": "^4.3|^5.0",
+                "symfony/validator": "^3.4.30|^4.3|^5.0",
+                "vimeo/psalm": "^3.6"
             },
             "suggest": {
-                "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
-                "gedmo/doctrine-extensions": "For Gedmo strategy",
+                "a2lix/translation-form-bundle": "For translation form"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "A2lix\\AutoFormBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David ALLIX",
+                    "homepage": "http://a2lix.fr"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/a2lix/AutoFormBundle/contributors"
+                }
+            ],
+            "description": "Automate form building",
+            "homepage": "https://github.com/a2lix/AutoFormBundle",
+            "keywords": [
+                "automate",
+                "automation",
+                "building",
+                "field",
+                "form",
+                "magic",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/a2lix/AutoFormBundle/issues",
+                "source": "https://github.com/a2lix/AutoFormBundle/tree/0.3.3"
+            },
+            "time": "2020-10-27T11:27:31+00:00"
+        },
+        {
+            "name": "a2lix/translation-form-bundle",
+            "version": "3.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a2lix/TranslationFormBundle.git",
+                "reference": "4a5f7c32209cef85cb33f63ca1d0b7169ebc484c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/4a5f7c32209cef85cb33f63ca1d0b7169ebc484c",
+                "reference": "4a5f7c32209cef85cb33f63ca1d0b7169ebc484c",
+                "shasum": ""
+            },
+            "require": {
+                "a2lix/auto-form-bundle": "^0.2|^0.3",
+                "php": ">=7.2",
+                "symfony/config": "^3.4.30|^4.3|^5.0",
+                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0",
+                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0",
+                "symfony/event-dispatcher": "^3.4.30|^4.3|^5.0",
+                "symfony/form": "^3.4.30|^4.3|^5.0",
+                "symfony/http-foundation": "^3.4.30|^4.3|^5.0",
+                "symfony/http-kernel": "^3.4.30|^4.3|^5.0",
+                "symfony/options-resolver": "^3.4.30|^4.3|^5.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "edgedesign/phpqa": "^1.23",
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "knplabs/doctrine-behaviors": "^1.6",
+                "matthiasnoback/symfony-dependency-injection-test": "^4.0",
+                "phpstan/phpstan": "^0.11.19",
+                "sensiolabs/security-checker": "^6.0",
+                "symfony/phpunit-bridge": "^4.3|^5.0",
+                "symfony/validator": "^3.4.30|^4.3|^5.0",
+                "vimeo/psalm": "^3.6"
+            },
+            "suggest": {
                 "knplabs/doctrine-behaviors": "For Knp strategy",
                 "prezent/doctrine-translatable-bundle": "For Prezent strategy"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "A2lix\\TranslationFormBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
+                    "A2lix\\TranslationFormBundle\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -75,7 +156,6 @@
             "keywords": [
                 "doctrine2",
                 "form",
-                "gedmo",
                 "i18n",
                 "internationalization",
                 "knplabs",
@@ -86,9 +166,9 @@
             ],
             "support": {
                 "issues": "https://github.com/a2lix/TranslationFormBundle/issues",
-                "source": "https://github.com/a2lix/TranslationFormBundle/tree/2.x"
+                "source": "https://github.com/a2lix/TranslationFormBundle/tree/master"
             },
-            "time": "2019-03-04T10:07:37+00:00"
+            "time": "2020-04-03T08:57:40+00:00"
         },
         {
             "name": "algolia/algoliasearch-client-php",
