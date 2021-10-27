@@ -291,6 +291,7 @@ services:
             - '%env(OVHCLOUD_APPLICATION_SECRET)%'
             - '%env(OVHCLOUD_CONSUMER_KEY)%'
             - '%env(OVHCLOUD_SERVICE_NAME)%'
+            - '%env(OVHCLOUD_SMS_SENDER_NAME)%'
 
     App\AdherentFilter\AdherentFiltersGenerator:
         arguments: [!tagged_iterator 'app.adherent_filter.builder']

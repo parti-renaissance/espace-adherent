@@ -9,18 +9,20 @@ class Driver
 {
     private const HOST = 'eu.api.ovh.com';
 
-    private $httpClient;
-    private $serviceName;
-    private $applicationKey;
-    private $applicationSecret;
-    private $consumerKey;
+    private HttpClientInterface $httpClient;
+    private string $serviceName;
+    private string $applicationKey;
+    private string $applicationSecret;
+    private string $consumerKey;
+    private string $senderName;
 
     public function __construct(
         HttpClientInterface $httpClient,
         string $applicationKey,
         string $applicationSecret,
         string $consumerKey,
-        string $serviceName
+        string $serviceName,
+        string $senderName
     ) {
         $this->httpClient = $httpClient;
 
@@ -28,6 +30,7 @@ class Driver
         $this->applicationSecret = $applicationSecret;
         $this->consumerKey = $consumerKey;
         $this->serviceName = $serviceName;
+        $this->senderName = $senderName;
     }
 
     public function sendSmsBatch(string $message, string $name, array $phones): ResponseInterface
@@ -36,7 +39,7 @@ class Driver
             'name' => $name,
             'message' => $message,
             'to' => $phones,
-            'from' => 'En Marche',
+            'from' => $this->senderName,
             'noStop' => false,
         ];
 
