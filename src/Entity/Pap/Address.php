@@ -3,6 +3,7 @@
 namespace App\Entity\Pap;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,18 +24,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={
  *         "near": {
  *             "method": "GET",
- *             "path": "/pap/address/near",
- *             "requirements": {"id": "[\w-]+"},
+ *             "path": "/v3/pap/address/near",
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Pap\AddressNearController",
- *         }
+ *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
- *             "path": "/pap/address/{id}",
+ *             "path": "/v3/pap/address/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"pap_address_read"}},
+ *         },
+ *     },
+ *     subresourceOperations={
+ *         "voter_get_subresource": {
+ *             "method": "GET",
+ *             "path": "/v3/pap/address/{id}/voters",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {"groups": {"pap_address_voter_list"}},
  *         },
  *     },
  * )
@@ -97,6 +105,10 @@ class Address
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Pap\Voter", mappedBy="address", cascade={"all"}, fetch="EXTRA_LAZY")
+     *
+     * @ApiSubresource
+     *
+     * @Groups({"pap_address_voters_list"})
      */
     private Collection $voters;
 

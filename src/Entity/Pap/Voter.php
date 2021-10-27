@@ -2,14 +2,21 @@
 
 namespace App\Entity\Pap;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\VoterRepository")
  * @ORM\Table(name="pap_voter")
+ *
+ * @ApiResource(
+ *     collectionOperations={},
+ *     itemOperations={},
+ * )
  */
 class Voter
 {
@@ -17,6 +24,8 @@ class Voter
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_address_voter_list"})
      */
     private ?string $firstName;
 
