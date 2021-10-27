@@ -17,6 +17,7 @@ class FeatureEnum extends Enum
     public const RIPOSTES = 'ripostes';
     public const TEAM = 'team';
     public const NEWS = 'news';
+    public const PHONING_CAMPAIGN = 'phoning_campaign';
 
     public const ALL = [
         self::DASHBOARD,
@@ -29,6 +30,7 @@ class FeatureEnum extends Enum
         self::PHONING,
         self::PAP,
         self::TEAM,
+        self::PHONING_CAMPAIGN,
     ];
 
     public const DELEGATED_ACCESSES_MAPPING = [

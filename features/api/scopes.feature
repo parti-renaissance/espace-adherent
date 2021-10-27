@@ -146,7 +146,8 @@ Feature:
         "ripostes",
         "phoning",
         "pap",
-        "team"
+        "team",
+        "phoning_campaign"
       ]
     }
     """
