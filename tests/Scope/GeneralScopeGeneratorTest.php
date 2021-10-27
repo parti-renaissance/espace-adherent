@@ -62,7 +62,10 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ],
             [
                 'code' => 'phoning_national_manager',
-                'zones' => [],
+                'zones' => [[
+                    'code' => 'FR',
+                    'name' => 'France',
+                ]],
                 'apps' => ['data_corner'],
             ],
             [
