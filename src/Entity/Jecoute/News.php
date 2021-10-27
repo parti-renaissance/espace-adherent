@@ -23,6 +23,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {"groups": {"jecoute_news_read"}},
+ *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') or is_granted('IS_FEATURE_GRANTED', 'news')",
+ *         "filters": {JecouteNewsZipCodeFilter::class},
+ *         "order": {"createdAt": "DESC"},
+ *     },
  *     collectionOperations={
  *         "get": {
  *             "path": "/jecoute/news",
@@ -65,12 +71,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 }
  *             }
  *         }
- *     },
- *     attributes={
- *         "normalization_context": {"groups": {"jecoute_news_read"}},
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *         "filters": {JecouteNewsZipCodeFilter::class},
- *         "order": {"createdAt": "DESC"},
  *     },
  * )
  *
