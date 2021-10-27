@@ -103,28 +103,28 @@ Feature:
           "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
           "first_name": "Lucie",
           "last_name": "Olivera",
-          "registred_at": "2017-01-18T13:15:28+01:00",
+          "registered_at": "2017-01-18T13:15:28+01:00",
           "postal_code": "75009"
         },
         {
           "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
           "last_name": "Picard",
-          "registred_at": "2017-01-03T08:47:54+01:00",
+          "registered_at": "2017-01-03T08:47:54+01:00",
           "postal_code": "75008"
         },
         {
           "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
           "first_name": "Pierre",
           "last_name": "Kiroule",
-          "registred_at": "2017-04-09T06:20:38+02:00",
+          "registered_at": "2017-04-09T06:20:38+02:00",
           "postal_code": "10019"
         },
         {
           "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
           "first_name": "Député",
           "last_name": "PARIS I",
-          "registred_at": "2017-06-01T09:26:31+02:00",
+          "registered_at": "2017-06-01T09:26:31+02:00",
           "postal_code": "75008"
         }
       ]
@@ -162,28 +162,28 @@ Feature:
           "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
           "first_name": "Lucie",
           "last_name": "Olivera",
-          "registred_at": "2017-01-18T13:15:28+01:00",
+          "registered_at": "2017-01-18T13:15:28+01:00",
           "postal_code": "75009"
         },
         {
           "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
           "last_name": "Picard",
-          "registred_at": "2017-01-03T08:47:54+01:00",
+          "registered_at": "2017-01-03T08:47:54+01:00",
           "postal_code": "75008"
         },
         {
           "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
           "first_name": "Pierre",
           "last_name": "Kiroule",
-          "registred_at": "2017-04-09T06:20:38+02:00",
+          "registered_at": "2017-04-09T06:20:38+02:00",
           "postal_code": "10019"
         },
         {
           "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
           "first_name": "Député",
           "last_name": "PARIS I",
-          "registred_at": "2017-06-01T09:26:31+02:00",
+          "registered_at": "2017-06-01T09:26:31+02:00",
           "postal_code": "75008"
         }
       ]
@@ -257,35 +257,35 @@ Feature:
           "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
           "first_name": "Benjamin",
           "last_name": "Duroc",
-          "registred_at": "2017-01-16T18:33:22+01:00",
+          "registered_at": "2017-01-16T18:33:22+01:00",
           "postal_code": "13003"
         },
         {
           "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
           "first_name": "Lucie",
           "last_name": "Olivera",
-          "registred_at": "2017-01-18T13:15:28+01:00",
+          "registered_at": "2017-01-18T13:15:28+01:00",
           "postal_code": "75009"
         },
         {
           "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
           "last_name": "Picard",
-          "registred_at": "2017-01-03T08:47:54+01:00",
+          "registered_at": "2017-01-03T08:47:54+01:00",
           "postal_code": "75008"
         },
         {
           "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
           "first_name": "Pierre",
           "last_name": "Kiroule",
-          "registred_at": "2017-04-09T06:20:38+02:00",
+          "registered_at": "2017-04-09T06:20:38+02:00",
           "postal_code": "10019"
         },
         {
           "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
           "first_name": "Député",
           "last_name": "PARIS I",
-          "registred_at": "2017-06-01T09:26:31+02:00",
+          "registered_at": "2017-06-01T09:26:31+02:00",
           "postal_code": "75008"
         }
       ]
@@ -316,21 +316,21 @@ Feature:
           "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
           "first_name": "Lucie",
           "last_name": "Olivera",
-          "registred_at": "2017-01-18T13:15:28+01:00",
+          "registered_at": "2017-01-18T13:15:28+01:00",
           "postal_code": "75009"
         },
         {
           "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
           "last_name": "Picard",
-          "registred_at": "2017-01-03T08:47:54+01:00",
+          "registered_at": "2017-01-03T08:47:54+01:00",
           "postal_code": "75008"
         },
         {
           "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
           "first_name": "Pierre",
           "last_name": "Kiroule",
-          "registred_at": "2017-04-09T06:20:38+02:00",
+          "registered_at": "2017-04-09T06:20:38+02:00",
           "postal_code": "10019"
         }
       ]
@@ -360,28 +360,28 @@ Feature:
           "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
           "first_name": "Lucie",
           "last_name": "Olivera",
-          "registred_at": "2017-01-18T13:15:28+01:00",
+          "registered_at": "2017-01-18T13:15:28+01:00",
           "postal_code": "75009"
         },
         {
           "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
           "last_name": "Picard",
-          "registred_at": "2017-01-03T08:47:54+01:00",
+          "registered_at": "2017-01-03T08:47:54+01:00",
           "postal_code": "75008"
         },
         {
           "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
           "first_name": "Pierre",
           "last_name": "Kiroule",
-          "registred_at": "2017-04-09T06:20:38+02:00",
+          "registered_at": "2017-04-09T06:20:38+02:00",
           "postal_code": "10019"
         },
         {
           "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
           "first_name": "Député",
           "last_name": "PARIS I",
-          "registred_at": "2017-06-01T09:26:31+02:00",
+          "registered_at": "2017-06-01T09:26:31+02:00",
           "postal_code": "75008"
         }
       ]
