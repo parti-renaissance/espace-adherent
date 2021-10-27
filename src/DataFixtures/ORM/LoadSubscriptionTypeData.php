@@ -24,7 +24,7 @@ class LoadSubscriptionTypeData extends Fixture
     {
         return [
             [
-                'label' => 'Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS',
+                'label' => 'Recevoir les informations sur les actions militantes du mouvement par téléphone',
                 'code' => SubscriptionTypeEnum::MILITANT_ACTION_SMS,
                 'externalId' => null,
             ],
