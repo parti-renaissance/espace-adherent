@@ -78,7 +78,7 @@ class LegislativesControllerTest extends WebTestCase
                 'electoralDistrictNumber' => '3',
                 'role' => 'Responsable communication',
                 'recipient' => $selectedRecipient,
-                'subject' => '🍔 Avez-vous pensez aux réseaux sociaux ? 🍔',
+                'subject' => '🍔 Avez-vous pensé aux réseaux sociaux ? 🍔',
                 'message' => 'Puis-je avoir accès aux comptes Twitter 🐦 et Facebook 📆 svp ?',
             ],
         ]));
@@ -91,18 +91,18 @@ class LegislativesControllerTest extends WebTestCase
         $email = $emails[0];
 
         self::assertMailSubject('Élections Législatives - Nouvelle demande de contact', $email);
-        self::assertMailFromName('Marc Dupont', $email);
+        self::assertMailFromName('Marc 🍇 🍎 Dupont', $email);
         self::assertMailTemplateName('legislative-campaign-contact', $email);
 
         self::assertMailVars([
             'email' => 'marc1337@gmail.tld',
-            'first_name' => 'Marc',
-            'last_name' => 'Dupont',
+            'first_name' => 'Marc 🍇',
+            'last_name' => '🍎 Dupont',
             'department_number' => '92',
             'electoral_district_number' => '3',
             'role' => 'Responsable communication',
-            'subject' => 'Avez-vous pensez aux réseaux sociaux ?',
-            'message' => 'Puis-je avoir accès aux comptes Twitter  et Facebook  svp ?',
+            'subject' => '🍔 Avez-vous pensé aux réseaux sociaux ? 🍔',
+            'message' => 'Puis-je avoir accès aux comptes Twitter 🐦 et Facebook 📆 svp ?',
         ], $email);
 
         $crawler = $this->client->followRedirect();

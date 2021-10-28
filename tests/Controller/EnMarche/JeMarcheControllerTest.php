@@ -92,7 +92,7 @@ class JeMarcheControllerTest extends WebTestCase
         $this->assertNull($report->getNotConvinced());
         $this->assertSame([], $report->getConvinced());
         $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
-        $this->assertSame('Emmanuel Macron va gagner !', $report->getReaction());
+        $this->assertSame('Emmanuel Macron va gagner ! 😀', $report->getReaction());
     }
 
     protected function setUp(): void
