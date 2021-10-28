@@ -15,14 +15,12 @@ class DeputyMessageType extends AbstractType
         $builder
             ->add('subject', TextType::class, [
                 'label' => false,
-                'filter_emojis' => true,
             ])
             ->add('content', PurifiedTextareaType::class, [
                 'label' => false,
                 'attr' => [
                     'maxlength' => 6000,
                 ],
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
             ])

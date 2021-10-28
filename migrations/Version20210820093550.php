@@ -20,7 +20,7 @@ final class Version20210820093550 extends AbstractMigration
           INDEX IDX_C4E0A61F4B09E92C (administrator_id),
           UNIQUE INDEX team_type_name_unique (type, name),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE team_member (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           team_id INT UNSIGNED NOT NULL,
@@ -32,7 +32,7 @@ final class Version20210820093550 extends AbstractMigration
           INDEX IDX_6FFBDA125F06C53 (adherent_id),
           UNIQUE INDEX team_member_unique (team_id, adherent_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE team_member_history (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           team_id INT UNSIGNED NOT NULL,
@@ -45,7 +45,7 @@ final class Version20210820093550 extends AbstractMigration
           INDEX team_member_history_administrator_id_idx (administrator_id),
           INDEX team_member_history_date_idx (date),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           team
         ADD

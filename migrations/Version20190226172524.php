@@ -17,7 +17,7 @@ final class Version20190226172524 extends AbstractMigration
           PRIMARY KEY(
             ideas_workshop_answer_id, user_document_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           ideas_workshop_answer_user_documents 
         ADD 

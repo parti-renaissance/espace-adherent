@@ -19,33 +19,33 @@ final class Version20200504113033 extends AbstractMigration
           designation_type VARCHAR(255) NOT NULL, 
           UNIQUE INDEX UNIQ_4E144C949F7E3037 (election_entity_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_voter (
           id INT AUTO_INCREMENT NOT NULL, 
           adherent_id INT UNSIGNED DEFAULT NULL, 
           created_at DATETIME NOT NULL, 
           UNIQUE INDEX UNIQ_AB02EC0225F06C53 (adherent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_voters_list (
           id INT AUTO_INCREMENT NOT NULL, 
           election_id INT UNSIGNED DEFAULT NULL, 
           UNIQUE INDEX UNIQ_3C73500DA708DAFF (election_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_voters_list_voter (
           voters_list_id INT NOT NULL, 
           voter_id INT NOT NULL, 
           INDEX IDX_7CC26956FB0C8C84 (voters_list_id), 
           INDEX IDX_7CC26956EBB4B8AD (voter_id), 
           PRIMARY KEY(voters_list_id, voter_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_election_entity (
           id INT AUTO_INCREMENT NOT NULL, 
           committee_id INT UNSIGNED DEFAULT NULL, 
           INDEX IDX_7AAD259FED1A100B (committee_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_vote (
           id INT AUTO_INCREMENT NOT NULL, 
           voter_id INT DEFAULT NULL, 
@@ -55,21 +55,21 @@ final class Version20200504113033 extends AbstractMigration
           INDEX IDX_DCBB2B7BA708DAFF (election_id), 
           UNIQUE INDEX unique_vote (voter_id, election_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_vote_candidate_group (
           vote_id INT NOT NULL, 
           candidate_group_id INT UNSIGNED NOT NULL, 
           INDEX IDX_AFB0733772DCDAFC (vote_id), 
           INDEX IDX_AFB073375F0A9B94 (candidate_group_id), 
           PRIMARY KEY(vote_id, candidate_group_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_candidate_group (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           election_id INT UNSIGNED DEFAULT NULL, 
           INDEX IDX_2C1A353AA708DAFF (election_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_candidate (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
@@ -81,7 +81,7 @@ final class Version20200504113033 extends AbstractMigration
           image_path VARCHAR(255) DEFAULT NULL, 
           INDEX IDX_3F426D6D5F0A9B94 (candidate_group_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           voting_platform_election 
         ADD 

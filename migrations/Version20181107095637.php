@@ -14,6 +14,6 @@ final class Version20181107095637 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE jecoute_data_survey CHANGE profession profession VARCHAR(15) DEFAULT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE jecoute_data_survey CHANGE profession profession VARCHAR(15) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

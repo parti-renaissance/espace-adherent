@@ -15,7 +15,7 @@ final class Version20201217161643 extends AbstractMigration
           INDEX IDX_BF208CAC3B1C4B73 (base_event_id),
           INDEX IDX_BF208CAC9F2C3FAB (zone_id),
           PRIMARY KEY(base_event_id, zone_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           event_zone
         ADD

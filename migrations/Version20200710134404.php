@@ -15,7 +15,7 @@ final class Version20200710134404 extends AbstractMigration
           label VARCHAR(255) NOT NULL, 
           external_id VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void

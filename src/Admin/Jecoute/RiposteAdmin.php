@@ -120,11 +120,9 @@ class RiposteAdmin extends AbstractAdmin
         $formMapper
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-                'filter_emojis' => true,
             ])
             ->add('body', TextareaType::class, [
                 'label' => 'Texte',
-                'filter_emojis' => true,
                 'attr' => ['rows' => 10],
             ])
             ->add('sourceUrl', UrlType::class, [

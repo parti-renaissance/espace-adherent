@@ -28,7 +28,7 @@ final class Version20210721120753 extends AbstractMigration
           has_sms_subscription TINYINT(1) DEFAULT NULL,
           INDEX IDX_FDCD94189F2C3FAB (zone_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           audience
         ADD

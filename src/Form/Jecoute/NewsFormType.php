@@ -20,12 +20,8 @@ class NewsFormType extends AbstractType
         $isEdition = $options['edit'];
 
         $builder
-            ->add('title', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('text', TextareaType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('title', TextType::class)
+            ->add('text', TextareaType::class)
             ->add('externalLink', UrlType::class, [
                 'required' => false,
             ])

@@ -24,7 +24,6 @@ class TonMacronInvitationType extends AbstractType
                 $builder
                     ->add('friendFirstName', TextType::class, [
                         'label' => false,
-                        'filter_emojis' => true,
                         'attr' => ['placeholder' => 'ton_macron.invitation_form.friend_first_name'],
                     ])
                     ->add('friendAge', ChoiceType::class, [
@@ -85,19 +84,15 @@ class TonMacronInvitationType extends AbstractType
                 $builder
                     ->add('messageSubject', TextType::class, [
                         'label' => false,
-                        'filter_emojis' => true,
                     ])
                     ->add('messageContent', TextareaType::class, [
                         'label' => false,
-                        'filter_emojis' => true,
                     ])
                     ->add('selfFirstName', TextType::class, [
                         'label' => false,
-                        'filter_emojis' => true,
                     ])
                     ->add('selfLastName', TextType::class, [
                         'label' => false,
-                        'filter_emojis' => true,
                     ])
                     ->add('selfEmail', EmailType::class, [
                         'label' => false,

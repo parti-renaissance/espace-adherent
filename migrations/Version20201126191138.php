@@ -36,13 +36,13 @@ final class Version20201126191138 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           jecoute_region 
         ADD 
-          name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         ADD 
-          code VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          code VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         ADD 
-          canonical_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          canonical_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         ADD 
-          slug VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          slug VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         DROP 
           geo_region_id');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_4E74226F77153098 ON jecoute_region (code)');

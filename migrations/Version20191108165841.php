@@ -17,6 +17,6 @@ final class Version20191108165841 extends AbstractMigration
         $this->addSql('ALTER TABLE
           programmatic_foundation_measure 
         ADD 
-          city VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          city VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

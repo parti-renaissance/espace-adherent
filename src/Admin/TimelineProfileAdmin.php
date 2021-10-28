@@ -27,7 +27,6 @@ class TimelineProfileAdmin extends AbstractAdmin
                         ],
                         'description' => [
                             'label' => 'Description',
-                            'filter_emojis' => true,
                         ],
                     ],
                 ])

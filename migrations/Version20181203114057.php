@@ -17,7 +17,7 @@ final class Version20181203114057 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql('DROP INDEX category_name_unique ON ideas_workshop_category');
-        $this->addSql('ALTER TABLE ideas_workshop_category ADD canonical_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, ADD slug VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE ideas_workshop_category ADD canonical_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, ADD slug VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('CREATE UNIQUE INDEX category_slug_unique ON ideas_workshop_category (slug)');
     }
 }

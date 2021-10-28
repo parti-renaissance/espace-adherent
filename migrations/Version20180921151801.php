@@ -31,7 +31,7 @@ final class Version20180921151801 extends AbstractMigration
                 UNIQUE INDEX executive_office_member_uuid_unique (uuid), 
                 UNIQUE INDEX executive_office_member_slug_unique (slug), 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
     }
 

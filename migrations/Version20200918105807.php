@@ -20,7 +20,7 @@ final class Version20200918105807 extends AbstractMigration
             thematic_community_membership_id, 
             user_list_definition_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           thematic_community_membership_user_list_definition 
         ADD 
@@ -57,16 +57,16 @@ final class Version20200918105807 extends AbstractMigration
         DROP 
           custom_gender, 
           CHANGE birth_date birth_date DATE NOT NULL, 
-          CHANGE phone phone VARCHAR(35) NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:phone_number)\', 
-          CHANGE activity_area activity_area VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
-          CHANGE job_area job_area VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
-          CHANGE job job VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE phone phone VARCHAR(35) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:phone_number)\', 
+          CHANGE activity_area activity_area VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE job_area job_area VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE job job VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           thematic_community_membership 
         ADD 
           elected_representative_id INT DEFAULT NULL, 
         ADD 
-          categories LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
+          categories LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
         $this->addSql('ALTER TABLE 
           thematic_community_membership 
         ADD 

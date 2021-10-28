@@ -17,7 +17,7 @@ final class Version20190415143923 extends AbstractMigration
           PRIMARY KEY(
             assessor_request_id, vote_place_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           assessor_requests_vote_place_wishes 
         ADD 
@@ -39,7 +39,7 @@ final class Version20190415143923 extends AbstractMigration
           PRIMARY KEY(
             assessor_request_id, vote_place_id
           )
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           assessor_request_vote_place_wishes 
         ADD 

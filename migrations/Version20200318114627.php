@@ -21,6 +21,6 @@ final class Version20200318114627 extends AbstractMigration
         $this->addSql('ALTER TABLE elected_representative_mandate DROP number');
         $this->addSql('ALTER TABLE elected_representative_political_function DROP FOREIGN KEY FK_303BAF416C1129CD');
         $this->addSql('DROP INDEX IDX_303BAF416C1129CD ON elected_representative_political_function');
-        $this->addSql('ALTER TABLE elected_representative_political_function ADD geographical_area VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, DROP mandate_id');
+        $this->addSql('ALTER TABLE elected_representative_political_function ADD geographical_area VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, DROP mandate_id');
     }
 }

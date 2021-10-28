@@ -29,7 +29,7 @@ SET ev.cause_id = ec.cause_id');
           UNIQUE INDEX UNIQ_B1C1CE9371F7E88B (event_id),
           INDEX IDX_B1C1CE9366E2221E (cause_id),
           PRIMARY KEY(event_id, cause_id)
-        ) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
         $this->addSql('ALTER TABLE
           event_cause
         ADD

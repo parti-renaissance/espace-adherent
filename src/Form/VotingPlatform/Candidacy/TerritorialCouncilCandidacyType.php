@@ -25,13 +25,11 @@ class TerritorialCouncilCandidacyType extends AbstractType
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
                 'constraints' => [new NotBlank(), new Length(['max' => 500])],
-                'filter_emojis' => true,
             ])
             ->add('faithStatement', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
                 'constraints' => [new NotBlank(), new Length(['max' => 2000])],
-                'filter_emojis' => true,
             ])
             ->add('isPublicFaithStatement', CheckboxType::class, [
                 'required' => false,

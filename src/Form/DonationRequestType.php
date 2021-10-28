@@ -81,7 +81,6 @@ class DonationRequestType extends AbstractType
                     'data' => $this->donationRequestUtils->getDefaultConfirmSubscriptionAmount(
                         $request->get('montant')
                     ),
-                    'filter_emojis' => true,
                     'attr' => ['size' => 2, 'maxlength' => 4],
                 ])
                 ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvent) {
@@ -103,12 +102,8 @@ class DonationRequestType extends AbstractType
                 'translation_domain' => 'messages',
                 'expanded' => true,
             ])
-            ->add('firstName', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('lastName', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('firstName', TextType::class)
+            ->add('lastName', TextType::class)
             ->add('emailAddress', EmailType::class)
             ->add('nationality', CountryType::class, [
                 'preferred_choices' => [Address::FRANCE],

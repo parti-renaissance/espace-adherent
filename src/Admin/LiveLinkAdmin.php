@@ -25,7 +25,6 @@ class LiveLinkAdmin extends AbstractAdmin
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-                'filter_emojis' => true,
             ])
             ->add('link', null, [
                 'label' => 'Cible du lien',

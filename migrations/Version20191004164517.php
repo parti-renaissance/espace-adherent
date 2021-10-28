@@ -17,7 +17,7 @@ final class Version20191004164517 extends AbstractMigration
           INDEX IDX_D6F94F2B25F06C53 (adherent_id), 
           UNIQUE INDEX UNIQ_D6F94F2B25F06C5370AAEA5 (adherent_id, dtype), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           adherent_charter 
         ADD 

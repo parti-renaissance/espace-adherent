@@ -2,7 +2,6 @@
 
 namespace App\OpenGraph;
 
-use App\Utils\EmojisRemover;
 use Fusonic\OpenGraph\Consumer;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\NativeHttpClient;
@@ -37,9 +36,9 @@ class OpenGraphFetcher
 
         return [
             'type' => $openGraph->type,
-            'title' => EmojisRemover::remove(str_replace(' on Twitter', '', $openGraph->title)),
-            'description' => EmojisRemover::remove(trim($openGraph->description, '“')),
-            'site_name' => EmojisRemover::remove($openGraph->siteName),
+            'title' => str_replace(' on Twitter', '', $openGraph->title),
+            'description' => trim($openGraph->description, '“'),
+            'site_name' => $openGraph->siteName,
             'url' => $openGraph->url,
             'image' => $image ? $image->url : null,
         ];

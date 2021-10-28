@@ -16,8 +16,8 @@ final class Version20201027190850 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE 
-          adherents CHANGE position position VARCHAR(20) DEFAULT NULL COLLATE utf8_unicode_ci');
+          adherents CHANGE position position VARCHAR(20) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
-          thematic_community_contact CHANGE position position VARCHAR(100) DEFAULT NULL COLLATE utf8_unicode_ci');
+          thematic_community_contact CHANGE position position VARCHAR(100) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

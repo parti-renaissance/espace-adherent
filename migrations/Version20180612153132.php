@@ -14,6 +14,6 @@ final class Version20180612153132 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE mooc_elements ADD type_form LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci, DROP typeform_url');
+        $this->addSql('ALTER TABLE mooc_elements ADD type_form LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, DROP typeform_url');
     }
 }

@@ -12,7 +12,7 @@ final class Version20200221103832 extends AbstractMigration
         $this->addSql('CREATE TABLE municipal_manager_role_association (
           id INT AUTO_INCREMENT NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE municipal_manager_role_association_cities (
           municipal_manager_role_association_id INT NOT NULL, 
           city_id INT UNSIGNED NOT NULL, 
@@ -24,7 +24,7 @@ final class Version20200221103832 extends AbstractMigration
             municipal_manager_role_association_id, 
             city_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE cities (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
@@ -33,7 +33,7 @@ final class Version20200221103832 extends AbstractMigration
           country VARCHAR(2) NOT NULL, 
           UNIQUE INDEX UNIQ_D95DB16B15A3C1BC (insee_code), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           municipal_manager_role_association_cities 
         ADD 

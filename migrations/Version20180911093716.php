@@ -43,7 +43,7 @@ final class Version20180911093716 extends AbstractMigration
         $this->addSql('DROP INDEX UNIQ_562C7DA31A912B27 ON adherents');
         $this->addSql('ALTER TABLE adherents DROP coordinator_citizen_project_area_id, DROP coordinator_committee_area_id');
 
-        $this->addSql('ALTER TABLE coordinator_managed_areas ADD adherent_id INT UNSIGNED DEFAULT NULL, CHANGE sector sector VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, CHANGE codes codes LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
+        $this->addSql('ALTER TABLE coordinator_managed_areas ADD adherent_id INT UNSIGNED DEFAULT NULL, CHANGE sector sector VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, CHANGE codes codes LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
         $this->addSql('ALTER TABLE coordinator_managed_areas ADD CONSTRAINT FK_C20973D25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE');
         $this->addSql('CREATE INDEX IDX_C20973D25F06C53 ON coordinator_managed_areas (adherent_id)');
     }

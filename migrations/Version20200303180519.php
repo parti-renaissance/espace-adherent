@@ -27,7 +27,7 @@ final class Version20200303180519 extends AbstractMigration
           INDEX IDX_3C39AD46B03A8386 (created_by_id), 
           INDEX IDX_3C39AD46896DBBDE (updated_by_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           city_vote_result 
         ADD 

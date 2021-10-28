@@ -14,6 +14,6 @@ final class Version20180926101908 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE biography_executive_office_member CHANGE content content VARCHAR(800) DEFAULT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE biography_executive_office_member CHANGE content content VARCHAR(800) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

@@ -17,7 +17,7 @@ final class Version20190613095719 extends AbstractMigration
           PRIMARY KEY(
             running_mate_request_id, application_request_tag_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE volunteer_request_application_request_tag (
           volunteer_request_id INT UNSIGNED NOT NULL, 
           application_request_tag_id INT NOT NULL, 
@@ -26,12 +26,12 @@ final class Version20190613095719 extends AbstractMigration
           PRIMARY KEY(
             volunteer_request_id, application_request_tag_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE application_request_tag (
           id INT AUTO_INCREMENT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           running_mate_request_application_request_tag 
         ADD 

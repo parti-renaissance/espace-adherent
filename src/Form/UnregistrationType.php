@@ -16,7 +16,6 @@ class UnregistrationType extends AbstractType
         $builder
             ->add('comment', TextareaType::class, [
                 'required' => false,
-                'filter_emojis' => true,
             ])
             ->add('reasons', ChoiceType::class, [
                 'choices' => $options['reasons'],

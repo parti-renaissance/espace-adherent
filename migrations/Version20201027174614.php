@@ -20,7 +20,7 @@ final class Version20201027174614 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           INDEX IDX_368B01611FB354CD (membership_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           committee_candidacy_invitation 
         ADD 

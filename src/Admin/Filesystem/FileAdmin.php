@@ -167,7 +167,6 @@ class FileAdmin extends AbstractAdmin
             ->with('Général', ['class' => 'col-md-7'])
                 ->add('name', TextType::class, [
                     'label' => 'Titre',
-                    'filter_emojis' => true,
                 ])
                 ->add('parent', FileParentType::class, [
                     'required' => false,

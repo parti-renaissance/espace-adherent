@@ -21,22 +21,22 @@ final class Version20210603175336 extends AbstractMigration
         $this->addSql('ALTER TABLE
           articles
         ADD
-          amp_content LONGTEXT CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+          amp_content LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE
           clarifications
         ADD
-          amp_content LONGTEXT CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+          amp_content LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE
           order_articles
         ADD
-          amp_content LONGTEXT CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+          amp_content LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE
           pages
         ADD
-          amp_content LONGTEXT CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+          amp_content LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE
           proposals
         ADD
-          amp_content LONGTEXT CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+          amp_content LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
     }
 }

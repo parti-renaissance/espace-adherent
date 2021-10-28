@@ -16,7 +16,7 @@ final class Version20190614153603 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE application_request_running_mate CHANGE curriculum_name curriculum_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE application_request_running_mate CHANGE curriculum_name curriculum_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE application_request_technical_skill DROP display');
         $this->addSql('ALTER TABLE application_request_theme DROP display');
     }

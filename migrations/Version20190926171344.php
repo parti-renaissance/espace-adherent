@@ -19,7 +19,7 @@ final class Version20190926171344 extends AbstractMigration
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           INDEX IDX_9DF0C7EBF675F31B (author_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           adherent_segment 
         ADD 

@@ -26,7 +26,7 @@ final class Version20190103234058 extends AbstractMigration
                 type VARCHAR(255) NOT NULL, 
                 INDEX IDX_D187C183F675F31B (author_id), 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
         $this->addSql('ALTER TABLE adherent_messages ADD CONSTRAINT FK_D187C183F675F31B FOREIGN KEY (author_id) REFERENCES adherents (id)');
         $this->addSql('ALTER TABLE referent_managed_users_message CHANGE include_supevisors include_supervisors TINYINT(1) DEFAULT \'0\' NOT NULL');

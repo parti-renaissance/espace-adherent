@@ -33,11 +33,8 @@ class RegionType extends AbstractType
         }
 
         $builder
-            ->add('subtitle', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('subtitle', TextType::class)
             ->add('description', TextareaType::class, [
-                'filter_emojis' => true,
                 'attr' => ['rows' => 20],
             ])
             ->add('primaryColor', ChoiceType::class, [

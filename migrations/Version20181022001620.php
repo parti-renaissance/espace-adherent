@@ -24,7 +24,7 @@ final class Version20181022001620 extends AbstractMigration
                 INDEX IDX_6579E8E7F675F31B (author_id), 
                 INDEX IDX_6579E8E7B3FE509D (survey_id), 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql(
@@ -36,7 +36,7 @@ final class Version20181022001620 extends AbstractMigration
                 INDEX IDX_12FB393EA6DF29BA (survey_question_id), 
                 INDEX IDX_12FB393E3C5110AB (data_survey_id), 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql(
@@ -46,7 +46,7 @@ final class Version20181022001620 extends AbstractMigration
                 INDEX IDX_10DF117259C0831 (data_answer_id), 
                 INDEX IDX_10DF117998666D1 (choice_id), 
                 PRIMARY KEY(data_answer_id, choice_id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql('ALTER TABLE jecoute_data_survey ADD CONSTRAINT FK_6579E8E7F675F31B FOREIGN KEY (author_id) REFERENCES adherents (id) ON DELETE SET NULL');

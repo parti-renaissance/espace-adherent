@@ -21,7 +21,7 @@ final class Version20180612102353 extends AbstractMigration
                             UNIQUE INDEX UNIQ_68E318DC25F06C53 (adherent_id), 
                             UNIQUE INDEX district_code_unique (code), 
                             UNIQUE INDEX district_department_code_number (department_code, `number`), 
-                            PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+                            PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
         $this->addSql('ALTER TABLE districts ADD CONSTRAINT FK_68E318DC25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id)');
     }

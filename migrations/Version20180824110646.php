@@ -14,6 +14,6 @@ final class Version20180824110646 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE citizen_projects ADD assistance_needed TINYINT(1) DEFAULT \'0\' NOT NULL, ADD assistance_content LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE citizen_projects ADD assistance_needed TINYINT(1) DEFAULT \'0\' NOT NULL, ADD assistance_content LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

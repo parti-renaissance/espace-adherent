@@ -14,6 +14,6 @@ class Version20171203025556 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE referent_managed_users_message CHANGE query_area_code query_area_code VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE query_city query_city VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, CHANGE query_id query_id VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE referent_managed_users_message CHANGE query_area_code query_area_code VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE query_city query_city VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE query_id query_id VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

@@ -15,7 +15,7 @@ final class Version20191121124258 extends AbstractMigration
           entire_world TINYINT(1) DEFAULT \'0\' NOT NULL, 
           UNIQUE INDEX UNIQ_D229BBF7AEC89CE1 (department_tag_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           senator_area 
         ADD 

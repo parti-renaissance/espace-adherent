@@ -31,7 +31,6 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
         $formMapper
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
-                    'filter_emojis' => true,
                     'label' => 'Nom du questionnaire',
                 ])
                 ->add('questions', CollectionType::class, [

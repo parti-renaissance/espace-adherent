@@ -20,7 +20,7 @@ final class Version20210414110430 extends AbstractMigration
           INDEX IDX_6023E2A5F675F31B (author_id),
           UNIQUE INDEX email_template_uuid_unique (uuid),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           email_templates
         ADD

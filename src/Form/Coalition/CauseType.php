@@ -15,12 +15,9 @@ class CauseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('name', TextType::class)
             ->add('description', PurifiedTextareaType::class, [
                 'required' => false,
-                'filter_emojis' => true,
                 'with_character_count' => true,
             ])
             ->add('coalition', EnabledCoalitionEntityType::class)

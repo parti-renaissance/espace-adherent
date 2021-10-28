@@ -22,14 +22,12 @@ class CommitteeCommandType extends AbstractType
         $committee = $command instanceof CommitteeCommand ? $command->getCommittee() : null;
         $builder
             ->add('name', TextType::class, [
-                'filter_emojis' => true,
                 'format_title_case' => true,
                 'disabled' => $committee ? $committee->isNameLocked() : false,
             ])
             ->add('description', TextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 140],
-                'filter_emojis' => true,
             ])
             ->add('address', AddressType::class, [
                 'child_error_bubbling' => false,

@@ -25,7 +25,7 @@ final class Version20190520172054 extends AbstractMigration
           created_at DATETIME NOT NULL, 
           updated_at DATETIME NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE mailchimp_campaign ADD report_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE 
           mailchimp_campaign 

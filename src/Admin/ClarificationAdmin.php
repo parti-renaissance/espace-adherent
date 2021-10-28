@@ -45,15 +45,12 @@ class ClarificationAdmin extends AbstractAdmin
             ->with('Méta-données', ['class' => 'col-md-4'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
-                    'filter_emojis' => true,
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
-                    'filter_emojis' => true,
                 ])
                 ->add('twitterDescription', TextareaType::class, [
                     'label' => 'Description pour Twitter',
-                    'filter_emojis' => true,
                     'required' => false,
                 ])
                 ->add('keywords', null, [
@@ -85,7 +82,6 @@ class ClarificationAdmin extends AbstractAdmin
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'required' => false,
-                    'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()

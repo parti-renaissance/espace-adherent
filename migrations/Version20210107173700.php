@@ -14,6 +14,6 @@ final class Version20210107173700 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE committees ADD admin_comment LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci, ADD coordinator_comment LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci, ADD photo_uploaded TINYINT(1) DEFAULT \'0\' NOT NULL');
+        $this->addSql('ALTER TABLE committees ADD admin_comment LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD coordinator_comment LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD photo_uploaded TINYINT(1) DEFAULT \'0\' NOT NULL');
     }
 }

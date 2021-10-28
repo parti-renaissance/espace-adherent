@@ -32,7 +32,7 @@ final class Version20190322091405 extends AbstractMigration
           PRIMARY KEY(
             adherent_zone_filter_id, referent_tag_id
           )
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           adherent_zone_filter_referent_tag 
         ADD 

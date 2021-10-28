@@ -29,7 +29,7 @@ SET ev.coalition_id = ec.coalition_id');
           UNIQUE INDEX UNIQ_215844FA71F7E88B (event_id),
           INDEX IDX_215844FAC2A46A23 (coalition_id),
           PRIMARY KEY(event_id, coalition_id)
-        ) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
         $this->addSql('ALTER TABLE
           event_coalition
         ADD

@@ -35,9 +35,9 @@ final class Version20200206154041 extends AbstractMigration
         ADD 
           referent_id INT UNSIGNED DEFAULT NULL, 
         ADD 
-          invite_source_name VARCHAR(100) DEFAULT NULL COLLATE utf8_unicode_ci, 
+          invite_source_name VARCHAR(100) DEFAULT NULL COLLATE utf8mb4_unicode_ci, 
         ADD 
-          invite_source_first_name VARCHAR(100) DEFAULT NULL COLLATE utf8_unicode_ci');
+          invite_source_first_name VARCHAR(100) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           procuration_proxies 
         ADD 

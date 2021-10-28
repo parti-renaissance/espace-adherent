@@ -14,6 +14,6 @@ final class Version20190423130626 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE committees ADD google_plus_page_url VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE committees ADD google_plus_page_url VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

@@ -15,7 +15,7 @@ final class Version20210608090625 extends AbstractMigration
           INDEX IDX_29D2153D94A4C7D4 (device_id),
           INDEX IDX_29D2153D9F2C3FAB (zone_id),
           PRIMARY KEY(device_id, zone_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE push_token (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           adherent_id INT UNSIGNED DEFAULT NULL,
@@ -29,7 +29,7 @@ final class Version20210608090625 extends AbstractMigration
           INDEX IDX_51BC138125F06C53 (adherent_id),
           INDEX IDX_51BC138194A4C7D4 (device_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           device_zone
         ADD

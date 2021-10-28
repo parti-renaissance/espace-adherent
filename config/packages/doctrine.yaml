@@ -1,7 +1,10 @@
 doctrine:
     dbal:
         driver:           pdo_mysql
-        charset:          UTF8
+        charset:          utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
         host:             "%env(DATABASE_HOST)%"
         port:             "%env(DATABASE_PORT)%"
         dbname:           "%env(DATABASE_NAME)%"
@@ -11,6 +14,7 @@ doctrine:
         server_version:   5.7
         options:
             1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
+            utf8mb4: "SET NAMES utf8mb4"
         schema_filter: '#^(?!rememberme_token)#'
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType

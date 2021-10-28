@@ -14,7 +14,7 @@ final class Version20200226153640 extends AbstractMigration
           referent_id INT UNSIGNED NOT NULL, 
           INDEX IDX_F304FF35E47E35 (referent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           municipal_manager_supervisor_role 
         ADD 

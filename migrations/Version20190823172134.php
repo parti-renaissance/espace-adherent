@@ -22,12 +22,12 @@ final class Version20190823172134 extends AbstractMigration
           INDEX IDX_A902FDD725F06C53 (adherent_id), 
           UNIQUE INDEX donator_identifier_unique (identifier), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE donator_identifier (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           identifier VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           donators 
         ADD 

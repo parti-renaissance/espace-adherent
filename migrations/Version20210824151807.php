@@ -24,7 +24,7 @@ final class Version20210824151807 extends AbstractMigration
           UNIQUE INDEX UNIQ_C3882BA4848CC616 (audience_id),
           INDEX IDX_C3882BA44B09E92C (administrator_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           phoning_campaign
         ADD

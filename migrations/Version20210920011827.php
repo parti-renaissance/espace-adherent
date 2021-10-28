@@ -22,7 +22,7 @@ final class Version20210920011827 extends AbstractMigration
           UNIQUE INDEX qr_code_uuid (uuid),
           UNIQUE INDEX qr_code_name (name),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           qr_code
         ADD

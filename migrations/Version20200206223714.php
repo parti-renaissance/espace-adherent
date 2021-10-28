@@ -23,7 +23,7 @@ final class Version20200206223714 extends AbstractMigration
           INDEX IDX_1F8DB349FCBF5E32 (election_round_id), 
           INDEX IDX_1F8DB349F675F31B (author_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           vote_result 
         ADD 

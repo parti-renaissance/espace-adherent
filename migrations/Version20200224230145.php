@@ -22,7 +22,7 @@ final class Version20200224230145 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           cities 
         ADD 
-          postal_code VARCHAR(10) NOT NULL COLLATE utf8_unicode_ci, 
+          postal_code VARCHAR(10) NOT NULL COLLATE utf8mb4_unicode_ci, 
         DROP 
           postal_codes');
     }

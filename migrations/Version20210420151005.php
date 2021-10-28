@@ -15,14 +15,14 @@ final class Version20210420151005 extends AbstractMigration
           UNIQUE INDEX UNIQ_215844FA71F7E88B (event_id),
           INDEX IDX_215844FAC2A46A23 (coalition_id),
           PRIMARY KEY(event_id, coalition_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE event_cause (
           event_id INT UNSIGNED NOT NULL,
           cause_id INT UNSIGNED NOT NULL,
           UNIQUE INDEX UNIQ_B1C1CE9371F7E88B (event_id),
           INDEX IDX_B1C1CE9366E2221E (cause_id),
           PRIMARY KEY(event_id, cause_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           event_coalition
         ADD
@@ -52,7 +52,7 @@ final class Version20210420151005 extends AbstractMigration
           PRIMARY KEY(
             coalition_event_id, coalition_id
           )
-        ) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
         $this->addSql('ALTER TABLE
           coalition_event_coalition
         ADD

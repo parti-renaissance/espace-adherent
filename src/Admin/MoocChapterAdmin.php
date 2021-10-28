@@ -35,7 +35,6 @@ class MoocChapterAdmin extends AbstractAdmin
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('title', TextType::class, [
                         'label' => 'Titre',
-                        'filter_emojis' => true,
                     ])
                     ->add('slug', TextType::class, [
                         'label' => 'Slug',

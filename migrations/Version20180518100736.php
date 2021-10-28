@@ -16,7 +16,7 @@ CREATE TABLE unregistration_referent_tag (
       INDEX IDX_59B7AC414D824CA (unregistration_id),
       INDEX IDX_59B7AC49C262DB3 (referent_tag_id),
       PRIMARY KEY(unregistration_id, referent_tag_id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
 );
         $this->addSql('ALTER TABLE unregistration_referent_tag ADD CONSTRAINT FK_59B7AC414D824CA FOREIGN KEY (unregistration_id) REFERENCES unregistrations (id) ON DELETE CASCADE');

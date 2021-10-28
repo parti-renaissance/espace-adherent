@@ -18,9 +18,7 @@ class SurveyFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('name', TextType::class)
             ->add('questions', CollectionType::class, [
                 'entry_type' => SurveyQuestionFormType::class,
                 'entry_options' => [

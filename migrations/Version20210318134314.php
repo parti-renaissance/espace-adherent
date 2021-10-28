@@ -19,7 +19,7 @@ final class Version20210318134314 extends AbstractMigration
           INDEX IDX_2DAE19C93C947C0F (poll_id), 
           UNIQUE INDEX poll_choice_uuid_unique (uuid), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE poll_vote (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           choice_id INT UNSIGNED NOT NULL, 
@@ -31,7 +31,7 @@ final class Version20210318134314 extends AbstractMigration
           INDEX IDX_ED568EBE25F06C53 (adherent_id), 
           INDEX IDX_ED568EBE94A4C7D4 (device_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE poll (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           created_by_id INT DEFAULT NULL, 
@@ -43,7 +43,7 @@ final class Version20210318134314 extends AbstractMigration
           INDEX IDX_84BCFA45B03A8386 (created_by_id), 
           UNIQUE INDEX poll_uuid_unique (uuid), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           poll_choice 
         ADD 

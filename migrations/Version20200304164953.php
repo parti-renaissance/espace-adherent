@@ -16,13 +16,13 @@ final class Version20200304164953 extends AbstractMigration
           updated_at DATETIME NOT NULL,
           INDEX IDX_9A044544E891720 (committee_election_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE committee_election (
           id INT AUTO_INCREMENT NOT NULL,
           committee_id INT UNSIGNED NOT NULL,
           UNIQUE INDEX UNIQ_2CA406E5ED1A100B (committee_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           committee_candidacy
         ADD

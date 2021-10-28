@@ -21,7 +21,7 @@ final class Version20200422104840 extends AbstractMigration
           INDEX adherent_certification_histories_administrator_id_idx (administrator_id), 
           INDEX adherent_certification_histories_date_idx (date), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           adherent_certification_histories 
         ADD 

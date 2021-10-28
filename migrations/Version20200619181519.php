@@ -21,7 +21,7 @@ final class Version20200619181519 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           elected_representative 
         ADD 
-          comment VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+          comment VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSQL('ALTER TABLE elected_representative_label SET begin_year = YEAR(CURDATE()) WHERE begin_year IS NULL');
         $this->addSql('ALTER TABLE elected_representative_label CHANGE begin_year begin_year INT NOT NULL');
         $this->addSql('ALTER TABLE elected_representative CHANGE is_adherent is_adherent TINYINT(1) DEFAULT \'0\'');

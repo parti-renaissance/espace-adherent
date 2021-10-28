@@ -17,7 +17,7 @@ final class Version20201006102454 extends AbstractMigration
           PRIMARY KEY(
             city_community_id, department_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           geo_city_community_department
         ADD

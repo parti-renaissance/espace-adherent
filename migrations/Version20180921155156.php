@@ -19,7 +19,7 @@ final class Version20180921155156 extends AbstractMigration
             extension VARCHAR(255) NOT NULL,
             UNIQUE INDEX turnkey_projects_file_slug_extension (slug, extension),
             PRIMARY KEY(id)
-          ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB
+          ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql(<<<'SQL'
@@ -30,7 +30,7 @@ SQL
             INDEX IDX_67BF8377B5315DF4 (turnkey_project_id),
             INDEX IDX_67BF83777D06E1CD (turnkey_project_file_id),
             PRIMARY KEY(turnkey_project_id, turnkey_project_file_id)
-          ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB
+          ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql('ALTER TABLE turnkey_project_turnkey_project_file ADD CONSTRAINT FK_67BF8377B5315DF4 FOREIGN KEY (turnkey_project_id) REFERENCES turnkey_projects (id) ON DELETE CASCADE');

@@ -47,7 +47,6 @@ class CampaignAdmin extends AbstractAdmin
                 ->add('brief', TextareaType::class, [
                     'label' => 'Brief',
                     'required' => false,
-                    'filter_emojis' => true,
                     'attr' => ['class' => 'simplified-content-editor', 'rows' => 15],
                 ])
                 ->add('goal', IntegerType::class, [

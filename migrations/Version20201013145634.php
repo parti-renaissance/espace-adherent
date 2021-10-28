@@ -18,7 +18,7 @@ final class Version20201013145634 extends AbstractMigration
           updated_at DATETIME NOT NULL,
           UNIQUE INDEX UNIQ_ABE4DB5A77153098 (code),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE geo_foreign_district ADD custom_zone_id INT UNSIGNED');
         $this->addSql('ALTER TABLE
           geo_foreign_district

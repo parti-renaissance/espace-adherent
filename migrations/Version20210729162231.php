@@ -17,7 +17,7 @@ final class Version20210729162231 extends AbstractMigration
           apps LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\',
           UNIQUE INDEX scope_code_unique (code),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
         $this->addSql(<<<'SQL'
             UPDATE oauth_clients

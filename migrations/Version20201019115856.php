@@ -22,7 +22,7 @@ final class Version20201019115856 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           thematic_community_membership 
         ADD 
-          motivation VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          motivation VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         DROP 
           motivations');
     }

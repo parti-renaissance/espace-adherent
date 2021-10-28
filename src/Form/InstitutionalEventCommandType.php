@@ -29,14 +29,12 @@ class InstitutionalEventCommandType extends BaseEventCommandType
     {
         $builder
             ->add('name', TextType::class, [
-                'filter_emojis' => true,
                 'format_title_case' => true,
             ])
             ->add('category', InstitutionalEventCategoryType::class, [
                 'class' => $options['event_category_class'],
             ])
             ->add('description', PurifiedTextareaType::class, [
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
             ])
             ->add('address', AddressType::class)
@@ -44,7 +42,6 @@ class InstitutionalEventCommandType extends BaseEventCommandType
                 'choices' => $this->getTimezones(),
             ])
             ->add('invitations', PurifiedTextareaType::class, [
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
             ])
             ->remove('capacity')

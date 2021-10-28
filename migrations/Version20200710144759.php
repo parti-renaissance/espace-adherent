@@ -14,7 +14,7 @@ final class Version20200710144759 extends AbstractMigration
           referent_tag_id INT UNSIGNED NOT NULL, 
           INDEX IDX_8D3B8F189C262DB3 (referent_tag_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           lre_area 
         ADD 

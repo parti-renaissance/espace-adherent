@@ -28,7 +28,6 @@ class NewsletterSubscriptionType extends AbstractType
             ])
             ->add('postalCode', TextType::class, [
                 'required' => false,
-                'filter_emojis' => true,
             ])
             ->add('country', UnitedNationsCountryType::class, [
                 'required' => false,

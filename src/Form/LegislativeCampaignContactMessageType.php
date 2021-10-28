@@ -17,25 +17,18 @@ class LegislativeCampaignContactMessageType extends AbstractType
     {
         $builder
             ->add('emailAddress', EmailType::class, [
-                'filter_emojis' => true,
                 'attr' => [
                     'placeholder' => 'vous@votre-fai.com',
                 ],
             ])
-            ->add('firstName', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('lastName', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('firstName', TextType::class)
+            ->add('lastName', TextType::class)
             ->add('departmentNumber', TextType::class, [
-                'filter_emojis' => true,
                 'attr' => [
                     'placeholder' => '35',
                 ],
             ])
             ->add('electoralDistrictNumber', TextType::class, [
-                'filter_emojis' => true,
                 'attr' => [
                     'placeholder' => '1',
                 ],
@@ -47,14 +40,11 @@ class LegislativeCampaignContactMessageType extends AbstractType
                 'choices' => LegislativeCampaignContactMessage::getRecipientChoices(),
             ])
             ->add('subject', TextType::class, [
-                'filter_emojis' => true,
                 'attr' => [
                     'placeholder' => 'Intitulé de votre sujet',
                 ],
             ])
-            ->add('message', TextareaType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('message', TextareaType::class)
         ;
     }
 

@@ -96,7 +96,6 @@ class MediaAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('path', null, [
                 'label' => $isCreation ? 'URL (ne spécifier que la fin : http://en-marche.fr/assets/images/<votre-valeur>, doit être unique)' : 'URL (non modifiable)',

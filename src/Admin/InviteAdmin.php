@@ -23,18 +23,15 @@ class InviteAdmin extends AbstractAdmin
         $show
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
-                'filter_emojis' => true,
             ])
             ->add('email', null, [
                 'label' => 'E-mail de l\'invité',
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
-                'filter_emojis' => true,
             ])
             ->add('clientIp', null, [
                 'label' => 'IP du client',

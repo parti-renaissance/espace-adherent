@@ -36,7 +36,7 @@ final class Version20211022155427 extends AbstractMigration
           INDEX IDX_5A3F26F7F639F774 (campaign_id),
           UNIQUE INDEX UNIQ_5A3F26F73C5110AB (data_survey_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           pap_campaign_history
         ADD

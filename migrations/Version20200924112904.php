@@ -12,7 +12,7 @@ final class Version20200924112904 extends AbstractMigration
         $this->addSql('CREATE TABLE algolia_candidature (
           id CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void

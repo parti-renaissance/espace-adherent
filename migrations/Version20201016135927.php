@@ -34,7 +34,7 @@ final class Version20201016135927 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           adherent_message_filters 
         ADD 
-          user_list_definition VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, 
+          user_list_definition VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, 
         DROP 
           user_list_definition_id');
     }

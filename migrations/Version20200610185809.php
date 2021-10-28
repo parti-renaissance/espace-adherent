@@ -22,6 +22,6 @@ final class Version20200610185809 extends AbstractMigration
           user_list_definition 
         DROP 
           color, 
-          CHANGE code code VARCHAR(50) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE code code VARCHAR(50) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

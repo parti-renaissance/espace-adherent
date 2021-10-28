@@ -17,7 +17,7 @@ final class Version20190515143812 extends AbstractMigration
           PRIMARY KEY(
             referent_user_filter_id, referent_tag_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
         $this->addSql('ALTER TABLE 
           referent_user_filter_referent_tag 
@@ -53,7 +53,7 @@ final class Version20190515143812 extends AbstractMigration
           static_segment_id VARCHAR(255) DEFAULT NULL,
           INDEX IDX_CFABD309537A1329 (message_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
         $this->addSql('ALTER TABLE 
           mailchimp_campaign 
@@ -94,7 +94,7 @@ final class Version20190515143812 extends AbstractMigration
         ADD 
           recipient_count INT DEFAULT NULL,
         ADD 
-          external_id VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+          external_id VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
 
         $this->addSql(
             'UPDATE adherent_messages AS m

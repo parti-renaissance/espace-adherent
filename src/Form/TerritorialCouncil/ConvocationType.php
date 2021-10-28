@@ -53,7 +53,6 @@ class ConvocationType extends AbstractType
             ])
             ->add('description', PurifiedTextareaType::class, [
                 'attr' => ['maxlength' => 2000],
-                'filter_emojis' => true,
                 'with_character_count' => true,
                 'purifier_type' => 'basic_content',
             ])

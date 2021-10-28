@@ -17,9 +17,9 @@ final class Version20190108152424 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE ideas_workshop_comment ADD status VARCHAR(9) DEFAULT \'POSTED\' NOT NULL COLLATE utf8_unicode_ci, DROP approved');
+        $this->addSql('ALTER TABLE ideas_workshop_comment ADD status VARCHAR(9) DEFAULT \'POSTED\' NOT NULL COLLATE utf8mb4_unicode_ci, DROP approved');
         $this->addSql('CREATE INDEX idea_workshop_thread_comments_status_idx ON ideas_workshop_comment (status)');
-        $this->addSql('ALTER TABLE ideas_workshop_thread ADD status VARCHAR(9) DEFAULT \'POSTED\' NOT NULL COLLATE utf8_unicode_ci, DROP approved');
+        $this->addSql('ALTER TABLE ideas_workshop_thread ADD status VARCHAR(9) DEFAULT \'POSTED\' NOT NULL COLLATE utf8mb4_unicode_ci, DROP approved');
         $this->addSql('CREATE INDEX idea_workshop_thread_status_idx ON ideas_workshop_thread (status)');
     }
 }

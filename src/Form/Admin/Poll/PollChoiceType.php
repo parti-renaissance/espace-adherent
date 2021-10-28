@@ -15,7 +15,6 @@ class PollChoiceType extends AbstractType
         $builder
             ->add('value', TextType::class, [
                 'label' => false,
-                'filter_emojis' => true,
             ])
         ;
     }

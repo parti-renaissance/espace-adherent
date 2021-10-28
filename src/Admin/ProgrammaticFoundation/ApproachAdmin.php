@@ -59,7 +59,6 @@ class ApproachAdmin extends AbstractAdmin
                     'label' => 'Contenu',
                     'attr' => ['class' => 'ck-editor-advanced'],
                     'purifier_type' => 'enrich_content',
-                    'filter_emojis' => true,
                     'required' => false,
                 ])
                 ->add('position', IntegerType::class, [

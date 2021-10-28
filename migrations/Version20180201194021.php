@@ -28,6 +28,6 @@ class Version20180201194021 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_F11FA745ED1A100B ON reports');
         $this->addSql('DROP INDEX IDX_F11FA74583B12DAC ON reports');
         $this->addSql('ALTER TABLE reports DROP citizen_action_id, DROP committee_id, DROP community_event_id');
-        $this->addSql('ALTER TABLE reports CHANGE status status VARCHAR(16) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE reports CHANGE status status VARCHAR(16) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

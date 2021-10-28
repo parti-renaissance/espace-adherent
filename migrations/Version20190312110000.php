@@ -26,8 +26,8 @@ final class Version20190312110000 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           interactive_invitations 
         ADD 
-          friend_email_address VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, 
-          CHANGE friend_position friend_position VARCHAR(50) NOT NULL COLLATE utf8_unicode_ci');
+          friend_email_address VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE friend_position friend_position VARCHAR(50) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('UPDATE administrators SET administrators.roles = REPLACE(administrators.roles,\'ROLE_ADMIN_MY_EUROPE\',\'ROLE_ADMIN_PURCHASING_POWER\')');
     }
 }

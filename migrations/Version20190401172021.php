@@ -28,7 +28,7 @@ SQL
           PRIMARY KEY(
             institutional_event_id, referent_tag_id
           )
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           institutional_event_referent_tag 
         ADD 

@@ -52,7 +52,6 @@ class DelegateAccessType extends AbstractType
             ->add('restrictedCommittees_search', TextType::class, [
                 'mapped' => false,
                 'required' => false,
-                'filter_emojis' => true,
             ])
             ->add('restrictedCommittees', CollectionType::class, [
                 'required' => false,

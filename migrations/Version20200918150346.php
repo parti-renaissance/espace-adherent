@@ -19,14 +19,14 @@ final class Version20200918150346 extends AbstractMigration
           code VARCHAR(255) NOT NULL,
           UNIQUE INDEX geo_zone_code_type_unique (code, type),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_zone_parent (
           child_id INT UNSIGNED NOT NULL,
           parent_id INT UNSIGNED NOT NULL,
           INDEX IDX_8E49B9DDD62C21B (child_id),
           INDEX IDX_8E49B9D727ACA70 (parent_id),
           PRIMARY KEY(child_id, parent_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_foreign_district (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           number SMALLINT NOT NULL,
@@ -37,14 +37,14 @@ final class Version20200918150346 extends AbstractMigration
           updated_at DATETIME NOT NULL,
           UNIQUE INDEX UNIQ_973BE1F177153098 (code),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_city_district (
           city_id INT UNSIGNED NOT NULL,
           district_id INT UNSIGNED NOT NULL,
           INDEX IDX_5C4191F8BAC62AF (city_id),
           INDEX IDX_5C4191FB08FA272 (district_id),
           PRIMARY KEY(city_id, district_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_consular_district (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           foreign_district_id INT UNSIGNED DEFAULT NULL,
@@ -58,7 +58,7 @@ final class Version20200918150346 extends AbstractMigration
           UNIQUE INDEX UNIQ_BBFC552F77153098 (code),
           INDEX IDX_BBFC552F72D24D35 (foreign_district_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           geo_zone_parent
         ADD

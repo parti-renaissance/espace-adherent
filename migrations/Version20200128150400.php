@@ -29,7 +29,7 @@ final class Version20200128150400 extends AbstractMigration
           number, 
         DROP 
           points, 
-          CHANGE code code VARCHAR(6) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE code code VARCHAR(6) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE consular_district RENAME consular_districts');
     }
 }

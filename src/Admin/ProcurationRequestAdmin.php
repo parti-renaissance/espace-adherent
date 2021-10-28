@@ -39,11 +39,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
                 ->add('lastName', TextType::class, [
                     'label' => 'Nom de naissance',
-                    'filter_emojis' => true,
                 ])
                 ->add('firstNames', TextType::class, [
                     'label' => 'Prénom(s)',
-                    'filter_emojis' => true,
                 ])
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
@@ -63,11 +61,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
                 ->add('cityName', TextType::class, [
                     'label' => 'Ville',
-                    'filter_emojis' => true,
                 ])
                 ->add('address', TextType::class, [
                     'label' => 'Adresse postale',
-                    'filter_emojis' => true,
                 ])
             ->end()
             ->with('Lieu de vote', ['class' => 'col-md-6'])
@@ -79,7 +75,6 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ])
                 ->add('voteCityName', TextType::class, [
                     'label' => 'Ville',
-                    'filter_emojis' => true,
                 ])
                 ->add('voteOffice', null, [
                     'label' => 'Bureau de vote',

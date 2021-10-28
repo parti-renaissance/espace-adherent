@@ -14,14 +14,14 @@ final class Version20200123111724 extends AbstractMigration
           consular_district_id INT UNSIGNED DEFAULT NULL, 
           INDEX IDX_7937A51292CA96FD (consular_district_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE consular_districts (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           countries LONGTEXT NOT NULL COMMENT \'(DC2Type:simple_array)\', 
           cities LONGTEXT NOT NULL COMMENT \'(DC2Type:simple_array)\', 
           code VARCHAR(6) NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           consular_managed_area 
         ADD 

@@ -27,7 +27,6 @@ class PartialDesignationType extends AbstractType
                 'attr' => [
                     'maxlength' => 2000,
                 ],
-                'filter_emojis' => true,
                 'purifier_type' => 'basic_content',
                 'with_character_count' => true,
             ])

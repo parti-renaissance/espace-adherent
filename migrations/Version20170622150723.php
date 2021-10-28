@@ -14,6 +14,6 @@ class Version20170622150723 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE summaries ADD availability VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, ADD job_location VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, DROP availabilities, DROP job_locations, DROP `public`, DROP showing_recent_activities');
+        $this->addSql('ALTER TABLE summaries ADD availability VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, ADD job_location VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, DROP availabilities, DROP job_locations, DROP `public`, DROP showing_recent_activities');
     }
 }

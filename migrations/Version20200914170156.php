@@ -17,6 +17,6 @@ final class Version20200914170156 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           voting_platform_election_pool 
         ADD 
-          title VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          title VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

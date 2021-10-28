@@ -17,7 +17,6 @@ class BaseFileType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-                'filter_emojis' => true,
             ])
             ->add('file', FileType::class)
         ;

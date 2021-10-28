@@ -9,7 +9,7 @@ final class Version20181211155533 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE ideas_workshop_vote (id INT UNSIGNED AUTO_INCREMENT NOT NULL, idea_id INT UNSIGNED NOT NULL, adherent_id INT UNSIGNED NOT NULL, type VARCHAR(10) NOT NULL, INDEX IDX_9A9B53535B6FEF7D (idea_id), INDEX IDX_9A9B535325F06C53 (adherent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE ideas_workshop_vote (id INT UNSIGNED AUTO_INCREMENT NOT NULL, idea_id INT UNSIGNED NOT NULL, adherent_id INT UNSIGNED NOT NULL, type VARCHAR(10) NOT NULL, INDEX IDX_9A9B53535B6FEF7D (idea_id), INDEX IDX_9A9B535325F06C53 (adherent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE ideas_workshop_vote ADD CONSTRAINT FK_9A9B53535B6FEF7D FOREIGN KEY (idea_id) REFERENCES ideas_workshop_idea (id)');
         $this->addSql('ALTER TABLE ideas_workshop_vote ADD CONSTRAINT FK_9A9B535325F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE ideas_workshop_comment DROP FOREIGN KEY FK_1858998825F06C53');
@@ -39,7 +39,7 @@ final class Version20181211155533 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1858998825F06C53 ON ideas_workshop_comment (adherent_id)');
         $this->addSql('ALTER TABLE ideas_workshop_idea DROP FOREIGN KEY FK_CA001C72F675F31B');
         $this->addSql('DROP INDEX IDX_CA001C72F675F31B ON ideas_workshop_idea');
-        $this->addSql('ALTER TABLE ideas_workshop_idea DROP with_committee, CHANGE status status VARCHAR(11) DEFAULT \'PENDING\' NOT NULL COLLATE utf8_unicode_ci, CHANGE author_id adherent_id INT UNSIGNED DEFAULT NULL');
+        $this->addSql('ALTER TABLE ideas_workshop_idea DROP with_committee, CHANGE status status VARCHAR(11) DEFAULT \'PENDING\' NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE author_id adherent_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE ideas_workshop_idea ADD CONSTRAINT FK_CA001C7225F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id)');
         $this->addSql('CREATE INDEX IDX_CA001C7225F06C53 ON ideas_workshop_idea (adherent_id)');
         $this->addSql('ALTER TABLE ideas_workshop_thread DROP FOREIGN KEY FK_CE975BDDF675F31B');

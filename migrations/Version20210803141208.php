@@ -24,7 +24,7 @@ final class Version20210803141208 extends AbstractMigration
           INDEX IDX_17E1064BB03A8386 (created_by_id),
           INDEX IDX_17E1064BF675F31B (author_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           jecoute_riposte
         ADD

@@ -106,7 +106,6 @@ class CommitteeAdmin extends AbstractAdmin
                     'format_title_case' => true,
                 ])
                 ->add('description', TextareaType::class, [
-                    'filter_emojis' => true,
                     'label' => 'Description',
                     'attr' => [
                         'rows' => '3',

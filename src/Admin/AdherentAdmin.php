@@ -317,17 +317,14 @@ class AdherentAdmin extends AbstractAdmin
                     ])
                     ->add('lastName', TextType::class, [
                         'label' => 'Nom',
-                        'filter_emojis' => true,
                         'format_identity_case' => true,
                     ])
                     ->add('firstName', TextType::class, [
                         'label' => 'Prénom',
-                        'filter_emojis' => true,
                         'format_identity_case' => true,
                     ])
                     ->add('nickname', TextType::class, [
                         'label' => 'Pseudo',
-                        'filter_emojis' => true,
                         'required' => false,
                     ])
                     ->add('nicknameUsed', null, [

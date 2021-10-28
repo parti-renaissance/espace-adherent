@@ -92,7 +92,6 @@ class NationalPollAdmin extends AbstractAdmin
         $formMapper
             ->with('Questionnaire', ['class' => 'col-md-6'])
                 ->add('question', TextType::class, [
-                    'filter_emojis' => true,
                     'label' => 'Question',
                     'disabled' => $hasVote,
                 ])

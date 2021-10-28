@@ -13,14 +13,14 @@ final class Version20200825122458 extends AbstractMigration
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE territorial_council_election_poll_choice (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           election_poll_id INT UNSIGNED NOT NULL, 
           value VARCHAR(255) NOT NULL, 
           INDEX IDX_63EBCF6B8649F5F1 (election_poll_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           territorial_council_election_poll_choice 
         ADD 

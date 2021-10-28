@@ -56,13 +56,13 @@ final class Version20200511124432 extends AbstractMigration
         ADD 
           election_entity_id INT DEFAULT NULL, 
         ADD 
-          title VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          title VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         ADD 
           start_date DATETIME NOT NULL, 
         ADD 
           end_date DATETIME NOT NULL, 
         ADD 
-          designation_type VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          designation_type VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
         DROP 
           designation_id');
         $this->addSql('ALTER TABLE 

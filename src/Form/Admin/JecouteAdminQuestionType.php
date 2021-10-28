@@ -20,7 +20,6 @@ class JecouteAdminQuestionType extends AbstractType
     {
         $builder
             ->add('content', TextType::class, [
-                'filter_emojis' => true,
                 'label' => false,
             ])
             ->add('type', QuestionChoiceType::class)

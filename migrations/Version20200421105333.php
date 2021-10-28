@@ -22,7 +22,7 @@ final class Version20200421105333 extends AbstractMigration
           INDEX IDX_6E7481A925F06C53 (adherent_id), 
           INDEX IDX_6E7481A92FFD4FD3 (processed_by_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           certification_request 
         ADD 

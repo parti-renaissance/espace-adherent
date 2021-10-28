@@ -24,6 +24,6 @@ final class Version20210916155001 extends AbstractMigration
         DROP
           open_graph,
         CHANGE
-          source_url source_url VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`');
+          source_url source_url VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
     }
 }

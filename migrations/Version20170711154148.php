@@ -14,6 +14,6 @@ class Version20170711154148 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE home_blocks DROP display_block, DROP title_cta, DROP color_cta, CHANGE position position VARCHAR(20) NOT NULL COLLATE utf8_unicode_ci, CHANGE position_name position_name VARCHAR(20) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE home_blocks DROP display_block, DROP title_cta, DROP color_cta, CHANGE position position VARCHAR(20) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE position_name position_name VARCHAR(20) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

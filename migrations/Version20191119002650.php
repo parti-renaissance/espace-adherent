@@ -29,6 +29,6 @@ final class Version20191119002650 extends AbstractMigration
           mooc_elements 
         DROP 
           image_id, 
-          CHANGE content content VARCHAR(800) DEFAULT NULL COLLATE utf8_unicode_ci');
+          CHANGE content content VARCHAR(800) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

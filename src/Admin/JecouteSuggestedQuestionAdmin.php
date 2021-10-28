@@ -27,7 +27,6 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
         $formMapper
             ->with('Questions du panier', ['class' => 'col-md-6'])
                 ->add('content', TextType::class, [
-                    'filter_emojis' => true,
                     'label' => 'Question',
                 ])
                 ->add('type', QuestionChoiceType::class, [

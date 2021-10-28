@@ -27,7 +27,7 @@ class Version20180522140022 extends AbstractMigration
         $this->addSql('ALTER TABLE citizen_project_memberships DROP FOREIGN KEY FK_2E41816B3584533');
         $this->addSql('DROP INDEX IDX_2E41816B3584533 ON citizen_project_memberships');
         $this->addSql('DROP INDEX adherent_has_joined_citizen_project ON citizen_project_memberships');
-        $this->addSql('ALTER TABLE citizen_project_memberships ADD citizen_project_uuid CHAR(36) NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:uuid)\', CHANGE adherent_id adherent_id INT UNSIGNED DEFAULT NULL');
+        $this->addSql('ALTER TABLE citizen_project_memberships ADD citizen_project_uuid CHAR(36) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:uuid)\', CHANGE adherent_id adherent_id INT UNSIGNED DEFAULT NULL');
         $this->addSql(
             'UPDATE citizen_project_memberships
             JOIN citizen_projects ON citizen_projects.id = citizen_project_memberships.citizen_project_id

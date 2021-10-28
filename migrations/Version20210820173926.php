@@ -29,14 +29,14 @@ final class Version20210820173926 extends AbstractMigration
           updated_at DATETIME NOT NULL,
           INDEX IDX_BA99FEBB9F2C3FAB (zone_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE audience_snapshot_zone (
           audience_snapshot_id INT UNSIGNED NOT NULL,
           zone_id INT UNSIGNED NOT NULL,
           INDEX IDX_10882DC0ACA633A8 (audience_snapshot_id),
           INDEX IDX_10882DC09F2C3FAB (zone_id),
           PRIMARY KEY(audience_snapshot_id, zone_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sms_campaign (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           audience_id INT UNSIGNED DEFAULT NULL,
@@ -50,7 +50,7 @@ final class Version20210820173926 extends AbstractMigration
           UNIQUE INDEX UNIQ_79E333DC848CC616 (audience_id),
           INDEX IDX_79E333DC4B09E92C (administrator_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           audience_snapshot
         ADD

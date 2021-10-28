@@ -21,7 +21,7 @@ final class Version20191107091244 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           INDEX IDX_735C1D0115140614 (approach_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE programmatic_foundation_project (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           measure_id INT UNSIGNED DEFAULT NULL, 
@@ -34,14 +34,14 @@ final class Version20191107091244 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           INDEX IDX_8E8E96D55DA37D00 (measure_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE programmatic_foundation_project_tag (
           project_id INT UNSIGNED NOT NULL, 
           tag_id INT UNSIGNED NOT NULL, 
           INDEX IDX_9F63872166D1F9C (project_id), 
           INDEX IDX_9F63872BAD26311 (tag_id), 
           PRIMARY KEY(project_id, tag_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE programmatic_foundation_measure (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           approach_id INT UNSIGNED DEFAULT NULL, 
@@ -57,14 +57,14 @@ final class Version20191107091244 extends AbstractMigration
           UNIQUE INDEX UNIQ_213A5F1E989D9B62 (slug), 
           INDEX IDX_213A5F1E15140614 (approach_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE programmatic_foundation_measure_tag (
           measure_id INT UNSIGNED NOT NULL, 
           tag_id INT UNSIGNED NOT NULL, 
           INDEX IDX_F004297F5DA37D00 (measure_id), 
           INDEX IDX_F004297FBAD26311 (tag_id), 
           PRIMARY KEY(measure_id, tag_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE programmatic_foundation_approach (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           position SMALLINT NOT NULL, 
@@ -73,13 +73,13 @@ final class Version20191107091244 extends AbstractMigration
           created_at DATETIME NOT NULL, 
           updated_at DATETIME NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE programmatic_foundation_tag (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           label VARCHAR(100) NOT NULL, 
           UNIQUE INDEX UNIQ_12127927EA750E8 (label), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           programmatic_foundation_sub_approach 
         ADD 

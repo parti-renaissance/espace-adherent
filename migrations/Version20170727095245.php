@@ -9,8 +9,8 @@ class Version20170727095245 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE skills (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, UNIQUE INDEX skill_slug_unique (slug), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE summary_skills (summary_id INT NOT NULL, skill_id INT NOT NULL, INDEX IDX_2FD2B63C2AC2D45C (summary_id), INDEX IDX_2FD2B63C5585C142 (skill_id), PRIMARY KEY(summary_id, skill_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE skills (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, UNIQUE INDEX skill_slug_unique (slug), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE summary_skills (summary_id INT NOT NULL, skill_id INT NOT NULL, INDEX IDX_2FD2B63C2AC2D45C (summary_id), INDEX IDX_2FD2B63C5585C142 (skill_id), PRIMARY KEY(summary_id, skill_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE summary_skills ADD CONSTRAINT FK_2FD2B63C2AC2D45C FOREIGN KEY (summary_id) REFERENCES summaries (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE summary_skills ADD CONSTRAINT FK_2FD2B63C5585C142 FOREIGN KEY (skill_id) REFERENCES skills (id) ON DELETE CASCADE');
 
@@ -32,7 +32,7 @@ class Version20170727095245 extends AbstractMigration
             WHILE i<n DO 
               SET transfer_skill_id = 0;
               SELECT summary_id, name, slug INTO transfer_summary_id, transfer_skill_slug, transfer_skill_name FROM member_summary_skills LIMIT i,1;
-              SELECT id INTO transfer_skill_id FROM skills WHERE slug = transfer_skill_slug COLLATE utf8_unicode_ci;
+              SELECT id INTO transfer_skill_id FROM skills WHERE slug = transfer_skill_slug COLLATE utf8mb4_unicode_ci;
               
               IF transfer_skill_id = 0 THEN
                 INSERT INTO skills (`name`, `slug`) VALUES (transfer_skill_name, transfer_skill_slug);

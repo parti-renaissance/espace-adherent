@@ -22,7 +22,6 @@ class PollType extends AbstractType
 
         $builder
             ->add('question', TextType::class, [
-                'filter_emojis' => true,
                 'disabled' => $hasVote,
             ])
             ->add('finishAt', DateTimePickerType::class)

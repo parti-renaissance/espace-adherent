@@ -12,11 +12,11 @@ final class Version20210319175244 extends AbstractMigration
         $this->addSql('CREATE TABLE committee_candidacies_group (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE candidacies_group (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE committee_candidacy ADD candidacies_group_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE 
           committee_candidacy 

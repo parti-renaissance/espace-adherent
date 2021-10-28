@@ -21,7 +21,7 @@ final class Version20200313164558 extends AbstractMigration
           comment LONGTEXT DEFAULT NULL, 
           INDEX IDX_D04AFB68BAC62AF (city_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE election_city_card (
           id INT AUTO_INCREMENT NOT NULL, 
           city_id INT UNSIGNED NOT NULL, 
@@ -42,7 +42,7 @@ final class Version20200313164558 extends AbstractMigration
           UNIQUE INDEX UNIQ_EB01E8D1B86B270B (national_prevision_id), 
           UNIQUE INDEX city_card_city_unique (city_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE election_city_candidate (
           id INT AUTO_INCREMENT NOT NULL, 
           first_name VARCHAR(255) NOT NULL, 
@@ -55,7 +55,7 @@ final class Version20200313164558 extends AbstractMigration
           agreement TINYINT(1) DEFAULT \'0\' NOT NULL, 
           eligible_advisers_count INT DEFAULT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE election_city_partner (
           id INT AUTO_INCREMENT NOT NULL, 
           city_id INT NOT NULL, 
@@ -63,7 +63,7 @@ final class Version20200313164558 extends AbstractMigration
           consensus VARCHAR(255) DEFAULT NULL, 
           INDEX IDX_704D77988BAC62AF (city_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE election_city_prevision (
           id INT AUTO_INCREMENT NOT NULL, 
           strategy VARCHAR(255) DEFAULT NULL, 
@@ -73,14 +73,14 @@ final class Version20200313164558 extends AbstractMigration
           allies VARCHAR(255) DEFAULT NULL, 
           validated_by VARCHAR(255) DEFAULT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE election_city_manager (
           id INT AUTO_INCREMENT NOT NULL, 
           first_name VARCHAR(255) NOT NULL, 
           last_name VARCHAR(255) NOT NULL, 
           phone VARCHAR(35) DEFAULT NULL COMMENT \'(DC2Type:phone_number)\', 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE region (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
@@ -88,7 +88,7 @@ final class Version20200313164558 extends AbstractMigration
           country VARCHAR(2) NOT NULL, 
           UNIQUE INDEX UNIQ_F62F17677153098 (code), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE department (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           region_id INT UNSIGNED NOT NULL, 
@@ -98,7 +98,7 @@ final class Version20200313164558 extends AbstractMigration
           UNIQUE INDEX UNIQ_CD1DE18A77153098 (code), 
           INDEX IDX_CD1DE18A98260155 (region_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           election_city_contact 
         ADD 
@@ -173,6 +173,6 @@ final class Version20200313164558 extends AbstractMigration
         $this->addSql('DROP TABLE region');
         $this->addSql('DROP TABLE department');
         $this->addSql('DROP INDEX IDX_D95DB16BAE80F5DF ON cities');
-        $this->addSql('ALTER TABLE cities ADD country VARCHAR(2) NOT NULL COLLATE utf8_unicode_ci, DROP department_id');
+        $this->addSql('ALTER TABLE cities ADD country VARCHAR(2) NOT NULL COLLATE utf8mb4_unicode_ci, DROP department_id');
     }
 }

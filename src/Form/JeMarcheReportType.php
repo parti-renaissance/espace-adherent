@@ -36,7 +36,6 @@ class JeMarcheReportType extends AbstractType
             ->add('notConvinced', IntegerType::class, ['required' => false])
             ->add('reaction', TextareaType::class, [
                 'required' => false,
-                'filter_emojis' => true,
             ])
         ;
     }

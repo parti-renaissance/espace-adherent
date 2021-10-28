@@ -14,6 +14,6 @@ class Version20170614200628 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE projection_referent_managed_users CHANGE postal_code postal_code VARCHAR(15) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE projection_referent_managed_users CHANGE postal_code postal_code VARCHAR(15) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

@@ -13,7 +13,7 @@ final class Version20190614172845 extends AbstractMigration
           id INT AUTO_INCREMENT NOT NULL, 
           codes LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE adherents ADD jecoute_managed_area_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE 
           adherents 

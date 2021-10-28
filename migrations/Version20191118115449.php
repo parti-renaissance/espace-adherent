@@ -18,13 +18,13 @@ final class Version20191118115449 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE 
-          programmatic_foundation_approach CHANGE content content VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+          programmatic_foundation_approach CHANGE content content VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           programmatic_foundation_measure 
         ADD 
-          slug VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          slug VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_213A5F1E989D9B62 ON programmatic_foundation_measure (slug)');
         $this->addSql('ALTER TABLE 
-          programmatic_foundation_sub_approach CHANGE content content VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+          programmatic_foundation_sub_approach CHANGE content content VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

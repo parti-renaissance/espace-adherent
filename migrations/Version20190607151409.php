@@ -29,6 +29,6 @@ final class Version20190607151409 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           referent_managed_users_message 
         ADD 
-          query_city LONGTEXT NOT NULL COLLATE utf8_unicode_ci');
+          query_city LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

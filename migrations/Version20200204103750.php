@@ -14,7 +14,7 @@ final class Version20200204103750 extends AbstractMigration
           vote_place_id INT DEFAULT NULL, 
           UNIQUE INDEX UNIQ_B93395C2F3F90B30 (vote_place_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           assessor_role_association 
         ADD 
