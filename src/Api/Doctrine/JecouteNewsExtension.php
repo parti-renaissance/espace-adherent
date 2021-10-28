@@ -7,18 +7,29 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Repository\Geo\ZoneRepository;
+use App\Scope\AuthorizationChecker;
+use App\Scope\ScopeEnum;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
 class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterface
 {
     private Security $security;
     private ZoneRepository $zoneRepository;
+    private RequestStack $requestStack;
+    private AuthorizationChecker $authorizationChecker;
 
-    public function __construct(Security $security, ZoneRepository $zoneRepository)
-    {
+    public function __construct(
+        Security $security,
+        ZoneRepository $zoneRepository,
+        RequestStack $requestStack,
+        AuthorizationChecker $authorizationChecker
+    ) {
         $this->security = $security;
         $this->zoneRepository = $zoneRepository;
+        $this->requestStack = $requestStack;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function applyToCollection(
@@ -39,13 +50,14 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
             ;
         }
 
-        /** @var Adherent $user */
-        $user = $this->security->getUser();
-        if ($user->hasNationalRole()) {
+        $scope = $this->authorizationChecker->getScope($this->requestStack->getMasterRequest());
+        if (ScopeEnum::NATIONAL === $scope) {
             $queryBuilder
                 ->andWhere(sprintf('%s.space IS NULL', $queryBuilder->getRootAliases()[0]))
             ;
-        } elseif ($user->isReferent()) {
+        } elseif (ScopeEnum::REFERENT === $scope) {
+            /** @var Adherent $user */
+            $user = $this->security->getUser();
             $queryBuilder
                 ->andWhere(sprintf('%s.zone IN (:zones)', $queryBuilder->getRootAliases()[0]))
                 ->setParameter('zones', $this->zoneRepository->findForJecouteByReferentTags($user->getManagedArea()->getTags()->toArray()))

@@ -237,28 +237,36 @@ Feature:
                 "title": "[Régionales] Nouveau sondage disponible",
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": null,
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "published": true
             },
             {
                 "uuid": "b2b8e6a3-f5a9-4b34-a761-37438c3c3602",
                 "title": "[Référent] Nouvelle actualité à 92 du référent",
                 "text": "Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.",
                 "external_link": "https://referent.en-marche.fr",
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "published": true
             },
             {
                 "uuid": "6c70f8e8-6bce-4376-8b9e-3ce342880673",
                 "title": "[Référent] Nouvelle actualité non publié à 92 du référent délégué",
                 "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
                 "external_link": "https://referent.en-marche.fr",
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "published": false
             },
             {
                 "uuid": "560bab7a-d624-47d6-bf5e-3864c2406daf",
                 "title": "Nouvelle actualité à 92 de l'admin",
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "published": true
             }
         ]
     }
@@ -285,14 +293,18 @@ Feature:
                 "title": "Nouveau assemblement",
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": "https://en-marche.fr",
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "published": false
             },
             {
                 "uuid": "560bab7a-d624-47d6-bf5e-3864c2406daf",
                 "title": "Nouvelle actualité à 92 de l'admin",
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
-                "created_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "published": true
             }
         ]
     }

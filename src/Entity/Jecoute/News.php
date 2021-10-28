@@ -185,6 +185,8 @@ class News implements AuthoredInterface
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read_dc"})
      */
     private $notification = false;
 
@@ -192,6 +194,8 @@ class News implements AuthoredInterface
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": 1})
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read_dc"})
      */
     private $published = true;
 
