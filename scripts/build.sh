@@ -5,12 +5,12 @@ set -xe
 perl -pi -e "s/default/$CIRCLE_SHA1/g" ./config/packages/app_version.yaml
 
 VERSION=${CIRCLE_TAG:-$CIRCLE_BRANCH}
-RESOURCE_NAME="eu.gcr.io/$GCLOUD_PROJECT/app"
+RESOURCE_NAME="eu.gcr.io/$GCLOUD_PROJECT_TMP/en-marche.fr"
 DOCKER_IMAGE_TAG="$RESOURCE_NAME:$VERSION-$CIRCLE_SHA1"
 DOCKER_IMAGE_CACHE_TAG="$RESOURCE_NAME:master"
 
 # Build the image
-gcloud docker -- pull $DOCKER_IMAGE_CACHE_TAG
+gcloud docker -- pull $DOCKER_IMAGE_CACHE_TAG || true
 docker build --cache-from=$DOCKER_IMAGE_CACHE_TAG -t $DOCKER_IMAGE_TAG .
 
 # Push the images to Google Cloud
