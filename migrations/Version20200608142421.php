@@ -32,7 +32,7 @@ final class Version20200608142421 extends AbstractMigration
           certification_request 
         DROP 
           found_duplicated_adherent_id, 
-          CHANGE document_name document_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
-          CHANGE document_mime_type document_mime_type VARCHAR(30) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE document_name document_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE document_mime_type document_mime_type VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

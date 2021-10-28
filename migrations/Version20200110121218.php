@@ -34,7 +34,7 @@ SQL
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE donations DROP FOREIGN KEY FK_CDE98962831BACAF');
-        $this->addSql('ALTER TABLE donations ADD gender VARCHAR(6) NOT NULL COLLATE utf8_unicode_ci, ADD email_address VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, ADD first_name VARCHAR(50) NOT NULL COLLATE utf8_unicode_ci, ADD last_name VARCHAR(50) NOT NULL COLLATE utf8_unicode_ci, CHANGE donator_id donator_id INT UNSIGNED DEFAULT NULL');
+        $this->addSql('ALTER TABLE donations ADD gender VARCHAR(6) NOT NULL COLLATE utf8mb4_unicode_ci, ADD email_address VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD first_name VARCHAR(50) NOT NULL COLLATE utf8mb4_unicode_ci, ADD last_name VARCHAR(50) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE donator_id donator_id INT UNSIGNED DEFAULT NULL');
         $this->addSql(<<<'SQL'
             UPDATE donations SET gender = (
                 SELECT gender

@@ -17,7 +17,7 @@ final class Version20200507124731 extends AbstractMigration
           PRIMARY KEY(
             referent_team_member_id, committee_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE referent_person_link_committee (
           referent_person_link_id INT UNSIGNED NOT NULL, 
           committee_id INT UNSIGNED NOT NULL, 
@@ -26,7 +26,7 @@ final class Version20200507124731 extends AbstractMigration
           PRIMARY KEY(
             referent_person_link_id, committee_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           referent_team_member_committee 
         ADD 

@@ -22,17 +22,14 @@ class ApproveCommitteeCommandType extends AbstractType
         $committee = $command instanceof CommitteeCommand ? $command->getCommittee() : null;
         $builder
             ->add('name', TextType::class, [
-                'filter_emojis' => true,
                 'format_title_case' => true,
             ])
             ->add('slug', TextType::class, [
-                'filter_emojis' => true,
                 'help' => 'Généré automatiquement depuis le titre.',
             ])
             ->add('description', TextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 140],
-                'filter_emojis' => true,
             ])
             ->add('address', AddressType::class, [
                 'disable_fields' => $committee ? $committee->isApproved() : false,

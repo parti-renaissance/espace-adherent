@@ -17,6 +17,6 @@ final class Version20210324150101 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           territorial_council_election 
         ADD 
-          questions LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci');
+          questions LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

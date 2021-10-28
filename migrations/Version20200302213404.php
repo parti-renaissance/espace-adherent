@@ -58,7 +58,7 @@ final class Version20200302213404 extends AbstractMigration
           PRIMARY KEY(
             vote_result_id, list_total_result_id
           )
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           vote_result_list_total_result 
         ADD 

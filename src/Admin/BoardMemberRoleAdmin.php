@@ -17,7 +17,6 @@ class BoardMemberRoleAdmin extends AbstractAdmin
             ])
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
         ;
     }
@@ -30,7 +29,6 @@ class BoardMemberRoleAdmin extends AbstractAdmin
             ])
             ->add('name', null, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

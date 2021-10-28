@@ -27,6 +27,6 @@ SQL
 SQL
         );
         $this->addSql('ALTER TABLE 
-          elected_representative CHANGE gender gender VARCHAR(10) NOT NULL COLLATE utf8_unicode_ci');
+          elected_representative CHANGE gender gender VARCHAR(10) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

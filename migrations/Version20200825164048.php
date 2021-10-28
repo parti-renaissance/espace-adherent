@@ -15,7 +15,7 @@ final class Version20200825164048 extends AbstractMigration
           INDEX IDX_CECA906FDD62C21B (child_id),
           INDEX IDX_CECA906F727ACA70 (parent_id),
           PRIMARY KEY(child_id, parent_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           elected_representative_zone_parent
         ADD

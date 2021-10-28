@@ -12,7 +12,7 @@ final class Version20200623103638 extends AbstractMigration
         $this->addSql('CREATE TABLE senatorial_candidate_areas (
           id INT AUTO_INCREMENT NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE senatorial_candidate_areas_tags (
           senatorial_candidate_area_id INT NOT NULL, 
           referent_tag_id INT UNSIGNED NOT NULL, 
@@ -21,7 +21,7 @@ final class Version20200623103638 extends AbstractMigration
           PRIMARY KEY(
             senatorial_candidate_area_id, referent_tag_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           senatorial_candidate_areas_tags 
         ADD 

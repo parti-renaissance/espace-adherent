@@ -35,22 +35,22 @@ final class Version20200602175713 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE 
           timeline_manifesto_translations CHANGE id id INT AUTO_INCREMENT NOT NULL, 
-          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           timeline_manifesto_translations RENAME INDEX timeline_manifesto_translations_unique_translation TO UNIQ_F7BD6C172C2AC5D34180C698');
         $this->addSql('ALTER TABLE 
           timeline_measure_translations CHANGE id id INT AUTO_INCREMENT NOT NULL, 
-          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           timeline_measure_translations RENAME INDEX timeline_measure_translations_unique_translation TO UNIQ_5C9EB6072C2AC5D34180C698');
         $this->addSql('ALTER TABLE 
           timeline_profile_translations CHANGE id id INT AUTO_INCREMENT NOT NULL, 
-          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           timeline_profile_translations RENAME INDEX timeline_profile_translations_unique_translation TO UNIQ_41B3A6DA2C2AC5D34180C698');
         $this->addSql('ALTER TABLE 
           timeline_theme_translations CHANGE id id INT AUTO_INCREMENT NOT NULL, 
-          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE locale locale VARCHAR(10) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           timeline_theme_translations RENAME INDEX timeline_theme_translations_unique_translation TO UNIQ_F81F72932C2AC5D34180C698');
     }

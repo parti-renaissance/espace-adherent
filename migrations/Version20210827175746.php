@@ -29,7 +29,7 @@ final class Version20210827175746 extends AbstractMigration
           INDEX IDX_EC19119825F06C53 (adherent_id),
           INDEX IDX_EC191198F639F774 (campaign_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           phoning_campaign_history
         ADD
@@ -59,8 +59,8 @@ final class Version20210827175746 extends AbstractMigration
           data_survey_id INT NOT NULL,
           adherent_id INT UNSIGNED NOT NULL,
           campaign_id INT UNSIGNED NOT NULL,
-          type VARCHAR(10) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`,
-          status VARCHAR(25) CHARACTER SET utf8 NOT NULL COLLATE `utf8_unicode_ci`,
+          type VARCHAR(10) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`,
+          status VARCHAR(25) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`,
           postal_code_checked TINYINT(1) NOT NULL,
           call_more TINYINT(1) NOT NULL,
           need_renewal TINYINT(1) NOT NULL,
@@ -71,7 +71,7 @@ final class Version20210827175746 extends AbstractMigration
           UNIQUE INDEX UNIQ_16BB9BA53C5110AB (data_survey_id),
           INDEX IDX_16BB9BA5F639F774 (campaign_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\'');
         $this->addSql('ALTER TABLE
           phoning_data_survey
         ADD

@@ -21,7 +21,7 @@ final class Version20190325180543 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           UNIQUE INDEX UNIQ_2574310677153098 (code), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void

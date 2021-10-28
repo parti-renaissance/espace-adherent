@@ -15,14 +15,14 @@ final class Version20200612142737 extends AbstractMigration
           title VARCHAR(255) NOT NULL, 
           INDEX IDX_7225D6EFA708DAFF (election_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_election_round (
           id INT AUTO_INCREMENT NOT NULL, 
           election_id INT UNSIGNED DEFAULT NULL, 
           is_active TINYINT(1) DEFAULT \'1\' NOT NULL, 
           INDEX IDX_F15D87B7A708DAFF (election_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_election_round_election_pool (
           election_round_id INT NOT NULL, 
           election_pool_id INT NOT NULL, 
@@ -31,7 +31,7 @@ final class Version20200612142737 extends AbstractMigration
           PRIMARY KEY(
             election_round_id, election_pool_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           voting_platform_election_pool 
         ADD 

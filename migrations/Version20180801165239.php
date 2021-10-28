@@ -28,7 +28,7 @@ final class Version20180801165239 extends AbstractMigration
                         UNIQUE INDEX turnkey_project_canonical_name_unique (canonical_name), 
                         UNIQUE INDEX turnkey_project_slug_unique (slug), 
                         PRIMARY KEY(id)
-                    ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+                    ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE turnkey_projects ADD CONSTRAINT FK_CB66CFAE12469DE2 FOREIGN KEY (category_id) REFERENCES citizen_project_categories (id)');
     }
 

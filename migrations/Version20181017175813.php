@@ -20,7 +20,7 @@ final class Version20181017175813 extends AbstractMigration
               updated_at DATETIME NOT NULL, 
               INDEX IDX_EC4948E561220EA6 (creator_id), 
               PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql(
@@ -31,7 +31,7 @@ final class Version20181017175813 extends AbstractMigration
               position SMALLINT NOT NULL, 
               INDEX IDX_80BD898B1E27F6BF (question_id), 
               PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql(
@@ -43,7 +43,7 @@ final class Version20181017175813 extends AbstractMigration
               INDEX IDX_A2FBFA81B3FE509D (survey_id), 
               INDEX IDX_A2FBFA811E27F6BF (question_id), 
               PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql(
@@ -52,7 +52,7 @@ final class Version20181017175813 extends AbstractMigration
               content VARCHAR(255) NOT NULL, 
               type VARCHAR(255) NOT NULL, 
               PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql('ALTER TABLE jecoute_survey ADD CONSTRAINT FK_EC4948E561220EA6 FOREIGN KEY (creator_id) REFERENCES adherents (id) ON DELETE SET NULL');

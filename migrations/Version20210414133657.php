@@ -16,7 +16,7 @@ final class Version20210414133657 extends AbstractMigration
           url VARCHAR(255) DEFAULT NULL,
           INDEX IDX_DC1B329B66E2221E (cause_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           cause_quick_action
         ADD

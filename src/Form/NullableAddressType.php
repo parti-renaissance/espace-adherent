@@ -17,7 +17,6 @@ class NullableAddressType extends AbstractType
         $builder
             ->add('address', TextType::class, [
                 'required' => false,
-                'filter_emojis' => true,
             ])
             ->add('city', HiddenType::class, [
                 'required' => false,

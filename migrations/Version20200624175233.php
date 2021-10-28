@@ -22,7 +22,7 @@ final class Version20200624175233 extends AbstractMigration
           INDEX IDX_1ECF756625F06C53 (adherent_id), 
           INDEX IDX_1ECF75664B09E92C (administrator_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           elected_representative_user_list_definition_history 
         ADD 

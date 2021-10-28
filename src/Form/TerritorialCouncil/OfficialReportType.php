@@ -20,9 +20,7 @@ class OfficialReportType extends AbstractType
         $report = $builder->getData();
 
         $builder
-            ->add('name', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('name', TextType::class)
             ->add('politicalCommittee', ManagedPoliticalCommitteeChoiceType::class, [
                 'required' => false,
                 'disabled' => null !== $report->getId(),

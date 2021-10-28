@@ -48,22 +48,22 @@ final class Version20200315032718 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           election_city_candidate 
         ADD 
-          last_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
-          CHANGE name first_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          last_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE name first_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           election_city_contact 
         ADD 
-          last_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
-          CHANGE name first_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          last_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE name first_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           election_city_manager 
         ADD 
-          last_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
-          CHANGE name first_name VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          last_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE name first_name VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
         $this->addSql('ALTER TABLE 
           election_city_prevision 
         ADD 
-          last_name VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, 
-          CHANGE name first_name VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+          last_name VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, 
+          CHANGE name first_name VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

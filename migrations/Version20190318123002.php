@@ -49,7 +49,7 @@ final class Version20190318123002 extends AbstractMigration
           adherent_uuid VARCHAR(36) DEFAULT NULL COMMENT \'(DC2Type:uuid)\', 
           UNIQUE INDEX UNIQ_55314F9525F06C53 (adherent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           elected_representatives_register 
         ADD 

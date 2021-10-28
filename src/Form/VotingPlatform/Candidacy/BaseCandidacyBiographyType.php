@@ -24,7 +24,6 @@ class BaseCandidacyBiographyType extends AbstractType
                 'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
-                'filter_emojis' => true,
             ])
             ->add('save', SubmitType::class)
         ;

@@ -16,11 +16,9 @@ class AttachmentLinkType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-                'filter_emojis' => true,
             ])
             ->add('link', UrlType::class, [
                 'label' => 'URL',
-                'filter_emojis' => true,
             ])
         ;
     }

@@ -23,17 +23,14 @@ class CmsBlockAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('description', TextType::class, [
                 'label' => 'Description',
-                'filter_emojis' => true,
                 'required' => false,
                 'help' => 'cms_block.description.help',
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
-                'filter_emojis' => true,
                 'required' => false,
                 'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
                 'help' => 'help.markdown',

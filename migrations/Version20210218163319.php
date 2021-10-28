@@ -24,7 +24,7 @@ final class Version20210218163319 extends AbstractMigration
           UNIQUE INDEX cause_uuid_unique (uuid), 
           UNIQUE INDEX cause_name_unique (name), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           cause 
         ADD 

@@ -27,7 +27,7 @@ class Version20180422142743 extends AbstractMigration
         $this->addSql('ALTER TABLE committees_memberships DROP FOREIGN KEY FK_E7A6490EED1A100B');
         $this->addSql('DROP INDEX IDX_E7A6490EED1A100B ON committees_memberships');
         $this->addSql('DROP INDEX adherent_has_joined_committee ON committees_memberships');
-        $this->addSql('ALTER TABLE committees_memberships ADD committee_uuid CHAR(36) NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:uuid)\', CHANGE adherent_id adherent_id INT UNSIGNED DEFAULT NULL');
+        $this->addSql('ALTER TABLE committees_memberships ADD committee_uuid CHAR(36) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:uuid)\', CHANGE adherent_id adherent_id INT UNSIGNED DEFAULT NULL');
         $this->addSql(
             'UPDATE committees_memberships
             JOIN committees ON committees.id = committees_memberships.committee_id

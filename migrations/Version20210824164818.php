@@ -29,7 +29,7 @@ final class Version20210824164818 extends AbstractMigration
           UNIQUE INDEX UNIQ_8DF5D8183C5110AB (data_survey_id),
           INDEX IDX_8DF5D81894A4C7D4 (device_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE phoning_data_survey (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           data_survey_id INT NOT NULL,
@@ -47,7 +47,7 @@ final class Version20210824164818 extends AbstractMigration
           INDEX IDX_16BB9BA525F06C53 (adherent_id),
           INDEX IDX_16BB9BA5F639F774 (campaign_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           jemarche_data_survey
         ADD

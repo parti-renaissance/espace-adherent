@@ -15,7 +15,7 @@ final class Version20210818093317 extends AbstractMigration
           INDEX IDX_A719804F848CC616 (audience_id),
           INDEX IDX_A719804F9F2C3FAB (zone_id),
           PRIMARY KEY(audience_id, zone_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           audience_zone
         ADD
@@ -42,7 +42,7 @@ final class Version20210818093317 extends AbstractMigration
         $this->addSql('ALTER TABLE
           audience
         ADD
-          type VARCHAR(255) CHARACTER SET utf8 NOT NULL COLLATE `utf8_unicode_ci`,
+          type VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`,
         DROP
           scope,
         DROP

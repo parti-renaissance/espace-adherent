@@ -18,7 +18,7 @@ class Version20170419181904 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE legislative_district_zones (id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL, area_code VARCHAR(4) NOT NULL, area_type VARCHAR(20) NOT NULL, name VARCHAR(100) NOT NULL, keywords LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE legislative_district_zones (id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL, area_code VARCHAR(4) NOT NULL, area_type VARCHAR(20) NOT NULL, name VARCHAR(100) NOT NULL, keywords LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE adherents ADD legislative_candidate TINYINT(1) DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE legislative_candidates DROP FOREIGN KEY FK_AE55AF9B91BD8781');
         $this->addSql('DROP INDEX UNIQ_AE55AF9B91BD8781 ON legislative_candidates');
@@ -51,7 +51,7 @@ class Version20170419181904 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_AE55AF9BEA9FDD75 ON legislative_candidates');
         $this->addSql('DROP INDEX legislative_candidates_slug_unique ON legislative_candidates');
         $this->addSql('DROP INDEX legislative_district_zones_area_code_unique ON legislative_district_zones');
-        $this->addSql('ALTER TABLE legislative_candidates ADD candidate_id INT UNSIGNED DEFAULT NULL, ADD area VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, DROP district_zone_id, DROP media_id, DROP slug, DROP facebook_page_url, DROP twitter_page_url, DROP donation_page_url, DROP website_url, DROP district_name, DROP district_number, DROP latitude, DROP longitude, DROP description, DROP first_name, DROP last_name, DROP display_media, CHANGE id id INT AUTO_INCREMENT NOT NULL');
+        $this->addSql('ALTER TABLE legislative_candidates ADD candidate_id INT UNSIGNED DEFAULT NULL, ADD area VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, DROP district_zone_id, DROP media_id, DROP slug, DROP facebook_page_url, DROP twitter_page_url, DROP donation_page_url, DROP website_url, DROP district_name, DROP district_number, DROP latitude, DROP longitude, DROP description, DROP first_name, DROP last_name, DROP display_media, CHANGE id id INT AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE legislative_candidates ADD CONSTRAINT FK_AE55AF9B91BD8781 FOREIGN KEY (candidate_id) REFERENCES adherents (id) ON DELETE CASCADE');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AE55AF9B91BD8781 ON legislative_candidates (candidate_id)');
     }

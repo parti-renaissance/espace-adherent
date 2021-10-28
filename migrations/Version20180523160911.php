@@ -24,7 +24,7 @@ CREATE TABLE committees_membership_histories (
     INDEX committees_membership_histories_action_idx (action),
     INDEX committees_membership_histories_date_idx (date),
     PRIMARY KEY(id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql(
@@ -35,7 +35,7 @@ CREATE TABLE committee_membership_history_referent_tag (
     INDEX IDX_B6A8C718123C64CE (committee_membership_history_id), 
     INDEX IDX_B6A8C7189C262DB3 (referent_tag_id), 
     PRIMARY KEY(committee_membership_history_id, referent_tag_id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
 

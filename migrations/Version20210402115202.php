@@ -12,7 +12,7 @@ final class Version20210402115202 extends AbstractMigration
         $this->addSql('CREATE TABLE coalition_moderator_role_association (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE adherents ADD coalition_moderator_role_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE
           adherents

@@ -17,7 +17,7 @@ final class Version20200507151000 extends AbstractMigration
           INDEX IDX_62C86890A708DAFF (election_id), 
           UNIQUE INDEX unique_vote (voter_key, election_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voting_platform_vote_choice (
           id INT AUTO_INCREMENT NOT NULL, 
           vote_result_id INT DEFAULT NULL, 
@@ -26,7 +26,7 @@ final class Version20200507151000 extends AbstractMigration
           INDEX IDX_B009F31145EB7186 (vote_result_id), 
           INDEX IDX_B009F3115F0A9B94 (candidate_group_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           voting_platform_vote_result 
         ADD 
@@ -58,7 +58,7 @@ final class Version20200507151000 extends AbstractMigration
           INDEX IDX_AFB0733772DCDAFC (vote_id), 
           INDEX IDX_AFB073375F0A9B94 (candidate_group_id), 
           PRIMARY KEY(vote_id, candidate_group_id)
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           voting_platform_vote_candidate_group 
         ADD 

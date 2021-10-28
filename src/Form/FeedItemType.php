@@ -19,7 +19,6 @@ class FeedItemType extends AbstractType
                     'maxlength' => 6000,
                     'placeholder' => 'Écrivez ici votre message',
                 ],
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
             ])

@@ -14,6 +14,6 @@ class Version20170302005646 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE je_marche_reports CHANGE reaction reaction LONGTEXT NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE je_marche_reports CHANGE reaction reaction LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

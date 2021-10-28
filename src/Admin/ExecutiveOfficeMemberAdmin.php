@@ -40,15 +40,12 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
             ->with('Général', ['class' => 'col-md-6'])
                 ->add('firstName', TextType::class, [
                     'label' => 'Prénom',
-                    'filter_emojis' => true,
                 ])
                 ->add('lastName', TextType::class, [
                     'label' => 'Nom',
-                    'filter_emojis' => true,
                 ])
                 ->add('job', TextType::class, [
                     'label' => 'Poste',
-                    'filter_emojis' => true,
                 ])
                 ->add('executiveOfficer', CheckboxType::class, [
                     'label' => 'Délégué général',
@@ -61,7 +58,6 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 ->add('description', TextType::class, [
                     'label' => 'Description',
                     'required' => false,
-                    'filter_emojis' => true,
                     'help' => 'La description de la biographie sera présente dans la liste des membres. (255 caractères maximum).',
                 ])
                 ->add('content', PurifiedTextareaType::class, [
@@ -69,7 +65,6 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                     'required' => false,
                     'attr' => ['class' => 'ck-editor'],
                     'purifier_type' => 'enrich_content',
-                    'filter_emojis' => true,
                     'help' => 'Le contenu de la biographie sera présent dans la fiche du membre.',
                 ])
                 ->add('published', null, [
@@ -88,22 +83,18 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 ->add('facebookProfile', TextType::class, [
                     'label' => 'Facebook',
                     'required' => false,
-                    'filter_emojis' => true,
                 ])
                 ->add('twitterProfile', TextType::class, [
                     'label' => 'Twitter',
                     'required' => false,
-                    'filter_emojis' => true,
                 ])
                 ->add('instagramProfile', TextType::class, [
                     'label' => 'Instagram',
                     'required' => false,
-                    'filter_emojis' => true,
                 ])
                 ->add('linkedInProfile', TextType::class, [
                     'label' => 'LinkedIn',
                     'required' => false,
-                    'filter_emojis' => true,
                 ])
             ->end()
         ;

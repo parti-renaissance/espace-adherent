@@ -19,7 +19,7 @@ class Version20170517100000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE events_categories (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, UNIQUE INDEX event_category_name_unique (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE events_categories (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, UNIQUE INDEX event_category_name_unique (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
         $this->addSql('ALTER TABLE events ADD category_id INT UNSIGNED DEFAULT NULL, DROP category');
         $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574A12469DE2 FOREIGN KEY (category_id) REFERENCES events_categories (id)');
@@ -53,7 +53,7 @@ class Version20170517100000 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A12469DE2');
         $this->addSql('DROP INDEX IDX_5387574A12469DE2 ON events');
-        $this->addSql('ALTER TABLE events ADD category VARCHAR(5) DEFAULT NULL COLLATE utf8_unicode_ci, DROP category_id');
+        $this->addSql('ALTER TABLE events ADD category VARCHAR(5) DEFAULT NULL COLLATE utf8mb4_unicode_ci, DROP category_id');
 
         $this->addSql('DROP TABLE events_categories');
     }

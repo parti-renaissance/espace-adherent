@@ -24,14 +24,12 @@ class CommitteeSupervisorCandidacyType extends AbstractType
             ->add('biography', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 400],
-                'filter_emojis' => true,
                 'constraints' => [new NotBlank(), new Length(['max' => 400])],
             ])
             ->add('faithStatement', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
                 'constraints' => [new NotBlank(), new Length(['max' => 1000])],
-                'filter_emojis' => true,
             ])
             ->add('isPublicFaithStatement', CheckboxType::class, [
                 'required' => false,

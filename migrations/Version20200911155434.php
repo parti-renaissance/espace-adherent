@@ -28,7 +28,7 @@ final class Version20200911155434 extends AbstractMigration
           INDEX IDX_22B6AC0525F06C53 (adherent_id), 
           INDEX IDX_22B6AC05D38DA5D3 (elected_representative_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE thematic_community (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
@@ -36,7 +36,7 @@ final class Version20200911155434 extends AbstractMigration
           enabled TINYINT(1) NOT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE thematic_community_contact (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           first_name VARCHAR(255) NOT NULL, 
@@ -58,7 +58,7 @@ final class Version20200911155434 extends AbstractMigration
           address_region VARCHAR(255) DEFAULT NULL, 
           address_geocodable_hash VARCHAR(255) DEFAULT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           thematic_community_membership 
         ADD 

@@ -68,12 +68,10 @@ class HomeBlockAdmin extends AbstractAdmin
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titre',
-                'filter_emojis' => true,
             ])
             ->add('subtitle', TextType::class, [
                 'label' => 'Sous-titre',
                 'required' => false,
-                'filter_emojis' => true,
             ])
             ->add('link', null, [
                 'label' => 'Cible du lien',

@@ -17,7 +17,7 @@ final class Version20200803182201 extends AbstractMigration
           PRIMARY KEY(
             mailchimp_campaign_id, mailchimp_segment_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           mailchimp_campaign_mailchimp_segment 
         ADD 
@@ -57,6 +57,6 @@ final class Version20200803182201 extends AbstractMigration
         DROP 
           is_adherent');
         $this->addSql('ALTER TABLE 
-          mailchimp_segment CHANGE external_id external_id VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          mailchimp_segment CHANGE external_id external_id VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

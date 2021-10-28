@@ -17,7 +17,7 @@ CREATE TABLE committee_referent_tag
     INDEX IDX_285EB1C5ED1A100B (committee_id),
     INDEX IDX_285EB1C59C262DB3 (referent_tag_id),
     PRIMARY KEY(committee_id, referent_tag_id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql(<<<SQL
@@ -28,7 +28,7 @@ CREATE TABLE event_referent_tag
   INDEX IDX_D3C8F5BE71F7E88B (event_id),
   INDEX IDX_D3C8F5BE9C262DB3 (referent_tag_id),
   PRIMARY KEY(event_id, referent_tag_id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql('ALTER TABLE committee_referent_tag ADD CONSTRAINT FK_285EB1C5ED1A100B FOREIGN KEY (committee_id) REFERENCES committees (id) ON DELETE CASCADE');

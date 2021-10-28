@@ -20,7 +20,7 @@ final class Version20200825130502 extends AbstractMigration
           UNIQUE INDEX UNIQ_A4B3C80877153098 (code),
           INDEX IDX_A4B3C808F92F3E70 (country_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_canton (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           department_id INT UNSIGNED NOT NULL,
@@ -32,7 +32,7 @@ final class Version20200825130502 extends AbstractMigration
           UNIQUE INDEX UNIQ_F04FC05F77153098 (code),
           INDEX IDX_F04FC05FAE80F5DF (department_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_department (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           region_id INT UNSIGNED NOT NULL,
@@ -44,7 +44,7 @@ final class Version20200825130502 extends AbstractMigration
           UNIQUE INDEX UNIQ_B460660477153098 (code),
           INDEX IDX_B460660498260155 (region_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_district (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           department_id INT UNSIGNED NOT NULL,
@@ -56,7 +56,7 @@ final class Version20200825130502 extends AbstractMigration
           UNIQUE INDEX UNIQ_DF78232677153098 (code),
           INDEX IDX_DF782326AE80F5DF (department_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_city (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           department_id INT UNSIGNED DEFAULT NULL,
@@ -74,14 +74,14 @@ final class Version20200825130502 extends AbstractMigration
           INDEX IDX_297C2D346D3B1930 (city_community_id),
           INDEX IDX_297C2D34B08FA272 (district_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_city_canton (
           city_id INT UNSIGNED NOT NULL,
           canton_id INT UNSIGNED NOT NULL,
           INDEX IDX_A4AB64718BAC62AF (city_id),
           INDEX IDX_A4AB64718D070D0B (canton_id),
           PRIMARY KEY(city_id, canton_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_country (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           code VARCHAR(255) NOT NULL,
@@ -91,7 +91,7 @@ final class Version20200825130502 extends AbstractMigration
           updated_at DATETIME NOT NULL,
           UNIQUE INDEX UNIQ_E465446477153098 (code),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE geo_city_community (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           department_id INT UNSIGNED NOT NULL,
@@ -103,7 +103,7 @@ final class Version20200825130502 extends AbstractMigration
           UNIQUE INDEX UNIQ_E5805E0877153098 (code),
           INDEX IDX_E5805E08AE80F5DF (department_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           geo_region
         ADD

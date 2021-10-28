@@ -29,7 +29,7 @@ final class Version20210616114059 extends AbstractMigration
             adherent_id, instance_quality_id
           ),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE instance_quality (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           code VARCHAR(255) NOT NULL,
@@ -39,7 +39,7 @@ final class Version20210616114059 extends AbstractMigration
           updated_at DATETIME NOT NULL,
           UNIQUE INDEX UNIQ_BB26C6D377153098 (code),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
         $this->addSql(
             'INSERT INTO instance_quality(id, `code`, scopes, uuid, created_at, updated_at) VALUES '.implode(', ', array_map(function (string $code) {

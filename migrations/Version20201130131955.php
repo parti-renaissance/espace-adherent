@@ -18,7 +18,7 @@ final class Version20201130131955 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           UNIQUE INDEX devices_uuid_unique (uuid), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE oauth_auth_codes ADD device_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE 
           oauth_auth_codes 

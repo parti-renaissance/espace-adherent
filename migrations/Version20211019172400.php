@@ -25,7 +25,7 @@ final class Version20211019172400 extends AbstractMigration
         CHANGE
           phoning_manager_role team_phoning_national_manager_role TINYINT(1) DEFAULT \'0\' NOT NULL');
         $this->addSql('DROP INDEX team_name_unique ON team');
-        $this->addSql('ALTER TABLE team ADD type VARCHAR(10) CHARACTER SET utf8 NOT NULL COLLATE `utf8_unicode_ci`');
+        $this->addSql('ALTER TABLE team ADD type VARCHAR(10) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('CREATE UNIQUE INDEX team_type_name_unique ON team (type, name)');
     }
 }

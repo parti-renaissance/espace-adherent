@@ -40,6 +40,6 @@ final class Version20210226133019 extends AbstractMigration
           notification, 
         DROP 
           published, 
-          CHANGE topic topic VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+          CHANGE topic topic VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

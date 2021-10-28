@@ -17,7 +17,7 @@ final class Version20200917163301 extends AbstractMigration
           PRIMARY KEY(
             adherent_id, thematic_community_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           adherent_thematic_community 
         ADD 

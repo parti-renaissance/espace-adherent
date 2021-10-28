@@ -22,14 +22,14 @@ final class Version20190905134617 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           adherent_message_filters 
         ADD 
-          cities LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\', 
+          cities LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:simple_array)\', 
         DROP 
           insee_code');
 
         $this->addSql('ALTER TABLE 
           municipal_chief_areas 
         ADD 
-          codes LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
+          codes LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
 
         $this->addSql('UPDATE municipal_chief_areas SET codes = insee_code');
         $this->addSql('ALTER TABLE municipal_chief_areas DROP insee_code');

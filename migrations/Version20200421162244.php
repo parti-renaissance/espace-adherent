@@ -17,7 +17,7 @@ final class Version20200421162244 extends AbstractMigration
           PRIMARY KEY(
             committee_merge_history_id, committee_membership_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           committee_merge_histories_merged_memberships 
         ADD 

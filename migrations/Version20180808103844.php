@@ -14,6 +14,6 @@ final class Version20180808103844 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE turnkey_projects ADD required_means LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci, DROP is_approved');
+        $this->addSql('ALTER TABLE turnkey_projects ADD required_means LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, DROP is_approved');
     }
 }

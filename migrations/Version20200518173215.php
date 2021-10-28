@@ -19,7 +19,7 @@ final class Version20200518173215 extends AbstractMigration
           PRIMARY KEY(
             elected_representative_id, user_list_definition_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user_list_definition (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           type VARCHAR(50) NOT NULL,
@@ -27,7 +27,7 @@ final class Version20200518173215 extends AbstractMigration
           label VARCHAR(100) NOT NULL,
           UNIQUE INDEX user_list_definition_type_code_unique (type, code),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           elected_representative_user_list_definition
         ADD

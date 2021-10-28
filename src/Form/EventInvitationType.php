@@ -33,7 +33,6 @@ class EventInvitationType extends AbstractType
                     'placeholder' => 'event.invitation.form.first_name',
                     'class' => 'form--full',
                 ],
-                'filter_emojis' => true,
             ])
             ->add('lastName', TextType::class, [
                 'label' => false,
@@ -41,7 +40,6 @@ class EventInvitationType extends AbstractType
                     'placeholder' => 'event.invitation.form.last_name',
                     'class' => 'form--full',
                 ],
-                'filter_emojis' => true,
             ])
             ->add('message', TextareaType::class, [
                 'attr' => [
@@ -50,7 +48,6 @@ class EventInvitationType extends AbstractType
                 ],
                 'label' => false,
                 'required' => false,
-                'filter_emojis' => true,
             ])
             ->add('guests', CollectionType::class, [
                 'entry_type' => EmailType::class,

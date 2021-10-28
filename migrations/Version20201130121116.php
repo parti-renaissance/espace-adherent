@@ -15,7 +15,7 @@ final class Version20201130121116 extends AbstractMigration
           INDEX IDX_E4D4ADCDC679DD78 (managed_user_id),
           INDEX IDX_E4D4ADCD9F2C3FAB (zone_id),
           PRIMARY KEY(managed_user_id, zone_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           projection_managed_users_zone
         ADD

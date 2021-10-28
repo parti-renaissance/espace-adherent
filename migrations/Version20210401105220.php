@@ -31,6 +31,6 @@ final class Version20210401105220 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE cause DROP FOREIGN KEY FK_F0DA7FBF38C2B2DC');
         $this->addSql('DROP INDEX IDX_F0DA7FBF38C2B2DC ON cause');
-        $this->addSql('ALTER TABLE cause DROP second_coalition_id, DROP status, CHANGE description description LONGTEXT CHARACTER SET utf8 NOT NULL COLLATE `utf8_unicode_ci`');
+        $this->addSql('ALTER TABLE cause DROP second_coalition_id, DROP status, CHANGE description description LONGTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
     }
 }

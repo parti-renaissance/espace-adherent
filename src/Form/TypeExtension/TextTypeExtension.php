@@ -2,7 +2,6 @@
 
 namespace App\Form\TypeExtension;
 
-use App\Utils\EmojisRemover;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,12 +31,10 @@ class TextTypeExtension extends AbstractTypeExtension
                 'empty_data' => function (Options $options) {
                     return $options['required'] ? '' : null;
                 },
-                'filter_emojis' => false,
                 'format_title_case' => false,
                 'format_identity_case' => false,
                 'with_character_count' => false,
             ])
-            ->setAllowedTypes('filter_emojis', 'bool')
             ->setAllowedTypes('format_title_case', 'bool')
             ->setAllowedTypes('format_identity_case', 'bool')
             ->setAllowedTypes('with_character_count', 'bool')
@@ -46,10 +43,6 @@ class TextTypeExtension extends AbstractTypeExtension
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['filter_emojis']) {
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, [__CLASS__, 'filterEmojis'], 10);
-        }
-
         if ($options['format_title_case']) {
             $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatDataAsTitle']);
         }
@@ -62,15 +55,6 @@ class TextTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['with_character_count'] = $options['with_character_count'];
-    }
-
-    public static function filterEmojis(FormEvent $event): void
-    {
-        $data = $event->getData();
-
-        if (\is_string($data) && '' !== $data) {
-            $event->setData(EmojisRemover::remove($data));
-        }
     }
 
     public static function formatDataAsTitle(FormEvent $event): void

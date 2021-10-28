@@ -20,7 +20,7 @@ final class Version20200608101418 extends AbstractMigration
           INDEX IDX_421C13B98825BEFA (delegator_id), 
           INDEX IDX_421C13B9B7E7AE18 (delegated_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE my_team_delegate_access_committee (
           delegated_access_id INT UNSIGNED NOT NULL, 
           committee_id INT UNSIGNED NOT NULL, 
@@ -29,7 +29,7 @@ final class Version20200608101418 extends AbstractMigration
           PRIMARY KEY(
             delegated_access_id, committee_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           my_team_delegated_access 
         ADD 

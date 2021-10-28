@@ -17,25 +17,21 @@ class ElectionAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('introduction', PurifiedTextareaType::class, [
                 'label' => 'Introduction',
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'attr' => ['class' => 'ck-editor'],
             ])
             ->add('proposalContent', PurifiedTextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les propositions',
                 'required' => false,
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'attr' => ['class' => 'ck-editor'],
             ])
             ->add('requestContent', PurifiedTextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les demandes',
                 'required' => false,
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'attr' => ['class' => 'ck-editor'],
             ])

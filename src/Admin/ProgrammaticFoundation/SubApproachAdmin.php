@@ -91,7 +91,6 @@ class SubApproachAdmin extends AbstractAdmin
                     'label' => 'Contenu',
                     'attr' => ['class' => 'ck-editor-advanced'],
                     'purifier_type' => 'enrich_content',
-                    'filter_emojis' => true,
                     'required' => false,
                 ])
                 ->add('isExpanded', null, [

@@ -15,7 +15,7 @@ final class Version20190402144714 extends AbstractMigration
           codes LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', 
           UNIQUE INDEX UNIQ_9D55225025F06C53 (adherent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE assessor_requests (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           vote_place_id INT DEFAULT NULL, 
@@ -42,7 +42,7 @@ final class Version20190402144714 extends AbstractMigration
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           INDEX IDX_26BC800F3F90B30 (vote_place_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE assessor_request_vote_place_wishes (
           assessor_request_id INT UNSIGNED NOT NULL, 
           vote_place_id INT NOT NULL, 
@@ -51,7 +51,7 @@ final class Version20190402144714 extends AbstractMigration
           PRIMARY KEY(
             assessor_request_id, vote_place_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           assessor_managed_areas 
         ADD 

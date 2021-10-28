@@ -17,7 +17,7 @@ CREATE TABLE adherent_email_subscription_history_referent_tag (
   INDEX IDX_6FFBE6E88FCB8132 (email_subscription_history_id),
   INDEX IDX_6FFBE6E89C262DB3 (referent_tag_id),
   PRIMARY KEY(email_subscription_history_id, referent_tag_id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql('ALTER TABLE adherent_email_subscription_histories DROP FOREIGN KEY FK_272CB3E99C262DB3');
@@ -36,7 +36,7 @@ SQL
         $this->addSql('ALTER TABLE adherent_email_subscription_history_referent_tag DROP FOREIGN KEY FK_6FFBE6E89C262DB3');
         $this->addSql('ALTER TABLE adherent_email_subscription_histories MODIFY id INT UNSIGNED NOT NULL');
         $this->addSql('ALTER TABLE adherent_email_subscription_histories DROP PRIMARY KEY');
-        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD uuid CHAR(36) NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:uuid)\', ADD referent_tag_id INT UNSIGNED DEFAULT NULL, DROP id');
+        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD uuid CHAR(36) NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:uuid)\', ADD referent_tag_id INT UNSIGNED DEFAULT NULL, DROP id');
         $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD CONSTRAINT FK_272CB3E99C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id)');
         $this->addSql('CREATE INDEX IDX_51AD83549C262DB3 ON adherent_email_subscription_histories (referent_tag_id)');
         $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD PRIMARY KEY (uuid)');

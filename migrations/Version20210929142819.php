@@ -22,7 +22,7 @@ final class Version20210929142819 extends AbstractMigration
           INDEX IDX_AD680C0E9DF5350C (created_by_administrator_id),
           INDEX IDX_AD680C0ECF1918FF (updated_by_administrator_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           cms_block
         ADD

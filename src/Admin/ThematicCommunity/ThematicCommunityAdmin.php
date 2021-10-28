@@ -56,11 +56,9 @@ class ThematicCommunityAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Titre',
-                'filter_emojis' => true,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'filter_emojis' => true,
             ])
             ->add('image', FileType::class, [
                 'label' => 'Bannière',

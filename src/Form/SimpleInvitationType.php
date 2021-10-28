@@ -21,7 +21,6 @@ class SimpleInvitationType extends AbstractType
                 new Length(['max' => 255]),
             ]])
             ->add('message', TextareaType::class, [
-                'filter_emojis' => true,
                 'constraints' => [
                     new NotBlank(),
                 ],

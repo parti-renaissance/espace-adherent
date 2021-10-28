@@ -16,7 +16,7 @@ final class Version20190423155116 extends AbstractMigration
           UNIQUE INDEX UNIQ_6C006717597D3FE (member_id), 
           INDEX IDX_6C0067135E47E35 (referent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           referent_team_member 
         ADD 

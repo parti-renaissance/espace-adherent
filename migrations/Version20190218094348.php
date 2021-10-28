@@ -17,7 +17,7 @@ final class Version20190218094348 extends AbstractMigration
           PRIMARY KEY(
             institutional_event_id, referent_tag_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE institutional_events_categories (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
@@ -26,7 +26,7 @@ final class Version20190218094348 extends AbstractMigration
           UNIQUE INDEX institutional_event_category_name_unique (name), 
           UNIQUE INDEX institutional_event_slug_unique (slug), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           institutional_event_referent_tag 
         ADD 

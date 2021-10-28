@@ -17,7 +17,7 @@ final class Version20191107005436 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           UNIQUE INDEX UNIQ_C53D045FD17F50A6 (uuid), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           mooc 
         ADD 
@@ -50,12 +50,12 @@ final class Version20191107005436 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           mooc 
         ADD 
-          image_name VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, 
+          image_name VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, 
         DROP 
           article_image_id, 
         DROP 
           list_image_id, 
-          CHANGE youtube_id youtube_id VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, 
+          CHANGE youtube_id youtube_id VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, 
           CHANGE youtube_duration youtube_duration TIME NOT NULL');
     }
 }

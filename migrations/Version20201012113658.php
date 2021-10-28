@@ -22,7 +22,7 @@ final class Version20201012113658 extends AbstractMigration
           UNIQUE INDEX UNIQ_1449587477153098 (code),
           INDEX IDX_144958748BAC62AF (city_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           geo_borough
         ADD

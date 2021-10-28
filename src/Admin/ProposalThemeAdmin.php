@@ -21,7 +21,6 @@ class ProposalThemeAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('color', null, [
                 'label' => 'Couleur de fond',

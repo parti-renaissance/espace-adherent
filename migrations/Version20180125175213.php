@@ -29,7 +29,7 @@ class Version20180125175213 extends AbstractMigration
                 UNIQUE INDEX web_hook_uuid_unique (uuid), 
                 UNIQUE INDEX web_hook_event_client_id_unique (event, client_id), 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
         $this->addSql('ALTER TABLE web_hooks ADD CONSTRAINT FK_CDB836AD19EB6921 FOREIGN KEY (client_id) REFERENCES oauth_clients (id)');
     }

@@ -51,7 +51,6 @@ class ProcurationRequestType extends AbstractProcurationType
                     ])
                     ->add('voteCityName', TextType::class, [
                         'required' => false,
-                        'filter_emojis' => true,
                     ])
                     ->add('voteOffice', TextType::class)
                 ;

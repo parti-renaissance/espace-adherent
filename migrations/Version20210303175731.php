@@ -20,7 +20,7 @@ final class Version20210303175731 extends AbstractMigration
           INDEX IDX_6F9A854425F06C53 (adherent_id), 
           UNIQUE INDEX cause_follower_unique (cause_id, adherent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           cause_follower 
         ADD 
@@ -42,7 +42,7 @@ final class Version20210303175731 extends AbstractMigration
           INDEX IDX_DFF370E2C2A46A23 (coalition_id), 
           INDEX IDX_DFF370E225F06C53 (adherent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           coalition_follower 
         ADD 
@@ -63,7 +63,7 @@ final class Version20210303175731 extends AbstractMigration
           INDEX IDX_DFF370E2C2A46A23 (coalition_id),
           INDEX IDX_DFF370E225F06C53 (adherent_id),
           PRIMARY KEY(coalition_id, adherent_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           coalition_follower
         ADD

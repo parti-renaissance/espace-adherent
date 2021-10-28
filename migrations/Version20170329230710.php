@@ -15,6 +15,6 @@ class Version20170329230710 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE newsletter_subscriptions ADD client_ip VARCHAR(50) DEFAULT NULL COLLATE utf8_unicode_ci, DROP updated_at, DROP deleted_at');
+        $this->addSql('ALTER TABLE newsletter_subscriptions ADD client_ip VARCHAR(50) DEFAULT NULL COLLATE utf8mb4_unicode_ci, DROP updated_at, DROP deleted_at');
     }
 }

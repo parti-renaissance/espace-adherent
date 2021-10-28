@@ -27,7 +27,7 @@ final class Version20211005182707 extends AbstractMigration
           UNIQUE INDEX UNIQ_376DBA01D775834 (value),
           UNIQUE INDEX UNIQ_376DBA01D7758346D804024 (value, adherent_uuid),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           adherent_email_subscribe_token
         ADD

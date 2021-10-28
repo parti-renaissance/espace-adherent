@@ -15,7 +15,7 @@ final class Version20200805111724 extends AbstractMigration
           INDEX IDX_7538F35AFAC7D83F (designation_id), 
           INDEX IDX_7538F35A9C262DB3 (referent_tag_id), 
           PRIMARY KEY(designation_id, referent_tag_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE territorial_council_election (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           territorial_council_id INT UNSIGNED DEFAULT NULL, 
@@ -23,7 +23,7 @@ final class Version20200805111724 extends AbstractMigration
           INDEX IDX_14CBC36BAAA61A99 (territorial_council_id), 
           INDEX IDX_14CBC36BFAC7D83F (designation_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           designation_referent_tag 
         ADD 
@@ -55,7 +55,7 @@ final class Version20200805111724 extends AbstractMigration
         $this->addSql('DROP TABLE designation_referent_tag');
         $this->addSql('DROP TABLE territorial_council_election');
         $this->addSql('ALTER TABLE 
-          designation CHANGE zones zones LONGTEXT NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
+          designation CHANGE zones zones LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
         $this->addSql('ALTER TABLE territorial_council DROP FOREIGN KEY FK_B6DCA2A5B4D2A5D1');
         $this->addSql('DROP INDEX IDX_B6DCA2A5B4D2A5D1 ON territorial_council');
         $this->addSql('ALTER TABLE territorial_council DROP current_designation_id');

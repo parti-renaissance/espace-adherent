@@ -14,7 +14,7 @@ final class Version20181102165220 extends AbstractMigration
                 id INT NOT NULL, 
                 published TINYINT(1) DEFAULT \'0\' NOT NULL, 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql('ALTER TABLE jecoute_suggested_question ADD CONSTRAINT FK_8280E9DABF396750 FOREIGN KEY (id) REFERENCES jecoute_question (id) ON DELETE CASCADE');

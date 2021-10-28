@@ -35,7 +35,7 @@ final class Version20201014175945 extends AbstractMigration
           INDEX IDX_A9919BF0C7A72 (political_committee_id), 
           INDEX IDX_A9919BF0B03A8386 (created_by_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           territorial_council_convocation 
         ADD 

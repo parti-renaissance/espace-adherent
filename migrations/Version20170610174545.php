@@ -30,7 +30,7 @@ class Version20170610174545 extends AbstractMigration
                 created_at DATETIME NOT NULL,
                 INDEX projection_referent_managed_users_search (status, postal_code, country),
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
         ');
     }
 

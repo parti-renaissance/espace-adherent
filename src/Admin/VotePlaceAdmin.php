@@ -32,14 +32,12 @@ class VotePlaceAdmin extends AbstractAdmin
             ])
             ->add('address', null, [
                 'label' => 'Adresse postale',
-                'filter_emojis' => true,
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
             ])
             ->add('city', null, [
                 'label' => 'Ville',
-                'filter_emojis' => true,
             ])
             ->add('country', null, [
                 'label' => 'Pays',
@@ -58,14 +56,12 @@ class VotePlaceAdmin extends AbstractAdmin
             ])
             ->add('address', null, [
                 'label' => 'Adresse postale',
-                'filter_emojis' => true,
             ])
             ->add('postalCode', null, [
                 'label' => 'Code postal',
             ])
             ->add('city', null, [
                 'label' => 'Ville',
-                'filter_emojis' => true,
             ])
         ;
     }

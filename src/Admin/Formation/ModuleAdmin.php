@@ -56,7 +56,6 @@ class ModuleAdmin extends AbstractAdmin
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'required' => false,
-                    'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()

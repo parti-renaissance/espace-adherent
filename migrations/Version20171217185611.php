@@ -14,6 +14,6 @@ class Version20171217185611 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE citizen_projects DROP matched_skills, DROP featured, DROP admin_comment, CHANGE assistance_content assistance_content VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE citizen_projects DROP matched_skills, DROP featured, DROP admin_comment, CHANGE assistance_content assistance_content VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

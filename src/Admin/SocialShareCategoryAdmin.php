@@ -21,7 +21,6 @@ class SocialShareCategoryAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('position', null, [
                 'label' => 'Position',

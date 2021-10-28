@@ -12,7 +12,7 @@ final class Version20210628162452 extends AbstractMigration
         $this->addSql('CREATE TABLE national_council_candidacies_group (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE national_council_candidacy (
           id INT AUTO_INCREMENT NOT NULL,
           election_id INT UNSIGNED NOT NULL,
@@ -33,14 +33,14 @@ final class Version20210628162452 extends AbstractMigration
           INDEX IDX_31A7A205FC1537C1 (candidacies_group_id),
           INDEX IDX_31A7A20525F06C53 (adherent_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE national_council_election (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           designation_id INT UNSIGNED DEFAULT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           INDEX IDX_F3809347FAC7D83F (designation_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           national_council_candidacy
         ADD

@@ -17,11 +17,11 @@ final class Version20200302100656 extends AbstractMigration
           PRIMARY KEY(
             vote_result_id, list_total_result_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE vote_result_list_collection (
           id INT AUTO_INCREMENT NOT NULL, 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE vote_result_list_collection_city_proxy (
           id INT AUTO_INCREMENT NOT NULL, 
           list_collection_id INT DEFAULT NULL, 
@@ -29,14 +29,14 @@ final class Version20200302100656 extends AbstractMigration
           INDEX IDX_1C21CEB3DB567AF4 (list_collection_id), 
           UNIQUE INDEX UNIQ_1C21CEB38BAC62AF (city_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE list_total_result (
           id INT AUTO_INCREMENT NOT NULL, 
           list_id INT DEFAULT NULL, 
           total INT DEFAULT 0 NOT NULL, 
           INDEX IDX_A19B071E3DAE168B (list_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE vote_result_list (
           id INT AUTO_INCREMENT NOT NULL, 
           list_collection_id INT DEFAULT NULL, 
@@ -46,7 +46,7 @@ final class Version20200302100656 extends AbstractMigration
           eligible_count INT DEFAULT NULL, 
           INDEX IDX_677ED502DB567AF4 (list_collection_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           vote_result_list_total_result 
         ADD 

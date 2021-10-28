@@ -97,7 +97,6 @@ class SocialShareAdmin extends AbstractAdmin
                     'label' => 'Nom',
                     'required' => false,
                     'help' => 'Laissez vide pour réutiliser le nom du média',
-                    'filter_emojis' => true,
                 ])
                 ->add('defaultUrl', null, [
                     'label' => 'URL par défaut',

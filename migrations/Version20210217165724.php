@@ -17,7 +17,7 @@ final class Version20210217165724 extends AbstractMigration
           PRIMARY KEY(
             coalition_event_id, coalition_id
           )
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           coalition_event_coalition 
         ADD 

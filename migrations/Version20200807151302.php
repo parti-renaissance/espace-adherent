@@ -20,7 +20,7 @@ final class Version20200807151302 extends AbstractMigration
           updated_at DATETIME NOT NULL, 
           INDEX IDX_DA86009A1FB354CD (membership_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE territorial_council_candidacy (
           id INT AUTO_INCREMENT NOT NULL, 
           election_id INT UNSIGNED NOT NULL, 
@@ -41,7 +41,7 @@ final class Version20200807151302 extends AbstractMigration
           INDEX IDX_39885B61FB354CD (membership_id), 
           UNIQUE INDEX UNIQ_39885B6A35D7AF0 (invitation_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           territorial_council_candidacy_invitation 
         ADD 

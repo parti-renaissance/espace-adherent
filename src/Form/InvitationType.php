@@ -15,16 +15,10 @@ class InvitationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('firstName', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('lastName', TextType::class)
+            ->add('firstName', TextType::class)
             ->add('email', EmailType::class)
-            ->add('message', TextareaType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('message', TextareaType::class)
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
         ;
     }

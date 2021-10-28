@@ -23,11 +23,9 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
                 ->with('Général', ['class' => 'col-md-8'])
                     ->add('title', TextType::class, [
                         'label' => 'Titre',
-                        'filter_emojis' => true,
                     ])
                     ->add('description', TextType::class, [
                         'label' => 'Description',
-                        'filter_emojis' => true,
                     ])
                     ->add('slug', TextType::class, [
                         'label' => 'Slug',
@@ -37,27 +35,22 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
                         'label' => 'Contenu',
                         'attr' => ['class' => 'ck-editor'],
                         'purifier_type' => 'enrich_content',
-                        'filter_emojis' => true,
                     ])
                 ->end()
                 ->with('Boutons de partage', ['class' => 'col-md-4'])
                     ->add('shareTwitterText', TextType::class, [
                         'label' => 'Texte du partage sur Twitter',
-                        'filter_emojis' => true,
                     ])
                     ->add('shareFacebookText', TextType::class, [
                         'label' => 'Texte du partage sur Facebook',
-                        'filter_emojis' => true,
                     ])
                     ->add('shareEmailSubject', TextType::class, [
                         'label' => 'Sujet de l\'email de partage',
-                        'filter_emojis' => true,
                     ])
                     ->add('shareEmailBody', PurifiedTextareaType::class, [
                         'label' => 'Corps de l\'email de partage',
                         'attr' => ['rows' => 5, 'maxlength' => 500],
                         'purifier_type' => 'enrich_content',
-                        'filter_emojis' => true,
                     ])
                 ->end()
         ;
@@ -96,7 +89,6 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
                     ->add('youtubeId', TextType::class, [
                         'label' => 'Youtube ID',
                         'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
-                        'filter_emojis' => true,
                         'required' => false,
                     ])
                     ->add('youtubeDuration', TimeType::class, [

@@ -24,7 +24,6 @@ class EventRegistrationType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'filter_emojis' => true,
                 'format_identity_case' => true,
             ])
             ->add('lastName', TextType::class, [

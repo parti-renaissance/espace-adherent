@@ -26,7 +26,7 @@ final class Version20200310001454 extends AbstractMigration
           INDEX IDX_B9F11DAEB03A8386 (created_by_id), 
           INDEX IDX_B9F11DAE896DBBDE (updated_by_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ministry_list_total_result (
           id INT AUTO_INCREMENT NOT NULL, 
           ministry_vote_result_id INT DEFAULT NULL, 
@@ -37,7 +37,7 @@ final class Version20200310001454 extends AbstractMigration
           total INT DEFAULT 0 NOT NULL, 
           INDEX IDX_99D1332580711B75 (ministry_vote_result_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           ministry_vote_result 
         ADD 
@@ -107,7 +107,7 @@ final class Version20200310001454 extends AbstractMigration
           INDEX IDX_3C39AD46B03A8386 (created_by_id), 
           INDEX IDX_3C39AD46896DBBDE (updated_by_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE vote_result_list_collection_city_proxy (
           id INT AUTO_INCREMENT NOT NULL, 
           list_collection_id INT DEFAULT NULL, 
@@ -115,7 +115,7 @@ final class Version20200310001454 extends AbstractMigration
           UNIQUE INDEX UNIQ_1C21CEB38BAC62AF (city_id), 
           INDEX IDX_1C21CEB3DB567AF4 (list_collection_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           city_vote_result 
         ADD 

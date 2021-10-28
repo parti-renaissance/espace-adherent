@@ -33,7 +33,6 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
             ])
             ->add('postalCode', TextType::class, [
                 'label' => 'Code postal',
-                'filter_emojis' => true,
             ])
         ;
     }

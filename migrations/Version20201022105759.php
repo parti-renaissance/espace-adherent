@@ -20,6 +20,6 @@ final class Version20201022105759 extends AbstractMigration
         $this->addSql('ALTER TABLE thematic_community_membership DROP status');
         $this->addSql('ALTER TABLE thematic_community_contact DROP position');
         $this->addSql('ALTER TABLE
-          thematic_community_membership CHANGE motivations motivations LONGTEXT NOT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
+          thematic_community_membership CHANGE motivations motivations LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci COMMENT \'(DC2Type:simple_array)\'');
     }
 }

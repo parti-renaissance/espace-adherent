@@ -17,7 +17,7 @@ final class Version20190320143515 extends AbstractMigration
           UNIQUE INDEX event_group_category_name_unique (name), 
           UNIQUE INDEX event_group_category_slug_unique (slug), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
         $this->addSql('INSERT INTO event_group_category (`name`, `slug`) VALUES (\'événement\', \'evenement\')');
         $this->addSql('ALTER TABLE events_categories ADD event_group_category_id INT UNSIGNED DEFAULT 1');

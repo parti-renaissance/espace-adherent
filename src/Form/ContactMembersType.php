@@ -19,7 +19,6 @@ class ContactMembersType extends AbstractType
             ->add('message', PurifiedTextareaType::class, [
                 'purifier_type' => 'enrich_content',
                 'attr' => ['placeholder' => 'Écrivez votre message'],
-                'filter_emojis' => true,
             ])
         ;
     }

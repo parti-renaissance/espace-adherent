@@ -18,6 +18,6 @@ class Version20170706102307 extends AbstractMigration
     {
         $this->addSql('DROP INDEX member_summary_mission_type_name_unique ON member_summary_mission_types');
         $this->addSql('ALTER TABLE member_summary_mission_types DROP name');
-        $this->addSql('ALTER TABLE legislative_candidates CHANGE status status VARCHAR(20) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE legislative_candidates CHANGE status status VARCHAR(20) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

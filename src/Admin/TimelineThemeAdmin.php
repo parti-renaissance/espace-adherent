@@ -31,7 +31,6 @@ class TimelineThemeAdmin extends AbstractAdmin
                         ],
                         'description' => [
                             'label' => 'Description',
-                            'filter_emojis' => true,
                         ],
                     ],
                 ])

@@ -24,7 +24,7 @@ final class Version20211026104620 extends AbstractMigration
           INDEX IDX_47071E11D8AD1DD1AFAA2D47 (offset_x, offset_y),
           INDEX IDX_47071E114118D12385E16F6B (latitude, longitude),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pap_voter (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           address_id INT UNSIGNED NOT NULL,
@@ -37,7 +37,7 @@ final class Version20211026104620 extends AbstractMigration
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           INDEX IDX_FBF5A013F5B7AF75 (address_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           pap_voter
         ADD

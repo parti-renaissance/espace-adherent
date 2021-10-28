@@ -28,7 +28,7 @@ final class Version20200825222149 extends AbstractMigration
           INDEX IDX_BCDA0C15998666D1 (choice_id), 
           INDEX IDX_BCDA0C151FB354CD (membership_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           territorial_council_election_poll_vote 
         ADD 

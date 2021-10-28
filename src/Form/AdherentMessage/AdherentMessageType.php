@@ -15,17 +15,12 @@ class AdherentMessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('subject', TextType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('label', TextType::class)
+            ->add('subject', TextType::class)
             ->add('content', PurifiedTextareaType::class, [
                 'attr' => [
                     'maxlength' => 6000,
                 ],
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
                 'with_character_count' => true,
             ])

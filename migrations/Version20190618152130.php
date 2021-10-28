@@ -24,7 +24,7 @@ final class Version20190618152130 extends AbstractMigration
           description LONGTEXT NOT NULL, 
           UNIQUE INDEX UNIQ_FD311864989D9B62 (slug), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
         $this->addSql('DROP INDEX IDX_70BEDE2C7294869C ON formation_files');
         $this->addSql('ALTER TABLE formation_files CHANGE article_id module_id BIGINT DEFAULT NULL');

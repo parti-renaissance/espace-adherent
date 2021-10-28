@@ -20,7 +20,7 @@ final class Version20210805173606 extends AbstractMigration
           UNIQUE INDEX UNIQ_C5C2F52FD395B25E (filter_id),
           INDEX IDX_C5C2F52FF675F31B (author_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           audience_segment
         ADD

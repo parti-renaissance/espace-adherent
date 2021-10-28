@@ -19,7 +19,7 @@ final class Version20190613133720 extends AbstractMigration
           INDEX IDX_70BEDE2C7294869C (article_id), 
           UNIQUE INDEX formation_file_slug_extension (slug, extension), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE 
           formation_files 
         ADD 

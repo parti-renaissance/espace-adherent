@@ -15,7 +15,7 @@ class Version20180523105720 extends AbstractMigration
                 begin_at DATETIME NOT NULL, 
                 finish_at DATETIME NOT NULL, 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql(
@@ -25,7 +25,7 @@ class Version20180523105720 extends AbstractMigration
                 INDEX IDX_543DED2612359909 (republican_silence_id), 
                 INDEX IDX_543DED269C262DB3 (referent_tag_id), 
                 PRIMARY KEY(republican_silence_id, referent_tag_id)
-            ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
 
         $this->addSql('ALTER TABLE republican_silence_referent_tag ADD CONSTRAINT FK_543DED2612359909 FOREIGN KEY (republican_silence_id) REFERENCES republican_silence (id) ON DELETE CASCADE');

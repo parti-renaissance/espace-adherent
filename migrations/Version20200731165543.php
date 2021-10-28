@@ -20,7 +20,7 @@ final class Version20200731165543 extends AbstractMigration
           availability VARCHAR(255) DEFAULT NULL, 
           UNIQUE INDEX UNIQ_D239EF6F25F06C53 (adherent_id), 
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
         $this->addSql('ALTER TABLE 
           adherent_commitment 

@@ -16,7 +16,7 @@ final class Version20180705144501 extends AbstractMigration
                 INDEX IDX_F93DC28A25F06C53 (adherent_id), 
                 INDEX IDX_F93DC28AB6596C08 (subscription_type_id), 
                 PRIMARY KEY(adherent_id, subscription_type_id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
         $this->addSql(
             'CREATE TABLE subscription_type (
@@ -26,7 +26,7 @@ final class Version20180705144501 extends AbstractMigration
                 UNIQUE INDEX UNIQ_BBE2473777153098 (code), 
                 INDEX IDX_BBE2473777153098 (code), 
                 PRIMARY KEY(id)
-            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB'
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
         $this->addSql('ALTER TABLE adherent_subscription_type ADD CONSTRAINT FK_F93DC28A25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE adherent_subscription_type ADD CONSTRAINT FK_F93DC28AB6596C08 FOREIGN KEY (subscription_type_id) REFERENCES subscription_type (id) ON DELETE CASCADE');
@@ -66,7 +66,7 @@ final class Version20180705144501 extends AbstractMigration
 
         $this->addSql('ALTER TABLE adherent_email_subscription_histories DROP FOREIGN KEY FK_51AD8354B6596C08');
         $this->addSql('DROP INDEX IDX_51AD8354B6596C08 ON adherent_email_subscription_histories');
-        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD subscribed_email_type VARCHAR(50) DEFAULT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD subscribed_email_type VARCHAR(50) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
 
         $this->addSql(
             'UPDATE adherent_email_subscription_histories AS history

@@ -23,7 +23,7 @@ class Version20180425145459 extends AbstractMigration
                 INDEX adherent_email_subscription_histories_adherent_email_type_idx (subscribed_email_type), 
                 INDEX IDX_51AD83549C262DB3 (referent_tag_id),
                 PRIMARY KEY(uuid)
-            ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
         ');
         $this->addSql('ALTER TABLE adherent_email_subscription_histories ADD CONSTRAINT FK_272CB3E99C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id)');
     }

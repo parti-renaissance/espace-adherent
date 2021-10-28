@@ -38,7 +38,6 @@ class TeamAdmin extends AbstractAdmin
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
                     'label' => 'Nom',
-                    'filter_emojis' => true,
                 ])
             ->end()
             ->with('Membres 👥', ['class' => 'col-md-6'])

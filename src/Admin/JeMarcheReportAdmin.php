@@ -41,7 +41,6 @@ class JeMarcheReportAdmin extends AbstractAdmin
             ])
             ->add('reaction', TextType::class, [
                 'label' => 'Réaction globale',
-                'filter_emojis' => true,
             ])
             ->add('createdAt', null, [
                 'label' => 'Date de création',

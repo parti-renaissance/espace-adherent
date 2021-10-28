@@ -99,7 +99,6 @@ class QrCodeAdmin extends AbstractAdmin
         $formMapper
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('redirectUrl', UrlType::class, [
                 'label' => 'URL de redirection',

@@ -37,18 +37,15 @@ class PageAdmin extends AbstractAdmin
             ->with('Title', ['class' => 'col-md-12'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
-                    'filter_emojis' => true,
                     'help' => 'Le titre ne sera visible que sur les layouts qui affichent le titre',
                 ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-8'])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
-                    'filter_emojis' => true,
                 ])
                 ->add('twitterDescription', TextareaType::class, [
                     'label' => 'Description pour Twitter',
-                    'filter_emojis' => true,
                     'required' => false,
                 ])
                 ->add('layout', ChoiceType::class, [
@@ -61,7 +58,6 @@ class PageAdmin extends AbstractAdmin
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
                     'required' => false,
-                    'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()

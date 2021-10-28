@@ -15,7 +15,7 @@ final class Version20201214180957 extends AbstractMigration
           INDEX IDX_37C5F224ED1A100B (committee_id),
           INDEX IDX_37C5F2249F2C3FAB (zone_id),
           PRIMARY KEY(committee_id, zone_id)
-        ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           committee_zone
         ADD

@@ -20,7 +20,7 @@ final class Version20180918225607 extends AbstractMigration
             INDEX committee_merge_histories_destination_committee_id_idx (destination_committee_id),
             INDEX committee_merge_histories_date_idx (date),
             PRIMARY KEY(id)
-          ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB
+          ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL
         );
         $this->addSql('ALTER TABLE committee_merge_histories ADD CONSTRAINT FK_BB95FBBC3BF0CCB3 FOREIGN KEY (source_committee_id) REFERENCES committees (id)');
