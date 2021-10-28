@@ -35,7 +35,7 @@ class CityContact
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(name="`function`", nullable=true)
      *
      * @Assert\Length(max=255)
      */
