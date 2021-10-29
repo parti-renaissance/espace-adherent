@@ -5833,32 +5833,32 @@
         },
         {
             "name": "knplabs/knp-time-bundle",
-            "version": "v1.16.1",
+            "version": "1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
-                "reference": "cfbef12c504cd656075f056b8158ccb753c0474d"
+                "reference": "bbb2c841b5e04b1290bee8173cbfa9c325ea3e9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/cfbef12c504cd656075f056b8158ccb753c0474d",
-                "reference": "cfbef12c504cd656075f056b8158ccb753c0474d",
+                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/bbb2c841b5e04b1290bee8173cbfa9c325ea3e9d",
+                "reference": "bbb2c841b5e04b1290bee8173cbfa9c325ea3e9d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "symfony/config": "^4.3|^5.0",
-                "symfony/dependency-injection": "^4.3|^5.0",
-                "symfony/translation": "^4.3|^5.0"
+                "symfony/config": "^4.3|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.3|^5.0|^6.0",
+                "symfony/translation": "^4.3|^5.0|^6.0"
             },
             "conflict": {
                 "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
-                "symfony/framework-bundle": "^4.3|^5.0",
-                "symfony/phpunit-bridge": "^5.2",
-                "symfony/templating": "^4.3|^5.0",
-                "symfony/twig-bundle": "^4.3|^5.0"
+                "symfony/framework-bundle": "^4.3|^5.0|^6.0",
+                "symfony/phpunit-bridge": "^5.2|^6.0",
+                "symfony/templating": "^4.3|^5.0|^6.0",
+                "symfony/twig-bundle": "^4.3|^5.0|^6.0"
             },
             "suggest": {
                 "symfony/twig-bundle": "to use the Twig `time_diff()` function or `|ago` filter"
@@ -5900,9 +5900,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v1.16.1"
+                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/1.17.0"
             },
-            "time": "2021-07-13T11:56:11+00:00"
+            "time": "2021-10-28T18:40:18+00:00"
         },
         {
             "name": "kreait/clock",
