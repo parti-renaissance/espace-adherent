@@ -41,7 +41,7 @@ class ProfessionEnum extends Enum
             self::EMPLOYEES => 'Employé',
             self::WORKERS => 'Ouvrier',
             self::MANAGERIAL_STAFF => 'Cadre',
-            self::INTERMEDIATE_PROFESSIONS => 'Profession intérimaire',
+            self::INTERMEDIATE_PROFESSIONS => 'Profession intermédiaire',
             self::SELF_CONTRACTOR => 'Indépendant et professions libérales',
             self::RETIREES => 'Retraité',
             self::STUDENT => 'Étudiant',

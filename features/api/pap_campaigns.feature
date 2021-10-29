@@ -271,7 +271,7 @@ Feature:
                         "employees": "Employé",
                         "workers": "Ouvrier",
                         "managerial staff": "Cadre",
-                        "intermediate_professions": "Profession intérimaire",
+                        "intermediate_professions": "Profession intermédiaire",
                         "self_contractor": "Indépendant et professions libérales",
                         "retirees": "Retraité",
                         "student": "Étudiant"
