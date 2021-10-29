@@ -18949,16 +18949,16 @@
         },
         {
             "name": "pedrotroller/php-cs-custom-fixer",
-            "version": "v2.25.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers.git",
-                "reference": "4e0fc9810eeb467690be83c5427f55ad9819db33"
+                "reference": "ee806227004d174ed37d4476295f68c4fe6c17df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PedroTroller/PhpCSFixer-Custom-Fixers/zipball/4e0fc9810eeb467690be83c5427f55ad9819db33",
-                "reference": "4e0fc9810eeb467690be83c5427f55ad9819db33",
+                "url": "https://api.github.com/repos/PedroTroller/PhpCSFixer-Custom-Fixers/zipball/ee806227004d174ed37d4476295f68c4fe6c17df",
+                "reference": "ee806227004d174ed37d4476295f68c4fe6c17df",
                 "shasum": ""
             },
             "require": {
@@ -18988,9 +18988,9 @@
             "description": "PHP-CS-FIXER : my custom fixers",
             "support": {
                 "issues": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers/issues",
-                "source": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers/tree/v2.25.1"
+                "source": "https://github.com/PedroTroller/PhpCSFixer-Custom-Fixers/tree/v2.27.0"
             },
-            "time": "2021-05-27T14:32:28+00:00"
+            "time": "2021-10-02T12:38:44+00:00"
         },
         {
             "name": "phar-io/manifest",
