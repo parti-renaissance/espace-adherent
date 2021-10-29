@@ -7027,16 +7027,16 @@
         },
         {
             "name": "lexik/jwt-authentication-bundle",
-            "version": "v2.11.3",
+            "version": "v2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikJWTAuthenticationBundle.git",
-                "reference": "9358649d03ba41e1c98effa0a6e39c0317cceeec"
+                "reference": "d3dbf97f9a2f7cead53767111234bb16b8726681"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/9358649d03ba41e1c98effa0a6e39c0317cceeec",
-                "reference": "9358649d03ba41e1c98effa0a6e39c0317cceeec",
+                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/d3dbf97f9a2f7cead53767111234bb16b8726681",
+                "reference": "d3dbf97f9a2f7cead53767111234bb16b8726681",
                 "shasum": ""
             },
             "require": {
@@ -7044,6 +7044,7 @@
                 "lcobucci/jwt": "^3.4|^4.0",
                 "namshi/jose": "^7.2",
                 "php": ">=7.1",
+                "symfony/deprecation-contracts": "^2.4",
                 "symfony/framework-bundle": "^4.4|^5.1",
                 "symfony/security-bundle": "^4.4|^5.1"
             },
@@ -7121,7 +7122,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikJWTAuthenticationBundle/issues",
-                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.11.3"
+                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.13.0"
             },
             "funding": [
                 {
@@ -7133,7 +7134,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-12T09:43:57+00:00"
+            "time": "2021-09-15T16:40:37+00:00"
         },
         {
             "name": "lexik/paybox-bundle",
@@ -7824,6 +7825,10 @@
                 "jwt",
                 "token"
             ],
+            "support": {
+                "issues": "https://github.com/namshi/jose/issues",
+                "source": "https://github.com/namshi/jose/tree/master"
+            },
             "time": "2016-12-05T07:27:31+00:00"
         },
         {
