@@ -1,0 +1,5 @@
+framework:
+    cache:
+        pools:
+            doctrine.system_cache_pool:
+                adapter: cache.adapter.apcu

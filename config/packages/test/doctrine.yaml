@@ -4,3 +4,7 @@ doctrine:
             default:
                 logging: false
                 profiling: false
+    orm:
+        metadata_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool

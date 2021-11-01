@@ -1,9 +1,3 @@
-framework:
-    cache:
-        pools:
-            doctrine.system_cache_pool:
-                adapter: cache.adapter.apcu
-
 doctrine:
     orm:
         metadata_cache_driver:

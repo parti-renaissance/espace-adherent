@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class FixtureContext extends RawMinkContext
 {
@@ -16,8 +16,9 @@ class FixtureContext extends RawMinkContext
     private $executor;
     private $purger;
     private $fixturesLoader;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(SymfonyFixturesLoader $fixturesLoader, EntityManager $manager)
+    public function __construct(SymfonyFixturesLoader $fixturesLoader, EntityManagerInterface $manager)
     {
         $this->fixturesLoader = $fixturesLoader;
         $this->executor = new ORMExecutor($manager, $this->purger = new ORMPurger($manager));
@@ -28,7 +29,9 @@ class FixtureContext extends RawMinkContext
      */
     public function clearDatabase()
     {
+        $this->purger->getObjectManager()->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->purger->purge();
+        $this->purger->getObjectManager()->clear();
     }
 
     /**
