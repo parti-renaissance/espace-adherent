@@ -7027,16 +7027,16 @@
         },
         {
             "name": "lexik/jwt-authentication-bundle",
-            "version": "v2.13.0",
+            "version": "v2.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikJWTAuthenticationBundle.git",
-                "reference": "d3dbf97f9a2f7cead53767111234bb16b8726681"
+                "reference": "66ef4199d00b9387a72543c15a168a659f61f192"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/d3dbf97f9a2f7cead53767111234bb16b8726681",
-                "reference": "d3dbf97f9a2f7cead53767111234bb16b8726681",
+                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/66ef4199d00b9387a72543c15a168a659f61f192",
+                "reference": "66ef4199d00b9387a72543c15a168a659f61f192",
                 "shasum": ""
             },
             "require": {
@@ -7044,17 +7044,30 @@
                 "lcobucci/jwt": "^3.4|^4.0",
                 "namshi/jose": "^7.2",
                 "php": ">=7.1",
+                "symfony/config": "^4.4|^5.3|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.3|^6.0",
                 "symfony/deprecation-contracts": "^2.4",
-                "symfony/framework-bundle": "^4.4|^5.1",
-                "symfony/security-bundle": "^4.4|^5.1"
+                "symfony/event-dispatcher": "^4.4|^5.3|^6.0",
+                "symfony/http-foundation": "^4.4|^5.3|^6.0",
+                "symfony/http-kernel": "^4.4|^5.3|^6.0",
+                "symfony/property-access": "^4.4|^5.3|^6.0",
+                "symfony/security-bundle": "^4.4|^5.3|^6.0",
+                "symfony/security-core": "^4.4|^5.3|^6.0",
+                "symfony/security-http": "^4.4|^5.3|^6.0"
+            },
+            "conflict": {
+                "symfony/console": "<4.4"
             },
             "require-dev": {
-                "symfony/browser-kit": "^4.4|^5.1",
-                "symfony/console": "^4.4|^5.1",
-                "symfony/dom-crawler": "^4.4|^5.1",
-                "symfony/phpunit-bridge": "^4.4|^5.1",
-                "symfony/var-dumper": "^4.4|^5.1",
-                "symfony/yaml": "^4.4|^5.1"
+                "symfony/browser-kit": "^4.4|^5.3|^6.0",
+                "symfony/console": "^4.4|^5.3|^6.0",
+                "symfony/dom-crawler": "^4.4|^5.3|^6.0",
+                "symfony/filesystem": "^4.4|^5.3|^6.0",
+                "symfony/framework-bundle": "^4.4|^5.3|^6.0",
+                "symfony/phpunit-bridge": "^4.4|^5.3|^6.0",
+                "symfony/security-guard": "^4.4|^5.3",
+                "symfony/var-dumper": "^4.4|^5.3|^6.0",
+                "symfony/yaml": "^4.4|^5.3|^6.0"
             },
             "suggest": {
                 "gesdinet/jwt-refresh-token-bundle": "Implements a refresh token system over Json Web Tokens in Symfony",
@@ -7122,7 +7135,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lexik/LexikJWTAuthenticationBundle/issues",
-                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.13.0"
+                "source": "https://github.com/lexik/LexikJWTAuthenticationBundle/tree/v2.14.1"
             },
             "funding": [
                 {
@@ -7134,7 +7147,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-15T16:40:37+00:00"
+            "time": "2021-11-02T00:05:11+00:00"
         },
         {
             "name": "lexik/paybox-bundle",
