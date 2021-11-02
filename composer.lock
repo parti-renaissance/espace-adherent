@@ -395,16 +395,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v3.2.7",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "d63a6943fc4fd1a2aedb65994e3548715105abcf"
+                "reference": "5e721d7e937ca3ba2cdec1e1adf195f9e5188372"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/d63a6943fc4fd1a2aedb65994e3548715105abcf",
-                "reference": "d63a6943fc4fd1a2aedb65994e3548715105abcf",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/5e721d7e937ca3ba2cdec1e1adf195f9e5188372",
+                "reference": "5e721d7e937ca3ba2cdec1e1adf195f9e5188372",
                 "shasum": ""
             },
             "require": {
@@ -412,12 +412,13 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-simplexml": "*",
-                "php": "^7"
+                "php": "^7.0 || ^8.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "*",
-                "phpstan/phpstan-shim": "*",
-                "phpunit/phpunit": ">=6.0.0 <8"
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": ">=6.0.0",
+                "yoast/phpunit-polyfills": "^0.1.0"
             },
             "suggest": {
                 "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
@@ -453,7 +454,11 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2019-12-19T17:51:41+00:00"
+            "support": {
+                "issues": "https://github.com/beberlei/assert/issues",
+                "source": "https://github.com/beberlei/assert/tree/v3.3.1"
+            },
+            "time": "2021-04-18T20:11:03+00:00"
         },
         {
             "name": "beberlei/doctrineextensions",
@@ -10257,22 +10262,22 @@
         },
         {
             "name": "scheb/two-factor-bundle",
-            "version": "v4.11.1",
+            "version": "v4.18.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/two-factor-bundle.git",
-                "reference": "f9198cfcd5b2a92691926fd10406e8817232ac16"
+                "reference": "78f5832d59ec49491ef27edc0fa03a3110139f5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/two-factor-bundle/zipball/f9198cfcd5b2a92691926fd10406e8817232ac16",
-                "reference": "f9198cfcd5b2a92691926fd10406e8817232ac16",
+                "url": "https://api.github.com/repos/scheb/two-factor-bundle/zipball/78f5832d59ec49491ef27edc0fa03a3110139f5c",
+                "reference": "78f5832d59ec49491ef27edc0fa03a3110139f5c",
                 "shasum": ""
             },
             "require": {
                 "lcobucci/jwt": "^3.2",
                 "paragonie/constant_time_encoding": "^2.2",
-                "php": "^7.1.3",
+                "php": ">=7.1.3",
                 "spomky-labs/otphp": "^9.1|^10.0",
                 "symfony/config": "^3.4|^4.0|^5.0",
                 "symfony/dependency-injection": "^3.4|^4.0|^5.0",
@@ -10285,13 +10290,14 @@
                 "symfony/twig-bundle": "^3.4|^4.0|^5.0"
             },
             "require-dev": {
-                "doctrine/lexer": "^1.0.1",
-                "doctrine/orm": "^2.6",
+                "doctrine/persistence": "^1.3|^2.0",
                 "escapestudios/symfony2-coding-standard": "^3.9",
-                "phpunit/phpunit": "^7.0|^8.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
                 "squizlabs/php_codesniffer": "^3.5",
                 "swiftmailer/swiftmailer": "^6.0",
-                "symfony/yaml": "^3.4|^4.0|^5.0"
+                "symfony/polyfill-php80": "^1.15",
+                "symfony/yaml": "^3.4|^4.0|^5.0",
+                "vimeo/psalm": "^3.11"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -10315,13 +10321,17 @@
             "description": "Provides two-factor authentication for Symfony applications",
             "homepage": "https://github.com/scheb/two-factor-bundle",
             "keywords": [
+                "2fa",
                 "Authentication",
-                "security",
                 "symfony",
                 "two-factor",
                 "two-step"
             ],
-            "time": "2019-12-19T12:07:42+00:00"
+            "support": {
+                "issues": "https://github.com/scheb/two-factor-bundle/issues",
+                "source": "https://github.com/scheb/two-factor-bundle/tree/v4.18.4"
+            },
+            "time": "2020-10-30T19:24:18+00:00"
         },
         {
             "name": "scienta/doctrine-json-functions",
@@ -11268,16 +11278,16 @@
         },
         {
             "name": "spomky-labs/otphp",
-            "version": "v10.0.0",
+            "version": "v10.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/otphp.git",
-                "reference": "7c4e59c6a1cfe7798e5bf33cca6e5e5cdc5df9ff"
+                "reference": "f44cce5a9db4b8da410215d992110482c931232f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/otphp/zipball/7c4e59c6a1cfe7798e5bf33cca6e5e5cdc5df9ff",
-                "reference": "7c4e59c6a1cfe7798e5bf33cca6e5e5cdc5df9ff",
+                "url": "https://api.github.com/repos/Spomky-Labs/otphp/zipball/f44cce5a9db4b8da410215d992110482c931232f",
+                "reference": "f44cce5a9db4b8da410215d992110482c931232f",
                 "shasum": ""
             },
             "require": {
@@ -11285,17 +11295,17 @@
                 "ext-mbstring": "*",
                 "paragonie/constant_time_encoding": "^2.0",
                 "php": "^7.2|^8.0",
-                "thecodingmachine/safe": "^0.1.14"
+                "thecodingmachine/safe": "^0.1.14|^1.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpstan/phpstan": "^0.11",
-                "phpstan/phpstan-beberlei-assert": "^0.11.0",
-                "phpstan/phpstan-deprecation-rules": "^0.11",
-                "phpstan/phpstan-phpunit": "^0.11",
-                "phpstan/phpstan-strict-rules": "^0.11",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-beberlei-assert": "^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
                 "phpunit/phpunit": "^8.0",
-                "thecodingmachine/phpstan-safe-rule": "^0.1.0"
+                "thecodingmachine/phpstan-safe-rule": "^1.0"
             },
             "type": "library",
             "extra": {
@@ -11335,7 +11345,11 @@
                 "otp",
                 "totp"
             ],
-            "time": "2019-07-30T14:43:55+00:00"
+            "support": {
+                "issues": "https://github.com/Spomky-Labs/otphp/issues",
+                "source": "https://github.com/Spomky-Labs/otphp/tree/v10.0.1"
+            },
+            "time": "2020-01-28T09:24:19+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -16564,25 +16578,25 @@
         },
         {
             "name": "thecodingmachine/safe",
-            "version": "v0.1.16",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/safe.git",
-                "reference": "4e8f840f0a0a2ea167813c3994a7fc527c3c2182"
+                "reference": "a8ab0876305a4cdaef31b2350fcb9811b5608dbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/4e8f840f0a0a2ea167813c3994a7fc527c3c2182",
-                "reference": "4e8f840f0a0a2ea167813c3994a7fc527c3c2182",
+                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/a8ab0876305a4cdaef31b2350fcb9811b5608dbc",
+                "reference": "a8ab0876305a4cdaef31b2350fcb9811b5608dbc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": ">=7.2"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.10.3",
+                "phpstan/phpstan": "^0.12",
                 "squizlabs/php_codesniffer": "^3.2",
-                "thecodingmachine/phpstan-strict-rules": "^0.10.3"
+                "thecodingmachine/phpstan-strict-rules": "^0.12"
             },
             "type": "library",
             "extra": {
@@ -16594,15 +16608,21 @@
                 "psr-4": {
                     "Safe\\": [
                         "lib/",
+                        "deprecated/",
                         "generated/"
                     ]
                 },
                 "files": [
+                    "deprecated/apc.php",
+                    "deprecated/libevent.php",
+                    "deprecated/mssql.php",
+                    "deprecated/stats.php",
+                    "lib/special_cases.php",
                     "generated/apache.php",
-                    "generated/apc.php",
                     "generated/apcu.php",
                     "generated/array.php",
                     "generated/bzip2.php",
+                    "generated/calendar.php",
                     "generated/classobj.php",
                     "generated/com.php",
                     "generated/cubrid.php",
@@ -16631,14 +16651,12 @@
                     "generated/inotify.php",
                     "generated/json.php",
                     "generated/ldap.php",
-                    "generated/libevent.php",
                     "generated/libxml.php",
                     "generated/lzf.php",
                     "generated/mailparse.php",
                     "generated/mbstring.php",
                     "generated/misc.php",
                     "generated/msql.php",
-                    "generated/mssql.php",
                     "generated/mysql.php",
                     "generated/mysqli.php",
                     "generated/mysqlndMs.php",
@@ -16657,6 +16675,7 @@
                     "generated/ps.php",
                     "generated/pspell.php",
                     "generated/readline.php",
+                    "generated/rpminfo.php",
                     "generated/rrd.php",
                     "generated/sem.php",
                     "generated/session.php",
@@ -16669,7 +16688,6 @@
                     "generated/sqlsrv.php",
                     "generated/ssdeep.php",
                     "generated/ssh2.php",
-                    "generated/stats.php",
                     "generated/stream.php",
                     "generated/strings.php",
                     "generated/swoole.php",
@@ -16683,8 +16701,7 @@
                     "generated/yaml.php",
                     "generated/yaz.php",
                     "generated/zip.php",
-                    "generated/zlib.php",
-                    "lib/special_cases.php"
+                    "generated/zlib.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -16692,7 +16709,11 @@
                 "MIT"
             ],
             "description": "PHP core functions that throw exceptions instead of returning FALSE on error",
-            "time": "2019-06-25T08:45:33+00:00"
+            "support": {
+                "issues": "https://github.com/thecodingmachine/safe/issues",
+                "source": "https://github.com/thecodingmachine/safe/tree/v1.3.3"
+            },
+            "time": "2020-10-28T17:51:34+00:00"
         },
         {
             "name": "twig/extensions",
