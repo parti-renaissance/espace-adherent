@@ -10941,20 +10941,20 @@
         },
         {
             "name": "sonata-project/doctrine-extensions",
-            "version": "1.12.0",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/sonata-doctrine-extensions.git",
-                "reference": "ba5ddbef84f8b432554453393fcfdad7560a926c"
+                "reference": "d54075e953c07b6b5ce05bc2770fdcfe62fc4ba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/sonata-doctrine-extensions/zipball/ba5ddbef84f8b432554453393fcfdad7560a926c",
-                "reference": "ba5ddbef84f8b432554453393fcfdad7560a926c",
+                "url": "https://api.github.com/repos/sonata-project/sonata-doctrine-extensions/zipball/d54075e953c07b6b5ce05bc2770fdcfe62fc4ba5",
+                "reference": "d54075e953c07b6b5ce05bc2770fdcfe62fc4ba5",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "^2.6",
+                "doctrine/dbal": "^2.13 || ^3.1",
                 "doctrine/persistence": "^1.3.6 || ^2.0",
                 "php": "^7.3 || ^8.0"
             },
@@ -11021,7 +11021,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/sonata-doctrine-extensions/issues",
-                "source": "https://github.com/sonata-project/sonata-doctrine-extensions/tree/1.12.0"
+                "source": "https://github.com/sonata-project/sonata-doctrine-extensions/tree/1.14.0"
             },
             "funding": [
                 {
@@ -11037,11 +11037,11 @@
                     "type": "github"
                 },
                 {
-                    "url": "https://github.com/wbloszyk",
+                    "url": "https://github.com/greg0ire",
                     "type": "github"
                 }
             ],
-            "time": "2021-03-11T20:34:37+00:00"
+            "time": "2021-10-05T15:19:11+00:00"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
