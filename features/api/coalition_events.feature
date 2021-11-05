@@ -1154,33 +1154,6 @@ Feature:
         ],
         "merge_vars": [
           {
-            "rcpt": "jacques.picard@en-marche.fr",
-            "vars": [
-              {
-                "name": "first_name",
-                "content": "Jacques"
-              }
-            ]
-          },
-          {
-            "rcpt": "carl999@example.fr",
-            "vars": [
-              {
-                "name": "first_name",
-                "content": "Carl"
-              }
-            ]
-          },
-          {
-            "rcpt": "referent@en-marche-dev.fr",
-            "vars": [
-              {
-                "name": "first_name",
-                "content": "Referent"
-              }
-            ]
-          },
-          {
             "rcpt": "adherent@en-marche-dev.fr",
             "vars": [
               {
@@ -1197,25 +1170,37 @@ Feature:
                 "content": "Jean"
               }
             ]
+          },
+          {
+            "rcpt": "carl999@example.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Carl"
+              }
+            ]
+          },
+          {
+            "rcpt": "jacques.picard@en-marche.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jacques"
+              }
+            ]
+          },
+          {
+            "rcpt": "referent@en-marche-dev.fr",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Referent"
+              }
+            ]
           }
         ],
         "from_name": "Pour une cause",
         "to": [
-          {
-            "email": "jacques.picard@en-marche.fr",
-            "type": "to",
-            "name": "Jacques"
-          },
-          {
-            "email": "carl999@example.fr",
-            "type": "to",
-            "name": "Carl"
-          },
-          {
-            "email": "referent@en-marche-dev.fr",
-            "type": "to",
-            "name": "Referent"
-          },
           {
             "email": "adherent@en-marche-dev.fr",
             "type": "to",
@@ -1225,6 +1210,21 @@ Feature:
             "email": "jean-paul@dupont.tld",
             "type": "to",
             "name": "Jean"
+          },
+          {
+            "email": "carl999@example.fr",
+            "type": "to",
+            "name": "Carl"
+          },
+          {
+            "email": "jacques.picard@en-marche.fr",
+            "type": "to",
+            "name": "Jacques"
+          },
+          {
+            "email": "referent@en-marche-dev.fr",
+            "type": "to",
+            "name": "Referent"
           }
         ]
       }

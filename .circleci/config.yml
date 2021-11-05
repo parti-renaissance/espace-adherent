@@ -10,25 +10,24 @@ references:
 
     configure_base: &configure_base
         environment:
-            - DOCKER_COMPOSE: "docker-compose -f docker-compose.yml -f docker-compose.ci.yml"
-            - EXEC: "$(DOCKER_COMPOSE) exec -T app entrypoint.sh"
+            DOCKER_COMPOSE: "docker-compose -f docker-compose.yml -f docker-compose.ci.yml"
+            EXEC: "$(DOCKER_COMPOSE) exec -T app entrypoint.sh"
         machine:
-            enabled: true
             image: ubuntu-2004:202107-02
 
     generate_docker_hashes: &generate_docker_hashes
         run: |
             test -e docker-dev.md5 || find docker/dev -type f -exec md5sum {} \; | sort -k 2 > docker-dev.md5
-            echo 'export APP_DOCKER_IMAGE_NAME=eu.gcr.io/${GCLOUD_PROJECT}/app' >> $BASH_ENV
+            echo 'export APP_DOCKER_IMAGE_NAME=eu.gcr.io/${GCLOUD_PROJECT_TMP}/en-marche.fr' >> $BASH_ENV
             echo 'export APP_DOCKER_IMAGE_MD5=$(md5sum docker-dev.md5 | cut -f1 -d" ")' >> $BASH_ENV
 
     authenticate_on_registry: &authenticate_on_registry
         run: |
             set -x
 
-            echo $GCLOUD_SERVICE_KEY | base64 --decode > $HOME/gcloud-service-key.json && cp $HOME/gcloud-service-key.json ./gcloud-service-key.json
+            echo $GCLOUD_SERVICE_KEY_TMP | base64 --decode > $HOME/gcloud-service-key.json
             gcloud auth activate-service-account --key-file $HOME/gcloud-service-key.json
-            gcloud config set project $GCLOUD_PROJECT
+            gcloud config set project $GCLOUD_PROJECT_TMP
 
     pull_docker_images: &pull_docker_images
         run: gcloud docker -- pull $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5
@@ -44,8 +43,10 @@ jobs:
             - checkout
 
             - restore_cache:
+                name: Restore Composer cache
                 key: composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
             - restore_cache:
+                name: Restore NPM cache
                 key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
 
             - *generate_docker_hashes
@@ -66,10 +67,12 @@ jobs:
                 gcloud container images add-tag $APP_DOCKER_IMAGE_NAME:$APP_DOCKER_IMAGE_MD5 $APP_DOCKER_IMAGE_NAME:dev --quiet
 
             - save_cache:
+                  name: Save Composer cache
                   paths:
                       - ./vendor
                   key: composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
             - save_cache:
+                  name: Save NPM cache
                   paths:
                       - ./node_modules
                   key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}

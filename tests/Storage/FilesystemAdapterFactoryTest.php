@@ -15,7 +15,7 @@ class FilesystemAdapterFactoryTest extends TestCase
     {
         $tmp = sys_get_temp_dir().'/en-marche-filesystem-local';
 
-        $adapter = FilesystemAdapterFactory::createAdapter('dev', $tmp, null, null, null, $this->createMock(UrlGeneratorInterface::class));
+        $adapter = FilesystemAdapterFactory::createAdapter('dev', $tmp, null, $this->createMock(UrlGeneratorInterface::class));
 
         $this->assertInstanceOf(Local::class, $adapter);
         $this->assertFileExists($tmp);
@@ -25,7 +25,7 @@ class FilesystemAdapterFactoryTest extends TestCase
 
     public function testCreateProdAdapter()
     {
-        $adapter = FilesystemAdapterFactory::createAdapter('prod', '', 'project-id', __DIR__.'/../Fixtures/gcloud-service-key.json', 'project-bucket', $this->createMock(UrlGeneratorInterface::class));
+        $adapter = FilesystemAdapterFactory::createAdapter('prod', '', 'project-bucket', $this->createMock(UrlGeneratorInterface::class));
 
         $this->assertInstanceOf(CachedAdapter::class, $adapter);
         $this->assertInstanceOf(GoogleStorageAdapter::class, $adapter->getAdapter());

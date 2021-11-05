@@ -18,7 +18,7 @@ services:
             - .:/app
 
     db:
-        image: mysql:5.7.36
+        image: mysql:8.0
         volumes:
             - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
