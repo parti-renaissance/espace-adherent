@@ -3964,20 +3964,20 @@
         },
         {
             "name": "geocoder-php/plugin",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/plugin.git",
-                "reference": "f93b5f2c56d7160726e7e30aa5c0055b32ed1b3c"
+                "reference": "af9ea75f37bd9566bef58e03adcd4bb44fbefa39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/plugin/zipball/f93b5f2c56d7160726e7e30aa5c0055b32ed1b3c",
-                "reference": "f93b5f2c56d7160726e7e30aa5c0055b32ed1b3c",
+                "url": "https://api.github.com/repos/geocoder-php/plugin/zipball/af9ea75f37bd9566bef58e03adcd4bb44fbefa39",
+                "reference": "af9ea75f37bd9566bef58e03adcd4bb44fbefa39",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": "^7.3 || ^8.0",
                 "php-http/promise": "^1.0",
                 "psr/log": "^1.0",
                 "psr/simple-cache": "^1.0",
@@ -4016,7 +4016,10 @@
             "keywords": [
                 "geocoder plugin"
             ],
-            "time": "2020-07-04T13:18:10+00:00"
+            "support": {
+                "source": "https://github.com/geocoder-php/plugin/tree/1.3.0"
+            },
+            "time": "2020-12-19T09:41:04+00:00"
         },
         {
             "name": "geoip2/geoip2",
@@ -8307,16 +8310,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.13.0",
+            "version": "1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "788f72d64c43dc361e7fcc7464c3d947c64984a7"
+                "reference": "de90ab2b41d7d61609f504e031339776bc8c7223"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/788f72d64c43dc361e7fcc7464c3d947c64984a7",
-                "reference": "788f72d64c43dc361e7fcc7464c3d947c64984a7",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/de90ab2b41d7d61609f504e031339776bc8c7223",
+                "reference": "de90ab2b41d7d61609f504e031339776bc8c7223",
                 "shasum": ""
             },
             "require": {
@@ -8333,8 +8336,7 @@
                 "puli/composer-plugin": "1.0.0-beta10"
             },
             "suggest": {
-                "php-http/message": "Allow to use Guzzle, Diactoros or Slim Framework factories",
-                "puli/composer-plugin": "Sets up Puli which is recommended for Discovery to work. Check http://docs.php-http.org/en/latest/discovery.html for more details."
+                "php-http/message": "Allow to use Guzzle, Diactoros or Slim Framework factories"
             },
             "type": "library",
             "extra": {
@@ -8370,9 +8372,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.13.0"
+                "source": "https://github.com/php-http/discovery/tree/1.14.1"
             },
-            "time": "2020-11-27T14:49:42+00:00"
+            "time": "2021-09-18T07:57:46+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -17081,72 +17083,74 @@
         },
         {
             "name": "willdurand/geocoder-bundle",
-            "version": "5.12.0",
+            "version": "5.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/BazingaGeocoderBundle.git",
-                "reference": "22697db03707ca0126f8b56646dc35bdb9b61e57"
+                "reference": "b9a62fda0aa6b38bf4bba7bbba18a57144428aad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/22697db03707ca0126f8b56646dc35bdb9b61e57",
-                "reference": "22697db03707ca0126f8b56646dc35bdb9b61e57",
+                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/b9a62fda0aa6b38bf4bba7bbba18a57144428aad",
+                "reference": "b9a62fda0aa6b38bf4bba7bbba18a57144428aad",
                 "shasum": ""
             },
             "require": {
-                "geocoder-php/plugin": "^1.0",
-                "php": "^7.1",
-                "php-http/discovery": "^1.7",
-                "symfony/console": "^3.4 || ^4.2 || ^5.0",
-                "symfony/framework-bundle": "^3.4 || ^4.2 || ^5.0",
-                "symfony/options-resolver": "^3.4 || ^4.2 || ^5.0",
-                "willdurand/geocoder": "^4.0"
+                "geocoder-php/plugin": "^1.3",
+                "php": "^7.3 || ^8.0",
+                "php-http/discovery": "^1.13",
+                "symfony/console": "^4.4 || ^5.0",
+                "symfony/framework-bundle": "^4.4 || ^5.0",
+                "symfony/options-resolver": "^4.4 || ^5.0",
+                "willdurand/geocoder": "^4.4"
             },
             "conflict": {
-                "geocoder-php/nominatim-provider": "<5.0",
-                "willdurand/geocoder": "3.2"
+                "geocoder-php/nominatim-provider": "<5.0"
             },
             "require-dev": {
                 "doctrine/cache": "~1.3",
-                "doctrine/orm": "~2.3",
-                "fzaninotto/faker": "^1.8",
-                "geocoder-php/algolia-places-provider": "^0.1.1",
-                "geocoder-php/arcgis-online-provider": "^4.0",
-                "geocoder-php/bing-maps-provider": "^4.0",
-                "geocoder-php/cache-provider": "^4.0",
-                "geocoder-php/chain-provider": "^4.0",
-                "geocoder-php/free-geoip-provider": "^4.0",
-                "geocoder-php/geo-plugin-provider": "^4.0",
-                "geocoder-php/geoip2-provider": "^4.0",
+                "doctrine/orm": "~2.8",
+                "fakerphp/faker": "^1.14",
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "geocoder-php/algolia-places-provider": "^0.3",
+                "geocoder-php/arcgis-online-provider": "^4.3",
+                "geocoder-php/bing-maps-provider": "^4.2",
+                "geocoder-php/cache-provider": "^4.3",
+                "geocoder-php/chain-provider": "^4.3",
+                "geocoder-php/free-geoip-provider": "^4.3",
+                "geocoder-php/geo-plugin-provider": "^4.2",
+                "geocoder-php/geoip2-provider": "^4.2",
                 "geocoder-php/geoips-provider": "^4.0",
-                "geocoder-php/geonames-provider": "^4.0",
-                "geocoder-php/google-maps-places-provider": "^1.0",
-                "geocoder-php/google-maps-provider": "^4.0",
-                "geocoder-php/here-provider": "^0.2",
-                "geocoder-php/host-ip-provider": "^4.0",
-                "geocoder-php/ip-info-db-provider": "^4.0",
-                "geocoder-php/ip-info-provider": "^0.1",
-                "geocoder-php/ipstack-provider": "^0.1",
-                "geocoder-php/mapbox-provider": "^1.0",
-                "geocoder-php/mapquest-provider": "^4.0",
+                "geocoder-php/geonames-provider": "^4.3",
+                "geocoder-php/google-maps-places-provider": "^1.3",
+                "geocoder-php/google-maps-provider": "^4.6",
+                "geocoder-php/here-provider": "^0.6",
+                "geocoder-php/host-ip-provider": "^4.3",
+                "geocoder-php/ip-info-db-provider": "^4.2",
+                "geocoder-php/ip-info-provider": "^0.3",
+                "geocoder-php/ipstack-provider": "^0.3",
+                "geocoder-php/locationiq-provider": "^1.2",
+                "geocoder-php/mapbox-provider": "^1.3",
+                "geocoder-php/mapquest-provider": "^4.2",
                 "geocoder-php/mapzen-provider": "^4.0",
-                "geocoder-php/maxmind-binary-provider": "^4.0",
-                "geocoder-php/maxmind-provider": "^4.0",
-                "geocoder-php/nominatim-provider": "^5.0",
-                "geocoder-php/open-cage-provider": "^4.0",
-                "geocoder-php/pickpoint-provider": "^4.0",
-                "geocoder-php/tomtom-provider": "^4.0",
-                "geocoder-php/yandex-provider": "^4.0",
+                "geocoder-php/maxmind-binary-provider": "^4.2",
+                "geocoder-php/maxmind-provider": "^4.3",
+                "geocoder-php/nominatim-provider": "^5.4",
+                "geocoder-php/open-cage-provider": "^4.5",
+                "geocoder-php/pickpoint-provider": "^4.2",
+                "geocoder-php/tomtom-provider": "^4.2",
+                "geocoder-php/yandex-provider": "^4.4",
                 "geoip/geoip": "~1.17",
-                "nyholm/nsa": "^1.1",
-                "nyholm/psr7": "^1.0",
-                "nyholm/symfony-bundle-test": "^1.6.1",
-                "php-http/curl-client": "^1.7",
+                "nyholm/nsa": "^1.2",
+                "nyholm/psr7": "^1.3",
+                "nyholm/symfony-bundle-test": "^1.7",
+                "php-http/curl-client": "^2.2",
                 "php-http/message": "^1.5",
-                "symfony/config": ">=3.4.31",
-                "symfony/phpunit-bridge": "^4.4",
-                "symfony/validator": "^3.4 || ^4.2 || ^5.0",
-                "symfony/yaml": "^3.4 || ^4.2 || ^5.0"
+                "phpstan/phpstan": "^0.12.68",
+                "symfony/config": "^4.4 || ^5.0",
+                "symfony/phpunit-bridge": "^5.2",
+                "symfony/validator": "^4.4 || ^5.0",
+                "symfony/yaml": "^4.4 || ^5.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -17174,7 +17178,11 @@
                 "geocoder",
                 "geocoding"
             ],
-            "time": "2020-08-13T03:43:54+00:00"
+            "support": {
+                "issues": "https://github.com/geocoder-php/BazingaGeocoderBundle/issues",
+                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.16.0"
+            },
+            "time": "2021-06-30T04:17:22+00:00"
         },
         {
             "name": "willdurand/negotiation",
