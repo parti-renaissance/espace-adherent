@@ -98,6 +98,8 @@
         "symfony/dotenv": "^4.4",
         "symfony/event-dispatcher": "^4.4",
         "symfony/expression-language": "^4.4",
+        "symfony/filesystem": "^4.4",
+        "symfony/finder": "^4.4",
         "symfony/flex": "^1.11",
         "symfony/http-client": "^4.4",
         "symfony/http-foundation": "^4.4",
@@ -114,6 +116,7 @@
         "symfony/security": "^4.4",
         "symfony/security-bundle": "^4.4",
         "symfony/serializer": "^4.4",
+        "symfony/stopwatch": "^4.4",
         "symfony/templating": "^4.4",
         "symfony/thanks": "^1.2",
         "symfony/translation": "^4.4",
@@ -151,6 +154,7 @@
         "symfony/css-selector": "^3.4",
         "symfony/debug-bundle": "^4.4",
         "symfony/phpunit-bridge": "^5.3",
+        "symfony/var-dumper": "^4.4",
         "symfony/web-profiler-bundle": "^4.4"
     },
     "scripts": {
