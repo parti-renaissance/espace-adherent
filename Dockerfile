@@ -4,6 +4,7 @@ ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
     TERM="xterm" \
+    PHP_VERSION=8.0 \
     DEBIAN_FRONTEND="noninteractive" \
     COMPOSER_ALLOW_SUPERUSER=1
 
@@ -24,27 +25,26 @@ RUN apt-get update -q && \
         nginx \
         git \
         mysql-client \
-        php7.4 \
-        php7.4-bcmath \
-        php7.4-common \
-        php7.4-curl \
-        php7.4-dom \
-        php7.4-fpm \
-        php7.4-gd \
-        php7.4-iconv \
-        php7.4-intl \
-        php7.4-json \
-        php7.4-mbstring \
-        php7.4-mysql \
-        php7.4-opcache \
-        php7.4-pdo \
-        php7.4-phar \
-        php7.4-xml \
-        php7.4-zip \
-        php7.4-amqp \
-        php7.4-apcu \
-        php7.4-uuid \
-        php7.4-imagick \
+        php${PHP_VERSION} \
+        php${PHP_VERSION}-bcmath \
+        php${PHP_VERSION}-common \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-dom \
+        php${PHP_VERSION}-fpm \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-iconv \
+        php${PHP_VERSION}-intl \
+        php${PHP_VERSION}-mbstring \
+        php${PHP_VERSION}-mysql \
+        php${PHP_VERSION}-opcache \
+        php${PHP_VERSION}-pdo \
+        php${PHP_VERSION}-phar \
+        php${PHP_VERSION}-xml \
+        php${PHP_VERSION}-zip \
+        php${PHP_VERSION}-amqp \
+        php${PHP_VERSION}-apcu \
+        php${PHP_VERSION}-uuid \
+        php${PHP_VERSION}-imagick \
         ghostscript \
         supervisor \
         tzdata \
@@ -68,10 +68,10 @@ RUN mkdir /run/php && \
     APP_ENV=prod bin/console cache:clear --no-warmup && \
     APP_ENV=prod bin/console cache:warmup && \
     chown -R www-data:www-data var && \
-    cp docker/prod/php.ini /etc/php/7.4/cli/conf.d/50-setting.ini && \
-    mv docker/prod/php.ini /etc/php/7.4/fpm/conf.d/50-setting.ini && \
-    rm -rf /etc/php/7.4/fpm/pool.d/www.conf && \
-    mv docker/prod/pool.conf /etc/php/7.4/fpm/pool.d/www.conf && \
+    cp docker/prod/php.ini /etc/php/${PHP_VERSION}/cli/conf.d/50-setting.ini && \
+    mv docker/prod/php.ini /etc/php/${PHP_VERSION}/fpm/conf.d/50-setting.ini && \
+    rm -rf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf && \
+    mv docker/prod/pool.conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf && \
     rm -rf /etc/nginx/nginx.conf && \
     mv docker/prod/nginx.conf /etc/nginx/nginx.conf && \
     mv docker/prod/supervisord.conf /etc/supervisor/conf.d/ && \

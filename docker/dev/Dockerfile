@@ -6,6 +6,7 @@ ENV LANG="en_US.UTF-8" \
     TERM="xterm" \
     DEBIAN_FRONTEND="noninteractive" \
     NODE_VERSION=14.17.5 \
+    PHP_VERSION=8.0 \
     GOSU_VERSION=1.14 \
     PHP_SECURITY_CHECHER_VERSION=1.1.1 \
     COMPOSER_ALLOW_SUPERUSER=1
@@ -29,28 +30,27 @@ RUN apt-get update -q && \
         git \
         graphviz \
         mysql-client \
-        php7.4 \
-        php7.4-bcmath \
-        php7.4-common \
-        php7.4-curl \
-        php7.4-dom \
-        php7.4-fpm \
-        php7.4-gd \
-        php7.4-iconv \
-        php7.4-intl \
-        php7.4-json \
-        php7.4-mbstring \
-        php7.4-mysql \
-        php7.4-pdo \
-        php7.4-phar \
-        php7.4-sqlite \
-        php7.4-xdebug \
-        php7.4-xml \
-        php7.4-zip \
-        php7.4-amqp \
-        php7.4-apcu \
-        php7.4-uuid \
-        php7.4-imagick \
+        php${PHP_VERSION} \
+        php${PHP_VERSION}-bcmath \
+        php${PHP_VERSION}-common \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-dom \
+        php${PHP_VERSION}-fpm \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-iconv \
+        php${PHP_VERSION}-intl \
+        php${PHP_VERSION}-mbstring \
+        php${PHP_VERSION}-mysql \
+        php${PHP_VERSION}-pdo \
+        php${PHP_VERSION}-phar \
+        php${PHP_VERSION}-sqlite \
+        php${PHP_VERSION}-xdebug \
+        php${PHP_VERSION}-xml \
+        php${PHP_VERSION}-zip \
+        php${PHP_VERSION}-amqp \
+        php${PHP_VERSION}-apcu \
+        php${PHP_VERSION}-uuid \
+        php${PHP_VERSION}-imagick \
         ghostscript \
         supervisor \
         tzdata \
@@ -81,9 +81,9 @@ RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gos
 
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
-COPY php.ini /etc/php/7.4/cli/conf.d/50-setting.ini
-COPY php.ini /etc/php/7.4/fpm/conf.d/50-setting.ini
-COPY pool.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY php.ini /etc/php/${PHP_VERSION}/cli/conf.d/50-setting.ini
+COPY php.ini /etc/php/${PHP_VERSION}/fpm/conf.d/50-setting.ini
+COPY pool.conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY symfony.conf /etc/nginx/symfony.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
