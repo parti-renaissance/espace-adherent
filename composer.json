@@ -144,7 +144,7 @@
         "coduo/php-matcher": "^6.0",
         "dama/doctrine-test-bundle": "^6.5",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "fabpot/goutte": "^4.0",
+        "fabpot/goutte": "^3.3",
         "fakerphp/faker": "^1.13",
         "friendsofphp/php-cs-fixer": "^3.0",
         "league/flysystem-memory": "^1.0",
