@@ -44,7 +44,7 @@ class CommitteeCommand
     protected $address;
 
     /**
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      * @Assert\Expression(
      *     expression="(value == null and this.getCommittee()) or (value != '' and value != null)",
      *     message="common.phone_number.required",

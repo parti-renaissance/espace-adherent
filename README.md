@@ -4,7 +4,7 @@
 
 Powered by : 
 <div>
-  <a href="http://symfony.com">
+  <a href="https://symfony.com">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Symfony2.svg/1280px-Symfony2.svg.png" height=25% width=25% alt="Symfony Logo">
   </a>
 </div>

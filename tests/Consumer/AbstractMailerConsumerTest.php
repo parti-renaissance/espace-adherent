@@ -220,7 +220,7 @@ class AbstractMailerConsumerTest extends TestCase
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, \count($recipients)))
+            ->willReturn(sprintf('%s from %s to %d recipients', $messageClass, $sender, \count($recipients)))
         ;
 
         $email
@@ -272,7 +272,7 @@ class AbstractMailerConsumerTest extends TestCase
         $abstractConsumer->expects($this->any())->method('getLogger')->willReturn($this->createMock(LoggerInterface::class));
         $abstractConsumer->expects($this->any())->method('getEmailRepository')->willReturn($emailRepository);
         $abstractConsumer->expects($this->once())->method('getEmailClient')->willReturn($emailClient);
-        $this->expectOutputString($uuid.' | Delivering '.sprintf('%s from %s to %i recipients', $messageClass, $sender, \count($recipients)).\PHP_EOL);
+        $this->expectOutputString($uuid.' | Delivering '.sprintf('%s from %s to %d recipients', $messageClass, $sender, \count($recipients)).\PHP_EOL);
 
         $this->assertSame(ConsumerInterface::MSG_ACK, $abstractConsumer->execute($message));
     }
@@ -295,7 +295,7 @@ class AbstractMailerConsumerTest extends TestCase
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, \count($recipients)))
+            ->willReturn(sprintf('%s from %s to %d recipients', $messageClass, $sender, \count($recipients)))
         ;
 
         $email
@@ -375,7 +375,7 @@ class AbstractMailerConsumerTest extends TestCase
         $email
             ->expects($this->once())
             ->method('getEnglishLog')
-            ->willReturn(sprintf('%s from %s to %i recipients', $messageClass, $sender, \count($recipients)))
+            ->willReturn(sprintf('%s from %s to %d recipients', $messageClass, $sender, \count($recipients)))
         ;
 
         $email

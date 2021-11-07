@@ -63,7 +63,7 @@ class TransactionSubscriberTest extends AbstractWebCaseTest
         $privateKey = openssl_pkey_get_private($this->getParameter('ssl_private_key'));
         openssl_sign($queryParams, $signature, $privateKey, 'sha1WithRSAEncryption');
 
-        return base64_encode($signature);
+        return urlencode(base64_encode($signature));
     }
 
     private function createPayload(string $transactionId): array

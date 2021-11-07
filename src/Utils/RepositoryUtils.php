@@ -43,7 +43,7 @@ class RepositoryUtils
             $until = (new Chronos("first day of -$month month"));
             $countByMonth[$until->format('Y-m')] = ['date' => $until->format('Y-m'), 'count' => 0];
             foreach ($itemsCount as $count) {
-                if ($until->format('Ym') === $count['yearmonth']) {
+                if ($until->format('Ym') == $count['yearmonth']) {
                     $countByMonth[$until->format('Y-m')]['count'] += $count['count'];
                 }
             }

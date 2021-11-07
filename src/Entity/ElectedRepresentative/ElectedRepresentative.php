@@ -115,7 +115,7 @@ class ElectedRepresentative
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      */
     private $contactPhone;
 

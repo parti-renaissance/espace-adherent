@@ -4,7 +4,7 @@ namespace Tests\App\Test\Algolia;
 
 use Algolia\AlgoliaSearch\Response\NullResponse;
 use Algolia\SearchBundle\SearchService;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class DummySearchService implements SearchService
 {

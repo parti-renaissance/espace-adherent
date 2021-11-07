@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Facebook\GraphNodes\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -49,6 +50,7 @@ class OrderSection
     {
         $this->position = $position;
         $this->name = $name;
+        $this->articles = new ArrayCollection();
     }
 
     public function __toString()

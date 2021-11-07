@@ -4,7 +4,7 @@ namespace App\Algolia;
 
 use Algolia\AlgoliaSearch\Algolia;
 use Algolia\SearchBundle\SearchService as BaseSearchService;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class SearchService implements BaseSearchService
 {

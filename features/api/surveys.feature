@@ -2044,14 +2044,14 @@ Feature:
     """
     [
       {
-        "latitude": "48.518219",
-        "longitude": "2.624205",
+        "latitude": 48.518219,
+        "longitude": 2.624205,
         "posted_at": "@string@.isDateTime()",
         "survey_name": "Questionnaire numéro 1"
       },
       {
-        "latitude": "48.518219",
-        "longitude": "2.624205",
+        "latitude": 48.518219,
+        "longitude": 2.624205,
         "posted_at": "@string@.isDateTime()",
         "survey_name": "Questionnaire national numéro 1"
       }

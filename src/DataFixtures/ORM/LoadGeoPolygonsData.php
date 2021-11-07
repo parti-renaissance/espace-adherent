@@ -3,11 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadGeoPolygonsData extends Fixture implements OrderedFixtureInterface
+class LoadGeoPolygonsData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

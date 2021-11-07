@@ -3,7 +3,6 @@
 namespace App\DataFixtures\ORM;
 
 use App\Committee\CommitteeFactory;
-use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\CommitteeElection;
 use App\Entity\PostAddress;
 use App\FranceCities\FranceCities;
@@ -40,8 +39,6 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
 
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'committees');
-
         // Create some default committees and make people join them
         $committee1 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_1_UUID,

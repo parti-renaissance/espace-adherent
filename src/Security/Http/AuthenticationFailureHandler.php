@@ -16,11 +16,11 @@ class AuthenticationFailureHandler extends DefaultAuthenticationFailureHandler
     private $failedLoginAttemptRepository;
 
     public function __construct(
+        FailedLoginAttemptRepository $failedLoginAttemptRepository,
         HttpKernelInterface $httpKernel,
         HttpUtils $httpUtils,
         array $options = [],
-        LoggerInterface $logger = null,
-        FailedLoginAttemptRepository $failedLoginAttemptRepository
+        LoggerInterface $logger = null
     ) {
         parent::__construct($httpKernel, $httpUtils, $options, $logger);
 

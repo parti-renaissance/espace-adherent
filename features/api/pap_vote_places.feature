@@ -13,24 +13,24 @@ Feature:
     [
         {
             "uuid": "1cc8f1bf-533d-4c3a-a02b-00ba651e056a",
-            "latitude": "48.879414",
-            "longitude": "2.319874",
-            "addresses": "2",
-            "distance": "0.09452285753944736"
+            "latitude": 48.879414,
+            "longitude": 2.319874,
+            "addresses": 2,
+            "distance": 0.09452285753944736
         },
         {
             "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b",
-            "latitude": "48.878029",
-            "longitude": "2.317807",
-            "addresses": "2",
-            "distance": "0.12802214131322467"
+            "latitude": 48.878029,
+            "longitude": 2.317807,
+            "addresses": 2,
+            "distance": 0.12802214131322467
         },
         {
             "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3",
-            "latitude": "48.858952",
-            "longitude": "2.277345",
-            "addresses": "2",
-            "distance": "3.805952025713274"
+            "latitude": 48.858952,
+            "longitude": 2.277345,
+            "addresses": 2,
+            "distance": 3.805952025713274
         }
     ]
     """

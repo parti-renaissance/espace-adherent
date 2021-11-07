@@ -43,7 +43,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     abstract protected function getAuthor(object $object): ?string;
 
-    final private function getType(): string
+    private function getType(): string
     {
         return TimelineFeedTypeEnum::CLASS_MAPPING[$this->getClassName()];
     }

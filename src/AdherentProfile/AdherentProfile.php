@@ -119,7 +119,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var PhoneNumber|null
      *
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      *
      * @SymfonySerializer\Groups({"profile_write"})
      */

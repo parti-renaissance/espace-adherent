@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Coalition\QuickAction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -12,8 +11,6 @@ class LoadQuickActionData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'cause_quick_action');
-
         $causeCulture = $this->getReference('cause-culture-1');
         $causeEducation = $this->getReference('cause-education-1');
         $quickActionC1 = new QuickAction(

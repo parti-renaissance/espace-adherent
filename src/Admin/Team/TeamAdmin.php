@@ -17,21 +17,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TeamAdmin extends AbstractAdmin
 {
-    private $teamMemberHistoryManager;
+    private ?TeamMemberHistoryManager $teamMemberHistoryManager = null;
 
     /** @var Team|null */
     private $beforeUpdate;
-
-    public function __construct(
-        $code,
-        $class,
-        $baseControllerName = null,
-        TeamMemberHistoryManager $teamMemberHistoryManager
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->teamMemberHistoryManager = $teamMemberHistoryManager;
-    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -123,5 +112,11 @@ class TeamAdmin extends AbstractAdmin
     public function postUpdate($object)
     {
         $this->teamMemberHistoryManager->handleChanges($object, $this->beforeUpdate);
+    }
+
+    /** @required */
+    public function setTeamMemberHistoryManager(TeamMemberHistoryManager $teamMemberHistoryManager): void
+    {
+        $this->teamMemberHistoryManager = $teamMemberHistoryManager;
     }
 }

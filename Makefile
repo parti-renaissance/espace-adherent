@@ -60,7 +60,7 @@ tty:                                                                            
 	$(RUN) /bin/bash
 
 keys:                                                                                                  ## Generate the public and private keys
-	$(EXEC) openssl genrsa -out var/private.key 1024
+	$(EXEC) openssl genrsa -out var/private.key 2048
 	$(EXEC) openssl rsa -in var/private.key -pubout -out var/public.key
 
 wait-for-rabbitmq:

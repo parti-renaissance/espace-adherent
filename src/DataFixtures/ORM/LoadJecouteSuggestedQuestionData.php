@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Jecoute\Choice;
 use App\Entity\Jecoute\SuggestedQuestion;
 use App\Jecoute\SurveyQuestionTypeEnum;
@@ -41,8 +40,6 @@ class LoadJecouteSuggestedQuestionData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_suggested_question');
-
         foreach (self::SUGGESTED_QUESTIONS as $code => $data) {
             $question = new SuggestedQuestion($data['content'], $data['type'], $data['published']);
 

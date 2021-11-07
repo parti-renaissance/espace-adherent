@@ -838,29 +838,29 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Lucie",
-            "nb_calls": "4",
-            "nb_surveys": "3",
+            "nb_calls": 4,
+            "nb_surveys": 3,
             "position": 1,
             "caller": true
           },
           {
             "firstName": "Jacques",
-            "nb_calls": "0",
-            "nb_surveys": "0",
+            "nb_calls": 0,
+            "nb_surveys": 0,
             "position": 2,
             "caller": false
           },
           {
             "firstName": "Pierre",
-            "nb_calls": "0",
-            "nb_surveys": "0",
+            "nb_calls": 0,
+            "nb_surveys": 0,
             "position": 3,
             "caller": false
           },
           {
             "firstName": "Député",
-            "nb_calls": "0",
-            "nb_surveys": "0",
+            "nb_calls": 0,
+            "nb_surveys": 0,
             "position": 4,
             "caller": false
           }
@@ -878,29 +878,29 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Jacques",
-            "nb_calls": "4",
-            "nb_surveys": "3",
+            "nb_calls": 4,
+            "nb_surveys": 3,
             "position": 1,
             "caller": false
           },
           {
             "firstName": "Député",
-            "nb_calls": "1",
-            "nb_surveys": "1",
+            "nb_calls": 1,
+            "nb_surveys": 1,
             "position": 2,
             "caller": false
           },
           {
             "firstName": "Pierre",
-            "nb_calls": "1",
-            "nb_surveys": "1",
+            "nb_calls": 1,
+            "nb_surveys": 1,
             "position": 3,
             "caller": false
           },
           {
             "firstName": "Lucie",
-            "nb_calls": "0",
-            "nb_surveys": "0",
+            "nb_calls": 0,
+            "nb_surveys": 0,
             "position": 4,
             "caller": true
           }
@@ -918,30 +918,30 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Jacques",
-            "nb_calls": "0",
-            "nb_surveys": "0",
-            "position": "@integer@",
+            "nb_calls": 0,
+            "nb_surveys": 0,
+            "position": @integer@,
             "caller": false
           },
           {
             "firstName": "Lucie",
-            "nb_calls": "0",
-            "nb_surveys": "0",
-            "position": "@integer@",
+            "nb_calls": 0,
+            "nb_surveys": 0,
+            "position": @integer@,
             "caller": true
           },
           {
             "firstName": "Pierre",
-            "nb_calls": "0",
-            "nb_surveys": "0",
-            "position": "@integer@",
+            "nb_calls": 0,
+            "nb_surveys": 0,
+            "position": @integer@,
             "caller": false
           },
           {
             "firstName": "Député",
-            "nb_calls": "0",
-            "nb_surveys": "0",
-            "position": "@integer@",
+            "nb_calls": 0,
+            "nb_surveys": 0,
+            "position": @integer@,
             "caller": false
           }
         ]
@@ -978,29 +978,29 @@ Feature:
         "scoreboard": [
           {
             "firstName": "Jacques",
-            "nb_calls": "4",
-            "nb_surveys": "3",
+            "nb_calls": 4,
+            "nb_surveys": 3,
             "position": 1,
             "caller": true
           },
           {
             "firstName": "Député",
-            "nb_calls": "1",
-            "nb_surveys": "1",
+            "nb_calls": 1,
+            "nb_surveys": 1,
             "position": 2,
             "caller": false
           },
           {
             "firstName": "Pierre",
-            "nb_calls": "1",
-            "nb_surveys": "1",
+            "nb_calls": 1,
+            "nb_surveys": 1,
             "position": 3,
             "caller": false
           },
           {
             "firstName": "Lucie",
-            "nb_calls": "0",
-            "nb_surveys": "0",
+            "nb_calls": 0,
+            "nb_surveys": 0,
             "position": 4,
             "caller": false
           }
@@ -2272,8 +2272,8 @@ Feature:
       {
         "firstName": "Jacques",
         "lastName": "Picard",
-        "nb_calls": "5",
-        "nb_surveys": "4",
+        "nb_calls": 5,
+        "nb_surveys": 4,
         "nb_completed": "1",
         "nb_to_unsubscribe": "1",
         "nb_to_unjoin": "1",
@@ -2284,8 +2284,8 @@ Feature:
       {
         "firstName": "Pierre",
         "lastName": "Kiroule",
-        "nb_calls": "4",
-        "nb_surveys": "2",
+        "nb_calls": 4,
+        "nb_surveys": 2,
         "nb_completed": "0",
         "nb_to_unsubscribe": "0",
         "nb_to_unjoin": "0",
@@ -2296,8 +2296,8 @@ Feature:
       {
         "firstName": "Michelle",
         "lastName": "Dufour",
-        "nb_calls": "0",
-        "nb_surveys": "0",
+        "nb_calls": 0,
+        "nb_surveys": 0,
         "nb_completed": "0",
         "nb_to_unsubscribe": "0",
         "nb_to_unjoin": "0",
@@ -2480,12 +2480,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "nb_campaigns": "7",
-      "nb_ongoing_campaigns": "6",
-      "nb_calls": "19",
-      "nb_calls_last_30d": "18",
-      "nb_surveys": "14",
-      "nb_surveys_last_30d": "14"
+      "nb_campaigns": 7,
+      "nb_ongoing_campaigns": 6,
+      "nb_calls": 19,
+      "nb_calls_last_30d": 18,
+      "nb_surveys": 14,
+      "nb_surveys_last_30d": 14
     }
     """
 
@@ -2496,12 +2496,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "nb_campaigns": "2",
-      "nb_ongoing_campaigns": "2",
-      "nb_calls": "0",
-      "nb_calls_last_30d": "0",
-      "nb_surveys": "0",
-      "nb_surveys_last_30d": "0"
+      "nb_campaigns": 2,
+      "nb_ongoing_campaigns": 2,
+      "nb_calls": 0,
+      "nb_calls_last_30d": 0,
+      "nb_surveys": 0,
+      "nb_surveys_last_30d": 0
     }
     """
     Examples:

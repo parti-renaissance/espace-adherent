@@ -9,7 +9,7 @@ use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;
 use App\Event\CommitteeEventEvent;
 use App\Membership\Event\UserEvent;
 use Behat\Behat\Context\Context;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SyncWithAPIContext implements Context

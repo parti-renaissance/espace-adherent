@@ -5,7 +5,9 @@ namespace App\Controller\OAuth;
 use App\Form\ConfirmActionType;
 use App\OAuth\OAuthAuthorizationManager;
 use App\Repository\OAuth\ClientRepository;
-use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\Token\RegisteredClaims;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
@@ -122,12 +124,12 @@ class OAuthServerController extends AbstractController
             return $e->generateHttpResponse(new Response());
         }
 
-        $accessTokenObject = (new Parser())->parse($accessToken);
-        $client = $repository->findClientByUuid(Uuid::fromString($accessTokenObject->getClaim('aud')));
+        $accessTokenObject = (new Parser(new JoseEncoder()))->parse($accessToken);
+        $client = $repository->findClientByUuid(Uuid::fromString(current($accessTokenObject->claims()->get(RegisteredClaims::AUDIENCE))));
 
         return new JsonResponse([
             'token_type' => 'Bearer',
-            'expires_in' => $accessTokenObject->getClaim('exp') - time(),
+            'expires_in' => $accessTokenObject->claims()->get(RegisteredClaims::EXPIRATION_TIME)->getTimestamp() - time(),
             'access_token' => $accessToken,
             'grant_types' => $client->getAllowedGrantTypes(),
             'scopes' => $oauthRequest->getAttribute('oauth_scopes'),

@@ -10,8 +10,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "total": "6",
-      "total_followers": "5"
+      "total": 6,
+      "total_followers": 5
     }
     """
 

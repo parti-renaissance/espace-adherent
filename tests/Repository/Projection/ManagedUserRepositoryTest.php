@@ -7,7 +7,7 @@ use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Tests\App\AbstractKernelTestCase;
 
 /**

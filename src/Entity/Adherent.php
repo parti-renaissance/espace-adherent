@@ -186,7 +186,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Groups({"profile_read", "phoning_campaign_call_read"})
      *
-     * @AssertPhoneNumber(defaultRegion="FR", message="common.phone_number.invalid", groups={"additional_info"})
+     * @AssertPhoneNumber(message="common.phone_number.invalid", groups={"additional_info"})
      */
     private $phone;
 

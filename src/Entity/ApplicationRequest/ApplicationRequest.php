@@ -148,7 +148,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @Assert\NotBlank(message="common.phone_number.required")
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @AssertPhoneNumber
      */
     protected $phone;
 

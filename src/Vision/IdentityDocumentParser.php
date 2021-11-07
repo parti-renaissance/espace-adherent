@@ -130,7 +130,7 @@ class IdentityDocumentParser
     {
         $pattern = '/(%s)\s?:?\s?(?<last_name>.+)\\n/';
 
-        preg_match(sprintf($pattern, implode($labels, '|')), $text, $matches);
+        preg_match(sprintf($pattern, implode('|', $labels)), $text, $matches);
 
         return $matches['last_name'] ?? null;
     }
