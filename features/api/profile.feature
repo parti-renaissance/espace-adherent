@@ -383,7 +383,7 @@ Feature:
     {
       "subscription_types": [
         {
-          "label": "Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS",
+          "label": "Recevoir les informations sur les actions militantes du mouvement par téléphone",
           "code": "militant_action_sms"
         },
         {
@@ -883,7 +883,7 @@ Feature:
       "subscription_types": [
         {
           "code": "militant_action_sms",
-          "label": "Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS"
+          "label": "Recevoir les informations sur les actions militantes du mouvement par téléphone"
         },
         {
           "code": "subscribed_emails_movement_information",

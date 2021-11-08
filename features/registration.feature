@@ -271,7 +271,7 @@ Feature:
 
     Given I follow "Communication"
     Then I should be on "/parametres/mon-compte/preferences-des-emails"
-    And the "Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS" checkbox should be unchecked
+    And the "Recevoir les informations sur les actions militantes du mouvement par téléphone" checkbox should be unchecked
     And the "Recevoir les e-mails nationaux" checkbox should be unchecked
     And the "Recevoir la newsletter hebdomadaire nationale" checkbox should be unchecked
     And I should not see an "Recevoir les e-mails de mon animateur\(trice\) local\(e\) de comité" element
