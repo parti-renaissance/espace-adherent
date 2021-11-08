@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JecouteNewsZipCodeFilter;
+use App\Api\Filter\JecouteNewsScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredInterface;
@@ -25,14 +26,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"jecoute_news_read"}},
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') or is_granted('IS_FEATURE_GRANTED', 'news')",
- *         "filters": {JecouteNewsZipCodeFilter::class},
  *         "order": {"createdAt": "DESC"},
  *     },
  *     collectionOperations={
- *         "get": {
+ *         "get_public": {
  *             "path": "/jecoute/news",
  *             "method": "GET",
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *             "filters": {JecouteNewsZipCodeFilter::class},
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -51,12 +52,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                     },
  *                 }
  *             }
- *         }
+ *         },
+ *         "get_private": {
+ *             "path": "/v3/jecoute/news",
+ *             "method": "GET",
+ *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
+ *             "filters": {JecouteNewsScopeFilter::class},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
+ *         },
  *     },
  *     itemOperations={
- *         "get": {
+ *         "get_public": {
  *             "method": "GET",
  *             "path": "/jecoute/news/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "swagger_context": {
  *                 "summary": "Retrieves a News resource by UUID.",
  *                 "description": "Retrieves a News resource by UUID.",
@@ -70,7 +79,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                     }
  *                 }
  *             }
- *         }
+ *         },
+ *         "get_private": {
+ *             "path": "/v3/jecoute/news/{id}",
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
+ *         },
  *     },
  * )
  *
