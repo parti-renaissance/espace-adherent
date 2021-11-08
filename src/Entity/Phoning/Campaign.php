@@ -6,7 +6,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\Adherent;
 use App\Entity\Audience\AudienceSnapshot;
-use App\Entity\EntityAdministratorTrait;
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Jecoute\Survey;
@@ -19,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,8 +36,28 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "iri": true,
  *             "groups": {"phoning_campaign_read"},
  *         },
+ *         "denormalization_context": {
+ *             "groups": {"phoning_campaign_write"}
+ *         },
+ *         "order": {"createdAt": "DESC"},
+ *         "pagination_client_items_per_page": true
  *     },
  *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/phoning_campaigns/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *         },
+ *         "put": {
+ *             "path": "/v3/phoning_campaigns/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *         },
+ *         "delete": {
+ *             "path": "/v3/phoning_campaigns/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *         },
  *         "get_with_scores": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{id}/scores",
@@ -42,9 +66,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
- *         },
+ *         }
  *     },
  *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/phoning_campaigns",
+ *             "normalization_context": {
+ *                 "groups": {"phoning_campaign_list"},
+ *             },
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *         },
+ *         "post": {
+ *             "path": "/v3/phoning_campaigns",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *         },
  *         "get_my_phoning_campaigns_scores": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/scores",
@@ -65,11 +100,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-class Campaign
+class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use EntityAdministratorTrait;
+    use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
 
     /**
      * @var string|null
@@ -79,7 +115,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
      */
     private $title;
 
@@ -88,7 +124,7 @@ class Campaign
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_write"})
      */
     private $brief;
 
@@ -100,7 +136,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
      *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
      */
     private $goal;
 
@@ -112,7 +148,7 @@ class Campaign
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
      *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
      */
     private $finishAt;
 
@@ -123,16 +159,20 @@ class Campaign
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
+     *
+     * @Groups({"phoning_campaign_read", "phoning_campaign_list", "phoning_campaign_write"})
      */
     private $team;
 
     /**
      * @var AudienceSnapshot|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
+     *
+     * @Groups({"audience_read", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $audience;
 
@@ -143,6 +183,8 @@ class Campaign
      * @Assert\NotBlank
      *
      * @ApiSubresource
+     *
+     * @Groups({"phoning_campaign_read", "phoning_campaign_write"})
      */
     private $survey;
 
@@ -320,6 +362,27 @@ class Campaign
         });
     }
 
+    public function getCampaignHistoriesToRemind(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isToRemindStatus();
+        });
+    }
+
+    public function getCampaignHistoriesNotRespond(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isNotRespondStatus();
+        });
+    }
+
+    public function getCampaignHistoriesFailed(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isFailedStatus();
+        });
+    }
+
     public function isFinished(): bool
     {
         return null !== $this->finishAt && $this->finishAt <= new \DateTime();
@@ -338,5 +401,14 @@ class Campaign
     public function setPermanent(bool $value): void
     {
         $this->permanent = $value;
+    }
+
+    /**
+     * @Groups({"phoning_campaign_read", "phoning_campaign_list"})
+     * @SerializedName("creator")
+     */
+    public function getCreator(): string
+    {
+        return null !== $this->createdByAdherent ? $this->createdByAdherent->getPartialName() : 'Admin';
     }
 }

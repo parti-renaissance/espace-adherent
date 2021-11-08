@@ -57,6 +57,7 @@ abstract class Survey
      *     "data_survey_read",
      *     "jemarche_data_survey_read",
      *     "survey_list",
+     *     "phoning_campaign_read",
      * })
      *
      * @ApiProperty(identifier=true)
@@ -69,7 +70,7 @@ abstract class Survey
      * @Assert\NotBlank
      * @Assert\Length(max=70)
      *
-     * @SymfonySerializer\Groups("survey_list")
+     * @SymfonySerializer\Groups("survey_list", "phoning_campaign_read")
      */
     private $name;
 

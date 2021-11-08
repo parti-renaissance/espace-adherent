@@ -85,7 +85,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      *     minMessage="team.name.min_length",
      *     maxMessage="team.name.max_length"
      * )
-     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
+     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write", "phoning_campaign_read", "phoning_campaign_list"})
      */
     private $name;
 
@@ -154,7 +154,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     }
 
     /**
-     * @SymfonySerializer\Groups({"team_list_read"})
+     * @SymfonySerializer\Groups({"team_list_read", "phoning_campaign_read", "phoning_campaign_list"})
      * @SymfonySerializer\SerializedName("members_count")
      */
     public function getMembersCount(): int

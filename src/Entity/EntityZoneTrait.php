@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityZoneTrait
 {
@@ -12,6 +13,8 @@ trait EntityZoneTrait
      * @var Collection|Zone[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     *
+     * @Groups({"phoning_campaign_read", "phoning_campaign_write"})
      */
     protected $zones;
 

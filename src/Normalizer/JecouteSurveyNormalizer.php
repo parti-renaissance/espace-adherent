@@ -41,6 +41,9 @@ class JecouteSurveyNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return !isset($context[static::ALREADY_CALLED]) && $data instanceof Survey;
+        return !isset($context[static::ALREADY_CALLED])
+            && $data instanceof Survey
+            && !\in_array('phoning_campaign_read', $context['groups'] ?? [])
+        ;
     }
 }

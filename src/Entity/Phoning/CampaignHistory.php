@@ -359,4 +359,19 @@ class CampaignHistory implements DataSurveyAwareInterface
     {
         return CampaignHistoryStatusEnum::TO_UNSUBSCRIBE === $this->status;
     }
+
+    public function isToRemindStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::TO_REMIND === $this->status;
+    }
+
+    public function isFailedStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::FAILED === $this->status;
+    }
+
+    public function isNotRespondStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::NOT_RESPOND === $this->status;
+    }
 }
