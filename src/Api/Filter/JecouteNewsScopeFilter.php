@@ -8,7 +8,9 @@ use App\Api\Doctrine\AuthoredItemsCollectionExtension;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Repository\AdherentMessageRepository;
+use App\Repository\Geo\ZoneRepository;
 use App\Scope\GeneralScopeGenerator;
+use App\Scope\ScopeEnum;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
@@ -20,6 +22,7 @@ final class JecouteNewsScopeFilter extends AbstractContextAwareFilter
     private GeneralScopeGenerator $generalScopeGenerator;
     private Security $security;
     private AdherentMessageRepository $adherentMessageRepository;
+    private ZoneRepository $zoneRepository;
 
     protected function filterProperty(
         string $property,
@@ -41,6 +44,7 @@ final class JecouteNewsScopeFilter extends AbstractContextAwareFilter
         }
 
         $scopeGenerator = $this->generalScopeGenerator->getGenerator($value, $user);
+        $scope = $scopeGenerator->getCode();
 
         $author = $scopeGenerator->isDelegatedAccess()
             ? $scopeGenerator->getDelegatedAccess()->getDelegator()
@@ -49,15 +53,16 @@ final class JecouteNewsScopeFilter extends AbstractContextAwareFilter
 
         $alias = $queryBuilder->getRootAliases()[0];
 
-        dd($alias);
-
-//        $this
-//            ->adherentMessageRepository
-//            ->withMessageType($queryBuilder, $scopeGenerator->getCode(), $alias)
-//            ->withAuthor($queryBuilder, $author, $alias)
-//        ;
-//
-//        $this->authoredItemsCollectionExtension->setSkip(true);
+        if (ScopeEnum::NATIONAL === $scope) {
+            $queryBuilder
+                ->andWhere(sprintf('%s.space IS NULL', $alias))
+            ;
+        } elseif (ScopeEnum::REFERENT === $scope) {
+            $queryBuilder
+                ->andWhere(sprintf('%s.zone IN (:zones)', $alias))
+                ->setParameter('zones', $this->zoneRepository->findForJecouteByReferentTags($author->getManagedArea()->getTags()->toArray()))
+            ;
+        }
     }
 
     public function getDescription(string $resourceClass): array
@@ -93,5 +98,13 @@ final class JecouteNewsScopeFilter extends AbstractContextAwareFilter
     public function setAdherentMessageRepository(AdherentMessageRepository $adherentMessageRepository): void
     {
         $this->adherentMessageRepository = $adherentMessageRepository;
+    }
+
+    /**
+     * @required
+     */
+    public function setZoneRepository(ZoneRepository $zoneRepository): void
+    {
+        $this->zoneRepository = $zoneRepository;
     }
 }

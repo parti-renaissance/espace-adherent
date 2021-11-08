@@ -49,19 +49,5 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
                 ->setParameter('date', (new \DateTime('-60 days'))->setTime(0, 0))
             ;
         }
-
-        $scope = $this->authorizationChecker->getScope($this->requestStack->getMasterRequest());
-        if (ScopeEnum::NATIONAL === $scope) {
-            $queryBuilder
-                ->andWhere(sprintf('%s.space IS NULL', $queryBuilder->getRootAliases()[0]))
-            ;
-        } elseif (ScopeEnum::REFERENT === $scope) {
-            /** @var Adherent $user */
-            $user = $this->security->getUser();
-            $queryBuilder
-                ->andWhere(sprintf('%s.zone IN (:zones)', $queryBuilder->getRootAliases()[0]))
-                ->setParameter('zones', $this->zoneRepository->findForJecouteByReferentTags($user->getManagedArea()->getTags()->toArray()))
-            ;
-        }
     }
 }

@@ -19,6 +19,7 @@ trait EntityTimestampableTrait
      *     "idea_thread_comment_read",
      *     "idea_read",
      *     "jecoute_news_read",
+     *     "jecoute_news_read_dc",
      *     "email_template_read",
      *     "email_template_list_read",
      *     "riposte_list_read",

@@ -217,8 +217,7 @@ Feature:
 
   Scenario: As a DC referent I can get the news list
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/jecoute/news?scope=referent&page_size=10"
-    And print last JSON response
+    When I send a "GET" request to "/api/v3/jecoute/news?scope=referent&page_size=10"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -274,7 +273,7 @@ Feature:
 
   Scenario: As a DC user with national role I can get the news list
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/jecoute/news?scope=national"
+    When I send a "GET" request to "/api/v3/jecoute/news?scope=national"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

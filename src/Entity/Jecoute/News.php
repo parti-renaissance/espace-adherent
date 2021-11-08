@@ -130,7 +130,7 @@ class News implements AuthoredInterface
      *
      * @ORM\Column(type="uuid")
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
      */
     private $uuid;
 
@@ -154,7 +154,7 @@ class News implements AuthoredInterface
      * @Assert\Length(max=1000)
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
      */
     private $text;
 
@@ -165,7 +165,7 @@ class News implements AuthoredInterface
      *
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
      */
     private $externalLink;
 
