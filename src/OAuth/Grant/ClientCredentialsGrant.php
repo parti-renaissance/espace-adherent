@@ -3,6 +3,8 @@
 namespace App\OAuth\Grant;
 
 use League\OAuth2\Server\Grant\ClientCredentialsGrant as BaseClientCredentialsGrant;
+use League\OAuth2\Server\RequestEvent;
+use League\OAuth2\Server\RequestRefreshTokenEvent;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -34,6 +36,15 @@ class ClientCredentialsGrant extends BaseClientCredentialsGrant
 
         // Inject access token into response type
         $responseType->setAccessToken($accessToken);
+
+        if ($device) {
+            $refreshToken = $this->issueRefreshToken($accessToken);
+
+            if (null !== $refreshToken) {
+                $this->getEmitter()->emit(new RequestRefreshTokenEvent(RequestEvent::REFRESH_TOKEN_ISSUED, $request, $refreshToken));
+                $responseType->setRefreshToken($refreshToken);
+            }
+        }
 
         return $responseType;
     }

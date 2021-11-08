@@ -112,7 +112,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     {
       "token_type":"Bearer",
       "expires_in":"@integer@.lowerThan(3601).greaterThan(3595)",
-      "access_token":"@string@"
+      "access_token":"@string@",
+      "refresh_token": "@string@"
     }
     """
 

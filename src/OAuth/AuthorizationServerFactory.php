@@ -73,17 +73,19 @@ class AuthorizationServerFactory
         $refreshTokenTtl = new \DateInterval($this->refreshTokenTtlInterval);
 
         $server->enableGrantType($this->createAuthCodeGrant(), $accessTokenTtl);
-        $server->enableGrantType($this->createClientCredetialsGrant(), $accessTokenTtl);
+        $server->enableGrantType($this->createClientCredetialsGrant($refreshTokenTtl), $accessTokenTtl);
         $server->enableGrantType($this->createRefreshTokenGrant($refreshTokenTtl), $accessTokenTtl);
         $server->enableGrantType($this->createPasswordGrant($refreshTokenTtl), $accessTokenTtl);
 
         return $server;
     }
 
-    private function createClientCredetialsGrant(): GrantTypeInterface
+    private function createClientCredetialsGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
     {
         $grant = new ClientCredentialsGrant();
         $grant->setDeviceRepository($this->deviceRepository);
+        $grant->setRefreshTokenRepository($this->refreshTokenRepository);
+        $grant->setRefreshTokenTTL($refreshTokenTtl);
 
         return $grant;
     }
