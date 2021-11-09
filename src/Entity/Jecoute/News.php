@@ -6,8 +6,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Api\Filter\JecouteNewsZipCodeFilter;
 use App\Api\Filter\JecouteNewsScopeFilter;
+use App\Api\Filter\JecouteNewsZipCodeFilter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredInterface;
@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"jecoute_news_read"}},
+ *         "filters": {JecouteNewsZipCodeFilter::class, JecouteNewsScopeFilter::class},
  *         "order": {"createdAt": "DESC"},
  *     },
  *     collectionOperations={
@@ -33,7 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/jecoute/news",
  *             "method": "GET",
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *             "filters": {JecouteNewsZipCodeFilter::class},
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -57,7 +57,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/jecoute/news",
  *             "method": "GET",
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
- *             "filters": {JecouteNewsScopeFilter::class},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
  *         },
  *     },

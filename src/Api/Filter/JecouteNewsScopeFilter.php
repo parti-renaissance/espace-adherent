@@ -4,7 +4,6 @@ namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Api\Doctrine\AuthoredItemsCollectionExtension;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Repository\AdherentMessageRepository;

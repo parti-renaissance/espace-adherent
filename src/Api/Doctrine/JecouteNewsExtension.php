@@ -4,11 +4,9 @@ namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\AuthorizationChecker;
-use App\Scope\ScopeEnum;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
