@@ -46,17 +46,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/phoning_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "put": {
  *             "path": "/v3/phoning_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "delete": {
  *             "path": "/v3/phoning_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
  *         "get_with_scores": {
  *             "method": "GET",

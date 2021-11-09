@@ -6,13 +6,14 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData                |
-      | LoadClientData                  |
-      | LoadTeamData                    |
-      | LoadJecouteSurveyData           |
-      | LoadPhoningCampaignData         |
-      | LoadPhoningCampaignHistoryData  |
-      | LoadCmsBlockData                |
+      | LoadAdherentData               |
+      | LoadClientData                 |
+      | LoadScopeData                  |
+      | LoadTeamData                   |
+      | LoadJecouteSurveyData          |
+      | LoadPhoningCampaignData        |
+      | LoadPhoningCampaignHistoryData |
+      | LoadCmsBlockData               |
 
   Scenario Outline: As a non logged-in user I cannot get and manage phoning campaigns
     Given I send a "<method>" request to "<url>"
@@ -34,6 +35,17 @@ Feature:
       | GET     | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/scores                 |
       | GET     | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config |
       | POST    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
+
+  Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns on DC
+    Given I am logged with "benjyd@aol.com" via OAuth client "Data-Corner"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method | url                                                                                           |
+      | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                      |
+      | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
+      | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
+      | DELETE | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
 
   Scenario: As a logged-in user I can get my phoning campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -548,3 +560,398 @@ Feature:
       "content": "# Lorem ipsum\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit."
     }
     """
+
+  Scenario: As a DC referent I can get the list of phoning campaigns
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+       "metadata": {
+         "total_items": 6,
+         "items_per_page": 10,
+         "count": 6,
+         "current_page": 1,
+         "last_page": 1
+       },
+       "items": [
+         {
+            "title": "Campagne pour les hommes",
+            "goal": 500,
+            "finish_at": "@string@.isDateTime()",
+            "team": {
+              "name": "Première équipe de phoning",
+              "uuid": "@uuid@",
+              "members_count": 3
+            },
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 12,
+            "nb_surveys": 6
+         },
+         {
+            "title": "Campagne pour les femmes",
+            "goal": 500,
+            "finish_at": "@string@.isDateTime()",
+            "team": {
+              "name": "Deuxième équipe de phoning",
+              "uuid": "@uuid@",
+              "members_count": 4
+            },
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 6,
+            "nb_surveys": 5
+         },
+         {
+            "title": "Campagne termin\u00e9",
+            "goal": 100,
+            "finish_at": "@string@.isDateTime()",
+            "team": {
+              "name": "Première équipe de phoning",
+              "uuid": "@uuid@",
+              "members_count": 3
+            },
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 0,
+            "nb_surveys": 0
+         },
+         {
+            "title": "Campagne sans adhérents dispo à appeler",
+            "goal": 100,
+            "finish_at": "@string@.isDateTime()",
+            "team": {
+              "name": "Première équipe de phoning",
+              "uuid": "@uuid@",
+              "members_count": 3
+            },
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 0,
+            "nb_surveys": 0
+         },
+         {
+            "title": "Campagne avec l'audience contenant tous les paramètres",
+            "goal": 10,
+            "finish_at": "@string@.isDateTime()",
+            "team": {
+              "name": "Deuxième équipe de phoning",
+              "uuid": "@uuid@",
+              "members_count": 4
+            },
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 0,
+            "nb_surveys": 0
+         },
+         {
+            "title": "Campagne permanente",
+            "goal": 42,
+            "finish_at": null,
+            "team": null,
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 1,
+            "nb_surveys": 0
+         }
+      ]
+    }
+    """
+
+  Scenario: As a DC referent I can get one phone campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne pour les hommes",
+      "brief": "**Campagne** pour les hommes",
+      "goal": 500,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Première équipe de phoning",
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "members_count": 3
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [
+          {
+             "uuid": "@uuid@",
+             "code": "75056",
+             "name": "Paris",
+             "created_at": "@string@.isDateTime()",
+             "updated_at": "@string@.isDateTime()"
+          }
+        ],
+        "first_name": null,
+        "last_name": null,
+        "gender": "male",
+        "age_min": null,
+        "age_max": null,
+        "registered_since": null,
+        "registered_until": null,
+        "is_committee_member": null,
+        "is_certified": null,
+        "has_email_subscription": null,
+        "has_sms_subscription": null
+      },
+      "survey": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1"
+      },
+      "permanent": false,
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "creator": "Admin",
+      "nb_calls": 12,
+      "nb_surveys": 6,
+      "nb_un_join": 1,
+      "nb_un_subscribe": 1,
+      "to_remind": 1,
+      "not_respond": 2,
+      "nb_failed": 1
+    }
+    """
+
+  Scenario: As a DC referent I can create a new phoning campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "firstName": "john",
+        "lastName": "Doe",
+        "ageMin": 30,
+        "ageMax": 80,
+        "registeredSince": "2020-11-08T10:25:20.677Z",
+        "isCertified": true,
+        "isCommitteeMember": false,
+        "hasSmsSubscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Deuxième équipe de phoning",
+        "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "members_count": 4
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [
+          {
+            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+            "code": "75",
+            "name": "Paris",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()"
+          }
+        ],
+        "first_name": "john",
+        "last_name": "Doe",
+        "gender": "male",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "@string@.isDateTime()",
+        "registered_until": null,
+        "is_committee_member": false,
+        "is_certified": true,
+        "has_email_subscription": null,
+        "has_sms_subscription": false
+      },
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1"
+      },
+      "permanent": false,
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "creator": "Referent R.",
+      "nb_calls": 0,
+      "nb_surveys": 0,
+      "nb_un_join": 0,
+      "nb_un_subscribe": 0,
+      "to_remind": 0,
+      "not_respond": 0,
+      "nb_failed": 0
+    }
+    """
+
+  Scenario: As a DC referent I cannot create a ne phoning campaign without the title the goal or the survey
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    """
+    {
+      "brief": "cette Campagne est un test",
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "firstName": "john",
+        "lastName": "Doe",
+        "ageMin": 30,
+        "ageMax": 80,
+        "registeredSince": "2020-11-08T10:25:20.677Z",
+        "isCertified": true,
+        "isCommitteeMember": false,
+        "hasSmsSubscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nsurvey: Cette valeur ne doit pas être vide.",
+      "violations": [
+        {
+          "propertyPath": "title",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "goal",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "survey",
+          "message": "Cette valeur ne doit pas être vide."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC referent I can update a phoning campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager" with body:
+    """
+      {
+        "title": "Campagne pour les femmes 2021",
+        "brief": "cette Campagne est un test",
+        "goal": 50,
+        "finish_at": "+10 days",
+        "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+        "audience": {
+          "gender": "female",
+          "firstName": "Jane",
+          "lastName": "SMITH",
+          "ageMin": 25,
+          "ageMax": 60,
+          "registeredSince": "2020-11-08T10:25:20.677Z",
+          "isCertified": true,
+          "isCommitteeMember": false,
+          "hasSmsSubscription": false,
+          "zones": [
+            "e3efe563-906e-11eb-a875-0242ac150002"
+          ]
+        },
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne pour les femmes 2021",
+      "brief": "cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Deuxième équipe de phoning",
+        "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "members_count": 4
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [
+          {
+            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+            "code": "75",
+            "name": "Paris",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()"
+          }
+        ],
+        "first_name": "Jane",
+        "last_name": "SMITH",
+        "gender": "female",
+        "age_min": 25,
+        "age_max": 60,
+        "registered_since": "@string@.isDateTime()",
+        "registered_until": null,
+        "is_committee_member": false,
+        "is_certified": true,
+        "has_email_subscription": null,
+        "has_sms_subscription": false
+      },
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1"
+      },
+      "permanent": false,
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "creator": "Admin",
+      "nb_calls": 12,
+      "nb_surveys": 6,
+      "nb_un_join": 1,
+      "nb_un_subscribe": 1,
+      "to_remind": 1,
+      "not_respond": 2,
+      "nb_failed": 1
+    }
+    """
+
+  Scenario: As a DC referent I can remove a phoning campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager"
+    Then the response status code should be 204

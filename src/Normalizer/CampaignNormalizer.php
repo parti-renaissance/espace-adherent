@@ -25,7 +25,9 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         $campaign['nb_calls'] = $object->getCampaignHistoriesCount();
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
 
-        if (isset($context['item_operation_name']) && 'get' === $context['item_operation_name']) {
+        if ((isset($context['item_operation_name']) && \in_array($context['item_operation_name'], ['get', 'put']))
+            || (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name'])
+        ) {
             $campaign['nb_un_join'] = $object->getCampaignHistoriesToUnjoin()->count();
             $campaign['nb_un_subscribe'] = $object->getCampaignHistoriesToUnsubscribe()->count();
             $campaign['to_remind'] = $object->getCampaignHistoriesToRemind()->count();
