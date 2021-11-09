@@ -2,8 +2,10 @@
 
 namespace App\Entity\Jecoute;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Jecoute\SurveyTypeEnum;
@@ -32,6 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  *     itemOperations={},
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/surveys",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *         }
+ *     },
  *     subresourceOperations={
  *         "api_phoning_campaigns_survey_get_subresource": {
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
@@ -41,6 +49,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ * })
  */
 abstract class Survey
 {

@@ -2,7 +2,9 @@
 
 namespace App\Entity\Team;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -55,6 +57,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     }
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ * })
+ *
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="team_name_unique", columns={"name"}),
