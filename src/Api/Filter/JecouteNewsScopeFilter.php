@@ -6,7 +6,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
-use App\Repository\AdherentMessageRepository;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
@@ -20,7 +19,6 @@ final class JecouteNewsScopeFilter extends AbstractContextAwareFilter
 
     private GeneralScopeGenerator $generalScopeGenerator;
     private Security $security;
-    private AdherentMessageRepository $adherentMessageRepository;
     private ZoneRepository $zoneRepository;
 
     protected function filterProperty(
@@ -89,14 +87,6 @@ final class JecouteNewsScopeFilter extends AbstractContextAwareFilter
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
-    }
-
-    /**
-     * @required
-     */
-    public function setAdherentMessageRepository(AdherentMessageRepository $adherentMessageRepository): void
-    {
-        $this->adherentMessageRepository = $adherentMessageRepository;
     }
 
     /**

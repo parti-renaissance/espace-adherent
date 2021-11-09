@@ -6,7 +6,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionEx
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Jecoute\News;
 use App\Repository\Geo\ZoneRepository;
-use App\Scope\AuthorizationChecker;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
@@ -16,18 +15,12 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
     private Security $security;
     private ZoneRepository $zoneRepository;
     private RequestStack $requestStack;
-    private AuthorizationChecker $authorizationChecker;
 
-    public function __construct(
-        Security $security,
-        ZoneRepository $zoneRepository,
-        RequestStack $requestStack,
-        AuthorizationChecker $authorizationChecker
-    ) {
+    public function __construct(Security $security, ZoneRepository $zoneRepository, RequestStack $requestStack)
+    {
         $this->security = $security;
         $this->zoneRepository = $zoneRepository;
         $this->requestStack = $requestStack;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function applyToCollection(
