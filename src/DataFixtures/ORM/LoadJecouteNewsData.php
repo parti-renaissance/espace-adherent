@@ -40,7 +40,11 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             'global_topic',
             'https://en-marche.fr',
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'),
-            JecouteSpaceEnum::CANDIDATE_SPACE
+            JecouteSpaceEnum::CANDIDATE_SPACE,
+            true,
+            true,
+            null,
+            new \DateTime('-1 hour')
         ));
 
         $manager->persist($this->createNews(
@@ -52,7 +56,9 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             null,
             null,
             true,
-            false
+            false,
+            null,
+            new \DateTime('-2 hour')
         ));
 
         $manager->persist($this->createNews(
@@ -65,7 +71,8 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             JecouteSpaceEnum::REFERENT_SPACE,
             true,
             true,
-            $this->getReference('adherent-8')
+            $this->getReference('adherent-8'),
+            new \DateTime('-3 hour')
         ));
 
         $manager->persist($this->createNews(
@@ -74,11 +81,12 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             'Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.',
             null,
             'https://referent.en-marche.fr',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'),
             JecouteSpaceEnum::REFERENT_SPACE,
             true,
             false,
-            $this->getReference('senator-59')
+            $this->getReference('senator-59'),
+            new \DateTime('-4 hour')
         ));
 
         $manager->persist($this->createNews(
@@ -92,7 +100,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             null,
-            new \DateTime('-1 minute')
+            new \DateTime('-5 hours')
         ));
 
         $manager->persist($this->createNews(
@@ -105,7 +113,8 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             JecouteSpaceEnum::REFERENT_SPACE,
             true,
             true,
-            $this->getReference('adherent-19')
+            $this->getReference('adherent-19'),
+            new \DateTime('-6 hours')
         ));
 
         $manager->flush();

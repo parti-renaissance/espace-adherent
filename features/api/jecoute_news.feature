@@ -29,11 +29,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 4,
+          "total_items": 5,
           "items_per_page": 2,
           "count": 2,
           "current_page": 1,
-          "last_page": 2
+          "last_page": 3
         },
         "items": [
           {
@@ -63,11 +63,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 4,
+          "total_items": 5,
           "items_per_page": 1,
           "count": 1,
           "current_page": 1,
-          "last_page": 4
+          "last_page": 5
         },
         "items": [
           {
@@ -87,11 +87,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 4,
+          "total_items": 5,
           "items_per_page": 1,
           "count": 1,
           "current_page": 2,
-          "last_page": 4
+          "last_page": 5
         },
         "items": [
           {
@@ -237,6 +237,12 @@ Feature:
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": null,
                 "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "59",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Nord",
+                    "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+                },
                 "notification": true,
                 "published": true
             },
@@ -246,15 +252,27 @@ Feature:
                 "text": "Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "92",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
                 "notification": true,
                 "published": true
             },
             {
                 "uuid": "6c70f8e8-6bce-4376-8b9e-3ce342880673",
-                "title": "[Référent] Nouvelle actualité non publié à 92 du référent délégué",
+                "title": "[Référent] Nouvelle actualité non publiée à 59 du référent délégué",
                 "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "59",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Nord",
+                    "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+                },
                 "notification": true,
                 "published": false
             },
@@ -264,6 +282,12 @@ Feature:
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "92",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
                 "notification": true,
                 "published": true
             }
@@ -293,6 +317,7 @@ Feature:
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": "https://en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "zone": null,
                 "notification": true,
                 "published": false
             },
@@ -302,9 +327,214 @@ Feature:
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "92",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
                 "notification": true,
                 "published": true
             }
         ]
     }
     """
+
+  Scenario: As a logged-in user with no correct rights I cannot create a news
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=deputy" with body:
+    """
+    {
+      "title": "Une nouvelle actualité"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I cannot create a news with no data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+    """
+    {}
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.\ntitle: Cette valeur ne doit pas être vide.\ntext: Cette valeur ne doit pas être vide.",
+        "violations": [
+            {
+                "propertyPath": "",
+                "message": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation."
+            },
+            {
+                "propertyPath": "title",
+                "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "text",
+                "message": "Cette valeur ne doit pas être vide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I cannot  create a news with invalid data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui - Une nouvelle actualité d'aujourd'hui",
+      "text": "Fusce quam lorem, lacinia ut erat a, ultrices eleifend urna. Aenean sit amet tristique ante, at malesuada dui. Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus at. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula, dapibus nibh quis, hendrerit ante. Etiam suscipit dolor vitae leo congue, quis vestibulum massa porttitor. Phasellus diam urna, tempor vitae neque vel, tempor pellentesque orci. Vivamus vel ipsum a sapien interdum rhoncus sit amet vitae quam. Nunc blandit consectetur odio in porttitor. In pellentesque nibh id arcu efficitur, sed finibus nisi consectetur. Sed laoreet rutrum mauris, a semper tellus ultricies vitae. Aenean lacus urna, sollicitudin sed tristique sed, auctor et lorem. In mattis placerat suscipit. Nullam congue felis quis massa mollis placerat. Integer scelerisque faucibus nulla ac luctus. Vivamus lobortis consectetur sodales. Maecenas urna dui, egestas ut ligula sit amet, volutpat commodo sapien. Etiam ac libero est.",
+      "external_link": "testlink"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.\ntitle: Vous devez saisir au maximum 120 caractères.\ntext: Vous devez saisir au maximum 1000 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
+        "violations": [
+            {
+                "propertyPath": "",
+                "message": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation."
+            },
+            {
+                "propertyPath": "title",
+                "message": "Vous devez saisir au maximum 120 caractères."
+            },
+            {
+                "propertyPath": "text",
+                "message": "Vous devez saisir au maximum 1000 caractères."
+            },
+            {
+                "propertyPath": "external_link",
+                "message": "Cette valeur n'est pas une URL valide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can create a news
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "global": true,
+      "notification": true,
+      "published": true
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "title": "Une nouvelle actualité d'aujourd'hui",
+        "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+        "external_link": "http://test.en-marche.fr",
+        "zone": null,
+        "created_at": "@string@.isDateTime()",
+        "global": true,
+        "notification": true,
+        "published": true
+    }
+    """
+    And I should have 1 notification "NewsCreatedNotification" with data:
+      | key   | value                                         |
+      | topic | staging_jemarche_global                       |
+      | title | Une nouvelle actualité d'aujourd'hui          |
+      | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
+
+  Scenario: As a logged-in user with no national role I cannot create a news without zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "global": true,
+      "notification": true,
+      "published": true
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.",
+        "violations": [
+            {
+                "propertyPath": "",
+                "message": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can update a news of my zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=referent" with body:
+    """
+    {
+      "title": "Nouveau titre",
+      "text": "Nouveau texte",
+      "external_link": "https://nouveau.en-marche.fr",
+      "notification": false,
+      "published": false
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@",
+      "title": "[Référent] Nouveau titre",
+      "text": "Nouveau texte",
+      "external_link": "https://nouveau.en-marche.fr",
+      "zone": {
+          "code": "59",
+          "created_at": "@string@.isDateTime()",
+          "name": "Nord",
+          "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+      },
+      "created_at": "@string@.isDateTime()",
+      "notification": false,
+      "published": false
+    }
+    """
+
+  Scenario: As a logged-in user I cannot update a news out of my zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/jecoute/news/25632c43-c224-4745-84d7-09dfa8249367?scope=referent" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "global": true,
+      "notification": true,
+      "published": true
+    }
+    """
+    Then the response status code should be 403

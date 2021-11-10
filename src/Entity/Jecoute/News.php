@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"jecoute_news_read"}},
+ *         "denormalization_context": {"groups": {"jecoute_news_write"}},
  *         "filters": {JecouteNewsZipCodeFilter::class, JecouteNewsScopeFilter::class},
  *         "order": {"createdAt": "DESC"},
  *     },
@@ -59,6 +60,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
  *         },
+ *         "post": {
+ *             "path": "/v3/jecoute/news",
+ *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
+ *         },
  *     },
  *     itemOperations={
  *         "get_public": {
@@ -86,6 +92,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news')",
+ *         },
+ *         "put": {
+ *             "path": "/v3/jecoute/news/{id}",
+ *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('CAN_CHANGE_JECOUTE_NEWS', object)",
  *         },
  *     },
  * )
@@ -142,7 +153,7 @@ class News implements AuthoredInterface
      * @Assert\Length(max=120)
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
     private $title;
 
@@ -154,7 +165,7 @@ class News implements AuthoredInterface
      * @Assert\Length(max=1000)
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
     private $text;
 
@@ -165,7 +176,7 @@ class News implements AuthoredInterface
      *
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
     private $externalLink;
 
@@ -181,6 +192,8 @@ class News implements AuthoredInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
     private $zone;
 
@@ -194,6 +207,8 @@ class News implements AuthoredInterface
 
     /**
      * @var bool
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_write_national"})
      */
     private $global = false;
 
@@ -202,7 +217,7 @@ class News implements AuthoredInterface
      *
      * @ORM\Column(type="boolean", options={"default": 0})
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read_dc"})
+     * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
     private $notification = false;
 
@@ -211,7 +226,7 @@ class News implements AuthoredInterface
      *
      * @ORM\Column(type="boolean", options={"default": 1})
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read_dc"})
+     * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
     private $published = true;
 
