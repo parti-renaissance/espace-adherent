@@ -37,8 +37,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         return
             empty($context[self::NEWS_ALREADY_CALLED])
             && $data instanceof News
-            && (\in_array('jecoute_news_read', $context['groups'] ?? []) ||
-                \in_array('jecoute_news_read_dc', $context['groups'] ?? []))
+            && 0 !== \count(array_intersect(['jecoute_news_read', 'jecoute_news_read_dc'], $context['groups'] ?? []))
         ;
     }
 }
