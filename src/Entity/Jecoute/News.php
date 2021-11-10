@@ -65,6 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/jecoute/news/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *             "swagger_context": {
  *                 "summary": "Retrieves a News resource by UUID.",
  *                 "description": "Retrieves a News resource by UUID.",
