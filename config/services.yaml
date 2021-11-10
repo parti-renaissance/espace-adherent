@@ -296,7 +296,3 @@ services:
     App\Api\Serializer\RiposteGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\RiposteGroupsContextBuilder.inner']
-
-    App\Api\Serializer\JecouteNewsGroupsContextBuilder:
-        decorates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Api\Serializer\JecouteNewsGroupsContextBuilder.inner']
