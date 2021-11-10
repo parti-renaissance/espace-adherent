@@ -43,9 +43,7 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         return
             empty($context[self::CAMPAIGN_ALREADY_CALLED])
             && $data instanceof Campaign
-            && (\in_array('phoning_campaign_list', $context['groups'] ?? [])
-                || \in_array('phoning_campaign_read', $context['groups'] ?? [])
-            )
+            && 0 !== \count(array_intersect(['phoning_campaign_list', 'phoning_campaign_read'], $context['groups'] ?? []))
         ;
     }
 }
