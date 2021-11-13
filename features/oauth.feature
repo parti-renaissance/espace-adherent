@@ -1,4 +1,5 @@
 @oauth
+@group01
 Feature: Using OAuth for 2-legged OAuth flow (client credentials)
   In order to secure API or user data access
   As an API or an En-Marche! user

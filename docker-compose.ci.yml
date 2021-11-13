@@ -2,20 +2,23 @@ version: "3.9"
 
 services:
     app:
-        image: ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
+        image: ${REGISTRY}:${TAG}
         environment:
             - APP_ENV=test
         build:
             cache_from:
-                - ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
-                - ${APP_DOCKER_IMAGE_NAME}:dev
+                - ${REGISTRY}:${HASH}
+                - ${REGISTRY}:${TAG}
 
     db:
         tmpfs: /var/lib/mysql
 
+    redis:
+      image: redis:3.2-alpine
+
+    rabbitmq:
+      image: rabbitmq:3.9.8-alpine
+
     selenium:
         ports:
             - 5900:5900
-
-    rabbitmq:
-        image: rabbitmq:3.9.9-alpine

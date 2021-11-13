@@ -1,4 +1,5 @@
 @registration
+@group01
 Feature:
   As a visitor
   In order to access the web site

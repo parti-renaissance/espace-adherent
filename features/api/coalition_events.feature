@@ -1,4 +1,6 @@
 @apiCoalitions
+@api
+@group07
 Feature:
   In order to see coalition events
   As a non logged-in user

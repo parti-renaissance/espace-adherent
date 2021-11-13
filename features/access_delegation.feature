@@ -1,3 +1,4 @@
+@group03
 Feature:
     As an adherent
     I want to delegate some access to another adherent
