@@ -1,3 +1,4 @@
+@gha2
 Feature: Be able to have some categories not displayed
 
   Background: I load all articles and categories data

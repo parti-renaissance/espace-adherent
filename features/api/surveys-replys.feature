@@ -1,4 +1,5 @@
 @api
+@gha5
 Feature:
   Background:
     Given the following fixtures are loaded:

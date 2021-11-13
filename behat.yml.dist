@@ -30,6 +30,7 @@ default:
                 - SecurityContext
                 - FeatureContext
                 - DonationContext
+
     extensions:
         Behat\Symfony2Extension:
             kernel:

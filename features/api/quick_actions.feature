@@ -1,4 +1,5 @@
 @api
+@gha7
 Feature:
   In order to see quick actions
   As a user

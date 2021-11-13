@@ -1,3 +1,4 @@
+@gha1
 Feature:
   As a visitor
   I should be able to check if I'm mandated and specify the mandate

@@ -1,4 +1,5 @@
 @api
+@gha9
 Feature:
   In order to to complete PAP campaigns
   I should be able to retrieve addresses for a given position and additional datas

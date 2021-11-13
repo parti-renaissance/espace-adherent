@@ -1,4 +1,5 @@
 @api
+@gha5
 Feature:
   As a non logged-in user
   I should be able to retrieve intl informations

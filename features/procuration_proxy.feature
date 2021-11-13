@@ -1,5 +1,6 @@
 @procurationProxy
 @javascript
+@gha2
 Feature:
   As a non logged user
   I can fill a form and became a representative

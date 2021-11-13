@@ -1,4 +1,5 @@
 @api
+@gha5
 Feature:
   In order to see report resources
   As a user

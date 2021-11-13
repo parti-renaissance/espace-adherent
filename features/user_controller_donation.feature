@@ -1,4 +1,5 @@
 @donation
+@gha1
 Feature: Test donation page
   In order to see donation as a user
   I should be able to see my donation in my account profile

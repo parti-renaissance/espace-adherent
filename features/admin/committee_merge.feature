@@ -1,4 +1,5 @@
 @admin
+@gha1
 Feature: Merge committees from admin panel
 
   Background:

@@ -1,4 +1,5 @@
 @api
+@gha6
 Feature:
   In order to see, create, edit and delete audiences
   As a logged-in user

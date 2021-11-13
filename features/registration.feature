@@ -1,4 +1,5 @@
 @registration
+@gha1
 Feature:
   As a visitor
   In order to access the web site

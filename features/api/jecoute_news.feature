@@ -1,4 +1,5 @@
 @api
+@gha9
 Feature:
   In order to get all news
   With a valid oauth token

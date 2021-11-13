@@ -1,6 +1,7 @@
 DOCKER_COMPOSE?=docker-compose
 RUN=$(DOCKER_COMPOSE) run --rm app
-EXEC?=$(DOCKER_COMPOSE) exec app entrypoint.sh
+EXEC_ARGS?=
+EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app entrypoint.sh
 COMPOSER=$(EXEC) composer
 CONSOLE=$(EXEC) bin/console
 PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
@@ -71,6 +72,7 @@ rabbitmq-fabric: wait-for-rabbitmq
 ## Database
 ##---------------------------------------------------------------------------
 
+
 wait-for-db:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',3306)){break;}echo \"Waiting for MySQL\n\";sleep(1);}"
 
@@ -101,6 +103,18 @@ db-load: vendor wait-for-db                                                     
 db-validate: vendor wait-for-db                                                                        ## Check the ORM mapping
 	$(CONSOLE) doctrine:schema:validate --no-debug
 
+
+up-db:
+	$(DOCKER_COMPOSE) up -d --remove-orphans db
+
+up-redis:
+	$(DOCKER_COMPOSE) up -d --remove-orphans redis
+
+up-rabbitmq:
+	$(DOCKER_COMPOSE) up -d --remove-orphans rabbitmq
+
+up-selenium:
+	$(DOCKER_COMPOSE) up -d --remove-orphans selenium
 
 ##
 ## Assets
@@ -145,8 +159,8 @@ tf: tfp test-behat test-phpunit-functional                                      
 tfp: assets-prod vendor perm tfp-rabbitmq tfp-db                                            ## Prepare the PHP functional tests
 
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
-	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true
-	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
+	$(DOCKER_COMPOSE) exec $(EXEC_ARGS) rabbitmq rabbitmqctl add_vhost /test || true
+	$(DOCKER_COMPOSE) exec $(EXEC_ARGS) rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests

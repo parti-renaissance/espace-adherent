@@ -1,3 +1,4 @@
+@gha3
 Feature:
 
   Scenario: The search city is base on user's city

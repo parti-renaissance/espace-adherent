@@ -1,3 +1,4 @@
+@gha3
 Feature:
   In order to protect the APP
   I should be blocked if I try to login too many time

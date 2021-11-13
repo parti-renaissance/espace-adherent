@@ -1,3 +1,4 @@
+@gha2
 Feature: Allow some worker to get the list of configured web hooks
   In order to get configured web hooks (list of urls)
   As an authenticated and allowed OAuth client

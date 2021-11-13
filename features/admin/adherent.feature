@@ -1,4 +1,5 @@
 @admin
+@gha1
 Feature: Manage adherent from admin panel
 
   Background:

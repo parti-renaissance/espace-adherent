@@ -2,13 +2,16 @@ version: "3.9"
 
 services:
     app:
-        image: ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
+        image: ${IMAGE}:${DOCKER_DEV_TAG}
         environment:
             - APP_ENV=test
         build:
             cache_from:
-                - ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
-                - ${APP_DOCKER_IMAGE_NAME}:dev
+                - ${IMAGE}:${DOCKER_DEV_TAG}
+                - ${IMAGE}:dev
+
+        volumes:
+            -   ./.cache:/home/enmarche/.cache
 
     db:
         tmpfs: /var/lib/mysql

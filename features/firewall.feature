@@ -1,4 +1,5 @@
 @firewall
+@gha4
 Feature:
   As a referent, animator or simple adherent
   In order to see all my informations

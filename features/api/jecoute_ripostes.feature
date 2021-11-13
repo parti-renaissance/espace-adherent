@@ -1,4 +1,5 @@
 @api
+@gha8
 Feature:
   In order to see ripostes
   I should be able to access API of ripostes

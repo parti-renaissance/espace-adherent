@@ -1,4 +1,5 @@
 @api
+@gha6
 Feature:
   In order to track device informations
   As a logged-in device

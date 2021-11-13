@@ -17,7 +17,11 @@ sed -i "s/group = www-data/group = enmarche/g" /etc/php/7.4/fpm/pool.d/www.conf
 sed -i -r "s/enmarche:x:[0-9]+:[0-9]+:/enmarche:x:$uid:$gid:/g" /etc/passwd
 sed -i -r "s/enmarche:x:[0-9]+:/enmarche:x:$gid:/g" /etc/group
 
-chown $uid:$gid /home/enmarche
+chown -R $uid:$gid /home/enmarche
+
+# /home/enmarche/.cache is a host volume to cache dependencies
+mkdir -p /home/enmarche/.cache
+chmod -R a+rwx /home/enmarche/.cache
 
 if [ $# -eq 0 ]; then
     supervisord -c /etc/supervisor/conf.d/supervisord.conf

@@ -1,0 +1,166 @@
+name: CI & CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  release:
+    types: [ published ]
+
+env:
+  IMAGE: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.GCP_GCR_REPOSITORY }}
+  TAG: ${{ github.ref_name }}-${{ github.sha }}
+
+  CLOUDSDK_PYTHON: python2
+  DOCKER_COMPOSE: docker-compose -f docker-compose.yml -f docker-compose.ci.yml
+  EXEC_ARGS: -T
+
+  # Change this to force cache reset
+  CACHE_KEY: ${{ secrets.GHA_CACHE_KEY }}
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-dev
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          save_cache: true
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-dev
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      - run: |-
+          make lint
+
+
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-dev
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          ssl_keys: true
+          db: true
+          redis: true
+          rabbitmq: true
+      - run: |-
+          make tfp-db
+      - env:
+          PHPUNIT_ARGS: -v --log-junit ./phpunit/junit.xml
+        run: |-
+          make test-phpunit
+
+      - uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: behat/**/*.xml
+
+  behat:
+    name: Behat
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    strategy:
+      fail-fast: false
+      matrix:
+        tags:
+          - "@gha1"
+          - "@gha2"
+          - "@gha3"
+          - "@gha4"
+          - "@gha5"
+          - "@gha6"
+          - "@gha7"
+          - "@gha8"
+          - "@gha9"
+          - "~@gha1&&~@gha2&&~@gha3&&~@gha4&&~@gha5&&~@gha6&&~@gha7&&~@gha8&&~@gha9"
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-dev
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          assets: true
+          ssl_keys: true
+          db: true
+          redis: true
+          rabbitmq: true
+          selenium: true
+
+      - run: |-
+          make tfp-db-init
+
+      - id: test-behat
+        env:
+          BEHAT_ARGS: --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
+        run: |-
+          make test-behat
+
+      - uses: actions/upload-artifact@v2
+        if: steps.test-behat.outcome != 'success'
+        with:
+          name: behat-screenshots
+          path: var/behat
+
+      - uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: behat/**/*.xml
+
+
+  docker-build-push-gcr:
+    name: Build docker production & push to GCR
+    runs-on: ubuntu-latest
+    needs: [ lint, phpunit, behat ]
+    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+          project_id: ${{ secrets.GCP_REGISTRY_PROJECT_ID }}
+          export_default_credentials: true
+
+      - run: |-
+          gcloud auth --quiet configure-docker
+
+          docker pull $IMAGE:latest || true
+          docker build --cache-from=$IMAGE:latest -t $IMAGE:$TAG .
+
+          docker push $IMAGE:$TAG
+          gcloud container images add-tag $IMAGE:$TAG $IMAGE:latest --quiet
+
+      - run: |-
+          limitDate=$(date "+%Y-%m-%d %H:%M:%S" -d "30 days ago")
+
+          digests=$(gcloud container images list-tags $IMAGE \
+          --filter="timestamp.datetime < '$limitDate'" \
+          --format="get(digest)")
+
+          for digest in $digests; do
+          (
+            gcloud container images delete --quiet --force-delete-tags $IMAGE@$digest
+          )
+          done

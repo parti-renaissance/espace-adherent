@@ -1,0 +1,158 @@
+name: Build and cache Docker dev image
+description: Build Docker dev image and cache it on GCR
+
+inputs:
+  service_account_key:
+    description: The GCP Service Account Key to push & pull on Google Cloud Registry
+    required: true
+  project_id:
+    description: The GCP Project ID hosting the Google Cloud Registry
+    required: true
+  save_cache:
+    description: Set to 'true' to push the build image
+    required: false
+    default: 'false'
+  ssl_keys:
+    required: false
+    description: Set to 'true' to generate private & public ssl keys
+    default: 'false'
+  assets:
+    required: false
+    description: Set to 'true' to build assets
+    default: 'false'
+  db:
+    required: false
+    description: Set to 'true' to prepare db container
+    default: 'false'
+  redis:
+    required: false
+    description: Set to 'true' to prepare redis container
+    default: 'false'
+  rabbitmq:
+    required: false
+    description: Set to 'true' to prepare rabbitmq container
+    default: 'false'
+  selenium:
+    required: false
+    description: Set to 'true' to prepare selenium container
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+
+    - name: Generate hash of docker dev environment
+      shell: bash
+      id: docker-dev
+      run: |-
+        test -e docker-dev.md5 || find docker/dev -type f -exec md5sum {} \; | sort -k 2 > docker-dev.md5
+
+        TAG=dev-$(md5sum docker-dev.md5 | cut -f1 -d" ")
+
+        sed -i s/'${DOCKER_DEV_TAG}'/$TAG/ docker-compose.ci.yml
+
+        echo ::set-output name=tag::$TAG
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ inputs.service_account_key }}
+        project_id: ${{ inputs.project_id }}
+        export_default_credentials: true
+
+    - name: Register gcloud as a Docker credential helper
+      shell: bash
+      run: |-
+        gcloud auth configure-docker --quiet
+
+    - name: Pull images from cache
+      shell: bash
+      env:
+        TAG: ${{ steps.docker-dev.outputs.tag }}
+      run: |-
+        docker pull $IMAGE:dev || true
+        docker pull $IMAGE:$TAG || true
+
+    - name: Build docker image
+      shell: bash
+      run: |-
+        $DOCKER_COMPOSE build app
+
+    - name: Start app container
+      shell: bash
+      run: |-
+        $DOCKER_COMPOSE up --detach --no-deps app
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v2
+      with:
+        path: ./.cache/composer
+        key: ${{ runner.os }}-composer-cache-${{ env.CACHE_KEY }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-cache-${{ env.CACHE_KEY }}-
+
+    - name: Cache Yarn dependencies
+      uses: actions/cache@v2
+      with:
+        path: ./.cache/yarn
+        key: ${{ runner.os }}-yarn-cache-${{ env.CACHE_KEY }}-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-cache-${{ env.CACHE_KEY }}-
+
+
+    - name: Composer install
+      shell: bash
+      run: |-
+        make vendor
+
+    - name: Yarn Install
+      shell: bash
+      run: |-
+        make node_modules
+
+    - name: Push image to cache
+      shell: bash
+      env:
+        TAG: ${{ steps.docker-dev.outputs.tag }}
+      if: ${{ inputs.save_cache == 'true' }}
+      run: |-
+        docker push $IMAGE:$TAG
+        gcloud container images add-tag $IMAGE:$TAG $IMAGE:dev --quiet
+
+    - name: Create private & public key
+      shell: bash
+      if: ${{ inputs.ssl_keys == 'true' }}
+      run: |-
+        make var/public.key
+        make perm
+
+    - name: Build assets
+      shell: bash
+      if: ${{ inputs.assets == 'true' }}
+      run: |-
+        make assets-prod
+
+    - name: Prepare DB
+      shell: bash
+      if: ${{ inputs.db == 'true' }}
+      run: |-
+        make up-db
+
+    - name: Prepare Redis container
+      shell: bash
+      if: ${{ inputs.redis == 'true' }}
+      run: |-
+        make up-redis
+
+    - name: Prepare RabbitMQ container
+      shell: bash
+      if: ${{ inputs.rabbitmq == 'true' }}
+      run: |-
+        make up-rabbitmq
+        make tfp-rabbitmq
+
+    - name: Prepare Selenium container
+      shell: bash
+      if: ${{ inputs.selenium == 'true' }}
+      run: |-
+        make up-selenium
+        $DOCKER_COMPOSE ps
