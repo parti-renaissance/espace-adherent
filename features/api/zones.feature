@@ -1,4 +1,5 @@
 @api
+@group10
 Feature:
   In order to see zones
   As a non logged-in user

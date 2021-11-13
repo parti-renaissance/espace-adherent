@@ -26,6 +26,7 @@
 /.docker-dev.md5
 /behat.yml
 /docker-dev.lock
+docker-dev.md5
 node_modules
 /.env.local
 /.env.local.php

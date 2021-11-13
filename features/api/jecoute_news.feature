@@ -1,4 +1,6 @@
 @apiJemengage
+@api
+@group14
 Feature:
   In order to get all news
   With a valid oauth token

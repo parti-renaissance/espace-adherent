@@ -1,4 +1,5 @@
 @api
+@group09
 Feature:
   In order to see event categories
   As a logged-in user

@@ -1,4 +1,5 @@
 @api
+@group04
 Feature:
   In order to manage email templates
   As client software developer

@@ -1,4 +1,5 @@
 @api
+@group12
 Feature:
   In order to get events count in the
   As a client passing a referent email

@@ -1,4 +1,5 @@
 @committeeVote
+@group01
 Feature:
   As an adherent I should be able to vote/unvote in followed committees
 

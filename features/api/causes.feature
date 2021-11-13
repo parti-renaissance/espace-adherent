@@ -1,4 +1,6 @@
 @apiCoalitions
+@api
+@group15
 Feature:
   In order to see causes
   As a non logged-in user

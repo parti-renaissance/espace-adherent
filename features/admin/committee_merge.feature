@@ -1,4 +1,5 @@
 @admin
+@group01
 Feature: Merge committees from admin panel
 
   Background:

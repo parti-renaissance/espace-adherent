@@ -1,4 +1,6 @@
 @apiJemengage
+@api
+@group10
 Feature:
   In order to see teams
   As a logged-in user

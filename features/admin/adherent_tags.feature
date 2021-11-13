@@ -1,4 +1,5 @@
 @admin
+@group01
 Feature: Manage adherent tags from admin panel
 
   Background:

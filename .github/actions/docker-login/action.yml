@@ -1,0 +1,13 @@
+name: docker login
+description: Authenticate with docker on registry
+
+runs:
+  using: composite
+  steps:
+    - uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ env.REGISTRY_SERVICE_ACCOUNT_KEY }}
+
+    - shell: bash
+      run: |-
+        gcloud auth --quiet configure-docker $REGISTRY_HOST
