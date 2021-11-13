@@ -1,4 +1,5 @@
 @api
+@group12
 Feature:
   In order to see quick actions
   As a user

@@ -155,7 +155,11 @@ workflows:
     version: 2
     test_deploy:
         jobs:
-            - build
+            - build:
+                filters:
+                    branches:
+                        only:
+                            - master
 
             - phpunit:
                 requires:

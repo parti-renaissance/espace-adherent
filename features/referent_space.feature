@@ -1,3 +1,4 @@
+@group06
 Feature:
   As a referent
   In order to see adherents, committees of my managed area
