@@ -1,4 +1,6 @@
 @apiJemengage
+@api
+@group13
 Feature:
   In order to see PAP campaigns
   As a non logged-in user

@@ -1,4 +1,6 @@
 @apiJemengage
+@api
+@group09
 Feature:
   In order to track device informations
   As a logged-in device

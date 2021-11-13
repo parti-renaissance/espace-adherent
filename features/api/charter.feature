@@ -1,4 +1,6 @@
 @apiJemengage
+@api
+@group05
 Feature:
   As a logged-in user
   I should be able to access my informations

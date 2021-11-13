@@ -1,3 +1,4 @@
+@group03
 Feature:
   As a candidate
   I should be able to access my candidate space and see concerned information

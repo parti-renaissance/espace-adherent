@@ -1,3 +1,4 @@
+@group04
 Feature:
   As deputy
   I can send messages to the adherents, see committees and events of my district

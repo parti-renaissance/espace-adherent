@@ -1,5 +1,6 @@
 @municipalSpace
 @javascript
+@group09
 Feature:
   As a municipal chief
   In order to see application request of my managed area

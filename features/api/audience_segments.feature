@@ -1,4 +1,5 @@
 @api
+@group10
 Feature:
   In order to see audience segments
   I should be able to access API of audience segments
