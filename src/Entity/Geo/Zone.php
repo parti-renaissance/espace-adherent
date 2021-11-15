@@ -98,6 +98,7 @@ class Zone implements GeoInterface
      *     "zone_read",
      *     "scopes",
      *     "scope",
+     *     "jecoute_news_read_dc",
      *     "audience_read",
      *     "audience_segment_read"
      * })
