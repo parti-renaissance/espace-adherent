@@ -24,6 +24,7 @@ trait EntityPersonNameTrait
      *     "event_read",
      *     "event_list_read",
      *     "adherent_autocomplete",
+     *     "phoning_campaign_history_read_list",
      * })
      *
      * @JMS\Groups({"adherent_change_diff"})
@@ -46,6 +47,7 @@ trait EntityPersonNameTrait
      *     "event_read",
      *     "event_list_read",
      *     "adherent_autocomplete",
+     *     "phoning_campaign_history_read_list"
      * })
      *
      * @JMS\Groups({"adherent_change_diff"})

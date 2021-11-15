@@ -2,7 +2,12 @@
 
 namespace App\Entity\Phoning;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\PhoningCampaignAdherentFilter;
+use App\Api\Filter\PhoningCampaignCallerFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Jecoute\DataSurvey;
@@ -27,6 +32,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"phoning_campaign_history_read"},
  *         },
  *         "denormalization_context": {"groups": {"phoning_campaign_history_write"}},
+ *         "order": {"beginAt": "DESC"},
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/phoning_campaign_histories",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "normalization_context": {
+ *                 "groups": {"phoning_campaign_history_read_list"}
+ *             },
+ *         },
  *     },
  *     itemOperations={
  *         "put": {
@@ -44,6 +59,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "campaign.title": "partial",
+ *     "status": "exact",
+ * })
+ * @ApiFilter(PhoningCampaignCallerFilter::class)
+ * @ApiFilter(PhoningCampaignAdherentFilter::class)
+ * @ApiFilter(DateFilter::class, properties={"beginAt"})
  */
 class CampaignHistory implements DataSurveyAwareInterface
 {
@@ -55,6 +78,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Groups({"phoning_campaign_history_read_list"})
      */
     private $caller;
 
@@ -64,7 +89,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
-     * @Groups({"phoning_campaign_call_read"})
+     * @Groups({"phoning_campaign_call_read", "phoning_campaign_history_read_list"})
      */
     private $adherent;
 
@@ -73,6 +98,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign", inversedBy="campaignHistories")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"phoning_campaign_history_read_list"})
      */
     private $campaign;
 
@@ -87,7 +114,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     strict=true
      * )
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     private $type;
 
@@ -103,7 +130,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     strict=true
      * )
      *
-     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read", "phoning_campaign_history_read_list"})
      */
     private $status;
 
@@ -178,6 +205,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\NotBlank
      * @Assert\DateTime
+     *
+     * @Groups({"phoning_campaign_history_read_list"})
      */
     private $beginAt;
 
@@ -191,6 +220,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     "value === null or value > this.getBeginAt()",
      *     message="phoning.campaign_history.finish_at.invalid"
      * )
+     *
+     * @Groups({"phoning_campaign_history_read_list"})
      */
     private $finishAt;
 
@@ -201,6 +232,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\Valid
+     *
+     * @Groups({"phoning_campaign_history_read_list"})
      */
     private $dataSurvey;
 

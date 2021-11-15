@@ -32,7 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     shortName="PhoningCampaign",
  *     attributes={
  *         "normalization_context": {
- *             "iri": true,
  *             "groups": {"phoning_campaign_read"},
  *         },
  *         "denormalization_context": {
@@ -114,7 +113,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write", "phoning_campaign_history_read_list"})
      */
     private $title;
 
