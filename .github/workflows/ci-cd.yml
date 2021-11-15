@@ -107,8 +107,7 @@ jobs:
           rabbitmq: true
           selenium: true
 
-      - run: |-
-          make tfp-db-init
+      - run: make tfp-cc tfp-db-init
 
       - id: test-behat
         env:
