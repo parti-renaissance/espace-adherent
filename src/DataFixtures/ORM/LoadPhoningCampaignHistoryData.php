@@ -70,7 +70,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::FAILED,
             null,
-            new \DateTime('-5 minutes')
+            new \DateTime('2021-07-14')
         );
         $phoningDataSurvey6 = $this->createPhoningCampaignHistory(
             $adherent3,
