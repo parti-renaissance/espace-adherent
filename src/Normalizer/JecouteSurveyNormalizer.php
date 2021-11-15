@@ -43,7 +43,7 @@ class JecouteSurveyNormalizer implements NormalizerInterface, NormalizerAwareInt
     {
         return !isset($context[static::ALREADY_CALLED])
             && $data instanceof Survey
-            && !\in_array('phoning_campaign_read', $context['groups'] ?? [])
+            && 0 !== \count(array_intersect(['pap_campaign_read', 'survey_list'], $context['groups'] ?? []))
         ;
     }
 }

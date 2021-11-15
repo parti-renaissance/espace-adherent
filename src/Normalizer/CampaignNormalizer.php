@@ -25,14 +25,28 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         $campaign['nb_calls'] = $object->getCampaignHistoriesCount();
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
 
-        if ((isset($context['item_operation_name']) && \in_array($context['item_operation_name'], ['get', 'put']))
-            || (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name'])
-        ) {
-            $campaign['nb_un_join'] = $object->getCampaignHistoriesToUnjoin()->count();
-            $campaign['nb_un_subscribe'] = $object->getCampaignHistoriesToUnsubscribe()->count();
-            $campaign['to_remind'] = $object->getCampaignHistoriesToRemind()->count();
-            $campaign['not_respond'] = $object->getCampaignHistoriesNotRespond()->count();
-            $campaign['nb_failed'] = $object->getCampaignHistoriesFailed()->count();
+        $stats = [
+            'nb_un_join' => 0,
+            'nb_un_subscribe' => 0,
+            'to_remind' => 0,
+            'not_respond' => 0,
+            'nb_failed' => 0,
+        ];
+
+        if (isset($context['item_operation_name']) && \in_array($context['item_operation_name'], ['get', 'put'])) {
+            $stats = [
+                'nb_un_join' => $object->getCampaignHistoriesToUnjoin()->count(),
+                'nb_un_subscribe' => $object->getCampaignHistoriesToUnsubscribe()->count(),
+                'to_remind' => $object->getCampaignHistoriesToRemind()->count(),
+                'not_respond' => $object->getCampaignHistoriesNotRespond()->count(),
+                'nb_failed' => $object->getCampaignHistoriesFailed()->count(),
+            ];
+
+            $campaign = array_merge($campaign, $stats);
+        }
+
+        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
+            $campaign = array_merge($campaign, $stats);
         }
 
         return $campaign;

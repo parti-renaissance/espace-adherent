@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -405,7 +404,6 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
 
     /**
      * @Groups({"phoning_campaign_read", "phoning_campaign_list"})
-     * @SerializedName("creator")
      */
     public function getCreator(): string
     {

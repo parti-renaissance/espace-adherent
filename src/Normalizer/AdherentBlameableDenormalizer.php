@@ -15,7 +15,7 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
 
     private const ALREADY_CALLED = 'ADHERENT_BLAMEABLE_DENORMALIZER_ALREADY_CALLED';
 
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
