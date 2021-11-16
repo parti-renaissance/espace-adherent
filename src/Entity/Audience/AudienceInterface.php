@@ -27,4 +27,6 @@ interface AudienceInterface extends ZoneableWithScopeEntity
     public function getHasSmsSubscription(): ?bool;
 
     public function getHasEmailSubscription(): ?bool;
+
+    public function getRoles(): array;
 }

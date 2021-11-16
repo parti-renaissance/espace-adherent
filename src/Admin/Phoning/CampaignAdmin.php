@@ -54,6 +54,12 @@ class CampaignAdmin extends AbstractAdmin
                     'label' => 'Objectif individuel',
                     'help' => 'Cet objectif sera affiché de manière identique à chaque appelant. L’objectif de la campagne sera calculé en multipliant l’objectif individuel par le nombre d’appelants.',
                 ])
+                ->add('survey', EntityType::class, [
+                    'label' => 'Questionnaire national',
+                    'placeholder' => '--',
+                    'class' => NationalSurvey::class,
+                    'choice_label' => 'name',
+                ])
         ;
 
         if (!$this->isPermanent()) {
@@ -98,17 +104,6 @@ class CampaignAdmin extends AbstractAdmin
                 'admin_code' => AudienceAdmin::SERVICE_CODE,
             ]);
         }
-
-        $formMapper
-            ->with('Questionnaire')
-                ->add('survey', EntityType::class, [
-                    'label' => 'Questionnaire national',
-                    'placeholder' => '--',
-                    'class' => NationalSurvey::class,
-                    'choice_label' => 'name',
-                ])
-            ->end()
-        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)
