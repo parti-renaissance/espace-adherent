@@ -3,17 +3,17 @@
 namespace App\Normalizer;
 
 use App\Entity\Adherent;
-use App\Entity\Team\Team;
+use App\Entity\EntityAdherentBlameableInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class TeamDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
+class AdherentBlameableDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'TEAM_DENORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'ADHERENT_BLAMEABLE_DENORMALIZER_ALREADY_CALLED';
 
     private Security $security;
 
@@ -27,7 +27,6 @@ final class TeamDenormalizer implements DenormalizerInterface, DenormalizerAware
         $context[self::ALREADY_CALLED] = true;
 
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
-
         if (!$data->getId()) {
             $data->setCreatedByAdherent($this->security->getUser());
         }
@@ -38,14 +37,11 @@ final class TeamDenormalizer implements DenormalizerInterface, DenormalizerAware
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
+        // Make sure we're not called twice
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
 
-        return
-            is_a($type, Team::class, true)
-            && $this->security->getUser() instanceof Adherent
-            && \in_array('team_write', $context['groups'] ?? [])
-        ;
+        return is_a($type, EntityAdherentBlameableInterface::class, true) && $this->security->getUser() instanceof Adherent;
     }
 }

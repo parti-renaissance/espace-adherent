@@ -23,7 +23,8 @@ trait EntityTimestampableTrait
      *     "email_template_read",
      *     "email_template_list_read",
      *     "riposte_list_read",
-     *     "riposte_read"
+     *     "riposte_read",
+     *     "phoning_campaign_read",
      * })
      * @Gedmo\Timestampable(on="create")
      */
@@ -33,6 +34,8 @@ trait EntityTimestampableTrait
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
+     *
+     * @SymfonySerializer\Groups({"phoning_campaign_read"})
      *
      * @Gedmo\Timestampable(on="update")
      */

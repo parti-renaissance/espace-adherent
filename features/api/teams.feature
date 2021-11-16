@@ -26,7 +26,7 @@ Feature:
       | PUT    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager                                  |
       | DELETE | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager |
 
-  Scenario: As a logged-in user with phoning team manager right I can get only teams
+  Scenario: As a logged-in user with phoning team manager right I can get teams
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/teams?scope=phoning_national_manager"
     Then the response status code should be 200
@@ -383,6 +383,31 @@ Feature:
           "last_name": "PARIS I",
           "registered_at": "2017-06-01T09:26:31+02:00",
           "postal_code": "75008"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC referent I can get the team list filtered by the name
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams?name=Deuxi&scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+   """
+    {
+      "metadata": {
+        "total_items": 1,
+        "items_per_page": 2,
+        "count": 1,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "name": "Deuxième équipe de phoning",
+          "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+          "members_count": 4,
+          "creator": "Admin"
         }
       ]
     }

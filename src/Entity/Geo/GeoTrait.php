@@ -39,7 +39,8 @@ trait GeoTrait
      *     "scope",
      *     "jecoute_news_read_dc",
      *     "audience_read",
-     *     "audience_segment_read"
+     *     "audience_segment_read",
+     *     "phoning_campaign_read"
      * })
      */
     private $code;
@@ -58,7 +59,8 @@ trait GeoTrait
      *     "scope",
      *     "jecoute_news_read_dc",
      *     "audience_read",
-     *     "audience_segment_read"
+     *     "audience_segment_read",
+     *     "phoning_campaign_read"
      * })
      */
     private $name;

@@ -2,7 +2,9 @@
 
 namespace App\Entity\Team;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -55,6 +57,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     }
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ * })
+ *
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="team_name_unique", columns={"name"}),
@@ -85,7 +92,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      *     minMessage="team.name.min_length",
      *     maxMessage="team.name.max_length"
      * )
-     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
+     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write", "phoning_campaign_read", "phoning_campaign_list"})
      */
     private $name;
 
@@ -154,7 +161,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     }
 
     /**
-     * @SymfonySerializer\Groups({"team_list_read"})
+     * @SymfonySerializer\Groups({"team_list_read", "phoning_campaign_read", "phoning_campaign_list"})
      * @SymfonySerializer\SerializedName("members_count")
      */
     public function getMembersCount(): int

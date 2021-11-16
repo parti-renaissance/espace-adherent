@@ -9,6 +9,7 @@ Feature:
       | LoadJecouteSurveyData |
       | LoadClientData        |
       | LoadOAuthTokenData    |
+      | LoadScopeData         |
 
   Scenario: As a non logged-in user I cannot get the surveys
     When I send a "GET" request to "/api/jecoute/survey"
@@ -760,5 +761,90 @@ Feature:
     """
     {
       "status": "ok"
+    }
+    """
+
+  Scenario: As a DC referent I can get the survey list filtered by the name
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/surveys?name=national&scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 2,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "id":1,
+          "uuid":"@uuid@",
+          "type": "national",
+          "questions":[
+            {
+              "id":6,
+              "type":"simple_field",
+              "content":"Une première question du 1er questionnaire national ?",
+              "choices":[
+
+              ]
+            },
+            {
+              "id":7,
+              "type":"multiple_choice",
+              "content":"Une deuxième question du 1er questionnaire national ?",
+              "choices":[
+                {
+                  "id":5,
+                  "content":"Réponse nationale A"
+                },
+                {
+                  "id":6,
+                  "content":"Réponse nationale B"
+                },
+                {
+                  "id":7,
+                  "content":"Réponse nationale C"
+                },
+                {
+                  "id":8,
+                  "content":"Réponse nationale D"
+                }
+              ]
+            }
+          ],
+          "name":"Questionnaire national numéro 1"
+        },
+        {
+          "id":2,
+          "uuid":"@uuid@",
+          "type":"national",
+          "questions":[
+            {
+              "id":8,
+              "type":"unique_choice",
+              "content":"La question du 2eme questionnaire national ?",
+              "choices":[
+                {
+                  "id":9,
+                  "content":"Réponse nationale E"
+                },
+                {
+                  "id":10,
+                  "content":"Réponse nationale F"
+                },
+                {
+                  "id":11,
+                  "content":"Réponse nationale G"
+                }
+              ]
+            }
+          ],
+          "name":"Le deuxième questionnaire national"
+        }
+      ]
     }
     """

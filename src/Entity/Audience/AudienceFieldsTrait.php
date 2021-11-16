@@ -16,7 +16,7 @@ trait AudienceFieldsTrait
      *
      * @Assert\Length(max=50)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $firstName;
 
@@ -27,7 +27,7 @@ trait AudienceFieldsTrait
      *
      * @Assert\Length(max=50)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $lastName;
 
@@ -42,7 +42,7 @@ trait AudienceFieldsTrait
      *     strict=true
      * )
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $gender;
 
@@ -51,7 +51,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $ageMin;
 
@@ -60,7 +60,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $ageMax;
 
@@ -69,7 +69,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $registeredSince;
 
@@ -78,7 +78,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $registeredUntil;
 
@@ -87,7 +87,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $isCommitteeMember;
 
@@ -96,7 +96,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $isCertified;
 
@@ -105,7 +105,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $hasEmailSubscription;
 
@@ -114,7 +114,7 @@ trait AudienceFieldsTrait
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"audience_read", "audience_write"})
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
     private $hasSmsSubscription;
 
