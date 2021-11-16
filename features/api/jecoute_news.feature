@@ -244,7 +244,8 @@ Feature:
                     "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
-                "published": true
+                "published": true,
+                "creator": "Anonyme"
             },
             {
                 "uuid": "b2b8e6a3-f5a9-4b34-a761-37438c3c3602",
@@ -259,7 +260,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
-                "published": true
+                "published": true,
+                "creator": "Referent Referent"
             },
             {
                 "uuid": "6c70f8e8-6bce-4376-8b9e-3ce342880673",
@@ -274,7 +276,8 @@ Feature:
                     "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
-                "published": false
+                "published": false,
+                "creator": "Bob Senateur (59)"
             },
             {
                 "uuid": "560bab7a-d624-47d6-bf5e-3864c2406daf",
@@ -289,7 +292,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
-                "published": true
+                "published": true,
+                "creator": "Anonyme"
             }
         ]
     }
@@ -320,7 +324,8 @@ Feature:
                 "global": false,
                 "zone": null,
                 "notification": true,
-                "published": false
+                "published": false,
+                "creator": "Anonyme"
             },
             {
                 "uuid": "560bab7a-d624-47d6-bf5e-3864c2406daf",
@@ -336,7 +341,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
-                "published": true
+                "published": true,
+                "creator": "Anonyme"
             }
         ]
     }
@@ -452,7 +458,8 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "global": true,
         "notification": true,
-        "published": true
+        "published": true,
+        "creator": "Député PARIS I"
     }
     """
     And I should have 1 notification "NewsCreatedNotification" with data:
@@ -521,7 +528,8 @@ Feature:
       },
       "created_at": "@string@.isDateTime()",
       "notification": false,
-      "published": false
+      "published": false,
+      "creator": "Bob Senateur (59)"
     }
     """
 
