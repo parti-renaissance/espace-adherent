@@ -6,8 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Api\Filter\PhoningCampaignAdherentFilter;
-use App\Api\Filter\PhoningCampaignCallerFilter;
+use App\Api\Filter\AdherentIdentityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Jecoute\DataSurvey;
@@ -64,8 +63,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "campaign.title": "partial",
  *     "status": "exact",
  * })
- * @ApiFilter(PhoningCampaignCallerFilter::class)
- * @ApiFilter(PhoningCampaignAdherentFilter::class)
+ * @ApiFilter(AdherentIdentityFilter::class, properties={"adherent", "caller"})
  * @ApiFilter(DateFilter::class, properties={"beginAt"})
  */
 class CampaignHistory implements DataSurveyAwareInterface

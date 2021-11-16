@@ -7,9 +7,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Phoning\CampaignHistory;
 use Doctrine\ORM\QueryBuilder;
 
-class PhoningCampaignCallerFilter extends AbstractContextAwareFilter
+class AdherentIdentityFilter extends AbstractContextAwareFilter
 {
-    private const PROPERTY_NAME = 'caller';
+    private const PROPERTY_NAMES = ['adherent', 'caller'];
     private const OPERATION_NAMES = ['get'];
 
     protected function filterProperty(
@@ -22,7 +22,7 @@ class PhoningCampaignCallerFilter extends AbstractContextAwareFilter
     ) {
         if (
             CampaignHistory::class !== $resourceClass
-            || self::PROPERTY_NAME !== $property
+            || !\in_array($property, self::PROPERTY_NAMES, true)
             || empty($value)
             || !\in_array($operationName, self::OPERATION_NAMES, true)
         ) {
@@ -30,21 +30,30 @@ class PhoningCampaignCallerFilter extends AbstractContextAwareFilter
         }
 
         $alias = $queryBuilder->getRootAliases()[0];
+        $parameterName = $queryNameGenerator->generateParameterName($property);
+
         $queryBuilder
-            ->leftJoin($alias.'.caller', 'caller')
-            ->andWhere('CONCAT(LOWER(caller.firstName), \' \', LOWER(caller.lastName)) LIKE :caller')
-            ->setParameter('caller', '%'.strtolower($value).'%')
+            ->leftJoin($alias.".$property", $property)
+            ->andWhere(sprintf('CONCAT(LOWER(%1$s.firstName), \' \', LOWER(%1$s.lastName)) LIKE :%2$s', $property, $parameterName))
+            ->setParameter($parameterName, '%'.strtolower($value).'%')
         ;
     }
 
     public function getDescription(string $resourceClass): array
     {
-        return [
-            self::PROPERTY_NAME => [
-                'property' => null,
+        if (!$this->properties) {
+            return [];
+        }
+
+        $description = [];
+        foreach ($this->properties as $property => $strategy) {
+            $description[$property] = [
+                'property' => $property,
                 'type' => 'string',
                 'required' => false,
-            ],
-        ];
+            ];
+        }
+
+        return $description;
     }
 }
