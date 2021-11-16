@@ -11170,16 +11170,16 @@
         },
         {
             "name": "sonata-project/exporter",
-            "version": "2.7.0",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "66a95588149bfe58bb6b854e0022dbfe45c8c025"
+                "reference": "184e29ff0e60370268702f27d6078f22fc61bcc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/66a95588149bfe58bb6b854e0022dbfe45c8c025",
-                "reference": "66a95588149bfe58bb6b854e0022dbfe45c8c025",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/184e29ff0e60370268702f27d6078f22fc61bcc7",
+                "reference": "184e29ff0e60370268702f27d6078f22fc61bcc7",
                 "shasum": ""
             },
             "require": {
@@ -11189,19 +11189,28 @@
                 "doctrine/mongodb-odm": "<2.0"
             },
             "require-dev": {
+                "doctrine/annotations": "^1.13",
                 "doctrine/dbal": "^2.5",
                 "doctrine/mongodb-odm": "^2.0",
                 "doctrine/orm": "^2.4.5",
                 "matthiasnoback/symfony-config-test": "^4.2",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.0",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12.84",
+                "phpstan/phpstan-phpunit": "^0.12.18",
+                "phpstan/phpstan-strict-rules": "^0.12.10",
+                "phpstan/phpstan-symfony": "^0.12.21",
                 "propel/propel1": "^1.6",
-                "symfony/config": "^4.4 || ^5.2",
-                "symfony/dependency-injection": "^4.4 || ^5.2",
-                "symfony/http-foundation": "^4.4 || ^5.2",
-                "symfony/http-kernel": "^4.4 || ^5.2",
-                "symfony/phpunit-bridge": "^5.2",
-                "symfony/property-access": "^4.4 || ^5.2",
-                "symfony/routing": "^4.4 || ^5.2"
+                "psalm/plugin-phpunit": "^0.16",
+                "psalm/plugin-symfony": "^2.0",
+                "symfony/config": "^4.4 || ^5.3",
+                "symfony/dependency-injection": "^4.4 || ^5.3",
+                "symfony/http-foundation": "^4.4 || ^5.3",
+                "symfony/http-kernel": "^4.4 || ^5.3",
+                "symfony/phpunit-bridge": "^5.3",
+                "symfony/property-access": "^4.4 || ^5.3",
+                "symfony/routing": "^4.4 || ^5.3",
+                "vimeo/psalm": "^4.9.2"
             },
             "suggest": {
                 "propel/propel1": "To export propel collections",
@@ -11244,7 +11253,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/exporter/issues",
-                "source": "https://github.com/sonata-project/exporter/tree/2.7.0"
+                "source": "https://github.com/sonata-project/exporter/tree/2.8.0"
             },
             "funding": [
                 {
@@ -11260,11 +11269,11 @@
                     "type": "github"
                 },
                 {
-                    "url": "https://github.com/wbloszyk",
+                    "url": "https://github.com/greg0ire",
                     "type": "github"
                 }
             ],
-            "time": "2021-06-27T13:47:08+00:00"
+            "time": "2021-09-21T12:50:49+00:00"
         },
         {
             "name": "spomky-labs/otphp",
