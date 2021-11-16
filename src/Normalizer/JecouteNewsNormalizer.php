@@ -34,6 +34,10 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         $news['title'] = $this->newsTitlePrefix->prefixTitle($object);
 
+        if (\in_array('jecoute_news_read_dc', $context['groups'] ?? [], true)) {
+            $news['creator'] = $object->getAuthorFullName();
+        }
+
         return $news;
     }
 
