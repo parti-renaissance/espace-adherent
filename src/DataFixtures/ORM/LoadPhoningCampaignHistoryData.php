@@ -37,47 +37,56 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $this->getReference('adherent-21'),
             $campaign1,
             CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-1 minutes')
         );
         $phoningDataSurvey2 = $this->createPhoningCampaignHistory(
             $adherent3,
             $this->getReference('adherent-23'),
             $campaign2,
             CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-2 minutes')
         );
         $phoningDataSurvey3 = $this->createPhoningCampaignHistory(
             $adherent3,
             $this->getReference('adherent-25'),
             $campaign1,
             CampaignHistoryStatusEnum::TO_UNJOIN,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-3 minutes')
         );
         $phoningDataSurvey4 = $this->createPhoningCampaignHistory(
             $deputy_75_1,
             $this->getReference('adherent-27'),
             $campaign2,
             CampaignHistoryStatusEnum::TO_UNJOIN,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-4 minutes')
         );
         $phoningDataSurvey5 = $this->createPhoningCampaignHistory(
             $adherent3,
             $this->getReference('adherent-29'),
             $campaign1,
-            CampaignHistoryStatusEnum::FAILED
+            CampaignHistoryStatusEnum::FAILED,
+            null,
+            new \DateTime('2021-07-14')
         );
         $phoningDataSurvey6 = $this->createPhoningCampaignHistory(
             $adherent3,
             $this->getReference('adherent-33'),
             $campaign2,
-            CampaignHistoryStatusEnum::FAILED
+            CampaignHistoryStatusEnum::FAILED,
+            null,
+            new \DateTime('-6 minutes')
         );
         $phoningDataSurvey7 = $this->createPhoningCampaignHistory(
             $adherent12,
             $this->getReference('adherent-35'),
             $campaign1,
             CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-7 minutes')
         );
         // should be returned for campaign1
         $phoningDataSurvey8 = $this->createPhoningCampaignHistory(
@@ -85,7 +94,8 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $this->getReference('adherent-37'),
             $campaign2,
             CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-8 minutes')
         );
         $phoningDataSurvey9 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -108,7 +118,9 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $adherent12,
             $this->getReference('adherent-41'),
             $campaign1,
-            CampaignHistoryStatusEnum::NOT_RESPOND
+            CampaignHistoryStatusEnum::NOT_RESPOND,
+            null,
+            new \DateTime('-9 minutes')
         );
         $phoningDataSurvey10a = $this->createPhoningCampaignHistory(
             $adherent12,
@@ -139,6 +151,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::INTERRUPTED,
             $nationalSurvey1,
+            new \DateTime('-10 minutes')
         );
         $phoningDataSurvey13 = $this->createPhoningCampaignHistory(
             $adherent3,
@@ -146,13 +159,15 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
             $campaign1,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
+            new \DateTime('-11 minutes')
         );
         $phoningDataSurvey14 = $this->createPhoningCampaignHistory(
             $adherent12,
             $this->getReference('adherent-49'),
             $campaign2,
             CampaignHistoryStatusEnum::COMPLETED,
-            $nationalSurvey1
+            $nationalSurvey1,
+            new \DateTime('-12 minutes')
         );
         // should be returned for campaign1
         $phoningDataSurvey15 = $this->createPhoningCampaignHistory(

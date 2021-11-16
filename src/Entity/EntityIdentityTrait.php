@@ -72,6 +72,7 @@ trait EntityIdentityTrait
      *     "pap_address_list",
      *     "pap_address_read",
      *     "pap_address_voter_list",
+     *     "phoning_campaign_history_read_list",
      * })
      *
      * @ApiProperty(

@@ -1,4 +1,4 @@
-@api @debug
+@api
 Feature:
   In order to see phoning campaigns
   As a non logged-in user
@@ -42,6 +42,7 @@ Feature:
     Then the response status code should be 403
     Examples:
       | method | url                                                                                           |
+      | GET    | /api/v3/phoning_campaign_histories?scope=phoning_national_manager                             |
       | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                      |
       | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
       | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
@@ -72,14 +73,14 @@ Feature:
             "caller": false
           },
           {
-            "firstName": "Pierre",
+            "firstName": "Député",
             "nb_calls": "1",
             "nb_surveys": "1",
             "position": 2,
             "caller": false
           },
           {
-            "firstName": "Député",
+            "firstName": "Pierre",
             "nb_calls": "1",
             "nb_surveys": "1",
             "position": 3,
@@ -172,14 +173,14 @@ Feature:
             "caller": true
           },
           {
-            "firstName": "Pierre",
+            "firstName": "Député",
             "nb_calls": "1",
             "nb_surveys": "1",
             "position": 2,
             "caller": false
           },
           {
-            "firstName": "Député",
+            "firstName": "Pierre",
             "nb_calls": "1",
             "nb_surveys": "1",
             "position": 3,
@@ -955,3 +956,373 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "DELETE" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager"
     Then the response status code should be 204
+
+  Scenario: As a DC referent I can get the list of phoning campaign histories
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 19,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 10
+      },
+      "items": [
+        {
+          "caller": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+          },
+          "adherent": {
+            "uuid": "@uuid@",
+            "first_name": "Adherent 39",
+            "last_name": "Fa39ke"
+          },
+          "campaign": {
+            "title": "Campagne pour les hommes",
+            "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+          },
+          "type": null,
+          "status": "send",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": null,
+          "data_survey": null,
+          "uuid": "@uuid@"
+        },
+        {
+          "caller": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+          },
+          "adherent": {
+            "uuid": "@uuid@",
+            "first_name": "Adrien",
+            "last_name": "Petit"
+          },
+          "campaign": {
+            "title": "Campagne pour les hommes",
+            "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+          },
+          "type": null,
+          "status": "to-unsubscribe",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": null,
+          "data_survey": {
+            "survey": {
+              "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+              "name": "Questionnaire national numéro 1"
+            },
+            "uuid": "@uuid@"
+          },
+          "uuid": "@uuid@"
+        }
+      ]
+    }
+    """
+
+ Scenario: As a DC referent I can get the list of phoning campaign histories filtered by campaign
+   Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+   When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes"
+   Then the response status code should be 200
+   And the JSON should be equal to:
+   """
+   {
+     "metadata": {
+       "total_items": 12,
+       "items_per_page": 2,
+       "count": 2,
+       "current_page": 1,
+       "last_page": 6
+     },
+     "items": [
+       {
+         "caller": {
+           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+           "first_name": "Jacques",
+           "last_name": "Picard"
+         },
+         "adherent": {
+           "uuid": "@uuid@",
+           "first_name": "Adherent 39",
+           "last_name": "Fa39ke"
+         },
+         "campaign": {
+           "title": "Campagne pour les hommes",
+           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+         },
+         "type": null,
+         "status": "send",
+         "begin_at": "@string@.isDateTime()",
+         "finish_at": null,
+         "data_survey": null,
+         "uuid": "@uuid@"
+       },
+       {
+         "caller": {
+           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+           "first_name": "Jacques",
+           "last_name": "Picard"
+         },
+         "adherent": {
+           "uuid": "@uuid@",
+           "first_name": "Adrien",
+           "last_name": "Petit"
+         },
+         "campaign": {
+           "title": "Campagne pour les hommes",
+           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+         },
+         "type": null,
+         "status": "to-unsubscribe",
+         "begin_at": "@string@.isDateTime()",
+         "finish_at": null,
+         "data_survey": {
+           "survey": {
+             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+             "name": "Questionnaire national numéro 1"
+           },
+           "uuid": "@uuid@"
+         },
+         "uuid": "@uuid@"
+       }
+     ]
+   }
+   """
+
+  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by caller
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&caller=Pierre"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+   """
+   {
+     "metadata": {
+       "total_items": 7,
+       "items_per_page": 2,
+       "count": 2,
+       "current_page": 1,
+       "last_page": 4
+     },
+     "items": [
+       {
+         "caller": {
+           "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+           "first_name": "Pierre",
+           "last_name": "Kiroule"
+         },
+         "adherent": {
+           "uuid": "@uuid@",
+           "first_name": "Adherent 35",
+           "last_name": "Fa35ke"
+         },
+         "campaign": {
+           "title": "Campagne pour les hommes",
+           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+         },
+         "type": null,
+         "status": "interrupted-dont-remind",
+         "begin_at": "@string@.isDateTime()",
+         "finish_at": null,
+         "data_survey": {
+           "survey": {
+             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+             "name": "Questionnaire national numéro 1"
+           },
+           "uuid": "@uuid@"
+         },
+         "uuid": "@uuid@"
+       },
+       {
+         "caller": {
+           "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+           "first_name": "Pierre",
+           "last_name": "Kiroule"
+         },
+         "adherent": {
+           "uuid": "@uuid@",
+           "first_name": "Adherent 41",
+           "last_name": "Fa41ke"
+         },
+         "campaign": {
+           "title": "Campagne pour les hommes",
+           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+         },
+         "type": null,
+         "status": "not-respond",
+         "begin_at": "@string@.isDateTime()",
+         "finish_at": null,
+         "data_survey": null,
+         "uuid": "@uuid@"
+       }
+     ]
+   }
+   """
+
+  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by adherent
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&adherent=Adrien"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 1,
+        "items_per_page": 2,
+        "count": 1,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "caller": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+          },
+          "adherent": {
+            "uuid": "@uuid@",
+            "first_name": "Adrien",
+            "last_name": "Petit"
+          },
+          "campaign": {
+            "title": "Campagne pour les hommes",
+            "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+          },
+          "type": null,
+          "status": "to-unsubscribe",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": null,
+          "data_survey": {
+            "survey": {
+              "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+              "name": "Questionnaire national numéro 1"
+            },
+            "uuid": "@uuid@"
+          },
+          "uuid": "@uuid@"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by status
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&status=to-unsubscribe"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 2,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "caller": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+          },
+          "adherent": {
+            "uuid": "@uuid@",
+            "first_name": "Adrien",
+            "last_name": "Petit"
+          },
+          "campaign": {
+            "title": "Campagne pour les hommes",
+            "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+          },
+          "type": null,
+          "status": "to-unsubscribe",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": null,
+          "data_survey": {
+            "survey": {
+              "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+              "name": "Questionnaire national numéro 1"
+            },
+            "uuid": "@uuid@"
+          },
+          "uuid": "@uuid@"
+        },
+        {
+          "caller": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+          },
+          "adherent": {
+            "uuid": "@uuid@",
+            "first_name": "Étienne",
+            "last_name": "Petit"
+          },
+          "campaign": {
+            "title": "Campagne pour les femmes",
+            "uuid": "4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc"
+          },
+          "type": null,
+          "status": "to-unsubscribe",
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": null,
+          "data_survey": {
+            "survey": {
+              "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+              "name": "Questionnaire national numéro 1"
+            },
+            "uuid": "@uuid@"
+          },
+          "uuid": "@uuid@"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by begin date
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&beginAt[after]=2021-07-01&beginAt[before]=2021-07-31"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 1,
+        "items_per_page": 2,
+        "count": 1,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "caller": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+          },
+          "adherent": {
+            "uuid": "@uuid@",
+            "first_name": "Guillaume",
+            "last_name": "Richard"
+          },
+          "campaign": {
+            "title": "Campagne pour les hommes",
+            "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+          },
+          "type": null,
+          "status": "failed",
+          "begin_at": "2021-07-14T00:00:00+02:00",
+          "finish_at": null,
+          "data_survey": null,
+          "uuid": "@uuid@"
+        }
+      ]
+    }
+    """
