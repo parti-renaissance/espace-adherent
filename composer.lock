@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c35af31415a53c498c0bcc465b05ccc3",
+    "content-hash": "eface2a1aaea20a38d5a58bd8b378b19",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4105,22 +4105,22 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.37",
+            "version": "8.10.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "4113157949337384c41b77bc1d5c0d46c1c3201b"
+                "reference": "cd9b87dce1d285247be490b2b8429956f7a5e78b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/4113157949337384c41b77bc1d5c0d46c1c3201b",
-                "reference": "4113157949337384c41b77bc1d5c0d46c1c3201b",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/cd9b87dce1d285247be490b2b8429956f7a5e78b",
+                "reference": "cd9b87dce1d285247be490b2b8429956f7a5e78b",
                 "shasum": ""
             },
             "require": {
-                "giggsey/locale": "^1.7|^2.0",
-                "php": ">=5.3.2",
-                "symfony/polyfill-mbstring": "^1.17"
+                "ext-mbstring": "*",
+                "giggsey/locale": "^1.2",
+                "php": ">=5.3.2"
             },
             "require-dev": {
                 "pear/pear-core-minimal": "^1.9",
@@ -4128,8 +4128,8 @@
                 "pear/versioncontrol_git": "^0.5",
                 "phing/phing": "^2.7",
                 "php-coveralls/php-coveralls": "^1.0|^2.0",
-                "symfony/console": "^2.8|^3.0|^v4.4|^v5.2",
-                "symfony/phpunit-bridge": "^4.2 || ^5"
+                "phpunit/phpunit": "^4.8.36|^5.0",
+                "symfony/console": "^2.8|^3.0"
             },
             "type": "library",
             "extra": {
@@ -4169,42 +4169,36 @@
                 "phonenumber",
                 "validation"
             ],
-            "support": {
-                "irc": "irc://irc.appliedirc.com/lobby",
-                "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
-                "source": "https://github.com/giggsey/libphonenumber-for-php"
-            },
-            "time": "2021-11-11T16:06:11+00:00"
+            "time": "2019-03-20T13:47:01+00:00"
         },
         {
             "name": "giggsey/locale",
-            "version": "2.1",
+            "version": "1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/Locale.git",
-                "reference": "8d324583b5899e6280a875c43bf1fc9658bc6962"
+                "reference": "3c9cc23c15851c54cb3ccd41a00fd4b5a89feeff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/Locale/zipball/8d324583b5899e6280a875c43bf1fc9658bc6962",
-                "reference": "8d324583b5899e6280a875c43bf1fc9658bc6962",
+                "url": "https://api.github.com/repos/giggsey/Locale/zipball/3c9cc23c15851c54cb3ccd41a00fd4b5a89feeff",
+                "reference": "3c9cc23c15851c54cb3ccd41a00fd4b5a89feeff",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2"
+                "php": ">=5.3.2"
             },
             "require-dev": {
-                "ext-json": "*",
                 "pear/pear-core-minimal": "^1.9",
                 "pear/pear_exception": "^1.0",
                 "pear/versioncontrol_git": "^0.5",
-                "phing/phing": "^2.7",
-                "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^8.5|^9.5",
-                "symfony/console": "^5.0",
-                "symfony/filesystem": "^5.0",
-                "symfony/finder": "^5.0",
-                "symfony/process": "^5.0"
+                "phing/phing": "~2.7",
+                "phpunit/phpunit": "^4.8|^5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "symfony/console": "^2.8|^3.0|^4.0",
+                "symfony/filesystem": "^2.8|^3.0|^4.0",
+                "symfony/finder": "^2.8|^3.0|^4.0",
+                "symfony/process": "^2.8|^3.0|^4.0"
             },
             "type": "library",
             "autoload": {
@@ -4220,15 +4214,11 @@
                 {
                     "name": "Joshua Gigg",
                     "email": "giggsey@gmail.com",
-                    "homepage": "https://giggsey.com/"
+                    "homepage": "http://giggsey.com/"
                 }
             ],
             "description": "Locale functions required by libphonenumber-for-php",
-            "support": {
-                "issues": "https://github.com/giggsey/Locale/issues",
-                "source": "https://github.com/giggsey/Locale/tree/2.1"
-            },
-            "time": "2021-11-04T19:12:22+00:00"
+            "time": "2018-04-03T15:53:12+00:00"
         },
         {
             "name": "google/auth",
@@ -8003,23 +7993,22 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.5.0",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
-                "reference": "c30c6629b6fe78cba7f9032e580f0d5e1e71c2ed"
+                "reference": "34f9eabcec4f159decdf30f6f10eada4d9b27326"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/c30c6629b6fe78cba7f9032e580f0d5e1e71c2ed",
-                "reference": "c30c6629b6fe78cba7f9032e580f0d5e1e71c2ed",
+                "url": "https://api.github.com/repos/odolbeau/phone-number-bundle/zipball/34f9eabcec4f159decdf30f6f10eada4d9b27326",
+                "reference": "34f9eabcec4f159decdf30f6f10eada4d9b27326",
                 "shasum": ""
             },
             "require": {
                 "giggsey/libphonenumber-for-php": "^8.0",
-                "php": ">=7.4",
-                "symfony/framework-bundle": "^4.4|^5.3",
-                "symfony/intl": "^4.4|^5.3"
+                "php": ">7.2.5",
+                "symfony/framework-bundle": "^3.4|^4.3|^5.0"
             },
             "replace": {
                 "misd/phone-number-bundle": "self.version"
@@ -8027,11 +8016,11 @@
             "require-dev": {
                 "doctrine/doctrine-bundle": "^1.12|^2.0",
                 "phpunit/phpunit": "^8.4",
-                "symfony/form": "^4.4|^5.3",
-                "symfony/property-access": "^4.4|^5.3",
-                "symfony/serializer": "^4.4|^5.3",
-                "symfony/twig-bundle": "^4.4|^5.3",
-                "symfony/validator": "^4.4|^5.3"
+                "symfony/form": "^3.4|^4.3|^5.0",
+                "symfony/property-access": "^3.4|^4.3|^5.0",
+                "symfony/serializer": "^3.4|^4.3|^5.0",
+                "symfony/twig-bundle": "^3.4|^4.3|^5.0",
+                "symfony/validator": "^3.4|^4.3|^5.0"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "Add a DBAL mapping type",
@@ -8044,7 +8033,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.5.x-dev"
+                    "dev-master": "3.3.x-dev"
                 }
             },
             "autoload": {
@@ -8065,11 +8054,7 @@
                 "phonenumber",
                 "telephone number"
             ],
-            "support": {
-                "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.5.0"
-            },
-            "time": "2021-10-27T11:58:46+00:00"
+            "time": "2021-02-04T14:29:07+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -9099,20 +9084,20 @@
         },
         {
             "name": "psr/container",
-            "version": "1.1.2",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea"
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/513e0666f7216c7459170d56df27dfcefe1689ea",
-                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/8622567409010282b7aeebe4bb841fe98b58dcaf",
+                "reference": "8622567409010282b7aeebe4bb841fe98b58dcaf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
             "autoload": {
@@ -9141,9 +9126,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-fig/container/issues",
-                "source": "https://github.com/php-fig/container/tree/1.1.2"
+                "source": "https://github.com/php-fig/container/tree/1.1.1"
             },
-            "time": "2021-11-05T16:50:12+00:00"
+            "time": "2021-03-05T17:36:06+00:00"
         },
         {
             "name": "psr/http-client",
@@ -21257,5 +21242,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
