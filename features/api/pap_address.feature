@@ -14,7 +14,7 @@ Feature:
     When I send a "GET" request to "<url>"
     Then the response status code should be 401
     Examples:
-    | url |
+    | url                                                                         |
     | /api/v3/pap/address/near?latitude=48.879001640&&longitude=2.3187434&zoom=15 |
     | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                    |
     | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters             |
