@@ -3,14 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 trait EntityAdherentBlameableTrait
 {
     /**
      * @var Adherent|null
-     *
-     * @Gedmo\Blameable(on="create")
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
@@ -19,8 +16,6 @@ trait EntityAdherentBlameableTrait
 
     /**
      * @var Adherent|null
-     *
-     * @Gedmo\Blameable(on="update")
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")

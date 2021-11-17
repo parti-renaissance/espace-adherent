@@ -3,6 +3,7 @@
 namespace App\Entity\Pap;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  * )
  */
-class Floor
+class Floor implements EntityAdherentBlameableInterface
 {
     use EntityAdherentBlameableTrait;
     use EntityIdentityTrait;
