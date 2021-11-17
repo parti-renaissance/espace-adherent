@@ -53,28 +53,28 @@ class Address
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $number;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $address;
 
     /**
      * @ORM\Column(length=5, nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $inseeCode;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $cityName;
 
