@@ -23,6 +23,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ZoneAutocompleteController extends AbstractController
 {
     use AccessDelegatorTrait;
+    public const QUERY_SEARCH_PARAM = 'q';
+    public const QUERY_ZONE_TYPE_PARAM = 'types';
 
     public function __invoke(
         Request $request,
@@ -32,7 +34,12 @@ class ZoneAutocompleteController extends AbstractController
         ManagedZoneProvider $managedZoneProvider
     ): Response {
         $scope = $authorizationChecker->getScope($request);
-        $term = (string) $request->query->get('q');
+        $term = (string) $request->query->get(self::QUERY_SEARCH_PARAM);
+        $zoneTypes = Zone::TYPES;
+
+        if (($zoneTypesFromRequest = $request->query->get(self::QUERY_ZONE_TYPE_PARAM)) && \is_array($zoneTypesFromRequest)) {
+            $zoneTypes = $zoneTypesFromRequest;
+        }
 
         $user = $this->getMainUser($request->getSession());
         $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scope]);
@@ -40,7 +47,7 @@ class ZoneAutocompleteController extends AbstractController
         return $this->json($repository->searchByTermAndManagedZonesGroupedByType(
             $term,
             $managedZones,
-            Zone::TYPES,
+            $zoneTypes,
             true,
             10
         ));
