@@ -337,6 +337,84 @@ Feature:
     ]
     """
 
+  Scenario: As a logged-in user I can filter zones by space and partial name with page limit
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/zone/autocomplete" with parameters:
+      | key         | value     |
+      | scope       | referent  |
+      | q           | pa        |
+      | types[]     | city      |
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "uuid": "e3f29811-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "77430"
+            ],
+            "code": "77079",
+            "name": "Champagne-sur-Seine"
+        },
+        {
+            "uuid": "e3f2a3e7-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "77130"
+            ],
+            "code": "77210",
+            "name": "La Grande-Paroisse"
+        },
+        {
+            "uuid": "e3f1cb08-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "13610"
+            ],
+            "code": "13080",
+            "name": "Le Puy-Sainte-Réparade"
+        },
+        {
+            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "76570"
+            ],
+            "code": "76495",
+            "name": "Pavilly"
+        },
+        {
+            "uuid": "e3f1e343-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "13920"
+            ],
+            "code": "13098",
+            "name": "Saint-Mitre-les-Remparts"
+        },
+        {
+            "uuid": "e3f2b860-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "77178"
+            ],
+            "code": "77430",
+            "name": "Saint-Pathus"
+        },
+        {
+            "uuid": "e3f2c010-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "77270"
+            ],
+            "code": "77514",
+            "name": "Villeparisis"
+        }
+    ]
+    """
+
   Scenario: As a logged-in user I can filter zones by space and partial name
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/zone/autocompletion" with parameters:
