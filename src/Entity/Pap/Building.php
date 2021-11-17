@@ -32,7 +32,7 @@ class Building
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private Address $address;
+    private ?Address $address = null;
 
     /**
      * @var BuildingBlock[]|Collection
@@ -55,7 +55,7 @@ class Building
         $this->buildingBlocks = new ArrayCollection();
     }
 
-    public function getAddress(): Address
+    public function getAddress(): ?Address
     {
         return $this->address;
     }

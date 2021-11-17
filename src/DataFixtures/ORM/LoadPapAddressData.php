@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Adherent;
 use App\Entity\Pap\Address;
 use App\Entity\Pap\Building;

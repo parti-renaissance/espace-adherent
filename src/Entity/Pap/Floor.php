@@ -36,7 +36,7 @@ class Floor
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @Assert\NotNull
@@ -44,14 +44,14 @@ class Floor
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\BuildingBlock", inversedBy="floors")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private ?BuildingBlock $buildingBlock;
+    private BuildingBlock $buildingBlock;
 
     /**
      * @ORM\Column
      *
      * @Groups({"pap_building_block_list"})
      */
-    private ?int $number;
+    private int $number;
 
     /**
      * @ORM\Column(length=10)
@@ -63,7 +63,7 @@ class Floor
      *
      * @Groups({"pap_building_block_list"})
      */
-    private ?string $status;
+    private string $status;
 
     /**
      * @Gedmo\Blameable(on="create")
@@ -71,7 +71,7 @@ class Floor
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?Adherent $createdBy;
+    private ?Adherent $createdBy = null;
 
     /**
      * @Gedmo\Blameable(on="update")
@@ -79,7 +79,7 @@ class Floor
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?Adherent $updatedBy;
+    private ?Adherent $updatedBy = null;
 
     public function __construct(int $number, BuildingBlock $buildingBlock)
     {
@@ -93,7 +93,7 @@ class Floor
         return $this->id;
     }
 
-    public function getBuildingBlock(): ?BuildingBlock
+    public function getBuildingBlock(): BuildingBlock
     {
         return $this->buildingBlock;
     }
@@ -103,7 +103,7 @@ class Floor
         $this->buildingBlock = $buildingBlock;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): int
     {
         return $this->number;
     }

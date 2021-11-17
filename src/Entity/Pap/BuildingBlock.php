@@ -38,7 +38,7 @@ class BuildingBlock
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column
@@ -57,7 +57,7 @@ class BuildingBlock
      *
      * @Groups({"pap_building_block_list"})
      */
-    private ?string $status;
+    private string $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="buildingBlocks")
@@ -87,7 +87,7 @@ class BuildingBlock
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?Adherent $createdBy;
+    private ?Adherent $createdBy = null;
 
     /**
      * @Gedmo\Blameable(on="update")
@@ -95,7 +95,7 @@ class BuildingBlock
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?Adherent $updatedBy;
+    private ?Adherent $updatedBy = null;
 
     public function __construct(string $name, Building $building)
     {
