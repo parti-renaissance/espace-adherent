@@ -3,11 +3,12 @@
 namespace App\Entity\Pap;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Adherent;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,14 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Floor
 {
+    use EntityAdherentBlameableTrait;
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
-
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private ?int $id = null;
 
     /**
      * @Assert\NotNull
@@ -54,7 +50,7 @@ class Floor
     private int $number;
 
     /**
-     * @ORM\Column(length=10)
+     * @ORM\Column(length=25)
      *
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingBlockStatusEnum", "toArray"},
@@ -65,32 +61,12 @@ class Floor
      */
     private string $status;
 
-    /**
-     * @Gedmo\Blameable(on="create")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private ?Adherent $createdBy = null;
-
-    /**
-     * @Gedmo\Blameable(on="update")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private ?Adherent $updatedBy = null;
-
     public function __construct(int $number, BuildingBlock $buildingBlock)
     {
+        $this->uuid = Uuid::uuid4();
         $this->number = $number;
         $this->buildingBlock = $buildingBlock;
         $this->status = BuildingStatusEnum::ONGOING;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getBuildingBlock(): BuildingBlock
@@ -121,25 +97,5 @@ class Floor
     public function setStatus(string $status): void
     {
         $this->status = $status;
-    }
-
-    public function getCreatedBy(): ?Adherent
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?Adherent $createdBy): void
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    public function getUpdatedBy(): ?Adherent
-    {
-        return $this->updatedBy;
-    }
-
-    public function setUpdatedBy(?Adherent $updatedBy): void
-    {
-        $this->updatedBy = $updatedBy;
     }
 }

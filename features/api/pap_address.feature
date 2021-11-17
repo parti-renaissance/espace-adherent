@@ -125,28 +125,34 @@ Feature:
     """
     [
         {
+            "uuid": "@uuid@",
             "name": "Bâtiment A",
             "status": "completed",
             "floors": [
                 {
+                    "uuid": "@uuid@",
                     "number": 0,
                     "status": "completed"
                 },
                 {
+                    "uuid": "@uuid@",
                     "number": 1,
                     "status": "completed"
                 }
             ]
         },
         {
+            "uuid": "@uuid@",
             "name": "Bâtiment B",
             "status": "ongoing",
             "floors": [
                 {
+                    "uuid": "@uuid@",
                     "number": 0,
                     "status": "ongoing"
                 },
                 {
+                    "uuid": "@uuid@",
                     "number": 1,
                     "status": "ongoing"
                 }

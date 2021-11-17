@@ -162,14 +162,14 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
 
         $buildingBlock = new BuildingBlock($name, $building);
         $buildingBlock->setStatus($status);
-        $buildingBlock->setCreatedBy($createdBy ?? $this->getReference('adherent-20'));
+        $buildingBlock->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20'));
         $buildingBlock->setCreatedAt($createdAt);
         $building->addBuildingBlock($buildingBlock);
 
         for ($number = 0; $number < $floors; ++$number) {
             $floor = new Floor($number, $buildingBlock);
             $floor->setStatus($status);
-            $floor->setCreatedBy($createdBy ?? $this->getReference('adherent-20'));
+            $floor->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20'));
             $floor->setCreatedAt($createdAt);
             $buildingBlock->addFloor($floor);
         }

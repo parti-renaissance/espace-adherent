@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20211116165507 extends AbstractMigration
+final class Version20211117151217 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -18,30 +18,32 @@ final class Version20211116165507 extends AbstractMigration
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pap_building_block (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+          uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           name VARCHAR(255) NOT NULL,
-          status VARCHAR(10) NOT NULL,
+          status VARCHAR(25) NOT NULL,
           building_id INT UNSIGNED NOT NULL,
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
-          created_by_id INT UNSIGNED DEFAULT NULL,
-          updated_by_id INT UNSIGNED DEFAULT NULL,
+          created_by_adherent_id INT UNSIGNED DEFAULT NULL,
+          updated_by_adherent_id INT UNSIGNED DEFAULT NULL,
           INDEX IDX_61470C814D2A7E12 (building_id),
-          INDEX IDX_61470C81B03A8386 (created_by_id),
-          INDEX IDX_61470C81896DBBDE (updated_by_id),
+          INDEX IDX_61470C8185C9D733 (created_by_adherent_id),
+          INDEX IDX_61470C81DF6CFDC9 (updated_by_adherent_id),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pap_floor (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+          uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           number VARCHAR(255) NOT NULL,
-          status VARCHAR(10) NOT NULL,
+          status VARCHAR(25) NOT NULL,
           building_block_id INT UNSIGNED NOT NULL,
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
-          created_by_id INT UNSIGNED DEFAULT NULL,
-          updated_by_id INT UNSIGNED DEFAULT NULL,
+          created_by_adherent_id INT UNSIGNED DEFAULT NULL,
+          updated_by_adherent_id INT UNSIGNED DEFAULT NULL,
           INDEX IDX_633C3C6432618357 (building_block_id),
-          INDEX IDX_633C3C64B03A8386 (created_by_id),
-          INDEX IDX_633C3C64896DBBDE (updated_by_id),
+          INDEX IDX_633C3C6485C9D733 (created_by_adherent_id),
+          INDEX IDX_633C3C64DF6CFDC9 (updated_by_adherent_id),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
@@ -55,13 +57,13 @@ final class Version20211116165507 extends AbstractMigration
         $this->addSql('ALTER TABLE
           pap_building_block
         ADD
-          CONSTRAINT FK_61470C81B03A8386 FOREIGN KEY (created_by_id) REFERENCES adherents (id) ON DELETE
+          CONSTRAINT FK_61470C8185C9D733 FOREIGN KEY (created_by_adherent_id) REFERENCES adherents (id) ON DELETE
         SET
           NULL');
         $this->addSql('ALTER TABLE
           pap_building_block
         ADD
-          CONSTRAINT FK_61470C81896DBBDE FOREIGN KEY (updated_by_id) REFERENCES adherents (id) ON DELETE
+          CONSTRAINT FK_61470C81DF6CFDC9 FOREIGN KEY (updated_by_adherent_id) REFERENCES adherents (id) ON DELETE
         SET
           NULL');
         $this->addSql('ALTER TABLE
@@ -71,13 +73,13 @@ final class Version20211116165507 extends AbstractMigration
         $this->addSql('ALTER TABLE
           pap_floor
         ADD
-          CONSTRAINT FK_633C3C64B03A8386 FOREIGN KEY (created_by_id) REFERENCES adherents (id) ON DELETE
+          CONSTRAINT FK_633C3C6485C9D733 FOREIGN KEY (created_by_adherent_id) REFERENCES adherents (id) ON DELETE
         SET
           NULL');
         $this->addSql('ALTER TABLE
           pap_floor
         ADD
-          CONSTRAINT FK_633C3C64896DBBDE FOREIGN KEY (updated_by_id) REFERENCES adherents (id) ON DELETE
+          CONSTRAINT FK_633C3C64DF6CFDC9 FOREIGN KEY (updated_by_adherent_id) REFERENCES adherents (id) ON DELETE
         SET
           NULL');
     }
