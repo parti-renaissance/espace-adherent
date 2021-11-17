@@ -10976,16 +10976,16 @@
         },
         {
             "name": "sonata-project/doctrine-extensions",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/sonata-doctrine-extensions.git",
-                "reference": "d54075e953c07b6b5ce05bc2770fdcfe62fc4ba5"
+                "reference": "2967d6e7558b9f47c9dd291f8061302c35d36b43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/sonata-doctrine-extensions/zipball/d54075e953c07b6b5ce05bc2770fdcfe62fc4ba5",
-                "reference": "d54075e953c07b6b5ce05bc2770fdcfe62fc4ba5",
+                "url": "https://api.github.com/repos/sonata-project/sonata-doctrine-extensions/zipball/2967d6e7558b9f47c9dd291f8061302c35d36b43",
+                "reference": "2967d6e7558b9f47c9dd291f8061302c35d36b43",
                 "shasum": ""
             },
             "require": {
@@ -11008,7 +11008,12 @@
                 "jackalope/jackalope-doctrine-dbal": "^1.0",
                 "matthiasnoback/symfony-config-test": "^4.2",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.0",
+                "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^0.12.54",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "phpstan/phpstan-strict-rules": "^0.12.10",
+                "phpunit/phpunit": "^9.5",
+                "psalm/plugin-phpunit": "^0.16",
                 "symfony/dependency-injection": "^4.4 || ^5.1",
                 "symfony/expression-language": "^4.4 || ^5.1",
                 "symfony/framework-bundle": "^4.4 || ^5.1",
@@ -11056,7 +11061,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/sonata-doctrine-extensions/issues",
-                "source": "https://github.com/sonata-project/sonata-doctrine-extensions/tree/1.14.0"
+                "source": "https://github.com/sonata-project/sonata-doctrine-extensions/tree/1.15.0"
             },
             "funding": [
                 {
@@ -11076,7 +11081,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-05T15:19:11+00:00"
+            "time": "2021-11-06T15:00:56+00:00"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
