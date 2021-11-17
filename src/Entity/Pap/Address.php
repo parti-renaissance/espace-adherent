@@ -116,6 +116,18 @@ class Address
      */
     private ?float $distance = null;
 
+    /**
+     * @var Building[]|Collection
+     *
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Pap\Building",
+     *     mappedBy="address",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    private ?Building $building;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $number = null,
@@ -253,5 +265,16 @@ class Address
     public function setDistance(?float $distance): void
     {
         $this->distance = floor($distance * 1000);
+    }
+
+    public function getBuilding(): ?Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(Building $building): void
+    {
+        $building->setAddress($this);
+        $this->building = $building;
     }
 }
