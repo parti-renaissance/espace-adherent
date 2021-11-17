@@ -52,6 +52,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->addVoter($this->createVoter(self::VOTER_02_UUID, 'Jane', 'Doe', Genders::FEMALE, '-29 years', '75108_0001'));
         $address->setBuilding($building = new Building(Uuid::fromString(self::BUILDING_01_UUID)));
         $this->createBuildingBlock('Bâtiment A', $building, 3, BuildingStatusEnum::COMPLETED, $this->getReference('adherent-31'), new \DateTime('-10 days'));
+        $this->addReference('building-1', $building);
         $manager->persist($address);
 
         $address = $this->createAddress(
@@ -69,6 +70,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->setBuilding($building = new Building(Uuid::fromString(self::BUILDING_02_UUID)));
         $this->createBuildingBlock('Bâtiment A', $building, 2, BuildingStatusEnum::COMPLETED, $this->getReference('adherent-32'), new \DateTime('-5 days'));
         $this->createBuildingBlock('Bâtiment B', $building, 2, BuildingStatusEnum::ONGOING, $this->getReference('adherent-32'), new \DateTime('-5 days'));
+        $this->addReference('building-2', $building);
         $manager->persist($address);
 
         $address = $this->createAddress(
@@ -87,6 +89,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->addVoter($this->createVoter(self::VOTER_06_UUID, 'Mickaël Jr', 'Doe', Genders::MALE, '-22 years', '75108_0001'));
         $address->setBuilding($building = new Building(Uuid::fromString(self::BUILDING_03_UUID)));
         $this->createBuildingBlock('Bâtiment A', $building, 11, BuildingStatusEnum::ONGOING, $this->getReference('adherent-32'), new \DateTime('-3 days'));
+        $this->addReference('building-3', $building);
         $manager->persist($address);
 
         $address = $this->createAddress(
@@ -103,6 +106,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->addVoter($this->createVoter(self::VOTER_07_UUID, 'Patrick', 'Simpson Jones', Genders::MALE, '-70 years', '75108_0001'));
         $address->setBuilding($building = new Building(Uuid::fromString(self::BUILDING_04_UUID)));
         $this->createBuildingBlock('Bâtiment A', $building);
+        $this->addReference('building-4', $building);
         $manager->persist($address);
 
         $manager->flush();

@@ -75,8 +75,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     private $adherent;
 
     /**
-     * @var Campaign
-     *
      * @Assert\NotNull
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="campaignHistories")
@@ -84,7 +82,17 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $campaign;
+    private ?Campaign $campaign = null;
+
+    /**
+     * @Assert\NotNull
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"pap_campaign_history_write"})
+     */
+    private ?Building $building = null;
 
     /**
      * @var string|null
@@ -109,7 +117,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $building;
+    private $buildingBlock;
 
     /**
      * @var int|null
@@ -256,6 +264,16 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->campaign = $campaign;
     }
 
+    public function getBuilding(): ?Building
+    {
+        return $this->building;
+    }
+
+    public function setBuilding(Building $building): void
+    {
+        $this->building = $building;
+    }
+
     public function getStatus(): ?string
     {
         return $this->status;
@@ -271,14 +289,14 @@ class CampaignHistory implements DataSurveyAwareInterface
         return \in_array($this->status, CampaignHistoryStatusEnum::FINISHED_STATUS);
     }
 
-    public function getBuilding(): ?string
+    public function getBuildingBlock(): ?string
     {
-        return $this->building;
+        return $this->buildingBlock;
     }
 
-    public function setBuilding(?string $building): void
+    public function setBuildingBlock(?string $buildingBlock): void
     {
-        $this->building = $building;
+        $this->buildingBlock = $buildingBlock;
     }
 
     public function getFloor(): ?int
