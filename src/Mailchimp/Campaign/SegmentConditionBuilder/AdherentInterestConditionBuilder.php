@@ -3,6 +3,7 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -13,6 +14,7 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
     public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof AdherentZoneFilter
+            || $filter instanceof AudienceFilter
             || (
                 $filter instanceof ReferentUserFilter
                     && false === $filter->getContactOnlyVolunteers()
@@ -27,26 +29,13 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
     }
 
     /**
-     * @param AdherentZoneFilter|ReferentUserFilter $filter
+     * @param AdherentZoneFilter|ReferentUserFilter|AudienceFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         $conditions = [];
         $interestIncludeKeys = [];
         $interestExcludeKeys = [];
-
-        // include interests
-        if (true === $filter->includeCommitteeSupervisors()) {
-            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
-        }
-
-        if (true === $filter->includeCommitteeProvisionalSupervisors()) {
-            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR;
-        }
-
-        if (true === $filter->includeCommitteeHosts()) {
-            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
-        }
 
         if (true === $filter->includeAdherentsInCommittee()) {
             $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
@@ -56,17 +45,32 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
             $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER;
         }
 
-        // exclude interests
-        if (false === $filter->includeCommitteeSupervisors()) {
-            $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
-        }
+        if (!$filter instanceof AudienceFilter) {
+            // include interests
+            if (true === $filter->includeCommitteeSupervisors()) {
+                $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
+            }
 
-        if (false === $filter->includeCommitteeProvisionalSupervisors()) {
-            $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR;
-        }
+            if (true === $filter->includeCommitteeProvisionalSupervisors()) {
+                $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR;
+            }
 
-        if (false === $filter->includeCommitteeHosts()) {
-            $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
+            if (true === $filter->includeCommitteeHosts()) {
+                $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
+            }
+
+            // exclude interests
+            if (false === $filter->includeCommitteeSupervisors()) {
+                $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
+            }
+
+            if (false === $filter->includeCommitteeProvisionalSupervisors()) {
+                $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR;
+            }
+
+            if (false === $filter->includeCommitteeHosts()) {
+                $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
+            }
         }
 
         // add conditions
