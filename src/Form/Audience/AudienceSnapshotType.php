@@ -2,11 +2,13 @@
 
 namespace App\Form\Audience;
 
+use App\Adherent\AdherentRoleEnum;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,6 +29,15 @@ class AudienceSnapshotType extends AbstractType
             ->add('isCertified', BooleanType::class, ['label' => 'Certifié', 'required' => false])
             ->add('isCommitteeMember', BooleanType::class, ['label' => 'Membre de comité', 'required' => false])
             ->add('hasSmsSubscription', BooleanType::class, ['label' => 'Abonné aux SMS', 'required' => false])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Rôles',
+                'required' => false,
+                'multiple' => true,
+                'choices' => [
+                    AdherentRoleEnum::COMMITTEE_SUPERVISOR => AdherentRoleEnum::COMMITTEE_SUPERVISOR,
+                    AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR => AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR,
+                ],
+            ])
         ;
     }
 

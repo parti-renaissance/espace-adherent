@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Adherent\AdherentRoleEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
 use App\Entity\Adherent;
@@ -1221,12 +1222,6 @@ SQL;
     }
 
     /** @return PaginatorInterface|Adherent[] */
-    public function findForAudience(AudienceInterface $audience, int $page = 1, int $limit = 100): PaginatorInterface
-    {
-        return $this->configurePaginator($this->createQueryBuilderForAudience($audience), $page, $limit);
-    }
-
-    /** @return PaginatorInterface|Adherent[] */
     public function findForSmsCampaign(
         SmsCampaign $smsCampaign,
         bool $uniquePhone,
@@ -1332,6 +1327,10 @@ SQL;
                     ;
                 }
             );
+        }
+
+        if ($audience->getRoles()) {
+            $this->withAdherentRole($qb, 'adherent', $audience->getRoles());
         }
 
         if (null !== $hasSmsSubscription = $audience->getHasSmsSubscription()) {
@@ -1482,5 +1481,25 @@ SQL;
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    private function withAdherentRole(QueryBuilder $qb, string $alias, array $roles): void
+    {
+        $where = $qb->expr()->orX();
+
+        if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $roles)) {
+            $qb->leftJoin(sprintf('%s.adherentMandates', $alias), 'am');
+            $condition = '';
+
+            if (1 === \count($committeeMandates)) {
+                $condition = ' AND am.provisional = :provisional';
+                $qb->setParameter('provisional', \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $committeeMandates, true));
+            }
+
+            $where->add('am.quality = :supervisor AND am.committee IS NOT NULL AND am.finishAt IS NULL'.$condition);
+            $qb->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR);
+        }
+
+        $qb->andWhere($where);
     }
 }

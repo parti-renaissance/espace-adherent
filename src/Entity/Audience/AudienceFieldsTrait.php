@@ -136,6 +136,15 @@ trait AudienceFieldsTrait
      */
     private $zone;
 
+    /**
+     * @var string[]
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"audience_write"})
+     */
+    private array $roles = [];
+
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -266,6 +275,16 @@ trait AudienceFieldsTrait
         $this->zone = $zone;
     }
 
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
     public function toArray(): array
     {
         return array_filter([
@@ -284,6 +303,7 @@ trait AudienceFieldsTrait
             'zones' => array_map(function (Zone $zone): string {
                 return $zone->getUuid()->toString();
             }, $this->zones->toArray()),
+            'roles' => implode(',', $this->roles),
         ]);
     }
 
