@@ -8,6 +8,7 @@ use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\AuthorizationChecker;
+use App\Scope\ScopeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ZoneAutocompleteController extends AbstractController
 {
     use AccessDelegatorTrait;
+
     public const QUERY_SEARCH_PARAM = 'q';
     public const QUERY_ZONE_TYPE_PARAM = 'types';
 
@@ -36,13 +38,17 @@ class ZoneAutocompleteController extends AbstractController
         $scope = $authorizationChecker->getScope($request);
         $term = (string) $request->query->get(self::QUERY_SEARCH_PARAM);
         $zoneTypes = Zone::TYPES;
+        $managedZones = [];
 
         if (($zoneTypesFromRequest = $request->query->get(self::QUERY_ZONE_TYPE_PARAM)) && \is_array($zoneTypesFromRequest)) {
             $zoneTypes = $zoneTypesFromRequest;
         }
 
         $user = $this->getMainUser($request->getSession());
-        $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scope]);
+
+        if (!\in_array($scope, ScopeEnum::NATIONAL_SCOPES, true)) {
+            $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scope]);
+        }
 
         return $this->json($repository->searchByTermAndManagedZonesGroupedByType(
             $term,
