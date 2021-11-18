@@ -194,7 +194,7 @@ Feature:
         "before_survey": {
             "address": [
                 {
-                    "code": "building",
+                    "code": "building_block",
                     "label": "Batiment",
                     "type": "text"
                 },
@@ -340,8 +340,12 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "status: Le statut n'est pas valide.",
+        "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.",
         "violations": [
+            {
+                "propertyPath": "building",
+                "message": "Cette valeur ne doit pas être nulle."
+            },
             {
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
@@ -357,8 +361,9 @@ Feature:
     """
     {
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "building": "0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f",
         "status": "door_closed",
-        "building": "A",
+        "building_block": "A",
         "floor": 1,
         "door": "3"
     }
@@ -379,7 +384,8 @@ Feature:
     """
     {
         "status": "accept_to_answer",
-        "building": "C",
+        "building": "0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f",
+        "building_block": "C",
         "floor": 2,
         "door": "23",
         "firstName": "Maria",
@@ -408,8 +414,9 @@ Feature:
     """
     {
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "building": "0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f",
         "status": "door_closed",
-        "building": "A",
+        "building_block": "A",
         "floor": 1,
         "door": "3"
     }
@@ -430,7 +437,7 @@ Feature:
     """
     {
         "status": "accept_to_answer",
-        "building": "C",
+        "building_block": "C",
         "floor": 2,
         "door": "23",
         "firstName": "Maria",

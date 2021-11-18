@@ -25,7 +25,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                 'before_survey' => [
                     'address' => [
                         [
-                            'code' => 'building',
+                            'code' => 'building_block',
                             'label' => 'Batiment',
                             'type' => 'text',
                         ],
