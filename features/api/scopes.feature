@@ -1,4 +1,4 @@
-@api
+@apiUserInfo
 Feature:
   In order to get scopes of an adherent
   I should be able to request them via the API

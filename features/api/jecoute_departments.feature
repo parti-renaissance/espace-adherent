@@ -1,4 +1,4 @@
-@api
+@apiJemengage
 Feature:
   In order to be localized on JeMarche mobile app
   With a valid oauth token

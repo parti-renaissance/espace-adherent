@@ -1,4 +1,4 @@
-@api
+@apiJemengage
 Feature:
   In order to get all news
   With a valid oauth token

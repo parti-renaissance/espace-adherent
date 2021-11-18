@@ -1,4 +1,4 @@
-@api
+@apiUserInfo
 Feature:
   In order to create a light profile
   As a non logged-in user

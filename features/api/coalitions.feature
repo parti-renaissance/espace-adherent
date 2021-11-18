@@ -1,4 +1,4 @@
-@api
+@apiCoalitions
 Feature:
   In order to see coalitions
   As a non logged-in user

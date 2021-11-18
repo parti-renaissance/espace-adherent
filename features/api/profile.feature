@@ -1,4 +1,4 @@
-@api
+@apiUserInfo
 Feature:
   As a logged-in user
   I should be able to retrieve and edit my profile information
