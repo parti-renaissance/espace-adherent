@@ -300,7 +300,7 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
 
     public function hasOtherCandidacies(): bool
     {
-        return $this->candidaciesGroup && 0 < $this->candidaciesGroup->count();
+        return 0 < \count($this->getOtherCandidacies());
     }
 
     /**
