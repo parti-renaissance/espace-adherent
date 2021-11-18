@@ -10,6 +10,7 @@ use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -27,6 +28,7 @@ use Symfony\Component\Security\Core\Security;
 class CampaignAdmin extends AbstractAdmin
 {
     private Security $security;
+    private AdherentRepository $adherentRepository;
 
     public function getFormBuilder()
     {
@@ -157,6 +159,9 @@ class CampaignAdmin extends AbstractAdmin
             ->add('finishAt', null, [
                 'label' => 'Date de fin',
             ])
+            ->add('participantsCount', null, [
+                'label' => 'Potentiels participants',
+            ])
             ->add('campaignHistoriesCount', null, [
                 'label' => 'Appels passés',
                 'template' => 'admin/phoning/campaign/list_campaign_histories_count.html.twig',
@@ -188,20 +193,35 @@ class CampaignAdmin extends AbstractAdmin
     public function prePersist($object)
     {
         $object->setCreatedByAdministrator($this->security->getUser());
+
+        $this->updateParticipantsCount($object);
     }
 
     /**
      * @param Campaign $object
      */
-    public function postUpdate($object)
+    public function preUpdate($object)
     {
         $object->setUpdatedByAdministrator($this->security->getUser());
+
+        $this->updateParticipantsCount($object);
+    }
+
+    private function updateParticipantsCount(Campaign $object): void
+    {
+        $object->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($object)->getTotalItems());
     }
 
     /** @required */
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    /** @required */
+    public function setAdherentRepository(AdherentRepository $adherentRepository): void
+    {
+        $this->adherentRepository = $adherentRepository;
     }
 
     public function toString($object): string

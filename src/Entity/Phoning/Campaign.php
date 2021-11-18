@@ -200,6 +200,9 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      */
     private bool $permanent = false;
 
+    /** @ORM\Column(type="integer", options={"default": 0}) */
+    private int $participantsCount = 0;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -407,5 +410,15 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     public function getCreator(): string
     {
         return null !== $this->createdByAdherent ? $this->createdByAdherent->getPartialName() : 'Admin';
+    }
+
+    public function getParticipantsCount(): int
+    {
+        return $this->participantsCount;
+    }
+
+    public function setParticipantsCount(int $participantsCount): void
+    {
+        $this->participantsCount = $participantsCount;
     }
 }
