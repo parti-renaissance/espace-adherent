@@ -7,7 +7,8 @@ use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Pap\BuildingStatusEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -34,6 +35,7 @@ class Floor implements EntityAdherentBlameableInterface
     use EntityAdherentBlameableTrait;
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use CampaignStatisticsTrait;
 
     /**
      * @Assert\NotNull
@@ -51,23 +53,23 @@ class Floor implements EntityAdherentBlameableInterface
     private int $number;
 
     /**
-     * @ORM\Column(length=25)
+     * @var FloorStatistics[]|Collection
      *
-     * @Assert\Choice(
-     *     callback={"App\Pap\BuildingBlockStatusEnum", "toArray"},
-     *     strict=true
+     * @ORM\OneToMany(
+     *     targetEntity="FloorStatistics",
+     *     mappedBy="floor",
+     *     cascade={"all"},
+     *     orphanRemoval=true
      * )
-     *
-     * @Groups({"pap_building_block_list"})
      */
-    private string $status;
+    private Collection $statistics;
 
     public function __construct(int $number, BuildingBlock $buildingBlock)
     {
         $this->uuid = Uuid::uuid4();
         $this->number = $number;
         $this->buildingBlock = $buildingBlock;
-        $this->status = BuildingStatusEnum::ONGOING;
+        $this->statistics = new ArrayCollection();
     }
 
     public function getBuildingBlock(): BuildingBlock
@@ -88,15 +90,5 @@ class Floor implements EntityAdherentBlameableInterface
     public function setNumber(int $number): void
     {
         $this->number = $number;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
     }
 }

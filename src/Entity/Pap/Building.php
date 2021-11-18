@@ -27,6 +27,7 @@ use Ramsey\Uuid\UuidInterface;
 class Building
 {
     use EntityIdentityTrait;
+    use CampaignStatisticsTrait;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
@@ -49,10 +50,23 @@ class Building
      */
     private Collection $buildingBlocks;
 
+    /**
+     * @var BuildingStatistics[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Pap\BuildingStatistics",
+     *     mappedBy="building",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    private Collection $statistics;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid;
         $this->buildingBlocks = new ArrayCollection();
+        $this->statistics = new ArrayCollection();
     }
 
     public function getAddress(): ?Address
