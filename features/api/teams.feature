@@ -1,4 +1,4 @@
-@api
+@apiJemengage
 Feature:
   In order to see teams
   As a logged-in user
