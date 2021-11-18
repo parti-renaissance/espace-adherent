@@ -1389,7 +1389,6 @@ SQL;
                     ->andWhere('ch5.status IN (:recall)')
                     ->andWhere('DATE(ch5.beginAt) = CURRENT_DATE()')
             ))
-            ->setMaxResults(10)
             ->setParameter('fr_phone', '+33%')
             ->setParameter('not_callable', CampaignHistoryStatusEnum::NOT_CALLABLE)
             ->setParameter('recall', CampaignHistoryStatusEnum::CALLABLE_LATER + [CampaignHistoryStatusEnum::COMPLETED])
@@ -1405,7 +1404,7 @@ SQL;
             ;
         }
 
-        return $this->configurePaginator($queryBuilder, $limit);
+        return $this->configurePaginator($queryBuilder, 1, $limit);
     }
 
     public function findScoresByCampaign(Campaign $campaign): array

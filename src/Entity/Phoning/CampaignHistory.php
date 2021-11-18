@@ -95,7 +95,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @var Campaign
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign", inversedBy="campaignHistories")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
      *
      * @Groups({"phoning_campaign_history_read_list"})
      */
