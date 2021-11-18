@@ -2,7 +2,7 @@
 
 namespace App\OvhCloud;
 
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Notifier

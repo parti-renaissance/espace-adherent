@@ -3,7 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Audience\AudienceSnapshot;
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use App\SmsCampaign\SmsCampaignStatusEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;

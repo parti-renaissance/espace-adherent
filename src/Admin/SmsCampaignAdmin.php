@@ -4,7 +4,7 @@ namespace App\Admin;
 
 use App\Admin\Audience\AudienceAdmin;
 use App\Entity\Audience\AudienceSnapshot;
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use App\Form\Admin\AdminZoneAutocompleteType;
 use App\Form\Audience\AudienceSnapshotType;
 use App\Repository\AdherentRepository;

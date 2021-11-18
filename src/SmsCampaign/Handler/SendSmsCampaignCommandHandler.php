@@ -2,7 +2,7 @@
 
 namespace App\SmsCampaign\Handler;
 
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use App\OvhCloud\Notifier;
 use App\Repository\AdherentRepository;
 use App\SmsCampaign\Command\SendSmsCampaignCommand;

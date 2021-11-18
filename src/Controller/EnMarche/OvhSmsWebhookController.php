@@ -24,13 +24,7 @@ class OvhSmsWebhookController extends AbstractController
     public function __invoke(string $key, Request $request, MessageBusInterface $bus): Response
     {
         if ($key === $this->ovhSmsWebhookKey) {
-            $bus->dispatch(new CatchOvhSmsWebhookCallCommand(
-                $request->getMethod(),
-                $request->headers->all(),
-                $request->query->all(),
-                $request->request->all(),
-                $request->getContent()
-            ));
+            $bus->dispatch(new CatchOvhSmsWebhookCallCommand($request->query->all()));
         }
 
         return new Response('OK');

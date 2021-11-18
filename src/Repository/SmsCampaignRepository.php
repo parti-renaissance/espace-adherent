@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

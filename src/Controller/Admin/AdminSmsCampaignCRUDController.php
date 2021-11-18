@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use App\Repository\AdherentRepository;
 use App\SmsCampaign\Command\SendSmsCampaignCommand;
 use Doctrine\ORM\EntityManagerInterface;

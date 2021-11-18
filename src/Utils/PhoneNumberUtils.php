@@ -17,8 +17,8 @@ class PhoneNumberUtils
         return PhoneNumberUtil::getInstance()->format($phone, $format);
     }
 
-    public static function create(string $number): ?PhoneNumber
+    public static function create(string $number, string $region = null): ?PhoneNumber
     {
-        return PhoneNumberUtil::getInstance()->parse($number);
+        return PhoneNumberUtil::getInstance()->parse($number, $region);
     }
 }
