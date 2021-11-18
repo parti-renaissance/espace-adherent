@@ -54,7 +54,7 @@ class DataSurvey implements AuthorInterface
      *
      * @Assert\NotBlank
      *
-     * @Groups({"phoning_campaign_history_read_list", App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP})
+     * @Groups({"phoning_campaign_history_read_list", "campaign_replies_list", App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP})
      */
     private $survey;
 
@@ -69,6 +69,8 @@ class DataSurvey implements AuthorInterface
      * @var CampaignHistory|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="dataSurvey")
+     *
+     * @Groups("campaign_replies_list")
      */
     private $campaignHistory;
 

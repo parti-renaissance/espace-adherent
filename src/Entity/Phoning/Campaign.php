@@ -60,6 +60,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
  *         },
+ *         "get_phoning_campaign_survey_replies": {
+ *             "method": "GET",
+ *             "path": "/v3/phoning_campaigns/{id}/replies",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignSurveyRepliesController",
+ *         },
+ *         },
  *         "get_callers_with_scores_private": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{uuid}/callers",
@@ -119,7 +127,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write", "phoning_campaign_history_read_list"})
+     * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score", "phoning_campaign_list", "phoning_campaign_write", "phoning_campaign_history_read_list", "campaign_replies_list"})
      */
     private $title;
 
@@ -387,6 +395,13 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     {
         return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
             return $campaignHistory->isFailedStatus();
+        });
+    }
+
+    public function getCampaignHistoriesCompleted(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isCompletedStatus();
         });
     }
 
