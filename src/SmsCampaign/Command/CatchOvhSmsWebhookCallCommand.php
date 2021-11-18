@@ -6,18 +6,10 @@ use App\Messenger\Message\AsynchronousMessageInterface;
 
 class CatchOvhSmsWebhookCallCommand implements AsynchronousMessageInterface
 {
-    public $method;
-    public $headers;
-    public $query;
-    public $request;
-    public $content;
+    public array $payload;
 
-    public function __construct($method, $headers, $query, $request, $content)
+    public function __construct(array $payload)
     {
-        $this->method = $method;
-        $this->headers = $headers;
-        $this->query = $query;
-        $this->request = $request;
-        $this->content = $content;
+        $this->payload = $payload;
     }
 }

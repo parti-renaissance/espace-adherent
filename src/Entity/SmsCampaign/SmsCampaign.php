@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\SmsCampaign;
 
 use App\Entity\Audience\AudienceSnapshot;
+use App\Entity\EntityAdministratorTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\SmsCampaign\SmsCampaignStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;

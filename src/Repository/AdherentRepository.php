@@ -18,7 +18,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\ReferentManagedArea;
-use App\Entity\SmsCampaign;
+use App\Entity\SmsCampaign\SmsCampaign;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
