@@ -7,12 +7,14 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingRepository")
  * @ORM\Table(name="pap_building")
  *
  * @ApiResource(
@@ -25,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  * )
  */
-class Building
+class Building implements CampaignStatisticsOwnerInterface
 {
     use EntityIdentityTrait;
     use CampaignStatisticsTrait;
@@ -78,7 +80,7 @@ class Building
 
     public function __construct(UuidInterface $uuid = null)
     {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->buildingBlocks = new ArrayCollection();
         $this->statistics = new ArrayCollection();
     }
@@ -99,6 +101,18 @@ class Building
             $buildingBlock->setBuilding($this);
             $this->buildingBlocks->add($buildingBlock);
         }
+    }
+
+    public function getBuildingBlockByName(string $name): ?BuildingBlock
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('name', $name))
+        ;
+
+        return $this->buildingBlocks->matching($criteria)->count() > 0
+            ? $this->buildingBlocks->matching($criteria)->first()
+            : null
+        ;
     }
 
     public function setCurrentCampaign(Campaign $campaign): void

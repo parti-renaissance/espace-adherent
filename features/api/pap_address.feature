@@ -7,11 +7,12 @@ Feature:
     When I send a "GET" request to "<url>"
     Then the response status code should be 401
     Examples:
-    | url                                                                         |
-    | /api/v3/pap/address/near?latitude=48.879001640&&longitude=2.3187434&zoom=15 |
-    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                    |
-    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters             |
-    | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks  |
+    | url                                                                                                                       |
+    | /api/v3/pap/address/near?latitude=48.879001640&longitude=2.3187434&zoom=15                                                |
+    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                                                                  |
+    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters                                                           |
+    | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks                                                |
+    | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events                                                         |
 
   Scenario Outline: As a logged-in user I can retrieve addresses near a given position ordered by distance
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -205,7 +206,7 @@ Feature:
     [
         {
             "uuid": "@uuid@",
-            "name": "Bâtiment A",
+            "name": "A",
             "floors": [
                 {
                     "uuid": "@uuid@",
@@ -219,7 +220,7 @@ Feature:
         },
         {
             "uuid": "@uuid@",
-            "name": "Bâtiment B",
+            "name": "B",
             "floors": [
                 {
                     "uuid": "@uuid@",
@@ -244,7 +245,7 @@ Feature:
     [
         {
             "uuid": "@uuid@",
-            "name": "Bâtiment A",
+            "name": "A",
             "status": "completed",
             "floors": [
                 {
@@ -261,7 +262,7 @@ Feature:
         },
         {
             "uuid": "@uuid@",
-            "name": "Bâtiment B",
+            "name": "B",
             "status": "ongoing",
             "floors": [
                 {
@@ -277,4 +278,70 @@ Feature:
             ]
         }
     ]
+    """
+
+  Scenario: As a logged-in user I can open and close a building
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "open",
+        "type": "building_block",
+        "identifier": "A",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
+    """
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "close",
+        "type": "building_block",
+        "identifier": "A",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
+    """
+
+  Scenario: As a logged-in user I can open and close a floor
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "open",
+        "type": "floor",
+        "identifier": "A-0",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
+    """
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "close",
+        "type": "floor",
+        "identifier": "A-0",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
     """

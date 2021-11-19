@@ -9,8 +9,10 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -29,7 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
-class BuildingBlock implements EntityAdherentBlameableInterface
+class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;
     use EntityIdentityTrait;
@@ -77,9 +79,9 @@ class BuildingBlock implements EntityAdherentBlameableInterface
      */
     private Collection $statistics;
 
-    public function __construct(string $name, Building $building)
+    public function __construct(string $name, Building $building, UuidInterface $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
         $this->building = $building;
         $this->floors = new ArrayCollection();
@@ -125,5 +127,17 @@ class BuildingBlock implements EntityAdherentBlameableInterface
     public function removeFloor(Floor $floor): void
     {
         $this->floors->removeElement($floor);
+    }
+
+    public function getFloorByNumber(int $number): ?Floor
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('number', $number))
+        ;
+
+        return $this->floors->matching($criteria)->count() > 0
+            ? $this->floors->matching($criteria)->first()
+            : null
+        ;
     }
 }

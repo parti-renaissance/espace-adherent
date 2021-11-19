@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  * )
  */
-class Floor implements EntityAdherentBlameableInterface
+class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;
     use EntityIdentityTrait;
@@ -64,9 +65,9 @@ class Floor implements EntityAdherentBlameableInterface
      */
     private Collection $statistics;
 
-    public function __construct(int $number, BuildingBlock $buildingBlock)
+    public function __construct(int $number, BuildingBlock $buildingBlock, UuidInterface $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->number = $number;
         $this->buildingBlock = $buildingBlock;
         $this->statistics = new ArrayCollection();
