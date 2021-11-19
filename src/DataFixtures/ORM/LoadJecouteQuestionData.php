@@ -59,6 +59,20 @@ class LoadJecouteQuestionData extends Fixture
                 'Réponse nationale G',
             ],
         ],
+        'national-question-4' => [
+            'content' => 'A votre avis quels seront les enjeux des 10 prochaines années?',
+            'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+        ],
+        'national-question-5' => [
+            'content' => 'L\'écologie est selon vous, importante pour :',
+            'type' => SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE,
+            'choices' => [
+              'L\'héritage laissé aux générations futures',
+              'Le bien-être sanitaire',
+              'L\'aspect financier',
+              'La préservation de l\'environnement',
+            ],
+        ],
     ];
 
     public function load(ObjectManager $manager)

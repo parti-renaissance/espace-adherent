@@ -6,6 +6,7 @@ use App\Entity\Phoning\Campaign;
 use App\Repository\Jecoute\DataSurveyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,10 +22,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GetPhoningCampaignSurveyRepliesController extends AbstractController
 {
-    public function __invoke(Campaign $campaign, DataSurveyRepository $dataSurveyRepository): Response
+    public function __invoke(Request $request, Campaign $campaign, DataSurveyRepository $dataSurveyRepository): Response
     {
         return $this->json(
-            $dataSurveyRepository->findPhoningCampaignDataSurvey($campaign),
+            $dataSurveyRepository->findPhoningCampaignDataSurvey(
+                $campaign,
+                $request->query->getInt('page', 1),
+                $request->query->getInt('page_size', 30)
+            ),
             Response::HTTP_OK,
             [],
             ['groups' => ['campaign_replies_list']]
