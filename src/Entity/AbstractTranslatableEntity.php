@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 
-abstract class AbstractTranslatableEntity
+abstract class AbstractTranslatableEntity implements TranslatableInterface
 {
     protected function getFieldTranslations(string $field): array
     {
@@ -25,15 +25,4 @@ abstract class AbstractTranslatableEntity
             'en' => $english->$getter(),
         ];
     }
-
-    abstract public function translate($locale = null, $fallbackToDefault = true);
-
-    /** @return Collection */
-    abstract public function getTranslations();
-
-    abstract public function addTranslation($translation);
-
-    abstract public function removeTranslation($translation);
-
-    abstract public function mergeNewTranslations();
 }
