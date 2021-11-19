@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\Entity\Event\EventRegistration;
+use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -14,6 +15,7 @@ abstract class AbstractEventControllerTest extends WebTestCase
 
     public function testAnonymousUserCanRegisterToEventWhileLoginIn()
     {
+        Chronos::setTestNow('2018-05-18');
         $eventUrl = $this->getEventUrl();
         $crawler = $this->client->request('GET', $eventUrl);
 
@@ -41,10 +43,14 @@ abstract class AbstractEventControllerTest extends WebTestCase
         ]));
 
         $this->assertClientIsRedirectedTo($eventRegistrationUrl, $this->client);
+
+        Chronos::setTestNow();
     }
 
     public function testAnonymousUserCanRegisterToEventWhileRegistering()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $eventUrl = $this->getEventUrl();
         $crawler = $this->client->request('GET', $eventUrl);
 
@@ -81,6 +87,8 @@ abstract class AbstractEventControllerTest extends WebTestCase
 
         $this->assertInstanceOf(EventRegistration::class, $registration);
         $this->assertSame($eventUrl.'/confirmation?registration='.$registration->getUuid(), $redirectUrl);
+
+        Chronos::setTestNow();
     }
 
     abstract protected function getEventUrl(): string;

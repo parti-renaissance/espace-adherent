@@ -1,5 +1,4 @@
 @api
-@group12
 Feature:
   In order to get events count in the
   As a client passing a referent email
@@ -7,13 +6,6 @@ Feature:
 
   Background:
     Given I freeze the clock to "2018-05-18"
-    And the following fixtures are loaded:
-      | LoadUserData            |
-      | LoadAdherentData        |
-      | LoadCommitteeEventData  |
-      | LoadCoalitionEventData  |
-      | LoadCauseEventData      |
-      | LoadClientData          |
 
   Scenario: As a non logged-in user I can not get events count in the referent managed zone
     When I am on "/api/statistics/events/count"
@@ -320,7 +312,7 @@ Feature:
     And I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 35 |
+      | metadata.total_items  | 38 |
 
   Scenario: As a non logged-in user I can get scheduled and published event
     When I send a "GET" request to "/api/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
@@ -338,14 +330,14 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 34 |
+      | metadata.total_items  | 36 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
     And I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 35 |
+      | metadata.total_items  | 38 |
 
   Scenario: As a non logged-in user I can not check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
@@ -393,16 +385,16 @@ Feature:
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | metadata.total_items  | 18 |
+      | metadata.total_items  | 20 |
 
     When I send a "GET" request to "/api/events?group_source=coalitions"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | metadata.total_items          | 16                                    |
-      | items[0].organizer.uuid       | 2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf  |
-      | items[0].organizer.first_name | Referent75and77                       |
-      | items[0].organizer.last_name  | Referent75and77                       |
+      | metadata.total_items          | 16                                   |
+      | items[0].organizer.uuid       | a046adbe-9c7b-56a9-a676-6151a6785dda |
+      | items[0].organizer.first_name | Jacques                              |
+      | items[0].organizer.last_name  | Picard                               |
 
   Scenario: As a logged-in user I can not delete an event of another adherent
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"

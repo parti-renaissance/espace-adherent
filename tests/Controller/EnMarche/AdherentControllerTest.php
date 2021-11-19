@@ -48,6 +48,8 @@ class AdherentControllerTest extends WebTestCase
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents(): void
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
@@ -78,6 +80,8 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame(2, $crawler->filter('#past-events article')->count());
         $this->assertSame('Grand Meeting de Paris', trim($titles->first()->text()));
         $this->assertSame('Grand Meeting de Marseille', trim($titles->last()->text()));
+
+        Chronos::setTestNow();
     }
 
     /**

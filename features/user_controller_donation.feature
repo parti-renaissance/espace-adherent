@@ -1,13 +1,7 @@
-@donation
-@group01
+@app
 Feature: Test donation page
   In order to see donation as a user
   I should be able to see my donation in my account profile
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
-      | LoadDonationData |
 
   Scenario: Be able to navigate in my donation page as an adherent with monthly donations
     Given I am logged as "jacques.picard@en-marche.fr"

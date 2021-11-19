@@ -34,6 +34,7 @@ use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
+use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -585,7 +586,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
             $this->finishAt->format('Y-m-d H:i'),
             $timezone = new \DateTimeZone($this->timeZone ?? GeoCoder::DEFAULT_TIME_ZONE)
         );
-        $now = new \DateTime('now');
+        $now = new Chronos('now');
 
         return $finishAt < $now->setTimezone($timezone);
     }

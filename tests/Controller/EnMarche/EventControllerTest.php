@@ -14,6 +14,7 @@ use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
 use App\Repository\EmailRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\NewsletterSubscriptionRepository;
+use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,6 +35,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAnonymousUserCanRegisterToEvent()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->assertCount(5, $this->subscriptionsRepository->findAll());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -103,10 +106,14 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertSame('paupau75@example.org', $subscription->getEmail());
         $this->assertNull($subscription->getPostalCode());
         $this->assertNull($subscription->getCountry());
+
+        Chronos::setTestNow();
     }
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->authenticateAsAdherent($this->client, 'deputy@en-marche-dev.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
@@ -147,13 +154,17 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertStringContainsString('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
+
+        Chronos::setTestNow();
     }
 
     public function testCantRegisterToAFullEvent()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
-        $eventUrl = '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise';
+        $eventUrl = '/evenements/'.self::getRelativeDate('2018-05-18', '+17 days').'-reunion-de-reflexion-marseillaise';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -169,6 +180,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->followRedirect();
 
         self::assertSame("L'événement est complet", $crawler->filter('.flash .flash__inner')->text());
+
+        Chronos::setTestNow();
     }
 
     public function testAdherentCanInviteToEvent()
@@ -352,10 +365,10 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testRedirectionEventFromOldUrl()
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadCommitteeEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise');
+        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadCommitteeEventData::EVENT_5_UUID.'/'.self::getRelativeDate('2018-05-18', '+17 days').'-reunion-de-reflexion-marseillaise');
 
         $this->assertClientIsRedirectedTo(
-            '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise',
+            '/evenements/'.self::getRelativeDate('2018-05-18', '+17 days').'-reunion-de-reflexion-marseillaise',
             $this->client,
             false,
             true
@@ -379,6 +392,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testEventWithSpecialCharInTitle()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_14_UUID);
         $eventUrl = sprintf('/evenements/%s/inscription', $event->getSlug());
         $crawler = $this->client->request('GET', $eventUrl);
@@ -389,6 +404,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $needle = 'text=Meeting%20%2311%20de%20Brooklyn';
 
         $this->assertStringContainsString($needle, $link);
+
+        Chronos::setTestNow();
     }
 
     public function testSearchCategoryForm()
@@ -415,6 +432,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAdherentCanUnregisterToEvent()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $eventUrl = $this->getEventUrl();
@@ -436,11 +455,13 @@ class EventControllerTest extends AbstractEventControllerTest
 
         self::assertSame('0 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
         self::assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
+
+        Chronos::setTestNow();
     }
 
     public function testAnonymousUserCannotSeePrivateEvent()
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.date('Y-m-d', strtotime('+1 day')).'-reunion-de-reflexion-bellifontaine');
+        $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+1 days').'-reunion-de-reflexion-bellifontaine');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
@@ -448,7 +469,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAnonymousUserCannotRegisterToPrivateEvent()
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.date('Y-m-d', strtotime('+1 day')).'-reunion-de-reflexion-bellifontaine/inscription');
+        $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+1 days').'-reunion-de-reflexion-bellifontaine/inscription');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
@@ -456,7 +477,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAnonymousUserCannotInviteToPrivateEvent()
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.date('Y-m-d', strtotime('+1 day')).'-reunion-de-reflexion-bellifontaine/invitation');
+        $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+1 days').'-reunion-de-reflexion-bellifontaine/invitation');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
@@ -482,6 +503,11 @@ class EventControllerTest extends AbstractEventControllerTest
 
     protected function getEventUrl(): string
     {
-        return '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
+        return '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne';
+    }
+
+    private static function getRelativeDate(string $date, string $modifier, string $format = 'Y-m-d'): string
+    {
+        return (new \DateTime($date))->modify($modifier)->format($format);
     }
 }

@@ -77,7 +77,7 @@ jobs:
             public/built/
             public/css/
             public/select2/
-          key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('public/built/*') }}
+          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
 
   lint:
     name: Lint
@@ -218,6 +218,7 @@ jobs:
         tags:
           - '@javascript1'
           - '@javascript2'
+          - '@javascript3'
 
     steps:
       - uses: actions/checkout@v2
@@ -236,13 +237,12 @@ jobs:
 
       - name: Cache static assets
         uses: actions/cache@v2
-        id: cache-static
         with:
           path: |
             public/built/
             public/css/
             public/select2/
-          key: cache-${{ env.CACHE_KEY }}-static-${{ hashFiles('public/built/*') }}
+          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
 
       - uses: ./.github/actions/docker-login
 
@@ -255,15 +255,13 @@ jobs:
           hash: ${{ hashFiles('docker/dev/*') }}
           extra-containers: db redis rabbitmq selenium
           keys: true
-          cache-warmup: true
 
       - name: Build static assets
-        if: ${{ steps.cache-static.outputs.hit != 'true' }}
         run: |-
           make assets-prod
 
       - run: |-
-          make tfp-rabbitmq tfp-db
+          make tfp-cc tfp-rabbitmq tfp-db
 
       - env:
           BEHAT_ARGS: --profile=javascript --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
@@ -271,11 +269,11 @@ jobs:
           make test-behat
 
       - uses: actions/upload-artifact@v2
-        if: ${{ failure() }}
+        if: failure()
         with:
           name: behat-selenium-screenshots-${{ matrix.tags }}
           path: var/behat/
-          retention-days: 2
+          retention-days: 1
 
   docker-build-push-gcr:
     name: Build prod & push on registry

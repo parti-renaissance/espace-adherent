@@ -1,17 +1,8 @@
-@apiJemengage
 @api
-@group10
 Feature:
   In order to get all surveys
   As a non logged-in user
   I should be able to access to the surveys configuration and be able to answer to it
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadJecouteSurveyData |
-      | LoadClientData        |
-      | LoadOAuthTokenData    |
-      | LoadScopeData         |
 
   Scenario: As a non logged-in user I cannot get the surveys
     When I send a "GET" request to "/api/jecoute/survey"
@@ -26,125 +17,125 @@ Feature:
     """
     [
       {
-        "id":3,
-        "uuid":"@uuid@",
+        "id": @integer@,
+        "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
         "type": "local",
-        "questions":[
+        "name": "Questionnaire numéro 1",
+        "zone":{
+           "code": "77",
+           "name": "Seine-et-Marne"
+        },
+        "city":null,
+        "questions": [
           {
             "id":1,
-            "type":"simple_field",
-            "content":"Ceci est-il un champ libre ?",
-            "choices":[]
+            "type": "simple_field",
+            "content": "Ceci est-il un champ libre ?",
+            "choices": []
           },
           {
-            "id":2,
-            "type":"multiple_choice",
-            "content":"Est-ce une question à choix multiple ?",
-            "choices":[
+            "id": @integer@,
+            "type": "multiple_choice",
+            "content": "Est-ce une question à choix multiple ?",
+            "choices": [
               {
-                "id":1,
-                "content":"Réponse A"
+                "id": @integer@,
+                "content": "Réponse A"
               },
               {
-                "id":2,
-                "content":"Réponse B"
+                "id": @integer@,
+                "content": "Réponse B"
               }
             ]
           },
           {
-            "id":3,
-            "type":"unique_choice",
-            "content":"Est-ce une question à choix unique ?",
-            "choices":[
+            "id": @integer@,
+            "type": "unique_choice",
+            "content": "Est-ce une question à choix unique ?",
+            "choices": [
               {
-                "id":3,
-                "content":"Réponse unique 1"
+                "id": @integer@,
+                "content": "Réponse unique 1"
               },
               {
-                "id":4,
-                "content":"Réponse unique 2"
+                "id": @integer@,
+                "content": "Réponse unique 2"
               }
             ]
           },
           {
-            "id": 4,
+            "id": @integer@,
             "type": "simple_field",
             "content": "Ceci est-il un champ libre d'une question suggérée ?",
             "choices": []
           }
-        ],
-        "name":"Questionnaire numéro 1",
-        "zone":{
-           "code":"77",
-           "name":"Seine-et-Marne"
-        },
-        "city":null
+        ]
       },
       {
-        "id":2,
-        "uuid":"@uuid@",
-        "type":"national",
-        "questions":[
+        "id": @integer@,
+        "uuid": "@uuid@",
+        "type": "national",
+        "name": "Le deuxième questionnaire national",
+        "questions": [
           {
-            "id":8,
-            "type":"unique_choice",
-            "content":"La question du 2eme questionnaire national ?",
-            "choices":[
+            "id": @integer@,
+            "type": "unique_choice",
+            "content": "La question du 2eme questionnaire national ?",
+            "choices": [
               {
-                "id":9,
-                "content":"Réponse nationale E"
+                "id": @integer@,
+                "content": "Réponse nationale E"
               },
               {
-                "id":10,
-                "content":"Réponse nationale F"
+                "id": @integer@,
+                "content": "Réponse nationale F"
               },
               {
-                "id":11,
-                "content":"Réponse nationale G"
+                "id": @integer@,
+                "content": "Réponse nationale G"
               }
             ]
           }
-        ],
-        "name":"Le deuxième questionnaire national"
+        ]
       },
       {
-        "id":1,
-        "uuid":"@uuid@",
+        "id": @integer@,
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
         "type": "national",
-        "questions":[
+        "name": "Questionnaire national numéro 1",
+        "questions": [
           {
-            "id":6,
-            "type":"simple_field",
-            "content":"Une première question du 1er questionnaire national ?",
-            "choices":[
+            "id": @integer@,
+            "type": "simple_field",
+            "content": "Une première question du 1er questionnaire national ?",
+            "choices": [
 
             ]
           },
           {
-            "id":7,
-            "type":"multiple_choice",
-            "content":"Une deuxième question du 1er questionnaire national ?",
-            "choices":[
+            "id": @integer@,
+            "type": "multiple_choice",
+            "content": "Une deuxième question du 1er questionnaire national ?",
+            "choices": [
               {
-                "id":5,
-                "content":"Réponse nationale A"
+                "id": @integer@,
+                "content": "Réponse nationale A"
               },
               {
-                "id":6,
-                "content":"Réponse nationale B"
+                "id": @integer@,
+                "content": "Réponse nationale B"
               },
               {
-                "id":7,
-                "content":"Réponse nationale C"
+                "id": @integer@,
+                "content": "Réponse nationale C"
               },
               {
-                "id":8,
-                "content":"Réponse nationale D"
+                "id": @integer@,
+                "content": "Réponse nationale D"
               }
             ]
           }
-        ],
-        "name":"Questionnaire national numéro 1"
+        ]
       }
     ]
     """
@@ -178,125 +169,125 @@ Feature:
     """
     [
       {
-        "id":3,
-        "uuid":"@uuid@",
+        "id": @integer@,
+        "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
         "type": "local",
-        "questions":[
+        "name": "Questionnaire numéro 1",
+        "zone":{
+           "code": "77",
+           "name": "Seine-et-Marne"
+        },
+        "city":null,
+        "questions": [
           {
             "id":1,
-            "type":"simple_field",
-            "content":"Ceci est-il un champ libre ?",
-            "choices":[]
+            "type": "simple_field",
+            "content": "Ceci est-il un champ libre ?",
+            "choices": []
           },
           {
-            "id":2,
-            "type":"multiple_choice",
-            "content":"Est-ce une question à choix multiple ?",
-            "choices":[
+            "id": @integer@,
+            "type": "multiple_choice",
+            "content": "Est-ce une question à choix multiple ?",
+            "choices": [
               {
-                "id":1,
-                "content":"Réponse A"
+                "id": @integer@,
+                "content": "Réponse A"
               },
               {
-                "id":2,
-                "content":"Réponse B"
+                "id": @integer@,
+                "content": "Réponse B"
               }
             ]
           },
           {
-            "id":3,
-            "type":"unique_choice",
-            "content":"Est-ce une question à choix unique ?",
-            "choices":[
+            "id": @integer@,
+            "type": "unique_choice",
+            "content": "Est-ce une question à choix unique ?",
+            "choices": [
               {
-                "id":3,
-                "content":"Réponse unique 1"
+                "id": @integer@,
+                "content": "Réponse unique 1"
               },
               {
-                "id":4,
-                "content":"Réponse unique 2"
+                "id": @integer@,
+                "content": "Réponse unique 2"
               }
             ]
           },
           {
-            "id": 4,
+            "id": @integer@,
             "type": "simple_field",
             "content": "Ceci est-il un champ libre d'une question suggérée ?",
             "choices": []
           }
-        ],
-        "name":"Questionnaire numéro 1",
-        "zone":{
-           "code":"77",
-           "name":"Seine-et-Marne"
-        },
-        "city":null
+        ]
       },
       {
-        "id":2,
-        "uuid":"@uuid@",
-        "type":"national",
-        "questions":[
+        "id": @integer@,
+        "uuid": "@uuid@",
+        "type": "national",
+        "name": "Le deuxième questionnaire national",
+        "questions": [
           {
-            "id":8,
-            "type":"unique_choice",
-            "content":"La question du 2eme questionnaire national ?",
-            "choices":[
+            "id": @integer@,
+            "type": "unique_choice",
+            "content": "La question du 2eme questionnaire national ?",
+            "choices": [
               {
-                "id":9,
-                "content":"Réponse nationale E"
+                "id": @integer@,
+                "content": "Réponse nationale E"
               },
               {
-                "id":10,
-                "content":"Réponse nationale F"
+                "id": @integer@,
+                "content": "Réponse nationale F"
               },
               {
-                "id":11,
-                "content":"Réponse nationale G"
+                "id": @integer@,
+                "content": "Réponse nationale G"
               }
             ]
           }
-        ],
-        "name":"Le deuxième questionnaire national"
+        ]
       },
       {
-        "id":1,
-        "uuid":"@uuid@",
+        "id": @integer@,
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
         "type": "national",
-        "questions":[
+        "name": "Questionnaire national numéro 1",
+        "questions": [
           {
-            "id":6,
-            "type":"simple_field",
-            "content":"Une première question du 1er questionnaire national ?",
-            "choices":[
+            "id": @integer@,
+            "type": "simple_field",
+            "content": "Une première question du 1er questionnaire national ?",
+            "choices": [
 
             ]
           },
           {
-            "id":7,
-            "type":"multiple_choice",
-            "content":"Une deuxième question du 1er questionnaire national ?",
-            "choices":[
+            "id": @integer@,
+            "type": "multiple_choice",
+            "content": "Une deuxième question du 1er questionnaire national ?",
+            "choices": [
               {
-                "id":5,
-                "content":"Réponse nationale A"
+                "id": @integer@,
+                "content": "Réponse nationale A"
               },
               {
-                "id":6,
-                "content":"Réponse nationale B"
+                "id": @integer@,
+                "content": "Réponse nationale B"
               },
               {
-                "id":7,
-                "content":"Réponse nationale C"
+                "id": @integer@,
+                "content": "Réponse nationale C"
               },
               {
-                "id":8,
-                "content":"Réponse nationale D"
+                "id": @integer@,
+                "content": "Réponse nationale D"
               }
             ]
           }
-        ],
-        "name":"Questionnaire national numéro 1"
+        ]
       }
     ]
     """
@@ -782,70 +773,70 @@ Feature:
       },
       "items": [
         {
-          "id":1,
-          "uuid":"@uuid@",
+          "id": @integer@,
+          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
           "type": "national",
-          "questions":[
+          "name": "Questionnaire national numéro 1",
+          "questions": [
             {
-              "id":6,
-              "type":"simple_field",
-              "content":"Une première question du 1er questionnaire national ?",
-              "choices":[
+              "id": @integer@,
+              "type": "simple_field",
+              "content": "Une première question du 1er questionnaire national ?",
+              "choices": [
 
               ]
             },
             {
-              "id":7,
-              "type":"multiple_choice",
-              "content":"Une deuxième question du 1er questionnaire national ?",
-              "choices":[
+              "id": @integer@,
+              "type": "multiple_choice",
+              "content": "Une deuxième question du 1er questionnaire national ?",
+              "choices": [
                 {
-                  "id":5,
-                  "content":"Réponse nationale A"
+                  "id": @integer@,
+                  "content": "Réponse nationale A"
                 },
                 {
-                  "id":6,
-                  "content":"Réponse nationale B"
+                  "id": @integer@,
+                  "content": "Réponse nationale B"
                 },
                 {
-                  "id":7,
-                  "content":"Réponse nationale C"
+                  "id": @integer@,
+                  "content": "Réponse nationale C"
                 },
                 {
-                  "id":8,
-                  "content":"Réponse nationale D"
+                  "id": @integer@,
+                  "content": "Réponse nationale D"
                 }
               ]
             }
-          ],
-          "name":"Questionnaire national numéro 1"
+          ]
         },
         {
-          "id":2,
-          "uuid":"@uuid@",
-          "type":"national",
-          "questions":[
+          "id": @integer@,
+          "uuid": "@uuid@",
+          "type": "national",
+          "name": "Le deuxième questionnaire national",
+          "questions": [
             {
-              "id":8,
-              "type":"unique_choice",
-              "content":"La question du 2eme questionnaire national ?",
-              "choices":[
+              "id": @integer@,
+              "type": "unique_choice",
+              "content": "La question du 2eme questionnaire national ?",
+              "choices": [
                 {
-                  "id":9,
-                  "content":"Réponse nationale E"
+                  "id": @integer@,
+                  "content": "Réponse nationale E"
                 },
                 {
-                  "id":10,
-                  "content":"Réponse nationale F"
+                  "id": @integer@,
+                  "content": "Réponse nationale F"
                 },
                 {
-                  "id":11,
-                  "content":"Réponse nationale G"
+                  "id": @integer@,
+                  "content": "Réponse nationale G"
                 }
               ]
             }
-          ],
-          "name":"Le deuxième questionnaire national"
+          ]
         }
       ]
     }

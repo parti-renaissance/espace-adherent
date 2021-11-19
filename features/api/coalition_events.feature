@@ -1,20 +1,11 @@
-@apiCoalitions
 @api
-@group07
 Feature:
   In order to see coalition events
   As a non logged-in user
   I should be able to access API coalition events
 
   Background:
-    Given the following fixtures are loaded:
-      | LoadCauseData           |
-      | LoadCoalitionData       |
-      | LoadCoalitionEventData  |
-      | LoadCauseEventData      |
-      | LoadAdherentData        |
-      | LoadUserData            |
-      | LoadClientData          |
+    Given I freeze the clock to "2018-05-18"
 
   Scenario: As a non logged-in user I see coalition events
     Given I add "Accept" header equal to "application/json"

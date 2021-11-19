@@ -11,12 +11,11 @@ use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadCauseEventData extends Fixture implements DependentFixtureInterface
+class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtureInterface
 {
     public const EVENT_1_UUID = 'ef62870c-6d42-47b6-91ea-f454d473adf8';
     public const EVENT_2_UUID = '19242011-7fbe-47b7-b459-0ca724d4fca2';
@@ -26,16 +25,15 @@ class LoadCauseEventData extends Fixture implements DependentFixtureInterface
     public const EVENT_6_UUID = 'b0b53da1-cb0f-4387-9214-bb1f13ce3ee2';
     public const EVENT_7_UUID = '7773cccb-e5ac-425f-b653-2222a34445bb';
 
-    private $eventFactory;
-    private $eventRegistrationFactory;
-
-    public function __construct(EventFactory $eventFactory, EventRegistrationFactory $eventRegistrationFactory)
-    {
-        $this->eventFactory = $eventFactory;
-        $this->eventRegistrationFactory = $eventRegistrationFactory;
+    public function __construct(
+        string $environment,
+        EventFactory $eventFactory,
+        EventRegistrationFactory $eventRegistrationFactory
+    ) {
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory);
     }
 
-    public function load(ObjectManager $manager)
+    public function loadEvents(ObjectManager $manager): void
     {
         $eventCategory1 = $this->getReference('CE001');
         $eventCategory5 = $this->getReference('CE005');
@@ -110,8 +108,8 @@ class LoadCauseEventData extends Fixture implements DependentFixtureInterface
             'Événement culturel passé de la cause',
             'Cet événement de la cause est passé',
             PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
-            '2021-02-10 09:30:00',
-            '2021-02-10 19:00:00'
+            (new Chronos('-20 days'))->format('Y-m-d').' 09:30:00',
+            (new Chronos('-20 days'))->format('Y-m-d').' 19:00:00'
         );
 
         $eventCultureNotPublished = $this->createEvent(

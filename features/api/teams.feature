@@ -1,17 +1,8 @@
-@apiJemengage
 @api
-@group10
 Feature:
   In order to see teams
   As a logged-in user
   I should be able to access API teams
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
-      | LoadClientData   |
-      | LoadScopeData    |
-      | LoadTeamData     |
 
   Scenario Outline: As a logged-in user without phoning team manager right I can not access teams endpoints
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"

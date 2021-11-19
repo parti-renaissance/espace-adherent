@@ -1,21 +1,8 @@
 @api
-@group11
 Feature:
   In order to see, create, edit and delete audiences
   As a logged-in user
   I should be able to access API audiences
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadCommitteeData               |
-      | LoadAdherentData                |
-      | LoadDelegatedAccessData         |
-      | LoadClientData                  |
-      | LoadGeoZoneData                 |
-      | LoadAudienceData                |
-      | LoadDistrictData                |
-      | LoadReferentTagData             |
-      | LoadReferentTagsZonesLinksData  |
 
   Scenario Outline: As a non logged-in user I can not manage audiences
     Given I send a "<method>" request to "<url>"

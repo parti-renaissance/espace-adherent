@@ -1,4 +1,5 @@
-@group03
+@javascript
+@javascript1
 Feature:
     As an adherent
     I want to delegate some access to another adherent
@@ -13,7 +14,6 @@ Feature:
             | LoadDistrictData        |
         And I am logged as "deputy-ch-li@en-marche-dev.fr"
 
-    @javascript
     Scenario: I can delegate a space to an adherent of my area by searching for its name
         When I go to "/espace-depute/messagerie"
         And I wait 3 second until I see "J'ai lu et j'accepte"
@@ -44,7 +44,6 @@ Feature:
         And I should see 4 ".team-organization__member-container" element
         And I should see "Michelle Dufour" in the ".team-organization__member-container:nth-child(4)" element
 
-    @javascript
     Scenario: I can delegate to an adherent not in my area by using its email address
         And I am on "/espace-depute/mon-equipe/deleguer-acces"
         And I wait 3 second until I see "J'ai lu et j'accepte"

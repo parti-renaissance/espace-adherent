@@ -1,15 +1,7 @@
-@group05
+@app
 Feature:
   In order to use the website
   I should be able to navigate through the nav
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData       |
-      | LoadArticleData        |
-      | LoadCommitteeEventData |
-      | LoadHomeBlockData      |
-      | LoadPageData           |
 
   Scenario: The global sitemap displays correctly
     Given I am on "/sitemap.xml"
@@ -35,12 +27,12 @@ Feature:
     Given I am on "/sitemap_content_1.xml"
     Then the response status code should be 200
     And the response should be in XML
-    And the XML element "//urlset" should have 215 element
+    And the XML element "//urlset" should have 216 element
 
   Scenario: The images sitemap displays correctly
     Given I am on "/sitemap_images_1.xml"
     Then the response should be in XML
-    And the XML element "//urlset" should have 9 element
+    And the XML element "//urlset" should have 18 element
 
   Scenario: The committees sitemap displays correctly
     Given I am on "/sitemap_committees_1.xml"

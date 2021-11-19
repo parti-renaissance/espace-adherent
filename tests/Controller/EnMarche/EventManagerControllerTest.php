@@ -8,6 +8,7 @@ use App\Entity\Event\CommitteeEvent;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventContactMembersMessage;
 use App\Mailer\Message\EventUpdateMessage;
+use Cake\Chronos\Chronos;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,7 @@ class EventManagerControllerTest extends WebTestCase
 
     public function provideHostProtectedPages(): array
     {
-        $slug = date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
+        $slug = self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne';
 
         return [
             ['/evenements/'.$slug.'/modifier'],
@@ -65,7 +66,7 @@ class EventManagerControllerTest extends WebTestCase
 
     public function provideCancelledInaccessiblePages(): array
     {
-        $slug = date('Y-m-d', strtotime('+60 days')).'-reunion-de-reflexion-parisienne-annule';
+        $slug = self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne-annule';
 
         return [
             ['/evenements/'.$slug.'/modifier'],
@@ -78,7 +79,9 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
+        Chronos::setTestNow('2018-05-18');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne/modifier');
+        Chronos::setTestNow();
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -121,7 +124,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.date('Y-m-d', strtotime('+10 days')).'-reunion-de-reflexion-dammarienne/annuler');
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+10 days').'-reunion-de-reflexion-dammarienne/annuler');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -147,7 +150,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
 
-        $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/modifier');
+        $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne/modifier');
 
         $this->isSuccessful($this->client->getResponse());
     }
@@ -156,7 +159,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $this->assertCount(3, $crawler->filter('tbody > tr'));
@@ -166,7 +169,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $exportUrl = $this->client->getRequest()->getPathInfo().'/exporter';
@@ -183,7 +186,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
@@ -222,7 +225,7 @@ class EventManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $printUrl = $this->client->getRequest()->getPathInfo().'/imprimer';
@@ -241,7 +244,7 @@ class EventManagerControllerTest extends WebTestCase
 
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-print-token')->attr('value');
@@ -266,7 +269,7 @@ class EventManagerControllerTest extends WebTestCase
     public function testOrganizerCanContactRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne');
+        $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');
         $crawler = $this->client->click($crawler->selectLink('Gérer les participants')->link());
 
         $token = $crawler->filter('#members-contact-token')->attr('value');
@@ -340,7 +343,7 @@ class EventManagerControllerTest extends WebTestCase
 
     public function testExportIcalEvent()
     {
-        $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
+        $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -390,5 +393,10 @@ CONTENT;
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
+    }
+
+    private static function getRelativeDate(string $date, string $modifier, string $format = 'Y-m-d'): string
+    {
+        return (new \DateTime($date))->modify($modifier)->format($format);
     }
 }

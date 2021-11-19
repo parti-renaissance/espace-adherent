@@ -95,7 +95,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->andWhere('e.beginAt >= :begin')
             // The extra 24 hours enable to include events in foreign
             // countries that are on different timezones.
-            ->setParameter('begin', new \DateTime('-24 hours'))
+            ->setParameter('begin', new Chronos('-24 hours'))
             ->orderBy('e.beginAt', 'ASC')
             ->getQuery()
             ->getResult()
@@ -114,7 +114,8 @@ class EventRegistrationRepository extends ServiceEntityRepository
     ): PaginatorInterface {
         $queryBuilder = $this->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
             ->andWhere('e.published = true')
-            ->andWhere('e.beginAt >= CONVERT_TZ(NOW(), \'Europe/Paris\', e.timeZone)')
+            ->andWhere('e.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', e.timeZone)')
+            ->setParameter('now', new Chronos('now'))
             ->orderBy('e.beginAt', 'ASC')
         ;
 
@@ -134,7 +135,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->andWhere('e.finishAt < :finish')
             // The extra 24 hours enable to include events in foreign
             // countries that are on different timezones.
-            ->setParameter('finish', new \DateTime('+24 hours'))
+            ->setParameter('finish', new Chronos('+24 hours'))
             ->orderBy('e.finishAt', 'DESC')
             ->getQuery()
             ->getResult()
@@ -155,7 +156,8 @@ class EventRegistrationRepository extends ServiceEntityRepository
         $queryBuilder = $this
             ->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
             ->andWhere('e.published = true')
-            ->andWhere('e.finishAt < CONVERT_TZ(NOW(), \'Europe/Paris\', e.timeZone)')
+            ->andWhere('e.finishAt < CONVERT_TZ(:now, \'Europe/Paris\', e.timeZone)')
+            ->setParameter('now', new Chronos('now'))
             ->orderBy('e.finishAt', 'DESC')
         ;
 

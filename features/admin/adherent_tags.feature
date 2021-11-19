@@ -1,11 +1,7 @@
-@admin
-@group01
+@app
 Feature: Manage adherent tags from admin panel
 
   Background:
-    Given the following fixtures are loaded:
-      | LoadAdminData       |
-      | LoadAdherentTagData |
     When I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: As a super admin, I should have a list of tags
