@@ -1353,42 +1353,58 @@ SQL;
 
     public function findOneToCall(Campaign $campaign, Adherent $excludedAdherent): ?Adherent
     {
-        $adherents = $this->createQueryBuilderForAudience($campaign->getAudience())
+        $adherents = iterator_to_array($this->findForPhoningCampaign($campaign, $excludedAdherent));
+
+        return $adherents ? $adherents[array_rand($adherents)] : null;
+    }
+
+    public function findForPhoningCampaign(
+        Campaign $campaign,
+        Adherent $excludedAdherent = null,
+        int $limit = 10
+    ): PaginatorInterface {
+        $queryBuilder = $this->createQueryBuilderForAudience($campaign->getAudience())
             ->select('adherent')
-            ->andWhere('adherent.phone LIKE :fr_phone AND adherent != :excludedAdherent')
-            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a3')
-                ->select('DISTINCT(a3.id)')
-                ->innerJoin(CampaignHistory::class, 'ch3', Join::WITH, 'ch3.adherent = a3')
-                ->andWhere('ch3.status = :completed')
-                ->andWhere('ch3.campaign = :campaign')
+            ->andWhere('adherent.phone LIKE :fr_phone')
+            ->andWhere(sprintf('adherent.id NOT IN (%s)',
+                $this->createQueryBuilder('a3')
+                    ->select('DISTINCT(a3.id)')
+                    ->innerJoin(CampaignHistory::class, 'ch3', Join::WITH, 'ch3.adherent = a3')
+                    ->andWhere('ch3.status = :completed')
+                    ->andWhere('ch3.campaign = :campaign')
             ))
-            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a4')
-                ->select('DISTINCT(a4.id)')
-                ->innerJoin(CampaignHistory::class, 'ch4', Join::WITH, 'ch4.adherent = a4')
-                ->andWhere((new Orx())
-                    ->add('ch4.status IN (:not_callable)')
-                    ->add('ch4.status = :dont_remind AND ch4.campaign = :campaign')
-                )
+            ->andWhere(sprintf('adherent.id NOT IN (%s)',
+                $this->createQueryBuilder('a4')
+                    ->select('DISTINCT(a4.id)')
+                    ->innerJoin(CampaignHistory::class, 'ch4', Join::WITH, 'ch4.adherent = a4')
+                    ->andWhere((new Orx())
+                        ->add('ch4.status IN (:not_callable)')
+                        ->add('ch4.status = :dont_remind AND ch4.campaign = :campaign')
+                    )
             ))
-            ->andWhere(sprintf('adherent.id NOT IN (%s)', $this->createQueryBuilder('a5')
-                ->select('DISTINCT(a5.id)')
-                ->innerJoin(CampaignHistory::class, 'ch5', Join::WITH, 'ch5.adherent = a5')
-                ->andWhere('ch5.status IN (:recall)')
-                ->andWhere('DATE(ch5.beginAt) = CURRENT_DATE()')
+            ->andWhere(sprintf('adherent.id NOT IN (%s)',
+                $this->createQueryBuilder('a5')
+                    ->select('DISTINCT(a5.id)')
+                    ->innerJoin(CampaignHistory::class, 'ch5', Join::WITH, 'ch5.adherent = a5')
+                    ->andWhere('ch5.status IN (:recall)')
+                    ->andWhere('DATE(ch5.beginAt) = CURRENT_DATE()')
             ))
-            ->setMaxResults(10)
             ->setParameter('fr_phone', '+33%')
             ->setParameter('not_callable', CampaignHistoryStatusEnum::NOT_CALLABLE)
             ->setParameter('recall', CampaignHistoryStatusEnum::CALLABLE_LATER + [CampaignHistoryStatusEnum::COMPLETED])
             ->setParameter('completed', CampaignHistoryStatusEnum::COMPLETED)
             ->setParameter('dont_remind', CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND)
             ->setParameter('campaign', $campaign)
-            ->setParameter('excludedAdherent', $excludedAdherent)
-            ->getQuery()
-            ->getResult()
         ;
 
-        return $adherents ? $adherents[array_rand($adherents)] : null;
+        if ($excludedAdherent) {
+            $queryBuilder
+                ->andWhere('adherent != :excluded_adherent')
+                ->setParameter('excluded_adherent', $excludedAdherent)
+            ;
+        }
+
+        return $this->configurePaginator($queryBuilder, 1, $limit);
     }
 
     public function findScoresByCampaign(Campaign $campaign): array

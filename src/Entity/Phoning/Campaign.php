@@ -51,11 +51,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
- *         "delete": {
- *             "path": "/v3/phoning_campaigns/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
- *         },
  *         "get_with_scores": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{id}/scores",
@@ -199,6 +194,9 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      * @Groups({"phoning_campaign_read", "phoning_campaign_read_with_score"})
      */
     private bool $permanent = false;
+
+    /** @ORM\Column(type="integer", options={"default": 0}) */
+    private int $participantsCount = 0;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -407,5 +405,15 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     public function getCreator(): string
     {
         return null !== $this->createdByAdherent ? $this->createdByAdherent->getPartialName() : 'Admin';
+    }
+
+    public function getParticipantsCount(): int
+    {
+        return $this->participantsCount;
+    }
+
+    public function setParticipantsCount(int $participantsCount): void
+    {
+        $this->participantsCount = $participantsCount;
     }
 }

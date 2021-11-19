@@ -46,7 +46,6 @@ Feature:
       | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                      |
       | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
       | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
-      | DELETE | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
 
   Scenario: As a logged-in user I can get my phoning campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -951,11 +950,6 @@ Feature:
       "nb_failed": 1
     }
     """
-
-  Scenario: As a DC referent I can remove a phoning campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "DELETE" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager"
-    Then the response status code should be 204
 
   Scenario: As a DC referent I can get the list of phoning campaign histories
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"

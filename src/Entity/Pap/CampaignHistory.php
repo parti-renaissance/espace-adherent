@@ -78,7 +78,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotNull
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="campaignHistories")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
      *
      * @Groups({"pap_campaign_history_write"})
      */
@@ -88,7 +88,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotNull
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
      *
      * @Groups({"pap_campaign_history_write"})
      */
