@@ -1,12 +1,9 @@
 @api
-@group14
 Feature:
   In order to get the acquisition statistics data
   I should be able to request them via the API
 
   Scenario:
-    Given the following fixtures are loaded:
-      | LoadClientData |
     And I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |

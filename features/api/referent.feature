@@ -1,16 +1,8 @@
 @api
-@group14
 Feature:
   In order to get information for referent space
   As a referent
   I should be able to acces API data accessible by referent
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadUserData      |
-      | LoadAdherentData  |
-      | LoadCommitteeEventData |
-      | LoadClientData    |
 
   Scenario: As a non logged-in user I can not get the committee, cities and countries managed by referent for autocomplete
     When I am on "/api/statistics/search/autocomplete?type=committee&value=en"

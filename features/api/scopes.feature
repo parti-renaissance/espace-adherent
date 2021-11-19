@@ -1,22 +1,7 @@
-@apiUserInfo
 @api
-@group13
 Feature:
   In order to get scopes of an adherent
   I should be able to request them via the API
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData                |
-      | LoadCommitteeData               |
-      | LoadDelegatedAccessData         |
-      | LoadClientData                  |
-      | LoadScopeData                   |
-      | LoadDistrictData                |
-      | LoadReferentTagData             |
-      | LoadGeoZoneData                 |
-      | LoadReferentTagsZonesLinksData  |
-      | LoadTeamData                    |
 
   Scenario:
     When I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"

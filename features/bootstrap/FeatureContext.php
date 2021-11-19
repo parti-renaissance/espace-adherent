@@ -2,27 +2,10 @@
 
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Cake\Chronos\Chronos;
 use Webmozart\Assert\Assert;
 
 class FeatureContext extends RawMinkContext
 {
-    /**
-     * @Given I freeze the clock to :dateTime
-     */
-    public function freezeClock(string $dateTime): void
-    {
-        Chronos::setTestNow($dateTime);
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function defreezeClock(): void
-    {
-        Chronos::setTestNow();
-    }
-
     /**
      * @Given I resolved the captcha
      */

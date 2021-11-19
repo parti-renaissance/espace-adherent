@@ -1,18 +1,8 @@
 @api
-@group12
 Feature:
   In order to get adherents' information
   As a referent
   I should be able to acces adherents API data
-
-  Background:
-    Given I freeze the clock to "2018-04-17"
-    And the following fixtures are loaded:
-      | LoadUserData                       |
-      | LoadAdherentData                   |
-      | LoadEmailSubscriptionHistoryData   |
-      | LoadCommitteeMembershipHistoryData |
-      | LoadClientData                     |
 
   Scenario: As a non logged-in user I can not access the adherents count information
     When I am on "/api/statistics/adherents/count"
@@ -51,6 +41,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can access the managed by referent adherents count information
+    Given I freeze the clock to "2018-04-17"
     Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
@@ -84,7 +75,7 @@ Feature:
           {"date": "2017-11", "count": 2}
       ],
       "email_subscriptions": [
-          {"date": "2018-04", "subscribed_emails_local_host": 9, "subscribed_emails_referents": 9},
+          {"date": "2018-04", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
           {"date": "2018-03", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
           {"date": "2018-02", "subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
           {"date": "2018-01", "subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},

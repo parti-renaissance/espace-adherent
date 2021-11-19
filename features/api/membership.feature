@@ -1,15 +1,8 @@
-@apiUserInfo
 @api
-@group14
 Feature:
   In order to create a light profile
   As a non logged-in user
   I should be able to access API membership
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadGeoZoneData       |
 
   Scenario: As a non logged-in user I can create a light profile
     Given I send a "POST" request to "/api/membership" with body:

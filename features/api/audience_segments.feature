@@ -1,18 +1,7 @@
 @api
-@group10
 Feature:
   In order to see audience segments
   I should be able to access API of audience segments
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData                  |
-      | LoadAdherentData                |
-      | LoadDistrictData                |
-      | LoadReferentTagData             |
-      | LoadGeoZoneData                 |
-      | LoadReferentTagsZonesLinksData  |
-      | LoadAudienceSegmentData         |
 
   Scenario Outline: As a non logged-in user I can not manage audience segments
     Given I send a "<method>" request to "<url>"

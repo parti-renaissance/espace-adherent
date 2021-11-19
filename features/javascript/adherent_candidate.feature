@@ -1,4 +1,4 @@
-@group03
+@javascript
 Feature:
   As a candidate
   I should be able to access my candidate space and see concerned information
@@ -13,14 +13,11 @@ Feature:
       | LoadJemarcheDataSurveyData      |
       | LoadJecouteDataAnswerData       |
 
-  Scenario: As a headed regional candidate I can access user list in candidate space
+  Scenario: As a headed regional candidate I can see the local surveys list and their statistics
     Given I am logged as "jacques.picard@en-marche.fr"
     When I am on "/espace-candidat/utilisateurs"
     And the response status code should be 200
 
-  @javascript
-  Scenario: As a headed regional candidate I can see the local surveys list and their statistics
-    Given I am logged as "jacques.picard@en-marche.fr"
     When I am on "/espace-candidat/questionnaires"
     And I should see "Vous gérez : Île-de-France (11)"
     And I should see "Questionnaires locaux"
@@ -42,7 +39,6 @@ Feature:
     When I follow "⟵ Retour"
     Then I should be on "/espace-candidat/questionnaires"
 
-  @javascript
   Scenario: As a departmental candidate I can see the local surveys list
     Given I am logged as "francis.brioul@yahoo.com"
     When I am on "/espace-candidat/questionnaires"

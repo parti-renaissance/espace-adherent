@@ -1,6 +1,4 @@
-@procurationProxy
 @javascript
-@group06
 Feature:
   As a non logged user
   I can fill a form and became a representative

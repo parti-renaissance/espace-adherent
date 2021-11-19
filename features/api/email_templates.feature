@@ -1,15 +1,8 @@
 @api
-@group04
 Feature:
   In order to manage email templates
   As client software developer
   I should be able to access API email templates
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadClientData        |
-      | LoadEmailTemplateData |
 
   Scenario: I can get a logged-in user templates
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
@@ -94,6 +87,6 @@ Feature:
       | DELETE | /api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312 |
 
   Scenario: I can not access email templates data with the wrong roles
-    Given I am logged with "carl999@example.fr" via OAuth client "JeMarche App"
+    Given I am logged with "damien.schmidt@example.ch" via OAuth client "JeMarche App"
     When I send a "GET" request to "/api/v3/email_templates"
     Then the response status code should be 403
