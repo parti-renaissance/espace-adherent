@@ -17,6 +17,7 @@ RUN apt-get update -q && \
     add-apt-repository -y ppa:ondrej/php && \
     apt-get update -q && \
     apt-get install --no-install-recommends -qy \
+        libpcre2-8-0 \
         ca-certificates \
         cron \
         curl \
