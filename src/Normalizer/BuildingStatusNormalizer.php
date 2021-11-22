@@ -51,7 +51,7 @@ class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareIn
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return \is_object($data) && !isset($context[static::ALREADY_CALLED.'_'.\get_class($data)])
-            && ($data instanceof Floor || $data instanceof BuildingBlock);
+        return ($data instanceof Floor || $data instanceof BuildingBlock)
+            && !isset($context[static::ALREADY_CALLED.'_'.\get_class($data)]);
     }
 }

@@ -49,17 +49,17 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      */
-    private ?int $nbVoters = 0;
+    private int $nbVoters = 0;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      */
-    private ?int $nbDoors = 0;
+    private int $nbDoors = 0;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      */
-    private ?int $nbSurveys = 0;
+    private int $nbSurveys = 0;
 
     public function __construct(Building $building, Campaign $campaign)
     {
@@ -110,7 +110,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->lastPassageDoneBy = $lastPassageDoneBy;
     }
 
-    public function getNbVoters(): ?int
+    public function getNbVoters(): int
     {
         return $this->nbVoters;
     }
@@ -120,7 +120,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->nbVoters = $nbVoters;
     }
 
-    public function getNbDoors(): ?int
+    public function getNbDoors(): int
     {
         return $this->nbDoors;
     }
@@ -130,7 +130,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->nbDoors = $nbDoors;
     }
 
-    public function getNbSurveys(): ?int
+    public function getNbSurveys(): int
     {
         return $this->nbSurveys;
     }
