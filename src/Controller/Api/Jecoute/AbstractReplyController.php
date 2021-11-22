@@ -57,7 +57,7 @@ abstract class AbstractReplyController extends AbstractController
 
         $this->dispatch();
 
-        return $this->json($dataSurvey, Response::HTTP_CREATED, [], ['groups' => 'data_survey_read']);
+        return $this->json($dataSurvey, Response::HTTP_CREATED, [], ['groups' => ['data_survey_read']]);
     }
 
     protected function postHandleAction(): void
