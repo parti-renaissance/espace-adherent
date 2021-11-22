@@ -279,13 +279,16 @@ jobs:
     name: Build prod & push on registry
     runs-on: ubuntu-20.04
     needs: [ lint, phpunit, behat, behat-selenium ]
-    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
     env:
-      TAG_LATEST: latest
-      HASH: ${{ github.ref_name }}-${{ github.sha }}
+      HASH: ${{ github.sha }}
+      TAG: master
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
 
       - name: Cache yarn dependencies
         uses: actions/cache@v2
@@ -302,19 +305,23 @@ jobs:
             public/select2/
           key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
 
-      - uses: ./github/actions/docker-pull
+      - uses: ./.github/actions/docker-pull
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
-          tag: ${{ env.TAG_LATEST }}
+          hash: ${{ env.HASH }}
+          tag: ${{ env.TAG }}
 
       - run: |-
-          docker build --cache-from=$REGISTRY:$TAG_LATEST -t $REGISTRY:$HASH .
+          docker build --cache-from=$REGISTRY:$TAG -t $REGISTRY:$TAG-$HASH .
+
+      - name: Build static assets
+        run: |-
+          make keys perm
 
       - name: Build static assets
         run: |-
           make assets-prod
 
-      - uses: ./github/actions/docker-push
+      - uses: ./.github/actions/docker-push
         with:
           hash: ${{ env.HASH }}
-          tag: ${{ env.TAG_LATEST }}
+          tag: ${{ steps.extract_branch.outputs.branch }}
