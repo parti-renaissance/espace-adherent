@@ -16,8 +16,7 @@ class PhoninCampaignCallersNormalizer implements NormalizerInterface, Normalizer
     {
         $context[self::PHONING_CAMPAIGN_CALLERS_ALREADY_CALLED] = true;
 
-        array_walk($object, function (&$adherent, $key) {
-            $adherent['position'] = ++$key;
+        array_walk($object, function (&$adherent) {
             unset($adherent['id']);
         });
 

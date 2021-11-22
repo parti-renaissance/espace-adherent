@@ -1339,8 +1339,7 @@ Feature:
         "nb_to_unjoin": "1",
         "nb_to_remind": "0",
         "nb_not_respond": "0",
-        "nb_failed": "1",
-        "position": 1
+        "nb_failed": "1"
       },
       {
         "firstName": "Pierre",
@@ -1352,8 +1351,7 @@ Feature:
         "nb_to_unjoin": "0",
         "nb_to_remind": "1",
         "nb_not_respond": "2",
-        "nb_failed": "0",
-        "position": 2
+        "nb_failed": "0"
       },
       {
         "firstName": "Michelle",
@@ -1365,8 +1363,7 @@ Feature:
         "nb_to_unjoin": "0",
         "nb_to_remind": "0",
         "nb_not_respond": "0",
-        "nb_failed": "0",
-        "position": 3
+        "nb_failed": "0"
       }
     ]
     """
