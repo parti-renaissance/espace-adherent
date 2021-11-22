@@ -7,6 +7,7 @@ use App\DataFixtures\ORM\LoadClientData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventCategory;
 use App\OAuth\Model\GrantTypeEnum;
+use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
@@ -24,6 +25,8 @@ class EventsControllerTest extends WebTestCase
 
     public function testApiUpcomingEvents()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->client->request(Request::METHOD_GET, '/api/upcoming-events');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -38,8 +41,10 @@ class EventsControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('position', $content);
-        $this->assertEachJsonItemContainsKey('committee_name', $content, [0, 4]);
-        $this->assertEachJsonItemContainsKey('committee_url', $content, [0, 4]);
+        $this->assertEachJsonItemContainsKey('committee_name', $content, [3, 8]);
+        $this->assertEachJsonItemContainsKey('committee_url', $content, [3, 8]);
+
+        Chronos::setTestNow();
     }
 
     /**
@@ -47,6 +52,8 @@ class EventsControllerTest extends WebTestCase
      */
     public function testApiUpcomingEventsForCategory(string $categoryCode, int $expectedCount, array $exclude = [])
     {
+        Chronos::setTestNow('2018-05-18');
+
         $categoryName = LoadEventCategoryData::LEGACY_EVENT_CATEGORIES[$categoryCode];
         $category = $this->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName]);
 
@@ -66,6 +73,8 @@ class EventsControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('position', $content);
         $this->assertEachJsonItemContainsKey('committee_name', $content, $exclude);
         $this->assertEachJsonItemContainsKey('committee_url', $content, $exclude);
+
+        Chronos::setTestNow();
     }
 
     public function testICanRequestMySubscribedEvents()
@@ -93,7 +102,7 @@ class EventsControllerTest extends WebTestCase
     {
         return [
             ['CE011', 0],
-            ['CE001', 2, [0]],
+            ['CE001', 2, [1]],
             ['CE005', 1],
         ];
     }

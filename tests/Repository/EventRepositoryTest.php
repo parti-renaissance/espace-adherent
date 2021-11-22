@@ -5,6 +5,7 @@ namespace Tests\App\Repository;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Repository\EventRepository;
 use App\Search\SearchParametersFilter;
+use Cake\Chronos\Chronos;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractKernelTestCase;
 
@@ -26,18 +27,28 @@ class EventRepositoryTest extends AbstractKernelTestCase
 
     public function testFindUpcomingEvents()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->assertCount(10, $this->repository->findUpcomingEvents(null, true));
         $this->assertCount(9, $this->repository->findUpcomingEvents(null, false));
+
+        Chronos::setTestNow();
     }
 
     public function testCountUpcomingEvents()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->assertSame(10, $this->repository->countUpcomingEvents(true));
         $this->assertSame(9, $this->repository->countUpcomingEvents(false));
+
+        Chronos::setTestNow();
     }
 
     public function testSearchAllEvents()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $query = [
             'q' => '',
             'r' => '150',
@@ -61,6 +72,8 @@ class EventRepositoryTest extends AbstractKernelTestCase
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
         $this->assertSame(1, \count($this->repository->searchAllEvents($search)));
+
+        Chronos::setTestNow();
     }
 
     protected function setUp(): void

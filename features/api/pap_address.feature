@@ -1,14 +1,7 @@
-@apiJemengage
+@api
 Feature:
   In order to to complete PAP campaigns
   I should be able to retrieve addresses for a given position and additional datas
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData    |
-      | LoadClientData      |
-      | LoadPapAddressData  |
-      | LoadPapBuildingData |
 
   Scenario Outline: As an anonymous I can not get address and voters information
     When I send a "GET" request to "<url>"

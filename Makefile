@@ -1,6 +1,9 @@
-DOCKER_COMPOSE?=docker-compose
-RUN=$(DOCKER_COMPOSE) run --rm app
-EXEC?=$(DOCKER_COMPOSE) exec app entrypoint.sh
+DOCKER_COMPOSE_ARGS?=
+DOCKER_COMPOSE?=docker-compose $(DOCKER_COMPOSE_ARGS)
+RUN_ARGS?=
+RUN=$(DOCKER_COMPOSE) run --rm $(RUN_ARGS) app
+EXEC_ARGS?=
+EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app entrypoint.sh
 COMPOSER=$(EXEC) composer
 CONSOLE=$(EXEC) bin/console
 PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
@@ -9,6 +12,7 @@ BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
 PHPUNIT_ARGS?=-v
 DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
+CONTAINERS?=
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
@@ -22,9 +26,9 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up config/packages/assets_version.yaml db rabbitmq-fabric public/built var/public.key perm  ## Install and start the project
+start: build up assets-prod assets db keys perm cc rabbitmq-fabric ## Install and start the project
 
-start-mac: build up config/packages/assets_version.yaml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
+start-mac: build up assets-prod web-built-mac db keys.key perm cc rabbitmq-fabric   ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill || true
@@ -48,18 +52,16 @@ cc:                                                                             
 	$(CONSOLE) cache:clear --no-warmup
 	$(CONSOLE) cache:warmup
 
-tfp-cc:                                                                                                    ## Clear the cache in test env
+tfp-cc:                                                                                                ## Clear the cache in test env
 	$(CONSOLE) cache:clear --env=test --no-warmup
 	$(CONSOLE) cache:warmup --env=test
 
 tty:                                                                                                   ## Run app container in interactive mode
 	$(RUN) /bin/bash
 
-var/public.key: var/private.key                                                                        ## Generate the public key
-	$(EXEC) openssl rsa -in var/private.key -pubout -out var/public.key
-
-var/private.key:                                                                                       ## Generate the private key
+keys:                                                                                                  ## Generate the public and private keys
 	$(EXEC) openssl genrsa -out var/private.key 1024
+	$(EXEC) openssl rsa -in var/private.key -pubout -out var/public.key
 
 wait-for-rabbitmq:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('rabbitmq',5672)){break;}echo \"Waiting for RabbitMQ\n\";sleep(1);}"
@@ -70,6 +72,7 @@ rabbitmq-fabric: wait-for-rabbitmq
 ##
 ## Database
 ##---------------------------------------------------------------------------
+
 
 wait-for-db:
 	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',3306)){break;}echo \"Waiting for MySQL\n\";sleep(1);}"
@@ -100,7 +103,6 @@ db-load: vendor wait-for-db                                                     
 
 db-validate: vendor wait-for-db                                                                        ## Check the ORM mapping
 	$(CONSOLE) doctrine:schema:validate --no-debug
-
 
 ##
 ## Assets
@@ -137,7 +139,7 @@ test-debug:                                                                     
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
-tu: vendor config/packages/assets_version.yaml                                                               ## Run the PHP unit tests
+tu: vendor                                                                                             ## Run the PHP unit tests
 	$(PHPUNIT) --exclude-group functional
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
@@ -145,8 +147,8 @@ tf: tfp test-behat test-phpunit-functional                                      
 tfp: assets-prod vendor perm tfp-rabbitmq tfp-db                                            ## Prepare the PHP functional tests
 
 tfp-rabbitmq: wait-for-rabbitmq                                                                        ## Init RabbitMQ setup for tests
-	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl add_vhost /test || true
-	$(DOCKER_COMPOSE) exec rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
+	$(DOCKER_COMPOSE) exec $(EXEC_ARGS) rabbitmq rabbitmqctl add_vhost /test || true
+	$(DOCKER_COMPOSE) exec $(EXEC_ARGS) rabbitmq rabbitmqctl set_permissions -p /test guest ".*" ".*" ".*"
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
@@ -156,8 +158,7 @@ tfp-db-init: wait-for-db                                                        
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 
-tfp-db: tfp-db-init                                                                                     ## Init databases for tests
-	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
+tfp-db: tfp-db-init
 	$(CONSOLE) doctrine:fixtures:load --no-debug --env=test -n
 
 tj: node_modules                                                                                       ## Run the Javascript tests
@@ -201,10 +202,7 @@ security-check: vendor                                                          
 ## Dependencies
 ##---------------------------------------------------------------------------
 
-deps: vendor public/built                                                                                 ## Install the project PHP and JS dependencies
-
-##
-
+deps: vendor assets                                                                                ## Install the project PHP and JS dependencies
 
 # Internal rules
 
@@ -217,9 +215,6 @@ docker-dev.lock: $(DOCKER_FILES)
 
 rm-docker-dev.lock:
 	rm -f docker-dev.lock
-
-up:
-	$(DOCKER_COMPOSE) up -d --remove-orphans
 
 perm:
 	$(EXEC) chmod -R 777 app/data/images app/data/files
@@ -241,12 +236,19 @@ node_modules: yarn.lock
 yarn.lock: package.json
 	@echo yarn.lock is not up to date.
 
-public/built: front node_modules
-	$(EXEC) yarn build-dev
-
 web-built-mac:
 	yarn install
 	yarn build-dev
 
-config/packages/assets_version.yaml: node_modules
-	 $(EXEC) yarn build-prod
+##
+## Containers
+##---------------------------------------------------------------------------
+
+build-app:
+	$(DOCKER_COMPOSE) build app
+
+up:
+	$(DOCKER_COMPOSE) up -d --remove-orphans $(CONTAINERS)
+
+up-no-deps:
+	$(DOCKER_COMPOSE) up -d --remove-orphans --no-deps $(CONTAINERS)

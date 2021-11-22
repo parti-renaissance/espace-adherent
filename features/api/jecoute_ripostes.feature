@@ -1,14 +1,7 @@
-@apiJemengage
+@api
 Feature:
   In order to see ripostes
   I should be able to access API of ripostes
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData          |
-      | LoadAdherentData        |
-      | LoadJecouteRiposteData  |
-      | LoadScopeData           |
 
   Scenario Outline: As a non logged-in user I can not manage ripostes
     Given I send a "<method>" request to "<url>"
@@ -56,7 +49,6 @@ Feature:
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/ripostes?scope=national"
     Then the response status code should be 200
-    Then print last JSON response
     And the JSON should be equal to:
     """
     [
@@ -155,7 +147,6 @@ Feature:
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/ripostes"
     Then the response status code should be 200
-    Then print last JSON response
     And the JSON should be equal to:
     """
     [

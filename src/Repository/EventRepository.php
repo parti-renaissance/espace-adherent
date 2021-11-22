@@ -270,7 +270,7 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('ec.status = :status')
             ->orderBy('e.beginAt', 'ASC')
             ->setParameter('published', true)
-            ->setParameter('today', date('Y-m-d'))
+            ->setParameter('today', (new Chronos('now'))->format('Y-m-d'))
             ->setParameter('status', BaseEventCategory::ENABLED)
         ;
 
@@ -394,7 +394,7 @@ SQL;
 
         if ($search->getCityCoordinates()) {
             $query->setParameter('distance_max', $search->getRadius());
-            $query->setParameter('today', new \DateTime('now - 1 hour'));
+            $query->setParameter('today', new Chronos('now - 1 hour'));
         }
 
         if (!empty($searchQuery)) {

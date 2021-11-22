@@ -1,13 +1,7 @@
-@apiUserInfo
+@api
 Feature:
   As a logged-in user
   I should be able to access my informations
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData     |
-      | LoadOAuthTokenData |
-      | LoadUserData       |
 
   Scenario: As a non logged-in user I cannot get my information
     When I send a "GET" request to "/api/me"

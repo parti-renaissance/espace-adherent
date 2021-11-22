@@ -1,5 +1,5 @@
-@procurationRequest
 @javascript
+@javascript3
 Feature:
   As a non logged user
   I can fill a form and submit a procuration request

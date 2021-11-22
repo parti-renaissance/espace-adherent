@@ -5,11 +5,6 @@ Feature:
   I should be able to retrieve the list of report reasons
   And be able to post reports
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData  |
-      | LoadCommitteeData |
-
   Scenario: As a non logged-in user I can not see the report reasons
     When I send a "GET" request to "/api/report/reasons"
     Then the response status code should be 401

@@ -1,0 +1,330 @@
+name: CI & CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  release:
+    types: [ published ]
+
+env:
+  DOCKER_COMPOSE_ARGS: -f docker-compose.yml -f docker-compose.ci.yml
+  EXEC_ARGS: -T
+  # Update this to force cache reset
+  CACHE_KEY: ${{ secrets.CACHE_KEY }}
+
+  NODE_VERSION: 14.17.5
+  PHP_VERSION: 7.4
+  PHP_SECURITY_CHECKER_VERSION: 1.2.0
+
+  REGISTRY: ${{ secrets.REGISTRY_HOST }}/${{ secrets.REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
+  REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
+  REGISTRY_SERVICE_ACCOUNT_EMAIL: ${{ secrets.REGISTRY_SERVICE_ACCOUNT_EMAIL }}
+  REGISTRY_SERVICE_ACCOUNT_KEY: ${{ secrets.REGISTRY_SERVICE_ACCOUNT_KEY }}
+
+jobs:
+  build:
+    name: Build dev
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: ./.github/actions/docker-login
+
+      - uses: ./.github/actions/docker-pull
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+
+      - uses: ./.github/actions/build
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+
+      - uses: ./.github/actions/docker-push
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+
+  build-static:
+    name: Build assets
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules/
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup yarn
+        uses: ./.github/actions/setup-yarn
+
+      - name: Build static assets
+        run: yarn build-prod
+
+      - name: Cache static assets
+        uses: actions/cache@v2
+        with:
+          path: |
+            public/built/
+            public/css/
+            public/select2/
+          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-20.04
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules/
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache PHP CS Fixer
+        uses: actions/cache@v2
+        with:
+          path: .php-cs-fixer.dist.php
+          key: cache-${{ env.CACHE_KEY }}-phpcsfixer
+
+      - name: Cache PHPStan
+        uses: actions/cache@v2
+        with:
+          path: var/phpstan-tmp/
+          key: cache-${{ env.CACHE_KEY }}-phpstan
+
+      - uses: ./.github/actions/setup-composer
+      - uses: ./.github/actions/setup-yarn
+
+      - name: PHP Coding Standards Fixer
+        run: vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v
+
+      - name: Lint YAML files
+        run: bin/console lint:yaml config --parse-tags
+
+      - name: Lint Twig files
+        run: bin/console lint:twig templates
+
+      - name: Lint container
+        run: bin/console lint:container
+
+      - name: Yarn lint
+        run: yarn lint -- --fix
+
+      - name: PHPStan - PHP Static Analysis Tool
+        run: vendor/bin/phpstan analyse
+
+      - name: Local PHP Security Checker
+        run: |-
+          curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECKER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECKER_VERSION}_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
+          chmod +x ./local-php-security-checker
+
+          ./local-php-security-checker
+
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-20.04
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: ./.github/actions/docker-login
+      - uses: ./.github/actions/docker-pull
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+
+      - uses: ./.github/actions/build
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+          extra-containers: db rabbitmq
+          keys: true
+          cache-warmup: true
+
+      - run: |-
+          make tfp-db
+
+      - env:
+          PHPUNIT_ARGS: -v --log-junit ./phpunit/junit.xml
+        run: |-
+          make test-phpunit
+
+  behat:
+    name: Behat
+    runs-on: ubuntu-20.04
+    needs: [ build ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - uses: ./.github/actions/docker-login
+
+      - uses: ./.github/actions/docker-pull
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+
+      - uses: ./.github/actions/build
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+          extra-containers: db redis rabbitmq
+          keys: true
+          cache-warmup: true
+
+      - run: |-
+          make tfp-rabbitmq tfp-db
+
+      - env:
+          BEHAT_ARGS: --profile=app -vvv --colors -f progress -o std -f junit -o ./behat --
+        run: |-
+          make test-behat
+
+  behat-selenium:
+    name: Behat/Selenium
+    runs-on: ubuntu-20.04
+    needs: [ build, build-static ]
+    strategy:
+      fail-fast: false
+      matrix:
+        tags:
+          - '@javascript1'
+          - '@javascript2'
+          - '@javascript3'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules/
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache static assets
+        uses: actions/cache@v2
+        with:
+          path: |
+            public/built/
+            public/css/
+            public/select2/
+          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+
+      - uses: ./.github/actions/docker-login
+
+      - uses: ./.github/actions/docker-pull
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+
+      - uses: ./.github/actions/build
+        with:
+          hash: ${{ hashFiles('docker/dev/*') }}
+          extra-containers: db redis rabbitmq selenium
+          keys: true
+
+      - name: Build static assets
+        run: |-
+          make assets-prod
+
+      - run: |-
+          make tfp-cc tfp-rabbitmq tfp-db
+
+      - env:
+          BEHAT_ARGS: --profile=javascript --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
+        run: |-
+          make test-behat
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: behat-selenium-screenshots-${{ matrix.tags }}
+          path: var/behat/
+          retention-days: 1
+
+  docker-build-push-gcr:
+    name: Build prod & push on registry
+    runs-on: ubuntu-20.04
+    needs: [ lint, phpunit, behat, behat-selenium ]
+    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
+    env:
+      HASH: ${{ github.sha }}
+      TAG: ${{ github.ref_name }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules/
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache static assets
+        uses: actions/cache@v2
+        with:
+          path: |
+            public/built/
+            public/css/
+            public/select2/
+          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+
+      - name: Setup yarn
+        uses: ./.github/actions/setup-yarn
+
+      - name: Build static assets
+        run: yarn build-prod
+
+      - uses: ./.github/actions/docker-login
+
+      - uses: ./.github/actions/docker-pull
+        with:
+          hash: ${{ env.HASH }}
+          tag: master
+
+      - run: |-
+          docker build --cache-from=$REGISTRY:master --tag $REGISTRY:$TAG-$HASH .
+
+      - uses: ./.github/actions/docker-push
+        with:
+          hash: ${{ env.HASH }}
+          tag: ${{ env.TAG }}

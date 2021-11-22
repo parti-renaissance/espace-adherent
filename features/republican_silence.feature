@@ -1,14 +1,7 @@
-@republicansilence
+@app
 Feature:
   As Referent|Deputy|CP-Host|Committee-Host or Committee-Supervisor
   I cannot communicate with the adherents when one republican silence is declared for the same Referent Tags
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadRepublicanSilenceData         |
-      | LoadDistrictData                  |
-      | LoadCommitteeData                 |
-      | LoadCommitteeAdherentMandateData  |
 
   Scenario Outline: As referent of department 92 I cannot communicate with adherent from my referent space.
     Given I am logged as "referent-child@en-marche-dev.fr"

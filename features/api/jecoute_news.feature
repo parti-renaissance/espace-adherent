@@ -1,20 +1,8 @@
-@apiJemengage
+@api
 Feature:
   In order to get all news
   With a valid oauth token
   I should be able to access to the news
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadGeoZoneData                 |
-      | LoadJecouteNewsData             |
-      | LoadClientData                  |
-      | LoadOAuthTokenData              |
-      | LoadAdherentData                |
-      | LoadGeoZoneData                 |
-      | LoadReferentTagData             |
-      | LoadReferentTagsZonesLinksData  |
-      | LoadScopeData                   |
 
   Scenario: As a non authenticated user I cannot get the news list
     When I send a "GET" request to "/api/jecoute/news"

@@ -1,12 +1,5 @@
-@admin
+@app
 Feature: Merge committees from admin panel
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdminData                     |
-      | LoadCommitteeData                 |
-      | LoadCommitteeCandidacyData        |
-      | LoadCommitteeAdherentMandateData  |
 
   Scenario: A committee can not be merged if it is not approved
     Given I am logged as "superadmin@en-marche-dev.fr" admin

@@ -4,18 +4,6 @@ Feature:
   As a logged-in user
   I should be able to access API adherent messages
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentMessageData         |
-      | LoadAudienceSegmentData         |
-      | LoadAdherentData                |
-      | LoadDelegatedAccessData         |
-      | LoadClientData                  |
-      | LoadGeoZoneData                 |
-      | LoadAudienceData                |
-      | LoadReferentTagData             |
-      | LoadReferentTagsZonesLinksData  |
-
   Scenario: As a logged-in user I can not update adherent message filter with not my segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"

@@ -1,15 +1,8 @@
-@apiCoalitions
+@api
 Feature:
   In order to see coalitions
   As a non logged-in user
   I should be able to access API coalitions
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadClientData        |
-      | LoadCoalitionData     |
-      | LoadCauseData         |
 
   Scenario: As a non logged-in user I can see first page of active coalitions
     Given I add "Accept" header equal to "application/json"

@@ -1,15 +1,8 @@
-@apiCoalitions
+@api
 Feature:
   In order to see causes
   As a non logged-in user
   I should be able to access API causes
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
-      | LoadClientData   |
-      | LoadCauseData    |
-      | LoadGeoZoneData  |
 
   Scenario: As a non logged-in user I can get causes statistics
     Given I send a "GET" request to "/api/causes/statistiques"

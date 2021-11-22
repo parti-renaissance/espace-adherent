@@ -4,12 +4,6 @@ Feature:
   As a logged-in user
   I should be able to access API event categories
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadEventCategoryData   |
-      | LoadAdherentData        |
-      | LoadClientData          |
-
   Scenario: As a non logged-in user I get event categories with their group category
     When I send a "GET" request to "/api/event_categories"
     Then the response status code should be 200

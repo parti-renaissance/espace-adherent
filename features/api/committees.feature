@@ -4,16 +4,6 @@ Feature:
   As a referent
   I should be able to access committees API data
 
-  Background:
-    Given I freeze the clock to "2018-04-15"
-    And the following fixtures are loaded:
-      | LoadUserData                        |
-      | LoadAdherentData                    |
-      | LoadCommitteeEventData              |
-      | LoadCommitteeMembershipHistoryData  |
-      | LoadClientData                      |
-      | LoadCommitteeData                   |
-      | LoadCommitteeAdherentMandateData    |
 
   Scenario: As a non logged-in user I can not access the committee supervisors count managed by referent information
     When I am on "/api/statistics/committees/count-for-referent-area"
@@ -62,6 +52,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can get the most active committees in referent managed zone
+    Given I freeze the clock to "2018-05-18"
     Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
@@ -98,6 +89,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a referent I can get the committee members count in referent managed zone
+    Given I freeze the clock to "2018-04-15"
     Given I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |
       | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |

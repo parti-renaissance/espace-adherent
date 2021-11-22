@@ -1,35 +1,4 @@
 default:
-    suites:
-        default:
-            contexts:
-                - Behat\MinkExtension\Context\MinkContext
-                - Behatch\Context\BrowserContext:
-                    timeout: 3
-                - Behatch\Context\DebugContext:
-                    screenshotDir: 'var/behat'
-                - Behatch\Context\XmlContext
-                - Behatch\Context\TableContext
-                - FixtureContext:
-                    fixturesLoader: '@Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader'
-                    manager: "@doctrine.orm.default_entity_manager"
-                - RestContext:
-                    sslPrivateKey: "%%ssl_private_key%%"
-                    entityManager: "@doctrine.orm.default_entity_manager"
-                - JsonContext
-                - RabbitMqContext:
-                    container: "@service_container"
-                - SyncWithAPIContext:
-                    doctrine: "@doctrine"
-                    dispatcher: "@event_dispatcher"
-                - EmailContext
-                - NotificationContext:
-                    notificationRepository: "@App\\Repository\\NotificationRepository"
-                    propertyAccessor: "@Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface"
-                - ReferentTagContext:
-                    adherentRepository: "@App\\Repository\\AdherentRepository"
-                - SecurityContext
-                - FeatureContext
-                - DonationContext
     extensions:
         Behat\Symfony2Extension:
             kernel:
@@ -47,3 +16,53 @@ default:
                         wd_host: http://selenium:4444/wd/hub
         Behatch\Extension: ~
         Bex\Behat\SkipTestsExtension: ~
+
+app:
+    suites:
+        default:
+            filters:
+                tags: "@app,@api"
+            contexts:
+                - RestContext:
+                    sslPrivateKey: "%%ssl_private_key%%"
+                    entityManager: "@doctrine.orm.default_entity_manager"
+                - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\XmlContext
+                - SecurityContext
+                - JsonContext
+                - ChronosContext
+                - EmailContext
+                - RabbitMqContext:
+                    container: "@service_container"
+                - NotificationContext:
+                    notificationRepository: "@App\\Repository\\NotificationRepository"
+                    propertyAccessor: "@Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface"
+                - ReferentTagContext:
+                    adherentRepository: "@App\\Repository\\AdherentRepository"
+                - FeatureContext
+                - TransactionalDatabaseContext
+
+javascript:
+    suites:
+        default:
+            filters:
+                tags: "@javascript"
+            contexts:
+                - RestContext:
+                    sslPrivateKey: "%%ssl_private_key%%"
+                    entityManager: "@doctrine.orm.default_entity_manager"
+                - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\BrowserContext:
+                    timeout: 3
+                - Behatch\Context\DebugContext:
+                    screenshotDir: 'var/behat'
+                - SecurityContext
+                - JsonContext
+                - EmailContext
+                - FixtureContext:
+                    fixturesLoader: '@Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader'
+                    manager: "@doctrine.orm.default_entity_manager"
+                - ReferentTagContext:
+                    adherentRepository: "@App\\Repository\\AdherentRepository"
+                - DonationContext
+                - FeatureContext

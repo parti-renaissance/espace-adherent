@@ -1,10 +1,7 @@
+@front
 Feature:
 
   Scenario: The search city is base on user's city
-    Given the following fixtures are loaded:
-      | LoadAdherentData |
-      | LoadCommitteeEventData |
-
     When I am on "/comites"
     Then the "search-city" field should contain "Paris"
 

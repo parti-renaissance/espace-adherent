@@ -11,6 +11,8 @@ class RemindEventCommandTest extends AbstractCommandCaseTest
 
     public function testCommandForMeetingMode(): void
     {
+        $this->markTestSkipped('Commands are tested in subprocess, hence we can not use Chronos to mock the dates for the tests. Skipping this test until we remove our dependency to cackephp/chronos package.');
+
         $notifications = $this->notificationRepository->findAll();
         self::assertEmpty($notifications);
 
@@ -36,6 +38,8 @@ class RemindEventCommandTest extends AbstractCommandCaseTest
 
     public function testCommandForOnlineMode(): void
     {
+        $this->markTestSkipped('Commands are tested in subprocess, hence we can not use Chronos to mock the dates for the tests. Skipping this test until we remove our dependency to cackephp/chronos package.');
+
         $notifications = $this->notificationRepository->findAll();
         self::assertEmpty($notifications);
 

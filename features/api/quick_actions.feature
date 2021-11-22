@@ -4,14 +4,6 @@ Feature:
   As a user
   I should be able to access API quick actions
 
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadClientData        |
-      | LoadCauseData         |
-      | LoadGeoZoneData       |
-      | LoadQuickActionData   |
-
   Scenario: As a non logged-in user I can see quick actions of the cause
     Given I send a "GET" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/quick_actions"
     Then the response status code should be 200
@@ -19,19 +11,19 @@ Feature:
     """
     [
       {
-        "id": "@integer@",
+        "id": @integer@,
         "title": "Première action rapide de la culture",
         "url": "http://culture.fr"
       },
       {
-        "id": "@integer@",
+        "id": @integer@,
         "title": "Deuxième action rapide de la culture",
         "url": "http://test.culture.fr"
       },
       {
-          "id": 3,
-          "title": "Troisième action rapide de la culture",
-          "url": "http://culture.com"
+        "id": @integer@,
+        "title": "Troisième action rapide de la culture",
+        "url": "http://culture.com"
       }
     ]
     """
@@ -108,7 +100,7 @@ Feature:
         "url": "http://test.culture.fr"
       },
       {
-        "id": 5,
+        "id": @integer@,
         "title": "Nouvelle URL",
         "url": "https://new.url.com"
       }

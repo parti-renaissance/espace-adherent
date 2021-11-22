@@ -1,12 +1,8 @@
+@app
 Feature:
   As a referent, animator or simple adherent
   In order to see all my informations
   I should be able to acces my dashboard
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData        |
-      | LoadCommitteeEventData  |
 
   # Adherent
   Scenario: As an adherent, I can see information about me
@@ -96,7 +92,7 @@ Feature:
     Then I should see "Espace responsable assesseur"
 
   Scenario: As a host of single committee, I should not see a dropdown for a single committee
-    Given I am logged as "gisele-berthoux@caramail.com"
+    Given I am logged as "lolodie.dutemps@hotnix.tld"
     When I am on "/evenements"
     Then I should not see an ".nav-dropdown__menu.nav-dropdown__black .list__links" element
 

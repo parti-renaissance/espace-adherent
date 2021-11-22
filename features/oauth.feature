@@ -1,15 +1,8 @@
-@oauth
+@app
 Feature: Using OAuth for 2-legged OAuth flow (client credentials)
   In order to secure API or user data access
   As an API or an En-Marche! user
   I need to be able to access API data
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData   |
-      | LoadAdminData    |
-      | LoadAdherentData |
-      | LoadUserData     |
 
   Scenario: OAuth is not allowed for admin
     Given I am logged as "superadmin@en-marche-dev.fr" admin

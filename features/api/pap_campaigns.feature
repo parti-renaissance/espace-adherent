@@ -1,17 +1,8 @@
-@apiJemengage
+@api
 Feature:
   In order to see PAP campaigns
   As a non logged-in user
   I should be able to access API PAP campaigns
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData            |
-      | LoadClientData              |
-      | LoadScopeData               |
-      | LoadPapCampaignData         |
-      | LoadPapCampaignHistoryData  |
-      | LoadCmsBlockData            |
 
   Scenario Outline: As a non logged-in user I cannot get and manage PAP campaigns
     Given I send a "<method>" request to "<url>"
@@ -146,41 +137,41 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "id":1,
-      "uuid":"@uuid@",
+      "id": @integer@,
+      "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
       "type": "national",
       "questions":[
         {
-          "id":6,
-          "type":"simple_field",
-          "content":"Une première question du 1er questionnaire national ?",
-          "choices":[]
+          "id": @integer@,
+          "type": "simple_field",
+          "content": "Une première question du 1er questionnaire national ?",
+          "choices": []
         },
         {
-          "id":7,
-          "type":"multiple_choice",
-          "content":"Une deuxième question du 1er questionnaire national ?",
-          "choices":[
+          "id": @integer@,
+          "type": "multiple_choice",
+          "content": "Une deuxième question du 1er questionnaire national ?",
+          "choices": [
             {
-              "id":5,
+              "id": @integer@,
               "content":"Réponse nationale A"
             },
             {
-              "id":6,
+              "id": @integer@,
               "content":"Réponse nationale B"
             },
             {
-              "id":7,
+              "id": @integer@,
               "content":"Réponse nationale C"
             },
             {
-              "id":8,
+              "id": @integer@,
               "content":"Réponse nationale D"
             }
           ]
         }
       ],
-      "name":"Questionnaire national numéro 1"
+      "name": "Questionnaire national numéro 1"
     }
     """
 

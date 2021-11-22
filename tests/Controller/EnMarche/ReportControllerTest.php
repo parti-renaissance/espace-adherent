@@ -30,7 +30,7 @@ class ReportControllerTest extends WebTestCase
         ];
         yield 'Event' => [
             CommunityEventReport::class,
-            sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', date('Y-m-d', strtotime('+17 days'))),
+            sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', (new \DateTime('2018-05-18'))->modify('+17 days')->format('Y-m-d')),
             LoadCommitteeEventData::EVENT_5_UUID,
         ];
     }

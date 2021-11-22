@@ -1,16 +1,7 @@
-@apiJemengage
+@api
 Feature:
   As a logged-in user
   I should be able to access my informations
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadClientData          |
-      | LoadOAuthTokenData      |
-      | LoadAdherentData        |
-      | LoadTeamData            |
-      | LoadPhoningCampaignData |
-      | LoadCmsBlockData        |
 
   Scenario Outline: As a non logged-in user I can not manage charters
     Given I send a "<method>" request to "<url>"

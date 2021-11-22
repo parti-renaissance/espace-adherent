@@ -18,6 +18,7 @@ use App\Event\EventTypeEnum;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
+use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -152,7 +153,7 @@ class BaseEventRepository extends ServiceEntityRepository
                 'statuses' => BaseEvent::ACTIVE_STATUSES,
                 'coalition' => $coalition,
                 'coalition_type' => EventTypeEnum::TYPE_COALITION,
-                'now' => new \DateTime('now'),
+                'now' => new Chronos('now'),
             ])
             ->orderBy('custom_order', 'DESC')
             ->addOrderBy('e.beginAt', 'DESC')

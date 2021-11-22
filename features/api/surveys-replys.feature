@@ -1,14 +1,5 @@
-@apiJemengage
+@api
 Feature:
-  Background:
-    Given the following fixtures are loaded:
-      | LoadJecouteSurveyData           |
-      | LoadClientData                  |
-      | LoadOAuthTokenData              |
-      | LoadPhoningCampaignHistoryData  |
-      | LoadPapCampaignHistoryData      |
-      | LoadJemarcheDataSurveyData      |
-
   Scenario: As a logged-in user I can reply to a national survey for phoning campaign (new body structure)
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
