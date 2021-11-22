@@ -18,7 +18,7 @@ Feature:
     [
       {
         "id": @integer@,
-        "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+        "uuid": "@uuid@",
         "type": "local",
         "name": "Questionnaire numéro 1",
         "zone":{
@@ -77,6 +77,47 @@ Feature:
         "type": "national",
         "name": "Le deuxième questionnaire national",
         "questions": [
+        "uuid": "@uuid@",
+        "id": 3,
+        "type": "national",
+        "name": "Les enjeux des 10 prochaines années ",
+        "questions": [
+          {
+            "id": 9,
+            "type": "simple_field",
+            "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
+            "choices": []
+          },
+          {
+            "id": 10,
+            "type": "multiple_choice",
+            "content": "L'écologie est selon vous, importante pour :",
+            "choices": [
+              {
+                "id": 12,
+                "content": "L'héritage laissé aux générations futures"
+              },
+              {
+                "id": 13,
+                "content": "Le bien-être sanitaire"
+              },
+              {
+                "id": 14,
+                "content": "L'aspect financier"
+              },
+              {
+                "id": 15,
+                "content": "La préservation de l'environnement"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id":2,
+        "uuid":"@uuid@",
+        "type":"national",
+        "questions":[
           {
             "id": @integer@,
             "type": "unique_choice",
@@ -170,7 +211,7 @@ Feature:
     [
       {
         "id": @integer@,
-        "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+        "uuid": "@uuid@",
         "type": "local",
         "name": "Questionnaire numéro 1",
         "zone":{
@@ -220,6 +261,43 @@ Feature:
             "type": "simple_field",
             "content": "Ceci est-il un champ libre d'une question suggérée ?",
             "choices": []
+          }
+        ]
+      },
+      {
+        "uuid": "@uuid@",
+        "id": 3,
+        "type": "national",
+        "name": "Les enjeux des 10 prochaines années ",
+        "questions": [
+          {
+            "id": 9,
+            "type": "simple_field",
+            "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
+            "choices": []
+          },
+          {
+            "id": 10,
+            "type": "multiple_choice",
+            "content": "L'écologie est selon vous, importante pour :",
+            "choices": [
+              {
+                "id": 12,
+                "content": "L'héritage laissé aux générations futures"
+              },
+              {
+                "id": 13,
+                "content": "Le bien-être sanitaire"
+              },
+              {
+                "id": 14,
+                "content": "L'aspect financier"
+              },
+              {
+                "id": 15,
+                "content": "La préservation de l'environnement"
+              }
+            ]
           }
         ]
       },
