@@ -1,7 +1,7 @@
 name: Remove old unused images from registry
 on:
   schedule:
-    - cron: "* 6 * * *"
+    - cron: "0 6 * * *"
 env:
   INTERVAL_OLD_IMAGES: ${{ secrets.CLEANUP_OLD_IMAGES_TIME_DIFF }}
 
