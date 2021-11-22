@@ -96,7 +96,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             LoadJecouteSurveyData::class,
             LoadAdherentData::class,
             LoadPapCampaignData::class,
-            LoadPapAddressData::class,
+            LoadPapBuildingData::class,
         ];
     }
 }

@@ -7,13 +7,11 @@ use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Pap\BuildingStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -36,6 +34,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface
     use EntityAdherentBlameableTrait;
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use CampaignStatisticsTrait;
 
     /**
      * @ORM\Column
@@ -43,18 +42,6 @@ class BuildingBlock implements EntityAdherentBlameableInterface
      * @Groups({"pap_building_block_list"})
      */
     private string $name;
-
-    /**
-     * @ORM\Column(length=25)
-     *
-     * @Assert\Choice(
-     *     callback={"App\Pap\BuildingStatusEnum", "toArray"},
-     *     strict=true
-     * )
-     *
-     * @Groups({"pap_building_block_list"})
-     */
-    private string $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="buildingBlocks")
@@ -78,13 +65,25 @@ class BuildingBlock implements EntityAdherentBlameableInterface
      */
     private Collection $floors;
 
+    /**
+     * @var BuildingBlockStatistics[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Pap\BuildingBlockStatistics",
+     *     mappedBy="buildingBlock",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    private Collection $statistics;
+
     public function __construct(string $name, Building $building)
     {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
         $this->building = $building;
-        $this->status = BuildingStatusEnum::ONGOING;
         $this->floors = new ArrayCollection();
+        $this->statistics = new ArrayCollection();
     }
 
     public function getBuilding(): Building
@@ -105,16 +104,6 @@ class BuildingBlock implements EntityAdherentBlameableInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
     }
 
     /**
