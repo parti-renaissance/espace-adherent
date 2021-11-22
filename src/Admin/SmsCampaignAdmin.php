@@ -90,16 +90,21 @@ class SmsCampaignAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('title', null, ['label' => 'Titre'])
-            ->add('content', null, ['label' => 'Contenu'])
-            ->add('administrator', null, ['label' => 'Auteur'])
-            ->add('audience', null, ['label' => 'Audience'])
-            ->add('recipientCount', null, ['label' => 'Nombre de contact trouvé', 'template' => 'admin/sms_campaign/CRUD/show__recipient_count.html.twig'])
-            ->add('status', 'trans', ['label' => 'Statut', 'format' => 'sms_campaign.status.%s'])
-            ->add('responsePayload', null, ['label' => 'Réponse'])
-            ->add('externalId', null, ['label' => 'OVH ID'])
-            ->add('createdAt', null, ['label' => 'Créée le'])
-            ->add('sentAt', null, ['label' => 'Envoyée le'])
+            ->with('Général')
+                ->add('title', null, ['label' => 'Titre'])
+                ->add('content', null, ['label' => 'Contenu'])
+                ->add('administrator', null, ['label' => 'Auteur'])
+                ->add('audience', null, ['label' => 'Audience'])
+                ->add('recipientCount', null, ['label' => 'Nombre de contact trouvé', 'template' => 'admin/sms_campaign/CRUD/show__recipient_count.html.twig'])
+                ->add('status', 'trans', ['label' => 'Statut', 'format' => 'sms_campaign.status.%s'])
+                ->add('responsePayload', null, ['label' => 'Réponse'])
+                ->add('externalId', null, ['label' => 'OVH ID'])
+                ->add('createdAt', null, ['label' => 'Créée le'])
+                ->add('sentAt', null, ['label' => 'Envoyée le'])
+            ->end()
+            ->with('Statistiques')
+                ->add('statistics', null, ['label' => false, 'template' => 'admin/sms_campaign/CRUD/show__stats.html.twig'])
+            ->end()
         ;
     }
 

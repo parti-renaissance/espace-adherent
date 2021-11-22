@@ -33,6 +33,11 @@ class Driver
         $this->senderName = $senderName;
     }
 
+    public function getBatchStats(string $batchId): ResponseInterface
+    {
+        return $this->send('GET', sprintf('https://%s/1.0/sms/%s/batches/%s/statistics', self::HOST, $this->serviceName, $batchId));
+    }
+
     public function sendSmsBatch(string $message, string $name, array $phones): ResponseInterface
     {
         $content = [
@@ -43,13 +48,12 @@ class Driver
             'noStop' => false,
         ];
 
-        $url = sprintf('https://%s/1.0/sms/%s/batches', self::HOST, $this->serviceName);
-
-        return $this->send('POST', $url, $content);
+        return $this->send('POST', sprintf('https://%s/1.0/sms/%s/batches', self::HOST, $this->serviceName), $content);
     }
 
-    private function send(string $method, string $url, array $content): ResponseInterface
+    private function send(string $method, string $url, array $content = []): ResponseInterface
     {
+        $requestOptions = [];
         $headers = [];
 
         $now = time() + $this->calculateTimeDelta();
@@ -57,18 +61,18 @@ class Driver
         $headers['X-Ovh-Timestamp'] = $now;
         $headers['Content-Type'] = 'application/json';
 
-        $body = json_encode($content, \JSON_UNESCAPED_SLASHES);
+        $body = null;
+        if ($content) {
+            $requestOptions['body'] = $body = json_encode($content, \JSON_UNESCAPED_SLASHES);
+        }
 
         $toSign = [$this->applicationSecret, $this->consumerKey, $method, $url, $body, $now];
         $headers['X-Ovh-Consumer'] = $this->consumerKey;
         $headers['X-Ovh-Signature'] = '$1$'.sha1(implode('+', $toSign));
 
-        $options = [
-            'headers' => $headers,
-            'body' => $body,
-        ];
+        $requestOptions['headers'] = $headers;
 
-        return $this->httpClient->request($method, $url, $options);
+        return $this->httpClient->request($method, $url, $requestOptions);
     }
 
     /**

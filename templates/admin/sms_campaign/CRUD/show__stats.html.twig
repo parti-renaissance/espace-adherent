@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% if value %}
+        <table class="table table-striped table-bordered" style="width:200px">
+            <tr><td class="text-bold">Envoyé</td><td>{{ value.sent }}</td></tr>
+            <tr><td class="text-bold">Reçu</td><td>{{ value.delivered }}</td></tr>
+            <tr><td class="text-bold">Échoué</td><td>{{ value.failed }}</td></tr>
+            <tr><td class="text-bold">En attente</td><td>{{ value.pending }}</td></tr>
+            <tr><td class="text-bold text-danger">Désabonnement</td><td>{{ value.stoplisted }}</td></tr>
+        </table>
+    {% else %}
+        <i>Les statistiques ne sont pas encore disponibles</i>
+    {% endif %}
+{% endblock %}
