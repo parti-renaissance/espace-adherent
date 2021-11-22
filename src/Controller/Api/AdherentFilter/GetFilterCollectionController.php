@@ -32,7 +32,7 @@ class GetFilterCollectionController extends AbstractController
             $this->builder->generate($this->authorizationChecker->getScope($request), $request->query->get('feature')),
             Response::HTTP_OK,
             [],
-            ['groups' => 'filter:read']
+            ['groups' => ['filter:read']]
         );
     }
 }
