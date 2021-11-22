@@ -282,6 +282,7 @@ jobs:
     if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
     env:
       TAG_LATEST: latest
+      HASH: ${{ github.ref_name }}-${{ github.sha }}
 
     steps:
       - uses: actions/checkout@v2
@@ -291,12 +292,10 @@ jobs:
           hash: ${{ hashFiles('docker/dev/*') }}
           tag: ${{ env.TAG_LATEST }}
 
-      - env:
-          HASH: ${{ github.ref_name }}-${{ github.sha }}
-        run: |-
-          docker build --cache-from=$REGISTRY:$TAG -t $REGISTRY:$HASH .
+      - run: |-
+          docker build --cache-from=$REGISTRY:$TAG_LATEST -t $REGISTRY:$HASH .
 
       - uses: ./github/actions/docker-push
         with:
-          hash: ${{ hashFiles('docker/dev/*') }}
+          hash: ${{ env.HASH }}
           tag: ${{ env.TAG_LATEST }}
