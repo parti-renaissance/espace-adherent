@@ -281,14 +281,10 @@ jobs:
     needs: [ lint, phpunit, behat, behat-selenium ]
     env:
       HASH: ${{ github.sha }}
-      TAG: master
+      TAG: ${{ github.head_ref }}
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Extract branch name
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
 
       - name: Cache yarn dependencies
         uses: actions/cache@v2
@@ -305,23 +301,23 @@ jobs:
             public/select2/
           key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
 
+      - name: Setup yarn
+        uses: ./.github/actions/setup-yarn
+
+      - name: Build static assets
+        run: yarn build-prod
+
+      - uses: ./.github/actions/docker-login
+
       - uses: ./.github/actions/docker-pull
         with:
           hash: ${{ env.HASH }}
-          tag: ${{ env.TAG }}
+          tag: master
 
       - run: |-
-          docker build --cache-from=$REGISTRY:$TAG -t $REGISTRY:$TAG-$HASH .
-
-      - name: Build static assets
-        run: |-
-          make keys perm
-
-      - name: Build static assets
-        run: |-
-          make assets-prod
+          docker build --cache-from=$REGISTRY:master --tag $REGISTRY:$TAG-$HASH .
 
       - uses: ./.github/actions/docker-push
         with:
           hash: ${{ env.HASH }}
-          tag: ${{ steps.extract_branch.outputs.branch }}
+          tag: ${{ env.TAG }}
