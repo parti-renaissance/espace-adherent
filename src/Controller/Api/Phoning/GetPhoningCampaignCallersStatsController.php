@@ -9,6 +9,6 @@ class GetPhoningCampaignCallersStatsController
 {
     public function __invoke(Campaign $campaign, AdherentRepository $adherentRepository): array
     {
-        return $adherentRepository->findFullScoresByCampaign($campaign);
+        return $adherentRepository->findFullScoresByCampaign($campaign, true);
     }
 }

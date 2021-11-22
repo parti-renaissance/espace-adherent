@@ -1436,10 +1436,10 @@ SQL;
         ;
     }
 
-    public function findFullScoresByCampaign(Campaign $campaign): array
+    public function findFullScoresByCampaign(Campaign $campaign, bool $apiContext = false): array
     {
-        return $this->createQueryBuilder('adherent')
-            ->select('adherent.id, adherent.firstName, adherent.lastName')
+        $qb = $this->createQueryBuilder('adherent')
+            ->select('adherent.firstName, adherent.lastName')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->addSelect('SUM(IF(campaignHistory.status = :completed, 1, 0)) as nb_completed')
@@ -1461,7 +1461,6 @@ SQL;
             ->groupBy('adherent.id')
             ->orderBy('nb_surveys', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
-            ->addOrderBy('adherent.id', 'ASC')
             ->setParameters([
                 'campaign' => $campaign,
                 'send' => CampaignHistoryStatusEnum::SEND,
@@ -1472,7 +1471,16 @@ SQL;
                 'not_respond' => CampaignHistoryStatusEnum::NOT_RESPOND,
                 'failed' => CampaignHistoryStatusEnum::FAILED,
             ])
-            ->getQuery()
+        ;
+
+        if (!$apiContext) {
+            $qb
+                ->addSelect('adherent.id')
+                ->addOrderBy('adherent.id', 'ASC')
+            ;
+        }
+
+        return $qb->getQuery()
             ->getResult()
         ;
     }
