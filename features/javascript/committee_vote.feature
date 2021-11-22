@@ -1,5 +1,5 @@
 @javascript
-@javascript1
+@javascript2
 Feature:
   As an adherent I should be able to vote/unvote in followed committees
 

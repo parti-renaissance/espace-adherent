@@ -1,5 +1,5 @@
 @javascript
-@javascript1
+@javascript3
 Feature:
     As an adherent
     I want to delegate some access to another adherent
