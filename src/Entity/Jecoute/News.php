@@ -95,6 +95,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "put": {
  *             "path": "/v3/jecoute/news/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('CAN_CHANGE_JECOUTE_NEWS', object)",
  *         },
@@ -106,7 +107,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "title": "partial",
  * })
  *
- * @ORM\Table(name="jecoute_news")
+ * @ORM\Table(name="jecoute_news", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="jecoute_news_uuid_unique", columns="uuid")
+ * }))
  * @ORM\Entity
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="author",
