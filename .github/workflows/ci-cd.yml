@@ -16,7 +16,7 @@ env:
 
   NODE_VERSION: 14.17.5
   PHP_VERSION: 7.4
-  PHP_SECURITY_CHECHER_VERSION: 1.2.0
+  PHP_SECURITY_CHECKER_VERSION: 1.2.0
 
   REGISTRY: ${{ secrets.REGISTRY_HOST }}/${{ secrets.REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
   REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
@@ -134,7 +134,7 @@ jobs:
 
       - name: Local PHP Security Checker
         run: |-
-          curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECHER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECHER_VERSION}_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
+          curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECKER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECKER_VERSION}_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
           chmod +x ./local-php-security-checker
 
           ./local-php-security-checker
