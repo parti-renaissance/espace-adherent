@@ -1441,6 +1441,7 @@ SQL;
         return $this->createQueryBuilder('adherent')
             ->select('adherent.id, adherent.firstName, adherent.lastName')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
+            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->addSelect('SUM(IF(campaignHistory.status = :completed, 1, 0)) as nb_completed')
             ->addSelect('SUM(IF(campaignHistory.status = :to_unsubscribe, 1, 0)) as nb_to_unsubscribe')
             ->addSelect('SUM(IF(campaignHistory.status = :to_unjoin, 1, 0)) as nb_to_unjoin')
@@ -1458,7 +1459,7 @@ SQL;
             )
             ->where('campaign = :campaign')
             ->groupBy('adherent.id')
-            ->orderBy('nb_completed', 'DESC')
+            ->orderBy('nb_surveys', 'DESC')
             ->addOrderBy('campaignHistory.beginAt', 'DESC')
             ->addOrderBy('adherent.id', 'ASC')
             ->setParameters([

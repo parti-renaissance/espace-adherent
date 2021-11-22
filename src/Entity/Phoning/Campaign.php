@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
  *         },
- *         "get_with_scores": {
+ *         "get_with_scores_public": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{id}/scores",
  *             "requirements": {"id": "%pattern_uuid%"},
@@ -59,6 +59,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
+ *         },
+ *         "get_callers_with_scores_private": {
+ *             "method": "GET",
+ *             "path": "/v3/phoning_campaigns/{uuid}/callers",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignCallersStatsController",
+ *             "defaults": {"_api_receive": false},
+ *             "normalization_context": {
+ *                 "groups": {"phoning_campaign_callers_with_scores"},
+ *             }
  *         }
  *     },
  *     collectionOperations={
