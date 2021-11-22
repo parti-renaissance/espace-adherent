@@ -115,7 +115,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Campagne SMS" group="Communication" />
 
             <argument />
-            <argument>App\Entity\SmsCampaign</argument>
+            <argument>App\Entity\SmsCampaign\SmsCampaign</argument>
             <argument>App\Controller\Admin\AdminSmsCampaignCRUDController</argument>
 
             <call method="setTemplate">
