@@ -93,7 +93,7 @@ class SmsCampaign
      */
     private $sentAt;
 
-    public ?Statistics $statistics;
+    public ?Statistics $statistics = null;
 
     public function __construct(UuidInterface $uuid = null)
     {
