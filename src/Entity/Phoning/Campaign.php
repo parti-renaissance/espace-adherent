@@ -67,7 +67,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignSurveyRepliesController",
  *         },
- *         },
  *         "get_callers_with_scores_private": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{uuid}/callers",
