@@ -279,12 +279,19 @@ jobs:
     name: Build prod & push on registry
     runs-on: ubuntu-20.04
     needs: [ lint, phpunit, behat, behat-selenium ]
+    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
     env:
       HASH: ${{ github.sha }}
-      TAG: ${{ github.head_ref }}
+      TAG: ${{ github.ref_name }}
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Cache yarn dependencies
         uses: actions/cache@v2
