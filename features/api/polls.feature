@@ -4,7 +4,7 @@ Feature:
   I should be able to access API of polls
 
   Scenario: As a non logged-in user I can retrieve polls, vote for it and see the results
-  Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/polls"
     Then the response status code should be 200
     And the JSON should be equal to:
