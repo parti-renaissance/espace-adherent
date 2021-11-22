@@ -67,6 +67,6 @@ class AdherentListController extends AbstractController
 
         $adherents = $this->repository->searchByFilter($filter, $request->query->getInt('page', 1));
 
-        return $this->json($adherents, Response::HTTP_OK, [], ['groups' => 'managed_user_read', ManagedUserNormalizer::FILTER_PARAM => $filter]);
+        return $this->json($adherents, Response::HTTP_OK, [], ['groups' => ['managed_user_read'], ManagedUserNormalizer::FILTER_PARAM => $filter]);
     }
 }

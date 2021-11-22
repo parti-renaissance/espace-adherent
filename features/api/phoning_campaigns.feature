@@ -19,33 +19,34 @@ Feature:
     Given I send a "<method>" request to "<url>"
     Then the response status code should be 401
     Examples:
-      | method  | url                                                                                     |
-      | POST    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                    |
-      | GET     | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config   |
-      | PUT     | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055                 |
-      | GET     | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey                   |
-      | GET     | /api/v3/phoning_campaigns/tutorial                                                      |
+      | method | url                                                                                   |
+      | POST   | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
+      | GET    | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config |
+      | PUT    | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055               |
+      | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey                 |
+      | GET    | /api/v3/phoning_campaigns/tutorial                                                    |
 
   Scenario Outline: As a logged-in user with no correct rights I cannot get regular phoning campaigns (only permanent)
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | method  | url                                                                                   |
-      | GET     | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/scores                 |
-      | GET     | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config |
-      | POST    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
+      | method | url                                                                                   |
+      | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/scores                 |
+      | GET    | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config |
+      | POST   | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
 
   Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns on DC
     Given I am logged with "benjyd@aol.com" via OAuth client "Data-Corner"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | method | url                                                                                           |
-      | GET    | /api/v3/phoning_campaign_histories?scope=phoning_national_manager                             |
-      | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                      |
-      | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
-      | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager |
+      | method | url                                                                                                   |
+      | GET    | /api/v3/phoning_campaign_histories?scope=phoning_national_manager                                     |
+      | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                              |
+      | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager         |
+      | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=phoning_national_manager |
+      | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager         |
 
   Scenario: As a logged-in user I can get my phoning campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -1020,11 +1021,11 @@ Feature:
     }
     """
 
- Scenario: As a DC referent I can get the list of phoning campaign histories filtered by campaign
-   Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-   When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes"
-   Then the response status code should be 200
-   And the JSON should be equal to:
+  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes"
+    Then the response status code should be 200
+    And the JSON should be equal to:
    """
    {
      "metadata": {
@@ -1319,4 +1320,50 @@ Feature:
         }
       ]
     }
+    """
+
+  Scenario: As a DC referent I can get a phoning campaign callers with their stats
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "firstName": "Jacques",
+        "lastName": "Picard",
+        "nb_calls": "5",
+        "nb_surveys": "4",
+        "nb_completed": "1",
+        "nb_to_unsubscribe": "1",
+        "nb_to_unjoin": "1",
+        "nb_to_remind": "0",
+        "nb_not_respond": "0",
+        "nb_failed": "1"
+      },
+      {
+        "firstName": "Pierre",
+        "lastName": "Kiroule",
+        "nb_calls": "4",
+        "nb_surveys": "2",
+        "nb_completed": "0",
+        "nb_to_unsubscribe": "0",
+        "nb_to_unjoin": "0",
+        "nb_to_remind": "1",
+        "nb_not_respond": "2",
+        "nb_failed": "0"
+      },
+      {
+        "firstName": "Michelle",
+        "lastName": "Dufour",
+        "nb_calls": "0",
+        "nb_surveys": "0",
+        "nb_completed": "0",
+        "nb_to_unsubscribe": "0",
+        "nb_to_unjoin": "0",
+        "nb_to_remind": "0",
+        "nb_not_respond": "0",
+        "nb_failed": "0"
+      }
+    ]
     """
