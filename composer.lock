@@ -4,57 +4,138 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c35af31415a53c498c0bcc465b05ccc3",
+    "content-hash": "f76c3befc6a996979454dee5afcb7dc4",
     "packages": [
         {
-            "name": "a2lix/translation-form-bundle",
-            "version": "2.4.3",
+            "name": "a2lix/auto-form-bundle",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "c0290acaa044add7476da0f49c2df399a4d9fcfd"
+                "url": "https://github.com/a2lix/AutoFormBundle.git",
+                "reference": "ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/c0290acaa044add7476da0f49c2df399a4d9fcfd",
-                "reference": "c0290acaa044add7476da0f49c2df399a4d9fcfd",
+                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b",
+                "reference": "ff1c9f3d1bee6143b0376e07a0770c11aea2bc5b",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0",
-                "symfony/config": "^2.3 || ^3.0 || ^4.0",
-                "symfony/dependency-injection": "^2.3 || ^3.0 || ^4.0",
-                "symfony/event-dispatcher": "^2.3 || ^3.0 || ^4.0",
-                "symfony/form": "^2.3 || ^3.0 || ^4.0",
-                "symfony/http-foundation": "^2.3 || ^3.0 || ^4.0",
-                "symfony/http-kernel": "^2.3 || ^3.0 || ^4.0",
-                "symfony/options-resolver": "^2.3 || ^3.0 || ^4.0"
+                "doctrine/persistence": "^1.3|^2.0",
+                "php": ">=7.2.5",
+                "symfony/config": "^3.4.30|^4.3|^5.0",
+                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0",
+                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0",
+                "symfony/form": "^3.4.30|^4.3|^5.0",
+                "symfony/http-kernel": "^3.4.30|^4.3|^5.0"
             },
             "require-dev": {
-                "doctrine/common": "^2.3",
-                "doctrine/doctrine-bundle": "^1.0",
-                "doctrine/orm": "^2.4",
-                "gedmo/doctrine-extensions": "^2.4",
-                "knplabs/doctrine-behaviors": "^1.0",
-                "matthiasnoback/symfony-dependency-injection-test": "^0.7 || ^1.2",
-                "symfony/doctrine-bridge": "^2.3.5 || ^3.0 || ^4.0",
-                "symfony/phpunit-bridge": "^4.0",
-                "symfony/validator": "^2.3 || ^3.0 || ^4.0"
+                "doctrine/orm": "^2.7",
+                "edgedesign/phpqa": "^1.23.3",
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "phpstan/phpstan": "^0.12",
+                "sensiolabs/security-checker": "^6.0",
+                "symfony/phpunit-bridge": "^4.3|^5.0",
+                "symfony/validator": "^3.4.30|^4.3|^5.0",
+                "vimeo/psalm": "^3.6"
             },
             "suggest": {
-                "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
-                "gedmo/doctrine-extensions": "For Gedmo strategy",
+                "a2lix/translation-form-bundle": "For translation form"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "A2lix\\AutoFormBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David ALLIX",
+                    "homepage": "http://a2lix.fr"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/a2lix/AutoFormBundle/contributors"
+                }
+            ],
+            "description": "Automate form building",
+            "homepage": "https://github.com/a2lix/AutoFormBundle",
+            "keywords": [
+                "automate",
+                "automation",
+                "building",
+                "field",
+                "form",
+                "magic",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/a2lix/AutoFormBundle/issues",
+                "source": "https://github.com/a2lix/AutoFormBundle/tree/0.3.3"
+            },
+            "time": "2020-10-27T11:27:31+00:00"
+        },
+        {
+            "name": "a2lix/translation-form-bundle",
+            "version": "3.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a2lix/TranslationFormBundle.git",
+                "reference": "4a5f7c32209cef85cb33f63ca1d0b7169ebc484c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/4a5f7c32209cef85cb33f63ca1d0b7169ebc484c",
+                "reference": "4a5f7c32209cef85cb33f63ca1d0b7169ebc484c",
+                "shasum": ""
+            },
+            "require": {
+                "a2lix/auto-form-bundle": "^0.2|^0.3",
+                "php": ">=7.2",
+                "symfony/config": "^3.4.30|^4.3|^5.0",
+                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0",
+                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0",
+                "symfony/event-dispatcher": "^3.4.30|^4.3|^5.0",
+                "symfony/form": "^3.4.30|^4.3|^5.0",
+                "symfony/http-foundation": "^3.4.30|^4.3|^5.0",
+                "symfony/http-kernel": "^3.4.30|^4.3|^5.0",
+                "symfony/options-resolver": "^3.4.30|^4.3|^5.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "edgedesign/phpqa": "^1.23",
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "knplabs/doctrine-behaviors": "^1.6",
+                "matthiasnoback/symfony-dependency-injection-test": "^4.0",
+                "phpstan/phpstan": "^0.11.19",
+                "sensiolabs/security-checker": "^6.0",
+                "symfony/phpunit-bridge": "^4.3|^5.0",
+                "symfony/validator": "^3.4.30|^4.3|^5.0",
+                "vimeo/psalm": "^3.6"
+            },
+            "suggest": {
                 "knplabs/doctrine-behaviors": "For Knp strategy",
                 "prezent/doctrine-translatable-bundle": "For Prezent strategy"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "A2lix\\TranslationFormBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
+                    "A2lix\\TranslationFormBundle\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -75,7 +156,6 @@
             "keywords": [
                 "doctrine2",
                 "form",
-                "gedmo",
                 "i18n",
                 "internationalization",
                 "knplabs",
@@ -86,9 +166,9 @@
             ],
             "support": {
                 "issues": "https://github.com/a2lix/TranslationFormBundle/issues",
-                "source": "https://github.com/a2lix/TranslationFormBundle/tree/2.x"
+                "source": "https://github.com/a2lix/TranslationFormBundle/tree/master"
             },
-            "time": "2019-03-04T10:07:37+00:00"
+            "time": "2020-04-03T08:57:40+00:00"
         },
         {
             "name": "algolia/algoliasearch-client-php",
@@ -5533,44 +5613,58 @@
         },
         {
             "name": "knplabs/doctrine-behaviors",
-            "version": "1.6.1",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/DoctrineBehaviors.git",
-                "reference": "072078422bcada395906ec96b192c6b30a93bebb"
+                "reference": "a788a8f16e3c7126b64dd5ab0ec07eec8d075a14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/DoctrineBehaviors/zipball/072078422bcada395906ec96b192c6b30a93bebb",
-                "reference": "072078422bcada395906ec96b192c6b30a93bebb",
+                "url": "https://api.github.com/repos/KnpLabs/DoctrineBehaviors/zipball/a788a8f16e3c7126b64dd5ab0ec07eec8d075a14",
+                "reference": "a788a8f16e3c7126b64dd5ab0ec07eec8d075a14",
                 "shasum": ""
             },
             "require": {
-                "behat/transliterator": "~1.0",
-                "doctrine/common": ">=2.2",
-                "php": "~7.0"
+                "doctrine/common": "^2.7|^3.0",
+                "doctrine/dbal": "^2.9",
+                "doctrine/orm": "^2.7",
+                "doctrine/persistence": "^1.3.4|^2.0",
+                "nette/utils": "^3.0",
+                "php": "^7.2|^8.0",
+                "ramsey/uuid": "^3.9|^4.0",
+                "symfony/cache": "^4.4|^5.1",
+                "symfony/dependency-injection": "^4.4|^5.1",
+                "symfony/framework-bundle": "^4.4|^5.1",
+                "symfony/http-kernel": "^4.4|^5.1",
+                "symfony/polyfill-php80": "^1.18",
+                "symfony/security-core": "^4.4|^5.1",
+                "symfony/string": "^5.0",
+                "symfony/translation-contracts": "^2.1"
             },
             "require-dev": {
-                "doctrine/orm": ">=2.4.5",
+                "doctrine/annotations": "^1.8",
+                "doctrine/doctrine-bundle": "^2.0",
                 "ext-pdo_mysql": "*",
                 "ext-pdo_pgsql": "*",
                 "ext-pdo_sqlite": "*",
-                "hexmedia/yaml-linter": "~0.1",
-                "jakub-onderka/php-parallel-lint": "~0.8",
-                "phpunit/phpunit": "~4.8"
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan": "^0.12.80",
+                "phpstan/phpstan-doctrine": "^0.12.33",
+                "phpstan/phpstan-phpunit": "^0.12.18",
+                "phpunit/phpunit": "^8.5|^9.2",
+                "psr/log": "^1.1",
+                "rector/rector-prefixed": "^0.9",
+                "symplify/easy-coding-standard": "^9.2.6",
+                "symplify/package-builder": "^9.2.6",
+                "symplify/phpstan-extensions": "^9.2.6",
+                "symplify/phpstan-rules": "^9.2.6"
             },
-            "suggest": {
-                "symfony/framework-bundle": "To be able to use it as a bundle"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
+            "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "Knp\\DoctrineBehaviors\\": "src/"
+                    "Knp\\DoctrineBehaviors\\": "src",
+                    "Knp\\DoctrineBehaviors\\PHPStan\\": "utils/phpstan-behaviors/src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5583,19 +5677,23 @@
                     "homepage": "http://knplabs.com"
                 }
             ],
-            "description": "Doctrine2 behavior traits",
+            "description": "Doctrine Behavior Traits",
             "homepage": "http://knplabs.com",
             "keywords": [
                 "Blameable",
                 "behaviors",
-                "doctrine2",
-                "filterable",
+                "doctrine",
                 "softdeletable",
                 "timestampable",
                 "translatable",
-                "tree"
+                "tree",
+                "uuid"
             ],
-            "time": "2019-12-09T14:23:03+00:00"
+            "support": {
+                "issues": "https://github.com/KnpLabs/DoctrineBehaviors/issues",
+                "source": "https://github.com/KnpLabs/DoctrineBehaviors/tree/2.1.0"
+            },
+            "time": "2021-03-08T21:34:43+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -7877,6 +7975,91 @@
                 "source": "https://github.com/nelmio/NelmioCorsBundle/tree/1.5.6"
             },
             "time": "2019-06-17T08:53:14+00:00"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v3.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "9cd80396ca58d7969ab44fc7afcf03624dfa526e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/9cd80396ca58d7969ab44fc7afcf03624dfa526e",
+                "reference": "9cd80396ca58d7969ab44fc7afcf03624dfa526e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2 <8.2"
+            },
+            "conflict": {
+                "nette/di": "<3.0.6"
+            },
+            "require-dev": {
+                "nette/tester": "~2.0",
+                "phpstan/phpstan": "^0.12",
+                "tracy/tracy": "^2.3"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()",
+                "ext-xml": "to use Strings::length() etc. when mbstring is not available"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/utils/issues",
+                "source": "https://github.com/nette/utils/tree/v3.2.5"
+            },
+            "time": "2021-09-20T10:50:11+00:00"
         },
         {
             "name": "ninsuo/symfony-collection",
@@ -21248,5 +21431,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
