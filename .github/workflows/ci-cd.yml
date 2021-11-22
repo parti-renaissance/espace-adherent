@@ -287,6 +287,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules/
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache static assets
+        uses: actions/cache@v2
+        with:
+          path: |
+            public/built/
+            public/css/
+            public/select2/
+          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+
       - uses: ./github/actions/docker-pull
         with:
           hash: ${{ hashFiles('docker/dev/*') }}
@@ -294,6 +309,10 @@ jobs:
 
       - run: |-
           docker build --cache-from=$REGISTRY:$TAG_LATEST -t $REGISTRY:$HASH .
+
+      - name: Build static assets
+        run: |-
+          make assets-prod
 
       - uses: ./github/actions/docker-push
         with:

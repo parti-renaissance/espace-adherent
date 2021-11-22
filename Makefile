@@ -139,7 +139,7 @@ test-debug:                                                                     
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
-tu: vendor config/packages/assets_version.yaml                                                               ## Run the PHP unit tests
+tu: vendor                                                                                             ## Run the PHP unit tests
 	$(PHPUNIT) --exclude-group functional
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
