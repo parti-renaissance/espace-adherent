@@ -1,15 +1,8 @@
-@apiJemengage
 @api
-@group09
 Feature:
   In order to track device informations
   As a logged-in device
   I should be able to update my informations
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadDeviceData |
-      | LoadClientData |
 
   Scenario: As a logged-in device I can update my postal code
     Given I am logged with device "device_2" via OAuth client "JeMarche App" with scope "jemarche_app"

@@ -4,6 +4,7 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Entity\Event\CommitteeEvent;
 use App\Search\SearchParametersFilter;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,8 @@ class SearchControllerTest extends WebTestCase
 
     public function testSearchEvents()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $crawler = $this->client->request(Request::METHOD_GET, '/recherche', [
             'r' => 25,
             'c' => 'Melun, France',
@@ -50,6 +53,8 @@ class SearchControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(3, $crawler->filter('.search__results__row'));
+
+        Chronos::setTestNow();
     }
 
     /**
@@ -98,6 +103,8 @@ class SearchControllerTest extends WebTestCase
 
     public function testListEventsAsAdherent()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
@@ -113,10 +120,14 @@ class SearchControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/evenements/categorie/inexistante');
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
+
+        Chronos::setTestNow();
     }
 
     public function testListEventsByCategory()
     {
+        Chronos::setTestNow('2018-05-18');
+
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
         $this->assertSame(5, $crawler->filter('div.search__results__row')->count());
@@ -130,6 +141,8 @@ class SearchControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/evenements/categorie/inexistante');
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
+
+        Chronos::setTestNow();
     }
 
     public function testListAllCommittee()

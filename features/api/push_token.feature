@@ -1,17 +1,8 @@
-@apiJemengage
 @api
-@group09
 Feature:
   In order to track push tokens
   As a logged-in adherent or device
   I should be able to post and delete push tokens
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData  |
-      | LoadDeviceData    |
-      | LoadPushTokenData |
-      | LoadClientData    |
 
   Scenario: As a logged-in adherent I can add and remove a push token
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App"

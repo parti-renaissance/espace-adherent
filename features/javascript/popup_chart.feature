@@ -1,6 +1,5 @@
-@popupchart
 @javascript
-@group02
+@javascript1
 Feature:
   As deputy or a referent
   I must have a popup when I am on my space only if I didn't accept it before

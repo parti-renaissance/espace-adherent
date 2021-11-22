@@ -40,6 +40,7 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
         /*
          * Create some old subscription history for testing
          */
+        Chronos::setTestNow('2018-04-10');
 
         // Create 2 history lines while it could be one, why?
         // It's done on purpose to make sure stats are calculated correctly in the case where
@@ -72,6 +73,8 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
             [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75008')],
             '-2 months'
         );
+
+        Chronos::setTestNow();
 
         $manager->flush();
     }

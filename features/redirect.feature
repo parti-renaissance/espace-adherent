@@ -1,4 +1,4 @@
-@group05
+@app
 Feature:
   In order to not confuse other app
   I should have some redirect

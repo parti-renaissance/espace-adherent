@@ -50,18 +50,18 @@ runs:
       run: make vendor
 
     - name: Create private & public key
-      if: ${{ inputs.keys == 'true' }}
+      if: inputs.keys == 'true'
       shell: bash
       run: make keys perm
 
     - name: Build cache
-      if: ${{ inputs.cache-warmup == 'true' }}
+      if: inputs.cache-warmup == 'true'
       shell: bash
       run: |-
         make tfp-cc
 
     - name: Start extra containers
-      if: ${{ inputs.extra-containers != 'false' }}
+      if: inputs.extra-containers != 'false'
       shell: bash
       env:
         CONTAINERS: ${{ inputs.extra-containers }}

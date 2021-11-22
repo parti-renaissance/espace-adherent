@@ -1,15 +1,8 @@
-@firewall
-@group02
+@app
 Feature:
   As a referent, animator or simple adherent
   In order to see all my informations
   I should be able to acces my dashboard
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadHomeBlockData              |
-      | LoadAdherentData               |
-      | LoadReferentTagsZonesLinksData |
 
   Scenario Outline: As an anonymous I can view non-secured pages
     Given I am on "<uri>"

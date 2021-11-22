@@ -14,11 +14,10 @@ use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCommitteeEventData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeEventData extends AbstractLoadEventData implements DependentFixtureInterface
 {
     public const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
     public const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
@@ -42,21 +41,20 @@ class LoadCommitteeEventData extends Fixture implements DependentFixtureInterfac
     public const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
     public const EVENT_21_UUID = '0e5f9f02-fa33-4c2c-a700-4235d752315b';
 
-    private $committeeFeedManager;
-    private $eventFactory;
-    private $eventRegistrationFactory;
+    private CommitteeFeedManager $committeeFeedManager;
 
     public function __construct(
-        CommitteeFeedManager $committeeFeedManager,
+        string $environment,
         EventFactory $eventFactory,
-        EventRegistrationFactory $eventRegistrationFactory
+        EventRegistrationFactory $eventRegistrationFactory,
+        CommitteeFeedManager $committeeFeedManager
     ) {
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory);
+
         $this->committeeFeedManager = $committeeFeedManager;
-        $this->eventFactory = $eventFactory;
-        $this->eventRegistrationFactory = $eventRegistrationFactory;
     }
 
-    public function load(ObjectManager $manager)
+    public function loadEvents(ObjectManager $manager): void
     {
         $eventCategory1 = $this->getReference('CE001');
         $eventCategory2 = $this->getReference('CE002');
@@ -339,7 +337,7 @@ class LoadCommitteeEventData extends Fixture implements DependentFixtureInterfac
             'category' => $eventCategory9,
             'description' => 'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('now'))->modify('-30 minutes')->format('Y-m-d H:i:00'),
+            'begin_at' => (new Chronos('now'))->format('Y-m-d').' 09:00:00',
             'finish_at' => (new Chronos('now'))->format('Y-m-d').' 18:00:00',
             'capacity' => 15,
         ]);

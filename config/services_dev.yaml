@@ -6,6 +6,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+          $environment: "%kernel.environment%"
 
     App\DataFixtures\:
         resource: '../src/DataFixtures/'

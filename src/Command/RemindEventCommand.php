@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Event\BaseEvent;
 use App\Event\EventReminderHandler;
+use Cake\Chronos\Chronos;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,11 +49,11 @@ class RemindEventCommand extends Command
         $mode = $input->getArgument('mode');
 
         if (BaseEvent::MODE_MEETING === $mode) {
-            $startAfter = (new \DateTime())->modify(sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
+            $startAfter = (new Chronos())->modify(sprintf('+%d days', (int) $input->getOption('meeting-delay')))->setTime(0, 0, 0);
             $startBefore = (clone $startAfter)->modify('+1 day');
         } elseif (BaseEvent::MODE_ONLINE === $mode) {
-            $startAfter = (new \DateTime())->modify(sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
-            $startBefore = (new \DateTime())->modify(sprintf('+%d minutes', (int) $input->getOption('online-start-before')));
+            $startAfter = (new Chronos())->modify(sprintf('+%d minutes', (int) $input->getOption('online-start-after')));
+            $startBefore = (new Chronos())->modify(sprintf('+%d minutes', (int) $input->getOption('online-start-before')));
         } else {
             throw new \InvalidArgumentException(sprintf('Event mode "%s" is not defined.', $mode));
         }

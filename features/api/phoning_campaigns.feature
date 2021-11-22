@@ -1,21 +1,8 @@
-@apiJemengage
 @api
-@group13
 Feature:
   In order to see phoning campaigns
   As a non logged-in user
   I should be able to access API phoning campaigns
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData               |
-      | LoadClientData                 |
-      | LoadScopeData                  |
-      | LoadTeamData                   |
-      | LoadJecouteSurveyData          |
-      | LoadPhoningCampaignData        |
-      | LoadPhoningCampaignHistoryData |
-      | LoadCmsBlockData               |
 
   Scenario Outline: As a non logged-in user I cannot get and manage phoning campaigns
     Given I send a "<method>" request to "<url>"
@@ -469,90 +456,45 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "id":1,
-      "uuid":"@uuid@",
+      "id": @integer@,
+      "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
       "type": "national",
       "questions":[
         {
-          "id":6,
-          "type":"simple_field",
-          "content":"Une première question du 1er questionnaire national ?",
-          "choices":[]
+          "id": @integer@,
+          "type": "simple_field",
+          "content": "Une première question du 1er questionnaire national ?",
+          "choices": []
         },
         {
-          "id":7,
-          "type":"multiple_choice",
-          "content":"Une deuxième question du 1er questionnaire national ?",
-          "choices":[
+          "id": @integer@,
+          "type": "multiple_choice",
+          "content": "Une deuxième question du 1er questionnaire national ?",
+          "choices": [
             {
-              "id":5,
-              "content":"Réponse nationale A"
+              "id": @integer@,
+              "content": "Réponse nationale A"
             },
             {
-              "id":6,
-              "content":"Réponse nationale B"
+              "id": @integer@,
+              "content": "Réponse nationale B"
             },
             {
-              "id":7,
-              "content":"Réponse nationale C"
+              "id": @integer@,
+              "content": "Réponse nationale C"
             },
             {
-              "id":8,
-              "content":"Réponse nationale D"
+              "id": @integer@,
+              "content": "Réponse nationale D"
             }
           ]
         }
       ],
-      "name":"Questionnaire national numéro 1"
+      "name": "Questionnaire national numéro 1"
     }
     """
 
-  Scenario: As a logged-in user I can get a campaign survey
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
-    And I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-      "id":1,
-      "uuid":"@uuid@",
-      "type": "national",
-      "questions":[
-        {
-          "id":6,
-          "type":"simple_field",
-          "content":"Une première question du 1er questionnaire national ?",
-          "choices":[]
-        },
-        {
-          "id":7,
-          "type":"multiple_choice",
-          "content":"Une deuxième question du 1er questionnaire national ?",
-          "choices":[
-            {
-              "id":5,
-              "content":"Réponse nationale A"
-            },
-            {
-              "id":6,
-              "content":"Réponse nationale B"
-            },
-            {
-              "id":7,
-              "content":"Réponse nationale C"
-            },
-            {
-              "id":8,
-              "content":"Réponse nationale D"
-            }
-          ]
-        }
-      ],
-      "name":"Questionnaire national numéro 1"
-    }
-    """
-
-  Scenario: As a logged-in user I can get a campaign survey
+  Scenario: As a logged-in user I can get the phoning campaigns survey tutorial
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
     And I send a "GET" request to "/api/v3/phoning_campaigns/tutorial"
     Then the response status code should be 200
