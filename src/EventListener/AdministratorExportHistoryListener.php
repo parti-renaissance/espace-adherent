@@ -36,7 +36,7 @@ class AdministratorExportHistoryListener implements EventSubscriberInterface
             return;
         }
 
-        $history = new AdministratorExportHistory($administrator, $routeName, $request->query->all());
+        $history = new AdministratorExportHistory($administrator, $routeName, $request->query->all(), new \DateTime('now'));
 
         $this->entityManager->persist($history);
         $this->entityManager->flush();
