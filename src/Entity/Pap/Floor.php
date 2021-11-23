@@ -48,7 +48,7 @@ class Floor implements EntityAdherentBlameableInterface
     /**
      * @ORM\Column
      *
-     * @Groups({"pap_building_block_list"})
+     * @Groups({"pap_address_list", "pap_building_block_list"})
      */
     private int $number;
 

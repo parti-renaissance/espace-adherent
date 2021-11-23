@@ -53,28 +53,28 @@ class Address
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $number;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $address;
 
     /**
      * @ORM\Column(length=5, nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $inseeCode;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?string $cityName;
 
@@ -110,13 +110,6 @@ class Address
     private Collection $voters;
 
     /**
-     * Used when listing addresses relative to a specific position.
-     *
-     * @Groups({"pap_address_list"})
-     */
-    private ?float $distance = null;
-
-    /**
      * @var Building[]|Collection
      *
      * @ORM\OneToOne(
@@ -125,8 +118,10 @@ class Address
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
+     *
+     * @Groups({"pap_address_list"})
      */
-    private ?Building $building;
+    private ?Building $building = null;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -255,16 +250,6 @@ class Address
     public function getVotersCount(): int
     {
         return $this->voters->count();
-    }
-
-    public function getDistance(): ?float
-    {
-        return $this->distance;
-    }
-
-    public function setDistance(?float $distance): void
-    {
-        $this->distance = floor($distance * 1000);
     }
 
     public function getBuilding(): ?Building

@@ -4,7 +4,6 @@ namespace App\Repository\Pap;
 
 use App\Entity\Pap\Address;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 class AddressRepository extends ServiceEntityRepository
@@ -18,7 +17,7 @@ class AddressRepository extends ServiceEntityRepository
     {
         $sql = <<<SQL
             select
-                *,
+                address.id,
                 (6371 * 
                  ACOS(
                    COS(RADIANS(:latitude)) 
@@ -38,13 +37,44 @@ class AddressRepository extends ServiceEntityRepository
             limit :limit
 SQL;
 
-        $query = $this->getEntityManager()->createNativeQuery($sql, new ResultSetMapping());
+        $stmt = $this
+            ->getEntityManager()
+            ->getConnection()
+            ->prepare($sql)
+        ;
 
-        $query->setParameter('latitude', $latitude, 'float');
-        $query->setParameter('longitude', $longitude, 'float');
-        $query->setParameter('zoom', $zoom, 'integer');
-        $query->setParameter('limit', $limit, 'integer');
+        $stmt->bindParam('latitude', $latitude);
+        $stmt->bindParam('longitude', $longitude);
+        $stmt->bindParam('zoom', $zoom, \PDO::PARAM_INT);
+        $stmt->bindParam('limit', $limit, \PDO::PARAM_INT);
 
-        return $query->getResult('PapAddressHydrator');
+        $result = $stmt->executeQuery();
+
+        $ids = array_column($result->fetchAllAssociative(), 'id');
+
+        $qb = $this
+            ->createQueryBuilder('address')
+            ->select('address, building, building_block, floor')
+            ->addSelect('
+                (6371 * 
+                ACOS(
+                    COS(RADIANS(:latitude)) 
+                    * COS(RADIANS(address.latitude)) 
+                    * COS(RADIANS(address.longitude) - RADIANS(:longitude)) 
+                    + SIN(RADIANS(:latitude)) 
+                    * SIN(RADIANS(address.latitude))
+                )) as HIDDEN distance
+            ')
+            ->leftJoin('address.building', 'building')
+            ->leftJoin('building.buildingBlocks', 'building_block')
+            ->leftJoin('building_block.floors', 'floor')
+            ->andWhere('address.id IN (:address_ids)')
+            ->setParameter('address_ids', $ids)
+            ->setParameter('latitude', $latitude)
+            ->setParameter('longitude', $longitude)
+            ->orderBy('distance', 'ASC')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }
