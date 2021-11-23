@@ -1,2 +1,0 @@
-parameters:
-    app_host: "front.%env(APP_HOST)%"
