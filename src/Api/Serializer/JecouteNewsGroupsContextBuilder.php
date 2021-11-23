@@ -31,7 +31,9 @@ class JecouteNewsGroupsContextBuilder implements SerializerContextBuilderInterfa
         $resourceClass = $context['resource_class'] ?? null;
 
         if (News::class !== $resourceClass
-            || !$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', 'news')) {
+            || !$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', 'news')
+            || !\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
+        ) {
             return $context;
         }
 

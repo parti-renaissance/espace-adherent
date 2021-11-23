@@ -30,16 +30,16 @@ class ChangeJecouteNewsVoter extends AbstractAdherentVoter
     /** @param News $subject */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if (!$zone = $subject->getZone()) {
-            return false;
-        }
-
         $scope = $this->authorizationChecker->getScope($this->requestStack->getMasterRequest());
         if (ScopeEnum::NATIONAL === $scope) {
             return !$subject->getSpace();
         }
 
         if (ScopeEnum::REFERENT === $scope) {
+            if (!$zone = $subject->getZone()) {
+                return false;
+            }
+
             return $this->zoneRepository->isInZones([$zone], $adherent->getManagedArea()->getZones()->toArray());
         }
 
