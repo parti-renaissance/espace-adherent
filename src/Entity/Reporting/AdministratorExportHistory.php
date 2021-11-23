@@ -44,18 +44,18 @@ class AdministratorExportHistory
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?\DateTimeInterface $date;
+    private ?\DateTimeInterface $exportedAt;
 
     public function __construct(
         Administrator $administrator,
         string $routeName,
         array $parameters,
-        \DateTimeInterface $date = null
+        \DateTimeInterface $exportedAt = null
     ) {
         $this->administrator = $administrator;
         $this->routeName = $routeName;
         $this->parameters = $parameters;
-        $this->date = $date;
+        $this->exportedAt = $exportedAt;
     }
 
     public function getId(): ?int
@@ -78,8 +78,8 @@ class AdministratorExportHistory
         return $this->parameters;
     }
 
-    public function getDateTime(): ?\DateTimeInterface
+    public function getExportedAt(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->exportedAt;
     }
 }
