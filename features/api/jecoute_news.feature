@@ -309,7 +309,6 @@ Feature:
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": "https://en-marche.fr",
                 "created_at": "@string@.isDateTime()",
-                "global": false,
                 "zone": null,
                 "notification": true,
                 "published": false,
@@ -320,7 +319,6 @@ Feature:
                 "title": "Nouvelle actualité à 92 de l'admin",
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
-                "global": false,
                 "created_at": "@string@.isDateTime()",
                 "zone": {
                     "code": "92",
