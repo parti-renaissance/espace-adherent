@@ -18,6 +18,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 {
     public const SURVEY_NATIONAL_1 = '13814039-1dd2-11b2-9bfd-78ea3dcdf0d9';
     public const SURVEY_NATIONAL_2 = '1f07832c-2a69-1e80-a33a-d5f9460e838f';
+    public const SURVEY_NATIONAL_3 = '4c3594d4-fb6f-4e25-ac2e-7ef81694ec47';
 
     public const SURVEY_LOCAL_1 = '138140e9-1dd2-11b2-a08e-41ae5b09da7d';
     public const SURVEY_LOCAL_2 = 'dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea';
@@ -116,6 +117,8 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /**
          * National Surveys
          */
+
+        // #1
         $nationalSurvey1 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_1), 'Questionnaire national numéro 1', true);
         $nationalSurvey1->setAdministrator($administrator1);
 
@@ -138,6 +141,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $this->addReference('national-survey-1-question-1', $nationalSurveyQuestion1);
         $this->addReference('national-survey-1-question-2', $nationalSurveyQuestion2);
 
+        // #2
         $nationalSurvey2 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_2), 'Le deuxième questionnaire national', true);
         $nationalSurvey2->setAdministrator($administrator2);
 
@@ -153,6 +157,29 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $this->addReference('national-survey-2', $nationalSurvey2);
 
         $this->addReference('national-survey-2-question-1', $nationalSurveyQuestion3);
+
+        // #3
+        $nationalSurvey3 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_3), 'Les enjeux des 10 prochaines années', true);
+        $nationalSurvey3->setAdministrator($administrator1);
+
+        /** @var Question $nationalQuestion4 */
+        $nationalQuestion4 = $this->getReference('national-question-4');
+
+        /** @var Question $nationalQuestion5 */
+        $nationalQuestion5 = $this->getReference('national-question-5');
+
+        $nationalSurveyQuestion4 = new SurveyQuestion($nationalSurvey3, $nationalQuestion4);
+        $nationalSurveyQuestion5 = new SurveyQuestion($nationalSurvey3, $nationalQuestion5);
+
+        $nationalSurvey3->addQuestion($nationalSurveyQuestion4);
+        $nationalSurvey3->addQuestion($nationalSurveyQuestion5);
+
+        $manager->persist($nationalSurvey3);
+
+        $this->addReference('national-survey-3', $nationalSurvey3);
+
+        $this->addReference('national-survey-3-question-4', $nationalSurveyQuestion4);
+        $this->addReference('national-survey-3-question-5', $nationalSurveyQuestion5);
 
         $manager->flush();
     }

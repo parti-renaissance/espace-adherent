@@ -18,7 +18,7 @@ Feature:
     [
       {
         "id": @integer@,
-        "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+        "uuid": "@uuid@",
         "type": "local",
         "name": "Questionnaire numéro 1",
         "zone":{
@@ -28,7 +28,7 @@ Feature:
         "city":null,
         "questions": [
           {
-            "id":1,
+            "id": @integer@,
             "type": "simple_field",
             "content": "Ceci est-il un champ libre ?",
             "choices": []
@@ -75,8 +75,45 @@ Feature:
         "id": @integer@,
         "uuid": "@uuid@",
         "type": "national",
-        "name": "Le deuxième questionnaire national",
+        "name": "Les enjeux des 10 prochaines années",
         "questions": [
+          {
+            "id": @integer@,
+            "type": "simple_field",
+            "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
+            "choices": []
+          },
+          {
+            "id": @integer@,
+            "type": "multiple_choice",
+            "content": "L'écologie est selon vous, importante pour :",
+            "choices": [
+              {
+                "id": @integer@,
+                "content": "L'héritage laissé aux générations futures"
+              },
+              {
+                "id": @integer@,
+                "content": "Le bien-être sanitaire"
+              },
+              {
+                "id": @integer@,
+                "content": "L'aspect financier"
+              },
+              {
+                "id": @integer@,
+                "content": "La préservation de l'environnement"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": @integer@,
+        "uuid":"@uuid@",
+        "type":"national",
+        "name": "Le deuxième questionnaire national",
+        "questions":[
           {
             "id": @integer@,
             "type": "unique_choice",
@@ -100,7 +137,7 @@ Feature:
       },
       {
         "id": @integer@,
-        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "uuid": "@uuid@",
         "type": "national",
         "name": "Questionnaire national numéro 1",
         "questions": [
@@ -170,7 +207,7 @@ Feature:
     [
       {
         "id": @integer@,
-        "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+        "uuid": "@uuid@",
         "type": "local",
         "name": "Questionnaire numéro 1",
         "zone":{
@@ -180,7 +217,7 @@ Feature:
         "city":null,
         "questions": [
           {
-            "id":1,
+            "id": @integer@,
             "type": "simple_field",
             "content": "Ceci est-il un champ libre ?",
             "choices": []
@@ -224,6 +261,43 @@ Feature:
         ]
       },
       {
+        "uuid": "@uuid@",
+        "id": @integer@,
+        "type": "national",
+        "name": "Les enjeux des 10 prochaines années",
+        "questions": [
+          {
+            "id": @integer@,
+            "type": "simple_field",
+            "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
+            "choices": []
+          },
+          {
+            "id": @integer@,
+            "type": "multiple_choice",
+            "content": "L'écologie est selon vous, importante pour :",
+            "choices": [
+              {
+                "id": @integer@,
+                "content": "L'héritage laissé aux générations futures"
+              },
+              {
+                "id": @integer@,
+                "content": "Le bien-être sanitaire"
+              },
+              {
+                "id": @integer@,
+                "content": "L'aspect financier"
+              },
+              {
+                "id": @integer@,
+                "content": "La préservation de l'environnement"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "id": @integer@,
         "uuid": "@uuid@",
         "type": "national",
@@ -252,7 +326,7 @@ Feature:
       },
       {
         "id": @integer@,
-        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "uuid": "@uuid@",
         "type": "national",
         "name": "Questionnaire national numéro 1",
         "questions": [

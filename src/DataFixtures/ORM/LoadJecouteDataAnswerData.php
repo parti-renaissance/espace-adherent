@@ -32,6 +32,12 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         /** @var SurveyQuestion $nationalSurvey2Question1 */
         $nationalSurvey2Question1 = $this->getReference('national-survey-2-question-1');
 
+        /** @var SurveyQuestion $nationalSurvey3Question1 */
+        $nationalSurvey3Question1 = $this->getReference('national-survey-3-question-4');
+
+        /** @var SurveyQuestion $nationalSurvey3Question2 */
+        $nationalSurvey3Question2 = $this->getReference('national-survey-3-question-5');
+
         /** @var DataSurvey $dataSurvey1 */
         $dataSurvey1 = $this->getReference('data-survey-1');
 
@@ -49,6 +55,12 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
 
         /** @var DataSurvey $nationalSurvey3 */
         $nationalSurvey3 = $this->getReference('data-national-survey-3');
+
+        /** @var DataSurvey $phoningDataSurvey1 */
+        $phoningDataSurvey1 = $this->getReference('phoning-data-survey-1');
+
+        /** @var DataSurvey $phoningDataSurvey2 */
+        $phoningDataSurvey2 = $this->getReference('phoning-data-survey-2');
 
         // Data Survey 1
 
@@ -165,6 +177,38 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
 
         $manager->persist($dataNationalSurvey3Answer1);
 
+        // phoning data survey 1
+        $phoningDataSurvey1Answer1 = new DataAnswer();
+        $phoningDataSurvey1Answer1->setSurveyQuestion($nationalSurvey3Question1);
+        $phoningDataSurvey1Answer1->setDataSurvey($phoningDataSurvey1);
+        $phoningDataSurvey1Answer1->setTextField('l\'écologie sera le sujet le plus important');
+
+        $manager->persist($phoningDataSurvey1Answer1);
+
+        $phoningDataSurvey1Answer2 = new DataAnswer();
+        $phoningDataSurvey1Answer2->setSurveyQuestion($nationalSurvey3Question2);
+        $phoningDataSurvey1Answer2->setDataSurvey($phoningDataSurvey1);
+        $phoningDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1'));
+        $phoningDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2'));
+
+        $manager->persist($phoningDataSurvey1Answer2);
+
+        // phoning data survey 2
+        $phoningDataSurvey2Answer1 = new DataAnswer();
+        $phoningDataSurvey2Answer1->setSurveyQuestion($nationalSurvey3Question1);
+        $phoningDataSurvey2Answer1->setDataSurvey($phoningDataSurvey2);
+        $phoningDataSurvey2Answer1->setTextField('le pouvoir d\'achat');
+
+        $manager->persist($phoningDataSurvey2Answer1);
+
+        $phoningDataSurvey2Answer2 = new DataAnswer();
+        $phoningDataSurvey2Answer2->setSurveyQuestion($nationalSurvey3Question2);
+        $phoningDataSurvey2Answer2->setDataSurvey($phoningDataSurvey2);
+        $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-3'));
+        $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-4'));
+
+        $manager->persist($phoningDataSurvey2Answer2);
+
         $manager->flush();
     }
 
@@ -176,6 +220,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
             LoadAdherentData::class,
             LoadJecouteQuestionData::class,
             LoadJecouteSuggestedQuestionData::class,
+            LoadPhoningCampaignHistoryData::class,
         ];
     }
 }

@@ -34,6 +34,7 @@ Feature:
       | GET    | /api/v3/phoning_campaign_histories?scope=phoning_national_manager                                     |
       | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                              |
       | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager         |
+      | GET    | /api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies?scope=phoning_national_manager |
       | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=phoning_national_manager |
       | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager         |
 
@@ -44,6 +45,46 @@ Feature:
     And the JSON should be equal to:
     """
     [
+      {
+        "title": "Campagne sur l'horizon 2030",
+        "brief": "### Décidons aujourd'hui de la France de demain",
+        "goal": 500,
+        "finish_at": "@string@.isDateTime()",
+        "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc",
+        "nb_calls": 3,
+        "nb_surveys": 2,
+        "permanent": false,
+        "scoreboard": [
+          {
+            "firstName": "Lucie",
+            "nb_calls": "3",
+            "nb_surveys": "2",
+            "position": 1,
+            "caller": true
+          },
+          {
+            "firstName": "Jacques",
+            "nb_calls": "0",
+            "nb_surveys": "0",
+            "position": 2,
+            "caller": false
+          },
+          {
+            "firstName": "Pierre",
+            "nb_calls": "0",
+            "nb_surveys": "0",
+            "position": 3,
+            "caller": false
+          },
+          {
+            "firstName": "Député",
+            "nb_calls": "0",
+            "nb_surveys": "0",
+            "position": 4,
+            "caller": false
+          }
+        ]
+      },
       {
         "title": "Campagne pour les femmes",
         "brief": "### Campagne pour les femmes",
@@ -514,9 +555,9 @@ Feature:
     """
     {
        "metadata": {
-         "total_items": 6,
+         "total_items": 7,
          "items_per_page": 10,
-         "count": 6,
+         "count": 7,
          "current_page": 1,
          "last_page": 1
        },
@@ -548,6 +589,20 @@ Feature:
             "creator": "Admin",
             "nb_calls": 6,
             "nb_surveys": 5
+         },
+         {
+            "title": "Campagne sur l'horizon 2030",
+            "goal": 500,
+            "finish_at": "@string@.isDateTime()",
+            "team": {
+              "name": "Deuxième équipe de phoning",
+              "uuid": "@uuid@",
+              "members_count": 4
+            },
+            "uuid": "@uuid@",
+            "creator": "Admin",
+            "nb_calls": 3,
+            "nb_surveys": 2
          },
          {
             "title": "Campagne termin\u00e9",
@@ -904,11 +959,11 @@ Feature:
     """
     {
       "metadata": {
-        "total_items": 19,
+        "total_items": 22,
         "items_per_page": 2,
         "count": 2,
         "current_page": 1,
-        "last_page": 10
+        "last_page": 11
       },
       "items": [
         {
@@ -982,81 +1037,81 @@ Feature:
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes"
     Then the response status code should be 200
     And the JSON should be equal to:
-   """
-   {
-     "metadata": {
-       "total_items": 12,
-       "items_per_page": 2,
-       "count": 2,
-       "current_page": 1,
-       "last_page": 6
-     },
-     "items": [
-       {
-         "caller": {
-           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-           "first_name": "Jacques",
-           "last_name": "Picard"
-         },
-         "adherent": {
-           "uuid": "@uuid@",
-           "first_name": "Adherent 39",
-           "last_name": "Fa39ke"
-         },
-         "campaign": {
-           "title": "Campagne pour les hommes",
-           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
-         },
-         "type": null,
-         "status": "send",
-         "postal_code_checked": null,
-         "profession": null,
-         "need_email_renewal": null,
-         "need_sms_renewal": null,
-         "engagement": null,
-         "note": null,
-         "begin_at": "@string@.isDateTime()",
-         "finish_at": null,
-         "data_survey": null,
-         "uuid": "@uuid@"
+    """
+    {
+       "metadata": {
+         "total_items": 12,
+         "items_per_page": 2,
+         "count": 2,
+         "current_page": 1,
+         "last_page": 6
        },
-       {
-         "caller": {
-           "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-           "first_name": "Jacques",
-           "last_name": "Picard"
-         },
-         "adherent": {
-           "uuid": "@uuid@",
-           "first_name": "Adrien",
-           "last_name": "Petit"
-         },
-         "campaign": {
-           "title": "Campagne pour les hommes",
-           "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
-         },
-         "type": null,
-         "status": "to-unsubscribe",
-         "postal_code_checked": null,
-         "profession": null,
-         "need_email_renewal": null,
-         "need_sms_renewal": null,
-         "engagement": null,
-         "note": null,
-         "begin_at": "@string@.isDateTime()",
-         "finish_at": null,
-         "data_survey": {
-           "survey": {
-             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-             "name": "Questionnaire national numéro 1"
+       "items": [
+         {
+           "caller": {
+             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+             "first_name": "Jacques",
+             "last_name": "Picard"
            },
+           "adherent": {
+             "uuid": "@uuid@",
+             "first_name": "Adherent 39",
+             "last_name": "Fa39ke"
+           },
+           "campaign": {
+             "title": "Campagne pour les hommes",
+             "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+           },
+           "type": null,
+           "status": "send",
+           "postal_code_checked": null,
+           "profession": null,
+           "need_email_renewal": null,
+           "need_sms_renewal": null,
+           "engagement": null,
+           "note": null,
+           "begin_at": "@string@.isDateTime()",
+           "finish_at": null,
+           "data_survey": null,
            "uuid": "@uuid@"
          },
-         "uuid": "@uuid@"
-       }
-     ]
-   }
-   """
+         {
+           "caller": {
+             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+             "first_name": "Jacques",
+             "last_name": "Picard"
+           },
+           "adherent": {
+             "uuid": "@uuid@",
+             "first_name": "Adrien",
+             "last_name": "Petit"
+           },
+           "campaign": {
+             "title": "Campagne pour les hommes",
+             "uuid": "4ebb184c-24d9-4aeb-bb36-afe44f294387"
+           },
+           "type": null,
+           "status": "to-unsubscribe",
+           "postal_code_checked": null,
+           "profession": null,
+           "need_email_renewal": null,
+           "need_sms_renewal": null,
+           "engagement": null,
+           "note": null,
+           "begin_at": "@string@.isDateTime()",
+           "finish_at": null,
+           "data_survey": {
+             "survey": {
+               "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+               "name": "Questionnaire national numéro 1"
+             },
+             "uuid": "@uuid@"
+           },
+           "uuid": "@uuid@"
+         }
+       ]
+     }
+     """
 
   Scenario: As a DC referent I can get the list of phoning campaign histories filtered by caller
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -1370,4 +1425,101 @@ Feature:
         "nb_failed": "0"
       }
     ]
+    """
+
+  Scenario: As a DC referent I can get the list of a campaign replies
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies?scope=phoning_national_manager&page=1&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 2,
+        "items_per_page": 10,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "survey": {
+            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+            "name": "Les enjeux des 10 prochaines années"
+          },
+          "campaign_history": {
+            "caller": {
+                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                "first_name": "Lucie",
+                "last_name": "Olivera"
+            },
+            "adherent": {
+                "uuid": "@uuid@",
+                "first_name": "Adherent 40",
+                "last_name": "Fa40ke"
+            },
+            "campaign": {
+                "title": "Campagne sur l'horizon 2030",
+                "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
+            },
+            "begin_at": "@string@.isDateTime()",
+            "finish_at": "@string@.isDateTime()",
+            "uuid": "b3c51626-164f-4fbd-9109-e70b20ab5788"
+          },
+          "answers": [
+            {
+                "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                "answer": "l'écologie sera le sujet le plus important"
+            },
+            {
+                "question": "L'écologie est selon vous, importante pour :",
+                "answer": [
+                    "L'héritage laissé aux générations futures",
+                    "Le bien-être sanitaire"
+                ]
+            }
+          ],
+          "uuid": "@uuid@"
+        },
+        {
+          "survey": {
+            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+            "name": "Les enjeux des 10 prochaines années"
+          },
+          "campaign_history": {
+            "caller": {
+                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                "first_name": "Lucie",
+                "last_name": "Olivera"
+            },
+            "adherent": {
+                "uuid": "@uuid@",
+                "first_name": "Adherent 34",
+                "last_name": "Fa34ke"
+            },
+            "campaign": {
+                "title": "Campagne sur l'horizon 2030",
+                "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
+            },
+            "begin_at": "@string@.isDateTime()",
+            "finish_at": "@string@.isDateTime()",
+            "uuid": "5587ce1f-bf4d-486f-a356-e75b06a62e2e"
+          },
+          "answers": [
+            {
+                "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                "answer": "le pouvoir d'achat"
+            },
+            {
+                "question": "L'écologie est selon vous, importante pour :",
+                "answer": [
+                    "L'aspect financier",
+                    "La préservation de l'environnement"
+                ]
+            }
+          ],
+          "uuid": "@uuid@"
+        }
+      ]
+    }
     """

@@ -21,6 +21,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
     public const CAMPAIGN_4_UUID = 'b5e1b850-faec-4da7-8da6-d64b94494668';
     public const CAMPAIGN_5_UUID = 'cc8f32ce-176c-42c8-a7e9-b854cc8fc61e';
     public const CAMPAIGN_6_UUID = 'b48af58c-51e8-4f1b-a432-deace2969fda';
+    public const CAMPAIGN_7_UUID = '9ca189b7-7635-4c3a-880b-6ce5cd10e8bc';
 
     public function load(ObjectManager $manager)
     {
@@ -28,6 +29,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $team2 = $this->getReference('team-2');
         $nationalSurvey1 = $this->getReference('national-survey-1');
         $nationalSurvey2 = $this->getReference('national-survey-2');
+        $nationalSurvey3 = $this->getReference('national-survey-3');
 
         $campaign1 = $this->createCampaign(
             self::CAMPAIGN_1_UUID,
@@ -54,6 +56,19 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         );
         $campaign2->getAudience()->setGender(Genders::FEMALE);
         $this->addReference('campaign-2', $campaign2);
+
+        $campaign3 = $this->createCampaign(
+            self::CAMPAIGN_7_UUID,
+            'Campagne sur l\'horizon 2030',
+            '### Décidons aujourd\'hui de la France de demain',
+            $team2,
+            $nationalSurvey3,
+            500,
+            '+20 days'
+        );
+        $campaign3->getAudience()->setAgeMin(18);
+        $campaign3->getAudience()->setAgeMin(80);
+        $this->addReference('campaign-3', $campaign3);
 
         $campaignFinished = $this->createCampaign(
             self::CAMPAIGN_3_UUID,
@@ -107,6 +122,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
 
         $manager->persist($campaign1);
         $manager->persist($campaign2);
+        $manager->persist($campaign3);
         $manager->persist($campaignFinished);
         $manager->persist($campaignNoAdherent);
         $manager->persist($campaignWithAllAudienceParameters);
