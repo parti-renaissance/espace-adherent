@@ -159,7 +159,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $this->addReference('national-survey-2-question-1', $nationalSurveyQuestion3);
 
         // #3
-        $nationalSurvey3 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_3), 'Les enjeux des 10 prochaines années ', true);
+        $nationalSurvey3 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_3), 'Les enjeux des 10 prochaines années', true);
         $nationalSurvey3->setAdministrator($administrator1);
 
         /** @var Question $nationalQuestion4 */

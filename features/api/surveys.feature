@@ -75,7 +75,7 @@ Feature:
         "id": @integer@,
         "uuid": "@uuid@",
         "type": "national",
-        "name": "Le deuxième questionnaire national",
+        "name": "Les enjeux des 10 prochaines années",
         "questions": [
           {
             "id": 9,
@@ -112,6 +112,7 @@ Feature:
         "id":2,
         "uuid":"@uuid@",
         "type":"national",
+        "name": "Le deuxième questionnaire national",
         "questions":[
           {
             "id": @integer@,
@@ -216,7 +217,7 @@ Feature:
         "city":null,
         "questions": [
           {
-            "id":1,
+            "id": @integer@,
             "type": "simple_field",
             "content": "Ceci est-il un champ libre ?",
             "choices": []
@@ -261,35 +262,35 @@ Feature:
       },
       {
         "uuid": "@uuid@",
-        "id": 3,
+        "id": @integer@,
         "type": "national",
-        "name": "Les enjeux des 10 prochaines années ",
+        "name": "Les enjeux des 10 prochaines années",
         "questions": [
           {
-            "id": 9,
+            "id": @integer@,
             "type": "simple_field",
             "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
             "choices": []
           },
           {
-            "id": 10,
+            "id": @integer@,
             "type": "multiple_choice",
             "content": "L'écologie est selon vous, importante pour :",
             "choices": [
               {
-                "id": 12,
+                "id": @integer@,
                 "content": "L'héritage laissé aux générations futures"
               },
               {
-                "id": 13,
+                "id": @integer@,
                 "content": "Le bien-être sanitaire"
               },
               {
-                "id": 14,
+                "id": @integer@,
                 "content": "L'aspect financier"
               },
               {
-                "id": 15,
+                "id": @integer@,
                 "content": "La préservation de l'environnement"
               }
             ]
@@ -325,7 +326,7 @@ Feature:
       },
       {
         "id": @integer@,
-        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "uuid": "@uuid@",
         "type": "national",
         "name": "Questionnaire national numéro 1",
         "questions": [
