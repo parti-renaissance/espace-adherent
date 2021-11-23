@@ -62,11 +62,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "get_phoning_campaign_survey_replies": {
  *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{uuid}/replies",
- *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "path": "/v3/phoning_campaigns/{id}/replies",
+ *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignSurveyRepliesController",
- *             "defaults": {"_api_receive": false},
  *             "normalization_context": {
  *                 "groups": {"campaign_replies_list"},
  *             }

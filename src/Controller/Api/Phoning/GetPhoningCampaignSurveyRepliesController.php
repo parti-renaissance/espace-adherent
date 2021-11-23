@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GetPhoningCampaignSurveyRepliesController
 {
-    public function __invoke(Request $request, Campaign $campaign, DataSurveyRepository $dataSurveyRepository)
+    public function __invoke(Request $request, Campaign $data, DataSurveyRepository $dataSurveyRepository)
     {
         return $dataSurveyRepository->findPhoningCampaignDataSurvey(
-            $campaign,
+            $data,
             $request->query->getInt('page', 1),
             $request->query->getInt('page_size', 30)
         );
