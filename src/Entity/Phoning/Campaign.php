@@ -401,13 +401,6 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         });
     }
 
-    public function getCampaignHistoriesCompleted(): Collection
-    {
-        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
-            return $campaignHistory->isCompletedStatus();
-        });
-    }
-
     public function isFinished(): bool
     {
         return null !== $this->finishAt && $this->finishAt <= new \DateTime();

@@ -405,9 +405,4 @@ class CampaignHistory implements DataSurveyAwareInterface
     {
         return CampaignHistoryStatusEnum::NOT_RESPOND === $this->status;
     }
-
-    public function isCompletedStatus(): bool
-    {
-        return CampaignHistoryStatusEnum::COMPLETED === $this->status;
-    }
 }
