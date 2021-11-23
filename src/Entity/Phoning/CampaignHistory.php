@@ -137,7 +137,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     protected $postalCodeChecked;
 
@@ -148,7 +148,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Length(max=255)
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     private $profession;
 
@@ -157,7 +157,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     private $needEmailRenewal;
 
@@ -166,7 +166,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     private $needSmsRenewal;
 
@@ -181,7 +181,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     strict=true
      * )
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     private $engagement;
 
@@ -192,7 +192,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Range(min="1", max="5")
      *
-     * @Groups({"phoning_campaign_history_write"})
+     * @Groups({"phoning_campaign_history_write", "phoning_campaign_history_read_list"})
      */
     private $note;
 
