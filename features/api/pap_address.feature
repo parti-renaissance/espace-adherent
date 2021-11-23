@@ -41,27 +41,165 @@ Feature:
     [
       {
         "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
+        "number": "55",
+        "address": "Rue du Rocher",
+        "insee_code": "75108",
+        "city_name": "Paris 8ème",
         "latitude": 48.878708,
         "longitude": 2.319111,
-        "distance": 258
+        "building": {
+          "uuid": "2fbe7b02-944d-4abd-be3d-f9b2944917a9",
+          "building_blocks": [
+            {
+              "uuid": "@uuid@",
+              "name": "Bâtiment A",
+              "floors": [
+                {
+                  "number": 0,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 1,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 2,
+                  "uuid": "@uuid@"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "uuid": "ccfd846a-5439-42ad-85ce-286baf4e7269",
+        "number": "65",
+        "address": "Rue du Rocher",
+        "insee_code": "75108",
+        "city_name": "Paris 8ème",
         "latitude": 48.879078,
         "longitude": 2.318631,
-        "distance": 312
+        "building": {
+          "uuid": "faf30370-80c5-4a46-8c31-f6a361bfa23b",
+          "building_blocks": [
+            {
+              "uuid": "@uuid@",
+              "name": "Bâtiment A",
+              "floors": [
+                {
+                  "number": 0,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 1,
+                  "uuid": "@uuid@"
+                }
+              ]
+            },
+            {
+              "uuid": "@uuid@",
+              "name": "Bâtiment B",
+              "floors": [
+                {
+                  "number": 0,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 1,
+                  "uuid": "@uuid@"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "uuid": "04e1d76f-c727-4612-afab-2dec2d71a480",
+        "number": "70",
+        "address": "Rue du Rocher",
+        "insee_code": "75108",
+        "city_name": "Paris 8ème",
         "latitude": 48.879166,
         "longitude": 2.318761,
-        "distance": 313
+        "building": {
+          "uuid": "0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f",
+          "building_blocks": [
+            {
+              "uuid": "@uuid@",
+              "name": "Bâtiment A",
+              "floors": [
+                {
+                  "number": 0,
+                  "uuid": "@uuid@"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2",
+        "number": "67",
+        "address": "Rue du Rocher",
+        "insee_code": "75108",
+        "city_name": "Paris 8ème",
         "latitude": 48.879246,
         "longitude": 2.318427,
-        "distance": 336
+        "building": {
+          "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+          "building_blocks": [
+            {
+              "uuid": "@uuid@",
+              "name": "Bâtiment A",
+              "floors": [
+                {
+                  "number": 0,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 1,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 10,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 2,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 3,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 4,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 5,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 6,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 7,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 8,
+                  "uuid": "@uuid@"
+                },
+                {
+                  "number": 9,
+                  "uuid": "@uuid@"
+                }
+              ]
+            }
+          ]
+        }
       }
     ]
     """

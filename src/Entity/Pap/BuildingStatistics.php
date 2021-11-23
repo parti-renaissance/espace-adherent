@@ -8,6 +8,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -27,16 +28,22 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"pap_address_list"})
      */
     private Campaign $campaign;
 
     /**
      * @ORM\Column(length=25)
+     *
+     * @Groups({"pap_address_list"})
      */
     private string $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"pap_address_list"})
      */
     private ?\DateTime $lastPassage = null;
 

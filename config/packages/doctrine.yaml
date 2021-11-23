@@ -70,4 +70,3 @@ doctrine:
 
         hydrators:
             EventHydrator: App\Doctrine\Hydrators\EventHydrator
-            PapAddressHydrator: App\Doctrine\Hydrators\PapAddressHydrator
