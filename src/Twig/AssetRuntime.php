@@ -29,8 +29,8 @@ class AssetRuntime implements RuntimeExtensionInterface
         $this->env = $env;
         $this->hash = $hash;
 
-        if (false === strpos($env, 'dev') && !$this->hash) {
-            throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments except dev. Please build them.');
+        if ('dev' !== $env && !$this->hash) {
+            throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments but dev. Please build them.');
         }
     }
 
@@ -70,7 +70,7 @@ class AssetRuntime implements RuntimeExtensionInterface
 
     public function webpackAsset(string $path, $packageName = null): string
     {
-        if (false !== strpos($this->env, 'dev')) {
+        if ('dev' === $this->env) {
             return $this->symfonyAssetExtension->getAssetUrl('built/'.$path, $packageName);
         }
 
