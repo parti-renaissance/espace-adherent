@@ -33,6 +33,7 @@ Feature:
       | method | url                                                                                                   |
       | GET    | /api/v3/phoning_campaign_histories?scope=phoning_national_manager                                     |
       | GET    | /api/v3/phoning_campaigns?scope=phoning_national_manager                                              |
+      | GET    | /api/v3/phoning_campaigns/kpi?scope=phoning_national_manager                                          |
       | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager         |
       | GET    | /api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies?scope=phoning_national_manager |
       | GET    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=phoning_national_manager |
@@ -1521,5 +1522,21 @@ Feature:
           "uuid": "@uuid@"
         }
       ]
+    }
+    """
+
+  Scenario: As a DC referent I can get phoning campaigns KPI
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "nb_campaigns": "7",
+      "nb_on_going_campaign": "6",
+      "nb_calls": "18",
+      "nb_calls_last_month": "17",
+      "nb_surveys": "13",
+      "nb_surveys_last_month": "13"
     }
     """

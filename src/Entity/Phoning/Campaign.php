@@ -103,6 +103,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
  *         },
+ *         "get_phoning_campaigns_kpi": {
+ *             "method": "GET",
+ *             "path": "/v3/phoning_campaigns/kpi",
+ *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignsKpiController",
+ *         },
  *     },
  *     subresourceOperations={
  *         "survey_get_subresource": {
