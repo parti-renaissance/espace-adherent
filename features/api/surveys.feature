@@ -137,7 +137,7 @@ Feature:
       },
       {
         "id": @integer@,
-        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "uuid": "@uuid@",
         "type": "national",
         "name": "Questionnaire national numéro 1",
         "questions": [
