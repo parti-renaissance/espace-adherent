@@ -77,11 +77,6 @@ Feature:
         "type": "national",
         "name": "Le deuxième questionnaire national",
         "questions": [
-        "uuid": "@uuid@",
-        "id": 3,
-        "type": "national",
-        "name": "Les enjeux des 10 prochaines années ",
-        "questions": [
           {
             "id": 9,
             "type": "simple_field",
