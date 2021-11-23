@@ -52,11 +52,11 @@ class CampaignRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaign')
             ->select('COUNT(DISTINCT campaign.id) AS nb_campaigns')
-            ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :end OR campaign.finishAt IS NULL , campaign.id, null)) AS nb_on_going_campaign')
+            ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL , campaign.id, null)) AS nb_on_going_campaigns')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
-            ->addSelect('SUM(IF(campaignHistory.beginAt >= :start AND campaignHistory.beginAt <= :end, 1, 0)) AS nb_calls_last_month')
+            ->addSelect('SUM(IF(campaignHistory.beginAt >= :last_month AND campaignHistory.beginAt <= :now, 1, 0)) AS nb_calls_last_month')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
-            ->addSelect('SUM(IF(dataSurvey.postedAt >= :start AND dataSurvey.postedAt <= :end, 1, 0)) as nb_surveys_last_month')
+            ->addSelect('SUM(IF(dataSurvey.postedAt >= :last_month AND dataSurvey.postedAt <= :now, 1, 0)) as nb_surveys_last_month')
             ->leftJoin(
                 'campaign.campaignHistories',
                 'campaignHistory',
@@ -65,8 +65,8 @@ class CampaignRepository extends ServiceEntityRepository
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
             ->setParameters([
-                'end' => new \DateTime(),
-                'start' => new \DateTime('last month'),
+                'now' => new \DateTime(),
+                'last_month' => new \DateTime('last month'),
                 'send' => CampaignHistoryStatusEnum::SEND,
             ])
             ->getQuery()
