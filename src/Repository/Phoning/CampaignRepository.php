@@ -52,7 +52,7 @@ class CampaignRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaign')
             ->select('COUNT(DISTINCT campaign.id) AS nb_campaigns')
-            ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL , campaign.id, null)) AS nb_on_going_campaigns')
+            ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL, campaign.id, null)) AS nb_on_going_campaigns')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
             ->addSelect('SUM(IF(campaignHistory.beginAt >= :last_month AND campaignHistory.beginAt <= :now, 1, 0)) AS nb_calls_last_month')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
