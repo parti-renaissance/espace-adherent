@@ -1484,7 +1484,7 @@ Feature:
         {
           "survey": {
             "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-            "name": "Les enjeux des 10 prochaines années "
+            "name": "Les enjeux des 10 prochaines années"
           },
           "campaign_history": {
             "caller": {
