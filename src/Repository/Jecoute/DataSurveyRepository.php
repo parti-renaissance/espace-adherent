@@ -21,7 +21,7 @@ class DataSurveyRepository extends ServiceEntityRepository
     /**
      * @return DataSurvey[]|PaginatorInterface|iterable
      */
-    public function findPhoningCampaignDataSurvey(Campaign $campaign, int $page = 1, ?int $limit = 30): iterable
+    public function findPhoningCampaignDataSurveys(Campaign $campaign, int $page = 1, ?int $limit = 30): iterable
     {
         $qb = $this
             ->createQueryBuilder('ds')
