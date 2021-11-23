@@ -7,6 +7,7 @@ use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\SmsCampaign\SmsCampaignStatusEnum;
+use App\SmsCampaign\Statistics;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -91,6 +92,8 @@ class SmsCampaign
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $sentAt;
+
+    public ?Statistics $statistics = null;
 
     public function __construct(UuidInterface $uuid = null)
     {

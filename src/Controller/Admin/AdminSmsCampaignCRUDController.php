@@ -3,22 +3,30 @@
 namespace App\Controller\Admin;
 
 use App\Entity\SmsCampaign\SmsCampaign;
+use App\OvhCloud\Driver;
 use App\Repository\AdherentRepository;
 use App\SmsCampaign\Command\SendSmsCampaignCommand;
+use App\SmsCampaign\Statistics;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdminSmsCampaignCRUDController extends CRUDController
 {
-    private $adherentRepository;
-    private $entityManager;
+    private AdherentRepository $adherentRepository;
+    private EntityManagerInterface $entityManager;
+    private Driver $ovhDriver;
 
-    public function __construct(AdherentRepository $adherentRepository, EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        AdherentRepository $adherentRepository,
+        EntityManagerInterface $entityManager,
+        Driver $ovhDriver
+    ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;
+        $this->ovhDriver = $ovhDriver;
     }
 
     public function confirmAction(SmsCampaign $smsCampaign): Response
@@ -78,5 +86,19 @@ class AdminSmsCampaignCRUDController extends CRUDController
         }
 
         return parent::redirectTo($object);
+    }
+
+    /** @param SmsCampaign $object */
+    protected function preShow(Request $request, $object)
+    {
+        if ($object->getExternalId()) {
+            $data = $this->ovhDriver->getBatchStats($object->getExternalId())->toArray(false);
+
+            if ($data) {
+                $object->statistics = Statistics::createFromResponse($data);
+            }
+        }
+
+        return null;
     }
 }
