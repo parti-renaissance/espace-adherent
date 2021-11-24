@@ -1533,7 +1533,7 @@ Feature:
     """
     {
       "nb_campaigns": "7",
-      "nb_on_going_campaigns": "6",
+      "nb_ongoing_campaigns": "6",
       "nb_calls": "18",
       "nb_calls_last_month": "17",
       "nb_surveys": "13",
