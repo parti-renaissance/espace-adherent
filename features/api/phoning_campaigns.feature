@@ -1535,7 +1535,7 @@ Feature:
       "nb_campaigns": "7",
       "nb_ongoing_campaigns": "6",
       "nb_calls": "18",
-      "nb_calls_last_30g": "17",
+      "nb_calls_last_30d": "17",
       "nb_surveys": "13",
       "nb_surveys_last_30d": "13"
     }
