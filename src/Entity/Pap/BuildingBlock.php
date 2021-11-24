@@ -39,7 +39,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface
     /**
      * @ORM\Column
      *
-     * @Groups({"pap_address_list", "pap_building_block_list"})
+     * @Groups({"pap_building_block_list"})
      */
     private string $name;
 
@@ -61,7 +61,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface
      * )
      * @ORM\OrderBy({"number": "ASC"})
      *
-     * @Groups({"pap_address_list", "pap_building_block_list"})
+     * @Groups({"pap_building_block_list"})
      */
     private Collection $floors;
 

@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\Pap\BuildingBlock;
+use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\Floor;
 use App\Repository\Pap\CampaignRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,7 +27,7 @@ class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareIn
     }
 
     /**
-     * @return array
+     * @param Floor|BuildingBlock $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -44,7 +45,7 @@ class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareIn
             return $data;
         }
 
-        $data['status'] = $object->getStatisticForCampaign($campaign)->getStatus();
+        $data['status'] = $object->findStatisticsForCampaign($campaign)->getStatus();
 
         return $data;
     }

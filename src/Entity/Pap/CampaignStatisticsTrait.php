@@ -26,7 +26,7 @@ trait CampaignStatisticsTrait
         $this->statistics->removeElement($statistic);
     }
 
-    public function getStatisticForCampaign(Campaign $campaign): ?CampaignStatisticsInterface
+    public function findStatisticsForCampaign(Campaign $campaign): ?CampaignStatisticsInterface
     {
         foreach ($this->statistics as $statistic) {
             if ($statistic->getCampaign() === $campaign) {
