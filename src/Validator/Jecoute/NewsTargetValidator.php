@@ -18,7 +18,7 @@ class NewsTargetValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, NewsTarget::class);
         }
 
-        if (!$value->isGlobal() && !$value->getZone()) {
+        if (!($value->isGlobal() xor $value->getZone())) {
             $this
                 ->context
                 ->buildViolation($constraint->undefinedTarget)

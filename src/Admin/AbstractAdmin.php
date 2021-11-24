@@ -6,6 +6,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAdmin;
 
 class AbstractAdmin extends SonataAdmin
 {
+    protected $formOptions = [
+        'validation_groups' => ['Default', 'Admin'],
+    ];
+
     protected function isCreation(): bool
     {
         return !(bool) $this->getSubject()->getId();

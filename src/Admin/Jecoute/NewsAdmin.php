@@ -2,12 +2,12 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Admin\AbstractAdmin;
 use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -108,6 +108,13 @@ class NewsAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+
+        $zone = $this->getSubject()->getZone();
+        $formMapper->getFormBuilder()->get('global')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($zone) {
+            if (!$this->isCreation() && null === $zone) {
+                $event->setData(true);
+            }
+        });
 
         $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
     }
