@@ -8,6 +8,7 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\GenderEnum;
 use App\Repository\Jecoute\JemarcheDataSurveyRepository;
+use App\Repository\Jecoute\SurveyQuestionRepository;
 use Cocur\Slugify\Slugify;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Exporter as SonataExporter;
@@ -17,24 +18,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SurveyExporter
 {
-    /** @var JemarcheDataSurveyRepository */
-    private $dataSurveyRepository;
-
-    /** @var Exporter */
-    private $exporter;
-
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /** @var int */
+    private JemarcheDataSurveyRepository $dataSurveyRepository;
+    private SurveyQuestionRepository $surveyQuestionRepository;
+    private Exporter $exporter;
+    private TranslatorInterface $translator;
     private $i = 0;
 
     public function __construct(
         JemarcheDataSurveyRepository $dataSurveyRepository,
+        SurveyQuestionRepository $surveyQuestionRepository,
         SonataExporter $exporter,
         TranslatorInterface $translator
     ) {
         $this->dataSurveyRepository = $dataSurveyRepository;
+        $this->surveyQuestionRepository = $surveyQuestionRepository;
         $this->exporter = $exporter;
         $this->translator = $translator;
     }
@@ -87,7 +84,7 @@ class SurveyExporter
                 $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
 
                 /** @var SurveyQuestion $surveyQuestion */
-                foreach ($survey->getQuestions() as $surveyQuestion) {
+                foreach ($this->surveyQuestionRepository->findForSurvey($survey) as $surveyQuestion) {
                     $questionName = $surveyQuestion->getQuestion()->getContent();
                     $row[$questionName] = '';
 
