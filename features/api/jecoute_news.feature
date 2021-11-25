@@ -359,12 +359,8 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.\ntitle: Cette valeur ne doit pas être vide.\ntext: Cette valeur ne doit pas être vide.",
+        "detail": "title: Cette valeur ne doit pas être vide.\ntext: Cette valeur ne doit pas être vide.",
         "violations": [
-            {
-                "propertyPath": "",
-                "message": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation."
-            },
             {
                 "propertyPath": "title",
                 "message": "Cette valeur ne doit pas être vide."
@@ -377,7 +373,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I cannot  create a news with invalid data
+  Scenario: As a logged-in user I cannot create a news with invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
@@ -395,12 +391,8 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.\ntitle: Vous devez saisir au maximum 120 caractères.\ntext: Vous devez saisir au maximum 1000 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
+        "detail": "title: Vous devez saisir au maximum 120 caractères.\ntext: Vous devez saisir au maximum 1000 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
         "violations": [
-            {
-                "propertyPath": "",
-                "message": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation."
-            },
             {
                 "propertyPath": "title",
                 "message": "Vous devez saisir au maximum 120 caractères."
@@ -454,37 +446,6 @@ Feature:
       | title | Une nouvelle actualité d'aujourd'hui          |
       | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
 
-  Scenario: As a logged-in user with no national role I cannot create a news without zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    Then I should have 0 notification
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
-    """
-    {
-      "title": "Une nouvelle actualité d'aujourd'hui",
-      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
-      "external_link": "http://test.en-marche.fr",
-      "global": true,
-      "notification": true,
-      "published": true
-    }
-    """
-    Then the response status code should be 400
-    And the JSON should be equal to:
-    """
-    {
-        "type": "https://tools.ietf.org/html/rfc2616#section-10",
-        "title": "An error occurred",
-        "detail": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation.",
-        "violations": [
-            {
-                "propertyPath": "",
-                "message": "Vous devez choisir entre une notification globale ou sélectionner une zone de segmentation."
-            }
-        ]
-    }
-    """
-
   Scenario: As a logged-in user I can update a news of my zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
@@ -518,6 +479,17 @@ Feature:
       "creator": "Bob Senateur (59)"
     }
     """
+
+  Scenario: As a logged-in user with National role I can update a news
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/jecoute/news/232f99b8-7a0c-40ed-ba9e-bf8f33e19052?scope=national" with body:
+    """
+    {
+      "published": false
+    }
+    """
+    Then the response status code should be 200
 
   Scenario: As a logged-in user I cannot update a news out of my zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"

@@ -119,7 +119,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * })
  *
- * @NewsTarget
+ * @NewsTarget(groups="Admin")
  */
 class News implements AuthoredInterface
 {
