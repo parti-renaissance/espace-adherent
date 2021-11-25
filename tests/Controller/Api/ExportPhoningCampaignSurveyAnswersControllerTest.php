@@ -31,7 +31,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends WebTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/export-replies?scope=phoning_national_manager', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xls?scope=phoning_national_manager', [], [], [
                 'HTTP_AUTHORIZATION' => "Bearer $accessToken",
             ]
         );
@@ -39,7 +39,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testExportPhoningCampaignReplies(): void
+    public function testExportPhoningCampaignRepliesInXls(): void
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
@@ -51,7 +51,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends WebTestCase
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/export-replies?scope=phoning_national_manager', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xls?scope=phoning_national_manager', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
         $responseContent = ob_get_clean();
