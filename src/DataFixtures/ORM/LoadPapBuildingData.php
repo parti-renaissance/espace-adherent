@@ -28,7 +28,11 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $campaign1 = $this->getReference('pap-campaign-1');
         $building = new Building(Uuid::fromString(self::BUILDING_01_UUID));
         $building->setAddress($this->getReference('address-1'));
-        $building->addStatistic(new BuildingStatistics($building, $campaign1));
+        $building->setCurrentCampaign($campaign1);
+        $building->addStatistic(new BuildingStatistics($building, $this->getReference('pap-campaign-2')));
+        $building->addStatistic($stats = new BuildingStatistics($building, $campaign1));
+        $stats->setLastPassage(new \DateTime('- 10 days'));
+        $stats->setLastPassageDoneBy($this->getReference('adherent-33'));
         $this->createBuildingBlock(
             'Bâtiment A',
             $building,
@@ -43,6 +47,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
 
         $building = new Building(Uuid::fromString(self::BUILDING_02_UUID));
         $building->setAddress($this->getReference('address-2'));
+        $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $campaign1));
         $this->createBuildingBlock(
             'Bâtiment A',
@@ -67,6 +72,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
 
         $building = new Building(Uuid::fromString(self::BUILDING_03_UUID));
         $building->setAddress($this->getReference('address-3'));
+        $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $campaign1));
         $this->createBuildingBlock(
             'Bâtiment A',
@@ -82,6 +88,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
 
         $building = new Building(Uuid::fromString(self::BUILDING_04_UUID));
         $building->setAddress($this->getReference('address-4'));
+        $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $campaign1));
         $this->createBuildingBlock('Bâtiment A', $building, $this->getReference('pap-campaign-2'));
         $this->addReference('building-4', $building);

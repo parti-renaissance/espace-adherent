@@ -31,6 +31,13 @@ class Building
     use CampaignStatisticsTrait;
 
     /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_address_list"})
+     */
+    private ?string $type = null;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -46,11 +53,8 @@ class Building
      *     mappedBy="building",
      *     cascade={"all"},
      *     orphanRemoval=true,
-     *     fetch="EAGER"
      * )
      * @ORM\OrderBy({"name": "ASC"})
-     *
-     * @Groups({"pap_address_list"})
      */
     private Collection $buildingBlocks;
 
@@ -61,10 +65,16 @@ class Building
      *     targetEntity="App\Entity\Pap\BuildingStatistics",
      *     mappedBy="building",
      *     cascade={"all"},
-     *     orphanRemoval=true
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY",
      * )
      */
     private Collection $statistics;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
+     */
+    private ?Campaign $currentCampaign = null;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -83,14 +93,6 @@ class Building
         $this->address = $address;
     }
 
-    /**
-     * @return BuildingBlock[]|Collection
-     */
-    public function getBuildingBlocks(): Collection
-    {
-        return $this->buildingBlocks;
-    }
-
     public function addBuildingBlock(BuildingBlock $buildingBlock): void
     {
         if (!$this->buildingBlocks->contains($buildingBlock)) {
@@ -99,8 +101,21 @@ class Building
         }
     }
 
-    public function removeBuildingBlock(BuildingBlock $buildingBlock): void
+    public function setCurrentCampaign(Campaign $campaign): void
     {
-        $this->buildingBlocks->removeElement($buildingBlock);
+        $this->currentCampaign = $campaign;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @Groups({"pap_address_list"})
+     */
+    public function getCampaignStatistics(): ?CampaignStatisticsInterface
+    {
+        return $this->currentCampaign ? $this->findStatisticsForCampaign($this->currentCampaign) : null;
     }
 }

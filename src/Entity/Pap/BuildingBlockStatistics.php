@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="pap_bulding_block_statistics")
+ * @ORM\Table(name="pap_building_block_statistics")
  */
 class BuildingBlockStatistics implements CampaignStatisticsInterface
 {

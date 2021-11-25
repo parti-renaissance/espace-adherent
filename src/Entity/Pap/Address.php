@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "near": {
  *             "method": "GET",
  *             "path": "/v3/pap/address/near",
- *             "defaults": {"_api_receive": false},
+ *             "normalization_context": {"groups": {"pap_address_list"}},
  *             "controller": "App\Controller\Api\Pap\AddressNearController",
  *         },
  *     },

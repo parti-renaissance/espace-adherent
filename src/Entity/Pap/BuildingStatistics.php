@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="pap_bulding_statistics")
+ * @ORM\Table(name="pap_building_statistics")
  */
 class BuildingStatistics implements CampaignStatisticsInterface
 {
@@ -50,6 +50,8 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Groups({"pap_address_list"})
      */
     protected ?Adherent $lastPassageDoneBy;
 
@@ -60,11 +62,15 @@ class BuildingStatistics implements CampaignStatisticsInterface
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"pap_address_list"})
      */
     private int $nbDoors = 0;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"pap_address_list"})
      */
     private int $nbSurveys = 0;
 

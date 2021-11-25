@@ -222,9 +222,9 @@ perm:
 
 # Rules from files
 
-vendor: vendor/composer
+vendor: vendor/composer/installed.php
 
-vendor/composer: composer.lock
+vendor/composer/installed.php: composer.lock
 	$(COMPOSER) install -n
 
 composer.lock: composer.json

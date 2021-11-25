@@ -26,7 +26,7 @@ class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareIn
     }
 
     /**
-     * @return array
+     * @param Floor|BuildingBlock $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -44,7 +44,7 @@ class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareIn
             return $data;
         }
 
-        $data['status'] = $object->getStatisticForCampaign($campaign)->getStatus();
+        $data['status'] = $object->findStatisticsForCampaign($campaign)->getStatus();
 
         return $data;
     }

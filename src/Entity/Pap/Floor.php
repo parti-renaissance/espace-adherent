@@ -46,9 +46,9 @@ class Floor implements EntityAdherentBlameableInterface
     private BuildingBlock $buildingBlock;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @Groups({"pap_address_list", "pap_building_block_list"})
+     * @Groups({"pap_building_block_list"})
      */
     private int $number;
 
