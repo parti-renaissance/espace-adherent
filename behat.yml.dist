@@ -16,12 +16,8 @@ default:
                         wd_host: http://selenium:4444/wd/hub
         Behatch\Extension: ~
         Bex\Behat\SkipTestsExtension: ~
-
-app:
     suites:
         default:
-            filters:
-                tags: "@app,@api"
             contexts:
                 - RestContext:
                     sslPrivateKey: "%%ssl_private_key%%"
@@ -40,6 +36,18 @@ app:
                 - ReferentTagContext:
                     adherentRepository: "@App\\Repository\\AdherentRepository"
                 - FeatureContext
+                - Behatch\Context\BrowserContext:
+                    timeout: 3
+                - Behatch\Context\DebugContext:
+                    screenshotDir: 'var/behat'
+                - DonationContext
+
+app:
+    suites:
+        default:
+            filters:
+                tags: "@app,@api"
+            contexts:
                 - TransactionalDatabaseContext
 
 javascript:
@@ -48,21 +56,6 @@ javascript:
             filters:
                 tags: "@javascript"
             contexts:
-                - RestContext:
-                    sslPrivateKey: "%%ssl_private_key%%"
-                    entityManager: "@doctrine.orm.default_entity_manager"
-                - Behat\MinkExtension\Context\MinkContext
-                - Behatch\Context\BrowserContext:
-                    timeout: 3
-                - Behatch\Context\DebugContext:
-                    screenshotDir: 'var/behat'
-                - SecurityContext
-                - JsonContext
-                - EmailContext
                 - FixtureContext:
                     fixturesLoader: '@Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader'
                     manager: "@doctrine.orm.default_entity_manager"
-                - ReferentTagContext:
-                    adherentRepository: "@App\\Repository\\AdherentRepository"
-                - DonationContext
-                - FeatureContext
