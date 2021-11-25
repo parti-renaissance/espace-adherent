@@ -3,7 +3,6 @@
 namespace App\Normalizer;
 
 use App\Entity\Pap\BuildingBlock;
-use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\Floor;
 use App\Repository\Pap\CampaignRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
