@@ -38,6 +38,7 @@ class CampaignHistoryReplyController extends AbstractReplyController
 
     protected function postHandleAction(): void
     {
+        $this->campaignHistory->getDataSurvey()->setAuthorPostalCode($this->campaignHistory->getDataSurvey()->getAuthor()->getPostalCode());
         $this->campaignHistory->setStatus(CampaignHistoryStatusEnum::COMPLETED);
         $this->campaignHistory->setFinishAt(new \DateTime());
     }

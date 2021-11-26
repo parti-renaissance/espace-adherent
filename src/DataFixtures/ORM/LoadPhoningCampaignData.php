@@ -67,7 +67,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
             '+20 days'
         );
         $campaign3->getAudience()->setAgeMin(18);
-        $campaign3->getAudience()->setAgeMin(80);
+        $campaign3->getAudience()->setAgeMax(80);
         $this->addReference('campaign-3', $campaign3);
 
         $campaignFinished = $this->createCampaign(

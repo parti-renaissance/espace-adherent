@@ -29,6 +29,11 @@ class DataSurvey implements AuthorInterface
     private $author;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $authorPostalCode;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -94,6 +99,16 @@ class DataSurvey implements AuthorInterface
     public function getAuthor(): ?Adherent
     {
         return $this->author;
+    }
+
+    public function getAuthorPostalCode(): ?string
+    {
+        return $this->authorPostalCode;
+    }
+
+    public function setAuthorPostalCode(?string $authorPostalCode): void
+    {
+        $this->authorPostalCode = $authorPostalCode;
     }
 
     public function getPostedAt(): ?\DateTime

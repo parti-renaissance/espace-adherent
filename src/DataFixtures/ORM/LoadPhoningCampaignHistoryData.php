@@ -274,6 +274,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         if ($survey) {
             $dataSurvey = new DataSurvey($survey);
             $dataSurvey->setAuthor($author);
+            $dataSurvey->setAuthorPostalCode($author->getPostalCode());
 
             $campaignHistory->setDataSurvey($dataSurvey);
         }
