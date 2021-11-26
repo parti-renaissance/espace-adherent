@@ -13,19 +13,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(
- *     "/v3/phoning_campaigns/{uuid}/replies",
- *     name="api_phoning_camapign_get_campaign_survey_replies_",
- *     requirements={"uuid": "%pattern_uuid%"}
+ *     "/v3/phoning_campaigns/{uuid}/replies.{_format}",
+ *     name="api_phoning_camapign_get_campaign_survey_replies",
+ *     methods={"GET"},
+ *     requirements={"uuid": "%pattern_uuid%", "_format": "json|csv|xls"},
+ *     defaults={"_format": "json"}
  * )
  *
  * @Security("is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')")
  */
 class GetPhoningCampaignSurveyRepliesController extends AbstractController
 {
-    /**
-     * @Route(".{_format}", name="list", methods={"GET"}, defaults={"_format": "json"}, requirements={"_format": "json|csv|xls"})
-     */
-    public function list(
+    public function __invoke(
         Request $request,
         Campaign $campaign,
         string $_format,
@@ -33,11 +32,7 @@ class GetPhoningCampaignSurveyRepliesController extends AbstractController
         PhoningCampaignSurveyRepliesExporter $exporter
     ): Response {
         if ('json' !== $_format) {
-            try {
-                return $exporter->export($campaign, $_format);
-            } catch (\Exception $e) {
-                throw new \RuntimeException('An error occurred during the export', 0, $e);
-            }
+            return $exporter->export($campaign, $_format);
         }
 
         return $this->json(
