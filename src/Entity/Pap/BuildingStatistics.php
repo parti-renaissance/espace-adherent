@@ -80,7 +80,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->campaign = $campaign;
 
         $this->uuid = Uuid::uuid4();
-        $this->status = BuildingStatusEnum::ONGOING;
+        $this->status = BuildingStatusEnum::TODO;
     }
 
     public function getBuilding(): Building

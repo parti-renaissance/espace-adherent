@@ -43,6 +43,8 @@ Feature:
             "number": "55",
             "address": "Rue du Rocher",
             "insee_code": "75108",
+            "postal_codes": ["75008"],
+            "voters_count": 2,
             "city_name": "Paris 8ème",
             "latitude": 48.878708,
             "longitude": 2.319111,
@@ -53,7 +55,7 @@ Feature:
                     "campaign": {
                         "uuid": "@uuid@"
                     },
-                    "status": "ongoing",
+                    "status": "todo",
                     "last_passage": "@string@.isDateTime()",
                     "last_passage_done_by": {
                         "uuid": "@uuid@",
@@ -71,6 +73,8 @@ Feature:
             "number": "65",
             "address": "Rue du Rocher",
             "insee_code": "75108",
+            "postal_codes": ["75008"],
+            "voters_count": 1,
             "city_name": "Paris 8ème",
             "latitude": 48.879078,
             "longitude": 2.318631,
@@ -81,7 +85,7 @@ Feature:
                     "campaign": {
                         "uuid": "@uuid@"
                     },
-                    "status": "ongoing",
+                    "status": "todo",
                     "last_passage": null,
                     "last_passage_done_by": null,
                     "nb_doors": 0,
@@ -95,6 +99,8 @@ Feature:
             "number": "70",
             "address": "Rue du Rocher",
             "insee_code": "75108",
+            "postal_codes": ["75008"],
+            "voters_count": 1,
             "city_name": "Paris 8ème",
             "latitude": 48.879166,
             "longitude": 2.318761,
@@ -105,7 +111,7 @@ Feature:
                     "campaign": {
                         "uuid": "@uuid@"
                     },
-                    "status": "ongoing",
+                    "status": "todo",
                     "last_passage": null,
                     "last_passage_done_by": null,
                     "nb_doors": 0,
@@ -119,6 +125,8 @@ Feature:
             "number": "67",
             "address": "Rue du Rocher",
             "insee_code": "75108",
+            "postal_codes": ["75008"],
+            "voters_count": 3,
             "city_name": "Paris 8ème",
             "latitude": 48.879246,
             "longitude": 2.318427,
@@ -129,7 +137,7 @@ Feature:
                     "campaign": {
                         "uuid": "@uuid@"
                     },
-                    "status": "ongoing",
+                    "status": "todo",
                     "last_passage": null,
                     "last_passage_done_by": null,
                     "nb_doors": 0,
@@ -154,6 +162,7 @@ Feature:
       "number": "55",
       "address": "Rue du Rocher",
       "insee_code": "75108",
+      "postal_codes": ["75008"],
       "city_name": "Paris 8ème",
       "voters_count": 2
     }

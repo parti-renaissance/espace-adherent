@@ -21,20 +21,20 @@ class AddressRepository extends ServiceEntityRepository
             SELECT address.id
             FROM pap_address AS address
             WHERE 
-                offset_x BETWEEN 
+                address.offset_x BETWEEN 
                     2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) - 1)
                     AND 2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) + 1)
-                AND offset_y BETWEEN 
+                AND address.offset_y BETWEEN 
                     2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) - 1)
                     AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)
             ORDER BY 
                 (6371 * 
                      ACOS(
                        COS(RADIANS(:latitude)) 
-                     * COS(RADIANS(latitude)) 
-                     * COS(RADIANS(longitude) - RADIANS(:longitude)) 
+                     * COS(RADIANS(address.latitude)) 
+                     * COS(RADIANS(address.longitude) - RADIANS(:longitude)) 
                      + SIN(RADIANS(:latitude)) 
-                     * SIN(RADIANS(latitude))
+                     * SIN(RADIANS(address.latitude))
                  ))
             LIMIT :limit
 SQL;
