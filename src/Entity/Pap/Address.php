@@ -72,6 +72,13 @@ class Address
     private ?string $inseeCode;
 
     /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"pap_address_list", "pap_address_read"})
+     */
+    private ?array $postalCodes;
+
+    /**
      * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_address_list", "pap_address_read"})
@@ -110,6 +117,13 @@ class Address
     private Collection $voters;
 
     /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     *
+     * @Groups({"pap_address_list", "pap_address_read"})
+     */
+    private int $votersCount = 0;
+
+    /**
      * @var Building[]|Collection
      *
      * @ORM\OneToOne(
@@ -128,6 +142,7 @@ class Address
         string $number = null,
         string $address = null,
         string $inseeCode = null,
+        array $postalCodes = null,
         string $cityName = null,
         int $offsetX = null,
         int $offsetY = null,
@@ -138,6 +153,7 @@ class Address
         $this->number = $number;
         $this->address = $address;
         $this->inseeCode = $inseeCode;
+        $this->postalCodes = $postalCodes;
         $this->cityName = $cityName;
         $this->offsetX = $offsetX;
         $this->offsetY = $offsetY;
@@ -236,6 +252,8 @@ class Address
         if (!$this->voters->contains($voter)) {
             $voter->setAddress($this);
             $this->voters->add($voter);
+
+            $this->votersCount = $this->voters->count();
         }
     }
 
@@ -244,12 +262,9 @@ class Address
         $this->voters->removeElement($voter);
     }
 
-    /**
-     * @Groups({"pap_address_read"})
-     */
     public function getVotersCount(): int
     {
-        return $this->voters->count();
+        return $this->votersCount;
     }
 
     public function getBuilding(): ?Building
@@ -261,5 +276,10 @@ class Address
     {
         $building->setAddress($this);
         $this->building = $building;
+    }
+
+    public function getPostalCodes(): ?array
+    {
+        return $this->postalCodes;
     }
 }
