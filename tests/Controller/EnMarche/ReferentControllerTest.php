@@ -430,7 +430,7 @@ class ReferentControllerTest extends WebTestCase
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
                 'referent_filter' => [
-                    'referentTags' => 16,
+                    'referentTags' => 13,
                 ],
             ])
         );
