@@ -93,7 +93,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
         $this->assertCount(2, $data);
         $this->assertArrayHasKey(0, $data);
         PHPUnitHelper::assertArraySubset([
-            'id' => 4,
+            'id' => 2,
             'type' => 'elected_representative',
             'code' => 'instances_member',
             'color' => null,
@@ -101,7 +101,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
             'ids' => ['2'],
         ], $data[0]);
         $this->assertArrayHasKey(1, $data);
-        $this->assertSame(3, $data[1]['id']);
+        $this->assertSame(1, $data[1]['id']);
         $this->assertSame('elected_representative', $data[1]['type']);
         $this->assertSame('supporting_la_rem', $data[1]['code']);
         $this->assertSame('Sympathisant(e) LaREM', $data[1]['label']);

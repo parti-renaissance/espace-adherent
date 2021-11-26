@@ -83,7 +83,7 @@ db: db-init                                                                     
 db-init: vendor wait-for-db                                                                            ## Init the database
 	$(CONSOLE) doctrine:database:drop --force --if-exists --no-debug
 	$(CONSOLE) doctrine:database:create --if-not-exists --no-debug
-	$(CONSOLE) doctrine:database:import -n --no-debug -- dump/dump-2020.sql
+	$(CONSOLE) doctrine:database:import -n --no-debug -- dump/dump-2021.sql
 	$(CONSOLE) doctrine:migrations:migrate -n --no-debug
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
@@ -154,7 +154,7 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 tfp-db-init: wait-for-db                                                                                    ## Init databases for tests
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test --no-debug
 	$(CONSOLE) doctrine:database:create --env=test --no-debug
-	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2020.sql
+	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2021.sql
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
 

@@ -167,7 +167,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $form = $crawler->selectButton('Mettre à jour')->form();
         $formName = str_replace(sprintf('%s?uniqid=', $editUrl), '', $form->getFormNode()->getAttribute('action'));
 
-        $form[$formName.'[instanceQualities]'] = 17;
+        $form[$formName.'[instanceQualities]'] = 9;
         $this->client->submit($form);
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
