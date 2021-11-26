@@ -50,11 +50,13 @@ class SendAdherentActionSummaryCommandHandler implements MessageHandlerInterface
             $editProfilUrl = $this->urlGenerator->generate('app_user_edit', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        $this->mailer->sendMessage(PhoningCampaignAdherentActionSummaryMessage::create(
-            $campaignHistory,
-            $emailSubscribeUrl,
-            $smsPreferenceUrl,
-            $editProfilUrl
-        ));
+        if ($emailSubscribeUrl || $smsPreferenceUrl || $editProfilUrl) {
+            $this->mailer->sendMessage(PhoningCampaignAdherentActionSummaryMessage::create(
+                $campaignHistory,
+                $emailSubscribeUrl,
+                $smsPreferenceUrl,
+                $editProfilUrl
+            ));
+        }
     }
 }
