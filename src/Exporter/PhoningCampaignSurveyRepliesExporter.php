@@ -3,10 +3,10 @@
 namespace App\Exporter;
 
 use App\Entity\Jecoute\Choice;
-use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Entity\Phoning\Campaign;
 use App\Repository\Jecoute\DataSurveyRepository;
+use App\Repository\Jecoute\SurveyQuestionRepository;
 use Cocur\Slugify\Slugify;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -15,19 +15,22 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class PhoningCampaignSurveyRepliesExporter
 {
     private DataSurveyRepository $dataSurveyRepository;
+    private SurveyQuestionRepository $surveyQuestionRepository;
     private SonataExporter $exporter;
     private int $i = 0;
 
-    public function __construct(DataSurveyRepository $dataSurveyRepository, SonataExporter $exporter)
-    {
+    public function __construct(
+        DataSurveyRepository $dataSurveyRepository,
+        SurveyQuestionRepository $surveyQuestionRepository,
+        SonataExporter $exporter
+    ) {
         $this->dataSurveyRepository = $dataSurveyRepository;
+        $this->surveyQuestionRepository = $surveyQuestionRepository;
         $this->exporter = $exporter;
     }
 
     public function export(Campaign $campaign, string $format): StreamedResponse
     {
-        $dataSurveysArray = new \ArrayObject($this->dataSurveyRepository->findPhoningCampaignDataSurveys($campaign, 1, null));
-
         return $this->exporter->getResponse(
             $format,
             sprintf(
@@ -37,8 +40,10 @@ class PhoningCampaignSurveyRepliesExporter
                 $format
             ),
             new IteratorCallbackSourceIterator(
-                $dataSurveysArray->getIterator(),
-                function (DataSurvey $dataSurvey) use ($campaign) {
+                $this->dataSurveyRepository->iterateForPhoningCampaignDataSurveys($campaign),
+                function (array $data) use ($campaign) {
+                    $dataSurvey = $data[0];
+
                     $row = [];
                     $row['ID'] = ++$this->i;
                     $row['Nom Prénom de l\'auteur'] = (string) $dataSurvey->getAuthor();
@@ -49,7 +54,7 @@ class PhoningCampaignSurveyRepliesExporter
                     $survey = $campaign->getSurvey();
 
                     /** @var SurveyQuestion $surveyQuestion */
-                    foreach ($survey->getQuestions() as $surveyQuestion) {
+                    foreach ($this->surveyQuestionRepository->findForSurvey($survey) as $surveyQuestion) {
                         $questionName = $surveyQuestion->getQuestion()->getContent();
                         $row[$questionName] = '';
 

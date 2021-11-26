@@ -7,6 +7,8 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Phoning\Campaign;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DataSurveyRepository extends ServiceEntityRepository
@@ -42,5 +44,22 @@ class DataSurveyRepository extends ServiceEntityRepository
         }
 
         return $this->configurePaginator($qb, $page, $limit);
+    }
+
+    public function iterateForPhoningCampaignDataSurveys(Campaign $campaign): IterableResult
+    {
+        return $this->createQueryBuilder('ds')
+            ->addSelect('survey', 'campaignHistory', 'author', 'adherent', 'campaign')
+            ->leftJoin('ds.survey', 'survey')
+            ->leftJoin('ds.author', 'author')
+            ->leftJoin('ds.campaignHistory', 'campaignHistory')
+            ->leftJoin('campaignHistory.campaign', 'campaign')
+            ->leftJoin('campaignHistory.adherent', 'adherent')
+            ->where('campaign = :campaign')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->iterate()
+        ;
     }
 }
