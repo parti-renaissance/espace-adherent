@@ -8,6 +8,7 @@ use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,14 +41,15 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
     public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
     {
         $qb = $this->createQueryBuilder('jds')
+            ->addSelect('ds', 'adherent')
             ->leftJoin('jds.dataSurvey', 'ds')
+            ->leftJoin('ds.author', 'adherent')
             ->where('ds.survey = :survey')
             ->setParameter('survey', $survey)
         ;
 
         if ($zones) {
             $qb
-                ->innerJoin('ds.author', 'adherent')
                 ->distinct()
                 ->innerJoin('adherent.zones', 'zone')
                 ->innerJoin('zone.parents', 'parent')
@@ -56,7 +58,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
             ;
         }
 
-        return $qb->getQuery()->iterate();
+        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 
     public function countByAdherent(Adherent $adherent, \DateTimeInterface $minPostedAt = null): int
