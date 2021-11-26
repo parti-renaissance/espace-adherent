@@ -60,16 +60,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"phoning_campaign_read_with_score"},
  *             },
  *         },
- *         "get_phoning_campaign_survey_replies": {
- *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{id}/replies",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
- *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignSurveyRepliesController",
- *             "normalization_context": {
- *                 "groups": {"campaign_replies_list"},
- *             }
- *         },
  *         "get_callers_with_scores_private": {
  *             "method": "GET",
  *             "path": "/v3/phoning_campaigns/{uuid}/callers",
