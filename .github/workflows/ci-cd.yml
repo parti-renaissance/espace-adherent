@@ -204,7 +204,7 @@ jobs:
           make tfp-rabbitmq tfp-db
 
       - env:
-          BEHAT_ARGS: --profile=app -vvv --colors -f progress -o std -f junit -o ./behat --
+          BEHAT_ARGS: --suite=default -vvv --colors -f progress -o std -f junit -o ./behat --
         run: |-
           make test-behat
 
@@ -264,7 +264,7 @@ jobs:
           make tfp-cc tfp-rabbitmq tfp-db
 
       - env:
-          BEHAT_ARGS: --profile=javascript --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
+          BEHAT_ARGS: --suite=javascript --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
         run: |-
           make test-behat
 
