@@ -30,7 +30,7 @@ class DataSurvey implements AuthorInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $authorPostalCode;
 
