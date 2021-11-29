@@ -32,7 +32,7 @@ class Statistics
         return $this->estimatedCredits;
     }
 
-    public function getNonSent(): int
+    public function getNotSent(): int
     {
         $value = $this->estimatedCredits - $this->sent - $this->pending;
 
