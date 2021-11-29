@@ -134,6 +134,7 @@
         "zendframework/zend-diactoros": "^2.2"
     },
     "require-dev": {
+        "behat/behat": "^3.10",
         "behat/mink": "^1.7",
         "behat/mink-browserkit-driver": "^1.3",
         "behat/mink-extension": "^2.2",

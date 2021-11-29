@@ -18,7 +18,10 @@ default:
         Bex\Behat\SkipTestsExtension: ~
     suites:
         default:
+            filters:
+                tags: "@app,@api"
             contexts:
+                - TransactionalDatabaseContext
                 - RestContext:
                     sslPrivateKey: "%%ssl_private_key%%"
                     entityManager: "@doctrine.orm.default_entity_manager"
@@ -41,21 +44,30 @@ default:
                 - Behatch\Context\DebugContext:
                     screenshotDir: 'var/behat'
                 - DonationContext
-
-app:
-    suites:
-        default:
-            filters:
-                tags: "@app,@api"
-            contexts:
-                - TransactionalDatabaseContext
-
-javascript:
-    suites:
-        default:
+        javascript:
             filters:
                 tags: "@javascript"
             contexts:
                 - FixtureContext:
                     fixturesLoader: '@Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader'
                     manager: "@doctrine.orm.default_entity_manager"
+                - RestContext:
+                    sslPrivateKey: "%%ssl_private_key%%"
+                    entityManager: "@doctrine.orm.default_entity_manager"
+                - Behat\MinkExtension\Context\MinkContext
+                - SecurityContext
+                - JsonContext
+                - EmailContext
+                - RabbitMqContext:
+                    container: "@service_container"
+                - NotificationContext:
+                    notificationRepository: "@App\\Repository\\NotificationRepository"
+                    propertyAccessor: "@Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface"
+                - ReferentTagContext:
+                    adherentRepository: "@App\\Repository\\AdherentRepository"
+                - FeatureContext
+                - Behatch\Context\BrowserContext:
+                    timeout: 3
+                - Behatch\Context\DebugContext:
+                    screenshotDir: 'var/behat'
+                - DonationContext
