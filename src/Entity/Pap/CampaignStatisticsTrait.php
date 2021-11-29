@@ -29,7 +29,7 @@ trait CampaignStatisticsTrait
     public function findStatisticsForCampaign(Campaign $campaign): ?CampaignStatisticsInterface
     {
         foreach ($this->statistics as $statistic) {
-            if ($statistic->getCampaign() === $campaign) {
+            if ($statistic->getCampaign()->getId() === $campaign->getId()) {
                 return $statistic;
             }
         }

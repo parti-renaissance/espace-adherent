@@ -2,7 +2,21 @@
 
 namespace App\Entity\Pap;
 
+use App\Entity\Adherent;
+
 interface CampaignStatisticsInterface
 {
     public function getCampaign(): Campaign;
+
+    public function getStatus(): string;
+
+    public function setStatus(string $status): void;
+
+    public function getClosedAt(): ?\DateTimeInterface;
+
+    public function setClosedAt(?\DateTimeInterface $closedAt): void;
+
+    public function getClosedBy(): ?Adherent;
+
+    public function setClosedBy(?Adherent $closedBy): void;
 }

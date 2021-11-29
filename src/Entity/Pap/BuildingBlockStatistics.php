@@ -16,6 +16,7 @@ class BuildingBlockStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use StatusTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\BuildingBlock", inversedBy="statistics")
@@ -28,11 +29,6 @@ class BuildingBlockStatistics implements CampaignStatisticsInterface
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Campaign $campaign;
-
-    /**
-     * @ORM\Column(length=25)
-     */
-    private string $status;
 
     public function __construct(BuildingBlock $buildingBlock, Campaign $campaign, ?string $status = null)
     {
@@ -51,15 +47,5 @@ class BuildingBlockStatistics implements CampaignStatisticsInterface
     public function getCampaign(): Campaign
     {
         return $this->campaign;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
     }
 }

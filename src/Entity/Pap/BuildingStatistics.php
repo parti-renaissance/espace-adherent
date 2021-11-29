@@ -18,6 +18,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use StatusTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="statistics")
@@ -74,13 +75,13 @@ class BuildingStatistics implements CampaignStatisticsInterface
      */
     private int $nbSurveys = 0;
 
-    public function __construct(Building $building, Campaign $campaign)
+    public function __construct(Building $building, Campaign $campaign, string $status = null)
     {
         $this->building = $building;
         $this->campaign = $campaign;
 
         $this->uuid = Uuid::uuid4();
-        $this->status = BuildingStatusEnum::TODO;
+        $this->status = $status ?? BuildingStatusEnum::TODO;
     }
 
     public function getBuilding(): Building
