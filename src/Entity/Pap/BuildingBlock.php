@@ -116,6 +116,17 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
         return $this->floors;
     }
 
+    public function getFloorByNumber(int $number): ?Floor
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('number', $number))
+        ;
+
+        return $this->floors->matching($criteria)->count() > 0
+            ? $this->floors->matching($criteria)->first()
+            : null;
+    }
+
     public function addFloor(Floor $floor): void
     {
         if (!$this->floors->contains($floor)) {
@@ -127,17 +138,5 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
     public function removeFloor(Floor $floor): void
     {
         $this->floors->removeElement($floor);
-    }
-
-    public function getFloorByNumber(int $number): ?Floor
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('number', $number))
-        ;
-
-        return $this->floors->matching($criteria)->count() > 0
-            ? $this->floors->matching($criteria)->first()
-            : null
-        ;
     }
 }

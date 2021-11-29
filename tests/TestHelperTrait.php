@@ -34,6 +34,7 @@ use App\Entity\NewsletterSubscription;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\Campaign as PapCampaign;
+use App\Entity\Pap\CampaignHistory;
 use App\Entity\PostAddress;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
@@ -81,6 +82,7 @@ use App\Repository\NewsletterInviteRepository;
 use App\Repository\NewsletterSubscriptionRepository;
 use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
+use App\Repository\Pap\CampaignHistoryRepository;
 use App\Repository\Pap\CampaignRepository as PapCampaignRepository;
 use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
@@ -385,6 +387,11 @@ trait TestHelperTrait
     public function getCoalitionRepository(): CoalitionRepository
     {
         return $this->getRepository(Coalition::class);
+    }
+
+    public function getPapCampaignHistoryRepository(): CampaignHistoryRepository
+    {
+        return $this->getRepository(CampaignHistory::class);
     }
 
     public function getPapCampaignRepository(): PapCampaignRepository

@@ -3,6 +3,7 @@
 namespace App\Entity\Pap;
 
 use App\Entity\Adherent;
+use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 trait StatusTrait
@@ -51,5 +52,20 @@ trait StatusTrait
     public function setClosedBy(?Adherent $closedBy): void
     {
         $this->closedBy = $closedBy;
+    }
+
+    public function isTodo(): bool
+    {
+        return BuildingStatusEnum::TODO === $this->status;
+    }
+
+    public function isOngoing(): bool
+    {
+        return BuildingStatusEnum::ONGOING === $this->status;
+    }
+
+    public function isCompleted(): bool
+    {
+        return BuildingStatusEnum::COMPLETED === $this->status;
     }
 }
