@@ -11,11 +11,11 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -111,12 +111,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
-    use TimestampableEntity;
+    use EntityTimestampableTrait;
 
     /**
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     *
+     * @Groups({"message_read_list"})
      *
      * @Assert\NotBlank
      */
@@ -192,6 +194,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"message_read_list"})
      */
     private $sentAt;
 

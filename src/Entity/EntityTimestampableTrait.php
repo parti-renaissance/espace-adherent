@@ -25,6 +25,7 @@ trait EntityTimestampableTrait
      *     "riposte_list_read",
      *     "riposte_read",
      *     "phoning_campaign_read",
+     *     "message_read_list",
      * })
      * @Gedmo\Timestampable(on="create")
      */
