@@ -9,7 +9,7 @@ final class Version20211126172212 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE jecoute_data_survey ADD author_postal_code LONGTEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE jecoute_data_survey ADD author_postal_code VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
