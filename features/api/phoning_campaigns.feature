@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to see phoning campaigns
   As a non logged-in user
@@ -721,7 +721,8 @@ Feature:
       "nb_un_subscribe": 1,
       "to_remind": 1,
       "not_respond": 2,
-      "nb_failed": 1
+      "nb_failed": 1,
+      "average_calling_time": 0
     }
     """
 
@@ -810,7 +811,8 @@ Feature:
       "nb_un_subscribe": 0,
       "to_remind": 0,
       "not_respond": 0,
-      "nb_failed": 0
+      "nb_failed": 0,
+      "average_calling_time": 0
     }
     """
 
@@ -948,7 +950,8 @@ Feature:
       "nb_un_subscribe": 1,
       "to_remind": 1,
       "not_respond": 2,
-      "nb_failed": 1
+      "nb_failed": 1,
+      "average_calling_time": 0
     }
     """
 
