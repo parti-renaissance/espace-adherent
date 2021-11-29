@@ -4,13 +4,13 @@ namespace App\SmsCampaign;
 
 class Statistics
 {
-    public int $credits = 0;
-    public int $delivered = 0;
-    public int $estimatedCredits = 0;
-    public int $failed = 0;
-    public int $pending = 0;
-    public int $sent = 0;
-    public int $stoplisted = 0;
+    private int $credits = 0;
+    private int $delivered = 0;
+    private int $estimatedCredits = 0;
+    private int $failed = 0;
+    private int $pending = 0;
+    private int $sent = 0;
+    private int $stoplisted = 0;
 
     public static function createFromResponse(array $response): self
     {
@@ -25,5 +25,42 @@ class Statistics
         $instance->stoplisted = $response['stoplisted'] ?? 0;
 
         return $instance;
+    }
+
+    public function getContacts(): int
+    {
+        return $this->estimatedCredits;
+    }
+
+    public function getNotSent(): int
+    {
+        $value = $this->estimatedCredits - $this->sent - $this->pending;
+
+        return $value >= 0 ? $value : 0;
+    }
+
+    public function getFailedSent(): int
+    {
+        return $this->credits - $this->delivered;
+    }
+
+    public function getPending(): int
+    {
+        return $this->pending;
+    }
+
+    public function getStoplisted(): int
+    {
+        return $this->stoplisted;
+    }
+
+    public function getSent(): int
+    {
+        return $this->credits;
+    }
+
+    public function getDelivered(): int
+    {
+        return $this->delivered;
     }
 }
