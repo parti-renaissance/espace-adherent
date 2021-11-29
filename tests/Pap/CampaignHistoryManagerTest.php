@@ -6,6 +6,7 @@ use App\DataFixtures\ORM\LoadPapCampaignHistoryData;
 use App\Entity\Pap\BuildingBlock;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\Pap\Floor;
+use App\Pap\BuildingStatusEnum;
 use App\Pap\CampaignHistoryManager;
 use App\Repository\Pap\CampaignHistoryRepository;
 use Doctrine\Persistence\ObjectRepository;
@@ -58,12 +59,20 @@ class CampaignHistoryManagerTest extends AbstractKernelTestCase
 
         $this->manager->clear();
 
+        $building = $campaignHistory->getBuilding();
         $this->assertSame(++$nbBb, $this->countBuildingBlocks());
         $this->assertSame(++$nbFloors, $this->countFloors());
-        $this->assertNotNull($buildingBlock = $campaignHistory->getBuilding()->getBuildingBlockByName($buildingBlockName));
+
+        $this->assertNotNull($buildingStats = $building->findStatisticsForCampaign($campaign));
+        $this->assertSame(BuildingStatusEnum::ONGOING, $buildingStats->getStatus());
+
+        $this->assertNotNull($buildingBlock = $building->getBuildingBlockByName($buildingBlockName));
+        $this->assertNotNull($buildingBlockStats = $buildingBlock->findStatisticsForCampaign($campaign));
+        $this->assertSame(BuildingStatusEnum::ONGOING, $buildingBlockStats->getStatus());
+
         $this->assertNotNull($floor = $buildingBlock->getFloorByNumber($floorNumber));
-        $this->assertNotNull($floor->findStatisticsForCampaign($campaign));
-        $this->assertNotNull($buildingBlock->findStatisticsForCampaign($campaign));
+        $this->assertNotNull($floorStats = $floor->findStatisticsForCampaign($campaign));
+        $this->assertSame(BuildingStatusEnum::ONGOING, $floorStats->getStatus());
     }
 
     private function countFloors(): int

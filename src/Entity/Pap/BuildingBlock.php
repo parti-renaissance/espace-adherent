@@ -139,16 +139,4 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
     {
         $this->floors->removeElement($floor);
     }
-
-    public function getFloorByNumber(int $number): ?Floor
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('number', $number))
-        ;
-
-        return $this->floors->matching($criteria)->count() > 0
-            ? $this->floors->matching($criteria)->first()
-            : null
-        ;
-    }
 }

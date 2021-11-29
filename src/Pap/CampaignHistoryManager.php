@@ -4,6 +4,7 @@ namespace App\Pap;
 
 use App\Entity\Pap\BuildingBlock;
 use App\Entity\Pap\BuildingBlockStatistics;
+use App\Entity\Pap\BuildingStatistics;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\Pap\Floor;
 use App\Entity\Pap\FloorStatistics;
@@ -22,45 +23,58 @@ class CampaignHistoryManager
     {
         $createdBy = $campaignHistory->getQuestioner();
         $building = $campaignHistory->getBuilding();
+        $campaign = $campaignHistory->getCampaign();
         if (!$buildingBlockName = $campaignHistory->getBuildingBlock()) {
             return;
         }
 
-        $buildingBlock = $building->getBuildingBlockByName($buildingBlockName);
-        if (!$buildingBlock) {
+        if (!$buildingBlock = $building->getBuildingBlockByName($buildingBlockName)) {
             $buildingBlock = new BuildingBlock($buildingBlockName, $building);
             $buildingBlock->setCreatedByAdherent($createdBy);
             $building->addBuildingBlock($buildingBlock);
 
-            $bbStats = new BuildingBlockStatistics(
-                $buildingBlock,
-                $campaignHistory->getCampaign(),
-                BuildingStatusEnum::ONGOING
-            );
-            $buildingBlock->addStatistic($bbStats);
-
             $this->em->persist($buildingBlock);
         }
 
+        if (!$buildingBlockStats = $buildingBlock->findStatisticsForCampaign($campaign)) {
+            $buildingBlock->addStatistic($buildingBlockStats = new BuildingBlockStatistics(
+                $buildingBlock,
+                $campaignHistory->getCampaign()
+            ));
+
+            $this->em->persist($buildingBlockStats);
+        }
+        $buildingBlockStats->setStatus(BuildingStatusEnum::ONGOING);
+
         if (!$floorNumber = $campaignHistory->getFloor()) {
-            return;
+            if (!$floor = $buildingBlock->getFloorByNumber($floorNumber)) {
+                $floor = new Floor($floorNumber, $buildingBlock);
+                $floor->setCreatedByAdherent($createdBy);
+                $buildingBlock->addFloor($floor);
+
+                $this->em->persist($floor);
+            }
+
+            if (!$floorStats = $floor->findStatisticsForCampaign($campaign)) {
+                $floor->addStatistic($floorStats = new FloorStatistics(
+                    $floor,
+                    $campaignHistory->getCampaign()
+                ));
+
+                $this->em->persist($floorStats);
+            }
+            $floorStats->setStatus(BuildingStatusEnum::ONGOING);
         }
 
-        $floor = $buildingBlock->getFloorByNumber($floorNumber);
-        if (!$floor) {
-            $floor = new Floor($floorNumber, $buildingBlock);
-            $floor->setCreatedByAdherent($createdBy);
-            $buildingBlock->addFloor($floor);
+        if (!$buildingStats = $building->findStatisticsForCampaign($campaign)) {
+            $building->addStatistic($buildingStats = new BuildingStatistics(
+                $building,
+                $campaignHistory->getCampaign()
+            ));
 
-            $floorStats = new FloorStatistics(
-                $floor,
-                $campaignHistory->getCampaign(),
-                BuildingStatusEnum::ONGOING
-            );
-            $floor->addStatistic($floorStats);
-
-            $this->em->persist($floor);
+            $this->em->persist($buildingStats);
         }
+        $buildingStats->setStatus(BuildingStatusEnum::ONGOING);
 
         $this->em->flush();
     }
