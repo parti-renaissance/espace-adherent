@@ -4,6 +4,7 @@ namespace Tests\App\Pap;
 
 use App\DataFixtures\ORM\LoadPapCampaignHistoryData;
 use App\Entity\Pap\BuildingBlock;
+use App\Entity\Pap\BuildingStatistics;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\Pap\Floor;
 use App\Pap\BuildingStatusEnum;
@@ -50,7 +51,7 @@ class CampaignHistoryManagerTest extends AbstractKernelTestCase
         $nbFloors = $this->countFloors();
 
         /** @var CampaignHistory $campaignHistory */
-        $campaignHistory = $this->campaignHistoryRepository->findOneBy(['uuid' => LoadPapCampaignHistoryData::HISTORY_1_UUID]);
+        $campaignHistory = clone $this->campaignHistoryRepository->findOneBy(['uuid' => LoadPapCampaignHistoryData::HISTORY_1_UUID]);
         $campaignHistory->setBuildingBlock($buildingBlockName);
         $campaignHistory->setFloor($floorNumber);
         $campaign = $campaignHistory->getCampaign();
@@ -63,8 +64,11 @@ class CampaignHistoryManagerTest extends AbstractKernelTestCase
         $this->assertSame(++$nbBb, $this->countBuildingBlocks());
         $this->assertSame(++$nbFloors, $this->countFloors());
 
+        /** @var BuildingStatistics $buildingStats */
         $this->assertNotNull($buildingStats = $building->findStatisticsForCampaign($campaign));
         $this->assertSame(BuildingStatusEnum::ONGOING, $buildingStats->getStatus());
+        $this->assertSame($campaignHistory->getUpdatedAt()->format('Y-m-d H:i:s'), $buildingStats->getLastPassage()->format('Y-m-d H:i:s'));
+        $this->assertSame($campaignHistory->getQuestioner(), $buildingStats->getLastPassageDoneBy());
 
         $this->assertNotNull($buildingBlock = $building->getBuildingBlockByName($buildingBlockName));
         $this->assertNotNull($buildingBlockStats = $buildingBlock->findStatisticsForCampaign($campaign));

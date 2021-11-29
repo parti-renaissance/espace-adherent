@@ -12,6 +12,12 @@ interface CampaignStatisticsInterface
 
     public function setStatus(string $status): void;
 
+    public function isTodo(): bool;
+
+    public function isOngoing(): bool;
+
+    public function isCompleted(): bool;
+
     public function getClosedAt(): ?\DateTimeInterface;
 
     public function setClosedAt(?\DateTimeInterface $closedAt): void;

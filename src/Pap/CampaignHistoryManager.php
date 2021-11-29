@@ -39,14 +39,17 @@ class CampaignHistoryManager
         if (!$buildingBlockStats = $buildingBlock->findStatisticsForCampaign($campaign)) {
             $buildingBlock->addStatistic($buildingBlockStats = new BuildingBlockStatistics(
                 $buildingBlock,
-                $campaignHistory->getCampaign()
+                $campaign
             ));
 
             $this->em->persist($buildingBlockStats);
         }
-        $buildingBlockStats->setStatus(BuildingStatusEnum::ONGOING);
 
-        if (!$floorNumber = $campaignHistory->getFloor()) {
+        if ($buildingBlockStats->isTodo()) {
+            $buildingBlockStats->setStatus(BuildingStatusEnum::ONGOING);
+        }
+
+        if ($floorNumber = $campaignHistory->getFloor()) {
             if (!$floor = $buildingBlock->getFloorByNumber($floorNumber)) {
                 $floor = new Floor($floorNumber, $buildingBlock);
                 $floor->setCreatedByAdherent($createdBy);
@@ -58,23 +61,31 @@ class CampaignHistoryManager
             if (!$floorStats = $floor->findStatisticsForCampaign($campaign)) {
                 $floor->addStatistic($floorStats = new FloorStatistics(
                     $floor,
-                    $campaignHistory->getCampaign()
+                    $campaign
                 ));
 
                 $this->em->persist($floorStats);
             }
-            $floorStats->setStatus(BuildingStatusEnum::ONGOING);
+
+            if ($floorStats->isTodo()) {
+                $floorStats->setStatus(BuildingStatusEnum::ONGOING);
+            }
         }
 
         if (!$buildingStats = $building->findStatisticsForCampaign($campaign)) {
             $building->addStatistic($buildingStats = new BuildingStatistics(
                 $building,
-                $campaignHistory->getCampaign()
+                $campaign
             ));
 
             $this->em->persist($buildingStats);
         }
-        $buildingStats->setStatus(BuildingStatusEnum::ONGOING);
+
+        if ($buildingStats->isTodo()) {
+            $buildingStats->setStatus(BuildingStatusEnum::ONGOING);
+        }
+        $buildingStats->setLastPassage($campaignHistory->getUpdatedAt());
+        $buildingStats->setLastPassageDoneBy($createdBy);
 
         $this->em->flush();
     }
