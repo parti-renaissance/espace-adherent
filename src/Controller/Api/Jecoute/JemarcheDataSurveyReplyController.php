@@ -47,8 +47,10 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
     {
         if ($this->user instanceof Adherent) {
             $this->jemarcheDataSurvey->getDataSurvey()->setAuthor($this->user);
+            $this->jemarcheDataSurvey->getDataSurvey()->setAuthorPostalCode($this->user->getPostalCode());
         } elseif ($this->user instanceof DeviceApiUser) {
             $this->jemarcheDataSurvey->setDevice($this->user->getDevice());
+            $this->jemarcheDataSurvey->getDataSurvey()->setAuthorPostalCode($this->user->getDevice()->getPostalCode());
         }
     }
 

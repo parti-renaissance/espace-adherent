@@ -82,6 +82,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             $dataSurvey = new DataSurvey($survey);
             if ($questioner) {
                 $dataSurvey->setAuthor($questioner);
+                $dataSurvey->setAuthorPostalCode($questioner->getPostalCode());
             }
 
             $campaignHistory->setDataSurvey($dataSurvey);
