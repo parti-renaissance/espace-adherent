@@ -84,27 +84,21 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
                 case Building::class:
                     $stats = new BuildingStatistics($object, $campaign, $status);
 
-                    return;
+                    break;
                 case BuildingBlock::class:
                     $stats = new BuildingBlockStatistics($object, $campaign, $status);
 
-                    return;
+                    break;
                 case Floor::class:
                     $stats = new FloorStatistics($object, $campaign, $status);
 
-                    return;
+                    break;
             }
 
             $this->entityManager->persist($stats);
         }
 
-        $stats->setStatus($status);
-        if (BuildingStatusEnum::COMPLETED === $status) {
-            $stats->setClosedAt($buildingEvent->getCreatedAt());
-            $stats->setClosedBy($buildingEvent->getAuthor());
-        } elseif (BuildingStatusEnum::ONGOING === $status) {
-            $stats->setClosedAt(null);
-            $stats->setClosedBy(null);
-        }
+        $stats->setClosedAt(BuildingStatusEnum::COMPLETED === $status ? $buildingEvent->getCreatedAt() : null);
+        $stats->setClosedBy(BuildingStatusEnum::COMPLETED === $status ? $buildingEvent->getAuthor() : null);
     }
 }

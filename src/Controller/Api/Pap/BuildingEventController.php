@@ -56,6 +56,6 @@ class BuildingEventController extends AbstractController
 
         $bus->dispatch(new BuildingEventCommand($building->getUuid(), $buildingEvent->getCampaign()->getUuid()));
 
-        return $this->json('OK');
+        return $this->json('OK', Response::HTTP_CREATED);
     }
 }

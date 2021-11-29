@@ -67,7 +67,7 @@ class BuildingEventControllerTest extends WebTestCase
             ])
         );
 
-        $this->assertResponseStatusCodeSame(200);
+        $this->assertResponseStatusCodeSame(201);
 
         $this->assertSame('"OK"', $this->client->getResponse()->getContent());
 

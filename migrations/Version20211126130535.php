@@ -27,7 +27,7 @@ final class Version20211126130535 extends AbstractMigration
         $this->addSql('ALTER TABLE
           pap_building_event
         ADD
-          CONSTRAINT FK_D9F291044D2A7E12 FOREIGN KEY (building_id) REFERENCES pap_building (id) ON DELETE CASCADE');
+          CONSTRAINT FK_D9F291044D2A7E12 FOREIGN KEY (building_id) REFERENCES pap_building (id)');
         $this->addSql('ALTER TABLE
           pap_building_event
         ADD

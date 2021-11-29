@@ -291,7 +291,7 @@ Feature:
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
-    Then the response status code should be 200
+    Then the response status code should be 201
     And the response should be in JSON
     And the JSON should be equal to:
     """
@@ -306,7 +306,7 @@ Feature:
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
-    Then the response status code should be 200
+    Then the response status code should be 201
     And the response should be in JSON
     And the JSON should be equal to:
     """
@@ -324,7 +324,7 @@ Feature:
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
-    Then the response status code should be 200
+    Then the response status code should be 201
     And the response should be in JSON
     And the JSON should be equal to:
     """
@@ -339,7 +339,7 @@ Feature:
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
-    Then the response status code should be 200
+    Then the response status code should be 201
     And the response should be in JSON
     And the JSON should be equal to:
     """

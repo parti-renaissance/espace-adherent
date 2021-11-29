@@ -3,7 +3,6 @@
 namespace App\Entity\Pap;
 
 use App\Entity\Adherent;
-use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,13 +18,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BuildingEvent implements AuthorInterface
 {
     use EntityIdentityTrait;
-    use AuthoredTrait;
 
     /**
-     * @Assert\NotBlank
-     *
      * @ORM\Column(length=25)
      *
+     * @Assert\NotBlank
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingEventActionEnum", "toArray"},
      *     strict=true
@@ -36,10 +33,9 @@ class BuildingEvent implements AuthorInterface
     private ?string $action = null;
 
     /**
-     * @Assert\NotBlank
-     *
      * @ORM\Column(length=25)
      *
+     * @Assert\NotBlank
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"},
      *     strict=true
@@ -57,18 +53,17 @@ class BuildingEvent implements AuthorInterface
     private ?string $identifier = null;
 
     /**
-     * @Assert\NotNull
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     *
+     * @Assert\NotNull
      */
     private Building $building;
 
     /**
-     * @Assert\NotNull
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull
      *
      * @Groups({"pap_building_event_write"})
      */

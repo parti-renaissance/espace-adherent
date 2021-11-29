@@ -8,6 +8,4 @@ class BuildingEventActionEnum extends Enum
 {
     public const OPEN = 'open';
     public const CLOSE = 'close';
-
-    public const URI_PATTERN = self::OPEN.'|'.self::CLOSE;
 }
