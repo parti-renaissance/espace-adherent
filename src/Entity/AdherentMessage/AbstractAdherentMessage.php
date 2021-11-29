@@ -15,6 +15,7 @@ use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -114,9 +115,22 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     use TimestampableEntity;
 
     /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Groups({"message_read_list"})
+     */
+    protected $createdAt;
+
+    /**
      * @var Adherent
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     *
+     * @Groups({"message_read_list"})
      *
      * @Assert\NotBlank
      */
@@ -192,6 +206,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"message_read_list"})
      */
     private $sentAt;
 

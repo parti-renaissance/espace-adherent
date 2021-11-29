@@ -73,6 +73,13 @@ Feature:
                 "recipient_count": 0,
                 "synchronized": false,
                 "from_name": "Referent Referent | La République En Marche !",
+                "created_at": "@string@.isDateTime()",
+                "sent_at": null,
+                "author": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
                 "statistics": {
                     "click_rate": 0,
                     "clicks": 0,
@@ -100,6 +107,13 @@ Feature:
                 "recipient_count": 0,
                 "synchronized": true,
                 "from_name": "Referent Referent | La République En Marche !",
+                "created_at": "@string@.isDateTime()",
+                "sent_at": null,
+                "author": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
                 "statistics": {
                     "click_rate": 0,
                     "clicks": 0,
