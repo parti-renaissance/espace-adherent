@@ -273,6 +273,7 @@ Feature:
                 "to_contact": {
                     "code": "to_contact",
                     "label": "Souhaite être recontacté ?",
+                    "description": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données.",
                     "type": "boolean"
                 },
                 "contact": [
@@ -293,10 +294,35 @@ Feature:
                     }
                 ]
             },
+            {
+                "voter_status": {
+                    "code": "voter_status",
+                    "label": "Êtes vous un électeur inscrit sur les listes ?",
+                    "type": "choice",
+                    "choices": {
+                        "not_voter": "Pas électeur",
+                        "not_registered": "Pas inscrit",
+                        "registered": "Inscrit sur les listes",
+                        "registered_elsewhere": "Inscrit ailleurs"
+                    }
+                },
+                "voter_city": {
+                    "code": "voter_city",
+                    "label": "Sur quelle commune ?",
+                    "type": "autocomplete",
+                    "options": {
+                        "query_param": "q",
+                        "url": "/api/v3/zone/autocomplete",
+                        "value_param": "uuid",
+                        "label_param": "name"
+                    }
+                }
+            },
             [
                 {
                     "code": "to_join",
                     "label": "Souhaite adhérer ?",
+                    "description": "En cochant oui, vous certifiez qu'il souhait adhérer.",
                     "type": "boolean"
                 }
             ]

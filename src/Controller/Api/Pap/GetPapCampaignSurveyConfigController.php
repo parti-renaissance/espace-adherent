@@ -5,6 +5,7 @@ namespace App\Controller\Api\Pap;
 use App\Jecoute\AgeRangeEnum;
 use App\Jecoute\ProfessionEnum;
 use App\Pap\CampaignHistoryStatusEnum;
+use App\Pap\CampaignHistoryVoterStatusEnum;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,6 +73,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                         'to_contact' => [
                             'code' => 'to_contact',
                             'label' => 'Souhaite être recontacté ?',
+                            'description' => 'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu\'il est informé des droits dont il dispose sur ses données.',
                             'type' => 'boolean',
                         ],
                         'contact' => [
@@ -93,9 +95,29 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                         ],
                     ],
                     [
+                        'voter_status' => [
+                            'code' => 'voter_status',
+                            'label' => 'Êtes vous un électeur inscrit sur les listes ?',
+                            'type' => 'choice',
+                            'choices' => CampaignHistoryVoterStatusEnum::LABELS,
+                        ],
+                        'voter_city' => [
+                            'code' => 'voter_city',
+                            'label' => 'Sur quelle commune ?',
+                            'type' => 'autocomplete',
+                            'options' => [
+                                'query_param' => 'q',
+                                'url' => '/api/v3/zone/autocomplete',
+                                'value_param' => 'uuid',
+                                'label_param' => 'name',
+                            ],
+                        ],
+                    ],
+                    [
                         [
                             'code' => 'to_join',
                             'label' => 'Souhaite adhérer ?',
+                            'description' => 'En cochant oui, vous certifiez qu\'il souhait adhérer.',
                             'type' => 'boolean',
                         ],
                     ],
