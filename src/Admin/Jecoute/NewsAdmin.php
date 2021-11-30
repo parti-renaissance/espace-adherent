@@ -192,24 +192,19 @@ class NewsAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param News $object
-     */
-    public function postPersist($object)
+    /** @param News $object */
+    public function prePersist($object)
     {
-        parent::postPersist($object);
-
         /** @var Administrator $administrator */
         $administrator = $this->security->getUser();
 
         $object->setCreatedBy($administrator);
-
-        $this->dispatchNotification($object);
     }
 
-    private function dispatchNotification(News $news): void
+    /** @param News $object */
+    public function postPersist($object)
     {
-        $this->newsHandler->handleNotification($news);
+        $this->newsHandler->handleNotification($object);
     }
 
     /**
