@@ -58,7 +58,12 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
             unset($data['zone']);
         }
 
-        return $this->denormalizer->denormalize($data, $type, $format, $context);
+        /** @var News $news */
+        $news = $this->denormalizer->denormalize($data, $type, $format, $context);
+
+        $this->newsTitlePrefix->removePrefix($news);
+
+        return $news;
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])

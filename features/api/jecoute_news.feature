@@ -452,7 +452,7 @@ Feature:
     And I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=referent" with body:
     """
     {
-      "title": "Nouveau titre",
+      "title": "[Référent] Nouveau titre",
       "text": "Nouveau texte",
       "external_link": "https://nouveau.en-marche.fr",
       "notification": false,
