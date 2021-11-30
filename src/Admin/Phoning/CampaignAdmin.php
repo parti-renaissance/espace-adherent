@@ -187,19 +187,20 @@ class CampaignAdmin extends AbstractAdmin
         ;
     }
 
-    /**
-     * @param Campaign $object
-     */
+    /** @param Campaign $object */
     public function prePersist($object)
     {
         $object->setCreatedByAdministrator($this->security->getUser());
-
-        $this->updateParticipantsCount($object);
     }
 
-    /**
-     * @param Campaign $object
-     */
+    /** @param Campaign $object */
+    public function postPersist($object)
+    {
+        $this->updateParticipantsCount($object);
+        $this->getModelManager()->update($object);
+    }
+
+    /** @param Campaign $object */
     public function preUpdate($object)
     {
         $object->setUpdatedByAdministrator($this->security->getUser());
