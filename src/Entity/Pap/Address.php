@@ -21,14 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * })
  *
  * @ApiResource(
- *     collectionOperations={
- *         "near": {
- *             "method": "GET",
- *             "path": "/v3/pap/address/near",
- *             "normalization_context": {"groups": {"pap_address_list"}},
- *             "controller": "App\Controller\Api\Pap\AddressNearController",
- *         },
- *     },
+ *     collectionOperations={},
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
@@ -136,6 +129,11 @@ class Address
      * @Groups({"pap_address_list"})
      */
     private ?Building $building = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\VotePlace")
+     */
+    public ?VotePlace $votePlace = null;
 
     public function __construct(
         UuidInterface $uuid = null,

@@ -7,11 +7,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20211126020536 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         if ($this->sm->tablesExist('adherents')) {
