@@ -11,7 +11,6 @@ final class Version20211130010431 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE pap_vote_place (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           latitude FLOAT (10, 6) DEFAULT NULL COMMENT \'(DC2Type:geo_point)\',
@@ -31,7 +30,6 @@ final class Version20211130010431 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE pap_address DROP FOREIGN KEY FK_47071E11F3F90B30');
         $this->addSql('DROP TABLE pap_vote_place');
         $this->addSql('DROP INDEX IDX_47071E11F3F90B30 ON pap_address');
