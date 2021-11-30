@@ -721,7 +721,8 @@ Feature:
       "nb_un_subscribe": 1,
       "to_remind": 1,
       "not_respond": 2,
-      "nb_failed": 1
+      "nb_failed": 1,
+      "average_calling_time": 0
     }
     """
 
@@ -810,7 +811,8 @@ Feature:
       "nb_un_subscribe": 0,
       "to_remind": 0,
       "not_respond": 0,
-      "nb_failed": 0
+      "nb_failed": 0,
+      "average_calling_time": 0
     }
     """
 
@@ -948,7 +950,8 @@ Feature:
       "nb_un_subscribe": 1,
       "to_remind": 1,
       "not_respond": 2,
-      "nb_failed": 1
+      "nb_failed": 1,
+      "average_calling_time": 0
     }
     """
 
@@ -1538,5 +1541,62 @@ Feature:
       "nb_calls_last_30d": "17",
       "nb_surveys": "13",
       "nb_surveys_last_30d": "13"
+    }
+    """
+
+  Scenario: As a DC referent I can get a phoning campaign details with the calling time average
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc?scope=phoning_national_manager&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne sur l'horizon 2030",
+      "brief": "### Décidons aujourd'hui de la France de demain",
+      "goal": 500,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Deuxième équipe de phoning",
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "members_count": 4
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [],
+        "first_name": null,
+        "last_name": null,
+        "gender": null,
+        "age_min": 18,
+        "age_max": 80,
+        "registered_since": null,
+        "registered_until": null,
+        "is_committee_member": null,
+        "is_certified": null,
+        "has_email_subscription": null,
+        "has_sms_subscription": null
+      },
+      "survey": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Les enjeux des 10 prochaines années"
+      },
+      "permanent": false,
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "creator": "Admin",
+      "nb_calls": 3,
+      "nb_surveys": 2,
+      "nb_un_join": 0,
+      "nb_un_subscribe": 0,
+      "to_remind": 0,
+      "not_respond": 0,
+      "nb_failed": 1,
+      "average_calling_time": 450
     }
     """

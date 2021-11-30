@@ -50,11 +50,13 @@ doctrine:
                 convert_tz: DoctrineExtensions\Query\Mysql\ConvertTz
                 now: DoctrineExtensions\Query\Mysql\Now
                 date: DoctrineExtensions\Query\Mysql\Date
+                timediff: DoctrineExtensions\Query\Mysql\TimeDiff
             numeric_functions:
                 acos: DoctrineExtensions\Query\Mysql\Acos
                 cos: DoctrineExtensions\Query\Mysql\Cos
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
+                time_to_sec: DoctrineExtensions\Query\Mysql\TimeToSec
                 st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STGeomFromText
                 st_within: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STWithin
                 point: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point

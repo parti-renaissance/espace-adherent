@@ -3,6 +3,7 @@
 namespace App\Repository\Phoning;
 
 use App\Entity\Adherent;
+use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -28,5 +29,19 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findPhoningCampaignAverageCallingTime(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('campaignHistory')
+            ->select('AVG(TIME_TO_SEC(TIMEDIFF(campaignHistory.finishAt, campaignHistory.beginAt))) AS average_calling_time')
+            ->where('campaignHistory.campaign = :campaign AND campaignHistory.status != :send')
+            ->setParameters([
+                'campaign' => $campaign,
+                'send' => CampaignHistoryStatusEnum::SEND,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
     }
 }
