@@ -171,6 +171,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $phone;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $phoneVerifiedAt = null;
+
+    /**
      * @ORM\Column(type="date", nullable=true)
      *
      * @JMS\Groups({"adherent_change_diff"})
