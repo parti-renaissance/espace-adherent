@@ -3,13 +3,15 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Pap\Address;
+use App\Entity\Pap\VotePlace;
 use App\Entity\Pap\Voter;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadPapAddressData extends Fixture
+class LoadPapAddressData extends Fixture implements DependentFixtureInterface
 {
     private const ADDRESS_01_UUID = 'a0b9231b-9ff5-49b9-aa7a-1d28abbba32f';
     private const ADDRESS_02_UUID = 'ccfd846a-5439-42ad-85ce-286baf4e7269';
@@ -26,6 +28,11 @@ class LoadPapAddressData extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        /** @var VotePlace $vpParis8a */
+        $vpParis8a = $this->getReference('pap-vote-place--paris-8-a');
+        /** @var VotePlace $vpParis8b */
+        $vpParis8b = $this->getReference('pap-vote-place--paris-8-b');
+
         $address = $this->createAddress(
             self::ADDRESS_01_UUID,
             '55',
@@ -40,6 +47,7 @@ class LoadPapAddressData extends Fixture
         );
         $address->addVoter($this->createVoter(self::VOTER_01_UUID, 'John', 'Doe', Genders::MALE, '-30 years', '75108_0001'));
         $address->addVoter($this->createVoter(self::VOTER_02_UUID, 'Jane', 'Doe', Genders::FEMALE, '-29 years', '75108_0001'));
+        $address->votePlace = $vpParis8a;
         $this->addReference('address-1', $address);
         $manager->persist($address);
 
@@ -56,6 +64,7 @@ class LoadPapAddressData extends Fixture
             2.318631
         );
         $address->addVoter($this->createVoter(self::VOTER_03_UUID, 'Jack', 'Doe', Genders::MALE, '-55 years', '75108_0001'));
+        $address->votePlace = $vpParis8a;
         $this->addReference('address-2', $address);
         $manager->persist($address);
 
@@ -74,6 +83,7 @@ class LoadPapAddressData extends Fixture
         $address->addVoter($this->createVoter(self::VOTER_04_UUID, 'Mickaël', 'Doe', Genders::MALE, '-44 years', '75108_0001'));
         $address->addVoter($this->createVoter(self::VOTER_05_UUID, 'Mickaëla', 'Doe', Genders::FEMALE, '-45 years', '75108_0001'));
         $address->addVoter($this->createVoter(self::VOTER_06_UUID, 'Mickaël Jr', 'Doe', Genders::MALE, '-22 years', '75108_0001'));
+        $address->votePlace = $vpParis8b;
         $this->addReference('address-3', $address);
         $manager->persist($address);
 
@@ -91,6 +101,7 @@ class LoadPapAddressData extends Fixture
         );
         $address->addVoter($this->createVoter(self::VOTER_07_UUID, 'Patrick', 'Simpson Jones', Genders::MALE, '-70 years', '75108_0001'));
         $this->addReference('address-4', $address);
+        $address->votePlace = $vpParis8b;
         $manager->persist($address);
 
         $manager->flush();
@@ -138,5 +149,12 @@ class LoadPapAddressData extends Fixture
             new \DateTime($birthdate),
             $votePlace
         );
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadPapVotePlaceData::class,
+        ];
     }
 }
