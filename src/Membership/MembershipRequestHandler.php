@@ -71,14 +71,7 @@ class MembershipRequestHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(
-            new UserEvent(
-                $adherent,
-                false,
-                false
-            ),
-            UserEvents::USER_CREATED
-        );
+        $this->dispatcher->dispatch(new UserEvent($adherent, false, false), UserEvents::USER_CREATED);
 
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
 
@@ -96,11 +89,7 @@ class MembershipRequestHandler
         $this->sendEmailValidation($adherent);
 
         $this->dispatcher->dispatch(
-            new UserEvent(
-                $adherent,
-                $membershipRequest->getAllowEmailNotifications(),
-                false
-            ),
+            new UserEvent($adherent, $membershipRequest->getAllowEmailNotifications(), false),
             UserEvents::USER_CREATED
         );
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);

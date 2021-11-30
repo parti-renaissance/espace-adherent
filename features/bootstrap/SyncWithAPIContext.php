@@ -42,9 +42,8 @@ class SyncWithAPIContext implements Context
         if (!isset($subscriptions[0])) {
             throw new \Exception('User has no email subscription.');
         }
-        unset($subscriptions[0]);
 
-        $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $subscriptions), $event);
+        $this->dispatcher->dispatch(new UserEvent($adherent), $event);
     }
 
     /**

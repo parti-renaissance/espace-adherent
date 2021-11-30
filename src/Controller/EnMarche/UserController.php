@@ -119,7 +119,10 @@ class UserController extends AbstractController
         $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
         $form = $this
-            ->createForm(AdherentEmailSubscriptionType::class, $adherent, ['is_adherent' => $adherent->isAdherent()])
+            ->createForm(AdherentEmailSubscriptionType::class, $adherent, [
+                'is_adherent' => $adherent->isAdherent(),
+                'validation_groups' => 'subscriptions_update',
+            ])
             ->handleRequest($request)
         ;
 

@@ -1254,10 +1254,10 @@ class AdherentAdmin extends AbstractAdmin
     public function postUpdate($object)
     {
         // No need to handle referent tags update as they are not update-able from admin
-        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
+        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
-        $this->dispatcher->dispatch(new UserEvent($object, null, null, $subscriptionTypes), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
     }
 
