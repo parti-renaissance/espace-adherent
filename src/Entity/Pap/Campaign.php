@@ -44,6 +44,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns",
  *         },
+ *         "get_paginated": {
+ *             "method": "GET",
+ *             "path": "/v3/pap_campaigns/paginated",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "pagination_enabled": true,
+ *         },
  *     },
  *     subresourceOperations={
  *         "survey_get_subresource": {
