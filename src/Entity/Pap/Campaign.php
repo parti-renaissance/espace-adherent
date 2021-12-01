@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "pagination_enabled": false,
+ *         "pagination_client_enabled": true,
  *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT'))",
  *         "normalization_context": {
  *             "iri": true,
@@ -43,12 +44,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns",
- *         },
- *         "get_paginated": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/paginated",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
- *             "pagination_enabled": true,
  *         },
  *     },
  *     subresourceOperations={

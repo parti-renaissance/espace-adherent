@@ -52,7 +52,7 @@ Feature:
 
   Scenario: As a logged-in user I can get all PAP campaigns
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/pap_campaigns/paginated?scope=pap_national_manager&page_size=5"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=pap_national_manager&pagination=true&page_size=5"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
