@@ -60,6 +60,11 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
                     EventTypeEnum::TYPE_MUNICIPAL,
                 ])
             ;
+        } else {
+            $queryBuilder
+                ->andWhere($queryBuilder->getRootAliases()[0].' NOT INSTANCE OF :institutional')
+                ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
+            ;
         }
 
         $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
