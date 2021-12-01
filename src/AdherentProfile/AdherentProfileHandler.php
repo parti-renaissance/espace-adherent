@@ -3,7 +3,6 @@
 namespace App\AdherentProfile;
 
 use App\Address\PostAddressFactory;
-use App\Adherent\Command\UpdateFirebaseTopicsCommand;
 use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
@@ -17,7 +16,6 @@ use App\Referent\ReferentZoneManager;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileHandler
@@ -31,7 +29,6 @@ class AdherentProfileHandler
     private EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler;
     private SubscriptionTypeRepository $subscriptionTypeRepository;
     private SubscriptionHandler $subscriptionHandler;
-    private MessageBusInterface $bus;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -42,8 +39,7 @@ class AdherentProfileHandler
         ReferentZoneManager $referentZoneManager,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
         SubscriptionTypeRepository $subscriptionTypeRepository,
-        SubscriptionHandler $subscriptionHandler,
-        MessageBusInterface $bus
+        SubscriptionHandler $subscriptionHandler
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
@@ -54,7 +50,6 @@ class AdherentProfileHandler
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
         $this->subscriptionTypeRepository = $subscriptionTypeRepository;
         $this->subscriptionHandler = $subscriptionHandler;
-        $this->bus = $bus;
     }
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
@@ -67,18 +62,11 @@ class AdherentProfileHandler
             $this->emailHandler->handleRequest($adherent, $adherentProfile->getEmailAddress());
         }
 
-        $newAddress = $this->addressFactory->createFromAddress($adherentProfile->getAddress());
-        $addressChanged = !$adherent->getPostAddress()->equals($newAddress);
-
-        $adherent->updateProfile($adherentProfile, $newAddress);
+        $adherent->updateProfile($adherentProfile, $this->addressFactory->createFromAddress($adherentProfile->getAddress()));
 
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
         $this->manager->flush();
-
-        if ($addressChanged) {
-            $this->bus->dispatch(new UpdateFirebaseTopicsCommand($adherent->getUuid()));
-        }
 
         $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($adherent), AdherentEvents::PROFILE_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
