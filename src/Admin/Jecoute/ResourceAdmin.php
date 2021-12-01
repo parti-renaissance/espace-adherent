@@ -107,7 +107,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param resource $resource
+     * @param Resource $resource
      */
     public function prePersist($resource)
     {
@@ -119,7 +119,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param resource $resource
+     * @param Resource $resource
      */
     public function preUpdate($resource)
     {
@@ -131,7 +131,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param resource $resource
+     * @param Resource $resource
      */
     public function postRemove($resource)
     {
