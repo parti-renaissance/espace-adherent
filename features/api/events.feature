@@ -338,7 +338,7 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 22 |
+      | metadata.total_items  | 20 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
