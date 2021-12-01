@@ -9,12 +9,10 @@ use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
-use App\Form\AdherentChangeEmailType;
 use App\Form\AdherentChangePasswordType;
 use App\Form\AdherentEmailSubscriptionType;
 use App\Form\AdherentProfileType;
 use App\Form\UnregistrationType;
-use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvent;
@@ -60,25 +58,6 @@ class UserController extends AbstractController
         }
 
         return $this->render('adherent/profile.html.twig', ['form' => $form->createView()]);
-    }
-
-    /**
-     * @Route("/modifier-email", name="app_user_change_email", methods={"POST", "GET"})
-     */
-    public function changeEmailAction(Request $request, AdherentChangeEmailHandler $handler): Response
-    {
-        $form = $this
-            ->createForm(AdherentChangeEmailType::class)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $handler->handleRequest($this->getUser(), $form->getData()['email']);
-
-            return $this->redirectToRoute('app_user_edit');
-        }
-
-        return $this->render('adherent/profile-email.html.twig', ['form' => $form->createView()]);
     }
 
     /**
