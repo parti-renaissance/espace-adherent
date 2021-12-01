@@ -51,7 +51,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
             return;
         }
 
-        if (BaseEvent::class === $resourceClass) {
+        if (BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
             $queryBuilder
                 ->andWhere($queryBuilder->getRootAliases()[0].' INSTANCE OF :allowed_types')
                 ->setParameter('allowed_types', [
