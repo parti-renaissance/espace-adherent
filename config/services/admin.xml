@@ -507,7 +507,6 @@
             <argument />
             <argument>App\Entity\Jecoute\Resource</argument>
             <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
-            <argument />
         </service>
 
         <!--

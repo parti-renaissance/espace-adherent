@@ -26,7 +26,7 @@ class LoadJecouteResourceData extends Fixture
     {
         $resource1 = $this->createResource(
             self::RESOURCE_1_UUID,
-            'On l\'a dit, On la fait',
+            'On l\'a dit, On le fait',
             'https://transformer.en-marche.fr',
             true
         );

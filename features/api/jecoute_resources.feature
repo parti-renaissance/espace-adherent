@@ -23,7 +23,7 @@ Feature:
       },
       "items": [
         {
-          "label": "On l'a dit, On la fait",
+          "label": "On l'a dit, On le fait",
           "url": "https://transformer.en-marche.fr",
           "uuid": "94bc6088-ff8f-4d07-a216-6eebd12f317c",
           "image_url": "http://test.enmarche.code/assets/images/jecoute/resources/bb4bb38ba549eea93700225f7be0fbd7.png"
