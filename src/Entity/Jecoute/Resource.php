@@ -121,4 +121,9 @@ class Resource implements ExposedImageOwnerInterface
     {
         $this->position = $position;
     }
+
+    public function getImagePath(): string
+    {
+        return $this->imageName ? sprintf('images/jecoute/resources/%s', $this->getImageName()) : '';
+    }
 }
