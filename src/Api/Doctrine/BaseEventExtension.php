@@ -32,6 +32,11 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
+        $queryBuilder
+            ->andWhere($queryBuilder->getRootAliases()[0]." NOT INSTANCE OF :institutional")
+            ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
+        ;
+
         $this->modifyQuery($queryBuilder, BaseEvent::STATUSES, $operationName);
     }
 
@@ -44,6 +49,15 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
         }
+
+        $queryBuilder
+            ->andWhere($queryBuilder->getRootAliases()[0]." INSTANCE OF :allowed_types")
+            ->setParameter('allowed_types', [
+                EventTypeEnum::TYPE_DEFAULT,
+                EventTypeEnum::TYPE_COMMITTEE,
+                EventTypeEnum::TYPE_MUNICIPAL,
+            ])
+        ;
 
         $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
     }
@@ -60,10 +74,8 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         $queryBuilder
             ->andWhere("$alias.published = :true")
             ->andWhere("$alias.status IN (:statuses)")
-            ->andWhere("$alias NOT INSTANCE OF :institutional")
             ->setParameter('true', true)
             ->setParameter('statuses', $statuses)
-            ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
         ;
     }
 }
