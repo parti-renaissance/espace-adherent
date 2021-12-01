@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityRepository;
@@ -19,6 +20,7 @@ class AdherentEmailSubscriptionType extends AbstractType
     {
         $resolver
             ->setDefaults([
+                'data_class' => Adherent::class,
                 'is_adherent' => true,
             ])
             ->setAllowedTypes('is_adherent', 'bool')

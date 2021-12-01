@@ -2,6 +2,7 @@
 
 namespace App\OvhCloud;
 
+use App\OvhCloud\Exception\ContactNotFoundException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -36,6 +37,15 @@ class Driver
     public function getBatchStats(string $batchId): ResponseInterface
     {
         return $this->send('GET', sprintf('https://%s/1.0/sms/%s/batches/%s/statistics', self::HOST, $this->serviceName, $batchId));
+    }
+
+    public function resubscribeContact(string $phone): void
+    {
+        $response = $this->send('DELETE', sprintf('https://%s/1.0/sms/%s/blacklists/%s', self::HOST, $this->serviceName, $phone));
+
+        if (200 !== $code = $response->getStatusCode()) {
+            throw new ContactNotFoundException($response->getContent(false), $code);
+        }
     }
 
     public function sendSmsBatch(string $message, string $name, array $phones): ResponseInterface

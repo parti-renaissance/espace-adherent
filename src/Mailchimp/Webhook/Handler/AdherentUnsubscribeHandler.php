@@ -31,11 +31,9 @@ class AdherentUnsubscribeHandler extends AbstractAdherentHandler
                 []
             );
 
-            $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
-
             $this->subscriptionHandler->handleUpdateSubscription($adherent, $newSubscriptionTypes);
 
-            $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         }
     }
 
