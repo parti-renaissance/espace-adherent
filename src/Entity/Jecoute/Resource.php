@@ -75,7 +75,7 @@ class Resource implements ExposedImageOwnerInterface
      * @ORM\Column(type="smallint")
      * @Gedmo\SortablePosition
      */
-    private int $position = 0;
+    private ?int $position = null;
 
     public function __construct(UuidInterface $uuid = null, string $label = null, string $url = null)
     {
@@ -109,7 +109,7 @@ class Resource implements ExposedImageOwnerInterface
         $this->url = $url;
     }
 
-    public function getPosition(): int
+    public function getPosition(): ?int
     {
         return $this->position;
     }
