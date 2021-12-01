@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
+ *             "iri": true,
  *             "groups": {"survey_list"},
  *         },
  *     },
@@ -71,6 +72,7 @@ abstract class Survey
      *     "survey_list",
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
+     *     "pap_campaign_read_after_write",
      *     "campaign_replies_list"
      * })
      *

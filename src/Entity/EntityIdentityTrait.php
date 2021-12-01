@@ -61,6 +61,7 @@ trait EntityIdentityTrait
      *     "phoning_campaign_read",
      *     "phoning_campaign_read_with_score",
      *     "phoning_campaign_list",
+     *     "phoning_campaign_history_read_list",
      *     "data_survey_write",
      *     "data_survey_read",
      *     "jemarche_data_survey_read",
@@ -72,8 +73,8 @@ trait EntityIdentityTrait
      *     "pap_address_list",
      *     "pap_address_read",
      *     "pap_address_voter_list",
-     *     "phoning_campaign_history_read_list",
      *     "pap_building_block_list",
+     *     "pap_campaign_read_after_write",
      *     "campaign_replies_list",
      * })
      *
