@@ -34,6 +34,7 @@ class JemarcheDataSurveyAnswerHandler
     public function handle(JemarcheDataSurvey $dataSurvey, Adherent $user): void
     {
         $dataSurvey->getDataSurvey()->setAuthor($user);
+        $dataSurvey->getDataSurvey()->setAuthorPostalCode($user->getPostalCode());
 
         $this->save($dataSurvey);
     }
@@ -41,6 +42,7 @@ class JemarcheDataSurveyAnswerHandler
     public function handleForDevice(JemarcheDataSurvey $dataSurvey, Device $device): void
     {
         $dataSurvey->setDevice($device);
+        $dataSurvey->getDataSurvey()->setAuthorPostalCode($device->getPostalCode());
 
         $this->save($dataSurvey);
     }

@@ -76,7 +76,7 @@ Feature:
     {
       "name": "Troisième équipe de phoning",
       "uuid": "@string@",
-      "creator": "Referent R.",
+      "creator": "Referent Referent",
       "members": []
     }
     """
