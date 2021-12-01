@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/jecoute/resources",
+ *             "path": "/v3/jecoute/resources",
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *         }
  *     },
@@ -65,8 +64,6 @@ class Resource implements ExposedImageOwnerInterface
     private ?string $url;
 
     /**
-     * @var UploadedFile|null
-     *
      * @Assert\Image(
      *     mimeTypes={"image/jpeg", "image/png"},
      *     maxSize="5M",
@@ -78,7 +75,7 @@ class Resource implements ExposedImageOwnerInterface
      * @ORM\Column(type="smallint")
      * @Gedmo\SortablePosition
      */
-    private int $position;
+    private int $position = 0;
 
     public function __construct(UuidInterface $uuid = null, string $label = null, string $url = null)
     {

@@ -11,15 +11,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadJecouteResourceData extends Fixture
 {
+    public const RESOURCE_1_UUID = '94bc6088-ff8f-4d07-a216-6eebd12f317c';
+    public const RESOURCE_2_UUID = '8ddd92d7-fc9e-43c0-8d03-57eccdce9547';
+    public const RESOURCE_3_UUID = 'ae385b16-cf22-48c5-9a29-0b1a116d6643';
+
     private ImageManagerInterface $imageManager;
 
     public function __construct(ImageManagerInterface $imageManager)
     {
         $this->imageManager = $imageManager;
     }
-    public const RESOURCE_1_UUID = '94bc6088-ff8f-4d07-a216-6eebd12f317c';
-    public const RESOURCE_2_UUID = '8ddd92d7-fc9e-43c0-8d03-57eccdce9547';
-    public const RESOURCE_3_UUID = 'ae385b16-cf22-48c5-9a29-0b1a116d6643';
 
     public function load(ObjectManager $manager)
     {
