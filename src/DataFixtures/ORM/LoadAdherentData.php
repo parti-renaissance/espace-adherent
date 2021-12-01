@@ -146,6 +146,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->addReferentTag($this->getReference('referent_tag_75'));
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
+        $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
         $adherent3->setCandidateManagedArea($candidateManagedAreaRegion = new CandidateManagedArea());
         $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));

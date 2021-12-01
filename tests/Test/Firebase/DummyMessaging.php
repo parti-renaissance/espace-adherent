@@ -20,4 +20,14 @@ class DummyMessaging extends Messaging
     {
         return MulticastSendReport::withItems([]);
     }
+
+    public function unsubscribeFromAllTopics($registrationTokenOrTokens): array
+    {
+        return [];
+    }
+
+    public function subscribeToTopics(iterable $topics, $registrationTokenOrTokens): array
+    {
+        return [];
+    }
 }

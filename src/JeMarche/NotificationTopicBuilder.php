@@ -2,6 +2,7 @@
 
 namespace App\JeMarche;
 
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 
 class NotificationTopicBuilder
@@ -23,6 +24,24 @@ class NotificationTopicBuilder
     {
         $this->environment = $environment;
         $this->canaryMode = $canaryMode;
+    }
+
+    public function getTopicsFromAdherent(Adherent $adherent): array
+    {
+        $zones = array_merge(
+            $adherent->getZonesOfType(Zone::BOROUGH, true),
+            $adherent->getZonesOfType(Zone::DEPARTMENT, true),
+            $adherent->getZonesOfType(Zone::REGION, true)
+        );
+
+        $topics = [];
+        foreach ($zones as $zone) {
+            $topics[] = $this->buildTopic($zone);
+        }
+        // Add global topic
+        $topics[] = $this->buildTopic();
+
+        return array_values(array_unique($topics));
     }
 
     public function buildTopic(?Zone $zone = null): string

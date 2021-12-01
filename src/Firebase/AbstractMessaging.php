@@ -43,6 +43,15 @@ abstract class AbstractMessaging
         $this->entityManager->flush();
     }
 
+    public function setTopics(array $identifiers, array $topics): void
+    {
+        $this->messaging->unsubscribeFromAllTopics($identifiers);
+
+        if (!empty($topics)) {
+            $this->messaging->subscribeToTopics($topics, $identifiers);
+        }
+    }
+
     private function sendToTopic(TopicNotificationInterface $notification): void
     {
         $message = $this->createTopicMessage($notification)
