@@ -3,7 +3,7 @@
 namespace App\Admin\Jecoute;
 
 use App\Admin\AbstractAdmin;
-use App\Entity\Jecoute\Resource;
+use App\Entity\Jecoute\Resource as ResourceEntity;
 use App\Image\ImageManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -107,7 +107,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Resource $resource
+     * @param ResourceEntity $resource
      */
     public function prePersist($resource)
     {
@@ -119,7 +119,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Resource $resource
+     * @param ResourceEntity $resource
      */
     public function preUpdate($resource)
     {
@@ -131,7 +131,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param Resource $resource
+     * @param ResourceEntity $resource
      */
     public function postRemove($resource)
     {
