@@ -24,7 +24,7 @@ class TeamFromUuidDenormalizer implements DenormalizerInterface
             return $team;
         }
 
-        throw new ItemNotFoundException();
+        throw new ItemNotFoundException('Team not found');
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])

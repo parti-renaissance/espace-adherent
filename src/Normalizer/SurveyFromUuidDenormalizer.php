@@ -24,7 +24,7 @@ class SurveyFromUuidDenormalizer implements DenormalizerInterface
             return $survey;
         }
 
-        throw new ItemNotFoundException();
+        throw new ItemNotFoundException('Survey not found');
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])

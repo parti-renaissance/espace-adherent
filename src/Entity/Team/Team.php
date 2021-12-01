@@ -171,11 +171,10 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
 
     /**
      * @SymfonySerializer\Groups({"team_read", "team_list_read"})
-     * @SymfonySerializer\SerializedName("creator")
      */
     public function getCreator(): string
     {
-        return null !== $this->createdByAdherent ? $this->createdByAdherent->getPartialName() : 'Admin';
+        return null !== $this->createdByAdherent ? $this->createdByAdherent->getFullName() : 'Admin';
     }
 
     public function __clone()
