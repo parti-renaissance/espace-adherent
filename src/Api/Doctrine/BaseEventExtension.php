@@ -2,7 +2,7 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
@@ -11,9 +11,9 @@ use App\Event\EventTypeEnum;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class BaseEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
+class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQueryCollectionExtensionInterface
 {
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
@@ -32,6 +32,11 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             return;
         }
 
+        $queryBuilder
+            ->andWhere($queryBuilder->getRootAliases()[0].' NOT INSTANCE OF :institutional')
+            ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
+        ;
+
         $this->modifyQuery($queryBuilder, BaseEvent::STATUSES, $operationName);
     }
 
@@ -39,10 +44,27 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        string $operationName = null,
+        array $context = []
     ) {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
+        }
+
+        if (BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
+            $queryBuilder
+                ->andWhere($queryBuilder->getRootAliases()[0].' INSTANCE OF :allowed_types')
+                ->setParameter('allowed_types', [
+                    EventTypeEnum::TYPE_DEFAULT,
+                    EventTypeEnum::TYPE_COMMITTEE,
+                    EventTypeEnum::TYPE_MUNICIPAL,
+                ])
+            ;
+        } else {
+            $queryBuilder
+                ->andWhere($queryBuilder->getRootAliases()[0].' NOT INSTANCE OF :institutional')
+                ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
+            ;
         }
 
         $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
@@ -60,10 +82,8 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         $queryBuilder
             ->andWhere("$alias.published = :true")
             ->andWhere("$alias.status IN (:statuses)")
-            ->andWhere("$alias NOT INSTANCE OF :institutional")
             ->setParameter('true', true)
             ->setParameter('statuses', $statuses)
-            ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
         ;
     }
 }
