@@ -11,6 +11,7 @@ class ScopeEnum extends Enum
     public const SENATOR = 'senator';
     public const CANDIDATE = 'candidate';
     public const NATIONAL = 'national';
+    public const NATIONAL_COMMUNICATION = 'national_communication';
     public const PHONING = 'phoning';
     public const PHONING_NATIONAL_MANAGER = 'phoning_national_manager';
     public const PAP_NATIONAL_MANAGER = 'pap_national_manager';
@@ -21,6 +22,7 @@ class ScopeEnum extends Enum
         self::SENATOR,
         self::CANDIDATE,
         self::NATIONAL,
+        self::NATIONAL_COMMUNICATION,
         self::PHONING,
         self::PHONING_NATIONAL_MANAGER,
         self::PAP_NATIONAL_MANAGER,
@@ -28,6 +30,7 @@ class ScopeEnum extends Enum
 
     public const NATIONAL_SCOPES = [
         self::NATIONAL,
+        self::NATIONAL_COMMUNICATION,
         self::PAP_NATIONAL_MANAGER,
         self::PHONING_NATIONAL_MANAGER,
     ];

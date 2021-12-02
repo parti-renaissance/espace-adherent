@@ -26,6 +26,7 @@ class LoadScopeData extends Fixture
         $manager->persist($this->createScope(ScopeEnum::DEPUTY, 'Député', self::BASIC_FEATURES));
         $manager->persist($this->createScope(ScopeEnum::SENATOR, 'Sénateur', self::BASIC_FEATURES));
         $manager->persist($this->createScope(ScopeEnum::NATIONAL, 'National'));
+        $manager->persist($this->createScope(ScopeEnum::NATIONAL_COMMUNICATION, 'National communication', [FeatureEnum::MESSAGES, FeatureEnum::NEWS]));
         $manager->persist($this->createScope(ScopeEnum::CANDIDATE, 'Candidat', self::BASIC_FEATURES, []));
         $manager->persist($this->createScope(ScopeEnum::PHONING, 'Appelant', [], [AppEnum::JEMARCHE]));
         $manager->persist($this->createScope(ScopeEnum::PHONING_NATIONAL_MANAGER, 'Responsable Phoning', [FeatureEnum::TEAM, FeatureEnum::PHONING_CAMPAIGN]));

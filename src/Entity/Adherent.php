@@ -602,11 +602,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $printPrivilege = false;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $nationalRole = false;
+    private bool $nationalRole = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private bool $nationalCommunicationRole = false;
 
     /**
      * @var Collection|AdherentCharterInterface[]
@@ -2336,6 +2339,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setNationalRole(bool $nationalRole): void
     {
         $this->nationalRole = $nationalRole;
+    }
+
+    public function hasNationalCommunicationRole(): bool
+    {
+        return $this->nationalCommunicationRole;
+    }
+
+    public function setNationalCommunicationRole(bool $nationalCommunicationRole): void
+    {
+        $this->nationalCommunicationRole = $nationalCommunicationRole;
     }
 
     public function isPhoningCampaignTeamMember(): bool
