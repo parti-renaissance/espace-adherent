@@ -328,3 +328,34 @@ jobs:
         with:
           hash: ${{ env.HASH }}
           tag: ${{ env.TAG }}
+
+  deploy-staging:
+    name: Deploy Staging
+    runs-on: ubuntu-20.04
+    needs: [ docker-build-push-gcr ]
+    environment: staging
+    if: github.event.ref == 'refs/heads/master'
+    env:
+      HASH: ${{ github.sha }}
+      TAG: ${{ github.ref_name }}
+
+      GKE_SERVICE_ACCOUNT_KEY: ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}
+      GKE_PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
+      GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+      GKE_REGION: ${{ secrets.GKE_REGION }}
+      GKE_CONTAINER: ${{ secrets.GKE_CONTAINER }}
+      GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
+
+    steps:
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ env.GKE_PROJECT_ID }}
+
+      - run: |-
+          gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
+
+      - run: |-
+          for GKE_DEPLOYMENT in $(echo $GKE_DEPLOYMENTS); do
+            kubectl set image deployment/$GKE_DEPLOYMENT $GKE_CONTAINER=$REGISTRY:$TAG-$HASH
+          done
