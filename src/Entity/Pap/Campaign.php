@@ -24,7 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     shortName="PapCampaign",
  *     attributes={
  *         "order": {"createdAt": "DESC"},
- *         "pagination_enabled": false,
  *         "pagination_client_enabled": true,
  *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT'))",
  *         "normalization_context": {
