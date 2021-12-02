@@ -20,15 +20,15 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileHandler
 {
-    private $dispatcher;
-    private $manager;
-    private $addressFactory;
-    private $emailHandler;
-    private $referentTagManager;
-    private $referentZoneManager;
-    private $emailSubscriptionHistoryHandler;
-    private $subscriptionTypeRepository;
-    private $subscriptionHandler;
+    private EventDispatcherInterface $dispatcher;
+    private EntityManagerInterface $manager;
+    private PostAddressFactory $addressFactory;
+    private AdherentChangeEmailHandler $emailHandler;
+    private ReferentTagManager $referentTagManager;
+    private ReferentZoneManager $referentZoneManager;
+    private EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler;
+    private SubscriptionTypeRepository $subscriptionTypeRepository;
+    private SubscriptionHandler $subscriptionHandler;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,

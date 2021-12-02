@@ -18,6 +18,19 @@ class PushTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, PushToken::class);
     }
 
+    public function findIdentifiersForAdherent(Adherent $adherent): array
+    {
+        $tokens = $this->createQueryBuilder('token')
+            ->select('DISTINCT(token.identifier)')
+            ->where('token.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return array_map('current', $tokens);
+    }
+
     public function findIdentifiersForZones(array $zones): array
     {
         $qb = $this->createQueryBuilder('token')
