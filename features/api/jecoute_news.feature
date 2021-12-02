@@ -506,3 +506,95 @@ Feature:
     }
     """
     Then the response status code should be 403
+
+  Scenario: As a DC referent i cannot create a local news without a zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "notification": true,
+      "published": true
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "zone: Une zone est nécessaire pour une actualité référente",
+        "violations": [
+            {
+                "propertyPath": "zone",
+                "message": "Une zone est nécessaire pour une actualité référente"
+            }
+        ]
+    }
+    """
+
+  Scenario: As a DC referent i cannot create a local news with a city zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002",
+      "notification": true,
+      "published": true
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: Cette zone ne correspond pas à une région, un département ou un arrondissement",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "Cette zone ne correspond pas à une région, un département ou un arrondissement"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC referent i cannot create a local news with a non managed zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "zone": "e3efe7bf-906e-11eb-a875-0242ac150002",
+      "notification": true,
+      "published": true
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: Oups, vous n'avez pas accès à cette zone !",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "Oups, vous n'avez pas accès à cette zone !"
+        }
+      ]
+    }
+    """

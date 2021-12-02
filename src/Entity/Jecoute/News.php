@@ -12,10 +12,12 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
+use App\Entity\AuthorInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Validator\Jecoute\NewsTarget;
+use App\Validator\Jecoute\ReferentNews;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -118,10 +120,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     )
  * })
- *
+ * @ReferentNews
  * @NewsTarget(groups="Admin")
  */
-class News implements AuthoredInterface
+class News implements AuthoredInterface, AuthorInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;
