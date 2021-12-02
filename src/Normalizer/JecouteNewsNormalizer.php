@@ -72,9 +72,11 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         /** @var News $news */
         $news = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        $scope = $this->authorizationChecker->getScope($this->requestStack->getMasterRequest());
-        if (ScopeEnum::REFERENT === $scope) {
-            $news->setSpace(JecouteSpaceEnum::REFERENT_SPACE);
+        if (!$news->getId()) {
+            $scope = $this->authorizationChecker->getScope($this->requestStack->getMasterRequest());
+            if (ScopeEnum::REFERENT === $scope) {
+                $news->setSpace(JecouteSpaceEnum::REFERENT_SPACE);
+            }
         }
 
         $this->newsTitlePrefix->removePrefix($news);
