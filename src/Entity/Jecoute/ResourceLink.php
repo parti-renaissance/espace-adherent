@@ -18,26 +18,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "order": {"position": "ASC"},
- *         "normalization_context": {"groups": {"jecoute_resources_read", "image_owner_exposed"}},
+ *         "normalization_context": {"groups": {"jecoute_resource_links_read", "image_owner_exposed"}},
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/v3/jecoute/resources",
+ *             "path": "/v3/jecoute/resource-links",
  *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *         }
  *     },
  *     itemOperations={}
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\ResourceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\ResourceLinkRepository")
  * @ORM\Table(
- *     name="jecoute_resource",
+ *     name="jecoute_resource_link",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(columns={"uuid"})
  *     }
  * )
  */
-class Resource implements ExposedImageOwnerInterface
+class ResourceLink implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -49,7 +49,7 @@ class Resource implements ExposedImageOwnerInterface
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"jecoute_resources_read"})
+     * @Groups({"jecoute_resource_links_read"})
      */
     private ?string $label;
 
@@ -59,7 +59,7 @@ class Resource implements ExposedImageOwnerInterface
      * @Assert\NotBlank
      * @Assert\Url
      *
-     * @Groups({"jecoute_resources_read"})
+     * @Groups({"jecoute_resource_links_read"})
      */
     private ?string $url;
 

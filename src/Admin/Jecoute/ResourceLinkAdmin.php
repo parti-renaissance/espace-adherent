@@ -3,7 +3,7 @@
 namespace App\Admin\Jecoute;
 
 use App\Admin\AbstractAdmin;
-use App\Entity\Jecoute\Resource as ResourceEntity;
+use App\Entity\Jecoute\ResourceLink;
 use App\Image\ImageManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -15,8 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-class ResourceAdmin extends AbstractAdmin
+class ResourceLinkAdmin extends AbstractAdmin
 {
+    protected $baseRoutePattern = 'app/jecoute-resource-link';
+    protected $baseRouteName = 'admin_app_jecoute_resource_link';
+
     private ImageManagerInterface $imageManager;
 
     public function createQuery($context = 'list')
@@ -107,7 +110,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ResourceEntity $resource
+     * @param ResourceLink $resource
      */
     public function prePersist($resource)
     {
@@ -119,7 +122,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ResourceEntity $resource
+     * @param ResourceLink $resource
      */
     public function preUpdate($resource)
     {
@@ -131,7 +134,7 @@ class ResourceAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ResourceEntity $resource
+     * @param ResourceLink $resource
      */
     public function postRemove($resource)
     {

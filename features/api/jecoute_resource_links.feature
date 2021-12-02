@@ -1,15 +1,15 @@
 @api
 Feature:
-  In order to get all resources
-  I should be able to access API of resources
+  In order to get all resource links
+  I should be able to access API of resource links
 
-  Scenario: As a non authenticated user I cannot get the resources list
-    When I send a "GET" request to "/api/v3/jecoute/resources"
+  Scenario: As a non authenticated user I cannot get the resource links list
+    When I send a "GET" request to "/api/v3/jecoute/resource-links"
     Then the response status code should be 401
 
-  Scenario: As a logged in user I can get the resources list
+  Scenario: As a logged in user I can get the resource links list
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
-    When I send a "GET" request to "/api/v3/jecoute/resources"
+    When I send a "GET" request to "/api/v3/jecoute/resource-links"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
