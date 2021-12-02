@@ -67,7 +67,10 @@ class DataSurveyRepository extends ServiceEntityRepository
     public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
     {
         $qb = $this->createQueryBuilder('ds')
-            ->addSelect('jemarcheDataSurvey', 'campaignHistory', 'author', 'adherent')
+            ->addSelect('jemarcheDataSurvey')
+            ->addSelect('partial campaignHistory.{id}')
+            ->addSelect('partial author.{id, firstName, lastName}')
+            ->addSelect('partial adherent.{id, firstName, lastName, emailAddress, postAddress.postalCode, gender, position}')
             ->leftJoin('ds.author', 'author')
             ->leftJoin('ds.jemarcheDataSurvey', 'jemarcheDataSurvey')
             ->leftJoin('ds.campaignHistory', 'campaignHistory')

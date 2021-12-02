@@ -38,6 +38,8 @@ class SurveyExporter
 
     public function export(Survey $survey, string $format, bool $fromAdmin = false, array $zones = []): StreamedResponse
     {
+        $questions = $this->surveyQuestionRepository->findForSurvey($survey);
+
         return $this->exporter->getResponse(
             $format,
             sprintf(
@@ -47,14 +49,13 @@ class SurveyExporter
                 (new \DateTime())->format('YmdHis'),
                 $format
             ),
-            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones), function (array $data) use ($survey, $fromAdmin) {
+            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones), function (array $data) use ($fromAdmin, $questions) {
                 /** @var DataSurvey $dataSurvey */
                 $dataSurvey = $data[0];
                 $jemarcheDataSurvey = $dataSurvey->getJemarcheDataSurvey();
                 $campaignHistory = $dataSurvey->getCampaignHistory();
 
                 $row = [];
-                $row['Type'] = $campaignHistory ? 'Phoning' : 'Libre';
                 $row['ID'] = ++$this->i;
 
                 $author = $dataSurvey->getAuthor();
@@ -64,7 +65,6 @@ class SurveyExporter
 
                 $row['Nom Prénom de l\'auteur'] = (string) $author;
                 $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
-                $row['DS_ID'] = $dataSurvey->getId();
 
                 if ($campaignHistory) {
                     $adherent = $campaignHistory->getAdherent();
@@ -113,8 +113,9 @@ class SurveyExporter
                 }
 
                 /** @var SurveyQuestion $surveyQuestion */
-                foreach ($this->surveyQuestionRepository->findForSurvey($survey) as $surveyQuestion) {
-                    $questionName = $surveyQuestion->getQuestion()->getContent();
+                foreach ($questions as $surveyQuestion) {
+                    $question = $surveyQuestion->getQuestion();
+                    $questionName = $question->getContent();
                     $row[$questionName] = '';
 
                     $dataAnswer = $surveyQuestion->getDataAnswersFor($surveyQuestion, $dataSurvey);
@@ -123,7 +124,7 @@ class SurveyExporter
                         continue;
                     }
 
-                    if ($surveyQuestion->getQuestion()->isChoiceType()) {
+                    if ($question->isChoiceType()) {
                         $row[$questionName] = implode(', ', $dataAnswer->getSelectedChoices()->map(static function (Choice $choice) {
                             return $choice->getContent();
                         })->toArray());
