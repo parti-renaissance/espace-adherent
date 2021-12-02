@@ -507,9 +507,8 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a DC referent i cannot create a local news without a zone
+  Scenario: As a DC referent I cannot create a local news without a zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
@@ -537,9 +536,8 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent i cannot create a local news with a city zone
+  Scenario: As a DC referent I cannot create a local news with a city zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
@@ -568,9 +566,8 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent i cannot create a local news with a non managed zone
+  Scenario: As a DC referent I cannot create a local news with a non managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
