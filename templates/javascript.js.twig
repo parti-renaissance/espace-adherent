@@ -31,7 +31,6 @@ App.createAddressSelector(
 {% macro ckeditor(element, height, uploadType = false, maxLength = false, removeFormat = false) %}
 {% import _self as js %}
 CKEDITOR.replace('{{ element }}', {
-    extraPlugins : 'confighelper',
     removePlugins: 'elementspath',
     height: {{ height|default(200) }},
     resize_enabled: false,
@@ -46,6 +45,7 @@ CKEDITOR.replace('{{ element }}', {
     ],
     {% if uploadType %}
         filebrowserUploadUrl: "{{ path('app_filebrowser_upload', { type: uploadType }) }}",
+        filebrowserUploadMethod: 'form',
     {% endif %}
     linkShowAdvancedTab: false,
     linkShowTargetTab: false,
@@ -119,7 +119,6 @@ CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
 
 {% macro simpleCkeditor(element, height) %}
 CKEDITOR.replace('{{ element }}', {
-    extraPlugins : 'confighelper',
     removePlugins: 'elementspath',
     height: {{ height|default(200) }},
     resize_enabled: false,

@@ -1056,10 +1056,6 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
-"@ckeditor/ckeditor5-build-en-marche@https://github.com/EnMarche/ckeditor5-build-classic#stable":
-  version "15.0.0"
-  resolved "https://github.com/EnMarche/ckeditor5-build-classic#73a0a654bd8955d8d3b1868ebbfad634ffaa097e"
-
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.2.tgz#8f03a22a04de437254e8ce8cc84ba39689288752"
@@ -2133,6 +2129,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+ckeditor4@^4.17.1:
+  version "4.17.1"
+  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.17.1.tgz#494c5039d31e3089183ac00c71854aadb5ebccad"
+  integrity sha512-VSTyro6tWd0B356SjJX8Zbix2Q85M/5h7469+vLb7DeNUP2vAimrPYoo29am2RRTTllyKxfLzVuTF8E9A1ssdA==
 
 class-utils@^0.3.5:
   version "0.3.6"

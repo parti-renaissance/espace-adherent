@@ -9,8 +9,7 @@
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.ckeditor('adherent_message_content', 500, constant('App\\Entity\\UserDocument::TYPE_ADHERENT_MESSAGE'), 5000, true) }}
