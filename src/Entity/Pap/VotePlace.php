@@ -38,6 +38,11 @@ class VotePlace
      */
     public ?float $longitude;
 
+    /**
+     * @ORM\Column(nullable=true, unique=true)
+     */
+    public ?string $code = null;
+
     public function __construct(?float $latitude, ?float $longitude, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
