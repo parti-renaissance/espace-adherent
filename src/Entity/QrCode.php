@@ -35,7 +35,7 @@ class QrCode
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
      * @Assert\Url

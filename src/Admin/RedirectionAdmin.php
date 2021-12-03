@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class RedirectionAdmin extends AbstractAdmin
 {
@@ -19,11 +20,11 @@ class RedirectionAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('from', null, [
+            ->add('from', TextType::class, [
                 'label' => 'Rediriger depuis ...',
                 'help' => 'Uniquement le chemin (sans le domaine) : pour "https://en-marche.fr/marseille", indiquez "/marseille".',
             ])
-            ->add('to', null, [
+            ->add('to', TextType::class, [
                 'label' => 'Vers ...',
                 'help' => 'Soit un chemin, soit une URL complète.',
             ])
