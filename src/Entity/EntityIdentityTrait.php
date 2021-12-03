@@ -75,6 +75,7 @@ trait EntityIdentityTrait
      *     "phoning_campaign_history_read_list",
      *     "pap_building_block_list",
      *     "campaign_replies_list",
+     *     "jecoute_resource_links_read",
      * })
      *
      * @ApiProperty(

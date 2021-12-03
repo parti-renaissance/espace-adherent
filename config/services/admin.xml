@@ -501,6 +501,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.jecoute.resource.link" class="App\Admin\Jecoute\ResourceLinkAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ressources" group="Je marche app" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\ResourceLink</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+        </service>
+
         <!--
         ######################################################
         # Phoning
