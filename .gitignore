@@ -12,6 +12,7 @@
 /public/bundles/
 /public/built/
 /public/js/jquery.collection.js
+/public/js/ckeditor
 /public/select2/
 /.tmp
 /docker-compose.override.yml
