@@ -12,7 +12,7 @@ final class Version20211202191607 extends AbstractMigration
         $this->addSql('CREATE TABLE jecoute_resource_link (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           label VARCHAR(255) NOT NULL,
-          url VARCHAR(255) NOT NULL,
+          url LONGTEXT NOT NULL,
           position SMALLINT NOT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           created_at DATETIME NOT NULL,

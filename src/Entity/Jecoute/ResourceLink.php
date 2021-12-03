@@ -54,7 +54,7 @@ class ResourceLink implements ExposedImageOwnerInterface
     private ?string $label;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
      * @Assert\Url
@@ -84,9 +84,9 @@ class ResourceLink implements ExposedImageOwnerInterface
         $this->url = $url;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->label;
+        return (string) $this->label;
     }
 
     public function getLabel(): ?string
