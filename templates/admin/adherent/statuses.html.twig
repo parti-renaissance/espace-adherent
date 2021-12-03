@@ -142,6 +142,10 @@
     <span class="label label-primary" style="padding: 2px;">Rôle National</span>
 {% endif %}
 
+{% if object.hasNationalCommunicationRole %}
+    <span class="label label-primary" style="padding: 2px;">Rôle National communication</span>
+{% endif %}
+
 {% if object.isCoalitionModerator %}
     <span class="label label-primary" style="padding: 2px;">Responsable des coalitions</span><br/>
 {% endif %}

@@ -41,6 +41,7 @@ class AdherentRoleEnum extends Enum
 
     public const PRINT_PRIVILEGE = 'print_privilege';
     public const ROLE_NATIONAL = 'role_national';
+    public const ROLE_NATIONAL_COMMUNICATION = 'role_national_communication';
     public const ELECTION_RESULTS_REPORTER = 'election_results_reporter';
 
     public const SENATORIAL_CANDIDATE = 'senatorial_candidate';
