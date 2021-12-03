@@ -28,10 +28,10 @@ class Redirection
     /**
      * @var string|null
      *
-     * @ORM\Column(name="url_from")
+     * @ORM\Column(name="url_from", type="text")
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=10000)
      *
      * @Serializer\Expose
      */
@@ -40,10 +40,10 @@ class Redirection
     /**
      * @var string|null
      *
-     * @ORM\Column(name="url_to")
+     * @ORM\Column(name="url_to", type="text")
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=10000)
      *
      * @Serializer\Expose
      */
