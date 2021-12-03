@@ -59,20 +59,16 @@ class CampaignHistory implements DataSurveyAwareInterface
     use EntityTimestampableTrait;
 
     /**
-     * @var Adherent|null
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $questioner;
+    private ?Adherent $questioner = null;
 
     /**
-     * @var Adherent|null
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $adherent;
+    private ?Adherent $adherent = null;
 
     /**
      * @Assert\NotNull
@@ -95,8 +91,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     private ?Building $building = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(length=25)
      *
      * @Assert\NotNull
@@ -108,48 +102,42 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_read", "pap_campaign_history_write"})
      */
-    private $status;
+    private ?string $status = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $buildingBlock;
+    private ?string $buildingBlock = null;
 
     /**
-     * @var int|null
-     *
      * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $floor;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     *
-     * @Groups({"pap_campaign_history_write"})
-     */
-    private $door;
+    private ?int $floor = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $firstName;
+    private ?string $door = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $lastName;
+    private ?string $firstName = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_campaign_history_write"})
+     */
+    private ?string $lastName = null;
 
     /**
      * @ORM\Column(nullable=true)
@@ -159,7 +147,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $emailAddress;
+    private ?string $emailAddress = null;
 
     /**
      * @ORM\Column(length=15, nullable=true)
@@ -172,7 +160,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $gender;
+    private ?string $gender = null;
 
     /**
      * @ORM\Column(length=15, nullable=true)
@@ -181,7 +169,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $ageRange;
+    private ?string $ageRange = null;
 
     /**
      * @ORM\Column(length=30, nullable=true)
@@ -190,44 +178,50 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $profession;
+    private ?string $profession = null;
 
     /**
-     * @var bool|null
-     *
      * @ORM\Column(type="boolean", nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $toContact;
+    private ?bool $toContact = null;
 
     /**
-     * @var bool|null
+     * @ORM\Column(nullable=true)
      *
+     * @Groups({"pap_campaign_history_write"})
+     */
+    private ?string $voterStatus = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_campaign_history_write"})
+     */
+    private ?string $voterPostalCode = null;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private $toJoin;
+    private ?bool $toJoin = null;
 
     /**
-     * @var \DateTime|null
-     *
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\DateTime
      */
-    private $finishAt;
+    private ?\DateTime $finishAt = null;
 
     /**
-     * @var DataSurvey|null
-     *
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="campaignHistory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\Valid
      */
-    private $dataSurvey;
+    private ?DataSurvey $dataSurvey = null;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -254,7 +248,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->adherent = $adherent;
     }
 
-    public function getCampaign(): Campaign
+    public function getCampaign(): ?Campaign
     {
         return $this->campaign;
     }
@@ -377,6 +371,26 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setProfession(?string $profession): void
     {
         $this->profession = $profession;
+    }
+
+    public function getVoterStatus(): ?string
+    {
+        return $this->voterStatus;
+    }
+
+    public function setVoterStatus(?string $voterStatus): void
+    {
+        $this->voterStatus = $voterStatus;
+    }
+
+    public function getVoterPostalCode(): ?string
+    {
+        return $this->voterPostalCode;
+    }
+
+    public function setVoterPostalCode(?string $voterPostalCode): void
+    {
+        $this->voterPostalCode = $voterPostalCode;
     }
 
     public function isToContact(): ?bool

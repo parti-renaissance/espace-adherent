@@ -158,14 +158,12 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     private $longitude;
 
     /**
-     * @var DataSurvey|null
-     *
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="jemarcheDataSurvey")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\Valid
      */
-    private $dataSurvey;
+    private ?DataSurvey $dataSurvey = null;
 
     public function __construct(UuidInterface $uuid = null)
     {

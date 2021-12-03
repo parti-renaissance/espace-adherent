@@ -224,8 +224,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     private $finishAt;
 
     /**
-     * @var DataSurvey|null
-     *
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="campaignHistory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
@@ -233,7 +231,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"phoning_campaign_history_read_list"})
      */
-    private $dataSurvey;
+    private ?DataSurvey $dataSurvey = null;
 
     public function __construct(Campaign $campaign, UuidInterface $uuid = null)
     {
