@@ -27,7 +27,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                     'address' => [
                         [
                             'code' => 'building_block',
-                            'label' => 'Batiment',
+                            'label' => 'Bâtiment',
                             'type' => 'text',
                         ],
                         [
@@ -101,16 +101,10 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                             'type' => 'choice',
                             'choices' => CampaignHistoryVoterStatusEnum::LABELS,
                         ],
-                        'voter_city' => [
-                            'code' => 'voter_city',
+                        'voter_postal_code' => [
+                            'code' => 'voter_postal_code',
                             'label' => 'Sur quelle commune ?',
-                            'type' => 'autocomplete',
-                            'options' => [
-                                'query_param' => 'q',
-                                'url' => '/api/v3/zone/autocomplete',
-                                'value_param' => 'uuid',
-                                'label_param' => 'name',
-                            ],
+                            'type' => 'text',
                         ],
                     ],
                     [

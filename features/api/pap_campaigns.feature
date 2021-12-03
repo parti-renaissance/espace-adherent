@@ -140,7 +140,7 @@ Feature:
       "id": @integer@,
       "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
       "type": "national",
-      "questions":[
+      "questions": [
         {
           "id": @integer@,
           "type": "simple_field",
@@ -182,151 +182,145 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "before_survey": {
-            "address": [
+       "before_survey": {
+          "address": [
+             {
+                "code": "building_block",
+                "label": "Bâtiment",
+                "type": "text"
+             },
+             {
+                "code": "floor",
+                "label": "Étage",
+                "type": "number"
+             },
+             {
+                "code": "door",
+                "label": "Porte",
+                "type": "text"
+             }
+          ],
+          "door_status": [
+             [
                 {
-                    "code": "building_block",
-                    "label": "Batiment",
-                    "type": "text"
+                   "code": "door_open",
+                   "label": "Porte ouverte"
                 },
                 {
-                    "code": "floor",
-                    "label": "Étage",
-                    "type": "number"
-                },
-                {
-                    "code": "door",
-                    "label": "Porte",
-                    "type": "text"
+                   "code": "door_closed",
+                   "label": "Porte fermée"
                 }
-            ],
-            "door_status": [
-                [
-                    {
-                        "code": "door_open",
-                        "label": "Porte ouverte"
-                    },
-                    {
-                        "code": "door_closed",
-                        "label": "Porte fermée"
-                    }
-                ]
-            ],
-            "response_status": [
-                [
-                    {
-                        "code": "accept_to_answer",
-                        "label": "Accepte de répondre aux questions"
-                    },
-                    {
-                        "code": "dont_accept_to_answer",
-                        "label": "N'accepte pas"
-                    },
-                    {
-                        "code": "contact_later",
-                        "label": "Repasser plus tard"
-                    }
-                ]
-            ]
-        },
-        "after_survey": [
-            [
+             ]
+          ],
+          "response_status": [
+             [
                 {
-                    "code": "gender",
-                    "label": "Genre",
-                    "type": "choice",
-                    "choices": {
-                        "female": "Femme",
-                        "male": "Homme"
-                    }
+                   "code": "accept_to_answer",
+                   "label": "Accepte de répondre aux questions"
                 },
                 {
-                    "code": "age_range",
-                    "label": "Tranche d'âge",
-                    "type": "choice",
-                    "choices": {
-                        "less_than_20": "-20 ans",
-                        "between_20_24": "20-24 ans",
-                        "between_25_39": "25-39 ans",
-                        "between_40_54": "40-54 ans",
-                        "between_55_64": "55-64 ans",
-                        "between_65_80": "65-80 ans",
-                        "greater_than_80": "80+ ans"
-                    }
+                   "code": "dont_accept_to_answer",
+                   "label": "N'accepte pas"
                 },
                 {
-                    "code": "profession",
-                    "label": "Métier",
-                    "type": "choice",
-                    "choices": {
-                        "employees": "Employé",
-                        "workers": "Ouvrier",
-                        "managerial staff": "Cadre",
-                        "intermediate_professions": "Profession intermédiaire",
-                        "self_contractor": "Indépendant et professions libérales",
-                        "retirees": "Retraité",
-                        "student": "Étudiant"
-                    }
+                   "code": "contact_later",
+                   "label": "Repasser plus tard"
                 }
-            ],
-            {
-                "to_contact": {
-                    "code": "to_contact",
-                    "label": "Souhaite être recontacté ?",
-                    "description": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données.",
-                    "type": "boolean"
-                },
-                "contact": [
-                    {
-                        "code": "first_name",
-                        "label": "Prénom",
-                        "type": "text"
-                    },
-                    {
-                        "code": "last_name",
-                        "label": "Nom",
-                        "type": "text"
-                    },
-                    {
-                        "code": "email_address",
-                        "label": "Email",
-                        "type": "text"
-                    }
-                ]
-            },
-            {
-                "voter_status": {
-                    "code": "voter_status",
-                    "label": "Êtes vous un électeur inscrit sur les listes ?",
-                    "type": "choice",
-                    "choices": {
-                        "not_voter": "Pas électeur",
-                        "not_registered": "Pas inscrit",
-                        "registered": "Inscrit sur les listes",
-                        "registered_elsewhere": "Inscrit ailleurs"
-                    }
-                },
-                "voter_city": {
-                    "code": "voter_city",
-                    "label": "Sur quelle commune ?",
-                    "type": "autocomplete",
-                    "options": {
-                        "query_param": "q",
-                        "url": "/api/v3/zone/autocomplete",
-                        "value_param": "uuid",
-                        "label_param": "name"
-                    }
+             ]
+          ]
+       },
+       "after_survey": [
+          [
+             {
+                "code": "gender",
+                "label": "Genre",
+                "type": "choice",
+                "choices": {
+                   "female": "Femme",
+                   "male": "Homme"
                 }
-            },
-            [
+             },
+             {
+                "code": "age_range",
+                "label": "Tranche d'âge",
+                "type": "choice",
+                "choices": {
+                   "less_than_20": "-20 ans",
+                   "between_20_24": "20-24 ans",
+                   "between_25_39": "25-39 ans",
+                   "between_40_54": "40-54 ans",
+                   "between_55_64": "55-64 ans",
+                   "between_65_80": "65-80 ans",
+                   "greater_than_80": "80+ ans"
+                }
+             },
+             {
+                "code": "profession",
+                "label": "Métier",
+                "type": "choice",
+                "choices": {
+                   "employees": "Employé",
+                   "workers": "Ouvrier",
+                   "managerial staff": "Cadre",
+                   "intermediate_professions": "Profession intermédiaire",
+                   "self_contractor": "Indépendant et professions libérales",
+                   "retirees": "Retraité",
+                   "student": "Étudiant"
+                }
+             }
+          ],
+          {
+             "to_contact": {
+                "code": "to_contact",
+                "label": "Souhaite être recontacté ?",
+                "description": "En cochant oui, vous certifiez qu'il consent \u00e0 ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données.",
+                "type": "boolean"
+             },
+             "contact": [
                 {
-                    "code": "to_join",
-                    "label": "Souhaite adhérer ?",
-                    "description": "En cochant oui, vous certifiez qu'il souhait adhérer.",
-                    "type": "boolean"
+                   "code": "first_name",
+                   "label": "Prénom",
+                   "type": "text"
+                },
+                {
+                   "code": "last_name",
+                   "label": "Nom",
+                   "type": "text"
+                },
+                {
+                   "code": "email_address",
+                   "label": "Email",
+                   "type": "text"
                 }
-            ]
-        ]
+             ]
+          },
+          {
+             "voter_status": {
+                "code": "voter_status",
+                "label": "Êtes vous un électeur inscrit sur les listes ?",
+                "type": "choice",
+                "choices": {
+                   "not_voter": "Pas électeur",
+                   "not_registered": "Pas inscrit",
+                   "registered": "Inscrit sur les listes",
+                   "registered_elsewhere": "Inscrit ailleurs"
+                }
+             },
+             "voter_postal_code": {
+                "code": "voter_postal_code",
+                "label": "Sur quelle commune ?",
+                "type": "text"
+             }
+          },
+          [
+             {
+                "code": "to_join",
+                "label": "Souhaite adhérer ?",
+                "description": "En cochant oui, vous certifiez qu'il souhait adhérer.",
+                "type": "boolean"
+             }
+          ]
+       ]
     }
     """
 
@@ -447,6 +441,80 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I cannot update a pap campaign history with invalid data
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
+    """
+    {
+        "status": "invalid",
+        "building_block": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "door": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "first_name": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "last_name": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "email_address": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "gender": "invalid",
+        "age_range": "invalid",
+        "profession": "invalid",
+        "voter_status": "invalid"
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "status: Le statut n'est pas valide.\nbuilding_block: Vous devez saisir au maximum 255 caractères.\ndoor: Vous devez saisir au maximum 255 caractères.\nfirst_name: Vous devez saisir au maximum 255 caractères.\nlast_name: Vous devez saisir au maximum 255 caractères.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse e-mail est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.\nvoter_status: Cette valeur doit être l'un des choix proposés.",
+        "violations": [
+            {
+                "propertyPath": "status",
+                "message": "Le statut n'est pas valide."
+            },
+            {
+                "propertyPath": "building_block",
+                "message": "Vous devez saisir au maximum 255 caractères."
+            },
+            {
+                "propertyPath": "door",
+                "message": "Vous devez saisir au maximum 255 caractères."
+            },
+            {
+                "propertyPath": "first_name",
+                "message": "Vous devez saisir au maximum 255 caractères."
+            },
+            {
+                "propertyPath": "last_name",
+                "message": "Vous devez saisir au maximum 255 caractères."
+            },
+            {
+                "propertyPath": "email_address",
+                "message": "Cette valeur n'est pas une adresse email valide."
+            },
+            {
+                "propertyPath": "email_address",
+                "message": "L'adresse e-mail est trop longue, 255 caractères maximum."
+            },
+            {
+                "propertyPath": "gender",
+                "message": "Ce sexe n'est pas valide."
+            },
+            {
+                "propertyPath": "age_range",
+                "message": "Cette valeur doit être l'un des choix proposés."
+            },
+            {
+                "propertyPath": "profession",
+                "message": "Cette valeur doit être l'un des choix proposés."
+            },
+            {
+                "propertyPath": "voter_status",
+                "message": "Cette valeur doit être l'un des choix proposés."
+            }
+        ]
+    }
+    """
+
   Scenario: As a logged-in user I can update a pap campaign history
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
@@ -463,6 +531,8 @@ Feature:
         "gender": "female",
         "ageRange": "between_40_54",
         "profession": "self_contractor",
+        "voter_status": "registered",
+        "voter_postal_code": "92110",
         "toContact": true,
         "toJoin": false
     }

@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use App\Entity\Jecoute\DataSurveyAwareTrait;
@@ -108,6 +107,8 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
+     * @Assert\Length(max=255)
+     *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $buildingBlock = null;
@@ -122,6 +123,8 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
+     * @Assert\Length(max=255)
+     *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $door = null;
@@ -129,12 +132,16 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
+     * @Assert\Length(max=255)
+     *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $firstName = null;
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
      *
      * @Groups({"pap_campaign_history_write"})
      */
@@ -198,11 +205,13 @@ class CampaignHistory implements DataSurveyAwareInterface
     private ?string $voterStatus = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     * @ORM\Column(length=15, nullable=true)
+     *
+     * @Assert\Length(max=15)
      *
      * @Groups({"pap_campaign_history_write"})
      */
-    private ?Zone $voterCity = null;
+    private ?string $voterPostalCode = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -374,6 +383,26 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setProfession(?string $profession): void
     {
         $this->profession = $profession;
+    }
+
+    public function getVoterStatus(): ?string
+    {
+        return $this->voterStatus;
+    }
+
+    public function setVoterStatus(?string $voterStatus): void
+    {
+        $this->voterStatus = $voterStatus;
+    }
+
+    public function getVoterPostalCode(): ?string
+    {
+        return $this->voterPostalCode;
+    }
+
+    public function setVoterPostalCode(?string $voterPostalCode): void
+    {
+        $this->voterPostalCode = $voterPostalCode;
     }
 
     public function isToContact(): ?bool
