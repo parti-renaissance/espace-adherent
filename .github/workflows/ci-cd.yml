@@ -2,8 +2,6 @@ name: CI & CD
 
 on:
   push:
-    branches:
-      - master
   pull_request:
   release:
     types: [ published ]
@@ -22,6 +20,10 @@ env:
   REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
   REGISTRY_SERVICE_ACCOUNT_EMAIL: ${{ secrets.REGISTRY_SERVICE_ACCOUNT_EMAIL }}
   REGISTRY_SERVICE_ACCOUNT_KEY: ${{ secrets.REGISTRY_SERVICE_ACCOUNT_KEY }}
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   build:
