@@ -4,6 +4,7 @@ namespace App\Repository\Jecoute;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -61,5 +62,33 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->iterate()
         ;
+    }
+
+    public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
+    {
+        $qb = $this->createQueryBuilder('ds')
+            ->addSelect('jemarcheDataSurvey')
+            ->addSelect('partial campaignHistory.{id}')
+            ->addSelect('partial author.{id, firstName, lastName}')
+            ->addSelect('partial adherent.{id, firstName, lastName, emailAddress, postAddress.postalCode, gender, position}')
+            ->leftJoin('ds.author', 'author')
+            ->leftJoin('ds.jemarcheDataSurvey', 'jemarcheDataSurvey')
+            ->leftJoin('ds.campaignHistory', 'campaignHistory')
+            ->leftJoin('campaignHistory.adherent', 'adherent')
+            ->where('ds.survey = :survey')
+            ->setParameter('survey', $survey)
+        ;
+
+        if ($zones) {
+            $qb
+                ->distinct()
+                ->innerJoin('author.zones', 'zone')
+                ->innerJoin('zone.parents', 'parent')
+                ->andWhere('zone IN (:zones) OR parent IN (:zones)')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Exporter;
 
 use App\Entity\Jecoute\Choice;
-use App\Entity\Jecoute\JemarcheDataSurvey;
+use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\GenderEnum;
-use App\Repository\Jecoute\JemarcheDataSurveyRepository;
+use App\Repository\Jecoute\DataSurveyRepository;
 use App\Repository\Jecoute\SurveyQuestionRepository;
 use Cocur\Slugify\Slugify;
 use Sonata\Exporter\Exporter;
@@ -18,14 +18,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SurveyExporter
 {
-    private JemarcheDataSurveyRepository $dataSurveyRepository;
+    private DataSurveyRepository $dataSurveyRepository;
     private SurveyQuestionRepository $surveyQuestionRepository;
     private Exporter $exporter;
     private TranslatorInterface $translator;
     private $i = 0;
 
     public function __construct(
-        JemarcheDataSurveyRepository $dataSurveyRepository,
+        DataSurveyRepository $dataSurveyRepository,
         SurveyQuestionRepository $surveyQuestionRepository,
         SonataExporter $exporter,
         TranslatorInterface $translator
@@ -38,6 +38,8 @@ class SurveyExporter
 
     public function export(Survey $survey, string $format, bool $fromAdmin = false, array $zones = []): StreamedResponse
     {
+        $questions = $this->surveyQuestionRepository->findForSurvey($survey);
+
         return $this->exporter->getResponse(
             $format,
             sprintf(
@@ -47,12 +49,11 @@ class SurveyExporter
                 (new \DateTime())->format('YmdHis'),
                 $format
             ),
-            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones), function (array $data) use ($survey, $fromAdmin) {
-                /** @var JemarcheDataSurvey $jemarcheDataSurvey */
-                $jemarcheDataSurvey = $data[0];
-                $dataSurvey = $jemarcheDataSurvey->getDataSurvey();
-
-                $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
+            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones), function (array $data) use ($fromAdmin, $questions) {
+                /** @var DataSurvey $dataSurvey */
+                $dataSurvey = $data[0];
+                $jemarcheDataSurvey = $dataSurvey->getJemarcheDataSurvey();
+                $campaignHistory = $dataSurvey->getCampaignHistory();
 
                 $row = [];
                 $row['ID'] = ++$this->i;
@@ -64,28 +65,57 @@ class SurveyExporter
 
                 $row['Nom Prénom de l\'auteur'] = (string) $author;
                 $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
-                $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;
-                $row['Prénom'] = $allowPersonalData ? $jemarcheDataSurvey->getLastName() : null;
 
-                if ($fromAdmin) {
-                    $row['Email'] = $jemarcheDataSurvey->getEmailAddress();
-                    $row['Accepte d\'être contacté'] = (int) $jemarcheDataSurvey->getAgreedToStayInContact();
-                    $row['Accepte d\'être invité à adhérer'] = (int) $jemarcheDataSurvey->getAgreedToContactForJoin();
+                if ($campaignHistory) {
+                    $adherent = $campaignHistory->getAdherent();
+                    $row['Nom'] = $adherent->getLastName();
+                    $row['Prénom'] = $adherent->getFirstName();
+
+                    if ($fromAdmin) {
+                        $row['Email'] = $adherent->getEmailAddress();
+                        $row['Accepte d\'être contacté'] = null;
+                        $row['Accepte d\'être invité à adhérer'] = null;
+                    }
+
+                    $row['Code postal'] = $adherent->getPostalCode();
+                    $row['Tranche d\'age'] = null;
+                    $row['Genre'] = $adherent->getGender()
+                        ? (GenderEnum::OTHER === $adherent->getGender()
+                            ? $adherent->getGenderOther()
+                            : ($this->translator->trans('common.'.$adherent->getGender())))
+                        : null;
+
+                    if ($fromAdmin) {
+                        $row['Accepte que ses données soient traitées'] = null;
+                    }
+
+                    $row['Profession'] = $adherent->getPosition() ? $this->translator->trans('adherent.activity_position.'.$adherent->getPosition()) : null;
+                } else {
+                    $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
+                    $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;
+                    $row['Prénom'] = $allowPersonalData ? $jemarcheDataSurvey->getLastName() : null;
+
+                    if ($fromAdmin) {
+                        $row['Email'] = $jemarcheDataSurvey->getEmailAddress();
+                        $row['Accepte d\'être contacté'] = (int) $jemarcheDataSurvey->getAgreedToStayInContact();
+                        $row['Accepte d\'être invité à adhérer'] = (int) $jemarcheDataSurvey->getAgreedToContactForJoin();
+                    }
+
+                    $row['Code postal'] = $allowPersonalData ? $jemarcheDataSurvey->getPostalCode() : null;
+                    $row['Tranche d\'age'] = $allowPersonalData && $jemarcheDataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$jemarcheDataSurvey->getAgeRange()) : null;
+                    $row['Genre'] = $allowPersonalData && $jemarcheDataSurvey->getGender() ? (GenderEnum::OTHER === $jemarcheDataSurvey->getGender() ? $jemarcheDataSurvey->getGenderOther() : $this->translator->trans('common.'.$jemarcheDataSurvey->getGender())) : null;
+
+                    if ($fromAdmin) {
+                        $row['Accepte que ses données soient traitées'] = (int) $jemarcheDataSurvey->getAgreedToTreatPersonalData();
+                    }
+
+                    $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
                 }
-
-                $row['Code postal'] = $allowPersonalData ? $jemarcheDataSurvey->getPostalCode() : null;
-                $row['Tranche d\'age'] = $allowPersonalData && $jemarcheDataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$jemarcheDataSurvey->getAgeRange()) : null;
-                $row['Genre'] = $allowPersonalData && $jemarcheDataSurvey->getGender() ? (GenderEnum::OTHER === $jemarcheDataSurvey->getGender() ? $jemarcheDataSurvey->getGenderOther() : $this->translator->trans('common.'.$jemarcheDataSurvey->getGender())) : null;
-
-                if ($fromAdmin) {
-                    $row['Accepte que ses données soient traitées'] = (int) $jemarcheDataSurvey->getAgreedToTreatPersonalData();
-                }
-
-                $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
 
                 /** @var SurveyQuestion $surveyQuestion */
-                foreach ($this->surveyQuestionRepository->findForSurvey($survey) as $surveyQuestion) {
-                    $questionName = $surveyQuestion->getQuestion()->getContent();
+                foreach ($questions as $surveyQuestion) {
+                    $question = $surveyQuestion->getQuestion();
+                    $questionName = $question->getContent();
                     $row[$questionName] = '';
 
                     $dataAnswer = $surveyQuestion->getDataAnswersFor($surveyQuestion, $dataSurvey);
@@ -94,7 +124,7 @@ class SurveyExporter
                         continue;
                     }
 
-                    if ($surveyQuestion->getQuestion()->isChoiceType()) {
+                    if ($question->isChoiceType()) {
                         $row[$questionName] = implode(', ', $dataAnswer->getSelectedChoices()->map(static function (Choice $choice) {
                             return $choice->getContent();
                         })->toArray());
