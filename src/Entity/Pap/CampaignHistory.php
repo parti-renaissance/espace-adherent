@@ -107,8 +107,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
-     *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $buildingBlock = null;
@@ -123,8 +121,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
-     *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $door = null;
@@ -132,16 +128,12 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
-     *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $firstName = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
      *
      * @Groups({"pap_campaign_history_write"})
      */
@@ -196,18 +188,14 @@ class CampaignHistory implements DataSurveyAwareInterface
     private ?bool $toContact = null;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\Choice(callback={"App\Pap\CampaignHistoryVoterStatusEnum", "toArray"})
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */
     private ?string $voterStatus = null;
 
     /**
-     * @ORM\Column(length=15, nullable=true)
-     *
-     * @Assert\Length(max=15)
+     * @ORM\Column(nullable=true)
      *
      * @Groups({"pap_campaign_history_write"})
      */

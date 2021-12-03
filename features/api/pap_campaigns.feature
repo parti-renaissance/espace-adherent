@@ -448,15 +448,10 @@ Feature:
     """
     {
         "status": "invalid",
-        "building_block": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        "door": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        "first_name": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        "last_name": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         "email_address": "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         "gender": "invalid",
         "age_range": "invalid",
-        "profession": "invalid",
-        "voter_status": "invalid"
+        "profession": "invalid"
     }
     """
     Then the response status code should be 400
@@ -465,27 +460,11 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "status: Le statut n'est pas valide.\nbuilding_block: Vous devez saisir au maximum 255 caractères.\ndoor: Vous devez saisir au maximum 255 caractères.\nfirst_name: Vous devez saisir au maximum 255 caractères.\nlast_name: Vous devez saisir au maximum 255 caractères.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse e-mail est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.\nvoter_status: Cette valeur doit être l'un des choix proposés.",
+        "detail": "status: Le statut n'est pas valide.\nemail_address: Cette valeur n'est pas une adresse email valide.\nemail_address: L'adresse e-mail est trop longue, 255 caractères maximum.\ngender: Ce sexe n'est pas valide.\nage_range: Cette valeur doit être l'un des choix proposés.\nprofession: Cette valeur doit être l'un des choix proposés.",
         "violations": [
             {
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
-            },
-            {
-                "propertyPath": "building_block",
-                "message": "Vous devez saisir au maximum 255 caractères."
-            },
-            {
-                "propertyPath": "door",
-                "message": "Vous devez saisir au maximum 255 caractères."
-            },
-            {
-                "propertyPath": "first_name",
-                "message": "Vous devez saisir au maximum 255 caractères."
-            },
-            {
-                "propertyPath": "last_name",
-                "message": "Vous devez saisir au maximum 255 caractères."
             },
             {
                 "propertyPath": "email_address",
@@ -505,10 +484,6 @@ Feature:
             },
             {
                 "propertyPath": "profession",
-                "message": "Cette valeur doit être l'un des choix proposés."
-            },
-            {
-                "propertyPath": "voter_status",
                 "message": "Cette valeur doit être l'un des choix proposés."
             }
         ]

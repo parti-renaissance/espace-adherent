@@ -12,9 +12,9 @@ final class Version20211203112333 extends AbstractMigration
         $this->addSql('ALTER TABLE
           pap_campaign_history
         ADD
-          voter_status VARCHAR(50) DEFAULT NULL,
+          voter_status VARCHAR(255) DEFAULT NULL,
         ADD
-          voter_postal_code VARCHAR(15) DEFAULT NULL');
+          voter_postal_code VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
