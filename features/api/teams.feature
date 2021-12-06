@@ -232,6 +232,29 @@ Feature:
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
+    [{}]
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://symfony.com/errors/validation",
+        "title": "Validation Failed",
+        "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
+        "violations": [
+            {
+                "propertyPath": "[0].adherent_uuid",
+                "title": "Cette valeur ne doit pas être vide.",
+                "parameters": {
+                    "{{ value }}": "null"
+                },
+                "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+            }
+        ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
     [
       {
         "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
