@@ -30,6 +30,16 @@ class FloorStatistics implements CampaignStatisticsInterface
      */
     private Campaign $campaign;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private array $doors = [];
+
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     */
+    private int $nbSurveys = 0;
+
     public function __construct(Floor $floor, Campaign $campaign, ?string $status = null)
     {
         $this->floor = $floor;
@@ -47,5 +57,25 @@ class FloorStatistics implements CampaignStatisticsInterface
     public function getCampaign(): Campaign
     {
         return $this->campaign;
+    }
+
+    public function getDoors(): array
+    {
+        return $this->doors;
+    }
+
+    public function setDoors(array $doors): void
+    {
+        $this->doors = $doors;
+    }
+
+    public function getNbSurveys(): int
+    {
+        return $this->nbSurveys;
+    }
+
+    public function setNbSurveys(int $nbSurveys): void
+    {
+        $this->nbSurveys = $nbSurveys;
     }
 }

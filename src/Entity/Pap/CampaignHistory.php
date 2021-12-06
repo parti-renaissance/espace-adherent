@@ -216,7 +216,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     private ?\DateTime $finishAt = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="campaignHistory")
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\Valid

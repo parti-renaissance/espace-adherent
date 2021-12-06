@@ -16,8 +16,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="pap_floor")
+ * @ORM\Entity(repositoryClass="App\Repository\Pap\FloorRepository")
+ * @ORM\Table(name="pap_floor", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="floor_unique", columns={"number", "building_block_id"})
+ * })
  *
  * @ApiResource(
  *     attributes={

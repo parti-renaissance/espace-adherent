@@ -5,11 +5,14 @@ namespace App\Repository\Jecoute;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
+use App\Entity\Pap\Building;
+use App\Entity\Pap\CampaignHistory;
 use App\Entity\Phoning\Campaign;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DataSurveyRepository extends ServiceEntityRepository
@@ -90,5 +93,23 @@ class DataSurveyRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
+    }
+
+    public function findNbSurveysForFloor(Building $building, string $buildingBlock, int $floor): int
+    {
+        return (int) $this
+            ->createQueryBuilder('ds')
+            ->select('COUNT(1)')
+            ->leftJoin(CampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.dataSurvey = ds')
+            ->where('campaignHistory.building = :building')
+            ->andWhere('campaignHistory.buildingBlock = :buildingBlock AND campaignHistory.floor = :floor')
+            ->setParameters([
+                'building' => $building,
+                'buildingBlock' => $buildingBlock,
+                'floor' => $floor,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }
