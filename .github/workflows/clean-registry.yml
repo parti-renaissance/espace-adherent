@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: google-github-actions/setup-gcloud@master
+      - uses: google-github-actions/auth@v0.4.1
         with:
-          service_account_key: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
-          project_id: ${{ secrets.GCP_REGISTRY_PROJECT_ID }}
-          export_default_credentials: true
+          credentials_json: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
 
       - run: |
           limitDate=$(date "+%Y-%m-%d %H:%M:%S" -d "$INTERVAL_OLD_IMAGES")
