@@ -2,21 +2,12 @@
   <img src="https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg">
 </div>
 
-
-
-| Build Type | Status |
-| ------ | ------ |
-| Linux | [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master) |
-
-
 Vous souhaitez aider le projet ou simplement parler avec nous? Rejoignez nous sur [Slack](https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw):
 <div align="center">
   <a href="https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw">
     <img src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/2019-01_BrandRefresh_Old-to-New-Final.fr-FR.gif" height=25% width=25% alt="Slack Logo">
   </a>
 </div>
-
-
 
 Powered by : 
 <div>
@@ -25,18 +16,16 @@ Powered by :
   </a>
 </div>
 
-
 Le projet En Marche s'efforce de respecter les meilleures pratiques en matière de développement de logiciels open source:
-| Code Quality | Status |
-| ------ | ------ |
-| CodeQL | ![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg) |
+
+| Type        | Status |
+|-------------| ------ |
+| CI / CD     | [![CI & CD](https://github.com/EnMarche/en-marche.fr/actions/workflows/ci-cd.yml/badge.svg?branch=master)](https://github.com/EnMarche/en-marche.fr/actions/workflows/ci-cd.yml) |
+| CodeQL      | ![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg) |
 | Code Factor | [![CodeFactor](https://www.codefactor.io/repository/github/enmarche/en-marche.fr/badge)](https://www.codefactor.io/repository/github/enmarche/en-marche.fr) |
-| Codacy | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade) |
-
-
+| Codacy      | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade) |
 
 > An English ReadMe is available after the French one.
-
 
 ## Comment puis-je aider ?
 
