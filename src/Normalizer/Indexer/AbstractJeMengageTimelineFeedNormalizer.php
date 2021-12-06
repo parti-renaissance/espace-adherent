@@ -7,8 +7,8 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     final public function normalize($object, $format = null, array $context = [])
     {
         return [
-            'id' => $object->getId(),
-            'type' => $this->getTitle($object),
+            'uuid' => $object->getUuid()->toString(),
+            'title' => $this->getTitle($object),
         ];
     }
 
