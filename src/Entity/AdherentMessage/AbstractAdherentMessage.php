@@ -234,6 +234,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      *
      * @ORM\Column(options={"default": self::SOURCE_PLATFORM})
+     *
+     * @Groups({"message_read", "message_read_list"})
      */
     private $source = self::SOURCE_PLATFORM;
 
