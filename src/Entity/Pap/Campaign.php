@@ -30,6 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "iri": true,
  *             "groups": {"pap_campaign_read"},
  *         },
+ *         "denormalization_context": {
+ *             "groups": {"pap_campaign_write"}
+ *         },
  *         "access_control": "is_granted('ROLE_USER')",
  *     },
  *     itemOperations={
@@ -38,11 +41,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/pap_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *         },
+ *         "put": {
+ *             "path": "/v3/pap_campaigns/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns",
+ *         },
+ *         "post": {
+ *             "path": "/v3/pap_campaigns",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *         },
  *     },
  *     subresourceOperations={
@@ -68,7 +82,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"pap_campaign_read"})
+     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $title;
 
@@ -77,7 +91,7 @@ class Campaign
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"pap_campaign_read"})
+     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $brief;
 
@@ -89,7 +103,7 @@ class Campaign
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
      *
-     * @Groups({"pap_campaign_read"})
+     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $goal;
 
@@ -100,6 +114,8 @@ class Campaign
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
+     *
+     * @Groups({"pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $beginAt;
 
@@ -111,7 +127,7 @@ class Campaign
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
      *
-     * @Groups({"pap_campaign_read"})
+     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $finishAt;
 
@@ -122,6 +138,8 @@ class Campaign
      * @Assert\NotBlank
      *
      * @ApiSubresource
+     *
+     * @Groups({"pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $survey;
 

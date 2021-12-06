@@ -11,6 +11,8 @@ Feature:
       | method  | url                                                         |
       | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9  |
       | GET     | /api/v3/pap_campaigns                                       |
+      | POST    | /api/v3/pap_campaigns                                       |
+      | PUT     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb  |
 
   Scenario Outline: As a JeMarche App user I can not get not active PAP campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
@@ -20,6 +22,17 @@ Feature:
       | method  | url                                                           |
       | GET     | /api/v3/pap_campaigns/932d67d1-2da6-4695-82f6-42afc20f2e41    |
       | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb    |
+
+  Scenario Outline: As a user with no correct rights I can not create or edit PAP campaign
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method  | url                                                                   |
+      # not mine
+      | PUT     | /api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da   |
+      # active
+      | PUT     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9          |
 
   Scenario: As a JeMarche App user I cannot update not my PAP campaign
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -527,5 +540,127 @@ Feature:
     {
         "uuid": "6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da",
         "status": "accept_to_answer"
+    }
+    """
+
+  Scenario: As a logged-in user I can not create a campaign with no data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    """
+    {
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nsurvey: Cette valeur ne doit pas être vide.",
+        "violations": [
+            {
+                "propertyPath": "title",
+                "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "goal",
+                "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "survey",
+                "message": "Cette valeur ne doit pas être vide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can not create a campaign with invalid data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    """
+    {
+        "title": "Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 0,
+        "begin_at": "2022-05-01 00:00:00",
+        "finish_at": "2022-05-31 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "goal: Cette valeur doit être supérieure à \"0\".",
+        "violations": [
+            {
+                "propertyPath": "goal",
+                "message": "Cette valeur doit être supérieure à \"0\"."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can create a campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 200,
+        "begin_at": "2022-05-01 00:00:00",
+        "finish_at": "2022-05-31 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 200,
+        "begin_at": "2022-05-01T00:00:00+02:00",
+        "finish_at": "2022-05-31T00:00:00+02:00",
+        "survey": {
+            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+        },
+        "uuid": "@uuid@"
+    }
+    """
+
+  Scenario: As a logged-in user I can update a campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    """
+    {
+        "title": "NOUVEAU Campagne de 10 jours suivants",
+        "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+        "goal": 1000,
+        "begin_at": "2022-04-01 00:00:00",
+        "finish_at": "2022-04-30 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "title": "NOUVEAU Campagne de 10 jours suivants",
+        "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+        "goal": 1000,
+        "begin_at": "2022-04-01T00:00:00+02:00",
+        "finish_at": "2022-04-30T00:00:00+02:00",
+        "survey": {
+            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+        },
+        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
