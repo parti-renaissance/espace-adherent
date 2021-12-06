@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\CampaignRepository")
  * @ORM\Table(name="pap_campaign")
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @ApiResource(
  *     shortName="PapCampaign",
@@ -68,7 +71,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-class Campaign
+class Campaign implements IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -237,5 +240,15 @@ class Campaign
     public function isFinished(): bool
     {
         return null !== $this->finishAt && $this->finishAt <= new \DateTime();
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isIndexable(): bool
+    {
+        return true;
     }
 }

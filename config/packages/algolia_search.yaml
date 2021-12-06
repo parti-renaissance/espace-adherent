@@ -38,3 +38,7 @@ algolia_search:
 
         -   name: designation_candidate
             class: App\Entity\Algolia\AlgoliaCandidature
+
+        -   name: jemengage_timeline_feed
+            class: App\Entity\Algolia\AlgoliaJeMengageTimelineFeed
+            index_if: isIndexable
