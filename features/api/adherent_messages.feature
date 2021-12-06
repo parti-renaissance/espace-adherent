@@ -58,7 +58,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 101,
+            "total_items": 102,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
@@ -142,3 +142,13 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       # senateur@en-marche-dev.fr has a delegated access from referent@en-marche-dev.fr and should see the same messages
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a DC referent I cannot delete a message already sent
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/adherent_messages/65f6cdbf-0707-4940-86d8-cc1755aab17e?scope=referent"
+    Then the response status code should be 403
+
+  Scenario: As a DC referent I can delete a draft message
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f?scope=referent"
+    Then the response status code should be 204

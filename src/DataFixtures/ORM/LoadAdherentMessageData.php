@@ -21,27 +21,47 @@ use Ramsey\Uuid\Uuid;
 class LoadAdherentMessageData extends Fixture implements DependentFixtureInterface
 {
     public const MESSAGE_01_UUID = '969b1f08-53ec-4a7d-8d6e-7654a001b13f';
+    public const MESSAGE_02_UUID = '65f6cdbf-0707-4940-86d8-cc1755aab17e';
 
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('FR_fr');
 
-        $message = ReferentAdherentMessage::createFromAdherent(
+        // message draft
+        $message1 = ReferentAdherentMessage::createFromAdherent(
             $this->getAuthor(ReferentAdherentMessage::class),
             Uuid::fromString(self::MESSAGE_01_UUID)
         );
 
-        $message->setContent($faker->randomHtml());
-        $message->setSubject($faker->sentence(5));
-        $message->setLabel($faker->sentence(2));
+        $message1->setContent($faker->randomHtml());
+        $message1->setSubject($faker->sentence(5));
+        $message1->setLabel($faker->sentence(2));
 
         if ($filter = $this->getFilter(ReferentAdherentMessage::class)) {
-            $message->setFilter($filter);
+            $message1->setFilter($filter);
         }
-        $message->addMailchimpCampaign(new MailchimpCampaign($message));
-        $message->setFilter(new ReferentUserFilter([$this->getReference('referent_tag_75')]));
+        $message1->addMailchimpCampaign(new MailchimpCampaign($message1));
+        $message1->setFilter(new ReferentUserFilter([$this->getReference('referent_tag_75')]));
 
-        $manager->persist($message);
+        // message sent
+        $message2 = ReferentAdherentMessage::createFromAdherent(
+            $this->getAuthor(ReferentAdherentMessage::class),
+            Uuid::fromString(self::MESSAGE_02_UUID)
+        );
+
+        $message2->setContent($faker->randomHtml());
+        $message2->setSubject($faker->sentence(5));
+        $message2->setLabel($faker->sentence(2));
+
+        if ($filter = $this->getFilter(ReferentAdherentMessage::class)) {
+            $message2->setFilter($filter);
+        }
+        $message2->addMailchimpCampaign(new MailchimpCampaign($message2));
+        $message2->setFilter(new ReferentUserFilter([$this->getReference('referent_tag_75')]));
+        $message2->markAsSent();
+
+        $manager->persist($message1);
+        $manager->persist($message2);
         $manager->flush();
 
         $message = null;
