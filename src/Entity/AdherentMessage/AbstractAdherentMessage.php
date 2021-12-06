@@ -104,7 +104,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "delete": {
  *             "path": "/v3/adherent_messages/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages')) and object.getStatus() == 'draft'"
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
  *         }
  *     }
  * )
