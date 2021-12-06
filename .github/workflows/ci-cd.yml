@@ -2,7 +2,6 @@ name: CI & CD
 
 on:
   push:
-  pull_request:
   release:
     types: [ published ]
 
@@ -349,10 +348,9 @@ jobs:
       GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
 
     steps:
-      - uses: google-github-actions/setup-gcloud@master
+      - uses: google-github-actions/auth@v0.4.1
         with:
-          service_account_key: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
-          project_id: ${{ env.GKE_PROJECT_ID }}
+          credentials_json: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
 
       - run: |-
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION

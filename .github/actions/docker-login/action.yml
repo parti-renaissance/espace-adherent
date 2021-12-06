@@ -4,9 +4,9 @@ description: Authenticate with docker on registry
 runs:
   using: composite
   steps:
-    - uses: google-github-actions/setup-gcloud@master
+    - uses: google-github-actions/auth@v0.4.1
       with:
-        service_account_key: ${{ env.REGISTRY_SERVICE_ACCOUNT_KEY }}
+        credentials_json: ${{ env.REGISTRY_SERVICE_ACCOUNT_KEY }}
 
     - shell: bash
       run: |-
