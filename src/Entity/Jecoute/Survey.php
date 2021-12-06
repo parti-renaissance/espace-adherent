@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,12 +21,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SurveyRepository")
  * @ORM\Table(name="jecoute_survey")
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     SurveyTypeEnum::LOCAL: "LocalSurvey",
  *     SurveyTypeEnum::NATIONAL: "NationalSurvey"
  * })
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @ApiResource(
  *     attributes={
@@ -54,7 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "partial",
  * })
  */
-abstract class Survey
+abstract class Survey implements IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -216,5 +220,15 @@ abstract class Survey
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isIndexable(): bool
+    {
+        return true;
     }
 }
