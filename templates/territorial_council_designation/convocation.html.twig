@@ -138,7 +138,8 @@
 
 {% block final_javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.microCkeditor('edit_designation_description', null, 2000) }}

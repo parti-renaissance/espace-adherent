@@ -5,7 +5,8 @@
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
-    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.ckeditor('message') }}

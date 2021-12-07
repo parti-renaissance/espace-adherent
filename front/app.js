@@ -241,14 +241,8 @@ class App {
         });
     }
 
-    runUserListDefinitions(
-        memberType,
-        type,
-        wrapperSelector,
-        checkboxSelector,
-        mainCheckboxSelector,
-        postApplyCallback
-    ) {
+    runUserListDefinitions(memberType, type, wrapperSelector, checkboxSelector, mainCheckboxSelector,
+        postApplyCallback) {
         System.import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
             module.default(
                 memberType,
@@ -319,6 +313,12 @@ class App {
     runApplicationRequest(formToDisplay) {
         System.import('pages/application_request').catch((error) => { throw error; }).then((module) => {
             module.default(formToDisplay);
+        });
+    }
+
+    createCKEditor(elementSelector, uploadUrl) {
+        System.import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
+            module.default(elementSelector, uploadUrl, { removePlugins: ['MediaEmbed'] });
         });
     }
 
