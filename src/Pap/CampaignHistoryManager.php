@@ -49,7 +49,8 @@ class CampaignHistoryManager
             $buildingBlockStats->setStatus(BuildingStatusEnum::ONGOING);
         }
 
-        if ($floorNumber = $campaignHistory->getFloor()) {
+        $floorNumber = $campaignHistory->getFloor();
+        if (null !== $floorNumber) {
             if (!$floor = $buildingBlock->getFloorByNumber($floorNumber)) {
                 $floor = new Floor($floorNumber, $buildingBlock);
                 $floor->setCreatedByAdherent($createdBy);

@@ -103,7 +103,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                         ],
                         'voter_postal_code' => [
                             'code' => 'voter_postal_code',
-                            'label' => 'Sur quelle commune ?',
+                            'label' => 'Quel est le code postal de la commune de vote ?',
                             'type' => 'text',
                         ],
                     ],

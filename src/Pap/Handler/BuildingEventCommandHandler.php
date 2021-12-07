@@ -98,6 +98,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
             $this->entityManager->persist($stats);
         }
 
+        $stats->setStatus($status);
         $stats->setClosedAt(BuildingStatusEnum::COMPLETED === $status ? $buildingEvent->getCreatedAt() : null);
         $stats->setClosedBy(BuildingStatusEnum::COMPLETED === $status ? $buildingEvent->getAuthor() : null);
     }
