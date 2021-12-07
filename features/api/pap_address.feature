@@ -252,14 +252,14 @@ Feature:
                     "uuid": "@uuid@",
                     "number": 0,
                     "status": "completed",
-                    "doors": [],
+                    "visited_doors": [],
                     "nb_surveys": 0
                 },
                 {
                     "uuid": "@uuid@",
                     "number": 1,
                     "status": "completed",
-                    "doors": [],
+                    "visited_doors": [],
                     "nb_surveys": 0
                 }
             ]
@@ -273,14 +273,14 @@ Feature:
                     "uuid": "@uuid@",
                     "number": 0,
                     "status": "ongoing",
-                    "doors": [],
+                    "visited_doors": [],
                     "nb_surveys": 0
                 },
                 {
                     "uuid": "@uuid@",
                     "number": 1,
                     "status": "ongoing",
-                    "doors": [],
+                    "visited_doors": [],
                     "nb_surveys": 0
                 }
             ]

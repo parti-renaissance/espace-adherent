@@ -12,7 +12,7 @@ final class Version20211206110133 extends AbstractMigration
         $this->addSql('ALTER TABLE
           pap_floor_statistics
         ADD
-          doors LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\',
+          visited_doors LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\',
         ADD
           nb_surveys SMALLINT UNSIGNED DEFAULT 0 NOT NULL');
         $this->addSql('CREATE UNIQUE INDEX building_block_unique ON pap_building_block (name, building_id)');
@@ -21,7 +21,7 @@ final class Version20211206110133 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE pap_floor_statistics DROP doors, DROP nb_surveys');
+        $this->addSql('ALTER TABLE pap_floor_statistics DROP visited_doors, DROP nb_surveys');
         $this->addSql('DROP INDEX building_block_unique ON pap_building_block');
         $this->addSql('DROP INDEX floor_unique ON pap_floor');
     }

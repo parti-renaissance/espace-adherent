@@ -46,7 +46,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             self::HISTORY_1_UUID
         ));
         $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign1);
-        $stats->setDoors(['01']);
+        $stats->setVisitedDoors(['01']);
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign2,
@@ -58,7 +58,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             $adherent12
         ));
         $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(3)->findStatisticsForCampaign($campaign1);
-        $stats->setDoors(['33']);
+        $stats->setVisitedDoors(['33']);
 
         $manager->flush();
     }

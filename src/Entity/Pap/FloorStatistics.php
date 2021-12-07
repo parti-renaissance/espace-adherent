@@ -33,7 +33,7 @@ class FloorStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private array $doors = [];
+    private array $visitedDoors = [];
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
@@ -59,14 +59,14 @@ class FloorStatistics implements CampaignStatisticsInterface
         return $this->campaign;
     }
 
-    public function getDoors(): array
+    public function getVisitedDoors(): array
     {
-        return $this->doors;
+        return $this->visitedDoors;
     }
 
-    public function setDoors(array $doors): void
+    public function setVisitedDoors(array $visitedDoors): void
     {
-        $this->doors = $doors;
+        $this->visitedDoors = $visitedDoors;
     }
 
     public function getNbSurveys(): int

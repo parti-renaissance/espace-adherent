@@ -55,7 +55,7 @@ class UpdateFloorStatsCommandHandler implements MessageHandlerInterface
             $campaignHistory->getBuildingBlock(),
             $campaignHistory->getFloor()
         ));
-        $stats->setDoors($this->campaignHistoryRepository->findDoorsForFloor(
+        $stats->setVisitedDoors($this->campaignHistoryRepository->findDoorsForFloor(
             $campaignHistory->getBuilding(),
             $campaignHistory->getBuildingBlock(),
             $campaignHistory->getFloor()
