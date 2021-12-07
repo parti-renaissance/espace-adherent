@@ -35,19 +35,22 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
         $data = $this->normalizer->normalize($object, $format, $context);
 
         $campaign = null;
+        $campaignUuid = $this->requestStack->getMasterRequest()->query->get('campaign_uuid');
         if (!empty($context['campaign'])) {
             $campaign = $context['campaign'];
         } else {
-            if ($campaignUuid = $this->requestStack->getMasterRequest()->query->get('campaign_uuid')) {
+            if ($campaignUuid) {
                 $campaign = $this->campaignRepository->findOneByUuid($campaignUuid);
             }
         }
 
         /** @var FloorStatistics $stats */
-        if ($campaign && $stats = $object->findStatisticsForCampaign($campaign)) {
-            $data['visited_doors'] = $stats->getVisitedDoors();
-            $data['nb_surveys'] = $stats->getNbSurveys();
-            $data['status'] = $stats->getStatus();
+        if ($campaign && $campaignUuid && $stats = $object->findStatisticsForCampaign($campaign)) {
+            $data['campaign_statistics'] = [
+                'visited_doors' => $stats->getVisitedDoors(),
+                'nb_surveys' => $stats->getNbSurveys(),
+                'status' => $stats->getStatus(),
+            ];
         }
 
         return $data;

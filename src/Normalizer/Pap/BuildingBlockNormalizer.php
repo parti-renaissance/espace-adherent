@@ -40,8 +40,10 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if ($campaign && $stats = $object->findStatisticsForCampaign($campaign)) {
-            $data['status'] = $stats->getStatus();
+        if ($campaign && $campaignUuid && $stats = $object->findStatisticsForCampaign($campaign)) {
+            $data['campaign_statistics'] = [
+                'status' => $stats->getStatus(),
+            ];
         }
 
         return $data;

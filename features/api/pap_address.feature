@@ -246,42 +246,54 @@ Feature:
         {
             "uuid": "@uuid@",
             "name": "A",
-            "status": "completed",
+            "campaign_statistics": {
+                "status": "completed"
+            },
             "floors": [
                 {
                     "uuid": "@uuid@",
                     "number": 0,
-                    "status": "completed",
-                    "visited_doors": [],
-                    "nb_surveys": 0
+                    "campaign_statistics": {
+                        "status": "completed",
+                        "visited_doors": [],
+                        "nb_surveys": 0
+                    }
                 },
                 {
                     "uuid": "@uuid@",
                     "number": 1,
-                    "status": "completed",
-                    "visited_doors": [],
-                    "nb_surveys": 0
+                    "campaign_statistics": {
+                        "status": "completed",
+                        "visited_doors": [],
+                        "nb_surveys": 0
+                    }
                 }
             ]
         },
         {
             "uuid": "@uuid@",
             "name": "B",
-            "status": "ongoing",
+            "campaign_statistics": {
+                "status": "ongoing"
+            },
             "floors": [
                 {
                     "uuid": "@uuid@",
                     "number": 0,
-                    "status": "ongoing",
-                    "visited_doors": [],
-                    "nb_surveys": 0
+                    "campaign_statistics": {
+                        "status": "ongoing",
+                        "visited_doors": [],
+                        "nb_surveys": 0
+                    }
                 },
                 {
                     "uuid": "@uuid@",
                     "number": 1,
-                    "status": "ongoing",
-                    "visited_doors": [],
-                    "nb_surveys": 0
+                    "campaign_statistics": {
+                        "status": "ongoing",
+                        "visited_doors": [],
+                        "nb_surveys": 0
+                    }
                 }
             ]
         }
