@@ -322,6 +322,8 @@ jobs:
           hash: ${{ env.HASH }}
           tag: master
 
+      - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.yaml
+
       - run: |-
           docker build --cache-from=$REGISTRY:master --tag $REGISTRY:$TAG-$HASH .
 
