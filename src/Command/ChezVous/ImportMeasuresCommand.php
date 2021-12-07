@@ -547,7 +547,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
     {
         $inseeCode = $metadata['insee_code'];
         $nombreProjets = $metadata[FranceRelance::KEY_NOMBRE_PROJETS];
-        $example = $metadata[FranceRelance::KEY_EXAMPLE];
+        $exemple = $metadata[FranceRelance::KEY_EXEMPLE];
 
         if (empty($inseeCode)) {
             return;
@@ -571,10 +571,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if (0 === \strlen($example)) {
+        if (0 === \strlen($exemple)) {
             $this->io->text(sprintf(
                 'Key "%s" is required (insee_code: "%s"). Skipping.',
-                FranceRelance::KEY_EXAMPLE,
+                FranceRelance::KEY_EXEMPLE,
                 $inseeCode
             ));
 
@@ -582,12 +582,12 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if ($measure = $this->findMeasure($city, $measureType)) {
-            $measure->setPayload(FranceRelance::createPayload($nombreProjets, $example));
+            $measure->setPayload(FranceRelance::createPayload($nombreProjets, $exemple));
 
             return;
         }
 
-        $this->em->persist(FranceRelance::create($city, $measureType, $nombreProjets, $example));
+        $this->em->persist(FranceRelance::create($city, $measureType, $nombreProjets, $exemple));
     }
 
     private function loadMeasureDevoirsFaits(MeasureType $measureType, array $metadata): void
