@@ -30,7 +30,7 @@ class FloorNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[static::ALREADY_CALLED.'_'.\get_class($object)] = true;
+        $context[static::ALREADY_CALLED] = true;
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
@@ -46,7 +46,7 @@ class FloorNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         /** @var FloorStatistics $stats */
         $stats = $object->findStatisticsForCampaign($campaign);
-        $data['doors'] = $stats->getDoors();
+        $data['visited_doors'] = $stats->getVisitedDoors();
         $data['nb_surveys'] = $stats->getNbSurveys();
         $data['status'] = $stats->getStatus();
 
@@ -55,8 +55,6 @@ class FloorNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return $data instanceof Floor
-            && !isset($context[static::ALREADY_CALLED.'_'.\get_class($data)])
-        ;
+        return $data instanceof Floor && !isset($context[static::ALREADY_CALLED]);
     }
 }

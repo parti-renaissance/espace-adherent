@@ -29,7 +29,7 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[static::ALREADY_CALLED.'_'.\get_class($object)] = true;
+        $context[static::ALREADY_CALLED] = true;
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
@@ -50,7 +50,6 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return $data instanceof BuildingBlock
-            && !isset($context[static::ALREADY_CALLED.'_'.\get_class($data)]);
+        return $data instanceof BuildingBlock && !isset($context[static::ALREADY_CALLED]);
     }
 }
