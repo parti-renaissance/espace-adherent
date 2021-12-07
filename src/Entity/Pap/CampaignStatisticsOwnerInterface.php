@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface CampaignStatisticsOwnerInterface
 {
+    public function getId(): ?int;
+
     public function getStatistics(): Collection;
 
     public function addStatistic(CampaignStatisticsInterface $statistic): void;

@@ -2,15 +2,9 @@
 
 namespace App\Pap\Handler;
 
-use App\Entity\Pap\Building;
-use App\Entity\Pap\BuildingBlock;
-use App\Entity\Pap\BuildingBlockStatistics;
 use App\Entity\Pap\BuildingEvent;
-use App\Entity\Pap\BuildingStatistics;
 use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\CampaignStatisticsOwnerInterface;
-use App\Entity\Pap\Floor;
-use App\Entity\Pap\FloorStatistics;
 use App\Pap\BuildingEventActionEnum;
 use App\Pap\BuildingEventTypeEnum;
 use App\Pap\BuildingStatusEnum;
@@ -68,34 +62,21 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
                     throw new \InvalidArgumentException(sprintf('Type %s is not supported for creation a building statistics', $type));
             }
 
-            $this->createStatistics($objectWithStats, $buildingEvent);
+            $this->updateStatisticsCloseInfo($objectWithStats, $buildingEvent);
         }
 
         $this->entityManager->flush();
     }
 
-    private function createStatistics(CampaignStatisticsOwnerInterface $object, BuildingEvent $buildingEvent): void
-    {
+    private function updateStatisticsCloseInfo(
+        CampaignStatisticsOwnerInterface $object,
+        BuildingEvent $buildingEvent
+    ): void {
         $status = BuildingEventActionEnum::CLOSE === $buildingEvent->getAction() ? BuildingStatusEnum::COMPLETED : BuildingStatusEnum::ONGOING;
         $campaign = $buildingEvent->getCampaign();
         /** @var CampaignStatisticsInterface $stats */
         if (!$stats = $object->findStatisticsForCampaign($campaign)) {
-            switch (\get_class($object)) {
-                case Building::class:
-                    $stats = new BuildingStatistics($object, $campaign, $status);
-
-                    break;
-                case BuildingBlock::class:
-                    $stats = new BuildingBlockStatistics($object, $campaign, $status);
-
-                    break;
-                case Floor::class:
-                    $stats = new FloorStatistics($object, $campaign, $status);
-
-                    break;
-            }
-
-            $this->entityManager->persist($stats);
+            throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', \get_class($object), $object->getId(), $campaign->getId()));
         }
 
         $stats->setStatus($status);

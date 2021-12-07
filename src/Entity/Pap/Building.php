@@ -95,12 +95,25 @@ class Building implements CampaignStatisticsOwnerInterface
         $this->address = $address;
     }
 
+    /**
+     * @return BuildingBlock[]|Collection
+     */
+    public function getBuildingBlocks(): Collection
+    {
+        return $this->buildingBlocks;
+    }
+
     public function addBuildingBlock(BuildingBlock $buildingBlock): void
     {
         if (!$this->buildingBlocks->contains($buildingBlock)) {
             $buildingBlock->setBuilding($this);
             $this->buildingBlocks->add($buildingBlock);
         }
+    }
+
+    public function removeBuildingBlock(BuildingBlock $buildingBlock): void
+    {
+        $this->buildingBlocks->removeElement($buildingBlock);
     }
 
     public function getBuildingBlockByName(string $name): ?BuildingBlock

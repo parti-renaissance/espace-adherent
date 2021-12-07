@@ -17,7 +17,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="pap_building_block")
+ * @ORM\Table(name="pap_building_block", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="building_block_unique", columns={"name", "building_id"})
+ * })
  *
  * @ApiResource(
  *     attributes={

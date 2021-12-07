@@ -28,6 +28,9 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $adherent3 = $this->getReference('adherent-3');
         $adherent12 = $this->getReference('adherent-12');
 
+        $nationalSurvey1 = $this->getReference('national-survey-1');
+
+        /** @var Building $building3 */
         $building3 = $this->getReference('building-3');
 
         $manager->persist($this->createPapCampaignHistory(
@@ -42,6 +45,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             new \DateTime('-5 minutes'),
             self::HISTORY_1_UUID
         ));
+        $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign1);
+        $stats->setVisitedDoors(['01']);
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign2,
@@ -52,6 +57,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '33',
             $adherent12
         ));
+        $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(3)->findStatisticsForCampaign($campaign1);
+        $stats->setVisitedDoors(['33']);
 
         $manager->flush();
     }

@@ -5,11 +5,14 @@ namespace App\Repository\Jecoute;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
+use App\Entity\Pap\Building;
+use App\Entity\Pap\CampaignHistory;
 use App\Entity\Phoning\Campaign;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DataSurveyRepository extends ServiceEntityRepository
@@ -90,5 +93,32 @@ class DataSurveyRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
+    }
+
+    public function countSurveysForBuilding(Building $building, string $buildingBlock = null, int $floor = null): int
+    {
+        $conditions = '';
+        $params = [
+            'building' => $building,
+        ];
+        if ($buildingBlock) {
+            $conditions = ' AND campaignHistory.buildingBlock = :buildingBlock';
+            $params += ['buildingBlock' => $buildingBlock];
+        }
+
+        if ($floor) {
+            $conditions .= ' AND campaignHistory.floor = :floor';
+            $params += ['floor' => $floor];
+        }
+
+        return (int) $this
+            ->createQueryBuilder('ds')
+            ->select('COUNT(1)')
+            ->leftJoin(CampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.dataSurvey = ds')
+            ->where(sprintf('campaignHistory.building = :building %s', $conditions))
+            ->setParameters($params)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }

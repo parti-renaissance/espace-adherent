@@ -4,10 +4,8 @@ namespace Tests\App\Pap;
 
 use App\DataFixtures\ORM\LoadPapCampaignHistoryData;
 use App\Entity\Pap\BuildingBlock;
-use App\Entity\Pap\BuildingStatistics;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\Pap\Floor;
-use App\Pap\BuildingStatusEnum;
 use App\Pap\CampaignHistoryManager;
 use App\Repository\Pap\CampaignHistoryRepository;
 use Doctrine\Persistence\ObjectRepository;
@@ -54,7 +52,6 @@ class CampaignHistoryManagerTest extends AbstractKernelTestCase
         $campaignHistory = clone $this->campaignHistoryRepository->findOneBy(['uuid' => LoadPapCampaignHistoryData::HISTORY_1_UUID]);
         $campaignHistory->setBuildingBlock($buildingBlockName);
         $campaignHistory->setFloor($floorNumber);
-        $campaign = $campaignHistory->getCampaign();
 
         $this->campaignHistoryManager->createBuildingParts($campaignHistory);
 
@@ -63,20 +60,8 @@ class CampaignHistoryManagerTest extends AbstractKernelTestCase
         $building = $campaignHistory->getBuilding();
         $this->assertSame(++$nbBb, $this->countBuildingBlocks());
         $this->assertSame(++$nbFloors, $this->countFloors());
-
-        /** @var BuildingStatistics $buildingStats */
-        $this->assertNotNull($buildingStats = $building->findStatisticsForCampaign($campaign));
-        $this->assertSame(BuildingStatusEnum::ONGOING, $buildingStats->getStatus());
-        $this->assertSame($campaignHistory->getUpdatedAt()->format('Y-m-d H:i:s'), $buildingStats->getLastPassage()->format('Y-m-d H:i:s'));
-        $this->assertSame($campaignHistory->getQuestioner(), $buildingStats->getLastPassageDoneBy());
-
         $this->assertNotNull($buildingBlock = $building->getBuildingBlockByName($buildingBlockName));
-        $this->assertNotNull($buildingBlockStats = $buildingBlock->findStatisticsForCampaign($campaign));
-        $this->assertSame(BuildingStatusEnum::ONGOING, $buildingBlockStats->getStatus());
-
         $this->assertNotNull($floor = $buildingBlock->getFloorByNumber($floorNumber));
-        $this->assertNotNull($floorStats = $floor->findStatisticsForCampaign($campaign));
-        $this->assertSame(BuildingStatusEnum::ONGOING, $floorStats->getStatus());
     }
 
     private function countFloors(): int

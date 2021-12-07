@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Normalizer;
+namespace App\Normalizer\Pap;
 
-use App\Entity\Pap\BuildingBlock;
 use App\Entity\Pap\Floor;
+use App\Entity\Pap\FloorStatistics;
 use App\Repository\Pap\CampaignRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    protected const ALREADY_CALLED = 'BUILDING_STATUS_NORMALIZER_ALREADY_CALLED';
+    protected const ALREADY_CALLED = 'FLOOR_NORMALIZER_ALREADY_CALLED';
 
     private RequestStack $requestStack;
     private CampaignRepository $campaignRepository;
@@ -26,32 +26,38 @@ class BuildingStatusNormalizer implements NormalizerInterface, NormalizerAwareIn
     }
 
     /**
-     * @param Floor|BuildingBlock $object
+     * @param Floor $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[static::ALREADY_CALLED.'_'.\get_class($object)] = true;
+        $context[static::ALREADY_CALLED] = true;
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
+        $campaign = null;
         $campaignUuid = $this->requestStack->getMasterRequest()->query->get('campaign_uuid');
-        if (!$campaignUuid) {
-            return $data;
+        if (!empty($context['campaign'])) {
+            $campaign = $context['campaign'];
+        } else {
+            if ($campaignUuid) {
+                $campaign = $this->campaignRepository->findOneByUuid($campaignUuid);
+            }
         }
 
-        $campaign = $this->campaignRepository->findOneByUuid($campaignUuid);
-        if (!$campaign) {
-            return $data;
+        /** @var FloorStatistics $stats */
+        if ($campaign && $campaignUuid && $stats = $object->findStatisticsForCampaign($campaign)) {
+            $data['campaign_statistics'] = [
+                'visited_doors' => $stats->getVisitedDoors(),
+                'nb_surveys' => $stats->getNbSurveys(),
+                'status' => $stats->getStatus(),
+            ];
         }
-
-        $data['status'] = $object->findStatisticsForCampaign($campaign)->getStatus();
 
         return $data;
     }
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return ($data instanceof Floor || $data instanceof BuildingBlock)
-            && !isset($context[static::ALREADY_CALLED.'_'.\get_class($data)]);
+        return $data instanceof Floor && !isset($context[static::ALREADY_CALLED]);
     }
 }
