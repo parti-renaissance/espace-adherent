@@ -60,6 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
+ *     "campaign.uuid": "exact",
  *     "campaign.title": "partial",
  *     "status": "exact",
  * })
