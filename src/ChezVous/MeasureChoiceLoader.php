@@ -2,14 +2,20 @@
 
 namespace App\ChezVous;
 
+use App\ChezVous\Measure\Apprentissage;
 use App\ChezVous\Measure\BaisseNombreChomeurs;
 use App\ChezVous\Measure\ChequeEnergie;
 use App\ChezVous\Measure\ConversionSurfaceAgricoleBio;
 use App\ChezVous\Measure\CouvertureFibre;
 use App\ChezVous\Measure\CreationEntreprise;
 use App\ChezVous\Measure\DedoublementClasses;
+use App\ChezVous\Measure\DevoirsFaits;
 use App\ChezVous\Measure\EmploisFrancs;
+use App\ChezVous\Measure\EntreprisesAideesCovid;
+use App\ChezVous\Measure\FranceRelance;
+use App\ChezVous\Measure\MaisonDeSante;
 use App\ChezVous\Measure\MaisonServiceAccueilPublic;
+use App\ChezVous\Measure\MaPrimeRenov;
 use App\ChezVous\Measure\MissionBern;
 use App\ChezVous\Measure\PassCulture;
 use App\ChezVous\Measure\PrimeConversionAutomobile;
@@ -42,6 +48,12 @@ class MeasureChoiceLoader
         ConversionSurfaceAgricoleBio::class,
         QuartierReconqueteRepublicaine::class,
         MissionBern::class,
+        FranceRelance::class,
+        DevoirsFaits::class,
+        MaisonDeSante::class,
+        MaPrimeRenov::class,
+        Apprentissage::class,
+        EntreprisesAideesCovid::class,
     ];
 
     public static function getTypeKeysMap(): array

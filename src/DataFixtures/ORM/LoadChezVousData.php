@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\ChezVous\Marker\MaisonServiceAccueilPublic;
 use App\ChezVous\Measure\BaisseNombreChomeurs;
+use App\ChezVous\Measure\FranceRelance;
 use App\ChezVous\Measure\MaisonServiceAccueilPublic as MaisonServiceAccueilPublicMeasure;
 use App\ChezVous\Measure\QuartierReconqueteRepublicaine;
 use App\Entity\ChezVous\City;
@@ -140,6 +141,13 @@ class LoadChezVousData extends Fixture implements DependentFixtureInterface
                     'payload' => [
                         BaisseNombreChomeurs::KEY_BAISSE_VILLE => 300,
                         BaisseNombreChomeurs::KEY_BAISSE_DEPARTEMENT => 4000,
+                    ],
+                ],
+                [
+                    'type' => FranceRelance::TYPE,
+                    'payload' => [
+                        FranceRelance::KEY_NOMBRE_PROJETS => 123,
+                        FranceRelance::KEY_EXEMPLE => 'L\'État soutient par exemple John Doe.',
                     ],
                 ],
             ],

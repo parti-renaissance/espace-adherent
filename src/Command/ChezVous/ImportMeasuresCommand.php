@@ -2,13 +2,19 @@
 
 namespace App\Command\ChezVous;
 
+use App\ChezVous\Measure\Apprentissage;
 use App\ChezVous\Measure\BaisseNombreChomeurs;
 use App\ChezVous\Measure\ChequeEnergie;
 use App\ChezVous\Measure\ConversionSurfaceAgricoleBio;
 use App\ChezVous\Measure\CouvertureFibre;
 use App\ChezVous\Measure\CreationEntreprise;
+use App\ChezVous\Measure\DevoirsFaits;
 use App\ChezVous\Measure\EmploisFrancs;
+use App\ChezVous\Measure\EntreprisesAideesCovid;
+use App\ChezVous\Measure\FranceRelance;
+use App\ChezVous\Measure\MaisonDeSante;
 use App\ChezVous\Measure\MaisonServiceAccueilPublic;
+use App\ChezVous\Measure\MaPrimeRenov;
 use App\ChezVous\Measure\PassCulture;
 use App\ChezVous\Measure\PrimeConversionAutomobile;
 use App\ChezVous\Measure\QuartierReconqueteRepublicaine;
@@ -170,6 +176,30 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 break;
             case SuppressionTaxeHabitation::getType():
                 $this->loadMeasureSuppressionTaxeHabitation($measureType, $metadata);
+
+                break;
+            case FranceRelance::getType():
+                $this->loadMeasureFranceRelance($measureType, $metadata);
+
+                break;
+            case DevoirsFaits::getType():
+                $this->loadMeasureDevoirsFaits($measureType, $metadata);
+
+                break;
+            case MaisonDeSante::getType():
+                $this->loadMeasureMaisonDeSante($measureType, $metadata);
+
+                break;
+            case MaPrimeRenov::getType():
+                $this->loadMeasureMaPrimeRenov($measureType, $metadata);
+
+                break;
+            case Apprentissage::getType():
+                $this->loadMeasureApprentissage($measureType, $metadata);
+
+                break;
+            case EntreprisesAideesCovid::getType():
+                $this->loadMeasureEntreprisesAideesCovid($measureType, $metadata);
 
                 break;
         }
@@ -511,6 +541,266 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         $this->em->persist(SuppressionTaxeHabitation::create($city, $measureType, $nombreFoyers, $baisse2018, $baisse2019, $baisseTotal));
+    }
+
+    private function loadMeasureFranceRelance(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $nombreProjets = $metadata[FranceRelance::KEY_NOMBRE_PROJETS];
+        $exemple = $metadata[FranceRelance::KEY_EXEMPLE];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($nombreProjets) || !is_numeric($nombreProjets)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                FranceRelance::KEY_NOMBRE_PROJETS,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if (0 === \strlen($exemple)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required (insee_code: "%s"). Skipping.',
+                FranceRelance::KEY_EXEMPLE,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(FranceRelance::createPayload($nombreProjets, $exemple));
+
+            return;
+        }
+
+        $this->em->persist(FranceRelance::create($city, $measureType, $nombreProjets, $exemple));
+    }
+
+    private function loadMeasureDevoirsFaits(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $proportionEleves = $metadata[DevoirsFaits::KEY_PROPORTION_ELEVES];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($proportionEleves)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required (insee_code: "%s"). Skipping.',
+                DevoirsFaits::KEY_PROPORTION_ELEVES,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(DevoirsFaits::createPayload($proportionEleves));
+
+            return;
+        }
+
+        $this->em->persist(DevoirsFaits::create($city, $measureType, $proportionEleves));
+    }
+
+    private function loadMeasureMaisonDeSante(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $nombreMaisons = $metadata[MaisonDeSante::KEY_NOMBRE_MAISONS];
+        $pourcentageProgression = $metadata[MaisonDeSante::KEY_POURCENTAGE_PROGRESSION];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($nombreMaisons) || !is_numeric($nombreMaisons)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                MaisonDeSante::KEY_NOMBRE_MAISONS,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if (0 === \strlen($pourcentageProgression) || !is_numeric($pourcentageProgression)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                MaisonDeSante::KEY_POURCENTAGE_PROGRESSION,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(MaisonDeSante::createPayload($nombreMaisons, $pourcentageProgression));
+
+            return;
+        }
+
+        $this->em->persist(MaisonDeSante::create($city, $measureType, $nombreMaisons, $pourcentageProgression));
+    }
+
+    private function loadMeasureMaPrimeRenov(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $nombreFoyers = $metadata[MaPrimeRenov::KEY_NOMBRE_FOYERS];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($nombreFoyers) || !is_numeric($nombreFoyers)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                MaPrimeRenov::KEY_NOMBRE_FOYERS,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(MaPrimeRenov::createPayload($nombreFoyers));
+
+            return;
+        }
+
+        $this->em->persist(MaPrimeRenov::create($city, $measureType, $nombreFoyers));
+    }
+
+    private function loadMeasureApprentissage(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $nombreJeunes = $metadata[Apprentissage::KEY_NOMBRE_JEUNES];
+        $pourcentageProgression = $metadata[Apprentissage::KEY_POURCENTAGE_PROGRESSION];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($nombreJeunes) || !is_numeric($nombreJeunes)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                Apprentissage::KEY_NOMBRE_JEUNES,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if (0 === \strlen($pourcentageProgression) || !is_numeric($pourcentageProgression)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                Apprentissage::KEY_POURCENTAGE_PROGRESSION,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(Apprentissage::createPayload($nombreJeunes, $pourcentageProgression));
+
+            return;
+        }
+
+        $this->em->persist(Apprentissage::create($city, $measureType, $nombreJeunes, $pourcentageProgression));
+    }
+
+    private function loadMeasureEntreprisesAideesCovid(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $nombreEntreprises = $metadata[EntreprisesAideesCovid::KEY_NOMBRE_ENTREPRISES];
+        $pourcentageSalaries = $metadata[EntreprisesAideesCovid::KEY_POURCENTAGE_SALARIES];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($nombreEntreprises) || !is_numeric($nombreEntreprises)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                EntreprisesAideesCovid::KEY_NOMBRE_ENTREPRISES,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if (0 === \strlen($pourcentageSalaries) || !is_numeric($pourcentageSalaries)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                EntreprisesAideesCovid::KEY_POURCENTAGE_SALARIES,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(EntreprisesAideesCovid::createPayload($nombreEntreprises, $pourcentageSalaries));
+
+            return;
+        }
+
+        $this->em->persist(EntreprisesAideesCovid::create($city, $measureType, $nombreEntreprises, $pourcentageSalaries));
     }
 
     private function loadMeasureWithEmptyPayload(string $measureClass, MeasureType $type, array $metadata): void
