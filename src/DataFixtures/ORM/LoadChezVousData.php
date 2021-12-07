@@ -147,7 +147,7 @@ class LoadChezVousData extends Fixture implements DependentFixtureInterface
                     'type' => FranceRelance::TYPE,
                     'payload' => [
                         FranceRelance::KEY_NOMBRE_PROJETS => 123,
-                        FranceRelance::KEY_EXAMPLE => 'L\'État soutient par exemple John Doe.',
+                        FranceRelance::KEY_EXEMPLE => 'L\'État soutient par exemple John Doe.',
                     ],
                 ],
             ],
