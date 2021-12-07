@@ -19,6 +19,7 @@ Feature:
       | PUT    | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager                                  |
       | DELETE | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager |
 
+    @debug
   Scenario: As a logged-in user with phoning team manager right I can get teams
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/teams?scope=phoning_national_manager"

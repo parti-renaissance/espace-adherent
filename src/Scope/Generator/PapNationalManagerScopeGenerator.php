@@ -17,7 +17,7 @@ class PapNationalManagerScopeGenerator extends AbstractScopeGenerator
         return $adherent->hasPapNationalManagerRole();
     }
 
-    protected function getZones(Adherent $adherent): array
+    public function getZones(Adherent $adherent): array
     {
         return [];
     }

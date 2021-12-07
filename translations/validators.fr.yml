@@ -530,6 +530,8 @@ team.name.min_length: Le nom de l'équipe doit faire au moins {{ limit }} caract
 team.name.max_length: Le nom de l'équipe ne doit pas dépasser {{ limit }} caractères.
 team.type.not_blank: Veuillez spécifier un type d'équipe.
 team.type.choice: Le type d'équipe n'est pas valide.
+team.visibility.not_blank: Veuillez spécifier une visibilité.
+team.visibility.choice: Veuillez spécifier une visibilité valide ("national" ou "local").
 
 #
 # Phoning

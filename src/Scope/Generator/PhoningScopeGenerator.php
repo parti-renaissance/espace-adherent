@@ -17,7 +17,7 @@ class PhoningScopeGenerator extends AbstractScopeGenerator
         return $adherent->isPhoningCampaignTeamMember();
     }
 
-    protected function getZones(Adherent $adherent): array
+    public function getZones(Adherent $adherent): array
     {
         return [];
     }
