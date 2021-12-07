@@ -4,7 +4,8 @@
     {% if transition is constant('App\\TonMacron\\InvitationProcessor::TRANSITION_SEND') %}
         {% import 'javascript.js.twig' as js %}
 
-        <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
         <script type="text/javascript">
             {{ js.ckeditor('ton_macron_invitation_messageContent', 500) }}
         </script>

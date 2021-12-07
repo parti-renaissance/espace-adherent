@@ -104,7 +104,8 @@
     <script src="{{ asset('js/simplemde.min.js') }}"></script>
     <script src="{{ asset('bundles/sonatacore/vendor/moment/min/moment-with-locales.min.js') }}"></script>
     <script src="{{ asset('bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script>
      $(function() {
          $('.content-editor').each(function(key, item) {
@@ -325,7 +326,7 @@
              CKEDITOR.replace(item, {
                  title: false,
                  removePlugins: 'elementspath',
-                 extraPlugins: 'youtube',
+                 extraPlugins: 'confighelper,youtube',
                  extraAllowedContent: 'iframe[*]',
                  height: {{ height|default(200) }},
                  resize_enabled: false,
