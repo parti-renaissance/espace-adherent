@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Normalizer;
+namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Voter;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
