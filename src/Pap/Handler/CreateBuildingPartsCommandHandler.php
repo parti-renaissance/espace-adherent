@@ -34,6 +34,11 @@ class CreateBuildingPartsCommandHandler implements MessageHandlerInterface
         }
 
         $this->campaignHistoryManager->createBuildingParts($campaignHistory);
-        $this->bus->dispatch(new UpdateStatsCommand($campaignHistory->getUuid()));
+        $this->bus->dispatch(
+            new UpdateStatsCommand(
+                $campaignHistory->getBuilding()->getId(),
+                $campaignHistory->getCampaign()->getId()
+            )
+        );
     }
 }

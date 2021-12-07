@@ -3,6 +3,7 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\Building;
+use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -19,7 +20,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
 
     public function findDoorsForFloor(Building $building, string $buildingBlock, int $floor): array
     {
-        return array_filter(array_column(
+        return array_unique(array_column(
             $this
                 ->createQueryBuilder('campaignHistory')
                 ->select('campaignHistory.door')
@@ -33,6 +34,34 @@ class CampaignHistoryRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getArrayResult(),
             'door'))
+        ;
+    }
+
+    public function countDoorsForBuilding(Building $building): int
+    {
+        return (int) $this
+            ->createQueryBuilder('campaignHistory')
+            ->select('COUNT(DISTINCT CONCAT(campaignHistory.floor, \'-\', campaignHistory.door))')
+            ->where('campaignHistory.building = :building')
+            ->setParameter('building', $building)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function findLastFor(Building $building, Campaign $campaign): ?CampaignHistory
+    {
+        return $this
+            ->createQueryBuilder('campaignHistory')
+            ->where('campaignHistory.building = :building AND campaignHistory.campaign = :campaign')
+            ->setParameters([
+                'building' => $building,
+                'campaign' => $campaign,
+            ])
+            ->orderBy('campaignHistory.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

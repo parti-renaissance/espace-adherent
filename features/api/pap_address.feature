@@ -63,7 +63,7 @@ Feature:
                         "first_name": "Adherent 33",
                         "last_name": "Fa33ke"
                     },
-                    "nb_doors": 0,
+                    "nb_visited_doors": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -89,7 +89,7 @@ Feature:
                     "status": "todo",
                     "last_passage": null,
                     "last_passage_done_by": null,
-                    "nb_doors": 0,
+                    "nb_visited_doors": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -115,7 +115,7 @@ Feature:
                     "status": "todo",
                     "last_passage": null,
                     "last_passage_done_by": null,
-                    "nb_doors": 0,
+                    "nb_visited_doors": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -141,7 +141,7 @@ Feature:
                     "status": "todo",
                     "last_passage": null,
                     "last_passage_done_by": null,
-                    "nb_doors": 0,
+                    "nb_visited_doors": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }

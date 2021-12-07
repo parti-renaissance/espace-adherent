@@ -66,7 +66,7 @@ class BuildingStatistics implements CampaignStatisticsInterface
      *
      * @Groups({"pap_address_list"})
      */
-    private int $nbDoors = 0;
+    private int $nbVisitedDoors = 0;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
@@ -134,14 +134,14 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->nbVoters = $nbVoters;
     }
 
-    public function getNbDoors(): int
+    public function getNbVisitedDoors(): int
     {
-        return $this->nbDoors;
+        return $this->nbVisitedDoors;
     }
 
-    public function setNbDoors(int $nbDoors): void
+    public function setNbVisitedDoors(int $nbVisitedDoors): void
     {
-        $this->nbDoors = $nbDoors;
+        $this->nbVisitedDoors = $nbVisitedDoors;
     }
 
     public function getNbSurveys(): int

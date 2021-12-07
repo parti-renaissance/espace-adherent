@@ -95,19 +95,28 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 
-    public function findNbSurveysForFloor(Building $building, string $buildingBlock, int $floor): int
+    public function countSurveysForBuilding(Building $building, string $buildingBlock = null, int $floor = null): int
     {
+        $conditions = '';
+        $params = [
+            'building' => $building,
+        ];
+        if ($buildingBlock) {
+            $conditions = ' AND campaignHistory.buildingBlock = :buildingBlock';
+            $params += ['buildingBlock' => $buildingBlock];
+        }
+
+        if ($floor) {
+            $conditions .= ' AND campaignHistory.floor = :floor';
+            $params += ['floor' => $floor];
+        }
+
         return (int) $this
             ->createQueryBuilder('ds')
             ->select('COUNT(1)')
             ->leftJoin(CampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.dataSurvey = ds')
-            ->where('campaignHistory.building = :building')
-            ->andWhere('campaignHistory.buildingBlock = :buildingBlock AND campaignHistory.floor = :floor')
-            ->setParameters([
-                'building' => $building,
-                'buildingBlock' => $buildingBlock,
-                'floor' => $floor,
-            ])
+            ->where(sprintf('campaignHistory.building = :building %s', $conditions))
+            ->setParameters($params)
             ->getQuery()
             ->getSingleScalarResult()
         ;

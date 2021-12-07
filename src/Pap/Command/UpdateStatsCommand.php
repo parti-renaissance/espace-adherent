@@ -3,19 +3,25 @@
 namespace App\Pap\Command;
 
 use App\Messenger\Message\AsynchronousMessageInterface;
-use Ramsey\Uuid\UuidInterface;
 
 class UpdateStatsCommand implements AsynchronousMessageInterface
 {
-    private UuidInterface $campaignHistoryUuid;
+    private int $buildingId;
+    private int $campaignId;
 
-    public function __construct(UuidInterface $campaignHistoryUuid)
+    public function __construct(int $buildingId, int $campaignId)
     {
-        $this->campaignHistoryUuid = $campaignHistoryUuid;
+        $this->buildingId = $buildingId;
+        $this->campaignId = $campaignId;
     }
 
-    public function getCampaignHistoryUuid(): UuidInterface
+    public function getBuildingId(): int
     {
-        return $this->campaignHistoryUuid;
+        return $this->buildingId;
+    }
+
+    public function getCampaignId(): int
+    {
+        return $this->campaignId;
     }
 }
