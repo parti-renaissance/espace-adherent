@@ -974,12 +974,16 @@ Feature:
           "caller": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "gender": "male",
+            "age":@integer@
           },
           "adherent": {
             "uuid": "@uuid@",
             "first_name": "Adherent 39",
-            "last_name": "Fa39ke"
+            "last_name": "Fa39ke",
+            "gender": "male",
+            "age":@integer@
           },
           "campaign": {
             "title": "Campagne pour les hommes",
@@ -1002,12 +1006,16 @@ Feature:
           "caller": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "gender": "male",
+            "age":@integer@
           },
           "adherent": {
             "uuid": "@uuid@",
             "first_name": "Adrien",
-            "last_name": "Petit"
+            "last_name": "Petit",
+            "gender": "male",
+            "age":@integer@
           },
           "campaign": {
             "title": "Campagne pour les hommes",
@@ -1036,9 +1044,9 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by campaign
+  Scenario Outline: As a DC referent I can get the list of phoning campaign histories filtered by campaign title or uuid
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes"
+    When I send a "GET" request to "<url>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1055,12 +1063,16 @@ Feature:
            "caller": {
              "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
              "first_name": "Jacques",
-             "last_name": "Picard"
+             "last_name": "Picard",
+             "gender": "male",
+             "age":@integer@
            },
            "adherent": {
              "uuid": "@uuid@",
              "first_name": "Adherent 39",
-             "last_name": "Fa39ke"
+             "last_name": "Fa39ke",
+             "gender": "male",
+             "age":@integer@
            },
            "campaign": {
              "title": "Campagne pour les hommes",
@@ -1083,12 +1095,16 @@ Feature:
            "caller": {
              "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
              "first_name": "Jacques",
-             "last_name": "Picard"
+             "last_name": "Picard",
+             "gender": "male",
+             "age":@integer@
            },
            "adherent": {
              "uuid": "@uuid@",
              "first_name": "Adrien",
-             "last_name": "Petit"
+             "last_name": "Petit",
+             "gender": "male",
+             "age":@integer@
            },
            "campaign": {
              "title": "Campagne pour les hommes",
@@ -1116,6 +1132,10 @@ Feature:
        ]
      }
      """
+    Examples:
+      | url                                                                                                                  |
+      | /api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes      |
+      | /api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.uuid=4ebb184c-24d9-4aeb-bb36-afe44f294387 |
 
   Scenario: As a DC referent I can get the list of phoning campaign histories filtered by caller
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -1136,12 +1156,16 @@ Feature:
          "caller": {
            "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
            "first_name": "Pierre",
-           "last_name": "Kiroule"
+           "last_name": "Kiroule",
+           "gender": "male",
+           "age":@integer@
          },
          "adherent": {
            "uuid": "@uuid@",
            "first_name": "Adherent 35",
-           "last_name": "Fa35ke"
+           "last_name": "Fa35ke",
+           "gender": "male",
+           "age":@integer@
          },
          "campaign": {
            "title": "Campagne pour les hommes",
@@ -1170,12 +1194,16 @@ Feature:
          "caller": {
            "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
            "first_name": "Pierre",
-           "last_name": "Kiroule"
+           "last_name": "Kiroule",
+           "gender": "male",
+           "age":@integer@
          },
          "adherent": {
            "uuid": "@uuid@",
            "first_name": "Adherent 41",
-           "last_name": "Fa41ke"
+           "last_name": "Fa41ke",
+           "gender": "male",
+           "age":@integer@
          },
          "campaign": {
            "title": "Campagne pour les hommes",
@@ -1217,12 +1245,16 @@ Feature:
           "caller": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "gender": "male",
+            "age":@integer@
           },
           "adherent": {
             "uuid": "@uuid@",
             "first_name": "Adrien",
-            "last_name": "Petit"
+            "last_name": "Petit",
+            "gender": "male",
+            "age":@integer@
           },
           "campaign": {
             "title": "Campagne pour les hommes",
@@ -1270,12 +1302,16 @@ Feature:
           "caller": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "gender": "male",
+            "age":@integer@
           },
           "adherent": {
             "uuid": "@uuid@",
             "first_name": "Adrien",
-            "last_name": "Petit"
+            "last_name": "Petit",
+            "gender": "male",
+            "age":@integer@
           },
           "campaign": {
             "title": "Campagne pour les hommes",
@@ -1304,12 +1340,16 @@ Feature:
           "caller": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "gender": "male",
+            "age":@integer@
           },
           "adherent": {
             "uuid": "@uuid@",
             "first_name": "Étienne",
-            "last_name": "Petit"
+            "last_name": "Petit",
+            "gender": "male",
+            "age":@integer@
           },
           "campaign": {
             "title": "Campagne pour les femmes",
@@ -1357,12 +1397,16 @@ Feature:
           "caller": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "gender": "male",
+            "age":@integer@
           },
           "adherent": {
             "uuid": "@uuid@",
             "first_name": "Guillaume",
-            "last_name": "Richard"
+            "last_name": "Richard",
+            "gender": "male",
+            "age":@integer@
           },
           "campaign": {
             "title": "Campagne pour les hommes",
