@@ -79,6 +79,11 @@ class Address
     private ?string $cityName;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $dptCode;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $offsetX;
@@ -142,6 +147,7 @@ class Address
         string $inseeCode = null,
         array $postalCodes = null,
         string $cityName = null,
+        string $dptCode = null,
         int $offsetX = null,
         int $offsetY = null,
         float $latitude = null,
@@ -153,6 +159,7 @@ class Address
         $this->inseeCode = $inseeCode;
         $this->postalCodes = $postalCodes;
         $this->cityName = $cityName;
+        $this->dptCode = $dptCode;
         $this->offsetX = $offsetX;
         $this->offsetY = $offsetY;
         $this->latitude = $latitude;
@@ -198,6 +205,16 @@ class Address
     public function setCityName(?string $cityName): void
     {
         $this->cityName = $cityName;
+    }
+
+    public function getDptCode(): ?string
+    {
+        return $this->dptCode;
+    }
+
+    public function setDptCode(?string $dptCode): void
+    {
+        $this->dptCode = $dptCode;
     }
 
     public function getOffsetX(): ?int

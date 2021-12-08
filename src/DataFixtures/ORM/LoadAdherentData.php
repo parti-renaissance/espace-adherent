@@ -437,6 +437,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]);
         $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
+        $this->addReference('adherent-16', $adherent16);
 
         $adherent17 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_17_UUID,
