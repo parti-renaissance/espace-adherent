@@ -7,6 +7,7 @@ use App\Repository\TransactionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class MaxFiscalYearDonationValidator extends ConstraintValidator
 {
@@ -29,7 +30,7 @@ class MaxFiscalYearDonationValidator extends ConstraintValidator
 
         /** @var DonationRequest $donationRequest */
         if (!($donationRequest = $this->context->getObject()) instanceof DonationRequest) {
-            throw new UnexpectedTypeException($value, DonationRequest::class);
+            throw new UnexpectedValueException($value, DonationRequest::class);
         }
 
         if (!$email = $donationRequest->getEmailAddress()) {

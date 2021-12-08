@@ -34,9 +34,9 @@ use App\Exception\AdherentTokenException;
 use App\Geocoder\GeoPointInterface;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Contact\MailchimpCleanableContactInterface;
-use App\Membership\ActivityPositions;
-use App\Membership\MembershipInterface;
-use App\Membership\MembershipRequest;
+use App\Membership\ActivityPositionsEnum;
+use App\Membership\MembershipRequest\MembershipInterface;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
@@ -836,7 +836,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?string $gender,
         string $firstName,
         string $lastName,
-        ?\DateTime $birthDate,
+        ?\DateTimeInterface $birthDate,
         ?string $position,
         PostAddress $postAddress,
         PhoneNumber $phone = null,
@@ -1229,8 +1229,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setPosition(string $position): void
     {
-        if (!ActivityPositions::exists($position)) {
-            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositions::ALL)));
+        if (!ActivityPositionsEnum::exists($position)) {
+            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositionsEnum::ALL)));
         }
 
         $this->position = $position;
@@ -1421,7 +1421,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
+    public function updateMembership(PlatformMembershipRequest $membership, PostAddress $postAddress): void
     {
         $this->customGender = $membership->customGender;
         $this->gender = $membership->gender;
@@ -2224,6 +2224,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getNationality(): ?string
     {
         return $this->nationality;
+    }
+
+    public function setNationality(?string $nationality)
+    {
+        $this->nationality = $nationality;
     }
 
     /**

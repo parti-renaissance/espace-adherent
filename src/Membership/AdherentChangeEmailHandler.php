@@ -6,6 +6,8 @@ use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentChangeEmailMessage;
+use App\Membership\Event\UserEmailEvent;
+use App\Membership\Event\UserEvent;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

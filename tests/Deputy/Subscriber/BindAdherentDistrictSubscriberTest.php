@@ -10,9 +10,9 @@ use App\Entity\GeoData;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
-use App\Membership\ActivityPositions;
-use App\Membership\AdherentAccountWasCreatedEvent;
-use App\Membership\AdherentProfileWasUpdatedEvent;
+use App\Membership\ActivityPositionsEnum;
+use App\Membership\Event\AdherentAccountWasCreatedEvent;
+use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -79,7 +79,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
             'John',
             'Smith',
             new \DateTime('1990-12-12'),
-            ActivityPositions::EMPLOYED,
+            ActivityPositionsEnum::EMPLOYED,
             PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
         );
     }

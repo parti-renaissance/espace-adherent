@@ -5,7 +5,7 @@ namespace App\Entity\ThematicCommunity;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\PostAddress;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -226,8 +226,8 @@ class Contact
 
     public function setPosition(string $position): void
     {
-        if (!ActivityPositions::exists($position)) {
-            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositions::ALL)));
+        if (!ActivityPositionsEnum::exists($position)) {
+            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositionsEnum::ALL)));
         }
 
         $this->position = $position;

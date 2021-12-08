@@ -2,7 +2,6 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\Membership\MembershipRegistrationPermissions;
 use App\Membership\MembershipRegistrationProcess;
 use App\Security\Voter\MembershipRegistrationVoter;
 use PHPUnit\Framework\TestCase;
@@ -36,8 +35,8 @@ class MembershipRegistrationVoterTest extends TestCase
 
     public function voterProvider(): iterable
     {
-        yield [true, [MembershipRegistrationPermissions::REGISTRATION_IN_PROGRESS], VoterInterface::ACCESS_GRANTED];
-        yield [false, [MembershipRegistrationPermissions::REGISTRATION_IN_PROGRESS], VoterInterface::ACCESS_DENIED];
+        yield [true, [MembershipRegistrationVoter::REGISTRATION_IN_PROGRESS], VoterInterface::ACCESS_GRANTED];
+        yield [false, [MembershipRegistrationVoter::REGISTRATION_IN_PROGRESS], VoterInterface::ACCESS_DENIED];
         yield [false, ['FOO_BAR'], VoterInterface::ACCESS_ABSTAIN];
     }
 

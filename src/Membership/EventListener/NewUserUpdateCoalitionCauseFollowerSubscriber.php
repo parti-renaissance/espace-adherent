@@ -3,7 +3,7 @@
 namespace App\Membership\EventListener;
 
 use App\Entity\Coalition\CauseFollower;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\Coalition\CauseFollowerRepository;
 use Doctrine\ORM\EntityManagerInterface;

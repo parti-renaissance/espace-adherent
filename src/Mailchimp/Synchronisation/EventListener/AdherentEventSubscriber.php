@@ -15,7 +15,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\CoalitionMemberChangeCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveCoalitionMemberCommand;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\TerritorialCouncil\Event\MembershipEvent;
 use App\TerritorialCouncil\Events as TerritorialCouncilEvents;

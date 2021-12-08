@@ -3,7 +3,7 @@
 namespace App\Validator;
 
 use App\Entity\Adherent;
-use App\Membership\MembershipInterface;
+use App\Membership\MembershipRequest\MembershipInterface;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use App\Repository\AdherentRepository;
 use Ramsey\Uuid\UuidInterface;
@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UniqueMembershipValidator extends ConstraintValidator
 {
@@ -39,7 +40,7 @@ class UniqueMembershipValidator extends ConstraintValidator
         } elseif (\is_string($member)) {
             $email = $member;
         } else {
-            throw new UnexpectedTypeException($member, MembershipInterface::class);
+            throw new UnexpectedValueException($member, MembershipInterface::class);
         }
 
         // Chosen email address is not already taken by someone else

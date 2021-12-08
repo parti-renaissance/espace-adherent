@@ -3,8 +3,8 @@
 namespace App\Deputy\Subscriber;
 
 use App\Entity\District;
-use App\Membership\AdherentEvent;
 use App\Membership\AdherentEvents;
+use App\Membership\Event\AdherentEvent;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Adherent;
-use App\Membership\MembershipRequestHandler;
+use App\Membership\MembershipNotifier;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -15,18 +15,18 @@ class RemindUnconfirmedMembershipCommand extends Command
 {
     protected static $defaultName = 'app:membership:remind-unconfirmed';
 
-    private $membershipRequestHandler;
     private $adherentRepository;
     private $em;
+    private $membershipNotifier;
 
     public function __construct(
-        MembershipRequestHandler $membershipRequestHandler,
+        MembershipNotifier $membershipNotifier,
         AdherentRepository $adherentRepository,
         ObjectManager $em
     ) {
         parent::__construct();
 
-        $this->membershipRequestHandler = $membershipRequestHandler;
+        $this->membershipNotifier = $membershipNotifier;
         $this->adherentRepository = $adherentRepository;
         $this->em = $em;
     }
@@ -45,7 +45,7 @@ class RemindUnconfirmedMembershipCommand extends Command
 
         while ($adherents = $this->findUnconfirmed($from, 100)) {
             foreach ($adherents as $adherent) {
-                if ($this->membershipRequestHandler->sendEmailValidation($adherent, true)) {
+                if ($this->membershipNotifier->sendEmailValidation($adherent, true)) {
                     $adherent->setRemindSent(true);
                 }
             }

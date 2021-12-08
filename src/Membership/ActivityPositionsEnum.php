@@ -2,7 +2,7 @@
 
 namespace App\Membership;
 
-final class ActivityPositions
+final class ActivityPositionsEnum
 {
     public const STUDENT = 'student';
     public const RETIRED = 'retired';

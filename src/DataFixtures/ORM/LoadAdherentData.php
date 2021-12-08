@@ -27,7 +27,7 @@ use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
 use App\Entity\SenatorialCandidateManagedArea;
 use App\Jecoute\GenderEnum;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -172,7 +172,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33727363643',
             'registered_at' => '2017-01-18 13:15:28',
         ]);
-        $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
+        $adherent4->setPosition(ActivityPositionsEnum::UNEMPLOYED);
         $adherent4->setInterests(['jeunesse']);
         $adherent4->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent4->removeSubscriptionTypeByCode(SubscriptionTypeEnum::DEPUTY_EMAIL);
@@ -432,7 +432,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
-        $adherent16->setPosition(ActivityPositions::EMPLOYED);
+        $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
 
         $adherent17 = $this->adherentFactory->createFromArray([
@@ -449,7 +449,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
-        $adherent17->setPosition(ActivityPositions::EMPLOYED);
+        $adherent17->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-lille', $adherent17);
 
@@ -467,7 +467,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
-        $adherent18->setPosition(ActivityPositions::EMPLOYED);
+        $adherent18->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-roubaix', $adherent18);
 

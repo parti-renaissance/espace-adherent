@@ -5,7 +5,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;
 use App\Event\CommitteeEventEvent;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use Behat\Behat\Context\Context;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;

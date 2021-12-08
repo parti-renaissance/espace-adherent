@@ -4,7 +4,7 @@ namespace App\SmsCampaign\Handler;
 
 use App\Entity\Adherent;
 use App\Entity\SmsCampaign\SmsStopHistory;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\SmsCampaign\Command\CatchOvhSmsWebhookCallCommand;
 use App\Subscription\SubscriptionTypeEnum;

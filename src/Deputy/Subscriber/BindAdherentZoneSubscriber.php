@@ -3,8 +3,8 @@
 namespace App\Deputy\Subscriber;
 
 use App\Entity\Geo\Zone;
-use App\Membership\AdherentEvent;
 use App\Membership\AdherentEvents;
+use App\Membership\Event\AdherentEvent;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

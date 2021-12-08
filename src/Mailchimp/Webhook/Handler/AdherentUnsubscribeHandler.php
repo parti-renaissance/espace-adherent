@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Webhook\Handler;
 
 use App\Mailchimp\Webhook\EventTypeEnum;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Subscription\SubscriptionHandler;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Membership;
+namespace App\Adherent\Unregistration;
 
 use App\Entity\Unregistration;
 

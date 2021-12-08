@@ -10,7 +10,7 @@ use App\Form\AdherentResetPasswordType;
 use App\Form\LoginType;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Membership\MembershipRequestHandler;
+use App\Membership\MembershipNotifier;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -158,7 +158,7 @@ class SecurityController extends AbstractController
      * @Route("/renvoyer-validation", name="adherent_resend_validation", methods={"GET"})
      */
     public function resendValidationEmailAction(
-        MembershipRequestHandler $membershipRequestHandler,
+        MembershipNotifier $membershipNotifier,
         AuthenticationUtils $authenticationUtils,
         AdherentRepository $adherentRepository
     ): Response {
@@ -166,7 +166,7 @@ class SecurityController extends AbstractController
         $adherent = $adherentRepository->loadUserByUsername($authenticationUtils->getLastUsername());
 
         if ($adherent && !$adherent->isEnabled() && !$adherent->getActivatedAt()) {
-            $membershipRequestHandler->sendEmailValidation($adherent);
+            $membershipNotifier->sendEmailValidation($adherent);
             $this->addFlash('success', 'Un email de validation a bien été envoyé.');
         }
 

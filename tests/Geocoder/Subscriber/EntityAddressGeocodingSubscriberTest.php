@@ -9,9 +9,9 @@ use App\Entity\PostAddress;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
-use App\Membership\ActivityPositions;
-use App\Membership\AdherentAccountWasCreatedEvent;
-use App\Membership\AdherentProfileWasUpdatedEvent;
+use App\Membership\ActivityPositionsEnum;
+use App\Membership\Event\AdherentAccountWasCreatedEvent;
+use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
@@ -140,7 +140,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             'John',
             'Smith',
             new \DateTime('1990-12-12'),
-            ActivityPositions::STUDENT,
+            ActivityPositionsEnum::STUDENT,
             PostAddress::createFrenchAddress($address, '92110-92024')
         );
     }

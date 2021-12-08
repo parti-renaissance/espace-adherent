@@ -8,7 +8,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentRepository;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator;
@@ -71,7 +71,7 @@ class UniqueTerritorialCouncilMemberValidatorTest extends ConstraintValidatorTes
             'Pierre',
             'SL',
             new \DateTime('1990-01-01'),
-            ActivityPositions::EMPLOYED,
+            ActivityPositionsEnum::EMPLOYED,
             PostAddress::createFrenchAddress('92-98 Boulevard Victor Hugo', '92110-92024')
         );
 

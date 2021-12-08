@@ -40,8 +40,8 @@ use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Intl\UnitedNationsBundle;
 use App\Mailchimp\Contact\ContactStatusEnum;
-use App\Membership\Mandates;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
+use App\Membership\MandatesEnum;
 use App\Membership\UserEvents;
 use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
@@ -342,7 +342,7 @@ class AdherentAdmin extends AbstractAdmin
                     ])
                     ->add('mandates', ChoiceType::class, [
                         'label' => 'adherent.mandate.admin.label',
-                        'choices' => Mandates::CHOICES,
+                        'choices' => MandatesEnum::CHOICES,
                         'required' => false,
                         'multiple' => true,
                     ])
@@ -736,7 +736,7 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'Mandat(s) (legacy)',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => Mandates::CHOICES,
+                    'choices' => MandatesEnum::CHOICES,
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {

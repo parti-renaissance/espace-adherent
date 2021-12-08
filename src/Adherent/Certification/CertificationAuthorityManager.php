@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\CertificationRequest;
 use App\Entity\Reporting\AdherentCertificationHistory;
-use App\Membership\AdherentEvent;
+use App\Membership\Event\AdherentEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

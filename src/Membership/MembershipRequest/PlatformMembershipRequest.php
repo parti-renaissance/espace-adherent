@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Membership;
+namespace App\Membership\MembershipRequest;
 
 use App\Address\Address;
 use App\Entity\Adherent;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @AssertUniqueMembership(groups={"Registration", "Update"})
  * @AssertCustomGender(groups={"Registration", "Update"})
  */
-class MembershipRequest implements MembershipInterface
+class PlatformMembershipRequest extends AbstractMembershipRequest
 {
     /**
      * @var string|null
@@ -48,7 +48,7 @@ class MembershipRequest implements MembershipInterface
      *     groups={"Registration", "Update"}
      * )
      */
-    public $firstName;
+    public ?string $firstName = null;
 
     /**
      * @var string
@@ -75,7 +75,7 @@ class MembershipRequest implements MembershipInterface
      * @var string|null
      *
      * @Assert\Choice(
-     *     callback={"App\Membership\ActivityPositions", "all"},
+     *     callback={"App\Membership\ActivityPositionsEnum", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
      *     groups={"Update"}
@@ -106,10 +106,6 @@ class MembershipRequest implements MembershipInterface
      */
     public $nationality;
 
-    private $allowEmailNotifications = false;
-
-    private $allowMobileNotifications = false;
-
     /**
      * @var string|null
      *
@@ -119,14 +115,12 @@ class MembershipRequest implements MembershipInterface
     public $recaptcha;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
      * @BannedAdherent(groups={"Registration"})
      */
-    private $emailAddress;
+    protected string $emailAddress = '';
 
     /**
      * @var PhoneNumber|null
@@ -151,9 +145,7 @@ class MembershipRequest implements MembershipInterface
     /**
      * @var array
      *
-     * @Assert\Choice(
-     *     callback={"App\Membership\Mandates", "all"}
-     * )
+     * @Assert\Choice(callback={"App\Membership\MandatesEnum", "all"})
      */
     private $mandates;
 
@@ -162,14 +154,20 @@ class MembershipRequest implements MembershipInterface
      */
     private $certified = false;
 
-    public function __construct()
+    private bool $asUser;
+
+    public function __construct(bool $asUser = false)
     {
+        $this->asUser = $asUser;
         $this->address = new Address();
     }
 
-    public static function createWithCaptcha(?string $countryIso, string $recaptchaAnswer = null): self
-    {
-        $dto = new self();
+    public static function createWithCaptcha(
+        ?string $countryIso,
+        string $recaptchaAnswer = null,
+        bool $asUser = false
+    ): self {
+        $dto = new self($asUser);
         $dto->recaptcha = $recaptchaAnswer;
 
         if ($countryIso) {
@@ -259,26 +257,6 @@ class MembershipRequest implements MembershipInterface
         return $this->birthdate;
     }
 
-    public function getAllowEmailNotifications(): bool
-    {
-        return $this->allowEmailNotifications;
-    }
-
-    public function setAllowEmailNotifications(bool $allowEmailNotifications): void
-    {
-        $this->allowEmailNotifications = $allowEmailNotifications;
-    }
-
-    public function getAllowMobileNotifications(): bool
-    {
-        return $this->allowMobileNotifications;
-    }
-
-    public function setAllowMobileNotifications(bool $allowMobileNotifications): void
-    {
-        $this->allowMobileNotifications = $allowMobileNotifications;
-    }
-
     public function isElected(): bool
     {
         return $this->elected;
@@ -297,5 +275,15 @@ class MembershipRequest implements MembershipInterface
     public function setMandates(?array $mandates): void
     {
         $this->mandates = $mandates;
+    }
+
+    final public function getSource(): ?string
+    {
+        return null;
+    }
+
+    public function isAsUser(): bool
+    {
+        return $this->asUser;
     }
 }

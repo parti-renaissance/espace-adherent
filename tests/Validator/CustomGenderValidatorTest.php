@@ -3,7 +3,7 @@
 namespace Tests\App\Validator;
 
 use App\Jecoute\GenderEnum;
-use App\Membership\MembershipRequest;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Validator\CustomGender;
 use App\Validator\CustomGenderValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -15,7 +15,7 @@ class CustomGenderValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidation(string $gender, ?string $customGender = null, int $violation = 0): void
     {
-        $member = new MembershipRequest();
+        $member = new PlatformMembershipRequest();
         $member->gender = $gender;
         $member->customGender = $customGender;
 

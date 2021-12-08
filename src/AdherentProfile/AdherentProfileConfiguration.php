@@ -5,7 +5,7 @@ namespace App\AdherentProfile;
 use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use App\Entity\SubscriptionType;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Repository\SubscriptionTypeRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -45,7 +45,7 @@ class AdherentProfileConfiguration
                     'code' => $code,
                     'label' => $this->translator->trans($label),
                 ];
-            }, array_keys(ActivityPositions::CHOICES), ActivityPositions::CHOICES),
+            }, array_keys(ActivityPositionsEnum::CHOICES), ActivityPositionsEnum::CHOICES),
             'jobs' => JobEnum::JOBS,
             'activity_area' => ActivityAreaEnum::ACTIVITIES,
         ];

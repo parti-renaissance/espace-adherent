@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Membership\UnregistrationSerializer;
+use App\Adherent\Unregistration\UnregistrationSerializer;
 use App\Repository\UnregistrationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

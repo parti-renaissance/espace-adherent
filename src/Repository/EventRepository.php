@@ -209,19 +209,6 @@ class EventRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function findEventsByOrganizer(Adherent $organizer): array
-    {
-        $query = $this
-            ->createQueryBuilder('e')
-            ->andWhere('e.organizer = :organizer')
-            ->setParameter('organizer', $organizer)
-            ->orderBy('e.createdAt', 'DESC')
-            ->getQuery()
-        ;
-
-        return $query->getResult();
-    }
-
     public function findEventsByOrganizerPaginator(
         Adherent $organizer,
         int $page = 1,

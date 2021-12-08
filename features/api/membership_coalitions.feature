@@ -13,7 +13,8 @@ Feature:
       "zone": "e3f19d3c-906e-11eb-a875-0242ac150002",
       "source": "coalitions",
       "coalition_subscription": false,
-      "cause_subscription": true
+      "cause_subscription": true,
+      "cgu_accepted": true
     }
     """
     Then the response status code should be 201

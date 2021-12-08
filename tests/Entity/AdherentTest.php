@@ -11,7 +11,7 @@ use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Geocoder\Coordinates;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +44,7 @@ class AdherentTest extends TestCase
         $this->assertSame('92110-92024', $adherent->getCity());
         $this->assertSame('92024', $adherent->getInseeCode());
         $this->assertEquals(new \DateTime('1990-12-12'), $adherent->getBirthdate());
-        $this->assertSame(ActivityPositions::STUDENT, $adherent->getPosition());
+        $this->assertSame(ActivityPositionsEnum::STUDENT, $adherent->getPosition());
         $this->assertNull($adherent->getLatitude());
         $this->assertNull($adherent->getLongitude());
     }
@@ -189,7 +189,7 @@ class AdherentTest extends TestCase
             $firstName,
             $lastName,
             new \DateTime('1990-12-12'),
-            ActivityPositions::STUDENT,
+            ActivityPositionsEnum::STUDENT,
             PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone
         );

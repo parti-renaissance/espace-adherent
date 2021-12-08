@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Listener;
 
 use App\Adherent\Certification\Events;
-use App\Membership\AdherentEvent;
+use App\Membership\Event\AdherentEvent;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\VotersListManager;

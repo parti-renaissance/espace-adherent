@@ -7,6 +7,7 @@ use App\Intl\FranceCitiesBundle;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class AddressValidator extends ConstraintValidator
 {
@@ -21,7 +22,7 @@ class AddressValidator extends ConstraintValidator
         }
 
         if (!$address instanceof AddressInterface) {
-            throw new UnexpectedTypeException($address, AddressInterface::class);
+            throw new UnexpectedValueException($address, AddressInterface::class);
         }
 
         if ('fr' !== strtolower($address->getCountry())) {

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Membership;
+namespace App\Membership\Event;
 
 use App\Entity\Adherent;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class UserEvent extends Event implements UserEventInterface
+class UserEvent extends Event
 {
-    private $user;
-    private $allowEmailNotifications;
-    private $allowMobileNotifications;
+    private Adherent $user;
+    private ?bool $allowEmailNotifications;
+    private ?bool $allowMobileNotifications;
 
     public function __construct(
         Adherent $adherent,

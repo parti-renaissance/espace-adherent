@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +13,7 @@ class ActivityPositionType extends AbstractType
     {
         $resolver->setDefaults([
             'translation_domain' => 'messages',
-            'choices' => ActivityPositions::CHOICES,
+            'choices' => ActivityPositionsEnum::CHOICES,
         ]);
     }
 

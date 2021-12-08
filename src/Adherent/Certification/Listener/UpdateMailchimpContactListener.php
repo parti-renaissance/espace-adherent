@@ -4,7 +4,7 @@ namespace App\Adherent\Certification\Listener;
 
 use App\Adherent\Certification\Events;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
-use App\Membership\AdherentEvent;
+use App\Membership\Event\AdherentEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
