@@ -24,6 +24,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
@@ -74,6 +75,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
  *     EventTypeEnum::TYPE_MUNICIPAL: "MunicipalEvent",
  * })
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @DateRange(
  *     startDateField="beginAt",
@@ -187,7 +190,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "beginAt": "start",
  * })
  */
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, JeMengageTimelineFeedIndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -801,5 +804,15 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function setElectoral(bool $electoral): void
     {
         $this->electoral = $electoral;
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isTimelineFeedIndexable(): bool
+    {
+        return $this->isActive() && $this->isPublished();
     }
 }

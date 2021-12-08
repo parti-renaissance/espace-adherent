@@ -3,10 +3,19 @@
 namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
-use App\Entity\IndexableEntityInterface;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\InstitutionalEvent;
+use App\Entity\Event\MunicipalEvent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
-use App\Entity\Pap\Campaign;
+use App\Entity\Jecoute\News;
+use App\Entity\Jecoute\Riposte;
+use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
+use App\Entity\Pap\Campaign as PapCampaign;
+use App\Entity\Phoning\Campaign as PhoningCampaign;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\Uuid;
@@ -17,7 +26,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @internal
  */
-class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntityInterface
+class AlgoliaJeMengageTimelineFeed extends Aggregator implements JeMengageTimelineFeedIndexableEntityInterface
 {
     /**
      * @var UuidInterface|null
@@ -41,7 +50,16 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
         return [
             LocalSurvey::class,
             NationalSurvey::class,
-            Campaign::class,
+            PapCampaign::class,
+            PhoningCampaign::class,
+            News::class,
+            Riposte::class,
+            CommitteeEvent::class,
+            CauseEvent::class,
+            CoalitionEvent::class,
+            MunicipalEvent::class,
+            InstitutionalEvent::class,
+            DefaultEvent::class,
         ];
     }
 
@@ -50,12 +68,12 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
         return [];
     }
 
-    public function isIndexable(): bool
+    public function isTimelineFeedIndexable(): bool
     {
-        if (!$this->entity instanceof IndexableEntityInterface) {
-            throw new \LogicException(sprintf('Algolia Sub Entity "%s" should implement "%s"', \get_class($this->entity), IndexableEntityInterface::class));
+        if (!$this->entity instanceof JeMengageTimelineFeedIndexableEntityInterface) {
+            throw new \LogicException(sprintf('Algolia Sub Entity "%s" should implement "%s"', \get_class($this->entity), JeMengageTimelineFeedIndexableEntityInterface::class));
         }
 
-        return $this->entity->isIndexable();
+        return $this->entity->isTimelineFeedIndexable();
     }
 }

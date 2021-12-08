@@ -29,9 +29,9 @@ services:
     App\Recaptcha\RecaptchaApiClient:
         class: 'Tests\App\Test\Recaptcha\DummyRecaptchaApiClient'
 
-    Tests\App\Test\Algolia\DummySearchService:
-        decorates: 'search.service'
-        arguments: ['@Tests\App\Test\Algolia\DummySearchService.inner']
+#    Tests\App\Test\Algolia\DummySearchService:
+#        decorates: 'search.service'
+#        arguments: ['@Tests\App\Test\Algolia\DummySearchService.inner']
 
     App\OpenGraph\OpenGraphFetcher:
         class: 'Tests\App\Test\OpenGraph\DummyOpenGraphFetcher'

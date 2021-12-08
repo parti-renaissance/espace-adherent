@@ -13,6 +13,7 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Jecoute\Survey;
+use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
 use App\Entity\Team\Team;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="phoning_campaign", uniqueConstraints={
  *     @ORM\UniqueConstraint(columns={"uuid"})
  * })
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @ApiResource(
  *     shortName="PhoningCampaign",
@@ -112,7 +115,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, JeMengageTimelineFeedIndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -273,7 +276,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         $this->goal = $goal;
     }
 
-    public function getFinishAt(): ?\DateTime
+    public function getFinishAt(): ?\DateTimeInterface
     {
         return $this->finishAt;
     }
@@ -434,5 +437,15 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     public function setParticipantsCount(int $participantsCount): void
     {
         $this->participantsCount = $participantsCount;
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isTimelineFeedIndexable(): bool
+    {
+        return !$this->isFinished();
     }
 }

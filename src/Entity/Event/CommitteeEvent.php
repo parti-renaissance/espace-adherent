@@ -182,11 +182,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         return $this->isActive() && $this->isPublished() && $this->isGeocoded();
     }
 
-    public function getIndexOptions(): array
-    {
-        return [];
-    }
-
     public function getExposedRouteName(): string
     {
         return 'app_committee_event_show';

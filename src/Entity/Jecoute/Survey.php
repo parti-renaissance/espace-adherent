@@ -8,7 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\IndexableEntityInterface;
+use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -59,7 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "partial",
  * })
  */
-abstract class Survey implements IndexableEntityInterface
+abstract class Survey implements JeMengageTimelineFeedIndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -229,8 +229,8 @@ abstract class Survey implements IndexableEntityInterface
         return [];
     }
 
-    public function isIndexable(): bool
+    public function isTimelineFeedIndexable(): bool
     {
-        return true;
+        return $this->isPublished();
     }
 }

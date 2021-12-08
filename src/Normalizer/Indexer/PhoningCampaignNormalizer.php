@@ -2,10 +2,10 @@
 
 namespace App\Normalizer\Indexer;
 
-use App\Entity\Pap\Campaign;
+use App\Entity\Phoning\Campaign;
 use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
-class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
+class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
     protected function getClassName(): string
     {
@@ -20,13 +20,16 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 
     protected function getType(): string
     {
-        return JeMengageTimelineFeedEnum::PAP_CAMPAIGN;
+        return JeMengageTimelineFeedEnum::PHONING_CAMPAIGN;
     }
 
     /** @param Campaign $object */
     protected function getDescription(object $object): ?string
     {
-        return 'Nouvelle campagne de porte-à-porte autour de vous.';
+        return sprintf('Vous avez jusqu\'au %s pour remplir %s questionnaires.',
+            $this->formatDate($object->getFinishAt(), 'EEEE d MMMM y à HH\'h\'mm'),
+            $object->getGoal()
+        );
     }
 
     /** @param Campaign $object */
@@ -56,7 +59,7 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Campaign $object */
     protected function getAuthor(object $object): ?string
     {
-        return null;
+        return $object->getCreatedByAdherent() ? $object->getCreatedByAdherent()->getFullName() : null;
     }
 
     /** @param Campaign $object */
