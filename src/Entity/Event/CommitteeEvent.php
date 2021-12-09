@@ -196,4 +196,9 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     {
         return true;
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }
