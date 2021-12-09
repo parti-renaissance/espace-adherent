@@ -64,6 +64,7 @@ class AdherentRoleEnum extends Enum
 
     public const ROLE_PHONING_MANAGER = 'role_phoning_manager';
     public const ROLE_PAP_NATIONAL_MANAGER = 'role_pap_national_manager';
+    public const ROLE_PAP_USER = 'role_pap_user';
 
     public static function getCandidates(): array
     {

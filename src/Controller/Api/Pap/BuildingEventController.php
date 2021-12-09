@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT')")
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('IS_PAP_USER')")
  */
 class BuildingEventController extends AbstractController
 {

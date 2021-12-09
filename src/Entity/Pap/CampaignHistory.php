@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"pap_campaign_history_read"},
  *         },
  *         "denormalization_context": {"groups": {"pap_campaign_history_write"}},
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_ADHERENT')",
+ *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('IS_PAP_USER')",
  *     },
  *     collectionOperations={
  *         "post": {

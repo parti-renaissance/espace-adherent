@@ -50,7 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')",
  *         },
  *         "api_pap_campaigns_survey_get_subresource": {
- *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('IS_PAP_USER')",
  *         },
  *     },
  * )

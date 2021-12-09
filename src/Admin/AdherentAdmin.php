@@ -520,6 +520,10 @@ class AdherentAdmin extends AbstractAdmin
                         'label' => 'Responsable National PAP',
                         'required' => false,
                     ])
+                    ->add('papUserRole', null, [
+                        'label' => 'Utilisateur PAP app mobile',
+                        'required' => false,
+                    ])
                 ->end()
                 ->with('Zone expérimentale 🚧', [
                     'class' => 'col-md-6',

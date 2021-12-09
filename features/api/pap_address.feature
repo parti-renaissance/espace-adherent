@@ -14,6 +14,15 @@ Feature:
     | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks                                                |
     | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events                                                         |
 
+  Scenario Outline: As a logged-in user with no PAP user role I cannot get and manage PAP campaigns
+    Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    And I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method  | url                                                                         |
+      | GET     | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks  |
+      | POST    | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events           |
+
   Scenario Outline: As a logged-in user I can retrieve addresses near a given position ordered by distance
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/address/near?latitude=<latitude>&longitude=<longitude>&zoom=16"

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/v3/pap_campaigns/{uuid}/survey-config", requirements={"uuid": "%pattern_uuid%"}, name="api_get_pap_campaign_survey_config", methods={"GET"})
  *
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')")
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('IS_PAP_USER')")
  */
 class GetPapCampaignSurveyConfigController extends AbstractController
 {
