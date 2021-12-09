@@ -27,7 +27,7 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getDescription(object $object): ?string
     {
         return sprintf('Vous avez jusqu\'au %s pour remplir %s questionnaires.',
-            $this->formatDate($object->getFinishAt(), 'EEEE d MMMM y à HH\'h\'mm'),
+            $this->formatDate($object->getFinishAt()),
             $object->getGoal()
         );
     }

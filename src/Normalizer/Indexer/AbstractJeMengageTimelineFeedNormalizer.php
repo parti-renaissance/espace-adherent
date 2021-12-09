@@ -9,7 +9,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return [
             'type' => $this->getType(),
             'is_local' => $this->isLocal($object),
-            'uuid' => $object->getUuid()->toString($object),
+            'uuid' => $object->getUuid()->toString(),
             'title' => $this->getTitle($object),
             'description' => $this->getDescription($object),
             'image' => $this->getImage($object),
