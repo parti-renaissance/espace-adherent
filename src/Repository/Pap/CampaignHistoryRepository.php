@@ -96,7 +96,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaignHistory')
             ->select('adherent.id, adherent.firstName, adherent.lastName')
-            ->addSelect('COUNT(DISTINCT CONCAT(campaignHistory.buildingBlock, \'-\', campaignHistory.floor, \'-\', campaignHistory.door)) AS nb_visited_doors')
+            ->addSelect('COUNT(DISTINCT CONCAT((adherent.id, \'-\',building.id, \'-\',campaignHistory.buildingBlock, \'-\', campaignHistory.floor, \'-\', campaignHistory.door)) AS nb_visited_doors')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->innerJoin('campaignHistory.questioner', 'adherent')
             ->where('campaignHistory.campaign = :campaign')
@@ -133,7 +133,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaignHistory')
             ->select('zone.id, zone.name')
-            ->addSelect('COUNT(DISTINCT CONCAT(campaignHistory.buildingBlock, \'-\', campaignHistory.floor, \'-\', campaignHistory.door)) AS nb_visited_doors')
+            ->addSelect('COUNT(DISTINCT CONCAT(zone.id, \'-\',building.id, \'-\', campaignHistory.buildingBlock, \'-\', campaignHistory.floor, \'-\', campaignHistory.door)) AS nb_visited_doors')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->innerJoin('campaignHistory.building', 'building')
             ->innerJoin('building.address', 'address')
