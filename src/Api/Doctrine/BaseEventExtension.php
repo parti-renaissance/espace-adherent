@@ -14,10 +14,12 @@ use Symfony\Component\Security\Core\Security;
 class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQueryCollectionExtensionInterface
 {
     private Security $security;
+    private bool $canaryMode;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, bool $canaryMode)
     {
         $this->security = $security;
+        $this->canaryMode = $canaryMode;
     }
 
     public function applyToItem(
@@ -51,7 +53,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
             return;
         }
 
-        if (BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
+        if (false === $this->canaryMode && BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
             $queryBuilder
                 ->andWhere($queryBuilder->getRootAliases()[0].' INSTANCE OF :allowed_types')
                 ->setParameter('allowed_types', [
