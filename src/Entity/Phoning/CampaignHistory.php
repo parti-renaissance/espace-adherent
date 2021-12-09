@@ -86,7 +86,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Groups({"phoning_campaign_call_read", "phoning_campaign_history_read_list", "campaign_replies_list"})
      */
