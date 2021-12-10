@@ -1479,7 +1479,6 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies?scope=phoning_national_manager&page=1&page_size=10"
     Then the response status code should be 200
-    And print last JSON response
     And the JSON should be equal to:
     """
     {
