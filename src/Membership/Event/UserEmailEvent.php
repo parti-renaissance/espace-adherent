@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Membership;
+namespace App\Membership\Event;
 
 use App\Entity\Adherent;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class UserEmailEvent extends Event
 {
-    private $user;
-    private $oldEmail;
+    private Adherent $user;
+    private string $oldEmail;
 
     public function __construct(Adherent $user, string $oldEmail)
     {

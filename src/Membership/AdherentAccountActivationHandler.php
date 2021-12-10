@@ -4,6 +4,7 @@ namespace App\Membership;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
+use App\Membership\Event\UserEvent;
 use App\Security\AuthenticationUtils;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

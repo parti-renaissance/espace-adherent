@@ -52,7 +52,7 @@ use App\Entity\TonMacronChoice;
 use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
 use App\Entity\UserListDefinition;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
@@ -444,7 +444,7 @@ trait TestHelperTrait
             'John',
             'Smith',
             new \DateTime('1990-12-12'),
-            ActivityPositions::STUDENT,
+            ActivityPositionsEnum::STUDENT,
             PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone
         );

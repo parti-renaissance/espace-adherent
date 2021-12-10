@@ -4,7 +4,7 @@ namespace App\Mailchimp\Webhook\Handler;
 
 use App\Entity\Adherent;
 use App\Mailchimp\Webhook\EventTypeEnum;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Subscription\SubscriptionHandler;
 use Psr\Log\LoggerAwareInterface;

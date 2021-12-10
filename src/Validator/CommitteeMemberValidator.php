@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class CommitteeMemberValidator extends ConstraintValidator
 {
@@ -36,12 +37,12 @@ class CommitteeMemberValidator extends ConstraintValidator
         }
 
         if (!$committee instanceof Committee) {
-            throw new UnexpectedTypeException($committee, Committee::class);
+            throw new UnexpectedValueException($committee, Committee::class);
         }
 
         $adherent = $this->security->getUser();
         if (!$adherent instanceof Adherent) {
-            throw new UnexpectedTypeException($adherent, Adherent::class);
+            throw new UnexpectedValueException($adherent, Adherent::class);
         }
 
         if (!$this->committeeMembershipRepository->isAdherentInCommittee($adherent, $committee)) {

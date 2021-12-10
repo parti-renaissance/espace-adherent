@@ -17,7 +17,6 @@ use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
-use App\Entity\ReferentManagedArea;
 use App\Entity\SmsCampaign\SmsCampaign;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
@@ -752,35 +751,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }
 
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
-    }
-
-    public function countInManagedArea(ReferentManagedArea $managedArea): int
-    {
-        return $this->createQueryBuilder('adherent')
-            ->select('COUNT(adherent)')
-            ->innerJoin('adherent.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->andWhere('adherent.status = :status')
-            ->setParameter('tags', $managedArea->getTags())
-            ->setParameter('status', Adherent::ENABLED)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function countSubscriberInManagedArea(ReferentManagedArea $managedArea): int
-    {
-        return $this->createQueryBuilder('adherent')
-            ->select('COUNT(DISTINCT(adherent))')
-            ->innerJoin('adherent.referentTags', 'tag')
-            ->innerJoin('adherent.subscriptionTypes', 'subscriptiontypes')
-            ->where('tag IN (:tags)')
-            ->andWhere('adherent.status = :status')
-            ->setParameter('tags', $managedArea->getTags())
-            ->setParameter('status', Adherent::ENABLED)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
     }
 
     public function refresh(Adherent $adherent): void

@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Address\Address;
-use App\Membership\Mandates;
-use App\Membership\MembershipRequest;
+use App\Membership\MandatesEnum;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -22,7 +22,7 @@ class AdherentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var MembershipRequest $membershipRequest */
+        /** @var PlatformMembershipRequest $membershipRequest */
         $membershipRequest = $builder->getData();
         $isCertified = $membershipRequest ? $membershipRequest->isCertified() : false;
 
@@ -70,7 +70,7 @@ class AdherentType extends AbstractType
             ])
             ->add('mandates', ChoiceType::class, [
                 'label' => 'adherent.mandate.label',
-                'choices' => Mandates::CHOICES,
+                'choices' => MandatesEnum::CHOICES,
                 'required' => false,
                 'multiple' => true,
             ])
@@ -105,7 +105,7 @@ class AdherentType extends AbstractType
         $years = range((int) date('Y') - 15, (int) date('Y') - 120);
 
         $resolver->setDefaults([
-            'data_class' => MembershipRequest::class,
+            'data_class' => PlatformMembershipRequest::class,
             'years' => array_combine($years, $years),
             'validation_groups' => ['Update'],
         ]);

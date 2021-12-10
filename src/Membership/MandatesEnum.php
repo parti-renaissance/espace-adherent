@@ -4,7 +4,7 @@ namespace App\Membership;
 
 use MyCLabs\Enum\Enum;
 
-final class Mandates extends Enum
+final class MandatesEnum extends Enum
 {
     private const REGIONAL_COUNCILOR = 'regional_councilor';
     private const DEPARTMENTAL_COUNCILOR = 'departmental_councilor';

@@ -16,8 +16,9 @@ use App\Form\UserRegistrationType;
 use App\Geocoder\CoordinatesFactory;
 use App\Intl\UnitedNationsBundle;
 use App\Membership\AdherentAccountActivationHandler;
+use App\Membership\MembershipNotifier;
 use App\Membership\MembershipRegistrationProcess;
-use App\Membership\MembershipRequest;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Membership\MembershipRequestHandler;
 use App\OAuth\CallbackManager;
 use App\Repository\AdherentRepository;
@@ -68,16 +69,17 @@ class MembershipController extends AbstractController
             return $callbackManager->redirectToClientIfValid();
         }
 
-        $membership = MembershipRequest::createWithCaptcha(
+        $membership = PlatformMembershipRequest::createWithCaptcha(
             $geoCoder->getCountryCodeFromIp($request->getClientIp()),
-            $request->request->get('g-recaptcha-response')
+            $request->request->get('g-recaptcha-response'),
+            true
         );
 
         $form = $this->createForm(UserRegistrationType::class, $membership);
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-                $this->membershipRequestHandler->registerAsUser($membership);
+                $this->membershipRequestHandler->createAdherent($membership);
 
                 return $this->redirectToRoute('app_membership_complete');
             }
@@ -109,7 +111,7 @@ class MembershipController extends AbstractController
             return $this->joinAdherent($request, $repository, $anonymousFollowerSession, $tokenStorage);
         }
 
-        $membership = MembershipRequest::createWithCaptcha(
+        $membership = PlatformMembershipRequest::createWithCaptcha(
             $geoCoder->getCountryCodeFromIp($request->getClientIp()),
             $request->request->get('g-recaptcha-response')
         );
@@ -122,7 +124,7 @@ class MembershipController extends AbstractController
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->membershipRequestHandler->registerAsAdherent($membership);
+                $this->membershipRequestHandler->createAdherent($membership);
 
                 return $this->redirectToRoute('app_membership_pin_interests');
             }
@@ -155,7 +157,7 @@ class MembershipController extends AbstractController
             throw $this->createNotFoundException('An adherent cannot join.');
         }
 
-        $membership = MembershipRequest::createFromAdherent($user);
+        $membership = PlatformMembershipRequest::createFromAdherent($user);
         $form = $this->createForm(BecomeAdherentType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'Je rejoins La République En Marche'])
             ->handleRequest($request)
@@ -220,7 +222,8 @@ class MembershipController extends AbstractController
         AdherentActivationToken $activationToken,
         CallbackManager $callbackManager,
         AdherentAccountActivationHandler $accountActivationHandler,
-        AnonymousFollowerSession $anonymousFollowerSession
+        AnonymousFollowerSession $anonymousFollowerSession,
+        MembershipNotifier $membershipNotifier
     ): Response {
         if ($this->getUser()) {
             $this->redirectToRoute('app_search_events');
@@ -230,7 +233,7 @@ class MembershipController extends AbstractController
             $accountActivationHandler->handle($adherent, $activationToken);
 
             if ($adherent->isAdherent()) {
-                $this->membershipRequestHandler->sendConfirmationJoinMessage($adherent);
+                $membershipNotifier->sendConfirmationJoinMessage($adherent);
 
                 $this->addFlash('info', 'adherent.activation.success');
 

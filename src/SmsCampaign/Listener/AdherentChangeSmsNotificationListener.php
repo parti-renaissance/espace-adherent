@@ -2,7 +2,7 @@
 
 namespace App\SmsCampaign\Listener;
 
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\OvhCloud\Driver;
 use App\Utils\PhoneNumberUtils;

@@ -6,6 +6,7 @@ use App\Assessor\AssessorRoleAssociationValueObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UniqueVotePlaceAssessorValidator extends ConstraintValidator
 {
@@ -19,7 +20,7 @@ class UniqueVotePlaceAssessorValidator extends ConstraintValidator
 
         foreach ((array) $collection as $index => $object) {
             if (!$object instanceof AssessorRoleAssociationValueObject) {
-                throw new UnexpectedTypeException($object, AssessorRoleAssociationValueObject::class);
+                throw new UnexpectedValueException($object, AssessorRoleAssociationValueObject::class);
             }
 
             if (!$adherent = $object->getAdherent()) {

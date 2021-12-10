@@ -4,7 +4,7 @@ namespace App\JeMarche\Subscriber;
 
 use App\Adherent\Command\UpdateFirebaseTopicsCommand;
 use App\Entity\PostAddress;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

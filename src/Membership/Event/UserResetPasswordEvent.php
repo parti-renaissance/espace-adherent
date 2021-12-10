@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Membership;
+namespace App\Membership\Event;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class UserResetPasswordEvent extends Event implements UserEventInterface
+class UserResetPasswordEvent extends Event
 {
-    private $user;
-    private $resetPasswordToken;
+    private Adherent $user;
+    private AdherentResetPasswordToken $resetPasswordToken;
 
     public function __construct(Adherent $adherent, AdherentResetPasswordToken $resetPasswordToken)
     {

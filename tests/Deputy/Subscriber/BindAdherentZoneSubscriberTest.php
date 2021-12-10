@@ -6,8 +6,8 @@ use App\Deputy\Subscriber\BindAdherentZoneSubscriber;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
-use App\Membership\ActivityPositions;
-use App\Membership\AdherentAccountWasCreatedEvent;
+use App\Membership\ActivityPositionsEnum;
+use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ class BindAdherentZoneSubscriberTest extends TestCase
             'John',
             'Smith',
             new \DateTime('1990-12-12'),
-            ActivityPositions::EMPLOYED,
+            ActivityPositionsEnum::EMPLOYED,
             PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
         );
 

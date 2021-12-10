@@ -7,6 +7,7 @@ use App\Repository\BannedAdherentRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class BannedAdherentValidator extends ConstraintValidator
 {
@@ -28,7 +29,7 @@ class BannedAdherentValidator extends ConstraintValidator
         }
 
         if (!\is_string($value)) {
-            throw new UnexpectedTypeException($value, 'string');
+            throw new UnexpectedValueException($value, 'string');
         }
 
         $isBanned = $this->bannedAdherentRepository->findOneBy([

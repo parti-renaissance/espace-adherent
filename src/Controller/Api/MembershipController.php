@@ -2,14 +2,15 @@
 
 namespace App\Controller\Api;
 
-use App\Membership\LightMembershipRequest;
 use App\Membership\MembershipRequestHandler;
+use App\Membership\MembershipSourceEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,8 +32,17 @@ class MembershipController extends AbstractController
             throw $this->createAccessDeniedException('Logged in users can not create account.');
         }
 
-        /** @var LightMembershipRequest $membershipRequest */
-        $membershipRequest = $serializer->deserialize($request->getContent(), LightMembershipRequest::class, JsonEncoder::FORMAT);
+        $membershipRequest = $handler->initialiseMembershipRequest($request->query->get('source', MembershipSourceEnum::COALITIONS));
+
+        $serializer->deserialize(
+            $request->getContent(),
+            \get_class($membershipRequest),
+            JsonEncoder::FORMAT,
+            [
+                AbstractNormalizer::OBJECT_TO_POPULATE => $membershipRequest,
+                AbstractNormalizer::GROUPS => ['merbership:write'],
+            ]
+        );
 
         $errors = $validator->validate($membershipRequest);
 
@@ -40,7 +50,7 @@ class MembershipController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $handler->registerLightUser($membershipRequest);
+        $handler->createAdherent($membershipRequest);
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

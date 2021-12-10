@@ -6,6 +6,7 @@ use App\Address\Address;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class FrenchZipCodeValidator extends ConstraintValidator
 {
@@ -21,7 +22,7 @@ class FrenchZipCodeValidator extends ConstraintValidator
 
         /** @var Address $address */
         if (!($address = $this->context->getObject()) instanceof Address) {
-            throw new UnexpectedTypeException($address, Address::class);
+            throw new UnexpectedValueException($address, Address::class);
         }
 
         if (Address::FRANCE !== strtoupper($address->getCountry())) {

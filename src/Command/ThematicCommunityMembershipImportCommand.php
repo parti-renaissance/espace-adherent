@@ -10,7 +10,7 @@ use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentRepository;
 use App\Repository\ThematicCommunity\ThematicCommunityRepository;
 use App\Repository\UserListDefinitionRepository;
@@ -213,30 +213,30 @@ class ThematicCommunityMembershipImportCommand extends Command
     {
         switch ($position) {
             case 'Cadre':
-                $contact->setPosition(ActivityPositions::EXECUTIVE);
+                $contact->setPosition(ActivityPositionsEnum::EXECUTIVE);
                 break;
             case 'Employé':
             case 'Employé(e)':
-                $contact->setPosition(ActivityPositions::EMPLOYED);
+                $contact->setPosition(ActivityPositionsEnum::EMPLOYED);
                 break;
             case 'Étudiant':
             case 'Étudiant(e)':
-                $contact->setPosition(ActivityPositions::STUDENT);
+                $contact->setPosition(ActivityPositionsEnum::STUDENT);
                 break;
             case 'Indépendants et professions libérales':
-                $contact->setPosition(ActivityPositions::SELF_EMPLOYED_AND_LIBERAL_PROFESSIONS);
+                $contact->setPosition(ActivityPositionsEnum::SELF_EMPLOYED_AND_LIBERAL_PROFESSIONS);
                 break;
             case 'Je ne souhaite pas répondre':
                 break;
             case 'Ouvrier':
-                $contact->setPosition(ActivityPositions::WORKER);
+                $contact->setPosition(ActivityPositionsEnum::WORKER);
                 break;
             case 'Profession intermédiaire':
-                $contact->setPosition(ActivityPositions::INTERMEDIATE_PROFESSION);
+                $contact->setPosition(ActivityPositionsEnum::INTERMEDIATE_PROFESSION);
                 break;
             case 'Retraité(e)':
             case 'Retraité':
-                $contact->setPosition(ActivityPositions::RETIRED);
+                $contact->setPosition(ActivityPositionsEnum::RETIRED);
                 break;
         }
     }

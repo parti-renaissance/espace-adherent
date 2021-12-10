@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Address\Address;
 use App\DataTransformer\ValueToDuplicatesTransformer;
-use App\Membership\MembershipRequest;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -60,7 +60,7 @@ class AdherentRegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MembershipRequest::class,
+            'data_class' => PlatformMembershipRequest::class,
             'validation_groups' => ['Update', 'Conditions', 'Registration'],
         ]);
     }

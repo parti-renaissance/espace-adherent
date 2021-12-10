@@ -3,9 +3,9 @@
 namespace App\ApplicationRequest\Listener;
 
 use App\ApplicationRequest\ApplicationRequestRepository;
-use App\Membership\AdherentEvent;
 use App\Membership\AdherentEvents;
-use App\Membership\UserEmailEvent;
+use App\Membership\Event\AdherentEvent;
+use App\Membership\Event\UserEmailEvent;
 use App\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

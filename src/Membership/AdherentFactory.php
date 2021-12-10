@@ -4,6 +4,10 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
+use App\Membership\MembershipRequest\CoalitionMembershipRequest;
+use App\Membership\MembershipRequest\JeMengageMembershipRequest;
+use App\Membership\MembershipRequest\MembershipInterface;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -19,24 +23,61 @@ class AdherentFactory
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
-    public function createFromLightMembershipRequest(LightMembershipRequest $request): Adherent
+    public function createFromMembershipRequest(MembershipInterface $membershipRequest): Adherent
+    {
+        if ($membershipRequest instanceof CoalitionMembershipRequest) {
+            return $this->createFromCoalitionMembershipRequest($membershipRequest);
+        }
+
+        if ($membershipRequest instanceof JeMengageMembershipRequest) {
+            return $this->createFromJeMengageMembershipRequest($membershipRequest);
+        }
+
+        if ($membershipRequest instanceof PlatformMembershipRequest) {
+            return $this->createFromPlatformMembershipRequest($membershipRequest);
+        }
+
+        throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', \get_class($membershipRequest)));
+    }
+
+    public function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent
     {
         return Adherent::createLight(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
-            $request->getFirstName(),
-            $this->addressFactory->createFromZone($request->getZone()),
+            $request->firstName,
+            $this->addressFactory->createFromZone($request->zone),
             $this->encodePassword(Uuid::uuid4()),
             Adherent::DISABLED,
             $request->getSource(),
-            $request->isCoalitionSubscription(),
-            $request->isCauseSubscription()
+            $request->coalitionSubscription,
+            $request->causeSubscription
         );
     }
 
-    public function createFromMembershipRequest(MembershipRequest $request): Adherent
+    public function createFromJeMengageMembershipRequest(JeMengageMembershipRequest $request): Adherent
     {
-        return Adherent::create(
+        $adherent = Adherent::create(
+            Adherent::createUuid($request->getEmailAddress()),
+            $request->getEmailAddress(),
+            $this->encodePassword(Uuid::uuid4()),
+            $request->gender,
+            $request->firstName,
+            $request->lastName,
+            $request->birthdate,
+            null,
+            $this->addressFactory->createFromAddress($request->address),
+            $request->phone
+        );
+        $adherent->setNationality($request->nationality);
+        $adherent->setSource($request->getSource());
+
+        return $adherent;
+    }
+
+    public function createFromPlatformMembershipRequest(PlatformMembershipRequest $request): Adherent
+    {
+        $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
             $this->encodePassword($request->password),
@@ -57,6 +98,12 @@ class AdherentFactory
             $request->nationality,
             $request->customGender
         );
+
+        if (!$request->isAsUser()) {
+            $adherent->join();
+        }
+
+        return $adherent;
     }
 
     public function createFromArray(array $data): Adherent
@@ -74,7 +121,7 @@ class AdherentFactory
             $data['first_name'],
             $data['last_name'],
             isset($data['birthdate']) ? $this->createBirthdate($data['birthdate']) : null,
-            isset($data['position']) ? $data['position'] : ActivityPositions::EMPLOYED,
+            isset($data['position']) ? $data['position'] : ActivityPositionsEnum::EMPLOYED,
             $data['address'],
             $phone,
             $data['nickname'] ?? null,

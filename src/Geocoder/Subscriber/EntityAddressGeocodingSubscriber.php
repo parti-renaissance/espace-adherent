@@ -10,7 +10,7 @@ use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
-use App\Membership\AdherentProfileWasUpdatedEvent;
+use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

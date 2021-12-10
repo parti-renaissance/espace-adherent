@@ -6,6 +6,7 @@ use App\Donation\DonationRequest;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class MaxMonthDonationValidator extends ConstraintValidator
 {
@@ -24,7 +25,7 @@ class MaxMonthDonationValidator extends ConstraintValidator
         }
 
         if (!$value instanceof DonationRequest) {
-            throw new UnexpectedTypeException($value, DonationRequest::class);
+            throw new UnexpectedValueException($value, DonationRequest::class);
         }
 
         if ($value->isSubscription() && $value->getAmount() * 100 > $constraint->maxDonationInCents) {

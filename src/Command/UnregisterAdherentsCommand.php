@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Adherent\UnregistrationHandler;
 use App\Entity\Adherent;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManager;

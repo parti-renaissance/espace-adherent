@@ -7,6 +7,7 @@ use App\Repository\Biography\ExecutiveOfficeMemberRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
 {
@@ -30,7 +31,7 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
         }
 
         if (!$value instanceof ExecutiveOfficeMember) {
-            throw new UnexpectedTypeException($value, ExecutiveOfficeMember::class);
+            throw new UnexpectedValueException($value, ExecutiveOfficeMember::class);
         }
 
         if ($value->isExecutiveOfficer()) {

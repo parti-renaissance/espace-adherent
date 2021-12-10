@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UniqueTerritorialCouncilMemberValidator extends ConstraintValidator
@@ -36,7 +37,7 @@ class UniqueTerritorialCouncilMemberValidator extends ConstraintValidator
         }
 
         if (!$value instanceof Adherent) {
-            throw new UnexpectedTypeException($value, Adherent::class);
+            throw new UnexpectedValueException($value, Adherent::class);
         }
 
         if (!$value->getTerritorialCouncilMembership()) {

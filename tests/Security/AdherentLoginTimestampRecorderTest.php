@@ -4,7 +4,7 @@ namespace Tests\App\Security;
 
 use App\Entity\Adherent;
 use App\Entity\PostAddress;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Security\AdherentLoginTimestampRecorder;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +43,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
             'John',
             'Smith',
             new \DateTime('1990-12-12'),
-            ActivityPositions::RETIRED,
+            ActivityPositionsEnum::RETIRED,
             PostAddress::createForeignAddress('CH', '8002', 'Zürich', 'Brandschenkestrasse')
         );
     }

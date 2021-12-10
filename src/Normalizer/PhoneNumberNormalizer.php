@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use App\Address\Address;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
@@ -18,9 +19,6 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
 
-    private const NORMALIZER_ALREADY_CALLED = 'PHONE_NUMBER_NORMALIZER_ALREADY_CALLED';
-    private const DENORMALIZER_ALREADY_CALLED = 'PHONE_NUMBER_DENORMALIZER_ALREADY_CALLED';
-
     private $util;
 
     public function __construct()
@@ -30,8 +28,6 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::NORMALIZER_ALREADY_CALLED] = true;
-
         return [
             'country' => $this->util->getRegionCodeForNumber($object),
             'number' => $this->util->format($object, PhoneNumberFormat::NATIONAL),
@@ -40,29 +36,35 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::DENORMALIZER_ALREADY_CALLED] = true;
-
-        try {
-            $phoneNumber = $this->util->parse($data['number'], $data['country']);
-        } catch (NumberParseException $e) {
-            // If the provided phone number can't be parsed,
-            // then we manually create a value object that will fail at validation.
-            $phoneNumber = new PhoneNumber();
-
-            $phoneNumber->setCountryCode($data['country']);
-            $phoneNumber->setNationalNumber($data['number']);
+        if (!\is_array($data) && !\is_string($data)) {
+            return null;
         }
 
-        return $phoneNumber;
+        if (\is_array($data)) {
+            try {
+                $phoneNumber = $this->util->parse($data['number'], $data['country']);
+            } catch (NumberParseException $e) {
+                // If the provided phone number can't be parsed,
+                // then we manually create a value object that will fail at validation.
+                $phoneNumber = new PhoneNumber();
+
+                $phoneNumber->setCountryCode($data['country']);
+                $phoneNumber->setNationalNumber($data['number']);
+            }
+
+            return $phoneNumber;
+        }
+
+        return $this->util->parse($data, Address::FRANCE);
     }
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return !isset($context[static::NORMALIZER_ALREADY_CALLED]) && $data instanceof PhoneNumber;
+        return $data instanceof PhoneNumber;
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        return !isset($context[self::DENORMALIZER_ALREADY_CALLED]) && PhoneNumber::class === $type;
+        return PhoneNumber::class === $type;
     }
 }

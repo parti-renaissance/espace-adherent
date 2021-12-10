@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
+use App\Membership\Event\UserResetPasswordEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;

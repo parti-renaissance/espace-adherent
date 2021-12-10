@@ -11,7 +11,7 @@ use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;

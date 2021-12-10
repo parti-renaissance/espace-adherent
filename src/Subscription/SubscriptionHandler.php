@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\NewsletterSubscription;
 use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;

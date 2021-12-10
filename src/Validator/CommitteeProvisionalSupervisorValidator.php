@@ -7,6 +7,7 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class CommitteeProvisionalSupervisorValidator extends ConstraintValidator
 {
@@ -28,7 +29,7 @@ class CommitteeProvisionalSupervisorValidator extends ConstraintValidator
         }
 
         if (!$value instanceof Adherent) {
-            throw new UnexpectedTypeException($value, Adherent::class);
+            throw new UnexpectedValueException($value, Adherent::class);
         }
 
         if ($value->getGender() !== $constraint->gender) {

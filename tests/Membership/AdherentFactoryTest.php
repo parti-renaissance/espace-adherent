@@ -5,9 +5,9 @@ namespace Tests\App\Membership;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\PostAddress;
-use App\Membership\ActivityPositions;
+use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
-use App\Membership\MembershipRequest;
+use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -50,7 +50,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertNull($adherent->getCity());
         $this->assertSame('Geneva', $adherent->getCityName());
         $this->assertEquals(new \DateTime('1972-11-23'), $adherent->getBirthdate());
-        $this->assertSame(ActivityPositions::EMPLOYED, $adherent->getPosition());
+        $this->assertSame(ActivityPositionsEnum::EMPLOYED, $adherent->getPosition());
         $this->assertFalse($adherent->isEnabled());
     }
 
@@ -66,7 +66,7 @@ class AdherentFactoryTest extends TestCase
             'last_name' => 'Mirabeau',
             'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182'),
             'birthdate' => '1950-07-08',
-            'position' => ActivityPositions::RETIRED,
+            'position' => ActivityPositionsEnum::RETIRED,
             'phone' => '+330102030405',
         ]);
 
@@ -86,7 +86,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertSame('73100', $adherent->getPostalCode());
         $this->assertSame('73100-73182', $adherent->getCity());
         $this->assertEquals(new \DateTime('1950-07-08'), $adherent->getBirthdate());
-        $this->assertSame(ActivityPositions::RETIRED, $adherent->getPosition());
+        $this->assertSame(ActivityPositionsEnum::RETIRED, $adherent->getPosition());
         $this->assertFalse($adherent->isEnabled());
     }
 
@@ -98,13 +98,13 @@ class AdherentFactoryTest extends TestCase
         $address->setCountry('FR');
         $address->setCity('73100-73182');
 
-        $request = new MembershipRequest();
+        $request = new PlatformMembershipRequest(true);
         $request->password = 'secret$secret';
         $request->setEmailAddress('carl999@example.fr');
         $request->firstName = 'Carl';
         $request->lastName = 'Mirabeau';
         $request->setAddress($address);
-        $request->position = ActivityPositions::RETIRED;
+        $request->position = ActivityPositionsEnum::RETIRED;
         $request->setBirthdate(new \DateTime('1950-07-08'));
         $request->gender = 'male';
 
@@ -129,7 +129,7 @@ class AdherentFactoryTest extends TestCase
         $this->assertFalse($adherent->isEnabled());
         $this->assertEquals($request->getBirthdate(), $adherent->getBirthdate());
         $this->assertNotSame($request->getBirthdate(), $adherent->getBirthdate());
-        $this->assertSame(ActivityPositions::RETIRED, $adherent->getPosition());
+        $this->assertSame(ActivityPositionsEnum::RETIRED, $adherent->getPosition());
     }
 
     private function createFactory(): AdherentFactory

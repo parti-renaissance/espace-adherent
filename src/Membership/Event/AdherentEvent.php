@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Membership;
+namespace App\Membership\Event;
 
 use App\Entity\Adherent;
 use App\Geocoder\GeocodableEntityEventInterface;
@@ -12,7 +12,7 @@ class AdherentEvent extends Event implements GeocodableEntityEventInterface
 {
     use GeoHashChangeAwareTrait;
 
-    private $adherent;
+    private Adherent $adherent;
 
     public function __construct(Adherent $adherent)
     {

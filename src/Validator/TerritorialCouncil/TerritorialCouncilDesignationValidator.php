@@ -6,6 +6,7 @@ use App\TerritorialCouncil\Designation\UpdateDesignationRequest;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class TerritorialCouncilDesignationValidator extends ConstraintValidator
 {
@@ -20,7 +21,7 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
         }
 
         if (!$value instanceof UpdateDesignationRequest) {
-            throw new UnexpectedTypeException($value, UpdateDesignationRequest::class);
+            throw new UnexpectedValueException($value, UpdateDesignationRequest::class);
         }
 
         if ($value->isMeetingMode()) {

@@ -19,12 +19,9 @@ use App\Form\AdherentInterestsFormType;
 use App\Form\ContactMessageType;
 use App\Form\CreateCommitteeCommandType;
 use App\Geocoder\Exception\GeocodingException;
-use App\Membership\MemberActivityTracker;
-use App\Membership\UserEvent;
+use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
-use App\Repository\EmailRepository;
-use App\Repository\EventRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,29 +72,6 @@ class AdherentController extends AbstractController
             'nb_adherent' => $adherentRepository->countAdherents(),
             'from_activation' => $request->query->getBoolean('from_activation'),
         ], $params));
-    }
-
-    /**
-     * @Route("/tableau-de-bord", name="app_user_dashboard", methods={"GET"})
-     */
-    public function dashboardAction(
-        AdherentRepository $adherentRepository,
-        EventRepository $eventRepository,
-        EmailRepository $emailRepository,
-        MemberActivityTracker $memberActivityTracker,
-        UserInterface $user
-    ): Response {
-        return $this->render('adherent/dashboard.html.twig', [
-            'events' => $eventRepository->findEventsByOrganizer($user),
-            'emails' => $emailRepository->findBy(['sender' => $user->getEmailAddress()]),
-            'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($user),
-            'area_stats' => $user->isReferent()
-                ? [
-                        'total' => $adherentRepository->countInManagedArea($user->getManagedArea()),
-                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getManagedArea()),
-                ]
-                : null,
-        ]);
     }
 
     /**

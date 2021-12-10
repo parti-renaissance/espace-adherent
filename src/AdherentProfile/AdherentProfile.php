@@ -4,7 +4,7 @@ namespace App\AdherentProfile;
 
 use App\Address\Address;
 use App\Entity\Adherent;
-use App\Membership\MembershipInterface;
+use App\Membership\MembershipRequest\MembershipInterface;
 use App\Validator\AdherentInterests;
 use App\Validator\UniqueMembership;
 use libphonenumber\PhoneNumber;
@@ -86,7 +86,7 @@ class AdherentProfile implements MembershipInterface
      * @var string|null
      *
      * @Assert\Choice(
-     *     callback={"App\Membership\ActivityPositions", "all"},
+     *     callback={"App\Membership\ActivityPositionsEnum", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
      * )
@@ -207,7 +207,7 @@ class AdherentProfile implements MembershipInterface
      * @var array
      *
      * @Assert\Choice(
-     *     callback={"App\Membership\Mandates", "all"},
+     *     callback={"App\Membership\MandatesEnum", "all"},
      *     multipleMessage="adherent_profile.mandates.invalid_choice",
      *     multiple=true
      * )
@@ -516,5 +516,10 @@ class AdherentProfile implements MembershipInterface
     public function setCoalitionsCguAccepted(bool $coalitionsCguAccepted): void
     {
         $this->coalitionsCguAccepted = $coalitionsCguAccepted;
+    }
+
+    public function getSource(): ?string
+    {
+        return null;
     }
 }

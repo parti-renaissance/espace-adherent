@@ -8,6 +8,7 @@ use App\Geocoder\Geocoder;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class GeocodableAddressValidator extends ConstraintValidator
 {
@@ -29,7 +30,7 @@ class GeocodableAddressValidator extends ConstraintValidator
         }
 
         if (!$address instanceof GeocodableInterface) {
-            throw new UnexpectedTypeException($address, GeocodableInterface::class);
+            throw new UnexpectedValueException($address, GeocodableInterface::class);
         }
 
         if (!$this->isGeocodable($address->getGeocodableAddress())) {
