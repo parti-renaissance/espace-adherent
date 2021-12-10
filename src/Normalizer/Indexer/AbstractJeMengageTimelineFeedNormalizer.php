@@ -14,9 +14,8 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'description' => $this->getDescription($object),
             'image' => $this->getImage($object),
             'date' => $this->formatDate($this->getDate($object)),
-            'timeZone' => $this->getTimeZone($object),
+            'time_zone' => $this->getTimeZone($object),
             'author' => $this->getAuthor($object),
-            'deepLink' => $this->getDeepLink($object),
         ];
     }
 
@@ -28,13 +27,14 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     abstract protected function isLocal(object $object): bool;
 
-    abstract protected function getImage(object $object): ?string;
-
     abstract protected function getDate(object $object): ?\DateTime;
 
     abstract protected function getTimeZone(object $object): ?string;
 
     abstract protected function getAuthor(object $object): ?string;
 
-    abstract protected function getDeepLink(object $object): ?string;
+    protected function getImage(object $object): ?string
+    {
+        return null;
+    }
 }

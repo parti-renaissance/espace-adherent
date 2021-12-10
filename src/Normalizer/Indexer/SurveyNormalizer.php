@@ -38,12 +38,6 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Survey $object */
-    protected function getImage(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Survey $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
@@ -59,11 +53,5 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getAuthor(object $object): ?string
     {
         return is_a($object, LocalSurvey::class) ? $object->getAuthor()->getFullName() : null;
-    }
-
-    /** @param Survey $object */
-    protected function getDeepLink(object $object): ?string
-    {
-        return null;
     }
 }

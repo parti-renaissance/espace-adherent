@@ -3,11 +3,11 @@
 namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
+use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\News;
 use App\Entity\Jecoute\Riposte;
-use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Phoning\Campaign as PhoningCampaign;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +20,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @internal
  */
-class AlgoliaJeMengageTimelineFeed extends Aggregator implements JeMengageTimelineFeedIndexableEntityInterface
+class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntityInterface
 {
     /**
      * @var UuidInterface|null
@@ -56,12 +56,12 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements JeMengageTimeli
         return [];
     }
 
-    public function isTimelineFeedIndexable(): bool
+    public function isIndexable(): bool
     {
-        if (!$this->entity instanceof JeMengageTimelineFeedIndexableEntityInterface) {
-            throw new \LogicException(sprintf('Algolia Sub Entity "%s" should implement "%s"', \get_class($this->entity), JeMengageTimelineFeedIndexableEntityInterface::class));
+        if (!$this->entity instanceof IndexableEntityInterface) {
+            throw new \LogicException(sprintf('Algolia Sub Entity "%s" should implement "%s"', \get_class($this->entity), IndexableEntityInterface::class));
         }
 
-        return $this->entity->isTimelineFeedIndexable();
+        return $this->entity->isIndexable();
     }
 }

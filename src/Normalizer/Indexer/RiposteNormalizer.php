@@ -36,12 +36,6 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Riposte $object */
-    protected function getImage(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Riposte $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
@@ -57,11 +51,5 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getAuthor(object $object): ?string
     {
         return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
-    }
-
-    /** @param Riposte $object */
-    protected function getDeepLink(object $object): ?string
-    {
-        return null;
     }
 }

@@ -9,7 +9,7 @@ use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
+use App\Entity\IndexableEntityInterface;
 use App\Validator\RiposteOpenGraph;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -69,7 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @RiposteOpenGraph
  */
-class Riposte implements AuthorInterface, JeMengageTimelineFeedIndexableEntityInterface
+class Riposte implements AuthorInterface, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -335,7 +335,7 @@ class Riposte implements AuthorInterface, JeMengageTimelineFeedIndexableEntityIn
         return [];
     }
 
-    public function isTimelineFeedIndexable(): bool
+    public function isIndexable(): bool
     {
         return $this->isEnabled();
     }

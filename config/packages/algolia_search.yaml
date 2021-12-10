@@ -41,4 +41,4 @@ algolia_search:
 
         -   name: jemengage_timeline_feed
             class: App\Entity\Algolia\AlgoliaJeMengageTimelineFeed
-            index_if: isTimelineFeedIndexable
+            index_if: isIndexable

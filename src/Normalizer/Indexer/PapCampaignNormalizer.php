@@ -36,12 +36,6 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getImage(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Campaign $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
@@ -55,12 +49,6 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 
     /** @param Campaign $object */
     protected function getAuthor(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Campaign $object */
-    protected function getDeepLink(object $object): ?string
     {
         return null;
     }

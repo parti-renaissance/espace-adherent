@@ -39,12 +39,6 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getImage(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Campaign $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
@@ -60,11 +54,5 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getAuthor(object $object): ?string
     {
         return $object->getCreatedByAdherent() ? $object->getCreatedByAdherent()->getFullName() : null;
-    }
-
-    /** @param Campaign $object */
-    protected function getDeepLink(object $object): ?string
-    {
-        return null;
     }
 }

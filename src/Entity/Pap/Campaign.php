@@ -7,8 +7,8 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
-use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -70,7 +70,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-class Campaign implements JeMengageTimelineFeedIndexableEntityInterface
+class Campaign implements IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -246,7 +246,7 @@ class Campaign implements JeMengageTimelineFeedIndexableEntityInterface
         return [];
     }
 
-    public function isTimelineFeedIndexable(): bool
+    public function isIndexable(): bool
     {
         return !$this->isFinished();
     }

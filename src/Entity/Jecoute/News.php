@@ -15,7 +15,7 @@ use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
-use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
+use App\Entity\IndexableEntityInterface;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Validator\Jecoute\NewsTarget;
 use App\Validator\Jecoute\ReferentNews;
@@ -127,7 +127,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ReferentNews
  * @NewsTarget(groups="Admin")
  */
-class News implements AuthoredInterface, AuthorInterface, JeMengageTimelineFeedIndexableEntityInterface
+class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;
@@ -394,7 +394,7 @@ class News implements AuthoredInterface, AuthorInterface, JeMengageTimelineFeedI
         return [];
     }
 
-    public function isTimelineFeedIndexable(): bool
+    public function isIndexable(): bool
     {
         return $this->isPublished();
     }

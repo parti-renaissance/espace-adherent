@@ -12,8 +12,8 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
-use App\Entity\JeMengageTimelineFeedIndexableEntityInterface;
 use App\Entity\Team\Team;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -115,7 +115,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, JeMengageTimelineFeedIndexableEntityInterface
+class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -444,7 +444,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         return [];
     }
 
-    public function isTimelineFeedIndexable(): bool
+    public function isIndexable(): bool
     {
         return !$this->isFinished();
     }
