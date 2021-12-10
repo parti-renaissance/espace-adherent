@@ -4,6 +4,12 @@ Feature:
   As a logged-in user
   I should be able to access API teams
 
+  @debug
+  Scenario: As a logged-in user without phoning team manager right I can not access teams endpoints
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams?scope=phoning_national_manager"
+    Then the response status code should be 403
+
   Scenario Outline: As a logged-in user without phoning team manager right I can not access teams endpoints
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
     When I send a "<method>" request to "<url>"

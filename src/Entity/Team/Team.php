@@ -5,6 +5,7 @@ namespace App\Entity\Team;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\TeamScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -61,6 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  * })
+ * @ApiFilter(TeamScopeFilter::class)
  *
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
