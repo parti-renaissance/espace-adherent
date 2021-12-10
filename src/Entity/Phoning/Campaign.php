@@ -446,6 +446,6 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
 
     public function isIndexable(): bool
     {
-        return !$this->isFinished();
+        return true;
     }
 }

@@ -248,6 +248,6 @@ class Campaign implements IndexableEntityInterface
 
     public function isIndexable(): bool
     {
-        return !$this->isFinished();
+        return true;
     }
 }
