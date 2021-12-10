@@ -42,12 +42,6 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Riposte $object */
-    protected function getTimeZone(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Riposte $object */
     protected function getAuthor(object $object): ?string
     {
         return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;

@@ -42,12 +42,6 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param News $object */
-    protected function getTimeZone(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param News $object */
     protected function getAuthor(object $object): ?string
     {
         return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;

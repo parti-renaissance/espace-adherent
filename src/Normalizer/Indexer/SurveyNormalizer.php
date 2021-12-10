@@ -44,12 +44,6 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Survey $object */
-    protected function getTimeZone(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Survey $object */
     protected function getAuthor(object $object): ?string
     {
         return is_a($object, LocalSurvey::class) ? $object->getAuthor()->getFullName() : null;

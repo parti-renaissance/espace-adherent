@@ -45,12 +45,6 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getTimeZone(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Campaign $object */
     protected function getAuthor(object $object): ?string
     {
         return $object->getCreatedByAdherent() ? $object->getCreatedByAdherent()->getFullName() : null;

@@ -42,12 +42,6 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getTimeZone(object $object): ?string
-    {
-        return null;
-    }
-
-    /** @param Campaign $object */
     protected function getAuthor(object $object): ?string
     {
         return null;

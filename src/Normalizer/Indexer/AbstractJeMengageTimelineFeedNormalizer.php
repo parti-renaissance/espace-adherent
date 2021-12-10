@@ -29,9 +29,12 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     abstract protected function getDate(object $object): ?\DateTime;
 
-    abstract protected function getTimeZone(object $object): ?string;
-
     abstract protected function getAuthor(object $object): ?string;
+
+    protected function getTimeZone(object $object): ?string
+    {
+        return 'Europe/Paris';
+    }
 
     protected function getImage(object $object): ?string
     {
