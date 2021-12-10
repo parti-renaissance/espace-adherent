@@ -286,29 +286,17 @@ class CommitteeManager
 
         foreach ($this->getCommitteeRepository()->findByUuid($committees) as $committee) {
             if (!$this->isFollowingCommittee($adherent, $committee)) {
-                $this->followCommittee($adherent, $committee, false);
+                $this->followCommittee($adherent, $committee);
             }
         }
-
-        $this->entityManager->flush();
     }
 
-    /**
-     * Makes an adherent follow one committee.
-     *
-     * @param Adherent  $adherent  The follower
-     * @param Committee $committee The committee to follow
-     * @param bool      $flush     Whether or not to flush the transaction
-     */
-    public function followCommittee(Adherent $adherent, Committee $committee, $flush = true): void
+    public function followCommittee(Adherent $adherent, Committee $committee): void
     {
         $this->entityManager->persist($membership = $adherent->followCommittee($committee));
-
         $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
 
-        if ($flush) {
-            $this->entityManager->flush();
-        }
+        $this->entityManager->flush();
 
         $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $committee), Events::COMMITTEE_NEW_FOLLOWER);
         $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
