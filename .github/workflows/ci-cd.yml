@@ -350,7 +350,7 @@ jobs:
       GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
 
     steps:
-      - uses: google-github-actions/auth@v0.4.2
+      - uses: google-github-actions/auth@v0.4.3
         with:
           credentials_json: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
 
