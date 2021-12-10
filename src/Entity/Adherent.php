@@ -1070,6 +1070,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_VOTE_INSPECTOR';
         }
 
+        if ($this->hasPapUserRole()) {
+            $roles[] = 'ROLE_PAP_USER';
+        }
+
         // Must be at the end as it uses $roles array
         if ($this->isAdherentMessageRedactor($roles)) {
             $roles[] = 'ROLE_MESSAGE_REDACTOR';

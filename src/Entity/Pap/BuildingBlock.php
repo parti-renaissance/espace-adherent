@@ -33,7 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  *     subresourceOperations={
  *         "api_buildings_building_blocks_get_subresource": {
- *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('IS_PAP_USER')",
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
  *         },
  *     },
  * )

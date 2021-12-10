@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "pagination_client_enabled": true,
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('IS_PAP_USER'))",
+ *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"pap_campaign_read"},
