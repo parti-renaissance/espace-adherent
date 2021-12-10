@@ -4,7 +4,6 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\Survey;
-use App\Jecoute\SurveyTypeEnum;
 use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
 class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -34,7 +33,7 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Survey $object */
     protected function isLocal(object $object): bool
     {
-        return SurveyTypeEnum::LOCAL === $object->getType();
+        return $object->isLocal();
     }
 
     /** @param Survey $object */
@@ -46,6 +45,6 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Survey $object */
     protected function getAuthor(object $object): ?string
     {
-        return is_a($object, LocalSurvey::class) ? $object->getAuthor()->getFullName() : null;
+        return is_a($object, LocalSurvey::class) && $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
     }
 }
