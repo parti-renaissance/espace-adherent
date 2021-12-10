@@ -52,14 +52,14 @@ Feature:
         "goal": 500,
         "finish_at": "@string@.isDateTime()",
         "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc",
-        "nb_calls": 3,
-        "nb_surveys": 2,
+        "nb_calls": 4,
+        "nb_surveys": 3,
         "permanent": false,
         "scoreboard": [
           {
             "firstName": "Lucie",
-            "nb_calls": "3",
-            "nb_surveys": "2",
+            "nb_calls": "4",
+            "nb_surveys": "3",
             "position": 1,
             "caller": true
           },
@@ -602,8 +602,8 @@ Feature:
             },
             "uuid": "@uuid@",
             "creator": "Admin",
-            "nb_calls": 3,
-            "nb_surveys": 2
+            "nb_calls": 4,
+            "nb_surveys": 3
          },
          {
             "title": "Campagne termin\u00e9",
@@ -963,11 +963,11 @@ Feature:
     """
     {
       "metadata": {
-        "total_items": 22,
+        "total_items": 23,
         "items_per_page": 2,
         "count": 2,
         "current_page": 1,
-        "last_page": 11
+        "last_page": 12
       },
       "items": [
         {
@@ -1483,9 +1483,9 @@ Feature:
     """
     {
       "metadata": {
-        "total_items": 2,
+        "total_items": 3,
         "items_per_page": 10,
-        "count": 2,
+        "count": 3,
         "current_page": 1,
         "last_page": 1
       },
@@ -1522,8 +1522,8 @@ Feature:
             {
                 "question": "L'écologie est selon vous, importante pour :",
                 "answer": [
-                    "L'héritage laissé aux générations futures",
-                    "Le bien-être sanitaire"
+                    "Le bien-être sanitaire",
+                    "L'héritage laissé aux générations futures"
                 ]
             }
           ],
@@ -1561,8 +1561,43 @@ Feature:
             {
                 "question": "L'écologie est selon vous, importante pour :",
                 "answer": [
-                    "L'aspect financier",
-                    "La préservation de l'environnement"
+                    "La préservation de l'environnement",
+                    "L'aspect financier"
+                ]
+            }
+          ],
+          "uuid": "@uuid@"
+        },
+                {
+          "survey": {
+            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+            "name": "Les enjeux des 10 prochaines années"
+          },
+          "campaign_history": {
+            "caller": {
+                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                "first_name": "Lucie",
+                "last_name": "Olivera"
+            },
+            "adherent": null,
+            "campaign": {
+                "title": "Campagne sur l'horizon 2030",
+                "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
+            },
+            "begin_at": "@string@.isDateTime()",
+            "finish_at": "@string@.isDateTime()",
+            "uuid": "e369f31b-d339-4ba7-b303-baa980c430cc"
+          },
+          "answers": [
+            {
+                "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                "answer": "la conquête de l'espace"
+            },
+            {
+                "question": "L'écologie est selon vous, importante pour :",
+                "answer": [
+                    "Le bien-être sanitaire",
+                    "L'héritage laissé aux générations futures"
                 ]
             }
           ],
@@ -1581,10 +1616,10 @@ Feature:
     {
       "nb_campaigns": "7",
       "nb_ongoing_campaigns": "6",
-      "nb_calls": "18",
-      "nb_calls_last_30d": "17",
-      "nb_surveys": "13",
-      "nb_surveys_last_30d": "13"
+      "nb_calls": "19",
+      "nb_calls_last_30d": "18",
+      "nb_surveys": "14",
+      "nb_surveys_last_30d": "14"
     }
     """
 
@@ -1634,13 +1669,13 @@ Feature:
       "created_at": "@string@.isDateTime()",
       "updated_at": "@string@.isDateTime()",
       "creator": "Admin",
-      "nb_calls": 3,
-      "nb_surveys": 2,
+      "nb_calls": 4,
+      "nb_surveys": 3,
       "nb_un_join": 0,
       "nb_un_subscribe": 0,
       "to_remind": 0,
       "not_respond": 0,
       "nb_failed": 1,
-      "average_calling_time": 450
+      "average_calling_time": 400
     }
     """

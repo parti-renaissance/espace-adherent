@@ -62,6 +62,9 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         /** @var DataSurvey $phoningDataSurvey2 */
         $phoningDataSurvey2 = $this->getReference('phoning-data-survey-2');
 
+        /** @var DataSurvey $phoningDataSurvey3 */
+        $phoningDataSurvey3 = $this->getReference('phoning-data-survey-3');
+
         // Data Survey 1
 
         $dataSurvey1Answer1 = new DataAnswer();
@@ -208,6 +211,22 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-4'));
 
         $manager->persist($phoningDataSurvey2Answer2);
+
+        // phoning data survey 3
+        $phoningDataSurvey3Answer1 = new DataAnswer();
+        $phoningDataSurvey3Answer1->setSurveyQuestion($nationalSurvey3Question1);
+        $phoningDataSurvey3Answer1->setDataSurvey($phoningDataSurvey3);
+        $phoningDataSurvey3Answer1->setTextField('la conquête de l\'espace');
+
+        $manager->persist($phoningDataSurvey3Answer1);
+
+        $phoningDataSurvey3Answer2 = new DataAnswer();
+        $phoningDataSurvey3Answer2->setSurveyQuestion($nationalSurvey3Question2);
+        $phoningDataSurvey3Answer2->setDataSurvey($phoningDataSurvey3);
+        $phoningDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1'));
+        $phoningDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2'));
+
+        $manager->persist($phoningDataSurvey3Answer2);
 
         $manager->flush();
     }
