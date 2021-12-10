@@ -9,7 +9,6 @@ use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -96,9 +95,10 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaignHistory')
             ->select('adherent.id, adherent.firstName, adherent.lastName')
-            ->addSelect('COUNT(DISTINCT CONCAT((adherent.id, \'-\',building.id, \'-\',campaignHistory.buildingBlock, \'-\', campaignHistory.floor, \'-\', campaignHistory.door)) AS nb_visited_doors')
+            ->addSelect('COUNT(DISTINCT CONCAT_WS(\'-\', adherent.id, building.id, campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door)) AS nb_visited_doors')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->innerJoin('campaignHistory.questioner', 'adherent')
+            ->innerJoin('campaignHistory.building', 'building')
             ->where('campaignHistory.campaign = :campaign')
             ->setParameters([
                 'campaign' => $campaign,
@@ -133,25 +133,13 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaignHistory')
             ->select('zone.id, zone.name')
-            ->addSelect('COUNT(DISTINCT CONCAT(zone.id, \'-\',building.id, \'-\', campaignHistory.buildingBlock, \'-\', campaignHistory.floor, \'-\', campaignHistory.door)) AS nb_visited_doors')
+            ->addSelect('COUNT(DISTINCT CONCAT_WS(\'-\', zone.id, building.id, campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door)) AS nb_visited_doors')
             ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
             ->innerJoin('campaignHistory.building', 'building')
             ->innerJoin('building.address', 'address')
-            ->innerJoin(
-                Zone::class,
-                'zone',
-                Join::WITH,
-                '(address.dptCode = zone.code AND zone.type = :dpt_type AND zone.code != :dpt_paris)'
-                        .'OR (address.inseeCode = zone.code AND zone.type = :borough_type AND zone.name LIKE :paris)'
-            )
+            ->innerJoin('address.zone', 'zone')
             ->where('campaignHistory.campaign = :campaign')
-            ->setParameters([
-                'campaign' => $campaign,
-                'dpt_type' => Zone::DEPARTMENT,
-                'borough_type' => Zone::BOROUGH,
-                'paris' => 'Paris %',
-                'dpt_paris' => '75',
-            ])
+            ->setParameter('campaign', $campaign)
         ;
     }
 }

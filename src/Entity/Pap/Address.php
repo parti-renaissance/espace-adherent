@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -79,11 +80,6 @@ class Address
     private ?string $cityName;
 
     /**
-     * @ORM\Column(nullable=true)
-     */
-    private ?string $dptCode;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $offsetX;
@@ -140,6 +136,11 @@ class Address
      */
     public ?VotePlace $votePlace = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private ?Zone $zone;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $number = null,
@@ -147,7 +148,7 @@ class Address
         string $inseeCode = null,
         array $postalCodes = null,
         string $cityName = null,
-        string $dptCode = null,
+        Zone $zone = null,
         int $offsetX = null,
         int $offsetY = null,
         float $latitude = null,
@@ -159,7 +160,7 @@ class Address
         $this->inseeCode = $inseeCode;
         $this->postalCodes = $postalCodes;
         $this->cityName = $cityName;
-        $this->dptCode = $dptCode;
+        $this->zone = $zone;
         $this->offsetX = $offsetX;
         $this->offsetY = $offsetY;
         $this->latitude = $latitude;
@@ -205,16 +206,6 @@ class Address
     public function setCityName(?string $cityName): void
     {
         $this->cityName = $cityName;
-    }
-
-    public function getDptCode(): ?string
-    {
-        return $this->dptCode;
-    }
-
-    public function setDptCode(?string $dptCode): void
-    {
-        $this->dptCode = $dptCode;
     }
 
     public function getOffsetX(): ?int
@@ -296,5 +287,15 @@ class Address
     public function getPostalCodes(): ?array
     {
         return $this->postalCodes;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(Zone $zone): void
+    {
+        $this->zone = $zone;
     }
 }
