@@ -178,6 +178,12 @@ class AdherentRoleFilter extends CallbackFilter
                     $qb->setParameter('papNationalManagerRole', true);
                 }
 
+                // PAP user Role
+                if (\in_array(AdherentRoleEnum::ROLE_PAP_USER, $value['value'], true)) {
+                    $where->add("$alias.papUserRole = :papUserRole");
+                    $qb->setParameter('papUserRole', true);
+                }
+
                 if ($delegatedTypes = array_intersect(
                     [
                         AdherentRoleEnum::DELEGATED_REFERENT,

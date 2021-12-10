@@ -32,7 +32,20 @@ Feature:
       # not mine
       | PUT     | /api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da   |
       # active
-      | PUT     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9          |
+      | PUT     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9            |
+
+  Scenario Outline: As a logged-in user with no PAP user role I cannot get and manage PAP campaigns
+    Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    And I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method  | url                                                                       |
+      | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9                |
+      | PUT     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9                |
+      | GET     | /api/v3/pap_campaigns                                                     |
+      | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey         |
+      | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey-config  |
+      | GET     | /api/v3/pap_campaigns/tutorial                                            |
 
   Scenario: As a JeMarche App user I cannot update not my PAP campaign
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -40,7 +53,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can get active PAP campaigns
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap_campaigns?pagination=false"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -118,7 +131,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get one PAP campaign
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     Then the response status code should be 200
     And the JSON should be equal to:

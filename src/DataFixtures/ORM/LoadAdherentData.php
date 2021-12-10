@@ -98,6 +98,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent1->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent1->setPapUserRole(true);
         $this->addReference('adherent-1', $adherent1);
 
         $adherent2 = $this->adherentFactory->createFromArray([
@@ -155,6 +156,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->addCharter(new PhoningCampaignCharter());
         $adherent3->addCharter(new PapCampaignCharter());
         $adherent3->setCoalitionModeratorRole(new CoalitionModeratorRoleAssociation());
+        $adherent3->setPapUserRole(true);
         $adherent3->certify();
         $this->addReference('adherent-3', $adherent3);
 
@@ -186,6 +188,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent4->addZone($zoneDpt92);
         $adherent4->setCandidateManagedArea($candidateManagedAreaDpt);
         $adherent4->addCharter(new CandidateCharter());
+        $adherent4->setPapUserRole(true);
         $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $this->adherentFactory->createFromArray([
@@ -525,6 +528,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $referent->addCharter(new ReferentCharter());
         $referent->addCharter(new CommitteeHostCharter());
         $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
+        $referent->setPapUserRole(true);
         $this->addReference('adherent-8', $referent);
 
         $referent75and77 = $this->adherentFactory->createFromArray([
@@ -640,6 +644,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $deputy_75_1->certify();
+        $deputy_75_1->setPapUserRole(true);
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $this->adherentFactory->createFromArray([

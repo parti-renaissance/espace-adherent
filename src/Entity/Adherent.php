@@ -783,6 +783,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $papNationalManagerRole = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $papUserRole = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1061,6 +1068,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->voteInspector) {
             $roles[] = 'ROLE_VOTE_INSPECTOR';
+        }
+
+        if ($this->hasPapUserRole()) {
+            $roles[] = 'ROLE_PAP_USER';
         }
 
         // Must be at the end as it uses $roles array
@@ -2994,5 +3005,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setPapNationalManagerRole(bool $papNationalManagerRole): void
     {
         $this->papNationalManagerRole = $papNationalManagerRole;
+    }
+
+    public function hasPapUserRole(): bool
+    {
+        return $this->papUserRole;
+    }
+
+    public function setPapUserRole(bool $papUserRole): void
+    {
+        $this->papUserRole = $papUserRole;
     }
 }
