@@ -216,7 +216,7 @@ class Campaign implements IndexableEntityInterface
         $this->beginAt = $beginAt;
     }
 
-    public function getFinishAt(): ?\DateTime
+    public function getFinishAt(): ?\DateTimeInterface
     {
         return $this->finishAt;
     }

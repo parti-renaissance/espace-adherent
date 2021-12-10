@@ -6,7 +6,10 @@ use Algolia\SearchBundle\Entity\Aggregator;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
-use App\Entity\Pap\Campaign;
+use App\Entity\Jecoute\News;
+use App\Entity\Jecoute\Riposte;
+use App\Entity\Pap\Campaign as PapCampaign;
+use App\Entity\Phoning\Campaign as PhoningCampaign;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\Uuid;
@@ -41,7 +44,10 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
         return [
             LocalSurvey::class,
             NationalSurvey::class,
-            Campaign::class,
+            PapCampaign::class,
+            PhoningCampaign::class,
+            News::class,
+            Riposte::class,
         ];
     }
 

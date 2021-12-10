@@ -231,6 +231,6 @@ abstract class Survey implements IndexableEntityInterface
 
     public function isIndexable(): bool
     {
-        return true;
+        return $this->isPublished();
     }
 }

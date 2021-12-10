@@ -2,17 +2,17 @@
 
 namespace App\Normalizer\Indexer;
 
-use App\Entity\Pap\Campaign;
+use App\Entity\Jecoute\News;
 use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
-class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
+class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
     protected function getClassName(): string
     {
-        return Campaign::class;
+        return News::class;
     }
 
-    /** @param Campaign $object */
+    /** @param News $object */
     protected function getTitle(object $object): string
     {
         return $object->getTitle();
@@ -20,30 +20,30 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 
     protected function getType(): string
     {
-        return JeMengageTimelineFeedEnum::PAP_CAMPAIGN;
+        return JeMengageTimelineFeedEnum::NEWS;
     }
 
-    /** @param Campaign $object */
+    /** @param News $object */
     protected function getDescription(object $object): ?string
     {
-        return 'Nouvelle campagne de porte-à-porte autour de vous.';
+        return $object->getText();
     }
 
-    /** @param Campaign $object */
+    /** @param News $object */
     protected function isLocal(object $object): bool
     {
-        return false;
+        return null !== $object->getSpace();
     }
 
-    /** @param Campaign $object */
+    /** @param News $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
     }
 
-    /** @param Campaign $object */
+    /** @param News $object */
     protected function getAuthor(object $object): ?string
     {
-        return null;
+        return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
     }
 }

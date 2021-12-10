@@ -15,6 +15,7 @@ use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
+use App\Entity\IndexableEntityInterface;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Validator\Jecoute\NewsTarget;
 use App\Validator\Jecoute\ReferentNews;
@@ -121,10 +122,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * })
  *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ *
  * @ReferentNews
  * @NewsTarget(groups="Admin")
  */
-class News implements AuthoredInterface, AuthorInterface
+class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;
@@ -384,5 +387,15 @@ class News implements AuthoredInterface, AuthorInterface
             throw new \InvalidArgumentException('Invalid space');
         }
         $this->space = $space;
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isPublished();
     }
 }

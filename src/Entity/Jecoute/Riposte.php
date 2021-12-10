@@ -9,6 +9,7 @@ use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\IndexableEntityInterface;
 use App\Validator\RiposteOpenGraph;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="jecoute_riposte")
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @ApiResource(
  *     attributes={
@@ -66,7 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @RiposteOpenGraph
  */
-class Riposte implements AuthorInterface
+class Riposte implements AuthorInterface, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -325,5 +328,15 @@ class Riposte implements AuthorInterface
     public function __toString(): string
     {
         return (string) $this->title;
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isEnabled();
     }
 }
