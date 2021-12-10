@@ -690,28 +690,28 @@ Feature:
             "fields": {
                 "rank": "Rang",
                 "questioner": "Militant",
-                "nb_doors": "Portes frappées",
+                "nb_visited_doors": "Portes frappées",
                 "nb_surveys": "Questionnaires remplis"
             },
             "items": [
                 {
                     "rank": 1,
                     "questioner": "Patrick B.",
-                    "nb_doors": 1,
+                    "nb_visited_doors": 1,
                     "nb_surveys": 1,
                     "current": false
                 },
                 {
                     "rank": 2,
                     "questioner": "Jacques P.",
-                    "nb_doors": 2,
+                    "nb_visited_doors": 2,
                     "nb_surveys": 0,
                     "current": false
                 },
                 {
-                    "rank": null,
+                    "rank": "...",
                     "questioner": "Referent R.",
-                    "nb_doors": 0,
+                    "nb_visited_doors": 0,
                     "nb_surveys": 0,
                     "current": true
                 }
@@ -722,21 +722,21 @@ Feature:
             "fields": {
                 "rank": "Rang",
                 "department": "Département",
-                "nb_doors": "Portes frappées",
+                "nb_visited_doors": "Portes frappées",
                 "nb_surveys": "Questionnaires remplis"
             },
             "items": [
                 {
                     "rank": 1,
                     "department": "Paris 8ème",
-                    "nb_doors": 3,
+                    "nb_visited_doors": 3,
                     "nb_surveys": 1,
                     "current": false
                 },
                 {
-                    "rank": null,
+                    "rank": "...",
                     "department": "Seine-et-Marne",
-                    "nb_doors": 0,
+                    "nb_visited_doors": 0,
                     "nb_surveys": 0,
                     "current": true
                 }

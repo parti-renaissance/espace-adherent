@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")
  */
-class GetRankingController extends AbstractController
+class GetCampaignRankingController extends AbstractController
 {
     private CampaignHistoryRepository $campaignHistoryRepository;
     private LoggerInterface $logger;
@@ -39,7 +39,7 @@ class GetRankingController extends AbstractController
                 'fields' => [
                     'rank' => 'Rang',
                     'questioner' => 'Militant',
-                    'nb_doors' => 'Portes frappées',
+                    'nb_visited_doors' => 'Portes frappées',
                     'nb_surveys' => 'Questionnaires remplis',
                 ],
                 'items' => $this->createIndividualRanking($campaign, $adherent),
@@ -49,7 +49,7 @@ class GetRankingController extends AbstractController
                 'fields' => [
                     'rank' => 'Rang',
                     'department' => 'Département',
-                    'nb_doors' => 'Portes frappées',
+                    'nb_visited_doors' => 'Portes frappées',
                     'nb_surveys' => 'Questionnaires remplis',
                 ],
                 'items' => $this->createDepartmentalRanking($campaign, $adherent),
@@ -66,7 +66,7 @@ class GetRankingController extends AbstractController
             $item = [];
             $item['rank'] = ++$key;
             $item['questioner'] = $data['firstName'].(isset($data['lastName']) ? ' '.strtoupper(($data['lastName'][0])).'.' : '');
-            $item['nb_doors'] = (int) $data['nb_visited_doors'];
+            $item['nb_visited_doors'] = (int) $data['nb_visited_doors'];
             $item['nb_surveys'] = (int) $data['nb_surveys'];
             $item['current'] = $isAdherent = $adherent->getId() === $data['id'];
 
@@ -75,13 +75,18 @@ class GetRankingController extends AbstractController
         }
 
         if (!$adherentAdded) {
-            $adherentRank = $this->campaignHistoryRepository->findRankingForAdherent($campaign, $adherent)[0];
-
             $item = [];
-            $item['rank'] = null;
+            $adherentRank = $this->campaignHistoryRepository->findRankingForAdherent($campaign, $adherent);
+
+            if (\count($adherentRank) > 0) {
+                $item['nb_visited_doors'] = (int) $adherentRank[0]['nb_visited_doors'];
+                $item['nb_surveys'] = (int) $adherentRank[0]['nb_surveys'];
+            } else {
+                $item['nb_visited_doors'] = 0;
+                $item['nb_surveys'] = 0;
+            }
+            $item['rank'] = '...';
             $item['questioner'] = $adherent->getPartialName();
-            $item['nb_doors'] = (int) $adherentRank['nb_visited_doors'];
-            $item['nb_surveys'] = (int) $adherentRank['nb_surveys'];
             $item['current'] = true;
             $individualItems[] = $item;
         }
@@ -96,9 +101,8 @@ class GetRankingController extends AbstractController
         if (!$department) {
             $this->logger->error(
                 sprintf(
-                    'Adherent with ID "%s" has %s parent zone(s) of type "department"',
-                    $adherent->getId(),
-                    \count($departments)
+                    'Adherent with ID "%d" has no zone of type "department"',
+                    $adherent->getId()
                 )
             );
 
@@ -109,9 +113,8 @@ class GetRankingController extends AbstractController
             if (!$borough) {
                 $this->logger->error(
                     sprintf(
-                        'Adherent with ID "%s" has %s zone(s) of type "borough"',
-                        $adherent->getId(),
-                        \count($boroughs)
+                        'Adherent with ID "%d" has no zone of type "borough"',
+                        $adherent->getId()
                     )
                 );
 
@@ -130,7 +133,7 @@ class GetRankingController extends AbstractController
             $item = [];
             $item['rank'] = ++$key;
             $item['department'] = $data['name'];
-            $item['nb_doors'] = (int) $data['nb_visited_doors'];
+            $item['nb_visited_doors'] = (int) $data['nb_visited_doors'];
             $item['nb_surveys'] = (int) $data['nb_surveys'];
             $item['current'] = $isAdherent = $adherent->getId() === $data['id'];
 
@@ -139,13 +142,18 @@ class GetRankingController extends AbstractController
         }
 
         if (!$departmentAdded) {
-            $departmentRank = $this->campaignHistoryRepository->findRankingForDepartment($campaign, $zone)[0];
-
             $item = [];
-            $item['rank'] = null;
+            $departmentRank = $this->campaignHistoryRepository->findRankingForDepartment($campaign, $zone);
+            if (\count($departmentRank) > 0) {
+                $item['nb_visited_doors'] = (int) $departmentRank[0]['nb_visited_doors'];
+                $item['nb_surveys'] = (int) $departmentRank[0]['nb_surveys'];
+            } else {
+                $item['nb_visited_doors'] = 0;
+                $item['nb_surveys'] = 0;
+            }
+
+            $item['rank'] = '...';
             $item['department'] = $department->getName();
-            $item['nb_doors'] = (int) $departmentRank['nb_visited_doors'];
-            $item['nb_surveys'] = (int) $departmentRank['nb_surveys'];
             $item['current'] = true;
             $departmentalItems[] = $item;
         }

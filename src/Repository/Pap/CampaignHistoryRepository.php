@@ -71,10 +71,8 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     public function findAdherentRanking(Campaign $campaign, int $limit = 10): array
     {
         return $this->createAdherentRankingQueryBuilder($campaign)
-            ->groupBy('adherent.id')
             ->orderBy('nb_surveys', 'DESC')
-            ->addOrderBy('campaignHistory.createdAt', 'DESC')
-            ->addOrderBy('adherent.id', 'ASC')
+            ->addOrderBy('adherent.firstName', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -96,22 +94,19 @@ class CampaignHistoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('campaignHistory')
             ->select('adherent.id, adherent.firstName, adherent.lastName')
             ->addSelect('COUNT(DISTINCT CONCAT_WS(\'-\', adherent.id, building.id, campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door)) AS nb_visited_doors')
-            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
+            ->addSelect('COUNT(campaignHistory.dataSurvey) as nb_surveys')
             ->innerJoin('campaignHistory.questioner', 'adherent')
             ->innerJoin('campaignHistory.building', 'building')
             ->where('campaignHistory.campaign = :campaign')
-            ->setParameters([
-                'campaign' => $campaign,
-            ])
+            ->setParameter('campaign', $campaign)
+            ->groupBy('adherent.id')
         ;
     }
 
     public function findDepartmentRanking(Campaign $campaign, int $limit = 10): array
     {
         return $this->createDepartmentRankingQueryBuilder($campaign)
-            ->groupBy('zone.id')
             ->orderBy('nb_surveys', 'DESC')
-            ->addOrderBy('campaignHistory.createdAt', 'DESC')
             ->addOrderBy('zone.name', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -134,12 +129,13 @@ class CampaignHistoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('campaignHistory')
             ->select('zone.id, zone.name')
             ->addSelect('COUNT(DISTINCT CONCAT_WS(\'-\', zone.id, building.id, campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door)) AS nb_visited_doors')
-            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
+            ->addSelect('COUNT(campaignHistory.dataSurvey) as nb_surveys')
             ->innerJoin('campaignHistory.building', 'building')
             ->innerJoin('building.address', 'address')
             ->innerJoin('address.zone', 'zone')
             ->where('campaignHistory.campaign = :campaign')
             ->setParameter('campaign', $campaign)
+            ->groupBy('zone.id')
         ;
     }
 }
