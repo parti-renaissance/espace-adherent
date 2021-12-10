@@ -7,12 +7,13 @@ Feature:
     When I send a "GET" request to "<url>"
     Then the response status code should be 401
     Examples:
-    | url                                                                                                                       |
-    | /api/v3/pap/address/near?latitude=48.879001640&longitude=2.3187434&zoom=15                                                |
-    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                                                                  |
-    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters                                                           |
-    | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks                                                |
-    | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events                                                         |
+    | url                                                                         |
+    | /api/v3/pap/address/near?latitude=48.879001640&longitude=2.3187434&zoom=15  |
+    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                    |
+    | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters             |
+    | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks  |
+    | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events           |
+    | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history          |
 
   Scenario Outline: As a logged-in user with no PAP user role I cannot get and manage PAP campaigns
     Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -22,6 +23,7 @@ Feature:
       | method  | url                                                                         |
       | GET     | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks  |
       | POST    | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events           |
+      | GET     | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history          |
 
   Scenario Outline: As a logged-in user I can retrieve addresses near a given position ordered by distance
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -373,4 +375,39 @@ Feature:
     And the JSON should be equal to:
     """
     "OK"
+    """
+
+  Scenario: As a logged-in user I can retrieve building history
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "date": "@string@.isDateTime()",
+            "building_block": "A",
+            "floor": 0,
+            "door": "01",
+            "status": "Porte ouverte",
+            "questioner": "Jacques P."
+        },
+        {
+            "date": "@string@.isDateTime()",
+            "building_block": "A",
+            "floor": 0,
+            "door": "02",
+            "status": "N'accepte pas",
+            "questioner": "Jacques P."
+        },
+        {
+            "date": "@string@.isDateTime()",
+            "building_block": "A",
+            "floor": 1,
+            "door": "11",
+            "status": "Accepte de répondre aux questions",
+            "questioner": "Patrick B."
+        }
+    ]
     """

@@ -133,6 +133,11 @@ class Building implements CampaignStatisticsOwnerInterface
         $this->currentCampaign = $campaign;
     }
 
+    public function getCurrentCampaign(): ?Campaign
+    {
+        return $this->currentCampaign;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

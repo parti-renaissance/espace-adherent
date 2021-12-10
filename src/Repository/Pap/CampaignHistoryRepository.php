@@ -138,4 +138,20 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->groupBy('zone.id')
         ;
     }
+
+    public function findHistoryForBuilding(Building $building, Campaign $campaign): array
+    {
+        return $this->createQueryBuilder('campaignHistory')
+            ->addSelect('adherent')
+            ->leftJoin('campaignHistory.questioner', 'adherent')
+            ->where('campaignHistory.building = :building AND campaignHistory.campaign = :campaign')
+            ->setParameters([
+                'building' => $building,
+                'campaign' => $campaign,
+            ])
+            ->orderBy('campaignHistory.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
