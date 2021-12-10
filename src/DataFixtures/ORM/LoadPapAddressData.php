@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Pap\Address;
 use App\Entity\Pap\VotePlace;
 use App\Entity\Pap\Voter;
@@ -40,6 +41,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45080,
             48.878708,
@@ -58,6 +60,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45080,
             48.879078,
@@ -75,6 +78,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45079,
             48.879246,
@@ -94,6 +98,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45080,
             48.879166,
@@ -114,6 +119,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         string $inseeCode,
         ?array $postalCodes,
         string $cityName,
+        Zone $zone,
         int $offsetX,
         int $offsetY,
         float $latitude,
@@ -126,6 +132,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             $inseeCode,
             $postalCodes,
             $cityName,
+            $zone,
             $offsetX,
             $offsetY,
             $latitude,

@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -135,6 +136,11 @@ class Address
      */
     public ?VotePlace $votePlace = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private ?Zone $zone;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $number = null,
@@ -142,6 +148,7 @@ class Address
         string $inseeCode = null,
         array $postalCodes = null,
         string $cityName = null,
+        Zone $zone = null,
         int $offsetX = null,
         int $offsetY = null,
         float $latitude = null,
@@ -153,6 +160,7 @@ class Address
         $this->inseeCode = $inseeCode;
         $this->postalCodes = $postalCodes;
         $this->cityName = $cityName;
+        $this->zone = $zone;
         $this->offsetX = $offsetX;
         $this->offsetY = $offsetY;
         $this->latitude = $latitude;
@@ -279,5 +287,15 @@ class Address
     public function getPostalCodes(): ?array
     {
         return $this->postalCodes;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(Zone $zone): void
+    {
+        $this->zone = $zone;
     }
 }

@@ -27,6 +27,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
 
         $adherent3 = $this->getReference('adherent-3');
         $adherent12 = $this->getReference('adherent-12');
+        $adherent16 = $this->getReference('adherent-16');
 
         $nationalSurvey1 = $this->getReference('national-survey-1');
 
@@ -42,11 +43,37 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '01',
             $adherent3,
             null,
-            new \DateTime('-5 minutes'),
+            new \DateTime('-15 minutes'),
             self::HISTORY_1_UUID
         ));
-        $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign1);
-        $stats->setVisitedDoors(['01']);
+
+        $manager->persist($this->createPapCampaignHistory(
+            $campaign1,
+            $building3,
+            CampaignHistoryStatusEnum::DONT_ACCEPT_TO_ANSWER,
+            'A',
+            0,
+            '02',
+            $adherent3,
+            null,
+            new \DateTime('-10 minutes')
+        ));
+
+        $manager->persist($this->createPapCampaignHistory(
+            $campaign1,
+            $building3,
+            CampaignHistoryStatusEnum::ACCEPT_TO_ANSWER,
+            'A',
+            1,
+            '11',
+            $adherent16,
+            $nationalSurvey1,
+            new \DateTime('-5 minutes')
+        ));
+        $statsFloor0 = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign1);
+        $statsFloor1 = $building3->getBuildingBlockByName('A')->getFloorByNumber(1)->findStatisticsForCampaign($campaign1);
+        $statsFloor0->setVisitedDoors(['01', '02']);
+        $statsFloor1->setVisitedDoors(['11']);
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign2,

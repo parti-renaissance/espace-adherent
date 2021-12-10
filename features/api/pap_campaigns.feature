@@ -677,3 +677,70 @@ Feature:
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
+
+  Scenario: As a logged-in user I can get PAP campaign ranking
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/ranking"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "label": "Individuel",
+            "fields": {
+                "rank": "Rang",
+                "questioner": "Militant",
+                "nb_visited_doors": "Portes frappées",
+                "nb_surveys": "Questionnaires remplis"
+            },
+            "items": [
+                {
+                    "rank": 1,
+                    "questioner": "Patrick B.",
+                    "nb_visited_doors": 1,
+                    "nb_surveys": 1,
+                    "current": false
+                },
+                {
+                    "rank": 2,
+                    "questioner": "Jacques P.",
+                    "nb_visited_doors": 2,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": "...",
+                    "questioner": "Referent R.",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": true
+                }
+            ]
+        },
+        {
+            "label": "Département",
+            "fields": {
+                "rank": "Rang",
+                "department": "Département",
+                "nb_visited_doors": "Portes frappées",
+                "nb_surveys": "Questionnaires remplis"
+            },
+            "items": [
+                {
+                    "rank": 1,
+                    "department": "Paris 8ème",
+                    "nb_visited_doors": 3,
+                    "nb_surveys": 1,
+                    "current": false
+                },
+                {
+                    "rank": "...",
+                    "department": "Seine-et-Marne",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": true
+                }
+            ]
+        }
+    ]
+    """
