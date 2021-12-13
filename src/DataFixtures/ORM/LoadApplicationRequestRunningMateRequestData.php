@@ -78,13 +78,13 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
 
         foreach ([$runningMateRequest1, $runningMateRequest2, $runningMateRequest3, $runningMateRequest4] as $i => $runningMateRequest) {
             /** @var RunningMateRequest $runningMateRequest */
-            $runningMateRequest->setPostalCode($faker->postcode);
-            $runningMateRequest->setCityName($faker->city);
+            $runningMateRequest->setPostalCode($faker->postcode());
+            $runningMateRequest->setCityName($faker->city());
             $runningMateRequest->setCity('75012-75112');
             $runningMateRequest->setCountry('FR');
-            $runningMateRequest->setAddress($faker->streetAddress);
+            $runningMateRequest->setAddress($faker->streetAddress());
             $runningMateRequest->setPhone($phone);
-            $runningMateRequest->setProfession($faker->jobTitle);
+            $runningMateRequest->setProfession($faker->jobTitle());
 
             $runningMateRequest->setCurriculumName('cv.pdf');
 

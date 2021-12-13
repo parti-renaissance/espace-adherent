@@ -132,7 +132,6 @@ class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFi
              'image.jpg',
              'image/jpeg',
              null,
-             null,
              true
          ));
 

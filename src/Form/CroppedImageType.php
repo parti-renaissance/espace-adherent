@@ -46,7 +46,6 @@ class CroppedImageType extends AbstractType
                         Uuid::uuid4()->toString().'.png',
                         str_replace([';', 'data:'], '', $imageData[0]),
                         null,
-                        null,
                         true
                     );
 

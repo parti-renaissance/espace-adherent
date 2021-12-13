@@ -115,7 +115,6 @@ class LoadCoalitionData extends Fixture implements DependentFixtureInterface
                 'image.png',
                 'image/png',
                 null,
-                null,
                 true
             ));
             $this->imageManager->saveImage($coalition);

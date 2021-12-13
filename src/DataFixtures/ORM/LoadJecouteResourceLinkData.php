@@ -62,7 +62,6 @@ class LoadJecouteResourceLinkData extends Fixture
                 'image.png',
                 'image/png',
                 null,
-                null,
                 true
             ));
             $this->imageManager->saveImage($resource);

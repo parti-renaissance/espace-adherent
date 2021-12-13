@@ -179,7 +179,6 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
                 'image.jpg',
                 'image/jpeg',
                 null,
-                null,
                 true
             ));
 

@@ -48,7 +48,7 @@ class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'sections' => [$this->getReference('os001'), $this->getReference('os004')],
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -61,7 +61,7 @@ class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
             'media' => $media,
             'displayMedia' => true,
             'published' => false,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'sections' => [$this->getReference('os001')],
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));

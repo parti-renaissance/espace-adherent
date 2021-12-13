@@ -76,7 +76,6 @@ class ImageContent
             Uuid::uuid4().'.'.$this->getExtension(),
             $this->getMimeType(),
             null,
-            null,
             true
         );
     }

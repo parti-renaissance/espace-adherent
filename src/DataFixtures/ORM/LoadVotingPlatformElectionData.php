@@ -317,16 +317,16 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     private function getCandidates(): array
     {
         $candidates = [
-            $candidate1 = new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-1')),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-2')),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-3')),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-4')),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-5')),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-6')),
-            $candidate2 = new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-7')),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-8')),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-9')),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-10')),
+            $candidate1 = new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-1')),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-2')),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-3')),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-4')),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-5')),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-6')),
+            $candidate2 = new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-7')),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-8')),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-9')),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-10')),
         ];
 
         $candidate1->setBiography($this->faker->paragraph(10));
