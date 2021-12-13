@@ -377,37 +377,53 @@ Feature:
     "OK"
     """
 
-  Scenario: As a logged-in user I can retrieve building history
+  Scenario: As a logged-in user I cannot retrieve building history if no "campaign_uuid" passed
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history"
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I cannot retrieve building history for invalid campaign
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history?campaign_uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf8"
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I can retrieve building history
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history?campaign_uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     [
         {
-            "date": "@string@.isDateTime()",
+            "created_at": "@string@.isDateTime()",
             "building_block": "A",
             "floor": 0,
             "door": "01",
-            "status": "Porte ouverte",
-            "questioner": "Jacques P."
+            "status_label": "Porte ouverte",
+            "questioner": {
+                "partial_name": "Jacques P."
+            }
         },
         {
-            "date": "@string@.isDateTime()",
+            "created_at": "@string@.isDateTime()",
             "building_block": "A",
             "floor": 0,
             "door": "02",
-            "status": "N'accepte pas",
-            "questioner": "Jacques P."
+            "status_label": "N'accepte pas",
+            "questioner": {
+                "partial_name": "Jacques P."
+            }
         },
         {
-            "date": "@string@.isDateTime()",
+            "created_at": "@string@.isDateTime()",
             "building_block": "A",
             "floor": 1,
             "door": "11",
-            "status": "Accepte de répondre aux questions",
-            "questioner": "Patrick B."
+            "status_label": "Accepte de répondre aux questions",
+            "questioner": {
+                "partial_name": "Patrick B."
+            }
         }
     ]
     """

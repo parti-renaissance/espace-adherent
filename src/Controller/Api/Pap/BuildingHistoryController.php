@@ -3,12 +3,13 @@
 namespace App\Controller\Api\Pap;
 
 use App\Entity\Pap\Building;
-use App\Entity\Pap\CampaignHistory;
-use App\Pap\CampaignHistoryStatusEnum;
 use App\Repository\Pap\CampaignHistoryRepository;
+use App\Repository\Pap\CampaignRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -23,18 +24,25 @@ class BuildingHistoryController extends AbstractController
      *     methods={"GET"}
      * )
      */
-    public function __invoke(Building $building, CampaignHistoryRepository $campaignHistoryRepository): JsonResponse
-    {
-        return $this->json(array_map(function (CampaignHistory $campaignHistory) {
-            return [
-                    'date' => $campaignHistory->getCreatedAt()->format('Y-m-d'),
-                    'building_block' => $campaignHistory->getBuildingBlock(),
-                    'floor' => $campaignHistory->getFloor(),
-                    'door' => $campaignHistory->getDoor(),
-                    'status' => CampaignHistoryStatusEnum::LABELS[$campaignHistory->getStatus()],
-                    'questioner' => $campaignHistory->getQuestioner()->getPartialName(),
-                ];
-        }, $campaignHistoryRepository->findHistoryForBuilding($building, $building->getCurrentCampaign())
-        ));
+    public function __invoke(
+        Request $request,
+        Building $building,
+        CampaignHistoryRepository $campaignHistoryRepository,
+        CampaignRepository $campaignRepository
+    ): JsonResponse {
+        if (!$campaignUuid = $request->query->get('campaign_uuid')) {
+            throw new BadRequestHttpException('Parameter "campaign_uuid" is requires');
+        }
+
+        if (!$campaign = $campaignRepository->findOneByUuid($campaignUuid)) {
+            throw new BadRequestHttpException(sprintf('Campaign with uuid "%s" not found', $campaignUuid));
+        }
+
+        return $this->json(
+            $campaignHistoryRepository->findHistoryForBuilding($building, $campaign),
+            JsonResponse::HTTP_OK,
+            [],
+            ['groups' => ['pap_building_history']]
+        );
     }
 }

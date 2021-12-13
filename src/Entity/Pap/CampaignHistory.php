@@ -63,6 +63,8 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Groups({"pap_building_history"})
      */
     private ?Adherent $questioner = null;
 
@@ -109,21 +111,21 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_building_history"})
      */
     private ?string $buildingBlock = null;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_building_history"})
      */
     private ?int $floor = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_building_history"})
      */
     private ?string $door = null;
 
@@ -278,6 +280,14 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setStatus(?string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @Groups({"pap_building_history"})
+     */
+    public function getStatusLabel(): ?string
+    {
+        return CampaignHistoryStatusEnum::LABELS[$this->status];
     }
 
     public function isFinishedStatus(): bool
