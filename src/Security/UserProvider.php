@@ -19,12 +19,12 @@ class UserProvider extends EntityUserProvider
 
     public function __construct(
         ManagerRegistry $registry,
-        $classOrAlias,
-        $property = null,
-        $managerName = null,
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
         RequestStack $requestStack,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        string $classOrAlias,
+        string $property = null,
+        string $managerName = null
     ) {
         parent::__construct($registry, $classOrAlias, $property, $managerName);
 

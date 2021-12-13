@@ -40,3 +40,20 @@ Feature:
       | uri                             |
       | /api/users/me                   |
       | /api/statistics/adherents/count |
+
+  Scenario: As an adherent I can login
+    Given I am on "/connexion"
+    And I fill in the following:
+      | _login_email    | luciole1989@spambox.fr |
+      | _login_password | secret!12345           |
+    When I press "Connexion"
+    Then I should be on "/evenements"
+
+  Scenario: As an JeMengage user I cannot login by form
+    Given I am on "/connexion"
+    And I fill in the following:
+      | _login_email    | je-mengage-user-1@en-marche-dev.fr |
+      | _login_password | secret!12345                       |
+    When I press "Connexion"
+    Then I should be on "/connexion"
+    And I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."

@@ -28,11 +28,6 @@ class AdherentManager
         }
     }
 
-    public function countActiveAdherents(): int
-    {
-        return $this->repository->countActiveAdherents();
-    }
-
     public function countMembersByMonthManagedBy(Adherent $referent, int $months = 6): array
     {
         $countByMonth = [];

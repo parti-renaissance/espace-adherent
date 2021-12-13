@@ -57,11 +57,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         );
     }
 
-    public function testCountActiveAdherents()
-    {
-        self::assertSame(62, $this->adherentRepository->countActiveAdherents());
-    }
-
     public function testFindAllManagedBy()
     {
         $referent = $this->adherentRepository->loadUserByUsername('referent@en-marche-dev.fr');
