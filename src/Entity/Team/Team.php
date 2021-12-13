@@ -14,6 +14,8 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
+use App\Team\TeamVisibilityEnum;
+use App\Validator\Team\TeamZone;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -56,6 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/teams/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('CAN_EDIT_TEAM', object)"
  *         }
  *     }
  * )
@@ -76,6 +79,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="team.name.already_exists",
  *     errorPath="name"
  * )
+ *
+ * @TeamZone
  */
 class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
@@ -94,6 +99,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      *     minMessage="team.name.min_length",
      *     maxMessage="team.name.max_length"
      * )
+     *
      * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write", "phoning_campaign_read", "phoning_campaign_list"})
      */
     private ?string $name;
@@ -102,9 +108,11 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * @ORM\Column(length=30)
      *
      * @Assert\NotBlank(message="team.visibility.not_blank")
-     * @Assert\Choice(choices="App\Team\TeamVisibilityEnum::ALL", message="team.visibility.choice")
+     * @Assert\Choice(choices=App\Team\TeamVisibilityEnum::ALL, message="team.visibility.choice")
+     *
+     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
      */
-    private ?string $visibility;
+    private string $visibility;
 
     /**
      * @var Member[]|Collection
@@ -126,25 +134,22 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
      */
     private ?Zone $zone;
 
-    public function __construct(
-        UuidInterface $uuid = null,
-        string $name = null,
-        array $members = [],
-        string $visibility = null,
-        Zone $zone = null
-    ) {
+    public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [], Zone $zone = null)
+    {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
-        $this->visibility = $visibility;
-        $this->zone = $zone;
 
         $this->members = new ArrayCollection();
         foreach ($members as $member) {
             $this->addMember($member);
         }
+
+        $this->setZone($zone);
     }
 
     public function __toString(): string
@@ -230,5 +235,25 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     public function reorderMembersCollection(): void
     {
         $this->members = new ArrayCollection(array_values($this->members->matching(Criteria::create()->orderBy(['createdAt' => 'DESC']))->toArray()));
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): void
+    {
+        $this->visibility = null !== $zone
+            ? TeamVisibilityEnum::LOCAL
+            : TeamVisibilityEnum::NATIONAL
+        ;
+
+        $this->zone = $zone;
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
     }
 }

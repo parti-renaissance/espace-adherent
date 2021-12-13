@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Team\Member;
 use App\Entity\Team\Team;
-use App\Team\TeamVisibilityEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -31,14 +30,14 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $team1 = $this->createTeam(self::TEAM_1_UUID, 'Première équipe de phoning', TeamVisibilityEnum::NATIONAL);
+        $team1 = $this->createTeam(self::TEAM_1_UUID, 'Première équipe de phoning');
         $team1->setCreatedAt(new \DateTime('-12 hours'));
         $team1->addMember($this->createMember(self::MEMBER_1_UUID, $this->getReference('adherent-1')));
         $team1->addMember($this->createMember(self::MEMBER_2_UUID, $this->getReference('adherent-3')));
         $team1->addMember($this->createMember(self::MEMBER_3_UUID, $this->getReference('adherent-12')));
         $this->setReference('team-1', $team1);
 
-        $team2 = $this->createTeam(self::TEAM_2_UUID, 'Deuxième équipe de phoning', TeamVisibilityEnum::NATIONAL);
+        $team2 = $this->createTeam(self::TEAM_2_UUID, 'Deuxième équipe de phoning');
         $team2->setCreatedAt(new \DateTime('-9 hours'));
         $member1 = $this->createMember(self::MEMBER_4_UUID, $this->getReference('adherent-4'));
         $member1->setCreatedAt(new \DateTime('-1 hours'));
@@ -57,7 +56,6 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         $team3 = $this->createTeam(
             self::TEAM_3_UUID,
             'Équipe locale du département 92',
-            TeamVisibilityEnum::LOCAL,
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
         );
         $team3->setCreatedAt(new \DateTime('-8 hours'));
@@ -65,9 +63,8 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
 
         $team4 = $this->createTeam(
             self::TEAM_4_UUID,
-            'Equipe locale de la ville 92270',
-            TeamVisibilityEnum::LOCAL,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92009')
+            'Équipe locale de la ville de Lille (59350)',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')
         );
         $team4->setCreatedAt(new \DateTime('-7 hours'));
         $team4->addMember($this->createMember(self::MEMBER_9_UUID, $this->getReference('adherent-4')));
@@ -89,9 +86,9 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    private function createTeam(string $uuid, string $name, string $visibility, Zone $zone = null): Team
+    private function createTeam(string $uuid, string $name, Zone $zone = null): Team
     {
-        return new Team(Uuid::fromString($uuid), $name, [], $visibility, $zone);
+        return new Team(Uuid::fromString($uuid), $name, [], $zone);
     }
 
     private function createMember(string $uuid, Adherent $adherent): Member

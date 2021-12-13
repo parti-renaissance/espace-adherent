@@ -6,19 +6,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Team\Team;
+use App\Scope\AuthorizationChecker;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
 use App\Team\TeamVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
 final class TeamScopeFilter extends AbstractContextAwareFilter
 {
-    private const PROPERTY_NAME = 'scope';
     private const OPERATION_NAMES = ['get'];
 
     private ?GeneralScopeGenerator $generalScopeGenerator = null;
     private ?Security $security = null;
+    private ?AuthorizationChecker $authorizationChecker = null;
 
     protected function filterProperty(
         string $property,
@@ -29,19 +31,18 @@ final class TeamScopeFilter extends AbstractContextAwareFilter
         string $operationName = null
     ) {
         $user = $this->security->getUser();
+        $scopeGenerator = $this->authorizationChecker->getScopeGenerator($this->requestStack->getMasterRequest(), $user);
 
         if (
             (!$user instanceof Adherent)
             || !is_a($resourceClass, Team::class, true)
-            || self::PROPERTY_NAME !== $property
             || !\in_array($operationName, self::OPERATION_NAMES, true)
+            || null === $scopeGenerator
         ) {
             return;
         }
 
         $alias = $queryBuilder->getRootAliases()[0];
-
-        $scopeGenerator = $this->generalScopeGenerator->getGenerator($value, $user);
 
         if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
             $queryBuilder
@@ -91,8 +92,24 @@ final class TeamScopeFilter extends AbstractContextAwareFilter
     /**
      * @required
      */
+    public function setAuthorizationChecker(AuthorizationChecker $authorizationChecker): void
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+    /**
+     * @required
+     */
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    /**
+     * @required
+     */
+    public function setRequestStack(RequestStack $requestStack): void
+    {
+        $this->requestStack = $requestStack;
     }
 }
