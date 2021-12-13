@@ -43,7 +43,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '01',
             $adherent3,
             null,
-            new \DateTime('-15 minutes'),
+            new \DateTime('-2 days -15 minutes'),
             self::HISTORY_1_UUID
         ));
 
@@ -56,7 +56,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '02',
             $adherent3,
             null,
-            new \DateTime('-10 minutes')
+            new \DateTime('-2 days -10 minutes')
         ));
 
         $manager->persist($this->createPapCampaignHistory(

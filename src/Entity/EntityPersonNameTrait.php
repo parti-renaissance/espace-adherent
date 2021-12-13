@@ -74,6 +74,9 @@ trait EntityPersonNameTrait
         return $this->firstName.' '.$this->lastName;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"pap_building_history"})
+     */
     public function getPartialName(): string
     {
         return $this->firstName.' '.$this->getLastNameInitial();
