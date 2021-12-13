@@ -1,12 +1,6 @@
-{% extends 'oauth/base_coalition.html.twig' %}
+{% extends 'oauth/base_coalitions.html.twig' %}
 
 {% block title 'Connectez-vous avec vos identifiants' %}
-
-{% block favicon %}
-    <link rel="shortcut icon" href="{{ asset('images/pourunecause/favicon.png') }}" />
-{% endblock %}
-
-{% block em_logo '' %}
 
 {% block content %}
     <section class="l__inner b__nudge--top">
@@ -31,7 +25,7 @@
                     {{ form_errors(form._login_password) }}
                     {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
 
-                    <a href="{{ path('app_coalition_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
+                    <a href="{{ path('app_coalitions_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
                 </li>
 
                 <li>

@@ -1,0 +1,37 @@
+{% extends 'oauth/base_jemengage.html.twig' %}
+
+{% block title 'Connectez-vous avec vos identifiants' %}
+
+{% block content %}
+    <section class="l__inner b__nudge--top">
+        <h1 style="margin-top: 45px">Connectez-vous</h1>
+
+        {% if error %}
+            <div id="auth-error" class="form__error">
+                {{- error.messageKey|trans(error.messageData)|raw -}}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, { action: path('app_user_login_check', {app_domain: jemengage_auth_host}) }) }}
+            <ul class="form">
+                <li>
+                     {{ form_label(form._login_email, 'E-mail', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_errors(form._login_email) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
+                </li>
+
+                <li>
+                    {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
+                    {{ form_errors(form._login_password) }}
+                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+
+                    <a href="{{ path('app_jemengage_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
+                </li>
+
+                <li>
+                    <button class="btn">Connexion</button>
+                </li>
+            </ul>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

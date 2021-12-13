@@ -1,19 +1,36 @@
 #
 # Coalition
 #
-app_coalition_login:
+app_coalitions_login:
     host: "%coalitions_auth_host%"
     path: ""
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
     defaults:
-        coalition: true
+        app: coalitions
 
-app_coalition_forgot_password:
+app_coalitions_forgot_password:
     host: "%coalitions_auth_host%"
     path: "/mot-de-passe-oublie"
     controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
     defaults:
-        coalition: true
+        app: coalitions
+
+#
+# JeMengage
+#
+app_jemengage_login:
+    host: "%jemengage_auth_host%"
+    path: ""
+    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
+    defaults:
+        app: jemengage
+
+app_jemengage_forgot_password:
+    host: "%jemengage_auth_host%"
+    path: "/mot-de-passe-oublie"
+    controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
+    defaults:
+        app: jemengage
 
 app_user_login_check:
     host: "{app_domain}"
@@ -23,7 +40,7 @@ app_user_login_check:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%"
+        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"
 
 logout:
     host: "{app_domain}"
@@ -33,7 +50,7 @@ logout:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%"
+        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"
 
 #
 # Assets
@@ -99,12 +116,9 @@ app_legislatives_api:
 # OAuth
 #
 app_oauth:
-    host:     "{app_domain}"
     resource: "../src/Controller/OAuth"
     type:     "annotation"
     prefix:   "/oauth/v2"
-    requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%"
 
 #
 # Admin 2FA
