@@ -143,7 +143,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('campaignHistory')
             ->addSelect('adherent')
-            ->leftJoin('campaignHistory.questioner', 'adherent')
+            ->innerJoin('campaignHistory.questioner', 'adherent')
             ->where('campaignHistory.building = :building AND campaignHistory.campaign = :campaign')
             ->setParameters([
                 'building' => $building,

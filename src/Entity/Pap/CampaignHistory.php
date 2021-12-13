@@ -287,7 +287,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      */
     public function getStatusLabel(): ?string
     {
-        return CampaignHistoryStatusEnum::LABELS[$this->status];
+        return CampaignHistoryStatusEnum::LABELS[$this->status] ?? null;
     }
 
     public function isFinishedStatus(): bool

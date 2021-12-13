@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -31,11 +31,14 @@ class BuildingHistoryController extends AbstractController
         CampaignRepository $campaignRepository
     ): JsonResponse {
         if (!$campaignUuid = $request->query->get('campaign_uuid')) {
-            throw new BadRequestHttpException('Parameter "campaign_uuid" is requires');
+            return $this->json('Parameter "campaign_uuid" is required.', Response::HTTP_BAD_REQUEST);
         }
 
         if (!$campaign = $campaignRepository->findOneByUuid($campaignUuid)) {
-            throw new BadRequestHttpException(sprintf('Campaign with uuid "%s" not found', $campaignUuid));
+            return $this->json(
+                sprintf('Campaign with uuid "%s" not found.', $campaignUuid),
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         return $this->json(

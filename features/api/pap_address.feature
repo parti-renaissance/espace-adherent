@@ -381,11 +381,19 @@ Feature:
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history"
     Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+      "Parameter \"campaign_uuid\" is required."
+    """
 
   Scenario: As a logged-in user I cannot retrieve building history for invalid campaign
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history?campaign_uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf8"
     Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+      "Campaign with uuid \"d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf8\" not found."
+    """
 
   Scenario: As a logged-in user I can retrieve building history
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
