@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.floor is not null %}
+        {{ object.floor is same as(0) ? 'RDC' : object.floor~(object.floor is same as(1) ? 'er' : 'ème' )~' étage' }}
+    {% endif %}
+{% endblock %}
