@@ -47,6 +47,16 @@ Feature:
       | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey-config  |
       | GET     | /api/v3/pap_campaigns/tutorial                                            |
 
+  Scenario Outline: As a logged-in user with no correct rights I cannot get PAP campaigns on DC
+    Given I am logged with "benjyd@aol.com" via OAuth client "Data-Corner"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 403
+    Examples:
+      | method | url                                                                                    |
+      | GET    | /api/v3/pap_campaigns?scope=pap_national_manager                                       |
+      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager  |
+      | GET    | /api/v3/pap_campaigns/kpi?scope=pap_national_manager                                   |
+
   Scenario: As a JeMarche App user I cannot update not my PAP campaign
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
     When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da"
@@ -743,4 +753,20 @@ Feature:
             ]
         }
     ]
+    """
+
+  Scenario: As a DC PAP national manger I can get PAP campaigns KPI
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=pap_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "nb_campaigns": "5",
+        "nb_ongoing_campaigns": "4",
+        "nb_visited_doors": "4",
+        "nb_visited_doors_last_30d": "4",
+        "nb_surveys": "1",
+        "nb_surveys_last_30d": "1"
+    }
     """
