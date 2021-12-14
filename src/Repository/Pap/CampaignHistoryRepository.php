@@ -154,4 +154,39 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findCampaignAverageVisitTime(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('campaignHistory')
+            ->select('AVG(TIME_TO_SEC(TIMEDIFF(campaignHistory.finishAt, campaignHistory.createdAt))) AS average_visit_time')
+            ->where('campaignHistory.campaign = :campaign AND campaignHistory.finishAt IS NOT NULL')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countCollectedContacts(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('campaignHistory')
+            ->select('COUNT(1) AS nb_collected_contacts')
+            ->where('campaignHistory.campaign = :campaign AND campaignHistory.emailAddress IS NOT NULL AND campaignHistory.emailAddress != \'\'')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countVisitedDoors(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('campaignHistory')
+
+            ->select('COUNT(DISTINCT CONCAT_WS(\'-\', building.id, campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door)) AS nb_visited_doors')
+            ->innerJoin('campaignHistory.building', 'building')
+            ->where('campaignHistory.campaign = :campaign AND campaignHistory.door IS NOT NULL')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
