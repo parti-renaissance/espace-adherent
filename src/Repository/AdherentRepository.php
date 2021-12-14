@@ -244,23 +244,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     /**
-     * Returns the total number of active Adherent accounts.
-     */
-    public function countActiveAdherents(): int
-    {
-        $query = $this
-            ->createQueryBuilder('a')
-            ->select('COUNT(a.uuid)')
-            ->where('a.status = :status')
-            ->andWhere('a.adherent = 1')
-            ->setParameter('status', Adherent::ENABLED)
-            ->getQuery()
-        ;
-
-        return (int) $query->getSingleScalarResult();
-    }
-
-    /**
      * Finds the list of adherent matching the given list of UUIDs.
      */
     public function findList(array $uuids): AdherentCollection

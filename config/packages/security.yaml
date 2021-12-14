@@ -494,9 +494,9 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
                 authenticators:
-                    - App\Security\LoginFormAuthenticator
+                    - App\Security\LoginFormGuardAuthenticator
                     - lexik_jwt_authentication.jwt_token_authenticator
-                entry_point: App\Security\LoginFormAuthenticator
+                entry_point: App\Security\LoginFormGuardAuthenticator
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }

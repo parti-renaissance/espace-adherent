@@ -268,3 +268,24 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Given I am logged as "jp@test.com"
     When I am on "/inscription-utilisateur?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
     Then I should be on "https://en-marche.fr/callback"
+
+  Scenario: Password authentication with JeMengage User
+    When I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | 4THZGbOfHJvRHk8bHdtZP3BTrMWFod6bOZb2mY3wLE=  |
+      | client_id     | 4222f4ce-f994-45f7-9ff5-f9f09ab3992b         |
+      | grant_type    | password                                     |
+      | scope         | jecoute_surveys                              |
+      | username      | je-mengage-user-1@en-marche-dev.fr           |
+      | password      | secret!12345                                 |
+    Then the response should be in JSON
+    And the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "token_type": "Bearer",
+      "expires_in": @integer@,
+      "access_token": "@string@",
+      "refresh_token": "@string@"
+    }
+    """

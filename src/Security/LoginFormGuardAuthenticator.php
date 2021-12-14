@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\Adherent;
 use App\Entity\FailedLoginAttempt;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\FailedLoginAttemptRepository;
@@ -24,7 +25,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
+class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
@@ -97,9 +98,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
+    /** @param UserInterface|Adherent $user */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+            return false;
+        }
+
+        if (null !== $user->getSource() && MembershipSourceEnum::COALITIONS !== $user->getSource()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)

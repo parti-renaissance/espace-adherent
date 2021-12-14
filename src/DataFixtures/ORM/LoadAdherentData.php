@@ -29,6 +29,7 @@ use App\Entity\SenatorialCandidateManagedArea;
 use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
+use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -1045,6 +1046,37 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         }
 
         $this->getReference('adherent-32')->setReferent([$this->getReference('referent_tag_de')]);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'je-mengage-user-1@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Jules',
+            'last_name' => 'Fullstack',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1942-01-10',
+            'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330699008800',
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->setSource(MembershipSourceEnum::JE_MENGAGE);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'coalition-user-1@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Luis',
+            'last_name' => 'Phplover',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1942-01-10',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->setSource(MembershipSourceEnum::COALITIONS);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
