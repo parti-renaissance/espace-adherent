@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Normalizer;
+namespace App\Normalizer\Phoning;
 
+use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
 use App\Repository\AdherentRepository;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,13 +16,13 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     private const CAMPAIGN_SCORE_ALREADY_CALLED = 'CAMPAIGN_SCORE_NORMALIZER_ALREADY_CALLED';
 
-    private $adherentRepository;
-    private $tokenStorage;
+    private AdherentRepository $adherentRepository;
+    private Security $security;
 
-    public function __construct(AdherentRepository $adherentRepository, TokenStorageInterface $tokenStorage)
+    public function __construct(AdherentRepository $adherentRepository, Security $security)
     {
         $this->adherentRepository = $adherentRepository;
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
     }
 
     /**
@@ -33,7 +34,8 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
 
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
-        $caller = $this->tokenStorage->getToken()->getUser();
+        /** @var Adherent $caller */
+        $caller = $this->security->getUser();
         $callerId = $caller->getId();
 
         if (isset($context['item_operation_name']) && 'get_with_scores_public' === $context['item_operation_name']) {

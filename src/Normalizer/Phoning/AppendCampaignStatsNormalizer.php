@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Normalizer;
+namespace App\Normalizer\Phoning;
 
 use App\Entity\Phoning\Campaign;
 use App\Repository\Phoning\CampaignHistoryRepository;
@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -33,30 +33,13 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         $campaign['nb_calls'] = $object->getCampaignHistoriesCount();
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
 
-        $stats = [
-            'nb_un_join' => 0,
-            'nb_un_subscribe' => 0,
-            'to_remind' => 0,
-            'not_respond' => 0,
-            'nb_failed' => 0,
-            'average_calling_time' => 0,
-        ];
-
-        if (isset($context['item_operation_name']) && \in_array($context['item_operation_name'], ['get', 'put'])) {
-            $stats = [
-                'nb_un_join' => $object->getCampaignHistoriesToUnjoin()->count(),
-                'nb_un_subscribe' => $object->getCampaignHistoriesToUnsubscribe()->count(),
-                'to_remind' => $object->getCampaignHistoriesToRemind()->count(),
-                'not_respond' => $object->getCampaignHistoriesNotRespond()->count(),
-                'nb_failed' => $object->getCampaignHistoriesFailed()->count(),
-                'average_calling_time' => $this->campaignHistoryRepository->findPhoningCampaignAverageCallingTime($object),
-            ];
-
-            $campaign = array_merge($campaign, $stats);
-        }
-
-        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
-            $campaign = array_merge($campaign, $stats);
+        if (($context['item_operation_name'] ?? null) === 'get') {
+            $campaign['nb_un_join'] = $object->getCampaignHistoriesToUnjoin()->count();
+            $campaign['nb_un_subscribe'] = $object->getCampaignHistoriesToUnsubscribe()->count();
+            $campaign['to_remind'] = $object->getCampaignHistoriesToRemind()->count();
+            $campaign['not_respond'] = $object->getCampaignHistoriesNotRespond()->count();
+            $campaign['nb_failed'] = $object->getCampaignHistoriesFailed()->count();
+            $campaign['average_calling_time'] = $this->campaignHistoryRepository->findPhoningCampaignAverageCallingTime($object);
         }
 
         return $campaign;
