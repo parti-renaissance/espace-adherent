@@ -44,6 +44,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             $adherent3,
             null,
             new \DateTime('-2 days -15 minutes'),
+            new \DateTime('-2 days'),
             self::HISTORY_1_UUID
         ));
 
@@ -56,7 +57,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             '02',
             $adherent3,
             null,
-            new \DateTime('-2 days -10 minutes')
+            new \DateTime('-2 days -10 minutes'),
+            new \DateTime('-2 days -9 minutes')
         ));
 
         $manager->persist($this->createPapCampaignHistory(
@@ -100,6 +102,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         Adherent $questioner = null,
         Survey $survey = null,
         \DateTime $createdAt = null,
+        \DateTime $finishAt = null,
         string $uuid = null
     ): CampaignHistory {
         $campaignHistory = new CampaignHistory($uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
@@ -110,6 +113,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $campaignHistory->setFloor($floor);
         $campaignHistory->setDoor($door);
         $campaignHistory->setCreatedAt($createdAt ?? new \DateTime('-10 minutes'));
+        $campaignHistory->setFinishAt($finishAt ?? new \DateTime('-5 minutes'));
         $campaignHistory->setQuestioner($questioner);
 
         if ($survey) {
@@ -117,6 +121,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             if ($questioner) {
                 $dataSurvey->setAuthor($questioner);
                 $dataSurvey->setAuthorPostalCode($questioner->getPostalCode());
+                $campaignHistory->setEmailAddress(sprintf('%s-%s-%s@test-en-marche-dev.com', $building->getId(), $buildingBlock, $floor));
             }
 
             $campaignHistory->setDataSurvey($dataSurvey);

@@ -166,7 +166,11 @@ Feature:
         "brief": null,
         "goal": 100,
         "finish_at": "@string@.isDateTime()",
-        "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb"
+        "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+        "nb_surveys": 0,
+        "nb_visited_doors": 0,
+        "nb_collected_contacts": 0,
+        "average_visit_time": 0
     }
     """
 
@@ -654,7 +658,11 @@ Feature:
         "survey": {
             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
         },
-        "uuid": "@uuid@"
+        "uuid": "@uuid@",
+        "nb_surveys": 0,
+        "nb_visited_doors": 0,
+        "nb_collected_contacts": 0,
+        "average_visit_time": 0
     }
     """
 
@@ -684,7 +692,11 @@ Feature:
         "survey": {
             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
         },
-        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "nb_surveys": 1,
+        "nb_visited_doors": 3,
+        "nb_collected_contacts": 1,
+        "average_visit_time": 320
     }
     """
 

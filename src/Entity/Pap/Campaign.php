@@ -247,6 +247,16 @@ class Campaign implements IndexableEntityInterface
         return null !== $this->finishAt && $this->finishAt <= new \DateTime();
     }
 
+    /**
+     * @return CampaignHistory[]|Collection
+     */
+    public function getCampaignHistoriesWithDataSurvey(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->getDataSurvey();
+        });
+    }
+
     public function getIndexOptions(): array
     {
         return [];
