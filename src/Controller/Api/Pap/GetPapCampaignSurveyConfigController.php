@@ -41,12 +41,8 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                             'type' => 'text',
                         ],
                     ],
-                    'door_status' => [
-                        self::transformStatusArray(CampaignHistoryStatusEnum::DOOR_STATUS),
-                    ],
-                    'response_status' => [
-                        self::transformStatusArray(CampaignHistoryStatusEnum::RESPONSE_STATUS),
-                    ],
+                    'door_status' => self::transformStatusArray(CampaignHistoryStatusEnum::DOOR_STATUS),
+                    'response_status' => self::transformStatusArray(CampaignHistoryStatusEnum::RESPONSE_STATUS),
                 ],
                 'after_survey' => [
                     [

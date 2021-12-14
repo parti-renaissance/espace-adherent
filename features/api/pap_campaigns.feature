@@ -250,32 +250,28 @@ Feature:
              }
           ],
           "door_status": [
-             [
-                {
-                   "code": "door_open",
-                   "label": "Porte ouverte"
-                },
-                {
-                   "code": "door_closed",
-                   "label": "Porte fermée"
-                }
-             ]
+              {
+                 "code": "door_open",
+                 "label": "Porte ouverte"
+              },
+              {
+                 "code": "door_closed",
+                 "label": "Porte fermée"
+              }
           ],
           "response_status": [
-             [
-                {
-                   "code": "accept_to_answer",
-                   "label": "Accepte de répondre aux questions"
-                },
-                {
-                   "code": "dont_accept_to_answer",
-                   "label": "N'accepte pas"
-                },
-                {
-                   "code": "contact_later",
-                   "label": "Repasser plus tard"
-                }
-             ]
+              {
+                 "code": "accept_to_answer",
+                 "label": "Accepte de répondre aux questions"
+              },
+              {
+                 "code": "dont_accept_to_answer",
+                 "label": "N'accepte pas"
+              },
+              {
+                 "code": "contact_later",
+                 "label": "Repasser plus tard"
+              }
           ]
        },
        "after_survey": [
