@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set address = object.building.address %}
+    {{ address.number }} {{ address.address }},<br />
+    {{ address.postalCodes|join(', ') }} {{ address.cityName }}
+{% endblock %}

@@ -104,7 +104,6 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('goal', null, [
                 'label' => 'Objectif de la campagne',
-                'template' => 'admin/pap/campaign/list_goal.html.twig',
             ])
             ->add('beginAt', null, [
                 'label' => 'Date de début',
@@ -116,6 +115,9 @@ class CampaignAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'actions' => [
                     'edit' => [],
+                    'visited_doors' => [
+                        'template' => 'admin/pap/campaign/list_action_visited_doors.html.twig',
+                    ],
                 ],
             ])
         ;

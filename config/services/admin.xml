@@ -543,6 +543,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.pap.campaign_history" class="App\Admin\Pap\CampaignHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Portes frappées" group="Porte-à-porte" />
+
+            <argument />
+            <argument>App\Entity\Pap\CampaignHistory</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Instances
