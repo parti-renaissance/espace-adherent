@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @Route("/v3/teams/{uuid}/add-members", requirements={"uuid": "%pattern_uuid%"}, name="api_team_add_members", methods={"PUT"})
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'team')")
+ * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('CAN_EDIT_TEAM', team)")
  */
 class AddTeamMembersController extends AbstractController
 {

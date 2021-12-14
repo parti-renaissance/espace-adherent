@@ -6,21 +6,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Team\Team;
-use App\Scope\AuthorizationChecker;
-use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use App\Team\TeamVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
 final class TeamScopeFilter extends AbstractContextAwareFilter
 {
     private const OPERATION_NAMES = ['get'];
 
-    private ?GeneralScopeGenerator $generalScopeGenerator = null;
     private ?Security $security = null;
-    private ?AuthorizationChecker $authorizationChecker = null;
+    private ?ScopeGeneratorResolver $scopeGeneratorResolver = null;
 
     protected function filterProperty(
         string $property,
@@ -31,11 +28,15 @@ final class TeamScopeFilter extends AbstractContextAwareFilter
         string $operationName = null
     ) {
         $user = $this->security->getUser();
-        $scopeGenerator = $this->authorizationChecker->getScopeGenerator($this->requestStack->getMasterRequest(), $user);
+
+        if (!$user instanceof Adherent) {
+            return;
+        }
+
+        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
 
         if (
-            (!$user instanceof Adherent)
-            || !is_a($resourceClass, Team::class, true)
+            !is_a($resourceClass, Team::class, true)
             || !\in_array($operationName, self::OPERATION_NAMES, true)
             || null === $scopeGenerator
         ) {
@@ -72,29 +73,7 @@ final class TeamScopeFilter extends AbstractContextAwareFilter
 
     public function getDescription(string $resourceClass): array
     {
-        return [
-            self::PROPERTY_NAME => [
-                'property' => null,
-                'type' => 'string',
-                'required' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @required
-     */
-    public function setGeneralScopeGenerator(GeneralScopeGenerator $generalScopeGenerator): void
-    {
-        $this->generalScopeGenerator = $generalScopeGenerator;
-    }
-
-    /**
-     * @required
-     */
-    public function setAuthorizationChecker(AuthorizationChecker $authorizationChecker): void
-    {
-        $this->authorizationChecker = $authorizationChecker;
+        return [];
     }
 
     /**
@@ -108,8 +87,8 @@ final class TeamScopeFilter extends AbstractContextAwareFilter
     /**
      * @required
      */
-    public function setRequestStack(RequestStack $requestStack): void
+    public function setScopeGeneratorResolver(ScopeGeneratorResolver $scopeGeneratorResolver): void
     {
-        $this->requestStack = $requestStack;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 }

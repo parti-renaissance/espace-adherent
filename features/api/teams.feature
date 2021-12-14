@@ -69,7 +69,7 @@ Feature:
     And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [{}]
-    """As a logged-in user with phoning team manager right I can add an adherent to a team
+    """
     Then the response status code should be 400
     And the JSON should be equal to:
     """
@@ -610,4 +610,118 @@ Feature:
       "name": "Equipe d'appel - 59"
     }
     """
+    Then the response status code should be 401
+
+  Scenario: As a user granted with team feature, I can add a member to a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [
+      {
+        "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
+      }
+    ]
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": [
+        {
+          "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
+          "first_name": "Benjamin",
+          "last_name": "Duroc",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "13003"
+        },
+        {
+          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+          "first_name": "Lucie",
+          "last_name": "Olivera",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "75009"
+        },
+        {
+          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+          "first_name": "Jacques",
+          "last_name": "Picard",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "75008"
+        },
+        {
+          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+          "first_name": "Pierre",
+          "last_name": "Kiroule",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "10019"
+        },
+        {
+          "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
+          "first_name": "Député",
+          "last_name": "PARIS I",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "75008"
+        }
+      ]
+    }
+    """
+
+  Scenario: As an anonymous user, I can not add a member to a team
+    When I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [
+      {
+        "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
+      }
+    ]
+    """
+    Then the response status code should be 401
+
+  Scenario: As a user granted with team feature, I can remove a member from a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": [
+        {
+          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+          "first_name": "Lucie",
+          "last_name": "Olivera",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "75009"
+        },
+        {
+          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+          "first_name": "Jacques",
+          "last_name": "Picard",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "75008"
+        },
+        {
+          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+          "first_name": "Pierre",
+          "last_name": "Kiroule",
+          "registered_at": "@string@.isDateTime()",
+          "postal_code": "10019"
+        }
+      ]
+    }
+    """
+
+  Scenario: As an anonymous user, I can not remove a member from a team
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
     Then the response status code should be 401
