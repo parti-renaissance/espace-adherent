@@ -29,8 +29,6 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
         }
 
         if ($this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
-            sleep(11);
-
             $queryBuilder
                 ->andWhere(sprintf('%1$s.published = 1 AND %1$s.createdAt >= :date', $queryBuilder->getRootAliases()[0]))
                 ->setParameter('date', (new \DateTime('-60 days'))->setTime(0, 0))

@@ -200,7 +200,6 @@
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\BaseEventExtension">
-            <argument key="$canaryMode">%env(bool:ENABLE_CANARY)%</argument>
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\GeoZoneExtension">
