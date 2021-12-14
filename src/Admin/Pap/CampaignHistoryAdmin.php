@@ -2,8 +2,8 @@
 
 namespace App\Admin\Pap;
 
+use App\Admin\AbstractAdmin;
 use App\Pap\CampaignHistoryStatusEnum;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;

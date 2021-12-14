@@ -2,8 +2,7 @@
 
 {% block field %}
     {% if object.dataSurvey %}
-        {% set type = object.dataSurvey.survey is instanceof('App\\Entity\\Jecoute\\NationalSurvey') ? 'national' : 'local' %}
-        <a href="{{ path('admin_app_jecoute_'~type~'survey_edit', { id: object.dataSurvey.survey.id }) }}">
+        <a href="{{ path('admin_app_jecoute_'~(object.dataSurvey.survey.getType())~'survey_edit', { id: object.dataSurvey.survey.id }) }}">
             {{ object.dataSurvey.survey.name }}
         </a>
     {% endif %}
