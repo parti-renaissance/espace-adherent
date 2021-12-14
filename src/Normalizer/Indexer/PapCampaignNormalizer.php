@@ -3,7 +3,6 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Pap\Campaign;
-use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
 class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -16,11 +15,6 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getTitle(object $object): string
     {
         return $object->getTitle();
-    }
-
-    protected function getType(): string
-    {
-        return JeMengageTimelineFeedEnum::PAP_CAMPAIGN;
     }
 
     /** @param Campaign $object */

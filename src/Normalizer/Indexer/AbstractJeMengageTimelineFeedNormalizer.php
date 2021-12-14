@@ -2,6 +2,8 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\JeMengage\Timeline\TimelineFeedTypeEnum;
+
 abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNormalizer
 {
     final public function normalize($object, $format = null, array $context = [])
@@ -19,18 +21,6 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         ];
     }
 
-    abstract protected function getTitle(object $object): string;
-
-    abstract protected function getType(): string;
-
-    abstract protected function getDescription(object $object): ?string;
-
-    abstract protected function isLocal(object $object): bool;
-
-    abstract protected function getDate(object $object): ?\DateTime;
-
-    abstract protected function getAuthor(object $object): ?string;
-
     protected function getTimeZone(object $object): ?string
     {
         return 'Europe/Paris';
@@ -40,4 +30,19 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     {
         return null;
     }
+
+    final private function getType(): string
+    {
+        return TimelineFeedTypeEnum::CLASS_MAPPING[$this->getClassName()];
+    }
+
+    abstract protected function getTitle(object $object): string;
+
+    abstract protected function getDescription(object $object): ?string;
+
+    abstract protected function isLocal(object $object): bool;
+
+    abstract protected function getDate(object $object): ?\DateTime;
+
+    abstract protected function getAuthor(object $object): ?string;
 }

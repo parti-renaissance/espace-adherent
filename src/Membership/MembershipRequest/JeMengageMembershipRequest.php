@@ -68,6 +68,6 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
 
     final public function getSource(): string
     {
-        return MembershipSourceEnum::JE_MENGAGE;
+        return MembershipSourceEnum::JEMENGAGE;
     }
 }

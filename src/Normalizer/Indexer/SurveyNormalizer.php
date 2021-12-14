@@ -4,7 +4,6 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\Survey;
-use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
 class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -17,11 +16,6 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getTitle(object $object): string
     {
         return $object->getName();
-    }
-
-    protected function getType(): string
-    {
-        return JeMengageTimelineFeedEnum::SURVEY;
     }
 
     /** @param Survey $object */

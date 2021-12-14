@@ -58,7 +58,7 @@ class MembershipRequestHandler
     public function initialiseMembershipRequest(?string $source): MembershipInterface
     {
         switch ($source) {
-            case MembershipSourceEnum::JE_MENGAGE:
+            case MembershipSourceEnum::JEMENGAGE:
                 return new JeMengageMembershipRequest();
             case MembershipSourceEnum::COALITIONS:
                 return new CoalitionMembershipRequest();

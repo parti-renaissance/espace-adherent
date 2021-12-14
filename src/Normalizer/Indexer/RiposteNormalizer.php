@@ -3,7 +3,6 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Jecoute\Riposte;
-use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
 class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -16,11 +15,6 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getTitle(object $object): string
     {
         return $object->getTitle();
-    }
-
-    protected function getType(): string
-    {
-        return JeMengageTimelineFeedEnum::RIPOSTE;
     }
 
     /** @param Riposte $object */
