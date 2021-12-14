@@ -21,6 +21,8 @@ twig:
         em_api_host:            "%env(EM_API_HOST)%"
         coalitions_host:        "%env(COALITIONS_HOST)%"
         coalitions_auth_host:   "%env(COALITIONS_AUTH_HOST)%"
+        jemengage_host:         "%env(JEMENGAGE_HOST)%"
+        jemengage_auth_host:    "%env(JEMENGAGE_AUTH_HOST)%"
         adherent_interests:     "%adherent_interests%"
         dpt_api_host:           "%env(DPT_API_HOST)%"
         data_corner_host:       "%env(DATA_CORNER_HOST)%"

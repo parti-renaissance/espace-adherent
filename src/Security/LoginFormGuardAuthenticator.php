@@ -155,7 +155,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         if ($this->currentRequest && $this->currentRequest->attributes->get('app_domain') === $this->coalitionAuthHost) {
-            return $this->urlGenerator->generate('app_coalition_login');
+            return $this->urlGenerator->generate('app_coalitions_login');
         }
 
         return $this->urlGenerator->generate('app_user_login');

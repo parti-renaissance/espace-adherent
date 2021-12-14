@@ -33,11 +33,11 @@ class SecurityController extends AbstractController
         AuthenticationUtils $securityUtils,
         FormFactoryInterface $formFactory
     ): Response {
-        $coalition = $request->attributes->getBoolean('coalition');
+        $currentApp = $request->attributes->get('app');
 
         if ($this->getUser()) {
-            if ($coalition) {
-                return $this->redirect($this->getParameter('coalitions_host'));
+            if ($currentApp) {
+                return $this->redirect($this->getParameter($currentApp.'_host'));
             }
 
             return $this->redirectToRoute('app_search_events');
@@ -47,7 +47,7 @@ class SecurityController extends AbstractController
             '_login_email' => $securityUtils->getLastUsername(),
         ]);
 
-        return $this->render($coalition ? 'security/coalition_user_login.html.twig' : 'security/adherent_login.html.twig', [
+        return $this->render($currentApp ? sprintf('security/%s_user_login.html.twig', $currentApp) : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
@@ -69,11 +69,11 @@ class SecurityController extends AbstractController
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository
     ): Response {
-        $coalition = $request->attributes->getBoolean('coalition');
+        $currentApp = $request->attributes->get('app');
 
         if ($this->getUser()) {
-            if ($coalition) {
-                return $this->redirect($this->getParameter('coalitions_host'));
+            if ($currentApp) {
+                return $this->redirect($this->getParameter($currentApp.'_host'));
             }
 
             return $this->redirectToRoute('app_search_events');
@@ -94,15 +94,14 @@ class SecurityController extends AbstractController
 
             $this->addFlash('info', 'adherent.reset_password.email_sent');
 
-            if ($coalition) {
-                return $this->redirectToRoute('app_coalition_login');
+            if ($currentApp) {
+                return $this->redirectToRoute(sprintf('app_%s_login', $currentApp));
             }
 
             return $this->redirectToRoute('app_user_login');
         }
 
-        return $this->render($coalition ? 'security/coalition_forgot_password.html.twig' : 'security/forgot_password.html.twig', [
-            'legacy' => $request->query->getBoolean('legacy'),
+        return $this->render($currentApp ? sprintf('security/%s_forgot_password.html.twig', $currentApp) : 'security/forgot_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }
