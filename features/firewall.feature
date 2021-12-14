@@ -49,7 +49,7 @@ Feature:
     When I press "Connexion"
     Then I should be on "/evenements"
 
-  Scenario: As an JeMengage user I cannot login by form
+  Scenario: As a JeMengage user I cannot login by form
     Given I am on "/connexion"
     And I fill in the following:
       | _login_email    | je-mengage-user-1@en-marche-dev.fr |
