@@ -43,7 +43,7 @@ class LoadFacebookVideoData extends Fixture
             $video = new FacebookVideo();
             $video->setFacebookUrl('https://www.facebook.com/EnMarche/videos/1946206882278555/');
             $video->setDescription($faker->sentence());
-            $video->setAuthor($faker->name);
+            $video->setAuthor($faker->name());
             $video->setPosition($i + 4);
             $video->setPublished(true);
             $manager->persist($video);

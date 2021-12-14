@@ -59,7 +59,7 @@ class LoadArticleData extends Fixture
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -71,7 +71,7 @@ class LoadArticleData extends Fixture
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'category' => $opinionsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -83,7 +83,7 @@ class LoadArticleData extends Fixture
             'media' => $media,
             'displayMedia' => true,
             'published' => false,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'category' => $newsCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -95,7 +95,7 @@ class LoadArticleData extends Fixture
             'media' => $media,
             'displayMedia' => false,
             'published' => true,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'category' => $speechCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -107,7 +107,7 @@ class LoadArticleData extends Fixture
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
-            'publishedAt' => $faker->dateTimeThisDecade,
+            'publishedAt' => $faker->dateTimeThisDecade(),
             'category' => $noDisplayCategory,
             'content' => file_get_contents(__DIR__.'/../content.md'),
         ]));
@@ -122,7 +122,7 @@ class LoadArticleData extends Fixture
                     'media' => $media,
                     'displayMedia' => false,
                     'published' => true,
-                    'publishedAt' => $faker->dateTimeThisDecade,
+                    'publishedAt' => $faker->dateTimeThisDecade(),
                     'category' => $category,
                     'content' => file_get_contents(__DIR__.'/../content.md'),
                 ]));

@@ -62,7 +62,6 @@ class LoadNationalCouncilElectionData extends Fixture implements DependentFixtur
                  'image.jpg',
                  'image/jpeg',
                  null,
-                 null,
                  true
             ));
             $this->imageManager->saveImage($candidacy);

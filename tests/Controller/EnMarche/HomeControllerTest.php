@@ -29,13 +29,6 @@ class HomeControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
 
-    public function testHealth(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/health');
-
-        $this->isSuccessful($this->client->getResponse());
-    }
-
     /**
      * @dataProvider provideSitemaps
      */

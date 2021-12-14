@@ -1,12 +1,4 @@
 #
-# Health
-#
-app_health:
-    host:     "%app_host%"
-    resource: "../src/Controller/HealthController.php"
-    type:     "annotation"
-
-#
 # Coalition
 #
 app_coalition_login:
