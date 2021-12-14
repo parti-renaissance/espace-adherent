@@ -268,7 +268,7 @@ services:
     League\OAuth2\Server\Repositories\ScopeRepositoryInterface: '@App\OAuth\Store\ScopeStore'
 
     League\OAuth2\Server\AuthorizationServer:
-        factory: 'App\OAuth\AuthorizationServerFactory::createServer'
+        factory: 'App\OAuth\AuthorizationServerFactory:createServer'
 
     League\OAuth2\Server\ResourceServer:
         arguments:
