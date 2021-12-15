@@ -806,17 +806,11 @@ Feature:
       "updated_at": "@string@.isDateTime()",
       "creator": "Referent R.",
       "nb_calls": 0,
-      "nb_surveys": 0,
-      "nb_un_join": 0,
-      "nb_un_subscribe": 0,
-      "to_remind": 0,
-      "not_respond": 0,
-      "nb_failed": 0,
-      "average_calling_time": 0
+      "nb_surveys": 0
     }
     """
 
-  Scenario: As a DC referent I cannot create a ne phoning campaign without the title the goal or the survey
+  Scenario: As a DC referent I cannot create a phoning campaign without the title the goal or the survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
@@ -945,13 +939,7 @@ Feature:
       "updated_at": "@string@.isDateTime()",
       "creator": "Admin",
       "nb_calls": 12,
-      "nb_surveys": 6,
-      "nb_un_join": 1,
-      "nb_un_subscribe": 1,
-      "to_remind": 1,
-      "not_respond": 2,
-      "nb_failed": 1,
-      "average_calling_time": 0
+      "nb_surveys": 6
     }
     """
 

@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -33,32 +33,16 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     {
         $context[self::CAMPAIGN_ALREADY_CALLED] = true;
 
-        if (!$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', 'pap')) {
-            return $this->normalizer->normalize($object, $format, $context);
-        }
-
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
-        if (isset($context['item_operation_name']) && \in_array($context['item_operation_name'], ['get', 'put'])) {
-            $stats = [
-                'nb_surveys' => $object->getCampaignHistoriesWithDataSurvey()->count(),
-                'nb_visited_doors' => $this->campaignHistoryRepository->countVisitedDoors($object),
-                'nb_collected_contacts' => $this->campaignHistoryRepository->countCollectedContacts($object),
-                'average_visit_time' => $this->campaignHistoryRepository->findCampaignAverageVisitTime($object),
-            ];
-
-            $campaign = array_merge($campaign, $stats);
+        if (!$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', 'pap')) {
+            return $campaign;
         }
 
-        if (isset($context['collection_operation_name']) && 'post' === $context['collection_operation_name']) {
-            $stats = [
-                'nb_surveys' => $object->getCampaignHistoriesWithDataSurvey()->count(),
-                'nb_visited_doors' => 0,
-                'nb_collected_contacts' => 0,
-                'average_visit_time' => 0,
-            ];
-            $campaign = array_merge($campaign, $stats);
-        }
+        $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
+        $campaign['nb_visited_doors'] = $this->campaignHistoryRepository->countVisitedDoors($object);
+        $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object);
+        $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object);
 
         return $campaign;
     }
@@ -68,6 +52,8 @@ class CampaignNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         return
             empty($context[self::CAMPAIGN_ALREADY_CALLED])
             && $data instanceof Campaign
+            && \in_array('pap_campaign_read', $context['groups'] ?? [])
+            && ($context['item_operation_name'] ?? null) === 'get'
         ;
     }
 }
