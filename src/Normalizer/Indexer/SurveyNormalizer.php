@@ -31,6 +31,12 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Survey $object */
+    protected function isNational(object $object): bool
+    {
+        return $object->isNational();
+    }
+
+    /** @param Survey $object */
     protected function getDate(object $object): ?\DateTime
     {
         return $object->getCreatedAt();
@@ -40,5 +46,11 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getAuthor(object $object): ?string
     {
         return is_a($object, LocalSurvey::class) && $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
+    }
+
+    /** @param Survey $object */
+    protected function getZoneCodes(object $object): ?array
+    {
+        return $this->buildZoneCodes($object->isLocal() ? $object->getZone() : null);
     }
 }

@@ -40,4 +40,10 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return null;
     }
+
+    /** @param Campaign $object */
+    protected function isNational(object $object): bool
+    {
+        return true;
+    }
 }

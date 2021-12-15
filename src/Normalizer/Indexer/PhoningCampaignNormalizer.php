@@ -43,4 +43,15 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return $object->getCreatedByAdherent() ? $object->getCreatedByAdherent()->getFullName() : null;
     }
+
+    /** @param Campaign $object */
+    protected function getAdherentIds(object $object): ?array
+    {
+        return $object->getTeam()
+             ? array_values(array_unique(array_filter(array_map(function (Member $member): ?int {
+                 return $member->getAdherent() ? $member->getAdherent()->getId() : null;
+             }, $object->getTeam()->getMembers()->toArray()))))
+             : null
+         ;
+    }
 }
