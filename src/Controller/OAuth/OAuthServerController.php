@@ -32,7 +32,14 @@ class OAuthServerController extends AbstractController
     }
 
     /**
-     * @Route("/auth", name="app_front_oauth_authorize", methods={"GET", "POST"})
+     * @Route(
+     *     "/auth",
+     *     name="app_front_oauth_authorize",
+     *     methods={"GET", "POST"},
+     *     host="{app_domain}",
+     *     defaults={"app_domain": "%app_host%"},
+     *     requirements={"app_domain": "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"}
+     * )
      * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and not is_granted('ROLE_ADMIN_DASHBOARD')")
      */
     public function authorizeAction(Request $request, ClientRepository $repository, OAuthAuthorizationManager $manager)
