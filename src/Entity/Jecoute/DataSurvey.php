@@ -60,7 +60,12 @@ class DataSurvey implements AuthorInterface
      *
      * @Assert\NotBlank
      *
-     * @Groups({"phoning_campaign_history_read_list", "campaign_replies_list", App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP})
+     * @Groups({
+     *     "phoning_campaign_history_read_list",
+     *     "campaign_replies_list",
+     *     App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP,
+     *     "pap_campaign_history_read_list",
+     * })
      */
     private $survey;
 

@@ -24,6 +24,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $campaign1 = $this->getReference('pap-campaign-1');
         /** @var Campaign $campaign2 */
         $campaign2 = $this->getReference('pap-campaign-2');
+        /** @var Campaign $campaignFinished */
+        $campaignFinished = $this->getReference('pap-campaign-finished');
 
         $adherent3 = $this->getReference('adherent-3');
         $adherent12 = $this->getReference('adherent-12');
@@ -88,6 +90,21 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         ));
         $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(3)->findStatisticsForCampaign($campaign1);
         $stats->setVisitedDoors(['33']);
+
+        $manager->persist($this->createPapCampaignHistory(
+            $campaignFinished,
+            $building3,
+            CampaignHistoryStatusEnum::CONTACT_LATER,
+            'A',
+            0,
+            '01',
+            $adherent12,
+            null,
+            new \DateTime('2021-11-10 10:10:10'),
+            new \DateTime('2021-11-10 10:12:30')
+        ));
+        $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaignFinished);
+        $stats->setVisitedDoors(['01']);
 
         $manager->flush();
     }

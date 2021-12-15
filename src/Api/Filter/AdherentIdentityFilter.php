@@ -4,12 +4,13 @@ namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Phoning\CampaignHistory;
+use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
+use App\Entity\Phoning\CampaignHistory as PhoningCampaignHistory;
 use Doctrine\ORM\QueryBuilder;
 
 class AdherentIdentityFilter extends AbstractContextAwareFilter
 {
-    private const PROPERTY_NAMES = ['adherent', 'caller'];
+    private const PROPERTY_NAMES = ['adherent', 'caller', 'questioner'];
     private const OPERATION_NAMES = ['get'];
 
     protected function filterProperty(
@@ -21,7 +22,7 @@ class AdherentIdentityFilter extends AbstractContextAwareFilter
         string $operationName = null
     ) {
         if (
-            CampaignHistory::class !== $resourceClass
+            !\in_array($resourceClass, [PhoningCampaignHistory::class, PapCampaignHistory::class])
             || !\in_array($property, self::PROPERTY_NAMES, true)
             || empty($value)
             || !\in_array($operationName, self::OPERATION_NAMES, true)

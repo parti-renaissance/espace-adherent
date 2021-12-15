@@ -168,9 +168,9 @@ Feature:
         "finish_at": "@string@.isDateTime()",
         "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
         "nb_surveys": 0,
-        "nb_visited_doors": 0,
+        "nb_visited_doors": 1,
         "nb_collected_contacts": 0,
-        "average_visit_time": 0
+        "average_visit_time": 140
     }
     """
 
@@ -755,6 +755,352 @@ Feature:
     ]
     """
 
+  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 5,
+            "items_per_page": 10,
+            "count": 5,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "door_open",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 900
+            },
+            {
+                "questioner": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "dont_accept_to_answer",
+                "building_block": "A",
+                "floor": 0,
+                "door": "02",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 60
+            },
+            {
+                "questioner": {
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès"
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "11",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 0
+            },
+            {
+                "questioner": {
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule"
+                },
+                "campaign": {
+                    "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 3,
+                "door": "33",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule"
+                },
+                "campaign": {
+                    "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "2021-11-10T10:10:10+01:00",
+                "duration": 140
+            }
+        ]
+    }
+    """
+
+  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by questioner
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&questioner=Patrick"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 2,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès"
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "11",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 0
+            }
+        ]
+    }
+    """
+
+  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by status
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&status=contact_later"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 2,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule"
+                },
+                "campaign": {
+                    "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 3,
+                "door": "33",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule"
+                },
+                "campaign": {
+                    "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "2021-11-10T10:10:10+01:00",
+                "duration": 140
+            }
+        ]
+    }
+    """
+
+  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by begin date
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&createdAt[after]=2021-11-09&createdAt[before]=2021-12-11"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 2,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule"
+                },
+                "campaign": {
+                    "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    }
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "2021-11-10T10:10:10+01:00",
+                "duration": 140
+            }
+        ]
+    }
+    """
+
   Scenario: As a DC PAP national manger I can get PAP campaigns KPI
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=pap_national_manager"
@@ -764,7 +1110,7 @@ Feature:
     {
         "nb_campaigns": "5",
         "nb_ongoing_campaigns": "4",
-        "nb_visited_doors": "4",
+        "nb_visited_doors": "5",
         "nb_visited_doors_last_30d": "4",
         "nb_surveys": "1",
         "nb_surveys_last_30d": "1"

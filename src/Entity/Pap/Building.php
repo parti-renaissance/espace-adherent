@@ -42,6 +42,8 @@ class Building implements CampaignStatisticsOwnerInterface
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"pap_campaign_history_read_list"})
      */
     private ?Address $address = null;
 
