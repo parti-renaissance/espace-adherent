@@ -4,7 +4,7 @@ namespace App\Controller\Api\JeMengage;
 
 use App\Algolia\SearchService;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
-use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
+use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\OAuth\Model\DeviceApiUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,8 +46,8 @@ class GetTimelineFeedsController extends AbstractController
 
         if ($user instanceof DeviceApiUser) {
             $tagFilters[] = [
-                JeMengageTimelineFeedEnum::NEWS,
-                JeMengageTimelineFeedEnum::SURVEY,
+                TimelineFeedTypeEnum::NEWS,
+                TimelineFeedTypeEnum::SURVEY,
             ];
         } else {
             $filters[] = 'adherent_ids:'.$user->getId();

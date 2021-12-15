@@ -3,6 +3,7 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Phoning\Campaign;
+use App\Entity\Team\Member;
 
 class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
