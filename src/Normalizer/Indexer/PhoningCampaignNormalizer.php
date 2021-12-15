@@ -3,6 +3,7 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Phoning\Campaign;
+use App\Entity\Team\Member;
 
 class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -42,5 +43,16 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getAuthor(object $object): ?string
     {
         return $object->getCreatedByAdherent() ? $object->getCreatedByAdherent()->getFullName() : null;
+    }
+
+    /** @param Campaign $object */
+    protected function getAdherentIds(object $object): ?array
+    {
+        return $object->getTeam()
+             ? array_values(array_unique(array_filter(array_map(function (Member $member): ?int {
+                 return $member->getAdherent() ? $member->getAdherent()->getId() : null;
+             }, $object->getTeam()->getMembers()->toArray()))))
+             : null
+         ;
     }
 }

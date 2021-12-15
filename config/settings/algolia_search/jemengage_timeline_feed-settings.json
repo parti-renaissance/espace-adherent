@@ -4,18 +4,39 @@
     "hitsPerPage": 20,
     "maxValuesPerFacet": 100,
     "version": 2,
-    "attributesToIndex": null,
+    "searchableAttributes": [
+        "unordered(title)",
+        "unordered(description)"
+    ],
     "numericAttributesToIndex": null,
-    "attributesToRetrieve": null,
-    "unretrievableAttributes": null,
+    "attributesToRetrieve": [
+        "author",
+        "date",
+        "description",
+        "image",
+        "is_local",
+        "time_zone",
+        "title",
+        "type"
+    ],
+    "unretrievableAttributes": [],
     "optionalWords": null,
-    "attributesForFaceting": null,
+    "queryLanguages": [
+        "fr"
+    ],
+    "attributesForFaceting": [
+        "filterOnly(adherent_ids)",
+        "filterOnly(is_national)",
+        "filterOnly(type)",
+        "filterOnly(zone_codes)"
+    ],
     "attributesToSnippet": null,
     "attributesToHighlight": null,
     "paginationLimitedTo": 1000,
     "attributeForDistinct": null,
     "exactOnSingleWordQuery": "attribute",
     "ranking": [
+        "desc(date)",
         "typo",
         "geo",
         "words",
@@ -35,5 +56,16 @@
     "alternativesAsExact": [
         "ignorePlurals",
         "singleWordSynonym"
+    ],
+    "responseFields": [
+        "hits",
+        "hitsPerPage",
+        "params",
+        "page",
+        "nbPages",
+        "nbHits"
+    ],
+    "indexLanguages": [
+        "fr"
     ]
 }

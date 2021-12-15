@@ -37,6 +37,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
         parent::__construct($entity, $entityIdentifierValues);
 
         $this->id = Uuid::uuid4();
+        $this->objectID = $entity->getUuid()->toString();
     }
 
     public static function getEntities()

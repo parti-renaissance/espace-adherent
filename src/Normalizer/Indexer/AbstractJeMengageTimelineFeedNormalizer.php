@@ -2,6 +2,7 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\Entity\Geo\Zone;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 
 abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNormalizer
@@ -11,14 +12,37 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return [
             'type' => $this->getType(),
             'is_local' => $this->isLocal($object),
-            'uuid' => $object->getUuid()->toString(),
             'title' => $this->getTitle($object),
             'description' => $this->getDescription($object),
             'image' => $this->getImage($object),
             'date' => $this->formatDate($this->getDate($object)),
             'time_zone' => $this->getTimeZone($object),
             'author' => $this->getAuthor($object),
+            'is_national' => $this->isNational($object),
+            'zone_codes' => $this->getZoneCodes($object),
+            'adherent_ids' => $this->getAdherentIds($object),
+            '_tags' => [$this->getType()],
         ];
+    }
+
+    abstract protected function getTitle(object $object): string;
+
+    abstract protected function getDescription(object $object): ?string;
+
+    abstract protected function isLocal(object $object): bool;
+
+    abstract protected function getDate(object $object): ?\DateTime;
+
+    abstract protected function getAuthor(object $object): ?string;
+
+    final private function getType(): string
+    {
+        return TimelineFeedTypeEnum::CLASS_MAPPING[$this->getClassName()];
+    }
+
+    protected function isNational(object $object): bool
+    {
+        return false;
     }
 
     protected function getTimeZone(object $object): ?string
@@ -31,18 +55,28 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
-    final private function getType(): string
+    protected function getZoneCodes(object $object): ?array
     {
-        return TimelineFeedTypeEnum::CLASS_MAPPING[$this->getClassName()];
+        return null;
     }
 
-    abstract protected function getTitle(object $object): string;
+    protected function getAdherentIds(object $object): ?array
+    {
+        return null;
+    }
 
-    abstract protected function getDescription(object $object): ?string;
+    final protected function buildZoneCodes(?Zone $zone): ?array
+    {
+        if (!$zone) {
+            return null;
+        }
 
-    abstract protected function isLocal(object $object): bool;
+        $codes = [sprintf('%s_%s', $zone->getType(), $zone->getCode())];
 
-    abstract protected function getDate(object $object): ?\DateTime;
+        foreach ($zone->getParents() as $parentZone) {
+            $codes[] = sprintf('%s_%s', $parentZone->getType(), $parentZone->getCode());
+        }
 
-    abstract protected function getAuthor(object $object): ?string;
+        return $codes;
+    }
 }

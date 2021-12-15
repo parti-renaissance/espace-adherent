@@ -40,4 +40,16 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
     }
+
+    /** @param News $object */
+    protected function isNational(object $object): bool
+    {
+        return !$object->getSpace();
+    }
+
+    /** @param News $object */
+    protected function getZoneCodes(object $object): ?array
+    {
+        return $this->buildZoneCodes($object->getZone());
+    }
 }

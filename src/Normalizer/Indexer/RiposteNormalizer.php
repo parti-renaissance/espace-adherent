@@ -40,4 +40,10 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
     }
+
+    /** @param Riposte $object */
+    protected function isNational(object $object): bool
+    {
+        return true;
+    }
 }
