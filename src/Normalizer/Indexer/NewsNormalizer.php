@@ -3,7 +3,6 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Jecoute\News;
-use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
 class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -16,11 +15,6 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getTitle(object $object): string
     {
         return $object->getTitle();
-    }
-
-    protected function getType(): string
-    {
-        return JeMengageTimelineFeedEnum::NEWS;
     }
 
     /** @param News $object */

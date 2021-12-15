@@ -88,7 +88,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
-            if ($adherent = $adherentRepository->findOneByEmail($email)) {
+            if (($adherent = $adherentRepository->findOneByEmail($email)) && $currentApp === $adherent->getSource()) {
                 $handler->handle($adherent);
             }
 

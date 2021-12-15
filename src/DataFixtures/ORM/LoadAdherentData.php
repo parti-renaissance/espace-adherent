@@ -1061,7 +1061,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+330699008800',
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
-        $adherent->setSource(MembershipSourceEnum::JE_MENGAGE);
+        $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => Uuid::uuid4(),

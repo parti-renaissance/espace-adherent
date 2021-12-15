@@ -3,7 +3,6 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Phoning\Campaign;
-use App\JeMengageTimelineFeed\JeMengageTimelineFeedEnum;
 
 class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -16,11 +15,6 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getTitle(object $object): string
     {
         return $object->getTitle();
-    }
-
-    protected function getType(): string
-    {
-        return JeMengageTimelineFeedEnum::PHONING_CAMPAIGN;
     }
 
     /** @param Campaign $object */

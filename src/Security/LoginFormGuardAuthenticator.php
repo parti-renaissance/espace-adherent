@@ -5,6 +5,7 @@ namespace App\Security;
 use App\Entity\Adherent;
 use App\Entity\FailedLoginAttempt;
 use App\Membership\MembershipSourceEnum;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,10 +36,8 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     private $anonymousFollowerSession;
     private $failedLoginAttemptRepository;
     private $apiPathPrefix;
-    /** @var Request|null */
-    private $currentRequest;
-    private $coalitionAuthHost;
-    private $coalitionFrontHost;
+    private AuthAppUrlManager $appUrlManager;
+    private ?string $currentAppCode = null;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
@@ -46,9 +45,8 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         UserPasswordEncoderInterface $passwordEncoder,
         AnonymousFollowerSession $anonymousFollowerSession,
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
-        string $apiPathPrefix,
-        string $coalitionAuthHost,
-        string $coalitionFrontHost
+        AuthAppUrlManager $appUrlManager,
+        string $apiPathPrefix
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -56,8 +54,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         $this->anonymousFollowerSession = $anonymousFollowerSession;
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
         $this->apiPathPrefix = $apiPathPrefix;
-        $this->coalitionAuthHost = $coalitionAuthHost;
-        $this->coalitionFrontHost = $coalitionFrontHost;
+        $this->appUrlManager = $appUrlManager;
     }
 
     public function supports(Request $request)
@@ -122,8 +119,9 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        if (($adherent = $token->getUser()) && MembershipSourceEnum::COALITIONS === $adherent->getSource()) {
-            return new RedirectResponse($this->coalitionFrontHost);
+        /** @var Adherent $adherent */
+        if (($adherent = $token->getUser()) && $adherent->getSource()) {
+            return new RedirectResponse($this->appUrlManager->getUrlGenerator($adherent->getSource())->generateHomepageLink());
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_search_events'));
@@ -133,7 +131,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     {
         $this->failedLoginAttemptRepository->save(FailedLoginAttempt::createFromRequest($request));
 
-        $this->currentRequest = $request;
+        $this->currentAppCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
         return parent::onAuthenticationFailure($request, $exception);
     }
@@ -147,15 +145,15 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             return new JsonResponse('Unauthorized', 401);
         }
 
-        $this->currentRequest = $request;
+        $this->currentAppCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
         return parent::start($request, $authException);
     }
 
     protected function getLoginUrl()
     {
-        if ($this->currentRequest && $this->currentRequest->attributes->get('app_domain') === $this->coalitionAuthHost) {
-            return $this->urlGenerator->generate('app_coalitions_login');
+        if ($this->currentAppCode) {
+            return $this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateLoginLink();
         }
 
         return $this->urlGenerator->generate('app_user_login');

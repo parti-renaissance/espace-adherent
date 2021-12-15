@@ -62,6 +62,9 @@ services:
             $enableMunicipalSpace: '%env(bool:ENABLE_MUNICIPAL_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
             $coalitionsHost: '%coalitions_host%'
+            $coalitionsAuthHost: '%coalitions_auth_host%'
+            $jemengageHost: '%jemengage_host%'
+            $jemengageAuthHost: '%jemengage_auth_host%'
             $internalApiProxyClient: '@app.http_client.internal_api_proxy'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
 
@@ -92,6 +95,8 @@ services:
             tags: ['app.managed_user.filer_factory']
         App\AdherentFilter\FilterBuilder\AdherentFilterBuilderInterface:
             tags: [ 'app.adherent_filter.builder' ]
+        App\OAuth\App\AuthAppUrlGeneratorInterface:
+            tags: [ 'app.auth_app.url_generator' ]
 
     # Imports
     App\:
@@ -100,7 +105,6 @@ services:
             - '../src/Admin'
             - '../src/Algolia'
             - '../src/Exception'
-            - '../src/OAuth'
             - '../src/Twig'
             - '../src/Mailchimp'
             - '../src/DependencyInjection'
@@ -153,6 +157,17 @@ services:
     App\ManagedUsers\ManagedUsersFilterFactory:
         arguments:
             $factories: !tagged_iterator 'app.managed_user.filer_factory'
+
+    App\OAuth\App\AuthAppUrlManager:
+        arguments:
+            $urlGenerators: !tagged_iterator {tag: 'app.auth_app.url_generator', default_index_method: 'getAppCode'}
+
+    App\OAuth\AuthorizationServerFactory:
+        arguments:
+            $privateKey: '%env(SSL_PRIVATE_KEY)%'
+            $encryptionKey: '%env(SSL_ENCRYPTION_KEY)%'
+            $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
+            $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
 
     App\AdherentMessage\MessageLimiter:
         arguments:
@@ -244,12 +259,20 @@ services:
     Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface: '@Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory'
     Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface: '@Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory'
 
+    League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface: '@App\OAuth\AuthorizationValidators\JsonWebTokenValidator'
     League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface: '@App\OAuth\Store\AccessTokenStore'
     League\OAuth2\Server\Repositories\UserRepositoryInterface: '@App\OAuth\Repository\OAuthUserRepository'
     League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface: '@App\OAuth\Store\AuthorizationCodeStore'
     League\OAuth2\Server\Repositories\ClientRepositoryInterface: '@App\OAuth\Store\ClientStore'
     League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface: '@App\OAuth\Store\RefreshTokenStore'
     League\OAuth2\Server\Repositories\ScopeRepositoryInterface: '@App\OAuth\Store\ScopeStore'
+
+    League\OAuth2\Server\AuthorizationServer:
+        factory: 'App\OAuth\AuthorizationServerFactory:createServer'
+
+    League\OAuth2\Server\ResourceServer:
+        arguments:
+            $publicKey: '%env(SSL_PUBLIC_KEY)%'
 
     Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
 

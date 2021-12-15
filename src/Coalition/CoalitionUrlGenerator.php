@@ -3,12 +3,16 @@
 namespace App\Coalition;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentResetPasswordToken;
+use App\Entity\AdherentExpirableTokenInterface;
 use App\Entity\Coalition\Cause;
 use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
+use App\Membership\MembershipSourceEnum;
+use App\OAuth\App\AbstractAppUrlGenerator;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class CoalitionUrlGenerator
+class CoalitionUrlGenerator extends AbstractAppUrlGenerator
 {
     private const CAUSE_LINK_PATTERN = '%s/cause/%s';
     private const CAUSE_LIST_LINK_PATTERN = '%s/causes';
@@ -17,11 +21,34 @@ class CoalitionUrlGenerator
     private const CREATE_ACCOUNT_LINK_PATTERN = '%s/inscription';
     private const CREATE_PASSWORD_LINK_PATTERN = '%s/confirmation/%s/%s';
 
-    private $coalitionsHost;
+    private string $coalitionsHost;
+    private string $coalitionsAuthHost;
 
-    public function __construct(string $coalitionsHost)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $coalitionsHost, string $coalitionsAuthHost)
     {
+        parent::__construct($urlGenerator);
+
         $this->coalitionsHost = $coalitionsHost;
+        $this->coalitionsAuthHost = $coalitionsAuthHost;
+    }
+
+    public static function getAppCode(): string
+    {
+        return MembershipSourceEnum::COALITIONS;
+    }
+
+    public function guessAppCodeFromRequest(Request $request): ?string
+    {
+        if ($request->attributes->get('app_domain') === $this->coalitionsAuthHost) {
+            return static::getAppCode();
+        }
+
+        return null;
+    }
+
+    public function generateLoginLink(): string
+    {
+        return $this->urlGenerator->generate('app_coalitions_login');
     }
 
     public function generateHomepageLink(): string
@@ -44,7 +71,7 @@ class CoalitionUrlGenerator
         return sprintf(self::CREATE_ACCOUNT_LINK_PATTERN, $this->coalitionsHost);
     }
 
-    public function generateCreatePasswordLink(Adherent $adherent, AdherentResetPasswordToken $token): string
+    public function generateCreatePasswordLink(Adherent $adherent, AdherentExpirableTokenInterface $token): string
     {
         return sprintf(self::CREATE_PASSWORD_LINK_PATTERN,
             $this->coalitionsHost,

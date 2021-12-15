@@ -5,7 +5,7 @@ Feature:
   I should be able to access API membership
 
   Scenario: As a non logged-in user I can create a JeMengage user
-    Given I send a "POST" request to "/api/membership?source=je_mengage" with body:
+    Given I send a "POST" request to "/api/membership?source=jemengage" with body:
     """
     {
       "email_address": "new-user@en-marche-dev.fr",

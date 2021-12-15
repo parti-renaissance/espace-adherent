@@ -486,7 +486,7 @@ security:
                 token_provider: Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider
             logout:
                 path: logout
-                success_handler: App\Security\AuthenticationHandler
+                success_handler: App\Security\LogoutSuccessHandler
             user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/login_check
