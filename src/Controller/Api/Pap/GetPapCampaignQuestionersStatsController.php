@@ -16,8 +16,8 @@ class GetPapCampaignQuestionersStatsController
     ): PaginatorInterface {
         return $adherentRepository->findFullScoresByPapCampaign(
             $campaign,
-            $request->query->get('page', 1),
-            $request->query->get('page_size', 100)
+            $request->query->getInt('page', 1),
+            $request->query->getInt('page_size', 100)
         );
     }
 }
