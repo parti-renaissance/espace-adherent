@@ -31,6 +31,7 @@ class RemoveTeamMemberController extends AbstractController
         TeamMemberManagementHandler $teamMemberManagementHandler
     ): JsonResponse {
         $teamMemberManagementHandler->handleMemberToRemove($team, $adherent);
+        $team->reorderMembersCollection();
 
         return $this->json(
             $team,

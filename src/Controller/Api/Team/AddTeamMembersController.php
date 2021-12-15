@@ -16,7 +16,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/v3/teams/{uuid}/add-members", requirements={"uuid": "%pattern_uuid%"}, name="api_team_add_members", methods={"PUT"})
+ * @Route(
+ *     "/v3/teams/{uuid}/add-members",
+ *     requirements={"uuid": "%pattern_uuid%"},
+ *     name="api_team_add_members",
+ *     methods={"PUT"}
+ * )
  *
  * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('CAN_EDIT_TEAM', team)")
  */
@@ -29,7 +34,11 @@ class AddTeamMembersController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator
     ): JsonResponse {
-        $newMembers = $serializer->deserialize($request->getContent(), AdherentUuid::class.'[]', JsonEncoder::FORMAT);
+        if (!$content = $request->getContent()) {
+            return $this->json('Request body should not be empty.', Response::HTTP_BAD_REQUEST);
+        }
+
+        $newMembers = $serializer->deserialize($content, AdherentUuid::class.'[]', JsonEncoder::FORMAT);
 
         if (\count($newMembers) < 1) {
             return $this->json('Vous devez fournir l\'id d\'au moins un membre.', Response::HTTP_BAD_REQUEST);

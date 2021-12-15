@@ -63,88 +63,6 @@ Feature:
     ]
     """
 
-  Scenario: As a logged-in user with phoning team manager right I can add an adherent to a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
-    """
-    [{}]
-    """
-    Then the response status code should be 400
-    And the JSON should be equal to:
-    """
-    {
-        "type": "https://symfony.com/errors/validation",
-        "title": "Validation Failed",
-        "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
-        "violations": [
-            {
-                "propertyPath": "[0].adherent_uuid",
-                "title": "Cette valeur ne doit pas être vide.",
-                "parameters": {
-                    "{{ value }}": "null"
-                },
-                "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
-            }
-        ]
-    }
-    """
-    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
-    """
-    [
-      {
-        "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
-      }
-    ]
-    """
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-      "name": "Deuxième équipe de phoning",
-      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
-      "visibility": "national",
-      "zone": null,
-      "creator": "Admin",
-      "members": [
-        {
-          "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
-          "first_name": "Benjamin",
-          "last_name": "Duroc",
-          "registered_at": "2017-01-16T18:33:22+01:00",
-          "postal_code": "13003"
-        },
-        {
-          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-          "first_name": "Lucie",
-          "last_name": "Olivera",
-          "registered_at": "2017-01-18T13:15:28+01:00",
-          "postal_code": "75009"
-        },
-        {
-          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name": "Jacques",
-          "last_name": "Picard",
-          "registered_at": "2017-01-03T08:47:54+01:00",
-          "postal_code": "75008"
-        },
-        {
-          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
-          "first_name": "Pierre",
-          "last_name": "Kiroule",
-          "registered_at": "2017-04-09T06:20:38+02:00",
-          "postal_code": "10019"
-        },
-        {
-          "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
-          "first_name": "Député",
-          "last_name": "PARIS I",
-          "registered_at": "2017-06-01T09:26:31+02:00",
-          "postal_code": "75008"
-        }
-      ]
-    }
-    """
 
   Scenario: As an anonymous I can not remove an adherent from a team
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
@@ -154,125 +72,6 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-17816bf2d819?scope=phoning_national_manager"
     Then the response status code should be 404
-
-  Scenario: As a logged-in user with phoning team manager right I can remove an adherent from a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-      "name": "Deuxième équipe de phoning",
-      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
-      "visibility": "national",
-      "zone": null,
-      "creator": "Admin",
-      "members": [
-        {
-          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-          "first_name": "Lucie",
-          "last_name": "Olivera",
-          "registered_at": "2017-01-18T13:15:28+01:00",
-          "postal_code": "75009"
-        },
-        {
-          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name": "Jacques",
-          "last_name": "Picard",
-          "registered_at": "2017-01-03T08:47:54+01:00",
-          "postal_code": "75008"
-        },
-        {
-          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
-          "first_name": "Pierre",
-          "last_name": "Kiroule",
-          "registered_at": "2017-04-09T06:20:38+02:00",
-          "postal_code": "10019"
-        }
-      ]
-    }
-    """
-
-  Scenario: As a logged-in user with phoning team manager right I can not add an adherent twice
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
-    """
-    [
-      {
-        "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
-      }
-    ]
-    """
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-      "name": "Deuxième équipe de phoning",
-      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
-      "visibility": "national",
-      "zone": null,
-      "creator": "Admin",
-      "members": [
-        {
-          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-          "first_name": "Lucie",
-          "last_name": "Olivera",
-          "registered_at": "2017-01-18T13:15:28+01:00",
-          "postal_code": "75009"
-        },
-        {
-          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name": "Jacques",
-          "last_name": "Picard",
-          "registered_at": "2017-01-03T08:47:54+01:00",
-          "postal_code": "75008"
-        },
-        {
-          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
-          "first_name": "Pierre",
-          "last_name": "Kiroule",
-          "registered_at": "2017-04-09T06:20:38+02:00",
-          "postal_code": "10019"
-        },
-        {
-          "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
-          "first_name": "Député",
-          "last_name": "PARIS I",
-          "registered_at": "2017-06-01T09:26:31+02:00",
-          "postal_code": "75008"
-        }
-      ]
-    }
-    """
-
-  Scenario: As a DC referent I can get the team list filtered by the name
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "GET" request to "/api/v3/teams?name=Deuxi&scope=phoning_national_manager"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-   """
-    {
-      "metadata": {
-        "total_items": 1,
-        "items_per_page": 2,
-        "count": 1,
-        "current_page": 1,
-        "last_page": 1
-      },
-      "items": [
-        {
-          "name": "Deuxième équipe de phoning",
-          "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
-          "visibility": "national",
-          "zone": null,
-          "members_count": 4,
-          "creator": "Admin"
-        }
-      ]
-    }
-    """
-
 
 
 
@@ -614,6 +413,21 @@ Feature:
 
   Scenario: As a user granted with team feature, I can add a member to a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": "@array@.count(4)"
+    }
+    """
+
     When I add "Content-Type" header equal to "application/json"
     When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
@@ -624,6 +438,217 @@ Feature:
     ]
     """
     Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": "@array@.count(5)"
+    }
+    """
+    And the JSON should be a superset of:
+    """
+    {
+      "members": [
+        {
+          "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with team feature, I can not add the same member twice to the same team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    And I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": "@array@.count(4)"
+    }
+    """
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [
+      {
+        "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
+      }
+    ]
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": "@array@.count(4)"
+    }
+    """
+    And the JSON should be a superset of:
+    """
+    {
+      "members": [
+        {
+          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with team feature, I should see validation errors when trying to add an adherent to a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    And I add "Content-Type" header equal to "application/json"
+
+    # Empty request
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager"
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "Request body should not be empty."
+    """
+
+    # Empty item
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [{}]
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://symfony.com/errors/validation",
+      "title": "Validation Failed",
+      "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
+      "violations": [
+        {
+          "propertyPath": "[0].adherent_uuid",
+          "title": "Cette valeur ne doit pas être vide.",
+          "parameters": {
+            "{{ value }}": "null"
+          },
+          "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+        }
+      ]
+    }
+    """
+
+    # Empty adherent UUID
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [
+      {
+        "adherent_uuid": null
+      }
+    ]
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://symfony.com/errors/validation",
+      "title": "Validation Failed",
+      "detail": "[0].adherent_uuid: Cette valeur ne doit pas être vide.",
+      "violations": [
+        {
+          "propertyPath": "[0].adherent_uuid",
+          "title": "Cette valeur ne doit pas être vide.",
+          "parameters": {
+            "{{ value }}": "null"
+          },
+          "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+        }
+      ]
+    }
+    """
+
+    # Unknown adherent UUID
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [
+      {
+        "adherent_uuid": "c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+      }
+    ]
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://symfony.com/errors/validation",
+      "title": "Validation Failed",
+      "detail": "[0].adherent_uuid: adherent.uuid.adherent_not_found",
+      "violations": [
+        {
+          "propertyPath": "[0].adherent_uuid",
+          "title": "adherent.uuid.adherent_not_found",
+          "parameters": {
+            "{{ value }}": "c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+          }
+        }
+      ]
+    }
+    """
+
+  Scenario: As an anonymous user, I can not add a member to a team
+    When I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
+    """
+    [
+      {
+        "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
+      }
+    ]
+    """
+    Then the response status code should be 401
+@debug
+  Scenario: As a user granted with team feature, I can remove a member from a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Deuxième équipe de phoning",
+      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "members": "@array@.count(4)"
+    }
+    """
+    And the JSON should be a superset of:
+    """
+    {
+      "members": [
+        {
+          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819"
+        }
+      ]
+    }
+    """
+
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/29461c49-6316-5be1-9ac3-17816bf2d819?scope=phoning_national_manager"
+    Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
@@ -633,20 +658,6 @@ Feature:
       "zone": null,
       "creator": "Admin",
       "members": [
-        {
-          "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
-          "first_name": "Benjamin",
-          "last_name": "Duroc",
-          "registered_at": "@string@.isDateTime()",
-          "postal_code": "13003"
-        },
-        {
-          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-          "first_name": "Lucie",
-          "last_name": "Olivera",
-          "registered_at": "@string@.isDateTime()",
-          "postal_code": "75009"
-        },
         {
           "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
           "first_name": "Jacques",
@@ -668,56 +679,7 @@ Feature:
           "registered_at": "@string@.isDateTime()",
           "postal_code": "75008"
         }
-      ]
-    }
-    """
 
-  Scenario: As an anonymous user, I can not add a member to a team
-    When I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
-    """
-    [
-      {
-        "adherent_uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67"
-      }
-    ]
-    """
-    Then the response status code should be 401
-
-  Scenario: As a user granted with team feature, I can remove a member from a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
-    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-      "name": "Deuxième équipe de phoning",
-      "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
-      "visibility": "national",
-      "zone": null,
-      "creator": "Admin",
-      "members": [
-        {
-          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-          "first_name": "Lucie",
-          "last_name": "Olivera",
-          "registered_at": "@string@.isDateTime()",
-          "postal_code": "75009"
-        },
-        {
-          "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "first_name": "Jacques",
-          "last_name": "Picard",
-          "registered_at": "@string@.isDateTime()",
-          "postal_code": "75008"
-        },
-        {
-          "adherent_uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
-          "first_name": "Pierre",
-          "last_name": "Kiroule",
-          "registered_at": "@string@.isDateTime()",
-          "postal_code": "10019"
-        }
       ]
     }
     """
@@ -725,3 +687,31 @@ Feature:
   Scenario: As an anonymous user, I can not remove a member from a team
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
     Then the response status code should be 401
+
+  Scenario: As a user granted with team feature, I can filter the team list by name
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams?name=Deuxi&scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 1,
+        "items_per_page": 2,
+        "count": 1,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "name": "Deuxième équipe de phoning",
+          "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+          "visibility": "national",
+          "zone": null,
+          "members_count": 4,
+          "creator": "Admin"
+        }
+      ]
+    }
+    """
