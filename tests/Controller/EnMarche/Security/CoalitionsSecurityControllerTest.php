@@ -61,6 +61,8 @@ class CoalitionsSecurityControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
+        $this->client->submitForm('Accepter');
+
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $response = $this->client->getResponse());
         $this->assertStringStartsWith('http://client-oauth.docker:8000/client/receive_authcode?code=', $response->headers->get('location'));
     }

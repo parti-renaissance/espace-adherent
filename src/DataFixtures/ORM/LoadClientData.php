@@ -161,7 +161,6 @@ class LoadClientData extends Fixture
         $client11->addSupportedScope(Scope::WRITE_EVENT);
         $client11->addSupportedScope(Scope::READ_PROFILE);
         $client11->addSupportedScope(Scope::WRITE_PROFILE);
-        $client11->setAskUserForAuthorization(false);
 
         $manager->persist($client11);
 
