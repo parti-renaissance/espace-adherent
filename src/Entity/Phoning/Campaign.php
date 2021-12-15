@@ -72,9 +72,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignCallersStatsController",
  *             "defaults": {"_api_receive": false},
- *             "normalization_context": {
- *                 "groups": {"phoning_campaign_callers_with_scores"},
- *             }
  *         }
  *     },
  *     collectionOperations={

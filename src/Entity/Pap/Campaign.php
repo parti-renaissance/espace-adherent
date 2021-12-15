@@ -49,6 +49,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *         },
+ *         "get_questioners_with_scores": {
+ *             "method": "GET",
+ *             "path": "/v3/pap_campaigns/{uuid}/questioners",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "controller": "App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController",
+ *             "defaults": {"_api_receive": false},
+ *         }
  *     },
  *     collectionOperations={
  *         "get": {

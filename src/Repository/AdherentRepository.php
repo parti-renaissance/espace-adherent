@@ -15,12 +15,15 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Pap\Campaign as PapCampaign;
+use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\SmsCampaign\SmsCampaign;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
+use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
@@ -1365,7 +1368,7 @@ SQL;
         return $this->createQueryBuilder('adherent')
             ->select('adherent.id, adherent.firstName')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
-            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
+            ->addSelect('COUNT(campaignHistory.dataSurvey) as nb_surveys')
             ->innerJoin('adherent.teamMemberships', 'teamMemberships')
             ->innerJoin('teamMemberships.team', 'team')
             ->innerJoin(Campaign::class, 'campaign', Join::WITH, 'campaign.team = team')
@@ -1394,7 +1397,7 @@ SQL;
         $qb = $this->createQueryBuilder('adherent')
             ->select('adherent.firstName, adherent.lastName')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
-            ->addSelect('SUM(IF(campaignHistory.dataSurvey IS NOT NULL, 1, 0)) as nb_surveys')
+            ->addSelect('COUNT(campaignHistory.dataSurvey) as nb_surveys')
             ->addSelect('SUM(IF(campaignHistory.status = :completed, 1, 0)) as nb_completed')
             ->addSelect('SUM(IF(campaignHistory.status = :to_unsubscribe, 1, 0)) as nb_to_unsubscribe')
             ->addSelect('SUM(IF(campaignHistory.status = :to_unjoin, 1, 0)) as nb_to_unjoin')
@@ -1436,6 +1439,37 @@ SQL;
         return $qb->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findFullScoresByPapCampaign(
+        PapCampaign $campaign,
+        int $page = 1,
+        int $limit = 100
+    ): PaginatorInterface {
+        $qb = $this->createQueryBuilder('adherent')
+            ->select('adherent.firstName AS first_name, adherent.lastName AS last_name')
+            ->addSelect('COUNT(campaignHistory.id) AS nb_visited_doors')
+            ->addSelect('COUNT(campaignHistory.dataSurvey) AS nb_surveys')
+            ->addSelect('SUM(IF(campaignHistory.status = :accept_to_answer, 1, 0)) AS nb_accept_to_answer')
+            ->addSelect('SUM(IF(campaignHistory.status = :dont_accept_to_answer, 1, 0)) AS nb_dont_accept_to_answer')
+            ->addSelect('SUM(IF(campaignHistory.status = :contact_later, 1, 0)) AS nb_contact_later')
+            ->addSelect('SUM(IF(campaignHistory.status = :door_open, 1, 0)) AS nb_door_open')
+            ->addSelect('SUM(IF(campaignHistory.status = :door_closed, 1, 0)) AS door_closed')
+            ->innerJoin(PapCampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.questioner = adherent')
+            ->where('campaignHistory.campaign = :campaign')
+            ->groupBy('adherent.id')
+            ->orderBy('nb_surveys', 'DESC')
+            ->setParameters([
+                'campaign' => $campaign,
+                'accept_to_answer' => PapCampaignHistoryStatusEnum::ACCEPT_TO_ANSWER,
+                'dont_accept_to_answer' => PapCampaignHistoryStatusEnum::DONT_ACCEPT_TO_ANSWER,
+                'contact_later' => PapCampaignHistoryStatusEnum::CONTACT_LATER,
+                'door_open' => PapCampaignHistoryStatusEnum::DOOR_OPEN,
+                'door_closed' => PapCampaignHistoryStatusEnum::DOOR_CLOSED,
+            ])
+        ;
+
+        return $this->configurePaginator($qb, $page, $limit, null, false);
     }
 
     /**
