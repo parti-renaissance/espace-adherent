@@ -778,3 +778,71 @@ Feature:
         "nb_surveys_last_30d": "1"
     }
     """
+
+  Scenario: As a DC PAP national manager I can get a PAP questioners with their stats
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=pap_national_manager"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 2,
+            "items_per_page": 100,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "first_name": "Patrick",
+                "last_name": "Bialès",
+                "nb_visited_doors": "1",
+                "nb_surveys": "1",
+                "nb_accept_to_answer": "1",
+                "nb_dont_accept_to_answer": "0",
+                "nb_contact_later": "0",
+                "nb_door_open": "0",
+                "door_closed": "0"
+            },
+            {
+                "first_name": "Jacques",
+                "last_name": "Picard",
+                "nb_visited_doors": "2",
+                "nb_surveys": "0",
+                "nb_accept_to_answer": "0",
+                "nb_dont_accept_to_answer": "1",
+                "nb_contact_later": "0",
+                "nb_door_open": "1",
+                "door_closed": "0"
+            }
+        ]
+    }
+    """
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=pap_national_manager&page_size=1&page=2"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 2,
+            "items_per_page": 1,
+            "count": 1,
+            "current_page": 2,
+            "last_page": 2
+        },
+        "items": [
+            {
+                "first_name": "Jacques",
+                "last_name": "Picard",
+                "nb_visited_doors": "2",
+                "nb_surveys": "0",
+                "nb_accept_to_answer": "0",
+                "nb_dont_accept_to_answer": "1",
+                "nb_contact_later": "0",
+                "nb_door_open": "1",
+                "door_closed": "0"
+            }
+        ]
+    }
+    """

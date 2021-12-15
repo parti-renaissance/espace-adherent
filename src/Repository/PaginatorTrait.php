@@ -13,7 +13,8 @@ trait PaginatorTrait
         QueryBuilder $queryBuilder,
         int $page,
         int $limit = 30,
-        callable $queryModifier = null
+        callable $queryModifier = null,
+        bool $useOutputWalkers = true
     ): PaginatorInterface {
         if ($page < 1) {
             $page = 1;
@@ -29,6 +30,10 @@ trait PaginatorTrait
             $queryModifier($query);
         }
 
-        return new ApiPaginator(new DoctrinePaginator($query));
+        return new ApiPaginator(
+            $useOutputWalkers
+            ? new DoctrinePaginator($query)
+            : (new DoctrinePaginator($query))->setUseOutputWalkers(false))
+        ;
     }
 }
