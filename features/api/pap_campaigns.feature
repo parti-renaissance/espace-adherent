@@ -231,141 +231,210 @@ Feature:
     And the JSON should be equal to:
     """
     {
-       "before_survey": {
-          "address": [
-             {
-                "code": "building_block",
-                "label": "Bâtiment",
-                "type": "text"
-             },
-             {
-                "code": "floor",
-                "label": "Étage",
-                "type": "number"
-             },
-             {
-                "code": "door",
-                "label": "Porte",
-                "type": "text"
-             }
-          ],
-          "door_status": [
-              {
-                 "code": "door_open",
-                 "label": "Porte ouverte"
-              },
-              {
-                 "code": "door_closed",
-                 "label": "Porte fermée"
-              }
-          ],
-          "response_status": [
-              {
-                 "code": "accept_to_answer",
-                 "label": "Accepte de répondre aux questions"
-              },
-              {
-                 "code": "dont_accept_to_answer",
-                 "label": "N'accepte pas"
-              },
-              {
-                 "code": "contact_later",
-                 "label": "Repasser plus tard"
-              }
-          ]
-       },
-       "after_survey": [
-          [
-             {
-                "code": "gender",
-                "label": "Genre",
-                "type": "choice",
-                "choices": {
-                   "female": "Femme",
-                   "male": "Homme"
-                }
-             },
-             {
-                "code": "age_range",
-                "label": "Tranche d'âge",
-                "type": "choice",
-                "choices": {
-                   "less_than_20": "-20 ans",
-                   "between_20_24": "20-24 ans",
-                   "between_25_39": "25-39 ans",
-                   "between_40_54": "40-54 ans",
-                   "between_55_64": "55-64 ans",
-                   "between_65_80": "65-80 ans",
-                   "greater_than_80": "80+ ans"
-                }
-             },
-             {
-                "code": "profession",
-                "label": "Métier",
-                "type": "choice",
-                "choices": {
-                   "employees": "Employé",
-                   "workers": "Ouvrier",
-                   "managerial staff": "Cadre",
-                   "intermediate_professions": "Profession intermédiaire",
-                   "self_contractor": "Indépendant et professions libérales",
-                   "retirees": "Retraité",
-                   "student": "Étudiant"
-                }
-             }
-          ],
-          {
-             "to_contact": {
-                "code": "to_contact",
-                "label": "Souhaite être recontacté ?",
-                "description": "En cochant oui, vous certifiez qu'il consent \u00e0 ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données.",
-                "type": "boolean"
-             },
-             "contact": [
-                {
-                   "code": "first_name",
-                   "label": "Prénom",
-                   "type": "text"
-                },
-                {
-                   "code": "last_name",
-                   "label": "Nom",
-                   "type": "text"
-                },
-                {
-                   "code": "email_address",
-                   "label": "Email",
-                   "type": "text"
-                }
-             ]
-          },
-          {
-             "voter_status": {
-                "code": "voter_status",
-                "label": "Êtes vous un électeur inscrit sur les listes ?",
-                "type": "choice",
-                "choices": {
-                   "not_voter": "Pas électeur",
-                   "not_registered": "Pas inscrit",
-                   "registered": "Inscrit sur les listes",
-                   "registered_elsewhere": "Inscrit ailleurs"
-                }
-             },
-             "voter_postal_code": {
-                "code": "voter_postal_code",
-                "label": "Quel est le code postal de la commune de vote ?",
-                "type": "text"
-             }
-          },
-          [
-             {
-                "code": "to_join",
-                "label": "Souhaite adhérer ?",
-                "description": "En cochant oui, vous certifiez qu'il souhait adhérer.",
-                "type": "boolean"
-             }
-          ]
-       ]
+        "before_survey": [
+            {
+                "description": null,
+                "questions": [{
+                    "code": "door_status",
+                    "type": "choice",
+                    "options": {
+                        "label": "La porte s'ouvre t-elle ?",
+                        "choices": {
+                            "door_closed": "Non",
+                            "door_open": "Oui"
+                        },
+                        "required": true,
+                        "multiple": false,
+                        "success_choice": "door_open"
+                    }
+                }]
+            },
+            {
+                "description": null,
+                "questions": [{
+                    "code": "response_status",
+                    "type": "choice",
+                    "options": {
+                        "label": "Votre interlocuteur",
+                        "choices": {
+                            "accept_to_answer": "Accepte de répondre aux questions",
+                            "dont_accept_to_answer": "N'accepte pas",
+                            "contact_later": "Repasser plus tard"
+                        },
+                        "required": true,
+                        "multiple": false,
+                        "success_choice": "accept_to_answer"
+                    }
+                }]
+            }
+        ],
+        "after_survey": [
+            {
+                "description": "Afin d’améliorer l’analyse des réponses à ce sondage vous pouvez renseigner le profil de votre interlocuteur. Toutes ces informations sont facultatives. ",
+                "questions": [
+                    {
+                        "code": "gender",
+                        "type": "choice",
+                        "options": {
+                            "label": "Quel est votre genre",
+                            "required": true,
+                            "multiple": false,
+                            "choices": {
+                                "female": "Femme",
+                                "male": "Homme"
+                            },
+                            "widget": "single_row"
+                        }
+                    },
+                    {
+                        "code": "age_range",
+                        "type": "choice",
+                        "options": {
+                            "label": "Sa tranche d'âge",
+                            "required": true,
+                            "multiple": false,
+                            "choices": {
+                                "less_than_20": "-20 ans",
+                                "between_20_24": "20-24 ans",
+                                "between_25_39": "25-39 ans",
+                                "between_40_54": "40-54 ans",
+                                "between_55_64": "55-64 ans",
+                                "between_65_80": "65-80 ans",
+                                "greater_than_80": "80+ ans"
+                            },
+                            "widget": "cols_2"
+                        }
+                    },
+                    {
+                        "code": "profession",
+                        "type": "choice",
+                        "options": {
+                            "label": "Sa profession",
+                            "required": true,
+                            "multiple": false,
+                            "choices": {
+                                "employees": "Employé",
+                                "workers": "Ouvrier",
+                                "managerial staff": "Cadre",
+                                "intermediate_professions": "Profession intermédiaire",
+                                "self_contractor": "Indépendant et professions libérales",
+                                "retirees": "Retraité",
+                                "student": "Étudiant"
+                            },
+                            "widget": "cols_1"
+                        }
+                    }
+                ]
+            },
+            {
+                "description": null,
+                "questions": [
+                    {
+                        "code": "voter_status",
+                        "type": "choice",
+                        "options": {
+                            "label": "Est-il inscrit sur les listes électorales ?",
+                            "required": false,
+                            "multiple": false,
+                            "choices": {
+                                "not_voter": "Pas électeur",
+                                "not_registered": "Pas inscrit",
+                                "registered": "Inscrit sur les listes",
+                                "registered_elsewhere": "Inscrit ailleurs"
+                            },
+                            "widget": "cols_1"
+                        }
+                    },
+                    {
+                        "code": "voter_postal_code",
+                        "type": "text",
+                        "dependency": {
+                            "question": "voter_status",
+                            "choices": [
+                                "registered_elsewhere"
+                            ]
+                        },
+                        "options": {
+                            "label": "Quel est le code postal de la commune de vote ?",
+                            "required": true,
+                            "placeholder": "Code postal"
+                        }
+                    }
+                ]
+            },
+            {
+                "description": null,
+                "questions": [
+                    {
+                        "code": "to_contact",
+                        "type": "boolean",
+                        "options": {
+                            "label": "Souhaite-t-il être au courant des résultats de cette consultation via e-mail ?",
+                            "required": false,
+                            "help": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données."
+                        }
+                    },
+                    {
+                        "code": "profil",
+                        "type": "compound",
+                        "dependency": {
+                            "question": "to_contact",
+                            "choices": [
+                                true
+                            ]
+                        },
+                        "options": {
+                            "label": "Informations personnelles",
+                            "required": true,
+                            "children": [
+                                {
+                                    "code": "first_name",
+                                    "type": "text",
+                                    "options": {
+                                        "label": "Prénom",
+                                        "required": true,
+                                        "placeholder": "Indiquez ici le prénom de la personne rencontrée"
+                                    }
+                                },
+                                {
+                                    "code": "last_name",
+                                    "type": "text",
+                                    "options": {
+                                        "label": "Nom",
+                                        "required": true,
+                                        "placeholder": "Indiquez ici le nom de la personne rencontrée"
+                                    }
+                                },
+                                {
+                                    "code": "email_address",
+                                    "type": "text",
+                                    "options": {
+                                        "label": "E-mail",
+                                        "required": true,
+                                        "placeholder": "Indiquez ici l'e-mail de la personne rencontrée"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "code": "to_join",
+                        "type": "boolean",
+                        "dependency": {
+                            "question": "to_contact",
+                            "choices": [
+                                true
+                            ]
+                        },
+                        "options": {
+                            "label": "Souhaite adhérer ?",
+                            "required": false,
+                            "help": "En cochant oui, vous certifiez qu'il souhait adhérer."
+                        }
+                    }
+                ]
+            }
+        ]
     }
     """
 
