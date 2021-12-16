@@ -21,8 +21,8 @@ class CampaignHistoryStatusEnum extends Enum
     ];
 
     public const DOOR_STATUS = [
-        self::DOOR_OPEN,
         self::DOOR_CLOSED,
+        self::DOOR_OPEN,
     ];
 
     public const RESPONSE_STATUS = [
