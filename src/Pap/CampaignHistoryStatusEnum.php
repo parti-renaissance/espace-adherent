@@ -21,14 +21,14 @@ class CampaignHistoryStatusEnum extends Enum
     ];
 
     public const DOOR_STATUS = [
-        self::DOOR_CLOSED => 'Non',
-        self::DOOR_OPEN => 'Oui',
+        self::DOOR_CLOSED,
+        self::DOOR_OPEN,
     ];
 
     public const RESPONSE_STATUS = [
-        self::ACCEPT_TO_ANSWER => self::LABELS[self::ACCEPT_TO_ANSWER],
-        self::DONT_ACCEPT_TO_ANSWER => self::LABELS[self::DONT_ACCEPT_TO_ANSWER],
-        self::CONTACT_LATER => self::LABELS[self::CONTACT_LATER],
+        self::ACCEPT_TO_ANSWER,
+        self::DONT_ACCEPT_TO_ANSWER,
+        self::CONTACT_LATER,
     ];
 
     public const FINISHED_STATUS = [

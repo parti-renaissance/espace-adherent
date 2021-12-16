@@ -23,24 +23,14 @@ class GetPapCampaignSurveyConfigController extends AbstractController
     {
         return $this->json([
             'before_survey' => [
-                [
-                    'description' => null,
-                    'questions' => [
-                        $this->buildQuestion('door_status', 'choice', 'La porte s\'ouvre t-elle ?', true, CampaignHistoryStatusEnum::DOOR_STATUS, null, null, null, null, ['success_choice' => CampaignHistoryStatusEnum::DOOR_OPEN]),
-                    ],
-                ],
-                [
-                    'description' => null,
-                    'questions' => [
-                        $this->buildQuestion('response_status', 'choice', 'Votre interlocuteur', true, CampaignHistoryStatusEnum::RESPONSE_STATUS, null, null, null, null, ['success_choice' => CampaignHistoryStatusEnum::ACCEPT_TO_ANSWER]),
-                    ],
-                ],
+                'door_status' => self::transformStatusArray(CampaignHistoryStatusEnum::DOOR_STATUS, CampaignHistoryStatusEnum::DOOR_OPEN),
+                'response_status' => self::transformStatusArray(CampaignHistoryStatusEnum::RESPONSE_STATUS, CampaignHistoryStatusEnum::ACCEPT_TO_ANSWER),
             ],
             'after_survey' => [
                 [
                     'description' => 'Afin d’améliorer l’analyse des réponses à ce sondage vous pouvez renseigner le profil de votre interlocuteur. Toutes ces informations sont facultatives. ',
                     'questions' => [
-                        $this->buildQuestion('gender', 'choice', 'Quel est votre genre', true, Genders::MALE_FEMALE_LABELS, 'single_row'),
+                        $this->buildQuestion('gender', 'choice', 'Quel est votre genre ?', true, Genders::MALE_FEMALE_LABELS, 'single_row'),
                         $this->buildQuestion('age_range', 'choice', 'Sa tranche d\'âge', true, AgeRangeEnum::choices(), 'cols_2'),
                         $this->buildQuestion('profession', 'choice', 'Sa profession', true, ProfessionEnum::choices(), 'cols_1'),
                     ],
@@ -131,5 +121,16 @@ class GetPapCampaignSurveyConfigController extends AbstractController
         $question['options'] = array_merge($options, $questionOptions);
 
         return $question;
+    }
+
+    private function transformStatusArray(array $statuses, string $successStatus): array
+    {
+        return array_map(function (string $code) use ($successStatus): array {
+            return [
+                'code' => $code,
+                'label' => CampaignHistoryStatusEnum::LABELS[$code],
+                'success_status' => $successStatus === $code,
+            ];
+        }, $statuses);
     }
 }

@@ -231,43 +231,37 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "before_survey": [
-            {
-                "description": null,
-                "questions": [{
-                    "code": "door_status",
-                    "type": "choice",
-                    "options": {
-                        "label": "La porte s'ouvre t-elle ?",
-                        "choices": {
-                            "door_closed": "Non",
-                            "door_open": "Oui"
-                        },
-                        "required": true,
-                        "multiple": false,
-                        "success_choice": "door_open"
-                    }
-                }]
-            },
-            {
-                "description": null,
-                "questions": [{
-                    "code": "response_status",
-                    "type": "choice",
-                    "options": {
-                        "label": "Votre interlocuteur",
-                        "choices": {
-                            "accept_to_answer": "Accepte de répondre aux questions",
-                            "dont_accept_to_answer": "N'accepte pas",
-                            "contact_later": "Repasser plus tard"
-                        },
-                        "required": true,
-                        "multiple": false,
-                        "success_choice": "accept_to_answer"
-                    }
-                }]
-            }
-        ],
+        "before_survey": {
+            "door_status": [
+                {
+                    "code": "door_closed",
+                    "label": "Porte fermée",
+                    "success_status": false
+                },
+                {
+                    "code": "door_open",
+                    "label": "Porte ouverte",
+                    "success_status": true
+                }
+            ],
+            "response_status": [
+                {
+                    "code": "accept_to_answer",
+                    "label": "Accepte de répondre aux questions",
+                    "success_status": true
+                },
+                {
+                    "code": "dont_accept_to_answer",
+                    "label": "N'accepte pas",
+                    "success_status": false
+                },
+                {
+                    "code": "contact_later",
+                    "label": "Repasser plus tard",
+                    "success_status": false
+                }
+            ]
+        },
         "after_survey": [
             {
                 "description": "Afin d’améliorer l’analyse des réponses à ce sondage vous pouvez renseigner le profil de votre interlocuteur. Toutes ces informations sont facultatives. ",
@@ -276,7 +270,7 @@ Feature:
                         "code": "gender",
                         "type": "choice",
                         "options": {
-                            "label": "Quel est votre genre",
+                            "label": "Quel est votre genre ?",
                             "required": true,
                             "multiple": false,
                             "choices": {
