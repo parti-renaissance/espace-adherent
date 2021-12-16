@@ -6,7 +6,6 @@ use App\ChezVous\Marker\DedoublementClasses;
 use App\ChezVous\Marker\MaisonServiceAccueilPublic;
 use App\ChezVous\Marker\MissionBern;
 use App\ChezVous\MarkerChoiceLoader;
-use App\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
 use App\ChezVous\Measure\MissionBern as MeasureMissionBern;
 use App\ChezVous\MeasureChoiceLoader;
 use App\Entity\ChezVous\City;
@@ -163,20 +162,6 @@ class ImportMarkersCommand extends AbstractImportCommand
         $this->em->persist($markerClass::createMarker($city, $latitude, $longitude));
 
         switch ($markerClass) {
-            case DedoublementClasses::class:
-                $totalCpCe1 = $metadata['total_cp_ce1'];
-
-                $measureType = $this->measureChoiceLoader->getMeasureType(DedoublementClasses::getType());
-
-                if ($measure = $this->findMeasure($city, $measureType)) {
-                    $measure->setPayload(MeasureDedoublementClasses::createPayload($totalCpCe1));
-
-                    break;
-                }
-
-                $this->em->persist(MeasureDedoublementClasses::create($city, $measureType, $totalCpCe1));
-
-                break;
             case MissionBern::class:
                 $link = $metadata['link'];
                 $montant = (int) preg_replace('/[^\d.]/', '', $metadata['montant']);
