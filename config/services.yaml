@@ -109,6 +109,7 @@ services:
             - '../src/Mailchimp'
             - '../src/DependencyInjection'
             - '../src/Entity'
+            - '../src/Logging'
             - '../src/Security'
             - '../src/Kernel.php'
 
@@ -328,3 +329,6 @@ services:
 
     App\SmsCampaign\Listener\AdherentChangeSmsNotificationListener:
         tags: [{name: 'monolog.logger'}]
+
+    Symfony\Bridge\Monolog\Processor\TokenProcessor: ~
+    Symfony\Bridge\Monolog\Processor\SwitchUserTokenProcessor: ~

@@ -41,12 +41,13 @@
         <script type="text/javascript">
             on(window, 'load', function() {
                 Kernel.boot(
-                    '{{ app.debug ? 'debug' : assets_hash }}',
+                    '{{ app_version }}',
                     {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
-                    '{{ app.environment }}',
+                    '{{ app_environment }}',
                     {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
                     {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
-                    '{{ algolia_blacklist|base64_encode }}'
+                    '{{ algolia_blacklist|base64_encode }}',
+                    '{{ app.user ? app.user.getUsername() }}'
                 );
             });
         </script>

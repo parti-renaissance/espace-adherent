@@ -2,73 +2,79 @@
 
 namespace App\Logging;
 
-use Monolog\Formatter\NormalizerFormatter;
-use Monolog\Handler\RavenHandler;
+use Monolog\Handler\AbstractHandler;
 use Monolog\Logger;
-use Raven_Client;
+use function Sentry\addBreadcrumb;
+use Sentry\Breadcrumb;
+use Sentry\Monolog\Handler;
+use Sentry\State\Scope;
+use function Sentry\withScope;
 
-class SentryHandler extends RavenHandler
+class SentryHandler extends AbstractHandler
 {
-    private $levels = [
-        Logger::DEBUG => Raven_Client::DEBUG,
-        Logger::INFO => Raven_Client::INFO,
-        Logger::NOTICE => Raven_Client::INFO,
-        Logger::WARNING => Raven_Client::WARNING,
-        Logger::ERROR => Raven_Client::ERROR,
-        Logger::CRITICAL => Raven_Client::FATAL,
-        Logger::ALERT => Raven_Client::FATAL,
-        Logger::EMERGENCY => Raven_Client::FATAL,
+    private array $levels = [
+        Logger::DEBUG => Breadcrumb::LEVEL_DEBUG,
+        Logger::INFO => Breadcrumb::LEVEL_INFO,
+        Logger::NOTICE => Breadcrumb::LEVEL_INFO,
+        Logger::WARNING => Breadcrumb::LEVEL_WARNING,
+        Logger::ERROR => Breadcrumb::LEVEL_ERROR,
+        Logger::CRITICAL => Breadcrumb::LEVEL_FATAL,
+        Logger::ALERT => Breadcrumb::LEVEL_FATAL,
+        Logger::EMERGENCY => Breadcrumb::LEVEL_FATAL,
     ];
 
-    public function handleBatch(array $records)
+    private Handler $decorated;
+
+    public function __construct(Handler $decorated)
     {
-        $level = $this->level;
+        parent::__construct($decorated->getLevel(), $decorated->getBubble());
 
-        // Filter records based on their level
-        $records = array_filter($records, function ($record) use ($level) {
-            return $record['level'] >= $level;
-        });
+        $this->decorated = $decorated;
+    }
 
+    public function handleBatch(array $records): void
+    {
         if (!$records) {
             return;
         }
 
         // The record with the highest severity is the "main" one
         $main = array_reduce($records, function ($highest, $record) {
-            if ($record['level'] > $highest['level']) {
+            if (null === $highest || $record['level'] > $highest['level']) {
                 return $record;
             }
 
             return $highest;
         });
 
-        $formatter = $this->getBatchFormatter();
-
         foreach ($records as $record) {
-            $breadcrumb = [
-                'message' => $record['message'],
-                'category' => $record['channel'],
-                'level' => $this->levels[$record['level']],
-            ];
-
             if ($record !== $main) {
-                $record = $formatter->format($this->processRecord($record));
+                $breadcrumb = new Breadcrumb(
+                    $this->levels[$record['level']],
+                    Breadcrumb::TYPE_DEFAULT,
+                    $record['channel'],
+                    $record['message'],
+                    $record['context'] ?? [],
+                    $record['datetime']->getTimestamp()
+                );
 
-                if ($record['context']) {
-                    foreach ($record['context'] as $key => $value) {
-                        $breadcrumb['data'][$key] = is_scalar($value) ? $value : json_encode($value, \JSON_UNESCAPED_SLASHES);
-                    }
-                }
+                addBreadcrumb($breadcrumb);
             }
-
-            $this->ravenClient->breadcrumbs->record($breadcrumb);
         }
 
-        $this->handle($this->processRecord($main));
+        $this->handle($main);
     }
 
-    protected function getDefaultBatchFormatter()
+    public function handle(array $record): bool
     {
-        return new NormalizerFormatter();
+        $result = false;
+
+        withScope(function (Scope $scope) use (&$result, $record): void {
+            $scope->setExtras($record['extra'] ?? []);
+
+            $result = $this->decorated->handle($record);
+        });
+
+        return $result;
     }
 }

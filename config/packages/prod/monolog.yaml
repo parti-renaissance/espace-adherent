@@ -1,13 +1,23 @@
 monolog:
     handlers:
         main:
-            type:                   fingers_crossed
-            action_level:           error
-            activation_strategy:    app.logging.activation_strategy
-            handler:                sentry
-            stop_buffering:         false
+            type: fingers_crossed
+            action_level: error
+            handler: sentry
+            excluded_http_codes:
+                - 400
+                - 403
+                - 404
+                - 405
         sentry:
-            type:                   service
-            id:                     app.logging.sentry_handler
+            type: service
+            level: !php/const Monolog\Logger::DEBUG
+            id: App\Logging\SentryHandler
+        sentry_handler:
+            type: sentry
+            level: !php/const Monolog\Logger::ERROR
+            environment: '%env(APP_ENVIRONMENT)%'
+            release: '%env(APP_VERSION)%'
+            hub_id: Sentry\State\HubInterface
         console:
-            type:                   console
+            type: console
