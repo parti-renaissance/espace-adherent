@@ -2,35 +2,35 @@
 
 namespace App\Membership\EventListener;
 
-use App\Coalition\CoalitionUrlGenerator;
-use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Coalition\CoalitionUserAccountConfirmationMessage;
+use App\Mailer\Message\JeMengage\JeMengageUserAccountConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
 use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
+use App\OAuth\App\AuthAppUrlManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SendEmailValidationSubscriber implements EventSubscriberInterface
 {
-    private $entityManager;
-    private $mailer;
-    private $coalitionUrlGenerator;
-    private $notifier;
+    private EntityManagerInterface $entityManager;
+    private MailerService $mailer;
+    private MembershipNotifier $notifier;
+    private AuthAppUrlManager $appUrlManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         MailerService $transactionalMailer,
-        CoalitionUrlGenerator $coalitionUrlGenerator,
-        MembershipNotifier $notifier
+        MembershipNotifier $notifier,
+        AuthAppUrlManager $appUrlManager
     ) {
         $this->entityManager = $entityManager;
         $this->mailer = $transactionalMailer;
-        $this->coalitionUrlGenerator = $coalitionUrlGenerator;
         $this->notifier = $notifier;
+        $this->appUrlManager = $appUrlManager;
     }
 
     public function sendConfirmationEmail(UserEvent $event): void
@@ -43,14 +43,30 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (MembershipSourceEnum::COALITIONS === $adherent->getSource()) {
-            $token = AdherentResetPasswordToken::generate($adherent, '+30 days');
-            $url = $this->generateCoalitionCreatePasswordUrl($adherent, $token);
+        $message = $token = null;
 
+        switch ($adherent->getSource()) {
+            case MembershipSourceEnum::COALITIONS:
+                $token = AdherentResetPasswordToken::generate($adherent, '+30 days');
+                $message = CoalitionUserAccountConfirmationMessage::createFromAdherent(
+                    $adherent,
+                    $this->appUrlManager->getUrlGenerator($adherent->getSource())->generateCreatePasswordLink($adherent, $token)
+                );
+                break;
+            case MembershipSourceEnum::JEMENGAGE:
+                $token = AdherentResetPasswordToken::generate($adherent);
+                $message = JeMengageUserAccountConfirmationMessage::createFromAdherent(
+                    $adherent,
+                    $this->appUrlManager->getUrlGenerator($adherent->getSource())->generateCreatePasswordLink($adherent, $token)
+                );
+                break;
+        }
+
+        if ($message && $token) {
             $this->entityManager->persist($token);
             $this->entityManager->flush();
 
-            $this->mailer->sendMessage(CoalitionUserAccountConfirmationMessage::createFromAdherent($adherent, $url));
+            $this->mailer->sendMessage($message);
         }
     }
 
@@ -59,10 +75,5 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
         return [
             UserEvents::USER_CREATED => 'sendConfirmationEmail',
         ];
-    }
-
-    private function generateCoalitionCreatePasswordUrl(Adherent $adherent, AdherentResetPasswordToken $token): string
-    {
-        return $this->coalitionUrlGenerator->generateCreatePasswordLink($adherent, $token);
     }
 }

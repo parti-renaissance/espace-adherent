@@ -1066,7 +1066,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => Uuid::uuid4(),
             'password' => self::DEFAULT_PASSWORD,
-            'email' => 'coalition-user-1@en-marche-dev.fr',
+            'email' => 'coalitions-user-1@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
             'nationality' => Address::FRANCE,
             'first_name' => 'Luis',
