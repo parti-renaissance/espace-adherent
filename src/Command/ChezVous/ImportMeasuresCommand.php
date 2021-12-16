@@ -8,6 +8,7 @@ use App\ChezVous\Measure\ChequeEnergie;
 use App\ChezVous\Measure\ConversionSurfaceAgricoleBio;
 use App\ChezVous\Measure\CouvertureFibre;
 use App\ChezVous\Measure\CreationEntreprise;
+use App\ChezVous\Measure\DedoublementClasses;
 use App\ChezVous\Measure\DevoirsFaits;
 use App\ChezVous\Measure\EmploisFrancs;
 use App\ChezVous\Measure\EntreprisesAideesCovid;
@@ -200,6 +201,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 break;
             case EntreprisesAideesCovid::getType():
                 $this->loadMeasureEntreprisesAideesCovid($measureType, $metadata);
+
+                break;
+            case DedoublementClasses::getType():
+                $this->loadMeasureDedoublementClasses($measureType, $metadata);
 
                 break;
         }
@@ -801,6 +806,46 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         $this->em->persist(EntreprisesAideesCovid::create($city, $measureType, $nombreEntreprises, $pourcentageSalaries));
+    }
+
+    private function loadMeasureDedoublementClasses(MeasureType $measureType, array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $totalEleves = $metadata[DedoublementClasses::KEY_TOTAL_ELEVES];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (0 === \strlen($totalEleves) || !is_numeric($totalEleves)) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                DedoublementClasses::KEY_TOTAL_ELEVES,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if (100 >= $totalEleves) {
+            $totalEleves = null;
+        }
+
+        if ($measure = $this->findMeasure($city, $measureType)) {
+            $measure->setPayload(DedoublementClasses::createPayload($totalEleves));
+
+            return;
+        }
+
+        $this->em->persist(DedoublementClasses::create($city, $measureType, $totalEleves));
     }
 
     private function loadMeasureWithEmptyPayload(string $measureClass, MeasureType $type, array $metadata): void
