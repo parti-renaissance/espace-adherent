@@ -133,7 +133,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      *     "phoning_campaign_list",
      *     "phoning_campaign_write",
      *     "phoning_campaign_history_read_list",
-     *     "campaign_replies_list"
+     *     "phoning_campaign_replies_list",
      * })
      */
     private $title;

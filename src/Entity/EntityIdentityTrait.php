@@ -76,7 +76,8 @@ trait EntityIdentityTrait
      *     "pap_address_voter_list",
      *     "pap_building_block_list",
      *     "pap_campaign_read_after_write",
-     *     "campaign_replies_list",
+     *     "phoning_campaign_replies_list",
+     *     "pap_campaign_replies_list",
      *     "jecoute_resource_links_read",
      * })
      *

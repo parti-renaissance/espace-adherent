@@ -7,6 +7,7 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\GenderEnum;
+use App\Jecoute\ProfessionEnum;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Repository\Jecoute\SurveyQuestionRepository;
 use Cocur\Slugify\Slugify;
@@ -53,7 +54,8 @@ class SurveyExporter
                 /** @var DataSurvey $dataSurvey */
                 $dataSurvey = $data[0];
                 $jemarcheDataSurvey = $dataSurvey->getJemarcheDataSurvey();
-                $campaignHistory = $dataSurvey->getCampaignHistory();
+                $phoningCampaignHistory = $dataSurvey->getPhoningCampaignHistory();
+                $papCampaignHistory = $dataSurvey->getPapCampaignHistory();
 
                 $row = [];
                 $row['ID'] = ++$this->i;
@@ -66,8 +68,8 @@ class SurveyExporter
                 $row['Nom Prénom de l\'auteur'] = (string) $author;
                 $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
 
-                if ($campaignHistory) {
-                    $adherent = $campaignHistory->getAdherent();
+                if ($phoningCampaignHistory) {
+                    $adherent = $phoningCampaignHistory->getAdherent();
                     $row['Nom'] = $adherent->getLastName();
                     $row['Prénom'] = $adherent->getFirstName();
 
@@ -90,6 +92,25 @@ class SurveyExporter
                     }
 
                     $row['Profession'] = $adherent->getPosition() ? $this->translator->trans('adherent.activity_position.'.$adherent->getPosition()) : null;
+                } elseif ($papCampaignHistory) {
+                    $row['Nom'] = $papCampaignHistory->getLastName();
+                    $row['Prénom'] = $papCampaignHistory->getFirstName();
+
+                    if ($fromAdmin) {
+                        $row['Email'] = $papCampaignHistory->getEmailAddress();
+                        $row['Accepte d\'être contacté'] = $papCampaignHistory->isToContact();
+                        $row['Accepte d\'être invité à adhérer'] = null;
+                    }
+
+                    $row['Code postal'] = $papCampaignHistory->getVoterPostalCode();
+                    $row['Tranche d\'age'] = $papCampaignHistory->getAgeRange();
+                    $row['Genre'] = $papCampaignHistory->getGender() ? $this->translator->trans('common.'.$papCampaignHistory->getGender()) : null;
+
+                    if ($fromAdmin) {
+                        $row['Accepte que ses données soient traitées'] = null;
+                    }
+
+                    $row['Profession'] = $papCampaignHistory->getProfession() ? ProfessionEnum::choices()[$papCampaignHistory->getProfession()] : null;
                 } else {
                     $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
                     $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;

@@ -52,10 +52,12 @@ Feature:
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | method | url                                                                                    |
-      | GET    | /api/v3/pap_campaigns?scope=pap_national_manager                                       |
-      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager  |
-      | GET    | /api/v3/pap_campaigns/kpi?scope=pap_national_manager                                   |
+      | method | url                                                                                                    |
+      | GET    | /api/v3/pap_campaigns?scope=pap_national_manager                                                       |
+      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager                  |
+      | GET    | /api/v3/pap_campaigns/kpi?scope=pap_national_manager                                                   |
+      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=phoning_national_manager      |
+      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=phoning_national_manager  |
 
   Scenario: As a JeMarche App user I cannot update not my PAP campaign
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -186,41 +188,41 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "id": @integer@,
-      "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-      "type": "national",
-      "questions": [
-        {
-          "id": @integer@,
-          "type": "simple_field",
-          "content": "Une première question du 1er questionnaire national ?",
-          "choices": []
-        },
-        {
-          "id": @integer@,
-          "type": "multiple_choice",
-          "content": "Une deuxième question du 1er questionnaire national ?",
-          "choices": [
+        "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+        "id": @integer@,
+        "type": "national",
+        "name": "Les enjeux des 10 prochaines années",
+        "questions": [
             {
-              "id": @integer@,
-              "content":"Réponse nationale A"
+                "id": @integer@,
+                "type": "simple_field",
+                "content": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                "choices": []
             },
             {
-              "id": @integer@,
-              "content":"Réponse nationale B"
-            },
-            {
-              "id": @integer@,
-              "content":"Réponse nationale C"
-            },
-            {
-              "id": @integer@,
-              "content":"Réponse nationale D"
+                "id": @integer@,
+                "type": "multiple_choice",
+                "content": "L'écologie est selon vous, importante pour :",
+                "choices": [
+                    {
+                        "id": @integer@,
+                        "content": "L'héritage laissé aux générations futures"
+                    },
+                    {
+                        "id": @integer@,
+                        "content": "Le bien-être sanitaire"
+                    },
+                    {
+                        "id": @integer@,
+                        "content": "L'aspect financier"
+                    },
+                    {
+                        "id": @integer@,
+                        "content": "La préservation de l'environnement"
+                    }
+                ]
             }
-          ]
-        }
-      ],
-      "name": "Questionnaire national numéro 1"
+        ]
     }
     """
 
@@ -770,8 +772,8 @@ Feature:
                 {
                     "rank": 1,
                     "questioner": "Patrick B.",
-                    "nb_visited_doors": 1,
-                    "nb_surveys": 1,
+                    "nb_visited_doors": 3,
+                    "nb_surveys": 3,
                     "current": false
                 },
                 {
@@ -802,8 +804,8 @@ Feature:
                 {
                     "rank": 1,
                     "department": "Paris 8ème",
-                    "nb_visited_doors": 3,
-                    "nb_surveys": 1,
+                    "nb_visited_doors": 5,
+                    "nb_surveys": 3,
                     "current": false
                 },
                 {
@@ -826,9 +828,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 5,
+            "total_items": 7,
             "items_per_page": 10,
-            "count": 5,
+            "count": 7,
             "current_page": 1,
             "last_page": 1
         },
@@ -921,6 +923,66 @@ Feature:
                 "door": "11",
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès"
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "12",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 420
+            },
+            {
+                "questioner": {
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès"
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "13",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "duration": 0
             },
             {
@@ -995,11 +1057,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 1,
+            "total_items": 3,
             "items_per_page": 2,
-            "count": 1,
+            "count": 2,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
             {
@@ -1030,7 +1092,37 @@ Feature:
                 "door": "11",
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
-                "duration": 0
+                "duration": 300
+            },
+            {
+                "campaign": {
+                    "created_at": "@string@.isDateTime()",
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+                },
+                "questioner": {
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945"
+                },
+                "building": {
+                    "address": {
+                        "address": "Rue du Rocher",
+                        "city_name": "Paris 8ème",
+                        "number": "67",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "12",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 420
             }
         ]
     }
@@ -1164,6 +1256,121 @@ Feature:
     }
     """
 
+  Scenario:  As a DC PAP national manager I can get the list of a campaign replies
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=pap_national_manager&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 3,
+            "items_per_page": 10,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années"
+                },
+                "pap_campaign_history": {
+                    "questioner": {
+                        "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                        "first_name": "Patrick",
+                        "last_name": "Bialès"
+                    },
+                    "first_name": null,
+                    "last_name": null,
+                    "gender": null,
+                    "uuid": "@uuid@",
+                    "duration": 0
+                },
+                "uuid": "@uuid@",
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "answer": "Nouvelles technologies"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "answer": [
+                            "L'héritage laissé aux générations futures",
+                            "Le bien-être sanitaire"
+                        ]
+                    }
+                ]
+            },
+            {
+                "uuid": "@uuid@",
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années"
+                },
+                "pap_campaign_history": {
+                    "questioner": {
+                        "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                        "first_name": "Patrick",
+                        "last_name": "Bialès"
+                    },
+                    "first_name": null,
+                    "last_name": null,
+                    "gender": null,
+                    "uuid": "@uuid@",
+                    "duration": 420
+                },
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "answer": "Les ressources énergétiques"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "answer": [
+                            "L'aspect financier",
+                            "La préservation de l'environnement"
+                        ]
+                    }
+                ]
+            },
+            {
+                "uuid": "@uuid@",
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années"
+                },
+                "pap_campaign_history": {
+                    "questioner": {
+                        "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                        "first_name": "Patrick",
+                        "last_name": "Bialès"
+                    },
+                    "first_name": null,
+                    "last_name": null,
+                    "gender": null,
+                    "uuid": "@uuid@",
+                    "duration": 300
+                },
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "answer": "Vie publique, répartition des pouvoirs et démocratie"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "answer": [
+                            "L'héritage laissé aux générations futures",
+                            "Le bien-être sanitaire"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    """
+
   Scenario: As a DC PAP national manger I can get PAP campaigns KPI
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=pap_national_manager"
@@ -1173,10 +1380,10 @@ Feature:
     {
         "nb_campaigns": "5",
         "nb_ongoing_campaigns": "4",
-        "nb_visited_doors": "5",
-        "nb_visited_doors_last_30d": "4",
-        "nb_surveys": "1",
-        "nb_surveys_last_30d": "1"
+        "nb_visited_doors": "7",
+        "nb_visited_doors_last_30d": "6",
+        "nb_surveys": "3",
+        "nb_surveys_last_30d": "3"
     }
     """
 
@@ -1198,9 +1405,9 @@ Feature:
             {
                 "first_name": "Patrick",
                 "last_name": "Bialès",
-                "nb_visited_doors": "1",
-                "nb_surveys": "1",
-                "nb_accept_to_answer": "1",
+                "nb_visited_doors": "3",
+                "nb_surveys": "3",
+                "nb_accept_to_answer": "3",
                 "nb_dont_accept_to_answer": "0",
                 "nb_contact_later": "0",
                 "nb_door_open": "0",

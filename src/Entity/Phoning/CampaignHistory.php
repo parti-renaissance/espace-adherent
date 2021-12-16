@@ -78,7 +78,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Groups({"phoning_campaign_history_read_list", "campaign_replies_list"})
+     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
     private $caller;
 
@@ -88,7 +88,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Groups({"phoning_campaign_call_read", "phoning_campaign_history_read_list", "campaign_replies_list"})
+     * @Groups({"phoning_campaign_call_read", "phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
     private $adherent;
 
@@ -98,7 +98,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign", inversedBy="campaignHistories")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"phoning_campaign_history_read_list", "campaign_replies_list"})
+     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
     private $campaign;
 
@@ -205,7 +205,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotBlank
      * @Assert\DateTime
      *
-     * @Groups({"phoning_campaign_history_read_list", "campaign_replies_list"})
+     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
     private $beginAt;
 
@@ -220,12 +220,12 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     message="phoning.campaign_history.finish_at.invalid"
      * )
      *
-     * @Groups({"phoning_campaign_history_read_list", "campaign_replies_list"})
+     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
      */
     private $finishAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="campaignHistory")
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="phoningCampaignHistory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\Valid

@@ -81,7 +81,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Groups({"pap_building_history", "pap_campaign_history_read_list"})
+     * @Groups({"pap_building_history", "pap_campaign_history_read_list", "pap_campaign_replies_list"})
      */
     private ?Adherent $questioner = null;
 
@@ -149,14 +149,14 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $firstName = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $lastName = null;
 
@@ -179,7 +179,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     strict=true
      * )
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $gender = null;
 
@@ -237,7 +237,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     private ?\DateTime $finishAt = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="papCampaignHistory")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\Valid
@@ -453,7 +453,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     }
 
     /**
-     * @Groups({"pap_campaign_history_read_list"})
+     * @Groups({"pap_campaign_history_read_list", "pap_campaign_replies_list"})
      */
     public function getDuration(): int
     {

@@ -78,7 +78,8 @@ abstract class Survey implements IndexableEntityInterface
      *     "phoning_campaign_history_read_list",
      *     "pap_campaign_read_after_write",
      *     "pap_campaign_history_read_list",
-     *     "campaign_replies_list",
+     *     "phoning_campaign_replies_list",
+     *     "pap_campaign_replies_list",
      * })
      *
      * @ApiProperty(identifier=true)
@@ -95,7 +96,8 @@ abstract class Survey implements IndexableEntityInterface
      *     "survey_list",
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
-     *     "campaign_replies_list",
+     *     "phoning_campaign_replies_list",
+     *     "pap_campaign_replies_list",
      *     "pap_campaign_history_read_list",
      * )
      */

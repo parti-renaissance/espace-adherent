@@ -3,8 +3,9 @@
 namespace App\Exporter;
 
 use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
-use App\Entity\Phoning\Campaign;
+use App\Entity\Pap\Campaign;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Repository\Jecoute\SurveyQuestionRepository;
 use Cocur\Slugify\Slugify;
@@ -12,7 +13,7 @@ use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class PhoningCampaignSurveyRepliesExporter
+class PapCampaignSurveyRepliesExporter
 {
     private DataSurveyRepository $dataSurveyRepository;
     private SurveyQuestionRepository $surveyQuestionRepository;
@@ -43,16 +44,17 @@ class PhoningCampaignSurveyRepliesExporter
                 $format
             ),
             new IteratorCallbackSourceIterator(
-                $this->dataSurveyRepository->iterateForPhoningCampaignDataSurveys($campaign),
+                $this->dataSurveyRepository->iterateForPapCampaignDataSurveys($campaign),
                 function (array $data) use ($questions) {
+                    /** @var DataSurvey $dataSurvey */
                     $dataSurvey = $data[0];
 
                     $row = [];
                     $row['ID'] = ++$this->i;
                     $row['Nom Prénom de l\'auteur'] = (string) $dataSurvey->getAuthor();
                     $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
-                    $row['Nom'] = $dataSurvey->getPhoningCampaignHistory()->getAdherent() ? $dataSurvey->getPhoningCampaignHistory()->getAdherent()->getLastName() : null;
-                    $row['Prénom'] = $dataSurvey->getPhoningCampaignHistory()->getAdherent() ? $dataSurvey->getPhoningCampaignHistory()->getAdherent()->getFirstName() : null;
+                    $row['Nom'] = $dataSurvey->getPapCampaignHistory()->getLastName();
+                    $row['Prénom'] = $dataSurvey->getPapCampaignHistory()->getFirstName();
 
                     /** @var SurveyQuestion $surveyQuestion */
                     foreach ($questions as $surveyQuestion) {

@@ -1470,128 +1470,132 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "metadata": {
-        "total_items": 3,
-        "items_per_page": 10,
-        "count": 3,
-        "current_page": 1,
-        "last_page": 1
-      },
-      "items": [
-        {
-          "survey": {
-            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-            "name": "Les enjeux des 10 prochaines années"
-          },
-          "campaign_history": {
-            "caller": {
-                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                "first_name": "Lucie",
-                "last_name": "Olivera"
-            },
-            "adherent": {
-                "uuid": "@uuid@",
-                "first_name": "Adherent 40",
-                "last_name": "Fa40ke"
-            },
-            "campaign": {
-                "title": "Campagne sur l'horizon 2030",
-                "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
-            },
-            "begin_at": "@string@.isDateTime()",
-            "finish_at": "@string@.isDateTime()",
-            "uuid": "b3c51626-164f-4fbd-9109-e70b20ab5788"
-          },
-          "answers": [
-            {
-                "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
-                "answer": "l'écologie sera le sujet le plus important"
-            },
-            {
-                "question": "L'écologie est selon vous, importante pour :",
-                "answer": [
-                    "Le bien-être sanitaire",
-                    "L'héritage laissé aux générations futures"
-                ]
-            }
-          ],
-          "uuid": "@uuid@"
+        "metadata": {
+            "total_items": 3,
+            "items_per_page": 10,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 1
         },
-        {
-          "survey": {
-            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-            "name": "Les enjeux des 10 prochaines années"
-          },
-          "campaign_history": {
-            "caller": {
-                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                "first_name": "Lucie",
-                "last_name": "Olivera"
-            },
-            "adherent": {
+        "items": [
+            {
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années"
+                },
+                "phoning_campaign_history": {
+                    "caller": {
+                        "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                        "first_name": "Lucie",
+                        "last_name": "Olivera"
+                    },
+                    "adherent": {
+                        "uuid": "@uuid@",
+                        "first_name": "Adherent 34",
+                        "last_name": "Fa34ke"
+                    },
+                    "campaign": {
+                        "title": "Campagne sur l'horizon 2030",
+                        "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "uuid": "5587ce1f-bf4d-486f-a356-e75b06a62e2e"
+                },
                 "uuid": "@uuid@",
-                "first_name": "Adherent 34",
-                "last_name": "Fa34ke"
-            },
-            "campaign": {
-                "title": "Campagne sur l'horizon 2030",
-                "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
-            },
-            "begin_at": "@string@.isDateTime()",
-            "finish_at": "@string@.isDateTime()",
-            "uuid": "5587ce1f-bf4d-486f-a356-e75b06a62e2e"
-          },
-          "answers": [
-            {
-                "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
-                "answer": "le pouvoir d'achat"
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "answer": "le pouvoir d'achat"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "answer": [
+                            "L'aspect financier",
+                            "La préservation de l'environnement"
+                        ]
+                    }
+                ]
             },
             {
-                "question": "L'écologie est selon vous, importante pour :",
-                "answer": [
-                    "La préservation de l'environnement",
-                    "L'aspect financier"
+                "uuid": "@uuid@",
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années"
+                },
+                "phoning_campaign_history": {
+                    "caller": {
+                        "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                        "first_name": "Lucie",
+                        "last_name": "Olivera"
+                    },
+                    "adherent": {
+                        "uuid": "@uuid@",
+                        "first_name": "Adherent 37",
+                        "last_name": "Fa37ke"
+                    },
+                    "campaign": {
+                        "title": "Campagne sur l'horizon 2030",
+                        "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "uuid": "e369f31b-d339-4ba7-b303-baa980c430cc"
+                },
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "answer": "la conquête de l'espace"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "answer": [
+                            "L'héritage laissé aux générations futures",
+                            "Le bien-être sanitaire"
+                        ]
+                    }
+                ]
+            },
+            {
+                "uuid": "@uuid@",
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années"
+                },
+                "phoning_campaign_history": {
+                    "caller": {
+                        "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+                        "first_name": "Lucie",
+                        "last_name": "Olivera"
+                    },
+                    "adherent": {
+                        "uuid": "@uuid@",
+                        "first_name": "Adherent 40",
+                        "last_name": "Fa40ke"
+                    },
+                    "campaign": {
+                        "title": "Campagne sur l'horizon 2030",
+                        "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
+                    },
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "uuid": "b3c51626-164f-4fbd-9109-e70b20ab5788"
+                },
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "answer": "l'écologie sera le sujet le plus important"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "answer": [
+                            "L'héritage laissé aux générations futures",
+                            "Le bien-être sanitaire"
+                        ]
+                    }
                 ]
             }
-          ],
-          "uuid": "@uuid@"
-        },
-                {
-          "survey": {
-            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-            "name": "Les enjeux des 10 prochaines années"
-          },
-          "campaign_history": {
-            "caller": {
-                "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
-                "first_name": "Lucie",
-                "last_name": "Olivera"
-            },
-            "adherent": null,
-            "campaign": {
-                "title": "Campagne sur l'horizon 2030",
-                "uuid": "9ca189b7-7635-4c3a-880b-6ce5cd10e8bc"
-            },
-            "begin_at": "@string@.isDateTime()",
-            "finish_at": "@string@.isDateTime()",
-            "uuid": "e369f31b-d339-4ba7-b303-baa980c430cc"
-          },
-          "answers": [
-            {
-                "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
-                "answer": "la conquête de l'espace"
-            },
-            {
-                "question": "L'écologie est selon vous, importante pour :",
-                "answer": [
-                    "Le bien-être sanitaire",
-                    "L'héritage laissé aux générations futures"
-                ]
-            }
-          ],
-          "uuid": "@uuid@"
-        }
-      ]
+        ]
     }
     """
 
