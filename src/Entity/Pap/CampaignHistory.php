@@ -2,7 +2,11 @@
 
 namespace App\Entity\Pap;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\AdherentIdentityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -33,6 +37,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
  *     },
  *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/pap_campaign_histories",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "normalization_context": {
+ *                 "groups": {"pap_campaign_history_read_list"}
+ *             },
+ *         },
  *         "post": {
  *             "path": "/v3/pap_campaign_histories",
  *         },
@@ -53,6 +64,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "status": "exact",
+ * })
+ * @ApiFilter(AdherentIdentityFilter::class, properties={"questioner"})
+ * @ApiFilter(DateFilter::class, properties={"createdAt"})
  */
 class CampaignHistory implements DataSurveyAwareInterface
 {
@@ -64,7 +81,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Groups({"pap_building_history"})
+     * @Groups({"pap_building_history", "pap_campaign_history_read_list"})
      */
     private ?Adherent $questioner = null;
 
@@ -80,7 +97,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="campaignHistories")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_history_read_list"})
      */
     private ?Campaign $campaign = null;
 
@@ -90,7 +107,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_history_read_list"})
      */
     private ?Building $building = null;
 
@@ -104,28 +121,28 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     strict=true
      * )
      *
-     * @Groups({"pap_campaign_history_read", "pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_read", "pap_campaign_history_write", "pap_campaign_history_read_list"})
      */
     private ?string $status = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write", "pap_building_history"})
+     * @Groups({"pap_campaign_history_write", "pap_building_history", "pap_campaign_history_read_list"})
      */
     private ?string $buildingBlock = null;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
      *
-     * @Groups({"pap_campaign_history_write", "pap_building_history"})
+     * @Groups({"pap_campaign_history_write", "pap_building_history", "pap_campaign_history_read_list"})
      */
     private ?int $floor = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write", "pap_building_history"})
+     * @Groups({"pap_campaign_history_write", "pap_building_history", "pap_campaign_history_read_list"})
      */
     private ?string $door = null;
 
@@ -433,5 +450,13 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setFinishAt(?\DateTimeInterface $finishAt): void
     {
         $this->finishAt = $finishAt;
+    }
+
+    /**
+     * @Groups({"pap_campaign_history_read_list"})
+     */
+    public function getDuration(): int
+    {
+        return $this->finishAt ? $this->finishAt->getTimestamp() - $this->createdAt->getTimestamp() : 0;
     }
 }

@@ -47,14 +47,14 @@ class Address
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
      */
     private ?string $number;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
      */
     private ?string $address;
 
@@ -68,14 +68,14 @@ class Address
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
      */
     private ?array $postalCodes;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
      */
     private ?string $cityName;
 

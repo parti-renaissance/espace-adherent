@@ -73,8 +73,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             null,
             $nationalSurvey1,
             100,
-            '-10 days',
-            '-1 day'
+            '2021-11-01',
+            '2021-11-12'
         );
         $this->addReference('pap-campaign-finished', $campaignFinished);
 

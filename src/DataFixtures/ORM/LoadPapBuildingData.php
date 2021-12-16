@@ -8,7 +8,6 @@ use App\Entity\Pap\BuildingBlock;
 use App\Entity\Pap\BuildingBlockStatistics;
 use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\BuildingStatistics;
-use App\Entity\Pap\Campaign;
 use App\Entity\Pap\Floor;
 use App\Entity\Pap\FloorStatistics;
 use App\Pap\BuildingEventActionEnum;
@@ -55,7 +54,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             self::BUILDING_BLOCK_01_UUID,
             'A',
             $building,
-            $campaign1,
+            [$campaign1],
             $events,
             3,
             [self::FLOOR_01_UUID, self::FLOOR_02_UUID, self::FLOOR_03_UUID],
@@ -74,7 +73,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             self::BUILDING_BLOCK_02_UUID,
             'A',
             $building,
-            $this->getReference('pap-campaign-1'),
+            [$this->getReference('pap-campaign-1')],
             $events,
             2,
             [self::FLOOR_04_UUID, self::FLOOR_05_UUID],
@@ -86,7 +85,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             self::BUILDING_BLOCK_03_UUID,
             'B',
             $building,
-            $this->getReference('pap-campaign-1'),
+            [$this->getReference('pap-campaign-1')],
             $events,
             2,
             [self::FLOOR_06_UUID, self::FLOOR_07_UUID],
@@ -105,7 +104,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             self::BUILDING_BLOCK_04_UUID,
             'A',
             $building,
-            $this->getReference('pap-campaign-1'),
+            [$this->getReference('pap-campaign-1'), $this->getReference('pap-campaign-finished')],
             $events,
             11,
             [],
@@ -124,7 +123,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             self::BUILDING_BLOCK_05_UUID,
             'A',
             $building,
-            $this->getReference('pap-campaign-2'),
+            [$this->getReference('pap-campaign-2')],
             $events
         );
         $this->addReference('building-4', $building);
@@ -141,7 +140,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         string $uuid,
         string $name,
         Building $building,
-        Campaign $campaign,
+        array $campaigns,
         array &$events,
         int $floors = 1,
         array $floorsUuids = [],
@@ -155,35 +154,39 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $buildingBlock->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20'));
         $buildingBlock->setCreatedAt($createdAt);
         $building->addBuildingBlock($buildingBlock);
-        $buildingBlock->addStatistic(new BuildingBlockStatistics($buildingBlock, $campaign, $status));
-        if (BuildingStatusEnum::COMPLETED === $status) {
-            $event = new BuildingEvent(
-                $building,
-                $campaign,
-                BuildingEventActionEnum::CLOSE,
-                BuildingEventTypeEnum::BUILDING_BLOCK,
-                $buildingBlock->getName()
-            );
-            $event->setAuthor($createdBy);
-            $events[] = $event;
-        }
-
-        for ($number = 0; $number < $floors; ++$number) {
-            $floor = new Floor($number, $buildingBlock, isset($floorsUuids[$number]) ? Uuid::fromString($floorsUuids[$number]) : null);
-            $floor->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20'));
-            $floor->setCreatedAt($createdAt);
-            $floor->addStatistic(new FloorStatistics($floor, $campaign, $status));
-            $buildingBlock->addFloor($floor);
+        foreach ($campaigns as $campaign) {
+            $buildingBlock->addStatistic(new BuildingBlockStatistics($buildingBlock, $campaign, $status));
             if (BuildingStatusEnum::COMPLETED === $status) {
                 $event = new BuildingEvent(
                     $building,
                     $campaign,
                     BuildingEventActionEnum::CLOSE,
                     BuildingEventTypeEnum::BUILDING_BLOCK,
-                    sprintf('%s-%s', $buildingBlock->getName(), $floor->getNumber())
+                    $buildingBlock->getName()
                 );
                 $event->setAuthor($createdBy);
                 $events[] = $event;
+            }
+        }
+
+        for ($number = 0; $number < $floors; ++$number) {
+            $floor = new Floor($number, $buildingBlock, isset($floorsUuids[$number]) ? Uuid::fromString($floorsUuids[$number]) : null);
+            $floor->setCreatedByAdherent($createdBy ?? $this->getReference('adherent-20'));
+            $floor->setCreatedAt($createdAt);
+            $buildingBlock->addFloor($floor);
+            foreach ($campaigns as $campaign) {
+                $floor->addStatistic(new FloorStatistics($floor, $campaign, $status));
+                if (BuildingStatusEnum::COMPLETED === $status) {
+                    $event = new BuildingEvent(
+                        $building,
+                        $campaign,
+                        BuildingEventActionEnum::CLOSE,
+                        BuildingEventTypeEnum::BUILDING_BLOCK,
+                        sprintf('%s-%s', $buildingBlock->getName(), $floor->getNumber())
+                    );
+                    $event->setAuthor($createdBy);
+                    $events[] = $event;
+                }
             }
         }
     }
