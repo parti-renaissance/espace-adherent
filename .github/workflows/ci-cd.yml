@@ -335,9 +335,9 @@ jobs:
   deploy-staging:
     name: Deploy Staging
     runs-on: ubuntu-20.04
-    needs: [ docker-build-push-gcr ]
+#    needs: [ docker-build-push-gcr ]
     environment: staging
-    if: github.event.ref == 'refs/heads/master'
+#    if: github.event.ref == 'refs/heads/master'
     env:
       HASH: ${{ github.sha }}
       TAG: ${{ github.ref_name }}
@@ -350,6 +350,7 @@ jobs:
       GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
 
     steps:
+      - uses: actions/checkout@v2
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
@@ -358,14 +359,14 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
             environment: staging
-      - uses: google-github-actions/auth@v0.4.3
-        with:
-          credentials_json: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
-
-      - run: |-
-          gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
-
-      - run: |-
-          for GKE_DEPLOYMENT in $(echo $GKE_DEPLOYMENTS); do
-            kubectl set image deployment/$GKE_DEPLOYMENT $GKE_CONTAINER=$REGISTRY:$TAG-$HASH
-          done
+#      - uses: google-github-actions/auth@v0.4.3
+#        with:
+#          credentials_json: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
+#
+#      - run: |-
+#          gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
+#
+#      - run: |-
+#          for GKE_DEPLOYMENT in $(echo $GKE_DEPLOYMENTS); do
+#            kubectl set image deployment/$GKE_DEPLOYMENT $GKE_CONTAINER=$REGISTRY:$TAG-$HASH
+#          done
