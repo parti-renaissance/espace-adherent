@@ -130,28 +130,6 @@
             </argument>
         </service>
 
-        <!-- Sentry -->
-        <service id="app.logging.sentry_handler" class="App\Logging\SentryHandler" public="false">
-            <argument type="service">
-                <service class="Raven_Client">
-                    <argument>%env(SENTRY_DSN)%</argument>
-                </service>
-            </argument>
-            <call method="setRelease">
-                <argument>%env(APP_VERSION)%</argument>
-            </call>
-        </service>
-
-        <service id="app.logging.activation_strategy" class="App\Logging\ActivationStrategy" public="false">
-            <argument type="constant">Monolog\Logger::ERROR</argument>
-            <argument type="collection">
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND</argument>
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN</argument>
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_METHOD_NOT_ALLOWED</argument>
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST</argument>
-            </argument>
-        </service>
-
         <!-- Serializer -->
         <service id="app.serializer_visitor.ical_serialization_visitor" class="App\Serializer\IcalSerializationVisitor" public="false">
             <tag name="jms_serializer.serialization_visitor" format="ical"/>

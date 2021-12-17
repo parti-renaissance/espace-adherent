@@ -171,10 +171,6 @@
             <tag name="messenger.message_handler" />
         </service>
 
-        <service id="App\Logging\CurrentUserProcessor">
-            <tag name="monolog.processor" method="processRecord" />
-        </service>
-
         <!-- ParamConverter -->
         <service id="App\ParamConverter\DoctrineQueryStringParamConverter">
             <tag name="request.param_converter" converter="querystring" priority="false" />

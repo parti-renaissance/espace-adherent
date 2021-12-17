@@ -44,7 +44,6 @@ module.exports = {
         removeClass: true,
         App: true,
         Kernel: true,
-        Raven: true,
         google: true,
         getUrlParameter: true,
     },

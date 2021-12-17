@@ -350,6 +350,14 @@ jobs:
       GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
 
     steps:
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+            environment: staging
       - uses: google-github-actions/auth@v0.4.3
         with:
           credentials_json: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}

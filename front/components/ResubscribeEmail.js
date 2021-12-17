@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { captureMessage as sentryCaptureMessage } from '@sentry/browser';
 import Modal from './Modal';
 import Loader from './Loader';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
@@ -41,7 +42,7 @@ const ResubscribeEmail = ({
                 api,
                 callback: (response) => {
                     if (null === response || !response.result || 'error' === response.result) {
-                        Raven.captureMessage(
+                        sentryCaptureMessage(
                             'Mailchimp resubscribe Email failed',
                             { level: 'error', debug: true, extra: { response } }
                         );

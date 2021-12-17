@@ -5,21 +5,30 @@ import 'utils/css';
 import 'utils/text';
 import 'utils/url';
 import { decode } from 'js-base64';
+import * as Sentry from '@sentry/browser';
+import { Integrations } from '@sentry/tracing';
 
 window.Kernel = class {
-    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist) {
-        Kernel.release = release;
-        Kernel.sentryDsn = sentryDsn;
-
+    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist, user) {
         let app = false;
         let vendor = false;
 
         const runIfReady = () => {
             if (app && vendor) {
-                const { sentryDsn, release, listeners } = Kernel;
+                const { listeners } = Kernel;
 
                 if (sentryDsn) {
-                    Raven.config(sentryDsn, { release }).install();
+                    Sentry.init({
+                        dsn: sentryDsn,
+                        release,
+                        environment,
+                        integrations: [new Integrations.BrowserTracing()],
+                        tracesSampleRate: 1.0,
+                    });
+
+                    if (user) {
+                        Sentry.setUser({ email: user });
+                    }
                 }
 
                 listeners.forEach((listener) => App.addListener(listener));
@@ -55,6 +64,4 @@ window.Kernel = class {
     }
 };
 
-Kernel.release = null;
-Kernel.sentryDsn = null;
 Kernel.listeners = [];
