@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Logging;
+namespace App\Monolog;
 
-use Monolog\Handler\AbstractHandler;
+use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 use function Sentry\addBreadcrumb;
 use Sentry\Breadcrumb;
@@ -10,7 +10,7 @@ use Sentry\Monolog\Handler;
 use Sentry\State\Scope;
 use function Sentry\withScope;
 
-class SentryHandler extends AbstractHandler
+class SentryHandler implements HandlerInterface
 {
     private array $levels = [
         Logger::DEBUG => Breadcrumb::LEVEL_DEBUG,
@@ -23,12 +23,11 @@ class SentryHandler extends AbstractHandler
         Logger::EMERGENCY => Breadcrumb::LEVEL_FATAL,
     ];
 
-    private Handler $decorated;
+    /** @var Handler|HandlerInterface */
+    private HandlerInterface $decorated;
 
-    public function __construct(Handler $decorated)
+    public function __construct(HandlerInterface $decorated)
     {
-        parent::__construct($decorated->getLevel(), $decorated->getBubble());
-
         $this->decorated = $decorated;
     }
 
@@ -76,5 +75,15 @@ class SentryHandler extends AbstractHandler
         });
 
         return $result;
+    }
+
+    public function isHandling(array $record): bool
+    {
+        return $this->decorated->isHandling($record);
+    }
+
+    public function close(): void
+    {
+        $this->decorated->close();
     }
 }

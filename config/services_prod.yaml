@@ -4,6 +4,6 @@ services:
         autoconfigure: true
         public: false
 
-    App\Logging\SentryHandler:
-        decorates: 'monolog.handler.sentry_handler'
-        arguments: [ '@App\Logging\SentryHandler.inner' ]
+    App\Monolog\SentryHandler:
+        decorates: 'monolog.handler.sentry'
+        arguments: [ '@App\Monolog\SentryHandler.inner' ]

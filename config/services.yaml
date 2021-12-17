@@ -104,14 +104,14 @@ services:
         exclude:
             - '../src/Admin'
             - '../src/Algolia'
-            - '../src/Exception'
-            - '../src/Twig'
-            - '../src/Mailchimp'
             - '../src/DependencyInjection'
             - '../src/Entity'
-            - '../src/Logging'
-            - '../src/Security'
+            - '../src/Exception'
             - '../src/Kernel.php'
+            - '../src/Mailchimp'
+            - '../src/Monolog'
+            - '../src/Security'
+            - '../src/Twig'
 
     App\Algolia\:
         resource: '../src/Algolia/'
@@ -330,5 +330,7 @@ services:
     App\SmsCampaign\Listener\AdherentChangeSmsNotificationListener:
         tags: [{name: 'monolog.logger'}]
 
-    Symfony\Bridge\Monolog\Processor\TokenProcessor: ~
-    Symfony\Bridge\Monolog\Processor\SwitchUserTokenProcessor: ~
+    Symfony\Bridge\Monolog\Processor\TokenProcessor:
+        tags: ['monolog.processor']
+    Symfony\Bridge\Monolog\Processor\SwitchUserTokenProcessor:
+        tags: ['monolog.processor']

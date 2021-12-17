@@ -1,3 +1,7 @@
 sentry:
     dsn: "%env(SENTRY_DSN)%"
     register_error_listener: false
+    tracing: false
+    options:
+        environment: '%env(APP_ENVIRONMENT)%'
+        release: '%env(APP_VERSION)%'

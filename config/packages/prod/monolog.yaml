@@ -10,14 +10,8 @@ monolog:
                 - 404
                 - 405
         sentry:
-            type: service
-            level: !php/const Monolog\Logger::DEBUG
-            id: App\Logging\SentryHandler
-        sentry_handler:
             type: sentry
             level: !php/const Monolog\Logger::ERROR
-            environment: '%env(APP_ENVIRONMENT)%'
-            release: '%env(APP_VERSION)%'
             hub_id: Sentry\State\HubInterface
         console:
             type: console
