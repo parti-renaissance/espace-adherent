@@ -350,6 +350,7 @@ jobs:
       GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
 
     steps:
+      - uses: actions/checkout@v2
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
