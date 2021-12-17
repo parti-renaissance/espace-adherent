@@ -13,8 +13,6 @@ framework:
     fragments:       ~
     http_method_override: true
     assets: ~
-    php_errors:
-        log: true
     cache:
         app: cache.adapter.doctrine
         default_doctrine_provider: cache.redis_doctrine_provider
