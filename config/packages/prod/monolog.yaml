@@ -3,6 +3,7 @@ monolog:
         main:
             type: fingers_crossed
             action_level: error
+            stop_buffering: false
             handler: sentry
             excluded_http_codes:
                 - 400
