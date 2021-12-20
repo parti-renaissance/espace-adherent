@@ -50,6 +50,8 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
                 'visited_doors' => $stats->getVisitedDoors(),
                 'nb_surveys' => $stats->getNbSurveys(),
                 'status' => $stats->getStatus(),
+                'closed_at' => $stats->getClosedAt() ? $stats->getClosedAt()->format(\DateTime::RFC3339) : null,
+                'closed_by' => $stats->getClosedBy() ? $stats->getClosedBy()->getPartialName() : null,
             ];
         }
 

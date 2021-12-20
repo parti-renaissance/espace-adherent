@@ -8,6 +8,8 @@ use App\Entity\Pap\BuildingBlock;
 use App\Entity\Pap\BuildingBlockStatistics;
 use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\BuildingStatistics;
+use App\Entity\Pap\Campaign;
+use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\Floor;
 use App\Entity\Pap\FloorStatistics;
 use App\Pap\BuildingEventActionEnum;
@@ -155,17 +157,18 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $buildingBlock->setCreatedAt($createdAt);
         $building->addBuildingBlock($buildingBlock);
         foreach ($campaigns as $campaign) {
-            $buildingBlock->addStatistic(new BuildingBlockStatistics($buildingBlock, $campaign, $status));
+            $buildingBlock->addStatistic($stats = new BuildingBlockStatistics($buildingBlock, $campaign, $status));
             if (BuildingStatusEnum::COMPLETED === $status) {
-                $event = new BuildingEvent(
+                $events[] = $this->createBuildingEvent(
+                    BuildingEventTypeEnum::BUILDING_BLOCK,
+                    BuildingEventActionEnum::CLOSE,
+                    $buildingBlock->getName(),
                     $building,
                     $campaign,
-                    BuildingEventActionEnum::CLOSE,
-                    BuildingEventTypeEnum::BUILDING_BLOCK,
-                    $buildingBlock->getName()
+                    $createdBy,
+                    new \DateTime(),
+                    $stats
                 );
-                $event->setAuthor($createdBy);
-                $events[] = $event;
             }
         }
 
@@ -175,20 +178,47 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             $floor->setCreatedAt($createdAt);
             $buildingBlock->addFloor($floor);
             foreach ($campaigns as $campaign) {
-                $floor->addStatistic(new FloorStatistics($floor, $campaign, $status));
+                $floor->addStatistic($stats = new FloorStatistics($floor, $campaign, $status));
                 if (BuildingStatusEnum::COMPLETED === $status) {
-                    $event = new BuildingEvent(
+                    $events[] = $this->createBuildingEvent(
+                        BuildingEventTypeEnum::FLOOR,
+                        BuildingEventActionEnum::CLOSE,
+                        sprintf('%s-%s', $buildingBlock->getName(), $floor->getNumber()),
                         $building,
                         $campaign,
-                        BuildingEventActionEnum::CLOSE,
-                        BuildingEventTypeEnum::BUILDING_BLOCK,
-                        sprintf('%s-%s', $buildingBlock->getName(), $floor->getNumber())
+                        $createdBy,
+                        new \DateTime(),
+                        $stats
                     );
-                    $event->setAuthor($createdBy);
-                    $events[] = $event;
                 }
             }
         }
+    }
+
+    private function createBuildingEvent(
+        string $type,
+        string $action,
+        string $identifier,
+        Building $building,
+        Campaign $campaign,
+        Adherent $createdBy,
+        ?\DateTime $createdAt = null,
+        ?CampaignStatisticsInterface $stats = null
+    ): BuildingEvent {
+        $event = new BuildingEvent(
+            $building,
+            $campaign,
+            $action,
+            $type,
+            $identifier
+        );
+        $event->setAuthor($createdBy);
+        if (BuildingEventActionEnum::CLOSE) {
+            $stats->setClosedBy($createdBy);
+            $stats->setClosedAt($createdAt ?? new \DateTime());
+        }
+
+        return $event;
     }
 
     public function getDependencies()
