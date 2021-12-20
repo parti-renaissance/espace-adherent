@@ -86,12 +86,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     private ?Adherent $questioner = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private ?Adherent $adherent = null;
-
-    /**
      * @Assert\NotNull
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="campaignHistories")
@@ -257,16 +251,6 @@ class CampaignHistory implements DataSurveyAwareInterface
     public function setQuestioner(?Adherent $questioner): void
     {
         $this->questioner = $questioner;
-    }
-
-    public function getAdherent(): ?Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent(?Adherent $adherent): void
-    {
-        $this->adherent = $adherent;
     }
 
     public function getCampaign(): ?Campaign

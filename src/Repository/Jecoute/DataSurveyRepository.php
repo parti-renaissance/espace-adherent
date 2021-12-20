@@ -100,12 +100,11 @@ class DataSurveyRepository extends ServiceEntityRepository
     public function iterateForPapCampaignDataSurveys(PapCampaign $campaign): IterableResult
     {
         return $this->createQueryBuilder('ds')
-            ->addSelect('survey', 'campaignHistory', 'author', 'adherent', 'campaign')
+            ->addSelect('survey', 'campaignHistory', 'author', 'campaign')
             ->leftJoin('ds.survey', 'survey')
             ->leftJoin('ds.author', 'author')
             ->leftJoin('ds.papCampaignHistory', 'campaignHistory')
             ->leftJoin('campaignHistory.campaign', 'campaign')
-            ->leftJoin('campaignHistory.adherent', 'adherent')
             ->where('campaign = :campaign')
             ->orderBy('campaignHistory.createdAt', 'DESC')
             ->setParameter('campaign', $campaign)
