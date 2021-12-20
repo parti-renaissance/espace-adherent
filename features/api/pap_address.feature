@@ -258,7 +258,9 @@ Feature:
             "uuid": "@uuid@",
             "name": "A",
             "campaign_statistics": {
-                "status": "completed"
+                "status": "completed",
+                "closed_at": "@string@.isDateTime()",
+                "closed_by": "Adherent 32 F."
             },
             "floors": [
                 {
@@ -267,7 +269,9 @@ Feature:
                     "campaign_statistics": {
                         "status": "completed",
                         "visited_doors": [],
-                        "nb_surveys": 0
+                        "nb_surveys": 0,
+                        "closed_at": "@string@.isDateTime()",
+                        "closed_by": "Adherent 32 F."
                     }
                 },
                 {
@@ -276,7 +280,9 @@ Feature:
                     "campaign_statistics": {
                         "status": "completed",
                         "visited_doors": [],
-                        "nb_surveys": 0
+                        "nb_surveys": 0,
+                        "closed_at": "@string@.isDateTime()",
+                        "closed_by": "Adherent 32 F."
                     }
                 }
             ]
@@ -285,7 +291,9 @@ Feature:
             "uuid": "@uuid@",
             "name": "B",
             "campaign_statistics": {
-                "status": "ongoing"
+                "status": "ongoing",
+                "closed_at": null,
+                "closed_by": null
             },
             "floors": [
                 {
@@ -294,7 +302,9 @@ Feature:
                     "campaign_statistics": {
                         "status": "ongoing",
                         "visited_doors": [],
-                        "nb_surveys": 0
+                        "nb_surveys": 0,
+                        "closed_at": null,
+                        "closed_by": null
                     }
                 },
                 {
@@ -303,7 +313,9 @@ Feature:
                     "campaign_statistics": {
                         "status": "ongoing",
                         "visited_doors": [],
-                        "nb_surveys": 0
+                        "nb_surveys": 0,
+                        "closed_at": null,
+                        "closed_by": null
                     }
                 }
             ]
