@@ -1,7 +1,19 @@
+services:
+    Sentry\Integration\EnvironmentIntegration: ~
+    Sentry\Integration\FrameContextifierIntegration: ~
+    Sentry\Integration\RequestIntegration: ~
+    Sentry\Integration\TransactionIntegration: ~
+
 sentry:
     dsn: "%env(SENTRY_DSN)%"
     register_error_listener: false
     tracing: false
     options:
+        default_integrations: false
+        integrations:
+            - Sentry\Integration\EnvironmentIntegration
+            - Sentry\Integration\FrameContextifierIntegration
+            - Sentry\Integration\RequestIntegration
+            - Sentry\Integration\TransactionIntegration
         environment: '%env(APP_ENVIRONMENT)%'
         release: '%env(APP_VERSION)%'
