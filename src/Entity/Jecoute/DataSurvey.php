@@ -5,7 +5,8 @@ namespace App\Entity\Jecoute;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\Phoning\CampaignHistory;
+use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
+use App\Entity\Phoning\CampaignHistory as PhoningCampaignHistory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,7 +63,8 @@ class DataSurvey implements AuthorInterface
      *
      * @Groups({
      *     "phoning_campaign_history_read_list",
-     *     "campaign_replies_list",
+     *     "phoning_campaign_replies_list",
+     *     "pap_campaign_replies_list",
      *     App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP,
      *     "pap_campaign_history_read_list",
      * })
@@ -77,13 +79,22 @@ class DataSurvey implements AuthorInterface
     private $jemarcheDataSurvey;
 
     /**
-     * @var CampaignHistory|null
+     * @var PhoningCampaignHistory|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="dataSurvey")
      *
-     * @Groups("campaign_replies_list")
+     * @Groups("phoning_campaign_replies_list")
      */
-    private $campaignHistory;
+    private $phoningCampaignHistory;
+
+    /**
+     * @var PapCampaignHistory|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="dataSurvey")
+     *
+     * @Groups("pap_campaign_replies_list")
+     */
+    private $papCampaignHistory;
 
     public function __construct(Survey $survey = null)
     {
@@ -160,13 +171,23 @@ class DataSurvey implements AuthorInterface
         return (bool) $this->jemarcheDataSurvey;
     }
 
-    public function getCampaignHistory(): ?CampaignHistory
+    public function getPhoningCampaignHistory(): ?PhoningCampaignHistory
     {
-        return $this->campaignHistory;
+        return $this->phoningCampaignHistory;
     }
 
-    public function isOfCampaignHistory(): bool
+    public function isOfPhoningCampaignHistory(): bool
     {
-        return (bool) $this->campaignHistory;
+        return (bool) $this->phoningCampaignHistory;
+    }
+
+    public function getPapCampaignHistory(): ?PapCampaignHistory
+    {
+        return $this->papCampaignHistory;
+    }
+
+    public function isOfPapCampaignHistory(): bool
+    {
+        return (bool) $this->papCampaignHistory;
     }
 }

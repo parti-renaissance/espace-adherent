@@ -6,8 +6,9 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Building;
+use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory;
-use App\Entity\Phoning\Campaign;
+use App\Entity\Phoning\Campaign as PhoningCampaign;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -27,7 +28,7 @@ class DataSurveyRepository extends ServiceEntityRepository
     /**
      * @return DataSurvey[]|PaginatorInterface|iterable
      */
-    public function findPhoningCampaignDataSurveys(Campaign $campaign, int $page = 1, ?int $limit = 30): iterable
+    public function findPhoningCampaignDataSurveys(PhoningCampaign $campaign, int $page = 1, ?int $limit = 30): iterable
     {
         $qb = $this
             ->createQueryBuilder('ds')
@@ -36,10 +37,11 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->leftJoin('surveyQuestion.question', 'question')
             ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
             ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
-            ->leftJoin('ds.campaignHistory', 'campaignHistory')
+            ->leftJoin('ds.phoningCampaignHistory', 'campaignHistory')
             ->leftJoin('campaignHistory.campaign', 'campaign')
             ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice', 'campaignHistory', 'campaign')
             ->where('campaign = :campaign')
+            ->orderBy('campaignHistory.beginAt', 'DESC')
             ->setParameter('campaign', $campaign)
         ;
 
@@ -50,16 +52,61 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
-    public function iterateForPhoningCampaignDataSurveys(Campaign $campaign): IterableResult
+    public function iterateForPhoningCampaignDataSurveys(PhoningCampaign $campaign): IterableResult
     {
         return $this->createQueryBuilder('ds')
             ->addSelect('survey', 'campaignHistory', 'author', 'adherent', 'campaign')
             ->leftJoin('ds.survey', 'survey')
             ->leftJoin('ds.author', 'author')
-            ->leftJoin('ds.campaignHistory', 'campaignHistory')
+            ->leftJoin('ds.phoningCampaignHistory', 'campaignHistory')
             ->leftJoin('campaignHistory.campaign', 'campaign')
             ->leftJoin('campaignHistory.adherent', 'adherent')
             ->where('campaign = :campaign')
+            ->orderBy('campaignHistory.beginAt', 'DESC')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->iterate()
+        ;
+    }
+
+    /**
+     * @return DataSurvey[]|PaginatorInterface|iterable
+     */
+    public function findPapCampaignDataSurveys(PapCampaign $campaign, int $page = 1, ?int $limit = 30): iterable
+    {
+        $qb = $this
+            ->createQueryBuilder('ds')
+            ->leftJoin('ds.survey', 'survey')
+            ->leftJoin('survey.questions', 'surveyQuestion')
+            ->leftJoin('surveyQuestion.question', 'question')
+            ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
+            ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
+            ->leftJoin('ds.papCampaignHistory', 'campaignHistory')
+            ->leftJoin('campaignHistory.campaign', 'campaign')
+            ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice', 'campaignHistory', 'campaign')
+            ->where('campaign = :campaign')
+            ->orderBy('campaignHistory.createdAt', 'DESC')
+            ->setParameter('campaign', $campaign)
+        ;
+
+        if (!$limit) {
+            return $qb->getQuery()->getResult();
+        }
+
+        return $this->configurePaginator($qb, $page, $limit);
+    }
+
+    public function iterateForPapCampaignDataSurveys(PapCampaign $campaign): IterableResult
+    {
+        return $this->createQueryBuilder('ds')
+            ->addSelect('survey', 'campaignHistory', 'author', 'campaign')
+            ->leftJoin('ds.survey', 'survey')
+            ->leftJoin('ds.author', 'author')
+            ->leftJoin('ds.papCampaignHistory', 'campaignHistory')
+            ->leftJoin('campaignHistory.campaign', 'campaign')
+            ->where('campaign = :campaign')
+            ->orderBy('campaignHistory.createdAt', 'DESC')
             ->setParameter('campaign', $campaign)
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
@@ -71,13 +118,15 @@ class DataSurveyRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('ds')
             ->addSelect('jemarcheDataSurvey')
-            ->addSelect('partial campaignHistory.{id}')
+            ->addSelect('partial phoningCampaignHistory.{id}')
+            ->addSelect('partial papCampaignHistory.{id}')
             ->addSelect('partial author.{id, firstName, lastName}')
             ->addSelect('partial adherent.{id, firstName, lastName, emailAddress, postAddress.postalCode, gender, position}')
             ->leftJoin('ds.author', 'author')
             ->leftJoin('ds.jemarcheDataSurvey', 'jemarcheDataSurvey')
-            ->leftJoin('ds.campaignHistory', 'campaignHistory')
-            ->leftJoin('campaignHistory.adherent', 'adherent')
+            ->leftJoin('ds.phoningCampaignHistory', 'phoningCampaignHistory')
+            ->leftJoin('ds.papCampaignHistory', 'papCampaignHistory')
+            ->leftJoin('phoningCampaignHistory.adherent', 'adherent')
             ->where('ds.survey = :survey')
             ->setParameter('survey', $survey)
         ;

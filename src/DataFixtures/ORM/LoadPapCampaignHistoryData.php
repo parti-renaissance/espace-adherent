@@ -32,6 +32,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $adherent16 = $this->getReference('adherent-16');
 
         $nationalSurvey1 = $this->getReference('national-survey-1');
+        $nationalSurvey3 = $this->getReference('national-survey-3');
 
         /** @var Building $building3 */
         $building3 = $this->getReference('building-3');
@@ -63,7 +64,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             new \DateTime('-2 days -9 minutes')
         ));
 
-        $manager->persist($this->createPapCampaignHistory(
+        $manager->persist($papCampaignHistory = $this->createPapCampaignHistory(
             $campaign1,
             $building3,
             CampaignHistoryStatusEnum::ACCEPT_TO_ANSWER,
@@ -71,13 +72,42 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             1,
             '11',
             $adherent16,
-            $nationalSurvey1,
+            $nationalSurvey3,
+            new \DateTime('-35 minutes'),
+            new \DateTime('-30 minutes')
+        ));
+        $this->addReference('pap-data-survey-1', $papCampaignHistory->getDataSurvey());
+
+        $manager->persist($papCampaignHistory = $this->createPapCampaignHistory(
+            $campaign1,
+            $building3,
+            CampaignHistoryStatusEnum::ACCEPT_TO_ANSWER,
+            'A',
+            1,
+            '12',
+            $adherent16,
+            $nationalSurvey3,
+            new \DateTime('-25 minutes'),
+            new \DateTime('-18 minutes')
+        ));
+        $this->addReference('pap-data-survey-2', $papCampaignHistory->getDataSurvey());
+
+        $manager->persist($papCampaignHistory = $this->createPapCampaignHistory(
+            $campaign1,
+            $building3,
+            CampaignHistoryStatusEnum::ACCEPT_TO_ANSWER,
+            'A',
+            1,
+            '13',
+            $adherent16,
+            $nationalSurvey3,
             new \DateTime('-5 minutes')
         ));
+        $this->addReference('pap-data-survey-3', $papCampaignHistory->getDataSurvey());
         $statsFloor0 = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign1);
         $statsFloor1 = $building3->getBuildingBlockByName('A')->getFloorByNumber(1)->findStatisticsForCampaign($campaign1);
         $statsFloor0->setVisitedDoors(['01', '02']);
-        $statsFloor1->setVisitedDoors(['11']);
+        $statsFloor1->setVisitedDoors(['11', '12', '13']);
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign2,

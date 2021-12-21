@@ -3,7 +3,9 @@
 {% block field %}
     {% if object.isOfJemarcheDataSurvey %}
         Libre
-    {% elseif object.isOfCampaignHistory %}
+    {% elseif object.isOfPapCampaignHistory %}
+        PAP
+    {% elseif object.isOfPhoningCampaignHistory %}
         Phoning
     {% endif %}
 {% endblock %}

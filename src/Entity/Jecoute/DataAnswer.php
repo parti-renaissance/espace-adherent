@@ -51,6 +51,7 @@ class DataAnswer
      *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
+     * @ORM\OrderBy({"id": "ASC"})
      *
      * @Groups({"data_survey_write"})
      */

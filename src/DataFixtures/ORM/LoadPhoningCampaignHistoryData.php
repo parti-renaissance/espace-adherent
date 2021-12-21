@@ -225,7 +225,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
 
         $phoningDataSurvey19 = $this->createPhoningCampaignHistory(
             $adherent4,
-            null,
+            $this->getReference('adherent-37'),
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,

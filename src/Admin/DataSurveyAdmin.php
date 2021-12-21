@@ -32,8 +32,10 @@ class DataSurveyAdmin extends AbstractAdmin
                 ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
                 ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
                 ->leftJoin('o.jemarcheDataSurvey', 'jemarcheDataSurvey')
-                ->leftJoin('o.campaignHistory', 'campaignHistory')
-                ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice', 'jemarcheDataSurvey', 'campaignHistory')
+                ->leftJoin('o.phoningCampaignHistory', 'phoningCampaignHistory')
+                ->leftJoin('o.papCampaignHistory', 'papCampaignHistory')
+                ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice')
+                ->addSelect('jemarcheDataSurvey', 'phoningCampaignHistory', 'papCampaignHistory')
             ;
         }
 

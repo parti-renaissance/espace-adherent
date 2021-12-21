@@ -444,6 +444,26 @@ Feature:
             "questioner": {
                 "partial_name": "Patrick B."
             }
+        },
+        {
+            "created_at":  "@string@.isDateTime()",
+            "building_block": "A",
+            "floor": 1,
+            "door": "12",
+            "status_label": "Accepte de répondre aux questions",
+            "questioner": {
+                "partial_name": "Patrick B."
+            }
+        },
+        {
+            "created_at":  "@string@.isDateTime()",
+            "building_block": "A",
+            "floor": 1,
+            "door": "13",
+            "status_label": "Accepte de répondre aux questions",
+            "questioner": {
+                "partial_name": "Patrick B."
+            }
         }
     ]
     """

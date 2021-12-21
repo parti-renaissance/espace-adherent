@@ -5,11 +5,15 @@
         {{ object.jemarcheDataSurvey.firstName }} {{ object.jemarcheDataSurvey.lastName }}
         <br />
         {{ object.jemarcheDataSurvey.emailAddress }}
-    {% elseif object.isOfCampaignHistory and object.campaignHistory.adherent %}
-        <a href="{{ path('admin_app_adherent_show', { id: object.campaignHistory.adherent.id }) }}">
-            {{ object.campaignHistory.adherent.fullName }}
+    {% elseif object.isOfPhoningCampaignHistory and object.phoningCampaignHistory.adherent %}
+        <a href="{{ path('admin_app_adherent_show', { id: object.phoningCampaignHistory.adherent.id }) }}">
+            {{ object.phoningCampaignHistory.adherent.fullName }}
         </a>
         <br />
-        {{ object.campaignHistory.adherent.emailAddress }}
+        {{ object.phoningCampaignHistory.adherent.emailAddress }}
+    {% elseif object.isOfPapCampaignHistory %}
+        {{ object.papCampaignHistory.firstName }} {{ object.papCampaignHistory.lastName }}
+        <br />
+        {{ object.papCampaignHistory.emailAddress }}
     {% endif %}
 {% endblock %}

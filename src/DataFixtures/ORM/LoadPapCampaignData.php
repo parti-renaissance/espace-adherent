@@ -22,12 +22,13 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
     {
         $nationalSurvey1 = $this->getReference('national-survey-1');
         $nationalSurvey2 = $this->getReference('national-survey-2');
+        $nationalSurvey3 = $this->getReference('national-survey-3');
 
         $campaign1 = $this->createCampaign(
             self::CAMPAIGN_1_UUID,
             'Campagne de 10 jours suivants',
             '**Campagne** de 10 jours suivants',
-            $nationalSurvey1,
+            $nationalSurvey3,
             600,
             '-1 hour',
             '+10 days'
