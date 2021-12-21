@@ -1506,10 +1506,12 @@ Feature:
                 "answers": [
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
                         "answer": "le pouvoir d'achat"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
                         "answer": [
                             "L'aspect financier",
                             "La préservation de l'environnement"
@@ -1545,10 +1547,12 @@ Feature:
                 "answers": [
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
                         "answer": "la conquête de l'espace"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
@@ -1584,10 +1588,12 @@ Feature:
                 "answers": [
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
                         "answer": "l'écologie sera le sujet le plus important"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
