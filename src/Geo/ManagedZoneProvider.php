@@ -85,4 +85,9 @@ class ManagedZoneProvider
 
         return \count($intersect) > 0;
     }
+
+    public function isManagerOfZone(Adherent $adherent, string $spaceType, Zone $zone): bool
+    {
+        return $this->zoneBelongsToSome($zone, $this->getManagedZonesIds($adherent, $spaceType));
+    }
 }

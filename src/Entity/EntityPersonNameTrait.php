@@ -30,6 +30,8 @@ trait EntityPersonNameTrait
      *     "pap_address_list",
      *     "message_read_list",
      *     "pap_campaign_history_read_list",
+     *     "survey_list_dc",
+     *     "survey_read_dc",
      * })
      *
      * @JMS\Groups({"adherent_change_diff"})
@@ -58,6 +60,8 @@ trait EntityPersonNameTrait
      *     "pap_address_list",
      *     "message_read_list",
      *     "pap_campaign_history_read_list",
+     *     "survey_list_dc",
+     *     "survey_read_dc",
      * })
      *
      * @JMS\Groups({"adherent_change_diff"})

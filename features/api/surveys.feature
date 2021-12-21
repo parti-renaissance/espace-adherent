@@ -847,70 +847,251 @@ Feature:
       },
       "items": [
         {
-          "id": @integer@,
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
           "type": "national",
           "name": "Questionnaire national numéro 1",
-          "questions": [
-            {
-              "id": @integer@,
-              "type": "simple_field",
-              "content": "Une première question du 1er questionnaire national ?",
-              "choices": [
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 2,
+          "nb_answers": 14
+        },
+        {
+          "uuid": "@uuid@",
+          "type": "national",
+          "name": "Le deuxième questionnaire national",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 1,
+          "nb_answers": 0
+        }
+      ]
+    }
+    """
 
-              ]
+  Scenario: As a DC user with national role I can access only national surveys
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/surveys?scope=national&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 3,
+        "items_per_page": 10,
+        "count": 3,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+          "type": "national",
+          "name": "Questionnaire national numéro 1",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 2,
+          "nb_answers": 14
+        },
+        {
+          "uuid": "@uuid@",
+          "type": "national",
+          "name": "Le deuxième questionnaire national",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 1,
+          "nb_answers": 0
+        },
+        {
+          "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+          "type": "national",
+          "name": "Les enjeux des 10 prochaines années",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 2,
+          "nb_answers": 6
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC user with referent role I can access to national and my local managed zones surveys
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 6,
+        "items_per_page": 10,
+        "count": 6,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+          "type": "national",
+          "name": "Questionnaire national numéro 1",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 2,
+          "nb_answers": 14
+        },
+        {
+          "uuid": "@uuid@",
+          "type": "national",
+          "name": "Le deuxième questionnaire national",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 1,
+          "nb_answers": 0
+        },
+        {
+          "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+          "type": "national",
+          "name": "Les enjeux des 10 prochaines années",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 2,
+          "nb_answers": 6
+        },
+        {
+          "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+          "type": "local",
+          "name": "Questionnaire numéro 1",
+          "created_at": "@string@.isDateTime()",
+          "zone": {
+            "uuid": "@uuid@",
+            "code": "77",
+            "name": "Seine-et-Marne",
+            "created_at": "@string@.isDateTime()"
+          },
+          "published": true,
+          "creator": {
+            "first_name": "Referent",
+            "last_name": "Referent"
+          },
+          "nb_questions": 4,
+          "nb_answers": 3
+        },
+        {
+          "uuid": "dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea",
+          "type": "local",
+          "name": "Un deuxième questionnaire",
+          "created_at": "@string@.isDateTime()",
+          "zone": {
+            "uuid": "@uuid@",
+            "code": "59",
+            "name": "Nord",
+            "created_at": "@string@.isDateTime()"
+          },
+          "published": true,
+          "creator": {
+            "first_name": "Referent75and77",
+            "last_name": "Referent75and77"
+          },
+          "nb_questions": 1,
+          "nb_answers": 0
+        },
+        {
+          "uuid": "0de90b18-47f5-1606-af9d-74eb1fa4a30a",
+          "type": "local",
+          "name": "Un questionnaire avec modification bloquée",
+          "created_at": "@string@.isDateTime()",
+          "zone": {
+            "uuid": "@uuid@",
+            "code": "92",
+            "name": "Hauts-de-Seine",
+            "created_at": "@string@.isDateTime()"
+          },
+          "published": true,
+          "creator": {
+            "first_name": "Referent",
+            "last_name": "Referent"
+          },
+          "nb_questions": 0,
+          "nb_answers": 0
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC user with national role I cannot read a local survey
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=national"
+    Then the response status code should be 403
+
+  Scenario: As a DC user with referent role I can read a local survey of my managed zone
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "city": null,
+      "zone": {
+        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+        "code": "77",
+        "name": "Seine-et-Marne"
+      },
+      "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+      "creator": {
+        "first_name": "Referent",
+        "last_name": "Referent"
+      },
+      "name": "Questionnaire numéro 1",
+      "published": true,
+      "questions": [
+        {
+          "id": 1,
+          "type": "simple_field",
+          "content": "Ceci est-il un champ libre ?",
+          "choices": []
+        },
+        {
+          "id": 2,
+          "type": "multiple_choice",
+          "content": "Est-ce une question à choix multiple ?",
+          "choices": [
+            {
+              "id": 7,
+              "content": "Réponse A"
             },
             {
-              "id": @integer@,
-              "type": "multiple_choice",
-              "content": "Une deuxième question du 1er questionnaire national ?",
-              "choices": [
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale A"
-                },
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale B"
-                },
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale C"
-                },
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale D"
-                }
-              ]
+              "id": 8,
+              "content": "Réponse B"
             }
           ]
         },
         {
-          "id": @integer@,
-          "uuid": "@uuid@",
-          "type": "national",
-          "name": "Le deuxième questionnaire national",
-          "questions": [
+          "id": 3,
+          "type": "unique_choice",
+          "content": "Est-ce une question à choix unique ?",
+          "choices": [
             {
-              "id": @integer@,
-              "type": "unique_choice",
-              "content": "La question du 2eme questionnaire national ?",
-              "choices": [
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale E"
-                },
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale F"
-                },
-                {
-                  "id": @integer@,
-                  "content": "Réponse nationale G"
-                }
-              ]
+              "id": 9,
+              "content": "Réponse unique 1"
+            },
+            {
+              "id": 10,
+              "content": "Réponse unique 2"
             }
           ]
+        },
+        {
+          "id": 4,
+          "type": "simple_field",
+          "content": "Ceci est-il un champ libre d'une question suggérée ?",
+          "choices": []
         }
       ]
     }

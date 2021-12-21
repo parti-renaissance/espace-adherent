@@ -170,4 +170,16 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function countSurveyDataAnswer(Survey $survey): int
+    {
+        return (int) $this
+            ->createQueryBuilder('ds')
+            ->select('COUNT(1)')
+            ->where('ds.survey = :survey')
+            ->setParameter('survey', $survey)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }

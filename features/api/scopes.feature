@@ -150,7 +150,8 @@ Feature:
         "phoning",
         "pap",
         "team",
-        "phoning_campaign"
+        "phoning_campaign",
+        "survey"
       ]
     }
     """

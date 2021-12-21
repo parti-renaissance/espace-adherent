@@ -7,6 +7,7 @@ use App\Scope\Exception\InvalidFeatureCodeException;
 use App\Scope\Exception\InvalidScopeException;
 use App\Scope\Exception\NotFoundScopeGeneratorException;
 use App\Scope\Exception\ScopeQueryParamMissingException;
+use App\Scope\Generator\ScopeGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorizationChecker
@@ -63,5 +64,16 @@ class AuthorizationChecker
         }
 
         return $request->query->get(self::SCOPE_QUERY_PARAM);
+    }
+
+    public function getScopeGenerator(Request $request, Adherent $adherent): ?ScopeGeneratorInterface
+    {
+        $scope = $this->getScope($request);
+
+        try {
+            return $this->scopeGenerator->getGenerator($scope, $adherent);
+        } catch (NotFoundScopeGeneratorException $e) {
+            return null;
+        }
     }
 }

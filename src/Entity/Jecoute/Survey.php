@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\JeMengageSurveyScopeFilter;
+use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
@@ -33,16 +35,27 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"survey_list"},
- *         },
+ *         "normalization_context": {"groups": {"survey_list"}},
+ *         "filters": {JeMengageSurveyScopeFilter::class},
+ *         "order": {"createdAt": "DESC"},
  *     },
- *     itemOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/surveys/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_READ_SURVEY', object)",
+ *             "normalization_context": {
+ *                 "groups": {"survey_read_dc"}
+ *             }
+ *         }
+ *     },
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/surveys",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') or is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "normalization_context": {
+ *                 "groups": {"survey_list_dc"}
+ *             }
  *         }
  *     },
  *     subresourceOperations={
@@ -74,6 +87,8 @@ abstract class Survey implements IndexableEntityInterface
      *     "data_survey_read",
      *     "jemarche_data_survey_read",
      *     "survey_list",
+     *     "survey_list_dc",
+     *     "survey_read_dc",
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
      *     "pap_campaign_read_after_write",
@@ -94,6 +109,8 @@ abstract class Survey implements IndexableEntityInterface
      *
      * @SymfonySerializer\Groups(
      *     "survey_list",
+     *     "survey_list_dc",
+     *     "survey_read_dc",
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
      *     "phoning_campaign_replies_list",
@@ -115,6 +132,8 @@ abstract class Survey implements IndexableEntityInterface
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @SymfonySerializer\Groups("survey_list_dc", "survey_read_dc")
      */
     private $published;
 
@@ -201,9 +220,17 @@ abstract class Survey implements IndexableEntityInterface
     }
 
     /**
-     * @SymfonySerializer\Groups("survey_list")
+     * @SymfonySerializer\Groups("survey_list", "survey_list_dc")
      */
     abstract public function getType(): string;
+
+    /**
+     * @SymfonySerializer\Groups("survey_list_dc", "survey_read_dc")
+     */
+    public function getCreator(): ?Adherent
+    {
+        return null;
+    }
 
     public function __clone()
     {
