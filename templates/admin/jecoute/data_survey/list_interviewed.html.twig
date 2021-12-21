@@ -11,11 +11,9 @@
         </a>
         <br />
         {{ object.phoningCampaignHistory.adherent.emailAddress }}
-    {% elseif object.isOfPapCampaignHistory and object.papCampaignHistory.adherent %}
-        <a href="{{ path('admin_app_adherent_show', { id: object.papCampaignHistory.adherent.id }) }}">
-            {{ object.papCampaignHistory.adherent.fullName }}
-        </a>
+    {% elseif object.isOfPapCampaignHistory %}
+        {{ object.papCampaignHistory.firstName }} {{ object.papCampaignHistory.lastName }}
         <br />
-        {{ object.papCampaignHistory.adherent.emailAddress }}
+        {{ object.papCampaignHistory.emailAddress }}
     {% endif %}
 {% endblock %}

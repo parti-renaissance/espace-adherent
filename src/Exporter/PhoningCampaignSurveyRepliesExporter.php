@@ -51,9 +51,10 @@ class PhoningCampaignSurveyRepliesExporter
                     $row['ID'] = ++$this->i;
                     $row['Nom Prénom de l\'auteur'] = (string) $dataSurvey->getAuthor();
                     $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
-                    $row['Nom'] = $dataSurvey->getPhoningCampaignHistory()->getAdherent() ? $dataSurvey->getPhoningCampaignHistory()->getAdherent()->getLastName() : null;
-                    $row['Prénom'] = $dataSurvey->getPhoningCampaignHistory()->getAdherent() ? $dataSurvey->getPhoningCampaignHistory()->getAdherent()->getFirstName() : null;
-
+                    $row += ($adherent = $dataSurvey->getPhoningCampaignHistory()->getAdherent())
+                        ? ['Nom' => $adherent->getLastName(), 'Prénom' => $adherent->getFirstName()]
+                        : ['Nom' => null, 'Prénom' => null]
+                    ;
                     /** @var SurveyQuestion $surveyQuestion */
                     foreach ($questions as $surveyQuestion) {
                         $questionName = $surveyQuestion->getQuestion()->getContent();
