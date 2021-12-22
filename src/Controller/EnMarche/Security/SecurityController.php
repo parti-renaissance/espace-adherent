@@ -12,6 +12,7 @@ use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentResetPasswordHandler;
 use App\Membership\MembershipNotifier;
 use App\OAuth\App\AuthAppUrlManager;
+use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -118,7 +119,7 @@ class SecurityController extends AbstractController
         AdherentResetPasswordHandler $handler,
         AuthAppUrlManager $appUrlManager
     ): Response {
-        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request));
+        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? PlatformAuthUrlGenerator::getAppCode());
 
         if ($this->getUser()) {
             return $this->redirect($appUrlGenerator->generateHomepageLink());

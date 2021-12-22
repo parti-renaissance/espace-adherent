@@ -40,7 +40,7 @@ Feature:
           },
           {
             "name": "create_password_link",
-            "content": "http:\/\/jemengage.code\/confirmation\/@string@\/@string@"
+            "content": "http:\/\/login.jemengage.code\/changer-mot-de-passe\/@string@\/@string@"
           }
         ],
         "from_name": "Je-mengage.fr",
@@ -54,3 +54,10 @@ Feature:
       }
     }
     """
+    When I click on the email link "create_password_link"
+    And I fill in the following:
+      | adherent_reset_password[password][first]  | test1234 |
+      | adherent_reset_password[password][second] | test1234 |
+    And I press "Réinitialiser le mot de passe"
+    Then I should be on "http://login.jemengage.code/bienvenue"
+
