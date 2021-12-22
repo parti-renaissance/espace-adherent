@@ -3,8 +3,9 @@
 namespace App\Normalizer;
 
 use App\Entity\Jecoute\Choice;
-use App\Entity\Jecoute\DataAnswer;
 use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Repository\Jecoute\SurveyQuestionRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -16,6 +17,13 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
 
     private const DATA_SURVEY_ALREADY_CALLED = 'DATA_SURVEY_NORMALIZER_ALREADY_CALLED';
 
+    private SurveyQuestionRepository $surveyQuestionRepository;
+
+    public function __construct(SurveyQuestionRepository $surveyQuestionRepository)
+    {
+        $this->surveyQuestionRepository = $surveyQuestionRepository;
+    }
+
     /**
      * @param DataSurvey $object
      */
@@ -25,17 +33,47 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
 
         $dataSurvey = $this->normalizer->normalize($object, $format, $context);
 
-        $dataSurvey['answers'] = array_map(function (DataAnswer $dataAnswer) {
-            $question = $dataAnswer->getSurveyQuestion()->getQuestion();
+        $questions = $this->surveyQuestionRepository->findForSurvey($object->getSurvey());
 
-            return [
-                'question' => $question->getContent(),
-                'type' => $question->getType(),
-                'answer' => $question->isChoiceType()
-                    ? $this->transformSelectedChoicesCollection($dataAnswer->getSelectedChoices())
-                    : $dataAnswer->getTextField(),
+        $answers = [];
+
+        /** @var SurveyQuestion $surveyQuestion */
+        foreach ($questions as $surveyQuestion) {
+            $questionName = $surveyQuestion->getQuestion()->getContent();
+            $type = $surveyQuestion->getQuestion()->getType();
+
+            $dataAnswer = $surveyQuestion->getDataAnswersFor($surveyQuestion, $object);
+
+            if (!$dataAnswer) {
+                $answers[] = [
+                    'question' => $questionName,
+                    'type' => $type,
+                    'answer' => null,
+                ];
+
+                continue;
+            }
+
+            if ($surveyQuestion->getQuestion()->isChoiceType()) {
+                $answers[] = [
+                    'question' => $questionName,
+                    'type' => $type,
+                    'answer' => $dataAnswer->getSelectedChoices()->map(static function (Choice $choice) {
+                        return $choice->getContent();
+                    })->toArray(),
+                ];
+
+                continue;
+            }
+
+            $answers[] = [
+                'question' => $questionName,
+                'type' => $type,
+                'answer' => $dataAnswer->getTextField(),
             ];
-        }, $object->getAnswers()->toArray());
+        }
+
+        $dataSurvey['answers'] = $answers;
 
         return $dataSurvey;
     }
