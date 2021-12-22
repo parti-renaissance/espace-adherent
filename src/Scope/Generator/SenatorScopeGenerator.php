@@ -17,7 +17,7 @@ class SenatorScopeGenerator extends AbstractScopeGenerator
         return $adherent->isSenator();
     }
 
-    protected function getZones(Adherent $adherent): array
+    public function getZones(Adherent $adherent): array
     {
         return [$adherent->getSenatorArea()->getDepartmentTag()->getZone()];
     }

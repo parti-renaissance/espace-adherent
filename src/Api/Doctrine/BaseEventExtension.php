@@ -9,15 +9,18 @@ use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 
 class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQueryCollectionExtensionInterface
 {
     private Security $security;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->security = $security;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function applyToItem(
@@ -52,13 +55,19 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
         }
 
         if (BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
+            $allowedTypes = [
+                EventTypeEnum::TYPE_DEFAULT,
+                EventTypeEnum::TYPE_COMMITTEE,
+                EventTypeEnum::TYPE_MUNICIPAL,
+            ];
+
+            if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {
+                $allowedTypes[] = EventTypeEnum::TYPE_INSTITUTIONAL;
+            }
+
             $queryBuilder
                 ->andWhere($queryBuilder->getRootAliases()[0].' INSTANCE OF :allowed_types')
-                ->setParameter('allowed_types', [
-                    EventTypeEnum::TYPE_DEFAULT,
-                    EventTypeEnum::TYPE_COMMITTEE,
-                    EventTypeEnum::TYPE_MUNICIPAL,
-                ])
+                ->setParameter('allowed_types', $allowedTypes)
             ;
         } else {
             $queryBuilder

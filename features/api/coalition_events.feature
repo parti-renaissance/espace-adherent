@@ -824,7 +824,7 @@ Feature:
           "postal_code": "69003",
           "city_name": "Lyon 3e",
           "country": "FR"
-      },
+       },
        "coalition": "fc7fd104-71e5-4399-a874-f8fe752f846b"
     }
     """

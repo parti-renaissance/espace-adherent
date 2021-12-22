@@ -174,6 +174,7 @@ class LoadClientData extends Fixture
         );
         $client12->setAskUserForAuthorization(false);
         $client12->setRequestedRoles([DataCornerVoter::DATA_CORNER]);
+        $client12->addSupportedScope(Scope::JEMENGAGE_ADMIN);
 
         $manager->persist($client12);
 

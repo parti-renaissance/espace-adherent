@@ -3,27 +3,22 @@
 namespace App\Api\Serializer;
 
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
-use App\Entity\Jecoute\News;
-use App\Scope\AuthorizationChecker;
+use App\Entity\Event\BaseEvent;
 use App\Scope\FeatureEnum;
-use App\Scope\ScopeEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class JecouteNewsGroupsContextBuilder implements SerializerContextBuilderInterface
+class EventGroupsContextBuilder implements SerializerContextBuilderInterface
 {
     private SerializerContextBuilderInterface $decorated;
     private AuthorizationCheckerInterface $authorizationChecker;
-    private AuthorizationChecker $scopeAuthorizationChecker;
 
     public function __construct(
         SerializerContextBuilderInterface $decorated,
-        AuthorizationCheckerInterface $authorizationChecker,
-        AuthorizationChecker $scopeAuthorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->decorated = $decorated;
         $this->authorizationChecker = $authorizationChecker;
-        $this->scopeAuthorizationChecker = $scopeAuthorizationChecker;
     }
 
     public function createFromRequest(Request $request, bool $normalization, array $extractedAttributes = null): array
@@ -31,16 +26,15 @@ class JecouteNewsGroupsContextBuilder implements SerializerContextBuilderInterfa
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $resourceClass = $context['resource_class'] ?? null;
 
-        if (News::class !== $resourceClass
-            || !$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', FeatureEnum::NEWS)
-            || !\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
+        if (BaseEvent::class !== $resourceClass
+            || !$this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')
+            || !$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', FeatureEnum::EVENTS)
         ) {
             return $context;
         }
 
-        $scope = $this->scopeAuthorizationChecker->getScope($request);
-        if (ScopeEnum::NATIONAL === $scope) {
-            $context['groups'][] = 'jecoute_news_write_national';
+        if ('api_base_events_get_collection' === $request->get('_route')) {
+            $context['groups'][] = 'event_list_read_extended';
         }
 
         return $context;

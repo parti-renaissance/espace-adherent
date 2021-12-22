@@ -1198,11 +1198,12 @@ procuration_proxy.reliability_8: Très fiable
 scope.feature.dashboard: Vue d'ensemble
 scope.feature.contacts: Contacts
 scope.feature.messages: Messagerie
+scope.feature.events: Événements
 scope.feature.mobile_app: Application Mobile
-scope.feature.elections: Elections
+scope.feature.elections: Élections
 scope.feature.ripostes: Ripostes
 scope.feature.phoning: Appelant
-scope.feature.team: Equipes
+scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
 scope.feature.news: Actualités
 scope.feature.phoning_campaign: Phoning
