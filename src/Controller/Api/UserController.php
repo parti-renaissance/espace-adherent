@@ -5,14 +5,11 @@ namespace App\Controller\Api;
 use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
 use App\AdherentProfile\Password;
 use App\Entity\Adherent;
-use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Membership\Event\UserEvent;
-use App\Membership\UserEvents;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use App\OAuth\OAuthTokenGenerator;
@@ -29,7 +26,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UserController extends AbstractController
 {
@@ -111,8 +107,7 @@ class UserController extends AbstractController
         AdherentResetPasswordHandler $handler,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        OAuthTokenGenerator $authTokenGenerator,
-        EventDispatcherInterface $dispatcher
+        OAuthTokenGenerator $authTokenGenerator
     ) {
         if ($createPasswordToken->getUsageDate()) {
             return $this->createBadRequestResponse('Pas de Token de création de mot de passe disponible');
@@ -130,18 +125,8 @@ class UserController extends AbstractController
             );
         }
 
-        // activate account if necessary
-        $hasBeenActivated = false;
-        if (!$user->getActivatedAt()) {
-            $user->activate(AdherentActivationToken::generate($user));
-            $hasBeenActivated = true;
-        }
-
         try {
             $handler->reset($user, $createPasswordToken, $password->getPassword());
-            if ($hasBeenActivated) {
-                $dispatcher->dispatch(new UserEvent($user), UserEvents::USER_VALIDATED);
-            }
 
             if ($clientId = $request->query->get('client_id')) {
                 $accessTokenResponse = $authTokenGenerator->generate($request->duplicate(), $user, $clientId, $password->getPassword());

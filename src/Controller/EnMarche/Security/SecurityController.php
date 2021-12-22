@@ -11,6 +11,8 @@ use App\Form\LoginType;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentResetPasswordHandler;
 use App\Membership\MembershipNotifier;
+use App\OAuth\App\AuthAppUrlManager;
+use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -107,15 +109,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}",
-     *     name="adherent_reset_password",
-     *     requirements={
-     *         "adherent_uuid": "%pattern_uuid%",
-     *         "reset_password_token": "%pattern_sha1%"
-     *     },
-     *     methods={"GET", "POST"}
-     * )
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("resetPasswordToken", expr="repository.findByToken(reset_password_token)")
      */
@@ -123,32 +116,38 @@ class SecurityController extends AbstractController
         Request $request,
         Adherent $adherent,
         AdherentResetPasswordToken $resetPasswordToken,
-        AdherentResetPasswordHandler $handler
+        AdherentResetPasswordHandler $handler,
+        AuthAppUrlManager $appUrlManager
     ): Response {
+        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? PlatformAuthUrlGenerator::getAppCode());
+
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_search_events');
+            return $this->redirect($appUrlGenerator->generateHomepageLink());
         }
 
         if ($resetPasswordToken->getUsageDate()) {
             throw $this->createNotFoundException('No available reset password token.');
         }
 
-        $form = $this->createForm(AdherentResetPasswordType::class);
+        $form = $this
+            ->createForm(AdherentResetPasswordType::class)
+            ->handleRequest($request)
+        ;
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('password')->getData();
 
             try {
                 $handler->reset($adherent, $resetPasswordToken, $newPassword);
                 $this->addFlash('info', 'adherent.reset_password.success');
 
-                return $this->redirectToRoute('app_user_edit');
+                return $this->redirect($appUrlGenerator->generateSuccessResetPasswordLink($request));
             } catch (AdherentTokenExpiredException $e) {
                 $this->addFlash('info', 'adherent.reset_password.expired_key');
             }
         }
 
-        return $this->render('security/adherent_reset_password.html.twig', [
+        return $this->render(sprintf('security/%s_reset_password.html.twig', $appUrlGenerator::getAppCode()), [
             'form' => $form->createView(),
         ]);
     }

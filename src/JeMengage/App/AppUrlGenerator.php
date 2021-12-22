@@ -41,13 +41,33 @@ class AppUrlGenerator extends AbstractAppUrlGenerator
         return $this->appHost;
     }
 
+    public function generateSuccessResetPasswordLink(Request $request): string
+    {
+        if ($request->query->has('is_creation')) {
+            return $this->urlGenerator->generate('app_jemengage_creation_confirmation');
+        }
+
+        return $this->appAuthHost;
+    }
+
     public function generateLoginLink(): string
     {
         return $this->urlGenerator->generate('app_jemengage_login');
     }
 
-    public function generateCreatePasswordLink(Adherent $adherent, AdherentExpirableTokenInterface $token): string
-    {
-        return sprintf('%s/confirmation/%s/%s', $this->appHost, $adherent->getUuid(), $token->getValue());
+    public function generateCreatePasswordLink(
+        Adherent $adherent,
+        AdherentExpirableTokenInterface $token,
+        array $urlParams = []
+    ): string {
+        return $this->urlGenerator->generate(
+            'app_adherent_reset_password',
+            array_merge($urlParams, [
+                'app_domain' => $this->appAuthHost,
+                'adherent_uuid' => (string) $adherent->getUuid(),
+                'reset_password_token' => (string) $token->getValue(),
+            ]),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

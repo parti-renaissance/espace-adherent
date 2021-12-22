@@ -57,7 +57,7 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
                 $token = AdherentResetPasswordToken::generate($adherent);
                 $message = JeMengageUserAccountConfirmationMessage::createFromAdherent(
                     $adherent,
-                    $this->appUrlManager->getUrlGenerator($adherent->getSource())->generateCreatePasswordLink($adherent, $token)
+                    $this->appUrlManager->getUrlGenerator($adherent->getSource())->generateCreatePasswordLink($adherent, $token, ['is_creation' => true])
                 );
                 break;
         }

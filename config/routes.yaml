@@ -52,6 +52,21 @@ logout:
     requirements:
         app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"
 
+app_adherent_reset_password:
+    host: "{app_domain}"
+    path: "/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}"
+    methods: "GET|POST"
+    controller: App\Controller\EnMarche\Security\SecurityController::resetPasswordAction
+    defaults:
+        app_domain: '%app_host%'
+    requirements:
+        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"
+
+app_jemengage:
+    host: '%jemengage_auth_host%'
+    resource: "../src/Controller/JeMengage"
+    type: "annotation"
+
 #
 # Assets
 #

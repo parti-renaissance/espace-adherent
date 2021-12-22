@@ -3,9 +3,11 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
+use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
+use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -50,10 +52,23 @@ class AdherentResetPasswordHandler
         $token->setNewPassword($newEncodedPassword);
         $adherent->resetPassword($token);
 
+        $hasBeenActivated = false;
+        if ($adherent->getSource()) {
+            // activate account if necessary
+            if (!$adherent->getActivatedAt()) {
+                $adherent->activate(AdherentActivationToken::generate($adherent));
+                $hasBeenActivated = true;
+            }
+        }
+
         $this->manager->flush();
 
         if (null === $adherent->getSource()) {
             $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        } else {
+            if ($hasBeenActivated) {
+                $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
+            }
         }
     }
 }

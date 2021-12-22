@@ -71,8 +71,11 @@ class CoalitionUrlGenerator extends AbstractAppUrlGenerator
         return sprintf(self::CREATE_ACCOUNT_LINK_PATTERN, $this->coalitionsHost);
     }
 
-    public function generateCreatePasswordLink(Adherent $adherent, AdherentExpirableTokenInterface $token): string
-    {
+    public function generateCreatePasswordLink(
+        Adherent $adherent,
+        AdherentExpirableTokenInterface $token,
+        array $urlParams = []
+    ): string {
         return sprintf(self::CREATE_PASSWORD_LINK_PATTERN,
             $this->coalitionsHost,
             (string) $adherent->getUuid(),
@@ -98,5 +101,10 @@ class CoalitionUrlGenerator extends AbstractAppUrlGenerator
             $event->getCoalition()->getUuid(),
             $event->getUuid()->toString()
         );
+    }
+
+    public function generateSuccessResetPasswordLink(Request $request): string
+    {
+        return $this->generateHomepageLink();
     }
 }
