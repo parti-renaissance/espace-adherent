@@ -5,6 +5,7 @@ namespace App\OAuth\App;
 use App\Entity\Adherent;
 use App\Entity\AdherentExpirableTokenInterface;
 use App\Membership\MembershipSourceEnum;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PlatformAuthUrlGenerator extends AbstractAppUrlGenerator
@@ -19,10 +20,18 @@ class PlatformAuthUrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-    public function generateCreatePasswordLink(Adherent $adherent, AdherentExpirableTokenInterface $token): string
+    public function generateSuccessResetPasswordLink(Request $request): string
     {
+        return $this->urlGenerator->generate('app_user_edit');
+    }
+
+    public function generateCreatePasswordLink(
+        Adherent $adherent,
+        AdherentExpirableTokenInterface $token,
+        array $urlParams = []
+    ): string {
         return $this->urlGenerator->generate(
-            'adherent_reset_password',
+            'app_adherent_reset_password',
             [
                 'adherent_uuid' => (string) $adherent->getUuid(),
                 'reset_password_token' => (string) $token->getValue(),

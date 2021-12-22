@@ -14,7 +14,13 @@ interface AuthAppUrlGeneratorInterface
 
     public function generateHomepageLink(): string;
 
-    public function generateCreatePasswordLink(Adherent $adherent, AdherentExpirableTokenInterface $token): string;
+    public function generateSuccessResetPasswordLink(Request $request): string;
+
+    public function generateCreatePasswordLink(
+        Adherent $adherent,
+        AdherentExpirableTokenInterface $token,
+        array $urlParams = []
+    ): string;
 
     public function generateLoginLink(): string;
 }
