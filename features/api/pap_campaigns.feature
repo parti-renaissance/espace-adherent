@@ -1292,10 +1292,12 @@ Feature:
                 "answers": [
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
                         "answer": "Nouvelles technologies"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
@@ -1324,10 +1326,12 @@ Feature:
                 "answers": [
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
                         "answer": "Les ressources énergétiques"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
                         "answer": [
                             "L'aspect financier",
                             "La préservation de l'environnement"
@@ -1356,14 +1360,17 @@ Feature:
                 "answers": [
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
                         "answer": "Vie publique, répartition des pouvoirs et démocratie"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
                         ]
+
                     }
                 ]
             }

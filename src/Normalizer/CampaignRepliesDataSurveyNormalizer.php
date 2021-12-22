@@ -30,6 +30,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
 
             return [
                 'question' => $question->getContent(),
+                'type' => $question->getType(),
                 'answer' => $question->isChoiceType()
                     ? $this->transformSelectedChoicesCollection($dataAnswer->getSelectedChoices())
                     : $dataAnswer->getTextField(),
