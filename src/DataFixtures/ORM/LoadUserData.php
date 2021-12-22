@@ -41,6 +41,7 @@ class LoadUserData extends Fixture
         ]);
         $key1 = AdherentActivationToken::generate($user1);
         $user1->activate($key1, '2017-01-25 19:34:02');
+        $this->addReference('user-1', $user1);
 
         $user2 = $this->adherentFactory->createFromArray([
             'uuid' => self::USER_2_UUID,

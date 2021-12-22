@@ -1222,6 +1222,24 @@ Feature:
                       "content": "Francis"
                    }
                 ]
+             },
+             {
+                "rcpt": "simple-user@example.ch",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Simple"
+                   }
+                ]
+             },
+             {
+                "rcpt": "marie.claire@test.com",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Marie"
+                   }
+                ]
              }
           ],
           "headers": {
@@ -1238,6 +1256,16 @@ Feature:
                 "email": "francis.brioul@yahoo.com",
                 "type": "to",
                 "name": "Francis Brioul"
+             },
+             {
+                "email": "simple-user@example.ch",
+                "type": "to",
+                "name": "Simple User"
+             },
+             {
+                "email": "marie.claire@test.com",
+                "type": "to",
+                "name": "Marie CLAIRE"
              }
           ]
        }
@@ -1285,6 +1313,24 @@ Feature:
                       "content": "Francis"
                    }
                 ]
+             },
+             {
+                "rcpt": "simple-user@example.ch",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Simple"
+                   }
+                ]
+             },
+             {
+                "rcpt": "marie.claire@test.com",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Marie"
+                   }
+                ]
              }
           ],
           "headers": {
@@ -1301,6 +1347,16 @@ Feature:
                 "email": "francis.brioul@yahoo.com",
                 "type": "to",
                 "name": "Francis Brioul"
+             },
+             {
+                "email": "simple-user@example.ch",
+                "type": "to",
+                "name": "Simple User"
+             },
+             {
+                "email": "marie.claire@test.com",
+                "type": "to",
+                "name": "Marie CLAIRE"
              }
           ]
        }
@@ -1316,3 +1372,50 @@ Feature:
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8"
     Then the response status code should be 204
+
+  Scenario: As a DC referent I can get the list of event participants
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants?scope=referent&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 4,
+            "items_per_page": 10,
+            "count": 4,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "subscription_date": "@string@.isDateTime()",
+                "type": "adherent",
+                "first_name": "Referent",
+                "last_name": "Referent",
+                "postal_code": "77000"
+            },
+            {
+                "subscription_date": "@string@.isDateTime()",
+                "type": "adherent",
+                "first_name": "Francis",
+                "last_name": "Brioul",
+                "postal_code": "77000"
+            },
+            {
+                "subscription_date": "@string@.isDateTime()",
+                "type": "user",
+                "first_name": "Simple",
+                "last_name": "User",
+                "postal_code": "8057"
+            },
+            {
+                "subscription_date": "@string@.isDateTime()",
+                "type": "contact",
+                "first_name": "Marie",
+                "last_name": "CLAIRE",
+                "postal_code": null
+            }
+        ]
+    }
+    """
