@@ -892,3 +892,111 @@ Feature:
         ]
     }
     """
+
+  Scenario: As a DC referent I can get one event
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "committee": {
+            "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+            "name": "En Marche Paris 8",
+            "slug": "en-marche-paris-8",
+            "link": "http://test.enmarche.code/comites/en-marche-paris-8"
+        },
+        "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
+        "name": "Événement de la catégorie masquée",
+        "slug": "@string@-evenement-de-la-categorie-masquee",
+        "description": "Allons à la rencontre des citoyens.",
+        "time_zone": "Europe/Paris",
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
+        "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "participants_count": 0,
+        "status": "SCHEDULED",
+        "capacity": 10,
+        "post_address": {
+            "address": "60 avenue des Champs-Élysées",
+            "postal_code": "75008",
+            "city": "75008-75108",
+            "city_name": "Paris 8e",
+            "country": "FR",
+            "latitude": 48.870506,
+            "longitude": 2.313243
+        },
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Catégorie masquée",
+            "slug": "categorie-masquee"
+        },
+        "visio_url": null,
+        "mode": null,
+        "image_url": null,
+        "link": "http://test.enmarche.code/evenements/@string@-evenement-de-la-categorie-masquee",
+        "user_registered_at": null
+    }
+    """
+
+  Scenario: As a DC referent I can get one event with full info
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "committee": {
+            "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+            "name": "En Marche Paris 8",
+            "slug": "en-marche-paris-8",
+            "link": "http://test.enmarche.code/comites/en-marche-paris-8"
+        },
+        "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
+        "name": "Événement de la catégorie masquée",
+        "slug": "@string@-evenement-de-la-categorie-masquee",
+        "description": "Allons à la rencontre des citoyens.",
+        "time_zone": "Europe/Paris",
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
+        "organizer": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name": "Picard"
+        },
+        "participants_count": 0,
+        "status": "SCHEDULED",
+        "capacity": 10,
+        "post_address": {
+            "address": "60 avenue des Champs-Élysées",
+            "postal_code": "75008",
+            "city": "75008-75108",
+            "city_name": "Paris 8e",
+            "country": "FR",
+            "latitude": 48.870506,
+            "longitude": 2.313243
+        },
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Catégorie masquée",
+            "slug": "categorie-masquee"
+        },
+        "private": false,
+        "electoral": false,
+        "visio_url": null,
+        "mode": null,
+        "image_url": null,
+        "link": "http://test.enmarche.code/evenements/@string@-evenement-de-la-categorie-masquee",
+        "user_registered_at": null
+    }
+    """
