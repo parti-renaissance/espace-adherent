@@ -12,6 +12,7 @@ use App\Address\GeoCoder;
 use App\Api\Filter\EventScopeFilter;
 use App\Api\Filter\EventsGroupSourceFilter;
 use App\Api\Filter\EventsZipCodeFilter;
+use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Entity\AddressHolderInterface;
@@ -179,6 +180,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(EventScopeFilter::class)
  * @ApiFilter(EventsGroupSourceFilter::class)
+ * @ApiFilter(MyCreatedEventsFilter::class)
  * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
  * @ApiFilter(EventsZipCodeFilter::class)
