@@ -135,6 +135,7 @@ committee.must_accept_contacting_terms: Vous devez accepter d'être contacté(e)
 committee.event.invalid_category: Le type d'événement sélectionné n'est pas valide.
 committee.event.invalid_date_range: La date de fin de l'événement doit être postérieure à la date de début.
 committee.event.invalid_finish_date: La date de fin de votre événement ne peut pas dépasser le {{ limit }}.
+committee.event.invalid_start_date: La date de début doit être dans le future.
 committee.event.invalid_capacity: La capacité doit être un nombre entier valide.
 
 committee.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.

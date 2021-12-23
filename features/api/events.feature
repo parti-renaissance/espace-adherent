@@ -1000,3 +1000,114 @@ Feature:
         "user_registered_at": null
     }
     """
+
+  Scenario: As a DC deputy I cannot create an event with missing or invalid data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+       "begin_at": "2018-01-01 10:10:10",
+       "finish_at": "2018-01-06 16:30:30"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le future.",
+      "title": "An error occurred",
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "violations": [
+          {
+             "message": "La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.",
+             "propertyPath": "finish_at"
+          },
+          {
+              "message": "Cette valeur ne doit pas être vide.",
+              "propertyPath": "name"
+          },
+          {
+              "message": "Cette valeur ne doit pas être vide.",
+              "propertyPath": "canonical_name"
+          },
+          {
+              "message": "Cette valeur ne doit pas être vide.",
+              "propertyPath": "description"
+          },
+          {
+              "message": "La date de début doit être dans le future.",
+              "propertyPath": "begin_at"
+          }
+      ]
+    }
+    """
+
+  Scenario: As a DC deputy I can create an event with invalid data
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+        "name": "Nouveau événement",
+        "category": "kiosque",
+        "description": "Une description de l'événement",
+        "begin_at": "2022-01-29 16:30:30",
+        "finish_at": "2022-01-30 16:30:30",
+        "capacity": 100,
+        "mode": "online",
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "post_address": {
+          "address": "50 rue de la villette",
+          "postal_code": "69003",
+          "city_name": "Lyon 3e",
+          "country": "FR"
+        },
+        "time_zone": "Europe/Paris",
+        "electoral": false,
+        "private": true
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "name": "Nouveau événement",
+        "slug": "2022-01-29-nouveau-evenement",
+        "description": "Une description de l'événement",
+        "time_zone": "Europe/Paris",
+        "begin_at": "2022-01-29T16:30:30+01:00",
+        "finish_at": "2022-01-30T16:30:30+01:00",
+        "organizer": {
+            "uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
+            "first_name": "Député",
+            "last_name": "PARIS I"
+        },
+        "participants_count": 1,
+        "status": "SCHEDULED",
+        "capacity": 100,
+        "post_address": {
+            "address": "50 rue de la villette",
+            "postal_code": "69003",
+            "city": "69003-69383",
+            "city_name": "Lyon 3e",
+            "country": "FR",
+            "latitude": 45.759636,
+            "longitude": 4.861436
+        },
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Kiosque",
+            "slug": "kiosque"
+        },
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "mode": "online",
+        "image_url": null
+    }
+    """
