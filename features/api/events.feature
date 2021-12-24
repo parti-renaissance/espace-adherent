@@ -1306,3 +1306,13 @@ Feature:
        }
     }
     """
+
+  Scenario: As a DC referent I cannot delete my event with participants
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "DELETE" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5"
+    Then the response status code should be 403
+
+  Scenario: As a logged-in user I can delete my event with no participants
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "DELETE" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8"
+    Then the response status code should be 204

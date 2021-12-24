@@ -265,6 +265,18 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return array_map('current', $tokens);
     }
 
+    public function countEventParticipantsWithoutCreator(BaseEvent $event): int
+    {
+        return (int) $this->createQueryBuilder('event_registration')
+            ->select('COUNT(1)')
+            ->where('event_registration.event = :event AND event_registration.adherentUuid != :organiser_uuid')
+            ->setParameter('event', $event)
+            ->setParameter('organiser_uuid', $event->getOrganizer()->getUuid()->toString())
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     private function createEventRegistrationQueryBuilder(string $eventUuid): QueryBuilder
     {
         self::validUuid($eventUuid);
