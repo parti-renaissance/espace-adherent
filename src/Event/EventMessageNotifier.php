@@ -74,7 +74,7 @@ class EventMessageNotifier implements EventSubscriberInterface
 
     public function onEventCancelled(EventEvent $event): void
     {
-        if (!$event->isCoalitionsEvent() && (!$event instanceof CommitteeEventEvent || !$event->getCommittee())) {
+        if (($event instanceof CommitteeEventEvent && !$event->getCommittee()) || !$event->getEvent()->needNotifyForCancellation()) {
             return;
         }
 

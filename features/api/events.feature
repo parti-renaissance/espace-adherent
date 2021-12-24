@@ -441,7 +441,7 @@ Feature:
         "merge_vars": [
           {
             "rcpt": "jacques.picard@en-marche.fr",
-            "vars":[
+            "vars": [
               {
                 "name": "first_name",
                 "content": "Jacques"
@@ -1109,5 +1109,200 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null
+    }
+    """
+
+  Scenario: As a DC referent I can edit my default event
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5" with body:
+    """
+    {
+      "description": "Nouvelle description",
+      "begin_at": "2022-05-12 10:30:00",
+      "finish_at": "2022-05-12 16:30:00",
+      "mode": "online",
+      "visio_url": "http://visio.fr",
+      "post_address": {
+        "address": "dammarie-les-lys",
+        "postal_code": "77190",
+        "city": "77190-77152",
+        "city_name": "dammarie-les-lys",
+        "country": "FR"
+      }
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+        "name": "Nouvel événement online",
+        "slug": "2022-05-12-nouvel-evenement-online",
+        "description": "Nouvelle description",
+        "time_zone": "Europe/Paris",
+        "begin_at": "2022-05-12T10:30:00+02:00",
+        "finish_at": "2022-05-12T16:30:00+02:00",
+        "organizer": {
+            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+            "first_name": "Referent",
+            "last_name": "Referent"
+        },
+        "participants_count": 0,
+        "status": "SCHEDULED",
+        "capacity": 50,
+        "post_address": {
+            "address": "dammarie-les-lys",
+            "postal_code": "77190",
+            "city": "77190-77152",
+            "city_name": "dammarie-les-lys",
+            "country": "FR",
+            "latitude": null,
+            "longitude": null
+        },
+        "category": null,
+        "visio_url": "http://visio.fr",
+        "mode": "online",
+        "image_url": null
+    }
+    """
+    And I should have 1 email
+    And I should have 1 email "EventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
+    """
+    {
+       "template_name": "event-update",
+       "template_content": [
+
+       ],
+       "message": {
+          "subject": "Un événement auquel vous participez a été mis à jour",
+          "from_email": "contact@en-marche.fr",
+          "global_merge_vars": [
+             {
+                "name": "event_name",
+                "content": "Nouvel événement online"
+             },
+             {
+                "name": "event_url",
+                "content": "http://test.enmarche.code/evenements/2022-05-12-nouvel-evenement-online"
+             },
+             {
+                "name": "event_date",
+                "content": "jeudi 12 mai 2022"
+             },
+             {
+                "name": "event_hour",
+                "content": "10h30"
+             },
+             {
+                "name": "event_address",
+                "content": "dammarie-les-lys, 77190 dammarie-les-lys"
+             },
+             {
+                "name": "calendar_url",
+                "content": "http://test.enmarche.code/evenements/2022-05-12-nouvel-evenement-online/ical"
+             }
+          ],
+          "merge_vars": [
+             {
+                "rcpt": "referent@en-marche-dev.fr",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Referent"
+                   }
+                ]
+             },
+             {
+                "rcpt": "francis.brioul@yahoo.com",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Francis"
+                   }
+                ]
+             }
+          ],
+          "headers": {
+             "Reply-To": "referent@en-marche-dev.fr"
+          },
+          "from_name": "La République En Marche !",
+          "to": [
+             {
+                "email": "referent@en-marche-dev.fr",
+                "type": "to",
+                "name": "Referent Referent"
+             },
+             {
+                "email": "francis.brioul@yahoo.com",
+                "type": "to",
+                "name": "Francis Brioul"
+             }
+          ]
+       }
+    }
+    """
+
+  Scenario: As a DC referent I can cancel my default event
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel"
+    Then the response status code should be 200
+    And I should have 1 email
+    And I should have 1 email "EventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
+    """
+    {
+       "template_name": "event-cancellation",
+       "template_content": [],
+       "message": {
+          "subject": "L'événement @string@Nouvel événement online@string@ a été annulé.",
+          "from_email": "contact@en-marche.fr",
+          "global_merge_vars": [
+             {
+                "name": "event_name",
+                "content": "Nouvel événement online"
+             },
+             {
+                "name": "event_slug",
+                "content": "http://test.enmarche.code/evenements"
+             }
+          ],
+          "merge_vars": [
+             {
+                "rcpt": "referent@en-marche-dev.fr",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Referent"
+                   }
+                ]
+             },
+             {
+                "rcpt": "francis.brioul@yahoo.com",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Francis"
+                   }
+                ]
+             }
+          ],
+          "headers": {
+             "Reply-To": "referent@en-marche-dev.fr"
+          },
+          "from_name": "La République En Marche !",
+          "to": [
+             {
+                "email": "referent@en-marche-dev.fr",
+                "type": "to",
+                "name": "Referent Referent"
+             },
+             {
+                "email": "francis.brioul@yahoo.com",
+                "type": "to",
+                "name": "Francis Brioul"
+             }
+          ]
+       }
     }
     """

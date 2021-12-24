@@ -21,4 +21,9 @@ class CommitteeEventEvent extends EventEvent
     {
         return $this->committee;
     }
+
+    public function needSendMessage(): bool
+    {
+        return true;
+    }
 }
