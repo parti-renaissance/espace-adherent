@@ -782,3 +782,113 @@ Feature:
         ]
     }
     """
+
+  Scenario: As a DC referent I can get a list of events created by me
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events?only_mine&page_size=10"
+    Then the response status code should be 200
+    And print last JSON response
+    And the JSON should be equal to:
+    """
+        {
+        "metadata": {
+            "total_items": 3,
+            "items_per_page": 10,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "category": {
+                    "name": "Comité politique",
+                    "slug": "comite-politique"
+                },
+                "uuid": "3f46976e-e76a-476e-86d7-575c6d3bc15e",
+                "name": "Evénement institutionnel numéro 1",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": null,
+                "post_address": {
+                    "address": "16 rue de la Paix",
+                    "postal_code": "75008",
+                    "city": "75008-75108",
+                    "city_name": "Paris 8e",
+                    "country": "FR",
+                    "latitude": 48.869331,
+                    "longitude": 2.331595
+                },
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+                "name": "Nouvel événement online",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": null,
+                    "postal_code": null,
+                    "city": null,
+                    "city_name": null,
+                    "country": null,
+                    "latitude": null,
+                    "longitude": null
+                },
+                "category": null,
+                "mode": "online",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": "@string@.isDateTime()"
+            },
+            {
+                "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
+                "name": "Nouvel événement online privé et électoral",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": null,
+                    "postal_code": null,
+                    "city": null,
+                    "city_name": null,
+                    "country": null,
+                    "latitude": null,
+                    "longitude": null
+                },
+                "category": null,
+                "mode": "online",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": "@string@.isDateTime()"
+            }
+        ]
+    }
+    """
