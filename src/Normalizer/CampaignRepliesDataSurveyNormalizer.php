@@ -45,7 +45,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
             $dataAnswer = $surveyQuestion->getDataAnswersFor($surveyQuestion, $object);
 
             if (!$dataAnswer) {
-                $answers[] = [
+                $answers[$surveyQuestion->getPosition()] = [
                     'question' => $questionName,
                     'type' => $type,
                     'answer' => null,
@@ -55,7 +55,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
             }
 
             if ($surveyQuestion->getQuestion()->isChoiceType()) {
-                $answers[] = [
+                $answers[$surveyQuestion->getPosition()] = [
                     'question' => $questionName,
                     'type' => $type,
                     'answer' => $dataAnswer->getSelectedChoices()->map(static function (Choice $choice) {
@@ -66,13 +66,14 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
                 continue;
             }
 
-            $answers[] = [
+            $answers[$surveyQuestion->getPosition()] = [
                 'question' => $questionName,
                 'type' => $type,
                 'answer' => $dataAnswer->getTextField(),
             ];
         }
 
+        ksort($answers);
         $dataSurvey['answers'] = $answers;
 
         return $dataSurvey;
