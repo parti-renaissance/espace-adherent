@@ -109,7 +109,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "delete": {
  *             "path": "/v3/events/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "object.getAuthor() == user",
+ *             "access_control": "object.getAuthor() == user and is_granted('CAN_DELETE_EVENT', object)",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
