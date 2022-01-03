@@ -170,7 +170,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "post": {
  *             "access_control": "is_granted('ROLE_USER')",
  *             "path": "/v3/events",
- *             "validation_groups": {"Default", "api_put_validation"},
+ *             "validation_groups": {"Default", "api_put_validation", "event_creation"},
  *             "denormalization_context": {
  *                 "groups": {"event_write"}
  *             },
@@ -326,6 +326,11 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(
+     *     value="+1 hour",
+     *     message="committee.event.invalid_start_date",
+     *     groups={"event_creation"}
+     * )
      */
     protected $beginAt;
 
@@ -397,7 +402,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups({"event_list_read_extended", "event_read_extended"})
+     * @SymfonySerializer\Groups({"event_write", "event_list_read_extended", "event_read_extended"})
      */
     private $private = false;
 
@@ -406,7 +411,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups({"event_list_read_extended", "event_read_extended"})
+     * @SymfonySerializer\Groups({"event_write", "event_list_read_extended", "event_read_extended"})
      */
     private $electoral = false;
 

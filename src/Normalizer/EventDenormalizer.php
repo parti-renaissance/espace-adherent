@@ -5,8 +5,8 @@ namespace App\Normalizer;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
+use App\Entity\Event\DefaultEvent;
 use App\Event\EventTypeEnum;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -21,15 +21,7 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $eventClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
         } else {
-            $eventType = $data['type'] ?? null;
-
-            if (!$eventType || !($eventClass = $this->getEventClassFromType($eventType))) {
-                throw new UnexpectedValueException('Type value is missing or invalid');
-            }
-        }
-
-        if (!$eventClass) {
-            throw new UnexpectedValueException('Type value is missing or invalid');
+            $eventClass = $this->getEventClassFromType($data['type'] ?? null);
         }
 
         unset($data['type']);
@@ -44,15 +36,15 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         return BaseEvent::class === $type;
     }
 
-    private function getEventClassFromType(string $eventType): ?string
+    private function getEventClassFromType(?string $eventType): ?string
     {
         switch ($eventType) {
             case EventTypeEnum::TYPE_COALITION:
                 return CoalitionEvent::class;
             case EventTypeEnum::TYPE_CAUSE:
                 return CauseEvent::class;
+            default:
+                return DefaultEvent::class;
         }
-
-        return null;
     }
 }
