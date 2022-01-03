@@ -29,7 +29,7 @@ class PhoningManagerScopeGenerator extends AbstractScopeGenerator
         return $adherent->hasPhoningManagerRole();
     }
 
-    protected function getZones(Adherent $adherent): array
+    public function getZones(Adherent $adherent): array
     {
         return [$this->zoneRepository->findOneBy([
             'type' => Zone::COUNTRY,

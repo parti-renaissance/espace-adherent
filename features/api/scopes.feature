@@ -110,6 +110,7 @@ Feature:
         "dashboard",
         "contacts",
         "messages",
+        "events",
         "mobile_app",
         "elections",
         "ripostes"
@@ -141,6 +142,7 @@ Feature:
         "dashboard",
         "contacts",
         "messages",
+        "events",
         "mobile_app",
         "news",
         "elections",

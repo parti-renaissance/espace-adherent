@@ -21,4 +21,6 @@ interface ScopeGeneratorInterface
     public function getDelegatedAccess(): ?DelegatedAccess;
 
     public function isDelegatedAccess(): bool;
+
+    public function getZones(Adherent $adherent): array;
 }

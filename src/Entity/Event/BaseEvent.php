@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
+use App\Api\Filter\EventScopeFilter;
 use App\Api\Filter\EventsGroupSourceFilter;
 use App\Api\Filter\EventsZipCodeFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
@@ -176,6 +177,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  *
+ * @ApiFilter(EventScopeFilter::class)
  * @ApiFilter(EventsGroupSourceFilter::class)
  * @ApiFilter(MySubscribedEventsFilter::class)
  * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
@@ -392,6 +394,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @SymfonySerializer\Groups({"event_list_read_extended"})
      */
     private $private = false;
 
@@ -399,6 +403,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @SymfonySerializer\Groups({"event_list_read_extended"})
      */
     private $electoral = false;
 
@@ -420,7 +426,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read_extended"})
      */
     private $visioUrl;
 

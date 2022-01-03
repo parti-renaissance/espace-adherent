@@ -4,6 +4,7 @@ namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Campaign;
 use App\Repository\Pap\CampaignHistoryRepository;
+use App\Scope\FeatureEnum;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -35,7 +36,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
-        if (!$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', 'pap')) {
+        if (!$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', FeatureEnum::PAP)) {
             return $campaign;
         }
 

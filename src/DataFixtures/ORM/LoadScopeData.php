@@ -15,6 +15,7 @@ class LoadScopeData extends Fixture
         FeatureEnum::DASHBOARD,
         FeatureEnum::CONTACTS,
         FeatureEnum::MESSAGES,
+        FeatureEnum::EVENTS,
         FeatureEnum::MOBILE_APP,
         FeatureEnum::ELECTIONS,
         FeatureEnum::RIPOSTES,

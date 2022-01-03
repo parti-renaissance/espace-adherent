@@ -28,6 +28,7 @@ trait EntityTimestampableTrait
      *     "message_read_list",
      *     "pap_building_history",
      *     "pap_campaign_history_read_list",
+     *     "event_list_read_extended",
      * })
      * @Gedmo\Timestampable(on="create")
      */

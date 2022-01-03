@@ -17,7 +17,7 @@ class DeputyScopeGenerator extends AbstractScopeGenerator
         return $adherent->isDeputy();
     }
 
-    protected function getZones(Adherent $adherent): array
+    public function getZones(Adherent $adherent): array
     {
         return [$adherent->getManagedDistrict()->getReferentTag()->getZone()];
     }

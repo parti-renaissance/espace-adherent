@@ -327,6 +327,10 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\JecouteNewsGroupsContextBuilder.inner']
 
+    App\Api\Serializer\EventGroupsContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@App\Api\Serializer\EventGroupsContextBuilder.inner']
+
     App\SmsCampaign\Listener\AdherentChangeSmsNotificationListener:
         tags: [{name: 'monolog.logger'}]
 

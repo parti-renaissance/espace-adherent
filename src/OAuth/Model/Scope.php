@@ -32,6 +32,7 @@ final class Scope extends Enum implements ScopeEntityInterface
 
     public const JECOUTE_SURVEYS = 'jecoute_surveys';
     public const JEMARCHE_APP = 'jemarche_app';
+    public const JEMENGAGE_ADMIN = 'jemengage_admin';
     public const CRM_PARIS = 'crm_paris';
     public const READ_PROFILE = 'read:profile';
     public const WRITE_PROFILE = 'write:profile';
