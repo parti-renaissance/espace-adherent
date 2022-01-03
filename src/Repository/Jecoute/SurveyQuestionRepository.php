@@ -24,6 +24,7 @@ class SurveyQuestionRepository extends ServiceEntityRepository
             ->leftJoin('dataAnswer.dataSurvey', 'dataSurvey')
             ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
             ->where('surveyQuestion.survey = :survey')
+            ->orderBy('surveyQuestion.position', 'ASC')
             ->setParameter('survey', $survey)
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
