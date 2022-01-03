@@ -35,6 +35,8 @@ class EventGroupsContextBuilder implements SerializerContextBuilderInterface
 
         if ('api_base_events_get_collection' === $request->get('_route')) {
             $context['groups'][] = 'event_list_read_extended';
+        } elseif ('api_base_events_get_item' === $request->get('_route')) {
+            $context['groups'][] = 'event_read_extended';
         }
 
         return $context;

@@ -397,7 +397,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups({"event_list_read_extended"})
+     * @SymfonySerializer\Groups({"event_list_read_extended", "event_read_extended"})
      */
     private $private = false;
 
@@ -406,7 +406,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups({"event_list_read_extended"})
+     * @SymfonySerializer\Groups({"event_list_read_extended", "event_read_extended"})
      */
     private $electoral = false;
 
