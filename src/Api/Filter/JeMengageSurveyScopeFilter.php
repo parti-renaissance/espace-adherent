@@ -2,27 +2,19 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Geo\ZoneRepository;
-use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
 
-final class JeMengageSurveyScopeFilter extends AbstractContextAwareFilter
+final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
 {
-    private const PROPERTY_NAME = 'scope';
-    private const OPERATION_NAMES = ['get'];
-
-    private GeneralScopeGenerator $generalScopeGenerator;
-    private Security $security;
     private ZoneRepository $zoneRepository;
 
     protected function filterProperty(
@@ -33,33 +25,22 @@ final class JeMengageSurveyScopeFilter extends AbstractContextAwareFilter
         string $resourceClass,
         string $operationName = null
     ) {
-        $user = $this->security->getUser();
-
         if (
-            (!$user instanceof Adherent)
+            (!$this->getUser($value) instanceof Adherent)
             || !is_a($resourceClass, Survey::class, true)
-            || self::PROPERTY_NAME !== $property
-            || !\in_array($operationName, self::OPERATION_NAMES, true)
+            || !$this->needApplyFilter($property, $operationName)
         ) {
             return;
         }
 
-        $scopeGenerator = $this->generalScopeGenerator->getGenerator($value, $user);
-        $scope = $scopeGenerator->getCode();
-
-        $author = $scopeGenerator->isDelegatedAccess()
-            ? $scopeGenerator->getDelegatedAccess()->getDelegator()
-            : $user
-        ;
-
         $alias = $queryBuilder->getRootAliases()[0];
 
-        if (ScopeEnum::NATIONAL === $scope) {
+        if (ScopeEnum::NATIONAL === $this->getScopeGenerator($value)->getCode()) {
             $queryBuilder
                 ->andWhere(sprintf('%s INSTANCE OF :national', $alias))
                 ->setParameter('national', SurveyTypeEnum::NATIONAL)
             ;
-        } elseif (ScopeEnum::REFERENT === $scope) {
+        } elseif (ScopeEnum::REFERENT === $this->getScopeGenerator($value)->getCode()) {
             $or = new Orx();
             $or
                 ->add(sprintf('%s INSTANCE OF :national', $alias))
@@ -71,37 +52,10 @@ final class JeMengageSurveyScopeFilter extends AbstractContextAwareFilter
                 ->setParameters([
                     'national' => SurveyTypeEnum::NATIONAL,
                     'local' => SurveyTypeEnum::LOCAL,
-                    'zones' => $this->zoneRepository->findForJecouteByReferentTags($author->getManagedArea()->getTags()->toArray()),
+                    'zones' => $this->zoneRepository->findForJecouteByReferentTags($this->getUser($value)->getManagedArea()->getTags()->toArray()),
                 ])
             ;
         }
-    }
-
-    public function getDescription(string $resourceClass): array
-    {
-        return [
-            self::PROPERTY_NAME => [
-                'property' => null,
-                'type' => 'string',
-                'required' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @required
-     */
-    public function setGeneralScopeGenerator(GeneralScopeGenerator $generalScopeGenerator): void
-    {
-        $this->generalScopeGenerator = $generalScopeGenerator;
-    }
-
-    /**
-     * @required
-     */
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
     }
 
     /**
