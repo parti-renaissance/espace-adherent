@@ -74,7 +74,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
         }
 
         ksort($answers);
-        $dataSurvey['answers'] = $answers;
+        $dataSurvey['answers'] = array_values($answers);
 
         return $dataSurvey;
     }
