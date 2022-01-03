@@ -3,7 +3,6 @@
 namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\SurveyTypeEnum;
