@@ -26,8 +26,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
         string $operationName = null
     ) {
         if (
-            (!$this->getUser($value) instanceof Adherent)
-            || !is_a($resourceClass, Survey::class, true)
+            !is_a($resourceClass, Survey::class, true)
             || !$this->needApplyFilter($property, $operationName)
         ) {
             return;
