@@ -3,7 +3,7 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
@@ -12,7 +12,7 @@ final class EventUpdateMessage extends Message
     public static function create(
         array $recipients,
         Adherent $host,
-        CommitteeEvent $event,
+        BaseEvent $event,
         string $eventUrl,
         string $icalEventUrl
     ): self {
@@ -47,7 +47,7 @@ final class EventUpdateMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(CommitteeEvent $event, string $eventUrl, string $icalEventUrl): array
+    private static function getTemplateVars(BaseEvent $event, string $eventUrl, string $icalEventUrl): array
     {
         return [
             'event_name' => self::escape($event->getName()),

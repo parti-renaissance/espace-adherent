@@ -22,4 +22,9 @@ class DefaultEvent extends BaseEvent
     {
         return EventTypeEnum::TYPE_DEFAULT;
     }
+
+    public function needNotifyForCancellation(): bool
+    {
+        return true;
+    }
 }

@@ -6,7 +6,6 @@ use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\PostAddress;
-use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Mailer\MailerService;
@@ -55,14 +54,14 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     public function onEventPreUpdate(EventEvent $event): void
     {
-        if ($event instanceof CommitteeEventEvent || $event->isCoalitionsEvent()) {
+        if ($event->needSendMessage()) {
             $this->doPreUpdate($event->getEvent());
         }
     }
 
     public function onEventPostUpdate(EventEvent $event): void
     {
-        if ($event instanceof CommitteeEventEvent || $event->isCoalitionsEvent()) {
+        if ($event->needSendMessage()) {
             $this->doPostUpdate($event->getEvent());
         }
     }
