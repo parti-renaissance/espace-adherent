@@ -58,6 +58,12 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $referent)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-7'))));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('user-1'))));
+        $eventRegistration1 = new EventRegistrationCommand($event1);
+        $eventRegistration1->setFirstName('Marie');
+        $eventRegistration1->setLastName('CLAIRE');
+        $eventRegistration1->setEmailAddress('marie.claire@test.com');
+        $manager->persist($this->eventRegistrationFactory->createFromCommand($eventRegistration1));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $referent)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $this->getReference('adherent-7'))));
 
@@ -67,6 +73,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            LoadUserData::class,
             LoadAdherentData::class,
             LoadEventCategoryData::class,
         ];
