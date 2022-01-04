@@ -248,11 +248,6 @@ Feature:
             ],
             "response_status": [
                 {
-                    "code": "accept_to_answer",
-                    "label": "Accepte de répondre aux questions",
-                    "success_status": true
-                },
-                {
                     "code": "dont_accept_to_answer",
                     "label": "N'accepte pas",
                     "success_status": false
@@ -261,6 +256,11 @@ Feature:
                     "code": "contact_later",
                     "label": "Repasser plus tard",
                     "success_status": false
+                },
+                {
+                    "code": "accept_to_answer",
+                    "label": "Accepte de répondre aux questions",
+                    "success_status": true
                 }
             ]
         },
