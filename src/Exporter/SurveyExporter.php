@@ -111,7 +111,7 @@ class SurveyExporter
                     }
 
                     $row['Profession'] = $papCampaignHistory->getProfession() ? ProfessionEnum::choices()[$papCampaignHistory->getProfession()] : null;
-                } else {
+                } elseif ($jemarcheDataSurvey) {
                     $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
                     $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;
                     $row['Prénom'] = $allowPersonalData ? $jemarcheDataSurvey->getLastName() : null;
@@ -131,6 +131,13 @@ class SurveyExporter
                     }
 
                     $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
+                } else {
+                    $row['Nom'] = $row['Prénom'] = $row['Code postal'] = '';
+                    $row['Tranche d\'age'] = $row['Genre'] = $row['Profession'] = '';
+                    if ($fromAdmin) {
+                        $row['Email'] = $row['Accepte d\'être contacté'] = '';
+                        $row['Accepte d\'être invité à adhérer'] = $row['Accepte que ses données soient traitées'] = '';
+                    }
                 }
 
                 /** @var SurveyQuestion $surveyQuestion */
