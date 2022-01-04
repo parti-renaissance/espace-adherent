@@ -29,7 +29,7 @@ class NationalCommunicationScopeGenerator extends AbstractScopeGenerator
         return $adherent->hasNationalCommunicationRole();
     }
 
-    public function getZones(Adherent $adherent): array
+    protected function getZones(Adherent $adherent): array
     {
         return [$this->zoneRepository->findOneBy([
             'type' => Zone::COUNTRY,

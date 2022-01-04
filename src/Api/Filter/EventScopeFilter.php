@@ -2,9 +2,10 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Repository\Event\BaseEventRepository;
+use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -13,28 +14,23 @@ final class EventScopeFilter extends AbstractScopeFilter
     private BaseEventRepository $baseEventRepository;
     private AuthorizationCheckerInterface $authorizationChecker;
 
-    protected function filterProperty(
-        string $property,
-        $value,
-        QueryBuilder $queryBuilder,
-        QueryNameGeneratorInterface $queryNameGenerator,
-        string $resourceClass,
-        string $operationName = null
-    ) {
-        if (
-            !is_a($resourceClass, BaseEvent::class, true)
-            || !$this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')
-            || !$this->needApplyFilter($property, $operationName)
-        ) {
-            return;
-        }
+    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    {
+        return is_a($resourceClass, BaseEvent::class, true)
+            && $this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN');
+    }
 
+    protected function applyFilter(
+        QueryBuilder $queryBuilder,
+        Adherent $currentUser,
+        ScopeGeneratorInterface $scopeGenerator
+    ): void {
         $alias = $queryBuilder->getRootAliases()[0];
 
         $this
             ->baseEventRepository
             ->withGeoZones(
-                $this->getScopeGenerator($value)->getZones($this->getUser($value)),
+                $scopeGenerator->generate($currentUser)->getZones(),
                 $queryBuilder,
                 $alias,
                 BaseEvent::class,

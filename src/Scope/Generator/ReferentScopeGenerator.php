@@ -17,7 +17,7 @@ class ReferentScopeGenerator extends AbstractScopeGenerator
         return $adherent->isReferent();
     }
 
-    public function getZones(Adherent $adherent): array
+    protected function getZones(Adherent $adherent): array
     {
         return $adherent->getManagedArea()->getZones()->toArray();
     }

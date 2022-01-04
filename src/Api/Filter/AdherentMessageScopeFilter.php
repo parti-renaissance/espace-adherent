@@ -2,10 +2,11 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Api\Doctrine\AuthoredItemsCollectionExtension;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Repository\AdherentMessageRepository;
+use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
 
 final class AdherentMessageScopeFilter extends AbstractScopeFilter
@@ -13,27 +14,23 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
     private AdherentMessageRepository $adherentMessageRepository;
     private AuthoredItemsCollectionExtension $authoredItemsCollectionExtension;
 
-    protected function filterProperty(
-        string $property,
-        $value,
-        QueryBuilder $queryBuilder,
-        QueryNameGeneratorInterface $queryNameGenerator,
-        string $resourceClass,
-        string $operationName = null
-    ) {
-        if (
-            !is_a($resourceClass, AbstractAdherentMessage::class, true)
-            || !$this->needApplyFilter($property, $operationName)
-        ) {
-            return;
-        }
+    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    {
+        return is_a($resourceClass, AbstractAdherentMessage::class, true);
+    }
 
+    protected function applyFilter(
+        QueryBuilder $queryBuilder,
+        Adherent $currentUser,
+        ScopeGeneratorInterface $scopeGenerator
+    ): void {
         $alias = $queryBuilder->getRootAliases()[0];
+        $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
 
         $this
             ->adherentMessageRepository
-            ->withMessageType($queryBuilder, $this->getScopeGenerator($value)->getCode(), $alias)
-            ->withAuthor($queryBuilder, $this->getUser($value), $alias)
+            ->withMessageType($queryBuilder, $scopeGenerator->getCode(), $alias)
+            ->withAuthor($queryBuilder, $user, $alias)
         ;
 
         $this->authoredItemsCollectionExtension->setSkip(true);
