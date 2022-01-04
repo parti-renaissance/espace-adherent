@@ -26,7 +26,7 @@ abstract class AbstractScopeFilter extends AbstractContextAwareFilter
         string $resourceClass,
         string $operationName = null
     ) {
-        if (static::PROPERTY_NAME !== $property || !\in_array($operationName, $this->getAllowedOperationNames(), true)) {
+        if (self::PROPERTY_NAME !== $property || !\in_array($operationName, $this->getAllowedOperationNames(), true)) {
             return;
         }
 
@@ -64,7 +64,7 @@ abstract class AbstractScopeFilter extends AbstractContextAwareFilter
     public function getDescription(string $resourceClass): array
     {
         return [
-            static::PROPERTY_NAME => [
+            self::PROPERTY_NAME => [
                 'property' => null,
                 'type' => 'string',
                 'required' => false,
