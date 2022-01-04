@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormView;
 
 class ZoneType extends AbstractType implements DataTransformerInterface
 {
-    private $zoneRepository;
+    private ZoneRepository $zoneRepository;
 
     public function __construct(ZoneRepository $zoneRepository)
     {

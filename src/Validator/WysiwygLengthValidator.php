@@ -15,7 +15,7 @@ class WysiwygLengthValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof WysiwygLength) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\WysiwygLength');
+            throw new UnexpectedTypeException($constraint, WysiwygLength::class);
         }
 
         if (null === $value || '' === $value) {

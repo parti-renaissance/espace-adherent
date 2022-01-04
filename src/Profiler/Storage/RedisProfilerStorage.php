@@ -167,7 +167,7 @@ class RedisProfilerStorage implements ProfilerStorageInterface
                     $profile->getStatusCode(),
                 ])."\n";
 
-                return $this->appendValue($indexName, $indexRow, $this->lifetime);
+                return (bool) $this->appendValue($indexName, $indexRow, $this->lifetime);
             }
 
             return true;

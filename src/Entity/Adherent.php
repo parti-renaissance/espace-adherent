@@ -43,6 +43,7 @@ use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\Validator\UniqueMembership;
+use App\Validator\ZoneBasedRoles as AssertZoneBasedRoles;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -266,6 +267,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToOne(targetEntity="ReferentTeamMember", mappedBy="member", cascade={"all"}, orphanRemoval=true)
      */
     private $referentTeamMember;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentZoneBasedRole", mappedBy="adherent", cascade={"persist"}, orphanRemoval=true)
+     *
+     * @AssertZoneBasedRoles
+     */
+    private Collection $zoneBasedRoles;
 
     /**
      * @var CoordinatorManagedArea|null
@@ -805,6 +813,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->causes = new ArrayCollection();
         $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
+        $this->zoneBasedRoles = new ArrayCollection();
     }
 
     public static function createLight(
@@ -1673,6 +1682,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         $this->boardMember->revoke();
         $this->boardMember = null;
+    }
+
+    /** @return AdherentZoneBasedRole[] */
+    public function getZoneBasedRoles(): array
+    {
+        return $this->zoneBasedRoles->toArray();
+    }
+
+    public function addZoneBasedRole(AdherentZoneBasedRole $role): void
+    {
+        if (!$this->zoneBasedRoles->contains($role)) {
+            $role->setAdherent($this);
+            $this->zoneBasedRoles->add($role);
+        }
+    }
+
+    public function removeZoneBasedRole(AdherentZoneBasedRole $role): void
+    {
+        $this->zoneBasedRoles->removeElement($role);
     }
 
     public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
