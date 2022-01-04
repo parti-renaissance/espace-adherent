@@ -62,6 +62,14 @@ Feature:
         ]
       },
       {
+        "code": "pap",
+        "name": "Porte-à-porteur",
+        "zones": [],
+        "apps": [
+          "jemarche"
+        ]
+      },
+      {
         "code": "phoning_national_manager",
         "name": "Responsable Phoning",
         "zones": [
