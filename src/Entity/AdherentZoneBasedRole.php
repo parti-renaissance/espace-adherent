@@ -20,6 +20,7 @@ class AdherentZoneBasedRole
      * @ORM\Column
      *
      * @Assert\NotBlank
+     * @Assert\Choice(choices=App\Adherent\Authorization\ZoneBasedRoleTypeEnum::ALL)
      */
     private ?string $type;
 
