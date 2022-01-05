@@ -91,7 +91,7 @@ class SecurityController extends AbstractController
             $email = $form->get('email')->getData();
 
             if (($adherent = $adherentRepository->findOneByEmail($email)) && $currentApp === $adherent->getSource()) {
-                $handler->handle($adherent);
+                $handler->handle($adherent, $currentApp);
             }
 
             $this->addFlash('info', 'adherent.reset_password.email_sent');

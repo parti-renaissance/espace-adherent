@@ -10,11 +10,16 @@ class UserResetPasswordEvent extends Event
 {
     private Adherent $user;
     private AdherentResetPasswordToken $resetPasswordToken;
+    private ?string $source;
 
-    public function __construct(Adherent $adherent, AdherentResetPasswordToken $resetPasswordToken)
-    {
+    public function __construct(
+        Adherent $adherent,
+        AdherentResetPasswordToken $resetPasswordToken,
+        string $source = null
+    ) {
         $this->user = $adherent;
         $this->resetPasswordToken = $resetPasswordToken;
+        $this->source = $source;
     }
 
     public function getUser(): Adherent
@@ -25,5 +30,10 @@ class UserResetPasswordEvent extends Event
     public function getResetPasswordToken(): AdherentResetPasswordToken
     {
         return $this->resetPasswordToken;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
     }
 }
