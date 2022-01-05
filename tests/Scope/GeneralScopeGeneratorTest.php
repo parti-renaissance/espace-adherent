@@ -69,6 +69,11 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'features' => ['pap'],
             ],
             [
+                'code' => 'pap',
+                'zones' => [],
+                'apps' => ['jemarche'],
+            ],
+            [
                 'code' => 'phoning_national_manager',
                 'zones' => [[
                     'code' => 'FR',
@@ -145,6 +150,11 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     'name' => 'Île-de-France',
                 ]],
                 'apps' => [],
+            ],
+            [
+                'code' => 'pap',
+                'zones' => [],
+                'apps' => ['jemarche'],
             ],
             [
                 'code' => 'phoning',
