@@ -1096,3 +1096,349 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a Dc user with national scope I cannot create a local survey
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
+    """
+    {
+        "type": "local",
+        "name": "test questionnaire local du 92",
+        "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "published": true,
+        "questions": [
+            {
+                "question": {
+                    "type": "simple_field",
+                    "content": "Aimez vous Noël ?"
+                }
+            },
+            {
+                "question": {
+                    "type": "unique_choice",
+                    "content": "la question à choix unique",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        }
+                    ]
+                }
+            },
+            {
+                "question": {
+                    "type": "multiple_choice",
+                    "content": "la question à choix multiple",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        },
+                        {
+                            "content": "réponse C"
+                        },
+                        {
+                            "content": "réponse D"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    """
+    Then the response status code should be 400
+    And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type local avec le scope national."
+
+  Scenario: As a Dc user with national scope I cannot create a local survey
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
+    """
+    {
+        "type": "national",
+        "name": "test questionnaire national 2202",
+        "published": true,
+        "questions": [
+            {
+                "question": {
+                    "type": "simple_field",
+                    "content": "Aimez vous Noël ?"
+                }
+            },
+            {
+                "question": {
+                    "type": "unique_choice",
+                    "content": "la question à choix unique",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        }
+                    ]
+                }
+            },
+            {
+                "question": {
+                    "type": "multiple_choice",
+                    "content": "la question à choix multiple",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        },
+                        {
+                            "content": "réponse C"
+                        },
+                        {
+                            "content": "réponse D"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    """
+    Then the response status code should be 400
+    And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope referent."
+
+  Scenario: As a DC user with national role I can create a national survey
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
+    """
+    {
+        "type": "national",
+        "name": "test questionnaire national 2202",
+        "published": true,
+        "questions": [
+            {
+                "question": {
+                    "type": "simple_field",
+                    "content": "Aimez vous Noël ?"
+                }
+            },
+            {
+                "question": {
+                    "type": "unique_choice",
+                    "content": "la question à choix unique",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        }
+                    ]
+                }
+            },
+            {
+                "question": {
+                    "type": "multiple_choice",
+                    "content": "la question à choix multiple",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        },
+                        {
+                            "content": "réponse C"
+                        },
+                        {
+                            "content": "réponse D"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@",
+      "name": "test questionnaire national 2202",
+      "published": true,
+      "creator": {
+        "first_name": "Député",
+        "last_name": "PARIS I"
+      },
+      "questions": [
+        {
+          "id": @integer@,
+          "type": "simple_field",
+          "content": "Aimez vous Noël ?",
+          "choices": []
+        },
+        {
+          "id": @integer@,
+          "type": "unique_choice",
+          "content": "la question à choix unique",
+          "choices": [
+            {
+              "id": @integer@,
+              "content": "réponse A"
+            },
+            {
+              "id": @integer@,
+            "content": "réponse B"
+            }
+          ]
+        },
+        {
+          "id": @integer@,
+          "type": "multiple_choice",
+          "content": "la question à choix multiple",
+          "choices": [
+            {
+              "id": @integer@,
+              "content": "réponse A"
+            },
+            {
+              "id": @integer@,
+              "content": "réponse B"
+            },
+            {
+              "id": @integer@,
+              "content": "réponse C"
+            },
+            {
+              "id": @integer@,
+              "content": "réponse D"
+            }
+          ]
+        }
+      ]
+    }
+    """
+
+  Scenario: As a DC user with national role I can create a national survey
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
+    """
+    {
+        "type": "local",
+        "name": "test questionnaire local du 92",
+        "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "published": true,
+        "questions": [
+            {
+                "question": {
+                    "type": "simple_field",
+                    "content": "Aimez vous Noël ?"
+                }
+            },
+            {
+                "question": {
+                    "type": "unique_choice",
+                    "content": "la question à choix unique",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        }
+                    ]
+                }
+            },
+            {
+                "question": {
+                    "type": "multiple_choice",
+                    "content": "la question à choix multiple",
+                    "choices": [
+                        {
+                            "content": "réponse A"
+                        },
+                        {
+                            "content": "réponse B"
+                        },
+                        {
+                            "content": "réponse C"
+                        },
+                        {
+                            "content": "réponse D"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+      "city": null,
+      "zone": {
+          "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+          "code": "92",
+          "name": "Hauts-de-Seine"
+      },
+      "uuid": "@uuid@",
+      "name": "test questionnaire local du 92",
+      "published": true,
+      "creator": {
+        "first_name": "Referent",
+        "last_name": "Referent"
+      },
+      "questions": [
+        {
+          "id": @integer@,
+          "type": "simple_field",
+          "content": "Aimez vous Noël ?",
+          "choices": []
+        },
+        {
+          "id": @integer@,
+          "type": "unique_choice",
+          "content": "la question à choix unique",
+          "choices": [
+            {
+              "id": @integer@,
+              "content": "réponse A"
+            },
+            {
+              "id": @integer@,
+            "content": "réponse B"
+            }
+          ]
+        },
+        {
+          "id": @integer@,
+          "type": "multiple_choice",
+          "content": "la question à choix multiple",
+          "choices": [
+            {
+              "id": @integer@,
+              "content": "réponse A"
+            },
+            {
+              "id": @integer@,
+              "content": "réponse B"
+            },
+            {
+              "id": @integer@,
+              "content": "réponse C"
+            },
+            {
+              "id": @integer@,
+              "content": "réponse D"
+            }
+          ]
+        }
+      ]
+    }
+    """

@@ -67,6 +67,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
  *             "denormalization_context": {
  *                 "groups": {"survey_write_dc"},
+ *             },
+ *             "normalization_context": {
+ *                 "groups": {"survey_read_dc"}
  *             }
  *         }
  *     },
