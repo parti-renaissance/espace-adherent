@@ -26,9 +26,9 @@ class CampaignHistoryStatusEnum extends Enum
     ];
 
     public const RESPONSE_STATUS = [
-        self::ACCEPT_TO_ANSWER,
         self::DONT_ACCEPT_TO_ANSWER,
         self::CONTACT_LATER,
+        self::ACCEPT_TO_ANSWER, // should be the last one in the list
     ];
 
     public const FINISHED_STATUS = [
