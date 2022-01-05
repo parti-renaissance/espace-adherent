@@ -23,6 +23,7 @@ use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
+use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\CoordinatorManagedAreaType;
@@ -50,7 +51,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -69,6 +69,7 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -76,22 +77,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'registeredAt',
-    ];
-
     protected $accessMapping = [
         'ban' => 'BAN',
         'certify' => 'CERTIFY',
         'uncertify' => 'UNCERTIFY',
         'extract' => 'EXTRACT',
-    ];
-
-    protected $formOptions = [
-        'validation_groups' => ['Default', 'Admin'],
     ];
 
     private $dispatcher;
@@ -412,6 +402,7 @@ class AdherentAdmin extends AbstractAdmin
                         'label' => 'jecoute_manager',
                         'required' => false,
                         'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
+                        'model_manager' => $this->getModelManager(),
                     ])
                     ->add('printPrivilege', null, [
                         'label' => 'Accès à "La maison des impressions"',
@@ -556,7 +547,24 @@ class AdherentAdmin extends AbstractAdmin
             ;
         }
 
-        $formMapper->end();
+        $formMapper
+            ->end()
+            ->tab('Rôles locaux')
+                ->with(false)
+                    ->add('zoneBasedRoles', CollectionType::class, [
+                        'required' => false,
+                        'label' => false,
+                        'entry_type' => AdherentZoneBasedRoleType::class,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'entry_options' => [
+                            'model_manager' => $this->getModelManager(),
+                        ],
+                        'by_reference' => false,
+                    ])
+                ->end()
+            ->end()
+        ;
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())

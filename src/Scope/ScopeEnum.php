@@ -15,6 +15,7 @@ class ScopeEnum extends Enum
     public const PHONING = 'phoning';
     public const PHONING_NATIONAL_MANAGER = 'phoning_national_manager';
     public const PAP_NATIONAL_MANAGER = 'pap_national_manager';
+    public const JEMENGAGE_ADMIN = 'jemenage_admin';
 
     public const ALL = [
         self::REFERENT,

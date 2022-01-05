@@ -1245,3 +1245,5 @@ cms_block.description.help: Champ interne pour les administrateurs seulement; ne
 mailchimp_contact.status.subscribed: Abonné
 mailchimp_contact.status.unsubscribed: Désabonné
 mailchimp_contact.status.cleaned: Cleaned
+
+adherent.zone_based_role_type.jemenage_admin: JeMengage admin

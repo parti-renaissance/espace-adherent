@@ -869,6 +869,22 @@
             <argument />
         </service>
 
+        <service id="app.admin.jecoute.jecoute_managed_area_admin" class="App\Admin\Jecoute\JecouteManagedAreaAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\JecouteManagedArea</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.adherent_zone_based_role_admin" class="App\Admin\AdherentZoneBasedRoleAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\AdherentZoneBasedRole</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Audience
