@@ -32,14 +32,14 @@ class AdherentResetPasswordHandler
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(Adherent $adherent): void
+    public function handle(Adherent $adherent, ?string $source): void
     {
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent);
 
         $this->manager->persist($resetPasswordToken);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new UserResetPasswordEvent($adherent, $resetPasswordToken), UserEvents::USER_FORGOT_PASSWORD);
+        $this->dispatcher->dispatch(new UserResetPasswordEvent($adherent, $resetPasswordToken, $source ?? MembershipSourceEnum::PLATFORM), UserEvents::USER_FORGOT_PASSWORD);
     }
 
     public function reset(Adherent $adherent, AdherentResetPasswordToken $token, string $newPassword): void

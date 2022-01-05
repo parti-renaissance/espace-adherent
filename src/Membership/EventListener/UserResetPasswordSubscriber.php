@@ -11,21 +11,15 @@ use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
 use App\OAuth\App\AuthAppUrlManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserResetPasswordSubscriber implements EventSubscriberInterface
 {
     private MailerService $mailer;
-    private RequestStack $requestStack;
     private AuthAppUrlManager $appUrlManager;
 
-    public function __construct(
-        MailerService $transactionalMailer,
-        RequestStack $requestStack,
-        AuthAppUrlManager $appUrlManager
-    ) {
+    public function __construct(MailerService $transactionalMailer, AuthAppUrlManager $appUrlManager)
+    {
         $this->mailer = $transactionalMailer;
-        $this->requestStack = $requestStack;
         $this->appUrlManager = $appUrlManager;
     }
 
@@ -33,10 +27,9 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
         $resetPasswordToken = $event->getResetPasswordToken();
-        $currentApp = $this->getCurrentApp();
-        $resetPasswordUrl = $this->appUrlManager->getUrlGenerator($currentApp)->generateCreatePasswordLink($user, $resetPasswordToken);
+        $resetPasswordUrl = $this->appUrlManager->getUrlGenerator($source = $event->getSource())->generateCreatePasswordLink($user, $resetPasswordToken);
 
-        switch ($currentApp) {
+        switch ($source) {
             case MembershipSourceEnum::COALITIONS:
                 $message = CoalitionResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl);
                 break;
@@ -47,7 +40,7 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
                 $message = AdherentResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Invalid adherent source "%s"', $currentApp));
+                throw new \InvalidArgumentException(sprintf('Invalid adherent source "%s"', $source));
         }
 
         $this->mailer->sendMessage($message);
@@ -58,10 +51,5 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
         return [
             UserEvents::USER_FORGOT_PASSWORD => 'publishUserResetPassword',
         ];
-    }
-
-    private function getCurrentApp(): string
-    {
-        return $this->requestStack->getCurrentRequest()->attributes->get('app', MembershipSourceEnum::PLATFORM);
     }
 }

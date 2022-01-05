@@ -2,8 +2,10 @@
 
 namespace App\Controller\Api;
 
+use App\Membership\AdherentResetPasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
+use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,5 +55,26 @@ class MembershipController extends AbstractController
         $handler->createAdherent($membershipRequest);
 
         return $this->json('OK', Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/membership/forgot-password", name="app_api_membership_forgot_password", methods={"POST"})
+     */
+    public function forgotPasswordAction(
+        Request $request,
+        AdherentRepository $adherentRepository,
+        AdherentResetPasswordHandler $adherentResetPasswordHandler
+    ): Response {
+        $data = json_decode($request->getContent(), true);
+
+        if (!\is_array($data) || empty($data['email_address'])) {
+            return $this->json('The field "email_address" is not provided.', Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($adherent = $adherentRepository->findOneByEmail($data['email_address'])) {
+            $adherentResetPasswordHandler->handle($adherent, $request->query->get('source') ?? $adherent->getSource());
+        }
+
+        return $this->json('OK');
     }
 }

@@ -61,3 +61,38 @@ Feature:
     And I press "Réinitialiser le mot de passe"
     Then I should be on "http://login.jemengage.code/bienvenue"
 
+    Scenario: As a non logged-in user I can request a reset password
+      Given I send a "POST" request to "/api/membership/forgot-password?source=jemengage" with body:
+      """
+      {"email_address": "new-user@en-marche-dev.fr"}
+      """
+      Then the response status code should be 200
+      And I should have 1 email "JeMengageResetPasswordMessage" for "new-user@en-marche-dev.fr" with payload:
+      """
+      {
+        "template_name": "je-mengage-reset-password",
+        "template_content": [],
+        "message": {
+          "subject": "Réinitialisation de votre mot de passe",
+          "from_email": "ne-pas-repondre@je-mengage.fr",
+          "global_merge_vars": [
+            {
+              "name": "first_name",
+              "content": "Jules"
+            },
+            {
+              "name": "create_password_link",
+              "content": "http:\/\/login.jemengage.code\/changer-mot-de-passe\/@string@\/@string@"
+            }
+          ],
+          "from_name": "Je-mengage.fr",
+          "to": [
+            {
+              "email": "new-user@en-marche-dev.fr",
+              "type": "to",
+              "name": "Jules Fullstack"
+            }
+          ]
+        }
+      }
+      """
