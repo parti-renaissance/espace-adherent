@@ -103,7 +103,7 @@ class Zone implements GeoInterface
      *     "audience_segment_read",
      *     "phoning_campaign_read",
      *     "survey_list_dc",
-     *     "survey_read_dc"
+     *     "survey_read_dc",
      * })
      *
      * @ApiProperty(

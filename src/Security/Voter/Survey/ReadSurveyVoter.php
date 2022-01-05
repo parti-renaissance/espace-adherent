@@ -2,37 +2,41 @@
 
 namespace App\Security\Voter\Survey;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Geo\ManagedZoneProvider;
+use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
-use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ReadSurveyVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_READ_SURVEY';
 
-    private Security $security;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
     private ManagedZoneProvider $managedZoneProvider;
+    private AuthorizationChecker $authorizationChecker;
+    private RequestStack $requestStack;
 
     public function __construct(
-        Security $security,
-        ScopeGeneratorResolver $scopeGeneratorResolver,
-        ManagedZoneProvider $managedZoneProvider
+        ManagedZoneProvider $managedZoneProvider,
+        AuthorizationChecker $authorizationChecker,
+        RequestStack $requestStack
     ) {
-        $this->security = $security;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->managedZoneProvider = $managedZoneProvider;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->requestStack = $requestStack;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
+        $scopeGenerator = $this->authorizationChecker->getScopeGenerator(
+            $this->requestStack->getMasterRequest(),
+            $adherent
+        );
 
         if (null === $scopeGenerator) {
             return false;
@@ -49,8 +53,8 @@ class ReadSurveyVoter extends AbstractAdherentVoter
 
             if ($subject instanceof LocalSurvey) {
                 return $this->managedZoneProvider->isManagerOfZone(
-                    $this->security->getUser(),
-                    $scopeGenerator->getCode(),
+                    $adherent,
+                    AdherentSpaceEnum::SCOPES[$scopeGenerator->getCode()],
                     $subject->getZone()
                 );
             }

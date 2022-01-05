@@ -27,7 +27,6 @@ class JeMengageWebSurveyNormalizer implements NormalizerInterface, NormalizerAwa
         $context[self::SURVEY_ALREADY_CALLED] = true;
 
         $survey = $this->normalizer->normalize($object, $format, $context);
-        $survey['nb_questions'] = $object->getQuestionsCount();
         $survey['nb_answers'] = $this->dataSurveyRepository->countSurveyDataAnswer($object);
 
         return $survey;

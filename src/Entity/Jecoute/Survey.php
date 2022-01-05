@@ -199,11 +199,10 @@ abstract class Survey implements IndexableEntityInterface
         $this->published = $published;
     }
 
-    public function questionsCount(): int
-    {
-        return \count($this->questions);
-    }
-
+    /**
+     * @SymfonySerializer\Groups({"survey_list_dc"})
+     * @SymfonySerializer\SerializedName("nb_questions")
+     */
     public function getQuestionsCount(): int
     {
         return $this->questions->count();
