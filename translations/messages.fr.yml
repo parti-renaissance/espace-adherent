@@ -1207,6 +1207,7 @@ scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
 scope.feature.news: Actualités
 scope.feature.phoning_campaign: Phoning
+scope.feature.survey: Questionnaires
 
 scope.app.data_corner: DataCorner
 scope.app.jemarche: Je m'engage

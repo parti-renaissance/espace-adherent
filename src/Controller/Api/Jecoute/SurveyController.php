@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SurveyController extends AbstractController
 {
     /**
-     * @Route(name="api_surveys_list", methods={"GET"})
+     * @Route(name="api_public_surveys_list", methods={"GET"})
      */
     public function surveyListAction(
         Request $request,

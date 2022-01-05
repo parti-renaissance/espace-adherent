@@ -26,7 +26,7 @@ class LocalSurvey extends Survey implements AuthoredInterface
      *
      * @Assert\Length(max=255)
      *
-     * @SymfonySerializer\Groups("survey_list")
+     * @SymfonySerializer\Groups("survey_list", "survey_read_dc")
      *
      * @deprecated
      */
@@ -44,7 +44,7 @@ class LocalSurvey extends Survey implements AuthoredInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      *
-     * @SymfonySerializer\Groups("survey_list")
+     * @SymfonySerializer\Groups("survey_list", "survey_list_dc", "survey_read_dc")
      */
     private $zone;
 
@@ -126,5 +126,10 @@ class LocalSurvey extends Survey implements AuthoredInterface
     public function setBlockedChanges(bool $blockedChanges): void
     {
         $this->blockedChanges = $blockedChanges;
+    }
+
+    public function getCreator(): ?Adherent
+    {
+        return $this->getAuthor();
     }
 }

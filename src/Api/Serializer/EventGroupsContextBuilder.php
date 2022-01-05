@@ -5,6 +5,7 @@ namespace App\Api\Serializer;
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Event\BaseEvent;
 use App\Scope\FeatureEnum;
+use App\Security\Voter\FeatureVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -28,7 +29,7 @@ class EventGroupsContextBuilder implements SerializerContextBuilderInterface
 
         if (BaseEvent::class !== $resourceClass
             || !$this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')
-            || !$this->authorizationChecker->isGranted('IS_FEATURE_GRANTED', FeatureEnum::EVENTS)
+            || !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::EVENTS)
         ) {
             return $context;
         }

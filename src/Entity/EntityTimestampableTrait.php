@@ -29,6 +29,7 @@ trait EntityTimestampableTrait
      *     "pap_building_history",
      *     "pap_campaign_history_read_list",
      *     "event_list_read_extended",
+     *     "survey_list_dc",
      * })
      * @Gedmo\Timestampable(on="create")
      */
