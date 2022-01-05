@@ -64,10 +64,10 @@ Feature:
     Scenario: As a non logged-in user I can request a reset password
       Given I send a "POST" request to "/api/membership/forgot-password?source=jemengage" with body:
       """
-      {"email_address": "new-user@en-marche-dev.fr"}
+      {"email_address": "je-mengage-user-1@en-marche-dev.fr"}
       """
       Then the response status code should be 200
-      And I should have 1 email "JeMengageResetPasswordMessage" for "new-user@en-marche-dev.fr" with payload:
+      And I should have 1 email "JeMengageResetPasswordMessage" for "je-mengage-user-1@en-marche-dev.fr" with payload:
       """
       {
         "template_name": "je-mengage-reset-password",
@@ -88,7 +88,7 @@ Feature:
           "from_name": "Je-mengage.fr",
           "to": [
             {
-              "email": "new-user@en-marche-dev.fr",
+              "email": "je-mengage-user-1@en-marche-dev.fr",
               "type": "to",
               "name": "Jules Fullstack"
             }
