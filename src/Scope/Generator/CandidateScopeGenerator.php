@@ -17,7 +17,7 @@ class CandidateScopeGenerator extends AbstractScopeGenerator
         return $adherent->isHeadedRegionalCandidate();
     }
 
-    public function getZones(Adherent $adherent): array
+    protected function getZones(Adherent $adherent): array
     {
         return [$adherent->getCandidateManagedArea()->getZone()];
     }

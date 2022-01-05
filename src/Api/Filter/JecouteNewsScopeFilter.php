@@ -2,46 +2,49 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
 use App\Repository\Geo\ZoneRepository;
+use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\QueryBuilder;
 
 final class JecouteNewsScopeFilter extends AbstractScopeFilter
 {
-    protected const OPERATION_NAMES = ['get_private'];
-
     private ZoneRepository $zoneRepository;
 
-    protected function filterProperty(
-        string $property,
-        $value,
+    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    {
+        return is_a($resourceClass, News::class, true);
+    }
+
+    protected function applyFilter(
         QueryBuilder $queryBuilder,
-        QueryNameGeneratorInterface $queryNameGenerator,
-        string $resourceClass,
-        string $operationName = null
-    ) {
-        if (
-            !is_a($resourceClass, News::class, true)
-            || !$this->needApplyFilter($property, $operationName)
-        ) {
-            return;
-        }
-
-        $scope = $this->getScopeGenerator($value)->getCode();
+        Adherent $currentUser,
+        ScopeGeneratorInterface $scopeGenerator
+    ): void {
         $alias = $queryBuilder->getRootAliases()[0];
+        $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
 
-        if (ScopeEnum::NATIONAL === $scope) {
-            $queryBuilder
-                ->andWhere(sprintf('%s.space IS NULL', $alias))
-            ;
-        } elseif (ScopeEnum::REFERENT === $scope) {
-            $queryBuilder
-                ->andWhere(sprintf('%s.zone IN (:zones)', $alias))
-                ->setParameter('zones', $this->zoneRepository->findForJecouteByReferentTags($this->getUser($value)->getManagedArea()->getTags()->toArray()))
-            ;
+        switch ($scopeGenerator->getCode()) {
+            case ScopeEnum::NATIONAL:
+                $queryBuilder->andWhere(sprintf('%s.space IS NULL', $alias));
+                break;
+            case ScopeEnum::REFERENT:
+                $queryBuilder
+                    ->andWhere(sprintf('%s.zone IN (:zones)', $alias))
+                    ->setParameter(
+                        'zones',
+                        $this->zoneRepository->findForJecouteByReferentTags($user->getManagedArea()->getTags()->toArray())
+                    )
+                ;
+                break;
         }
+    }
+
+    protected function getAllowedOperationNames(): array
+    {
+        return ['get_private'];
     }
 
     /**

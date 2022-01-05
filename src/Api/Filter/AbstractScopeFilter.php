@@ -3,54 +3,68 @@
 namespace App\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
+use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Generator\ScopeGeneratorInterface;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
 abstract class AbstractScopeFilter extends AbstractContextAwareFilter
 {
-    protected const PROPERTY_NAME = 'scope';
-    protected const OPERATION_NAMES = ['get'];
+    private const PROPERTY_NAME = 'scope';
 
     protected GeneralScopeGenerator $generalScopeGenerator;
-    protected ScopeGeneratorInterface $scopeGenerator;
     protected Security $security;
-    protected ?Adherent $user = null;
 
-    protected function needApplyFilter(string $property, string $operationName = null): bool
-    {
-        $this->user = $this->security->getUser();
-
-        if (
-            static::PROPERTY_NAME !== $property
-            || !\in_array($operationName, static::OPERATION_NAMES, true)
-        ) {
-            return false;
+    final protected function filterProperty(
+        string $property,
+        $value,
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        string $operationName = null
+    ) {
+        if (self::PROPERTY_NAME !== $property || !\in_array($operationName, $this->getAllowedOperationNames(), true)) {
+            return;
         }
 
-        return true;
+        if (!$this->needApplyFilter($property, $resourceClass, $operationName)) {
+            return;
+        }
+
+        $currentUser = $this->security->getUser();
+
+        if (!$currentUser instanceof Adherent) {
+            return;
+        }
+
+        try {
+            $scopeGenerator = $this->generalScopeGenerator->getGenerator($value, $currentUser);
+        } catch (ScopeExceptionInterface $e) {
+            return;
+        }
+
+        $this->applyFilter($queryBuilder, $currentUser, $scopeGenerator);
     }
 
-    protected function getUser(string $value): ?Adherent
-    {
-        $this->scopeGenerator = $this->getScopeGenerator($value);
+    abstract protected function needApplyFilter(
+        string $property,
+        string $resourceClass,
+        string $operationName = null
+    ): bool;
 
-        return $this->scopeGenerator->isDelegatedAccess()
-            ? $this->scopeGenerator->getDelegatedAccess()->getDelegator()
-            : $this->user
-        ;
-    }
-
-    protected function getScopeGenerator($value): ScopeGeneratorInterface
-    {
-        return $this->scopeGenerator ?? ($this->scopeGenerator = $this->generalScopeGenerator->getGenerator($value, $this->user));
-    }
+    abstract protected function applyFilter(
+        QueryBuilder $queryBuilder,
+        Adherent $currentUser,
+        ScopeGeneratorInterface $scopeGenerator
+    ): void;
 
     public function getDescription(string $resourceClass): array
     {
         return [
-            static::PROPERTY_NAME => [
+            self::PROPERTY_NAME => [
                 'property' => null,
                 'type' => 'string',
                 'required' => false,
@@ -72,5 +86,10 @@ abstract class AbstractScopeFilter extends AbstractContextAwareFilter
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    protected function getAllowedOperationNames(): array
+    {
+        return ['get'];
     }
 }
