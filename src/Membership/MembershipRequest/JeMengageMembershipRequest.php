@@ -45,7 +45,6 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
     public ?\DateTimeInterface $birthdate = null;
 
     /**
-     * @Assert\NotBlank(message="adherent_profile.nationality.not_blank")
      * @Assert\Country(message="common.nationality.invalid")
      *
      * @Groups({"merbership:write"})
