@@ -944,6 +944,7 @@
             <tag name="sonata.admin.extension" target="app.admin.cms_block" />
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
         </service>
         <!--
         ######################################################

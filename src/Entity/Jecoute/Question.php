@@ -41,7 +41,7 @@ class Question
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_read_dc")
+     * @SymfonySerializer\Groups("survey_list", "survey_read_dc", "survey_write_dc")
      */
     private $content;
 
@@ -51,7 +51,7 @@ class Question
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Jecoute\SurveyQuestionTypeEnum", "all"})
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_read_dc")
+     * @SymfonySerializer\Groups("survey_list", "survey_read_dc", "survey_write_dc")
      */
     private $type;
 
@@ -63,7 +63,7 @@ class Question
      *
      * @Assert\Valid
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_read_dc")
+     * @SymfonySerializer\Groups("survey_list", "survey_read_dc", "survey_write_dc")
      */
     private $choices;
 

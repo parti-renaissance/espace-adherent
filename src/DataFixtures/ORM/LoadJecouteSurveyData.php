@@ -49,16 +49,16 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
          * Local Surveys
          */
         $localSurvey1 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_1), 'Questionnaire numéro 1', true);
-        $localSurvey1->setAuthor($referent1);
+        $localSurvey1->setCreatedByAdherent($referent1);
 
         $localSurvey2 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_2), 'Un deuxième questionnaire', true);
-        $localSurvey2->setAuthor($referent2);
+        $localSurvey2->setCreatedByAdherent($referent2);
 
         $localSurvey3 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_3), 'Un questionnaire de la Région', true);
-        $localSurvey3->setAuthor($headedRegionalCandidate);
+        $localSurvey3->setCreatedByAdherent($headedRegionalCandidate);
 
         $localSurvey4 = new LocalSurvey(Uuid::fromString(self::SURVEY_LOCAL_4), 'Un questionnaire avec modification bloquée', true);
-        $localSurvey4->setAuthor($referent1);
+        $localSurvey4->setCreatedByAdherent($referent1);
         $localSurvey4->setBlockedChanges(true);
 
         /** @var Question $question1 */
@@ -120,7 +120,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 
         // #1
         $nationalSurvey1 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_1), 'Questionnaire national numéro 1', true);
-        $nationalSurvey1->setAdministrator($administrator1);
+        $nationalSurvey1->setCreatedByAdministrator($administrator1);
 
         /** @var Question $nationalQuestion1 */
         $nationalQuestion1 = $this->getReference('national-question-1');
@@ -143,7 +143,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 
         // #2
         $nationalSurvey2 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_2), 'Le deuxième questionnaire national', true);
-        $nationalSurvey2->setAdministrator($administrator2);
+        $nationalSurvey2->setCreatedByAdministrator($administrator2);
 
         /** @var Question $nationalQuestion3 */
         $nationalQuestion3 = $this->getReference('national-question-3');
@@ -160,7 +160,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 
         // #3
         $nationalSurvey3 = new NationalSurvey(Uuid::fromString(self::SURVEY_NATIONAL_3), 'Les enjeux des 10 prochaines années', true);
-        $nationalSurvey3->setAdministrator($administrator1);
+        $nationalSurvey3->setCreatedByAdministrator($administrator1);
 
         /** @var Question $nationalQuestion4 */
         $nationalQuestion4 = $this->getReference('national-question-4');

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -42,6 +43,8 @@ class SurveyQuestion implements AuthoredInterface
      * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
      *
      * @Assert\Valid
+     *
+     * @SymfonySerializer\Groups("survey_write_dc")
      */
     private $question;
 

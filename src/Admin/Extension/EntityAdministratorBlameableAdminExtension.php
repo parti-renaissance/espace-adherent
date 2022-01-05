@@ -49,6 +49,13 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
 
             $listMapper->reorder($keys);
         }
+
+        if (false !== $actionKey = array_search('export', $keys)) {
+            unset($keys[$actionKey]);
+            $keys[] = 'export';
+
+            $listMapper->reorder($keys);
+        }
     }
 
     /**
