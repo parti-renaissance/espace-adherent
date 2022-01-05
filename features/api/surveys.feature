@@ -1052,43 +1052,43 @@ Feature:
       "published": true,
       "questions": [
         {
-          "id": 1,
+          "id": @integer@,
           "type": "simple_field",
           "content": "Ceci est-il un champ libre ?",
           "choices": []
         },
         {
-          "id": 2,
+          "id": @integer@,
           "type": "multiple_choice",
           "content": "Est-ce une question à choix multiple ?",
           "choices": [
             {
-              "id": 7,
+              "id": @integer@,
               "content": "Réponse A"
             },
             {
-              "id": 8,
+              "id": @integer@,
               "content": "Réponse B"
             }
           ]
         },
         {
-          "id": 3,
+          "id": @integer@,
           "type": "unique_choice",
           "content": "Est-ce une question à choix unique ?",
           "choices": [
             {
-              "id": 9,
+              "id": @integer@,
               "content": "Réponse unique 1"
             },
             {
-              "id": 10,
+              "id": @integer@,
               "content": "Réponse unique 2"
             }
           ]
         },
         {
-          "id": 4,
+          "id": @integer@,
           "type": "simple_field",
           "content": "Ceci est-il un champ libre d'une question suggérée ?",
           "choices": []
