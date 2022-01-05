@@ -21,7 +21,9 @@ Feature:
           "city_name": "lyon 1er",
           "country": "FR"
       },
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "allow_mobile_notifications": true,
+      "allow_email_notifications": true
     }
     """
     Then the response status code should be 201

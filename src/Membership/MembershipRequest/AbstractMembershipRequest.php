@@ -42,8 +42,14 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      */
     public bool $cguAccepted = false;
 
+    /**
+     * @Groups({"merbership:write"})
+     */
     public ?bool $allowEmailNotifications = null;
 
+    /**
+     * @Groups({"merbership:write"})
+     */
     public ?bool $allowMobileNotifications = null;
 
     public function getEmailAddress(): string
