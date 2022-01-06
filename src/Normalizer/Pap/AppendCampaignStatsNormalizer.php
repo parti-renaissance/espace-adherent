@@ -43,8 +43,10 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
         $campaign['nb_visited_doors'] = $this->campaignHistoryRepository->countVisitedDoors($object);
-        $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object);
-        $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object);
+        if (($context['item_operation_name'] ?? null) === 'get') {
+            $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object);
+            $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object);
+        }
 
         return $campaign;
     }
@@ -55,7 +57,6 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
             empty($context[self::CAMPAIGN_ALREADY_CALLED])
             && $data instanceof Campaign
             && \in_array('pap_campaign_read', $context['groups'] ?? [])
-            && ($context['item_operation_name'] ?? null) === 'get'
         ;
     }
 }

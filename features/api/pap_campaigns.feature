@@ -108,35 +108,45 @@ Feature:
                 "brief": "**Campagne** de 10 jours suivants",
                 "goal": 600,
                 "finish_at": "@string@.isDateTime()",
-                "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+                "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                "nb_surveys": 3,
+                "nb_visited_doors": 5
             },
             {
                 "title": "Campagne de 5 jours suivants",
                 "brief": "**Campagne** de 5 jours suivants",
                 "goal": 500,
                 "finish_at": "@string@.isDateTime()",
-                "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024"
+                "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+                "nb_surveys": 0,
+                "nb_visited_doors": 1
             },
             {
                 "title": "Campagne dans 10 jours",
                 "brief": "### Campagne dans 10 jours",
                 "goal": 400,
                 "finish_at": "@string@.isDateTime()",
-                "uuid": "63460047-c81a-44b9-aec9-152ecf58df93"
+                "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
+                "nb_surveys": 0,
+                "nb_visited_doors": 0
             },
             {
                 "title": "Campagne dans 20 jours",
                 "brief": "### Campagne dans 20 jours",
                 "goal": 400,
                 "finish_at": "@string@.isDateTime()",
-                "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41"
+                "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
+                "nb_surveys": 0,
+                "nb_visited_doors": 0
             },
             {
                 "title": "Campagne terminé",
                 "brief": null,
                 "goal": 100,
                 "finish_at": "@string@.isDateTime()",
-                "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb"
+                "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                "nb_surveys": 0,
+                "nb_visited_doors": 1
             }
         ]
     }
@@ -839,7 +849,9 @@ Feature:
                 "questioner": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "Picard",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -869,7 +881,9 @@ Feature:
                 "questioner": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "Picard",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -899,7 +913,9 @@ Feature:
                 "questioner": {
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
-                    "last_name": "Bialès"
+                    "last_name": "Bialès",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -929,7 +945,9 @@ Feature:
                 "questioner": {
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
-                    "last_name": "Bialès"
+                    "last_name": "Bialès",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -959,7 +977,9 @@ Feature:
                 "questioner": {
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
-                    "last_name": "Bialès"
+                    "last_name": "Bialès",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -989,7 +1009,9 @@ Feature:
                 "questioner": {
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
-                    "last_name": "Kiroule"
+                    "last_name": "Kiroule",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
@@ -1019,7 +1041,9 @@ Feature:
                 "questioner": {
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
-                    "last_name": "Kiroule"
+                    "last_name": "Kiroule",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
@@ -1068,7 +1092,9 @@ Feature:
                 "questioner": {
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
-                    "last_name": "Bialès"
+                    "last_name": "Bialès",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1102,7 +1128,9 @@ Feature:
                 "questioner": {
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945"
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "building": {
                     "address": {
@@ -1147,7 +1175,9 @@ Feature:
                 "questioner": {
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
-                    "last_name": "Kiroule"
+                    "last_name": "Kiroule",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
@@ -1177,7 +1207,9 @@ Feature:
                 "questioner": {
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
-                    "last_name": "Kiroule"
+                    "last_name": "Kiroule",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
@@ -1226,7 +1258,9 @@ Feature:
                 "questioner": {
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
-                    "last_name": "Kiroule"
+                    "last_name": "Kiroule",
+                    "age": @integer@,
+                    "gender": "male"
                 },
                 "campaign": {
                     "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
@@ -1274,7 +1308,8 @@ Feature:
             {
                 "survey": {
                     "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-                    "name": "Les enjeux des 10 prochaines années"
+                    "name": "Les enjeux des 10 prochaines années",
+                    "created_at": "@string@.isDateTime()"
                 },
                 "pap_campaign_history": {
                     "questioner": {
@@ -1286,6 +1321,8 @@ Feature:
                     "last_name": null,
                     "gender": null,
                     "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
                     "duration": 0
                 },
                 "uuid": "@uuid@",
@@ -1309,7 +1346,8 @@ Feature:
                 "uuid": "@uuid@",
                 "survey": {
                     "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-                    "name": "Les enjeux des 10 prochaines années"
+                    "name": "Les enjeux des 10 prochaines années",
+                    "created_at": "@string@.isDateTime()"
                 },
                 "pap_campaign_history": {
                     "questioner": {
@@ -1321,6 +1359,8 @@ Feature:
                     "last_name": null,
                     "gender": null,
                     "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
                     "duration": 420
                 },
                 "answers": [
@@ -1343,7 +1383,8 @@ Feature:
                 "uuid": "@uuid@",
                 "survey": {
                     "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-                    "name": "Les enjeux des 10 prochaines années"
+                    "name": "Les enjeux des 10 prochaines années",
+                    "created_at": "@string@.isDateTime()"
                 },
                 "pap_campaign_history": {
                     "questioner": {
@@ -1355,6 +1396,8 @@ Feature:
                     "last_name": null,
                     "gender": null,
                     "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
                     "duration": 300
                 },
                 "answers": [

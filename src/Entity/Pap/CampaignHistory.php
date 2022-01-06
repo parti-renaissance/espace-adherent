@@ -227,6 +227,8 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\DateTime
+     *
+     * @Groups({"pap_campaign_replies_list"})
      */
     private ?\DateTime $finishAt = null;
 
