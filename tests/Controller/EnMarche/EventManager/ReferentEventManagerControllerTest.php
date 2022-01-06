@@ -25,8 +25,8 @@ class ReferentEventManagerControllerTest extends WebTestCase
         $this->assertStringContainsString('Réunion de réflexion dammarienne', $crawler->filter('tbody tr.event__item')->eq(1)->text());
         $this->assertStringContainsString('Réunion de réflexion bellifontaine', $crawler->filter('tbody tr.event__item')->eq(2)->text());
         $this->assertStringContainsString('Event of non AL', $crawler->filter('tbody tr.event__item')->eq(3)->text());
-        $this->assertStringContainsString('Événements à Fontainebleau 1', $crawler->filter('tbody tr.event__item')->eq(4)->text());
-        $this->assertStringContainsString('Événements à Fontainebleau 2', $crawler->filter('tbody tr.event__item')->eq(5)->text());
+        $this->assertStringContainsString('Événements à Fontainebleau 2', $crawler->filter('tbody tr.event__item')->eq(4)->text());
+        $this->assertStringContainsString('Événements à Fontainebleau 1', $crawler->filter('tbody tr.event__item')->eq(5)->text());
         $this->assertStringContainsString('Grand Meeting de Marseille', $crawler->filter('tbody tr.event__item')->eq(6)->text());
     }
 

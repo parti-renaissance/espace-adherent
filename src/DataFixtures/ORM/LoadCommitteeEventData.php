@@ -396,8 +396,8 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'category' => $eventCategory3,
             'description' => 'Allons à la rencontre des citoyens.',
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
-            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 09:30:00',
-            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:00:00',
+            'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 10:30:00',
+            'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:30:00',
             'capacity' => 50,
         ]);
         $event20->setPublished(true);

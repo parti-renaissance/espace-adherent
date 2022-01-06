@@ -76,6 +76,10 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
             ;
         }
 
+        if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {
+            return;
+        }
+
         $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
     }
 
