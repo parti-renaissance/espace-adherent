@@ -46,7 +46,7 @@ class BuildingEvent implements AuthorInterface
     private ?string $type = null;
 
     /**
-     * @ORM\Column(length=50)
+     * @ORM\Column(length=50, nullable=true)
      *
      * @Groups({"pap_building_event_write"})
      */

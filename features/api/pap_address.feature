@@ -329,6 +329,37 @@ Feature:
     """
     {
         "action": "open",
+        "type": "building",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
+    """
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "close",
+        "type": "building",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
+    """
+
+  Scenario: As a logged-in user I can open and close a building block
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "open",
         "type": "building_block",
         "identifier": "A",
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"

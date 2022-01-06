@@ -35,7 +35,7 @@ class BuildingEventControllerTest extends WebTestCase
     /**
      * @dataProvider provideActions
      */
-    public function testCloseOpenBuilding(string $type, string $action, string $identifier): void
+    public function testCloseOpenBuilding(string $type, string $action, string $identifier = null): void
     {
         $campaignUuid = LoadPapCampaignData::CAMPAIGN_1_UUID;
         $buidingUuid = LoadPapBuildingData::BUILDING_01_UUID;
@@ -59,12 +59,11 @@ class BuildingEventControllerTest extends WebTestCase
                 'CONTENT_TYPE' => 'application/json',
                 'HTTP_AUTHORIZATION' => "Bearer $accessToken",
             ],
-            json_encode([
+            json_encode(array_merge([
                 'action' => $action,
                 'type' => $type,
-                'identifier' => $identifier,
                 'campaign' => $campaignUuid,
-            ])
+            ], $identifier ? ['identifier' => $identifier] : []))
         );
 
         $this->assertResponseStatusCodeSame(201);
@@ -75,6 +74,8 @@ class BuildingEventControllerTest extends WebTestCase
         $buildingEvent = $this->getLastBuildingEvent($campaign, $building);
 
         $this->assertNotNull($buildingEvent);
+        $this->assertSame($building->getId(), $buildingEvent->getBuilding()->getId());
+        $this->assertSame($campaign->getId(), $buildingEvent->getCampaign()->getId());
         $this->assertSame($action, $buildingEvent->getAction());
         $this->assertSame($identifier, $buildingEvent->getIdentifier());
         $this->assertSame($type, $buildingEvent->getType());
@@ -87,6 +88,8 @@ class BuildingEventControllerTest extends WebTestCase
             ['building_block', 'close', 'A'],
             ['floor', 'open', 'A-0'],
             ['floor', 'close', 'A-0'],
+            ['building', 'open'],
+            ['building', 'close'],
         ];
     }
 
