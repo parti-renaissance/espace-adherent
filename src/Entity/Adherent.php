@@ -3055,4 +3055,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->papUserRole = $papUserRole;
     }
+
+    public function hasZoneBasedRole(string $scope): bool
+    {
+        return null !== $this->findZoneBasedRole($scope);
+    }
+
+    public function findZoneBasedRole(string $scope): ?AdherentZoneBasedRole
+    {
+        $matched = $this->zoneBasedRoles->matching(
+            Criteria::create()->where(Criteria::expr()->eq('type', $scope))
+        );
+
+        return $matched->count() ? $matched->first() : null;
+    }
 }

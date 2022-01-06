@@ -13,6 +13,7 @@ use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentResetPasswordToken;
+use App\Entity\AdherentZoneBasedRole;
 use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Coalition\CoalitionModeratorRoleAssociation;
@@ -1062,6 +1063,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
+        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createJeMengageAdmin(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => Uuid::uuid4(),

@@ -10,7 +10,7 @@ class DataCornerVoter extends AbstractAdherentVoter
 {
     public const DATA_CORNER = 'DATA_CORNER';
 
-    private $scopeRepository;
+    private ScopeRepository $scopeRepository;
 
     public function __construct(ScopeRepository $scopeRepository)
     {
@@ -33,6 +33,7 @@ class DataCornerVoter extends AbstractAdherentVoter
             || (\in_array(ScopeEnum::NATIONAL, $codes) && $adherent->hasNationalRole())
             || (\in_array(ScopeEnum::PHONING_NATIONAL_MANAGER, $codes) && $adherent->hasPhoningManagerRole())
             || (\in_array(ScopeEnum::PAP_NATIONAL_MANAGER, $codes) && $adherent->hasPapNationalManagerRole())
+            || (\in_array(ScopeEnum::JEMENGAGE_ADMIN, $codes) && $adherent->hasZoneBasedRole(ScopeEnum::JEMENGAGE_ADMIN))
         ;
     }
 
