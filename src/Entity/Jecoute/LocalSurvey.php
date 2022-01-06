@@ -39,7 +39,13 @@ class LocalSurvey extends Survey
      *
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_list_dc", "survey_read_dc", "survey_write_dc")
+     * @SymfonySerializer\Groups(
+     *     "survey_list",
+     *     "survey_list_dc",
+     *     "survey_read_dc",
+     *     "survey_write_dc",
+     *     "survey_update_dc",
+     * )
      */
     private $zone;
 

@@ -13,9 +13,9 @@ use App\Scope\ScopeEnum;
 use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ReadSurveyVoter extends AbstractAdherentVoter
+class CanManageSurveyVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'CAN_READ_SURVEY';
+    public const PERMISSION = 'CAN_MANAGE_SURVEY';
 
     private ManagedZoneProvider $managedZoneProvider;
     private AuthorizationChecker $authorizationChecker;
