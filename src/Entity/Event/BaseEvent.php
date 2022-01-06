@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
@@ -190,6 +191,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "mode": "exact",
  *     "beginAt": "start",
  * })
+ * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
  */
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
 {

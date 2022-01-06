@@ -1,292 +1,8 @@
 @api
 Feature:
-  In order to get events count in the
-  As a client passing a referent email
-  I should be able to access events API stats
-
-  Background:
-    Given I freeze the clock to "2018-05-18"
-
-  Scenario: As a non logged-in user I can not get events count in the referent managed zone
-    When I am on "/api/statistics/events/count"
-    Then the response status code should be 401
-
-  Scenario Outline: As an adherent I can not get events count in the referent managed zone
-    When I am logged as "jacques.picard@en-marche.fr"
-    And I am on "<url>"
-    Then the response status code should be 401
-
-    Examples:
-      | url                                       |
-      | /api/statistics/events/count              |
-      | /api/statistics/events/count-by-month     |
-      | /api/statistics/events/count-participants |
-
-  Scenario: As a client passing a referent email I can get events count in the referent managed zone
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count?referent=referent-75-77@en-marche-dev.fr"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "current_total":4,
-      "events": [
-        {"date": "2018-05", "count":3},
-        {"date": "2018-04", "count":2},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "referent_events": [
-        {"date": "2018-05", "count":1},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-  Scenario: As a non logged-in user I can not get events count in the referent managed zone
-    When I am on "/api/statistics/events/count-by-month?country=fr"
-    Then the response status code should be 401
-
-  Scenario:  As a client passing a referent email I can get events count in the referent managed zone
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "events": [
-        {"date": "2018-05", "count":3},
-        {"date": "2018-04", "count":2},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "event_participants": [
-        {"date": "2018-05", "count":5},
-        {"date": "2018-04", "count":4},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&country=fr"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "events": [
-        {"date": "2018-05", "count":3},
-        {"date": "2018-04", "count":2},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "event_participants": [
-        {"date": "2018-05", "count":5},
-        {"date": "2018-04", "count":4},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&city=Paris%208e"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "events": [
-        {"date": "2018-05", "count":3},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "event_participants": [
-        {"date": "2018-05", "count":5},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&city=Fontainebleau"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "events": [
-        {"date": "2018-05", "count":0},
-        {"date": "2018-04", "count":2},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "event_participants": [
-        {"date": "2018-05", "count":0},
-        {"date": "2018-04", "count":4},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&committee=515a56c0-bde8-56ef-b90c-4745b1c93818"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "events": [
-        {"date": "2018-05", "count":3},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "event_participants": [
-        {"date": "2018-05", "count":5},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-    # Test get stats for committee with scheduled events but not managed by referent
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&committee=62ea97e7-6662-427b-b90a-23429136d0dd"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "events": [
-        {"date": "2018-05", "count":0},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ],
-      "event_participants": [
-        {"date": "2018-05", "count":0},
-        {"date": "2018-04", "count":0},
-        {"date": "2018-03", "count":0},
-        {"date": "2018-02", "count":0},
-        {"date": "2018-01", "count":0},
-        {"date": "2017-12", "count":0}
-      ]
-    }
-    """
-
-  Scenario: As a client passing a referent email I can get participants count
-    Given I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                        |
-      | client_secret | crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE= |
-      | client_id     | 4f3394d4-7137-424a-8c73-27e0ad641fc9         |
-      | grant_type    | client_credentials                           |
-      | scope         | read:stats                                   |
-    And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-participants?referent=referent-75-77@en-marche-dev.fr"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "total": 7,
-      "participants": [
-        {"date": "2018-05", "count": 5},
-        {"date": "2018-04", "count": 4},
-        {"date": "2018-03", "count": 0},
-        {"date": "2018-02", "count": 0},
-        {"date": "2018-01", "count": 0},
-        {"date": "2017-12", "count": 0}
-      ],
-      "participants_as_adherent": [
-        {"date": "2018-05", "count": 3},
-        {"date": "2018-04", "count": 4},
-        {"date": "2018-03", "count": 0},
-        {"date": "2018-02", "count": 0},
-        {"date": "2018-01", "count": 0},
-        {"date": "2017-12", "count": 0}
-      ]
-    }
-    """
+  In order to get and manipulate events
+  As a client of different apps
+  I should be able to access events API
 
   Scenario Outline: As a logged-in user I can get an event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
@@ -783,18 +499,292 @@ Feature:
     }
     """
 
+  Scenario: As a DC referent I can get an ordered list of events corresponding to my zones
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events?scope=referent&page_size=3&order[bagin_at]=asc"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 7,
+            "items_per_page": 3,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 3
+        },
+        "items": [
+            {
+                "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
+                "name": "Grand Meeting de Marseille",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "participants_count": 1,
+                "status": "SCHEDULED",
+                "capacity": 2000,
+                "post_address": {
+                    "address": "2 Place de la Major",
+                    "postal_code": "13002",
+                    "city": "13002-13202",
+                    "city_name": "Marseille 2e",
+                    "country": "FR",
+                    "latitude": 43.298492,
+                    "longitude": 5.362377
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
+                "name": "Événements à Fontainebleau 1",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
+                "name": "Événements à Fontainebleau 2",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Conférence-débat",
+                    "slug": "conference-debat"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            }
+        ]
+    }
+    """
+    When I send a "GET" request to "/api/v3/events?scope=referent&page_size=3&order[finish_at]=desc"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 7,
+            "items_per_page": 3,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 3
+        },
+        "items": [
+            {
+                "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
+                "name": "Grand Meeting de Marseille",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "participants_count": 1,
+                "status": "SCHEDULED",
+                "capacity": 2000,
+                "post_address": {
+                    "address": "2 Place de la Major",
+                    "postal_code": "13002",
+                    "city": "13002-13202",
+                    "city_name": "Marseille 2e",
+                    "country": "FR",
+                    "latitude": 43.298492,
+                    "longitude": 5.362377
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
+                "name": "Événements à Fontainebleau 1",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
+                "name": "Événements à Fontainebleau 2",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Conférence-débat",
+                    "slug": "conference-debat"
+                },
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            }
+        ]
+    }
+    """
+
   Scenario: As a DC referent I can get a list of events created by me
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events?only_mine&page_size=10"
     Then the response status code should be 200
-    And print last JSON response
     And the JSON should be equal to:
     """
         {
         "metadata": {
-            "total_items": 3,
+            "total_items": 4,
             "items_per_page": 10,
-            "count": 3,
+            "count": 4,
             "current_page": 1,
             "last_page": 1
         },
@@ -827,6 +817,35 @@ Feature:
                     "longitude": 2.331595
                 },
                 "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
+                "name": "Un événement du référent annulé",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "CANCELLED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "category": null,
+                "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": null
