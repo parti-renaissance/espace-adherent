@@ -1097,7 +1097,7 @@ Feature:
     }
     """
 
-  Scenario: As a Dc user with national scope I cannot create a local survey
+  Scenario: As a DC user with national scope I cannot create a local survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
@@ -1154,7 +1154,7 @@ Feature:
     Then the response status code should be 400
     And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type local avec le scope national."
 
-  Scenario: As a Dc user with national scope I cannot create a local survey
+  Scenario: As a DC user with national scope I cannot create a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
@@ -1323,7 +1323,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC user with national role I can create a national survey
+  Scenario: As a DC user with referent role I can create a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:

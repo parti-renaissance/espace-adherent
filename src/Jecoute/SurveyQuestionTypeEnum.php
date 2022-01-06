@@ -14,11 +14,6 @@ class SurveyQuestionTypeEnum extends Enum
     public const UNIQUE_CHOICE_TYPE_LABEL = 'Choix unique';
     public const SIMPLE_FIELD_LABEL = 'Champ libre';
 
-    public const CHOICE_TYPES = [
-        self::UNIQUE_CHOICE_TYPE,
-        self::MULTIPLE_CHOICE_TYPE,
-    ];
-
     public static function all(): array
     {
         return [
