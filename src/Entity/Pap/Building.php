@@ -12,12 +12,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingRepository")
  * @ORM\Table(name="pap_building")
  *
  * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"pap_building_read"},
+ *             "iri": true,
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"pap_building_write"},
+ *         },
+ *     },
+ *     itemOperations={
+ *         "put": {
+ *             "path": "/v3/pap/buildings/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
+ *         },
+ *     },
  *     subresourceOperations={
  *         "building_blocks_get_subresource": {
  *             "method": "GET",
@@ -35,7 +52,13 @@ class Building implements CampaignStatisticsOwnerInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list"})
+     * @Assert\Choice(
+     *     callback={"App\Pap\BuildingTypeEnum", "toArray"},
+     *     message="pap.building.type.invalid_choice",
+     *     strict=true
+     * )
+     *
+     * @Groups({"pap_address_list", "pap_building_read", "pap_building_write"})
      */
     private ?string $type = null;
 
@@ -143,6 +166,11 @@ class Building implements CampaignStatisticsOwnerInterface
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 
     /**

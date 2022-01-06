@@ -15,6 +15,7 @@ use App\Entity\Pap\FloorStatistics;
 use App\Pap\BuildingEventActionEnum;
 use App\Pap\BuildingEventTypeEnum;
 use App\Pap\BuildingStatusEnum;
+use App\Pap\BuildingTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -46,6 +47,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $events = [];
         $campaign1 = $this->getReference('pap-campaign-1');
         $building = new Building(Uuid::fromString(self::BUILDING_01_UUID));
+        $building->setType(BuildingTypeEnum::BUILDING);
         $building->setAddress($this->getReference('address-1'));
         $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $this->getReference('pap-campaign-2')));
@@ -68,6 +70,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $manager->persist($building);
 
         $building = new Building(Uuid::fromString(self::BUILDING_02_UUID));
+        $building->setType(BuildingTypeEnum::BUILDING);
         $building->setAddress($this->getReference('address-2'));
         $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $campaign1));
@@ -99,6 +102,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $manager->persist($building);
 
         $building = new Building(Uuid::fromString(self::BUILDING_03_UUID));
+        $building->setType(BuildingTypeEnum::BUILDING);
         $building->setAddress($this->getReference('address-3'));
         $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $campaign1));
@@ -118,6 +122,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $manager->persist($building);
 
         $building = new Building(Uuid::fromString(self::BUILDING_04_UUID));
+        $building->setType(BuildingTypeEnum::BUILDING);
         $building->setAddress($this->getReference('address-4'));
         $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $campaign1));

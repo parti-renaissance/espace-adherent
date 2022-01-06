@@ -24,6 +24,7 @@ Feature:
       | GET     | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks  |
       | POST    | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events           |
       | GET     | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history          |
+      | PUT     | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd                  |
 
   Scenario Outline: As a logged-in user I can retrieve addresses near a given position ordered by distance
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
@@ -61,7 +62,7 @@ Feature:
             "latitude": 48.878708,
             "longitude": 2.319111,
             "building": {
-                "type": null,
+                "type": "building",
                 "uuid": "@uuid@",
                 "campaign_statistics": {
                     "campaign": {
@@ -91,7 +92,7 @@ Feature:
             "latitude": 48.879078,
             "longitude": 2.318631,
             "building": {
-                "type": null,
+                "type": "building",
                 "uuid": "@uuid@",
                 "campaign_statistics": {
                     "campaign": {
@@ -117,7 +118,7 @@ Feature:
             "latitude": 48.879166,
             "longitude": 2.318761,
             "building": {
-                "type": null,
+                "type": "building",
                 "uuid": "@uuid@",
                 "campaign_statistics": {
                     "campaign": {
@@ -143,7 +144,7 @@ Feature:
             "latitude": 48.879246,
             "longitude": 2.318427,
             "building": {
-                "type": null,
+                "type": "building",
                 "uuid": "@uuid@",
                 "campaign_statistics": {
                     "campaign": {
@@ -497,4 +498,49 @@ Feature:
             }
         }
     ]
+    """
+
+  Scenario: As a logged-in user I cannot change building type with invalid type
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
+    """
+    {
+      "type": "invalid"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "type: Le type n'est pas valide.",
+        "violations": [
+            {
+                "propertyPath": "type",
+                "message": "Le type n'est pas valide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a logged-in user I can change building type
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
+    """
+    {
+      "type": "house"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "house",
+        "uuid": "faf30370-80c5-4a46-8c31-f6a361bfa23b"
+    }
     """
