@@ -541,6 +541,7 @@ phoning.campaign_history.finish_at.invalid: La date de fin doit être postérieu
 # Pap
 #
 pap.campaign_history.status.invalid_choice: Le statut n'est pas valide.
+pap.building.type.invalid_choice: Le type n'est pas valide.
 
 #
 # Riposte
