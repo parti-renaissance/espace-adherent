@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdminInterface
 {
-    protected array $endColumnsList = [];
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
@@ -88,13 +87,11 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdm
                     'template' => 'admin/jecoute/_exports.html.twig',
                 ])
             ;
-
-            $this->endColumnsList[] = 'export';
         }
     }
 
     public function getListMapperEndColumns(): array
     {
-        return $this->endColumnsList;
+        return ['export'];
     }
 }

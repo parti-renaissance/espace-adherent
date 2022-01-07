@@ -45,11 +45,7 @@ class EntityAdministratorBlameableAdminExtension extends AbstractAdminExtension
         $keys = $listMapper->keys();
         $admin = $listMapper->getAdmin();
 
-        if (!$admin instanceof ReorderableAdminInterface) {
-            return;
-        }
-
-        foreach (array_merge($admin->getListMapperEndColumns(), ['_action']) as $column) {
+        foreach ($admin instanceof ReorderableAdminInterface ? array_merge($admin->getListMapperEndColumns(), ['_action']) : ['_action'] as $column) {
             if (false !== $actionKey = array_search($column, $keys)) {
                 unset($keys[$actionKey]);
                 $keys[] = $column;

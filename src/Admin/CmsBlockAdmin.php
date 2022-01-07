@@ -9,9 +9,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class CmsBlockAdmin extends AbstractAdmin implements ReorderableAdminInterface
+class CmsBlockAdmin extends AbstractAdmin
 {
-    protected array $endColumnsList = [];
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
@@ -72,10 +71,5 @@ class CmsBlockAdmin extends AbstractAdmin implements ReorderableAdminInterface
                 ],
             ])
         ;
-    }
-
-    public function getListMapperEndColumns(): array
-    {
-        return $this->endColumnsList;
     }
 }
