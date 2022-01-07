@@ -33,7 +33,7 @@ class PreWritePapCampaignHistoryListener implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getRequest()->isMethod(Request::METHOD_PUT)
+        if (\in_array($event->getRequest()->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
             && $campaignHistory->isFinishedStatus()
             && null === $campaignHistory->getFinishAt()
         ) {
