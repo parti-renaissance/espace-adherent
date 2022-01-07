@@ -7,6 +7,8 @@ use App\Entity\Jecoute\Question;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\SurveyQuestionTypeEnum;
+use App\Repository\Jecoute\ChoiceRepository;
+use App\Repository\Jecoute\SurveyQuestionRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -17,6 +19,15 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
     private const ALREADY_CALLED = 'JE_MENGAGE_WEB_SURVEY_UPDATE_DENORMALIZER_ALREADY_CALLED';
 
+    private SurveyQuestionRepository $surveyQuestionRepository;
+    private ChoiceRepository $choiceRepository;
+
+    public function __construct(SurveyQuestionRepository $surveyQuestionRepository, ChoiceRepository $choiceRepository)
+    {
+        $this->surveyQuestionRepository = $surveyQuestionRepository;
+        $this->choiceRepository = $choiceRepository;
+    }
+
     public function denormalize($data, $type, $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
@@ -25,6 +36,10 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
         $survey = $this->denormalizer->denormalize($data, $type, $format, $context);
 
         if (isset($data['questions'])) {
+            $oldQuestionsIds = array_map(function (SurveyQuestion $surveyQuestion) {return $surveyQuestion->getId();}, $survey->getQuestions()->toArray());
+
+            $elementToRemove = $this->handleElementToRemove($oldQuestionsIds, $data['questions']);
+
             foreach ($data['questions'] as $key => $dataQuestion) {
                 $surveyQuestion = $this->handleChanges($survey, $dataQuestion, $format, $context);
                 $surveyQuestion->setPosition($key);
@@ -96,5 +111,17 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
                 $question->addChoice($choice);
             }
         }
+    }
+
+    private function handleElementToRemove(array $oldIds, array $data): array
+    {
+        $dataIds = [];
+        foreach ($data as $element) {
+            if (isset($element['id'])) {
+                $dataIds[] = (int) $element['id'];
+            }
+        }
+
+        return array_diff($oldIds, $dataIds);
     }
 }
