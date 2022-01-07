@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class SurveyScopeTargetValidator extends ConstraintValidator
 {
@@ -47,7 +48,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
         }
 
         if (!is_a($value, Survey::class, true)) {
-            throw new UnexpectedTypeException($value, Survey::class);
+            throw new UnexpectedValueException($value, Survey::class);
         }
 
         $currentUser = $this->security->getUser();
