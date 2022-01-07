@@ -4,7 +4,6 @@ namespace App\Security;
 
 use App\Entity\Adherent;
 use App\Entity\FailedLoginAttempt;
-use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -76,6 +75,8 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             $credentials['emailAddress']
         );
 
+        $this->currentAppCode = $this->appUrlManager->getAppCodeFromRequest($request);
+
         return $credentials;
     }
 
@@ -102,7 +103,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             return false;
         }
 
-        if (null !== $user->getSource() && MembershipSourceEnum::COALITIONS !== $user->getSource()) {
+        if (null !== $user->getSource() && $this->currentAppCode !== $user->getSource()) {
             return false;
         }
 
@@ -120,8 +121,8 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         /** @var Adherent $adherent */
-        if ($token->getUser() && ($currentApp = $this->appUrlManager->getAppCodeFromRequest($request))) {
-            return new RedirectResponse($this->appUrlManager->getUrlGenerator($currentApp)->generateHomepageLink());
+        if ($token->getUser() && $this->currentAppCode) {
+            return new RedirectResponse($this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateHomepageLink());
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_search_events'));
@@ -130,8 +131,6 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $this->failedLoginAttemptRepository->save(FailedLoginAttempt::createFromRequest($request));
-
-        $this->currentAppCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
         return parent::onAuthenticationFailure($request, $exception);
     }

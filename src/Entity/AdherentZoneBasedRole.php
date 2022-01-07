@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Geo\Zone;
+use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -37,6 +39,14 @@ class AdherentZoneBasedRole
         $this->uuid = Uuid::uuid4();
         $this->type = $type;
         $this->zones = new ArrayCollection();
+    }
+
+    public static function createJeMengageAdmin(Zone $zone): self
+    {
+        $role = new self(ScopeEnum::JEMENGAGE_ADMIN);
+        $role->addZone($zone);
+
+        return $role;
     }
 
     public function getType(): ?string
