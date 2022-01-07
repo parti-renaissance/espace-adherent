@@ -6,7 +6,7 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\SurveyTypeEnum;
-use http\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -30,13 +30,13 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
             if (!$surveyType || !($surveyClass = $this->getSurveyClassFromType($surveyType))) {
                 throw new UnexpectedValueException('Type value is missing or invalid');
             }
+
+            unset($data['type']);
         }
 
         if (!$surveyClass) {
             throw new UnexpectedValueException('Type value is missing or invalid');
         }
-
-        unset($data['type']);
 
         $context['resource_class'] = $surveyClass;
 
@@ -47,7 +47,7 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Survey::class, true)
-            && \in_array('survey_write_dc', $context['groups'] ?? [])
+            && 'post' === ($context['item_operation_name'] ?? null)
         ;
     }
 

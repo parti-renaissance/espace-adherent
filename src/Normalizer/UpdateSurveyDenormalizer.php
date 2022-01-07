@@ -40,13 +40,10 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        dump($context, $data);
-
-        return false;
-//        return !isset($context[self::ALREADY_CALLED])
-//            && is_a($type, Survey::class, true)
-//            && \in_array('survey_update_dc', $context['groups'] ?? [])
-//            ;
+        return !isset($context[self::ALREADY_CALLED])
+            && is_a($type, Survey::class, true)
+            && 'put' === ($context['item_operation_name'] ?? null)
+        ;
     }
 
     private function handleChanges(Survey $survey, array $question, $format = null, array $context = []): SurveyQuestion

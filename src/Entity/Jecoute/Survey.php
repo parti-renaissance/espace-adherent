@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/surveys/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_MANAGE_SURVEY', object)",
- *             "denormalization_context": {"groups": {"survey_update_dc"}},
+ *             "denormalization_context": {"groups": {"survey_write_dc"}},
  *             "normalization_context": {"groups": {"survey_read_dc"}},
  *         },
  *     },
@@ -137,7 +137,6 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      *     "survey_list",
      *     "survey_list_dc",
      *     "survey_write_dc",
-     *     "survey_update_dc",
      *     "survey_read_dc",
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
@@ -167,7 +166,6 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      *     "survey_list_dc",
      *     "survey_read_dc",
      *     "survey_write_dc",
-     *     "survey_update_dc"
      * )
      */
     private $published;
