@@ -8,10 +8,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JeMengageSurveyScopeFilter;
 use App\Entity\Adherent;
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
+use App\Entity\EntityAdministratorBlameableInterface;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
 use App\Jecoute\SurveyTypeEnum;
+use App\Validator\Jecoute\SurveyScopeTarget;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -56,6 +61,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"survey_list_dc"}
  *             }
+ *         },
+ *         "post": {
+ *             "path": "/v3/surveys",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
+ *             "denormalization_context": {
+ *                 "groups": {"survey_write_dc"},
+ *             },
+ *             "normalization_context": {
+ *                 "groups": {"survey_read_dc"}
+ *             }
  *         }
  *     },
  *     subresourceOperations={
@@ -71,11 +86,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  * })
+ *
+ * @SurveyScopeTarget
  */
-abstract class Survey implements IndexableEntityInterface
+abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
+    use EntityAdherentBlameableTrait;
 
     /**
      * @var UuidInterface
@@ -110,6 +129,7 @@ abstract class Survey implements IndexableEntityInterface
      * @SymfonySerializer\Groups(
      *     "survey_list",
      *     "survey_list_dc",
+     *     "survey_write_dc",
      *     "survey_read_dc",
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
@@ -127,13 +147,15 @@ abstract class Survey implements IndexableEntityInterface
      * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid
+     *
+     * @SymfonySerializer\Groups("survey_write_dc")
      */
     private $questions;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups("survey_list_dc", "survey_read_dc")
+     * @SymfonySerializer\Groups("survey_list_dc", "survey_read_dc", "survey_write_dc")
      */
     private $published;
 
@@ -228,7 +250,7 @@ abstract class Survey implements IndexableEntityInterface
      */
     public function getCreator(): ?Adherent
     {
-        return null;
+        return $this->getCreatedByAdherent();
     }
 
     public function __clone()

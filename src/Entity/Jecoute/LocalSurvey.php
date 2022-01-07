@@ -3,7 +3,6 @@
 namespace App\Entity\Jecoute;
 
 use App\Entity\Adherent;
-use App\Entity\AuthoredInterface;
 use App\Entity\Geo\Zone;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,14 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\LocalSurveyRepository")
  */
-class LocalSurvey extends Survey implements AuthoredInterface
+class LocalSurvey extends Survey
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $author;
-
     /**
      * @ORM\Column(nullable=true)
      *
@@ -44,7 +37,9 @@ class LocalSurvey extends Survey implements AuthoredInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      *
-     * @SymfonySerializer\Groups("survey_list", "survey_list_dc", "survey_read_dc")
+     * @Assert\NotBlank
+     *
+     * @SymfonySerializer\Groups("survey_list", "survey_list_dc", "survey_read_dc", "survey_write_dc")
      */
     private $zone;
 
@@ -56,19 +51,9 @@ class LocalSurvey extends Survey implements AuthoredInterface
     public static function create(Adherent $user): self
     {
         $survey = new self();
-        $survey->author = $user;
+        $survey->setCreatedByAdherent($user);
 
         return $survey;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(Adherent $author = null): void
-    {
-        $this->author = $author;
     }
 
     /**
@@ -126,10 +111,5 @@ class LocalSurvey extends Survey implements AuthoredInterface
     public function setBlockedChanges(bool $blockedChanges): void
     {
         $this->blockedChanges = $blockedChanges;
-    }
-
-    public function getCreator(): ?Adherent
-    {
-        return $this->getAuthor();
     }
 }

@@ -78,7 +78,7 @@ class LocalSurveyRepository extends ServiceEntityRepository
             ->addSelect('zone')
             ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
-            ->where('survey.author = :author')
+            ->where('survey.createdByAdherent = :author')
             ->setParameter('author', $adherent)
             ->getQuery()
             ->getResult()

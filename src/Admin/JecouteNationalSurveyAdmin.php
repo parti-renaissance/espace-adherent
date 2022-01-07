@@ -2,8 +2,6 @@
 
 namespace App\Admin;
 
-use App\Entity\Administrator;
-use App\Entity\Jecoute\NationalSurvey;
 use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -12,13 +10,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Security\Core\Security;
 
-class JecouteNationalSurveyAdmin extends AbstractAdmin
+class JecouteNationalSurveyAdmin extends AbstractAdmin implements ReorderableAdminInterface
 {
-    /** @var Security */
-    private $security;
-
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
@@ -55,7 +49,7 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
             ->add('name', null, [
                 'show_filter' => true,
             ])
-            ->add('administrator.emailAddress', null, [
+            ->add('createdByAdministrator.emailAddress', null, [
                 'label' => "Email de l'auteur",
                 'show_filter' => true,
             ])
@@ -67,9 +61,6 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
-            ])
-            ->add('administrator', null, [
-                'label' => 'Auteur',
             ])
             ->add('getQuestionsCount', null, [
                 'label' => 'Nombre de questions',
@@ -99,22 +90,8 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
         }
     }
 
-    /**
-     * @param NationalSurvey $object
-     */
-    public function prePersist($object)
+    public function getListMapperEndColumns(): array
     {
-        /** @var Administrator $administrator */
-        $administrator = $this->security->getUser();
-
-        $object->setAdministrator($administrator);
-    }
-
-    /**
-     * @required
-     */
-    public function setSecurity(Security $security)
-    {
-        $this->security = $security;
+        return ['export'];
     }
 }

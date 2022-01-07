@@ -94,7 +94,7 @@
 
                         {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                             {% set row = row|merge({
-                                author: survey.author ? survey.author.fullName : 'Ancien adhérent',
+                                author: survey.creator ? survey.creator.fullName : 'Ancien adhérent',
                                 menu: menu|merge([
                                     {
                                         label: 'Statistiques',

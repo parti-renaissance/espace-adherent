@@ -62,11 +62,11 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name')
-            ->add('author.lastName', null, [
+            ->add('createdByAdherent.lastName', null, [
                 'label' => "Nom de l'auteur",
                 'show_filter' => true,
             ])
-            ->add('author.firstName', null, [
+            ->add('createdByAdherent.firstName', null, [
                 'label' => "Prénom de l'auteur",
                 'show_filter' => true,
             ])
@@ -89,7 +89,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('author', null, [
+            ->add('createdByAdherent', null, [
                 'label' => 'Auteur',
             ])
             ->add('getQuestionsCount', null, [
