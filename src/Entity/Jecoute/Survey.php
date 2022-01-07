@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/surveys/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_MANAGE_SURVEY', object)",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_READ_SURVEY', object)",
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
  *             }
@@ -56,7 +56,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/surveys/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_MANAGE_SURVEY', object)",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
  *             "denormalization_context": {"groups": {"survey_write_dc"}},
  *             "normalization_context": {"groups": {"survey_read_dc"}},
  *         },
