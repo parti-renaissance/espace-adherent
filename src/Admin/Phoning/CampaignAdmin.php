@@ -4,7 +4,6 @@ namespace App\Admin\Phoning;
 
 use App\Admin\AbstractAdmin;
 use App\Admin\Audience\AudienceAdmin;
-use App\Admin\ReorderableAdminInterface;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
@@ -26,12 +25,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
 
-class CampaignAdmin extends AbstractAdmin implements ReorderableAdminInterface
+class CampaignAdmin extends AbstractAdmin
 {
     private Security $security;
     private AdherentRepository $adherentRepository;
-
-    protected array $endColumnsList = [];
 
     public function getFormBuilder()
     {
@@ -236,10 +233,5 @@ class CampaignAdmin extends AbstractAdmin implements ReorderableAdminInterface
     private function isPermanent(): bool
     {
         return $this->getSubject()->isPermanent();
-    }
-
-    public function getListMapperEndColumns(): array
-    {
-        return $this->endColumnsList;
     }
 }

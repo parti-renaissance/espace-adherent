@@ -2,7 +2,6 @@
 
 namespace App\Admin\Team;
 
-use App\Admin\ReorderableAdminInterface;
 use App\Entity\Team\Team;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
@@ -16,14 +15,12 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class TeamAdmin extends AbstractAdmin implements ReorderableAdminInterface
+class TeamAdmin extends AbstractAdmin
 {
     private $teamMemberHistoryManager;
 
     /** @var Team|null */
     private $beforeUpdate;
-
-    protected array $endColumnsList = [];
 
     public function __construct(
         $code,
@@ -126,10 +123,5 @@ class TeamAdmin extends AbstractAdmin implements ReorderableAdminInterface
     public function postUpdate($object)
     {
         $this->teamMemberHistoryManager->handleChanges($object, $this->beforeUpdate);
-    }
-
-    public function getListMapperEndColumns(): array
-    {
-        return $this->endColumnsList;
     }
 }
