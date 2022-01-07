@@ -131,7 +131,7 @@ class Campaign implements IndexableEntityInterface
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
      *
-     * @Groups({"pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
      */
     private $beginAt;
 
@@ -262,6 +262,27 @@ class Campaign implements IndexableEntityInterface
     {
         return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
             return $campaignHistory->getDataSurvey();
+        });
+    }
+
+    public function getCampaignHistoriesToJoin(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isToJoin();
+        });
+    }
+
+    public function getCampaignHistoriesDoorOpen(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isDoorOpenStatus();
+        });
+    }
+
+    public function getCampaignHistoriesContactLater(): Collection
+    {
+        return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
+            return $campaignHistory->isContactLaterStatus();
         });
     }
 

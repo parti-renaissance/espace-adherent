@@ -75,6 +75,7 @@ Feature:
             "title": "Campagne de 10 jours suivants",
             "brief": "**Campagne** de 10 jours suivants",
             "goal": 600,
+            "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
             "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
         },
@@ -82,6 +83,7 @@ Feature:
             "title": "Campagne de 5 jours suivants",
             "brief": "**Campagne** de 5 jours suivants",
             "goal": 500,
+            "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
             "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024"
         }
@@ -107,6 +109,7 @@ Feature:
                 "title": "Campagne de 10 jours suivants",
                 "brief": "**Campagne** de 10 jours suivants",
                 "goal": 600,
+                "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "nb_surveys": 3,
@@ -116,6 +119,7 @@ Feature:
                 "title": "Campagne de 5 jours suivants",
                 "brief": "**Campagne** de 5 jours suivants",
                 "goal": 500,
+                "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
                 "nb_surveys": 0,
@@ -125,6 +129,7 @@ Feature:
                 "title": "Campagne dans 10 jours",
                 "brief": "### Campagne dans 10 jours",
                 "goal": 400,
+                "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
                 "nb_surveys": 0,
@@ -134,6 +139,7 @@ Feature:
                 "title": "Campagne dans 20 jours",
                 "brief": "### Campagne dans 20 jours",
                 "goal": 400,
+                "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
                 "nb_surveys": 0,
@@ -143,6 +149,7 @@ Feature:
                 "title": "Campagne terminé",
                 "brief": null,
                 "goal": 100,
+                "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
                 "nb_surveys": 0,
@@ -162,6 +169,7 @@ Feature:
         "title": "Campagne de 10 jours suivants",
         "brief": "**Campagne** de 10 jours suivants",
         "goal": 600,
+        "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
@@ -177,11 +185,15 @@ Feature:
         "title": "Campagne terminé",
         "brief": null,
         "goal": 100,
+        "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
         "nb_surveys": 0,
         "nb_visited_doors": 1,
         "nb_collected_contacts": 0,
+        "nb_contact_later": 1,
+        "nb_door_open": 0,
+        "nb_to_join": 0,
         "average_visit_time": 140
     }
     """
@@ -1315,7 +1327,9 @@ Feature:
                     "questioner": {
                         "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                         "first_name": "Patrick",
-                        "last_name": "Bialès"
+                        "last_name": "Bialès",
+                        "age": @integer@,
+                        "gender": "male"
                     },
                     "first_name": null,
                     "last_name": null,
@@ -1353,7 +1367,9 @@ Feature:
                     "questioner": {
                         "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                         "first_name": "Patrick",
-                        "last_name": "Bialès"
+                        "last_name": "Bialès",
+                        "age": @integer@,
+                        "gender": "male"
                     },
                     "first_name": null,
                     "last_name": null,
@@ -1390,7 +1406,9 @@ Feature:
                     "questioner": {
                         "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                         "first_name": "Patrick",
-                        "last_name": "Bialès"
+                        "last_name": "Bialès",
+                        "age": @integer@,
+                        "gender": "male"
                     },
                     "first_name": null,
                     "last_name": null,
