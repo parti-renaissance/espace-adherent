@@ -32,15 +32,23 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
     {
         $context[self::ALREADY_CALLED] = true;
 
+        $questionData = $data['questions'] ?? null;
+        unset($data['questions']);
+
         /** @var Survey $survey */
         $survey = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        if (isset($data['questions'])) {
-            $oldQuestionsIds = array_map(function (SurveyQuestion $surveyQuestion) {return $surveyQuestion->getId();}, $survey->getQuestions()->toArray());
+        if ($questionData) {
+            $oldQuestionsIds = array_map(function (SurveyQuestion $surveyQuestion) {return $surveyQuestion->getId(); }, $survey->getQuestions()->toArray());
 
-            $elementToRemove = $this->handleElementToRemove($oldQuestionsIds, $data['questions']);
+            foreach ($this->handleElementToRemove($oldQuestionsIds, $questionData) as $item) {
+                $surveyQuestionToRemove = $this->surveyQuestionRepository->find($item);
+                if ($surveyQuestionToRemove && $survey->getQuestions()->contains($surveyQuestionToRemove)) {
+                    $survey->removeQuestion($surveyQuestionToRemove);
+                }
+            }
 
-            foreach ($data['questions'] as $key => $dataQuestion) {
+            foreach ($questionData as $key => $dataQuestion) {
                 $surveyQuestion = $this->handleChanges($survey, $dataQuestion, $format, $context);
                 $surveyQuestion->setPosition($key);
 
@@ -85,10 +93,12 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
     {
         switch ($data['type']) {
             case SurveyQuestionTypeEnum::SIMPLE_FIELD:
+                $question->setType($data['type']);
                 $question->setContent($data['content']);
                 break;
             case SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE:
             case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
+                $question->setType($data['type']);
                 $question->setContent($data['content']);
                 $this->applyChoiceChanges($question, $data['choices']);
                 break;
