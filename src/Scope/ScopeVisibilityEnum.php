@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Team;
+namespace App\Scope;
 
-class TeamVisibilityEnum
+class ScopeVisibilityEnum
 {
     public const LOCAL = 'local';
     public const NATIONAL = 'national';

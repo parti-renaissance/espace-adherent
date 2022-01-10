@@ -3,7 +3,7 @@
 {% block field %}
     {% set visibility = object.visibility %}
 
-    <span class="label label-{{ constant('App\\Team\\TeamVisibilityEnum::LOCAL') == visibility ? 'primary' : 'success' }}">
+    <span class="label label-{{ constant('App\\Scope\\ScopeVisibilityEnum::LOCAL') == visibility ? 'primary' : 'success' }}">
         {{ ('team.visibility.' ~ visibility)|trans }}
     </span>
 {% endblock %}

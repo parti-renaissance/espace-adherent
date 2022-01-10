@@ -3,17 +3,17 @@
 namespace App\Api\Filter;
 
 use App\Entity\Adherent;
-use App\Entity\Team\Team;
+use App\Entity\EntityScopeVisibilityInterface;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
-use App\Team\TeamVisibilityEnum;
+use App\Scope\ScopeVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
 
-final class TeamScopeFilter extends AbstractScopeFilter
+final class ScopeVisibilityFilter extends AbstractScopeFilter
 {
     protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
     {
-        return is_a($resourceClass, Team::class, true);
+        return is_a($resourceClass, EntityScopeVisibilityInterface::class, true);
     }
 
     protected function applyFilter(
@@ -28,7 +28,7 @@ final class TeamScopeFilter extends AbstractScopeFilter
         if (\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
             $queryBuilder
                 ->andWhere("$alias.visibility = :visibility")
-                ->setParameter('visibility', TeamVisibilityEnum::NATIONAL)
+                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
             ;
 
             return;
@@ -36,7 +36,7 @@ final class TeamScopeFilter extends AbstractScopeFilter
 
         $queryBuilder
             ->andWhere("$alias.visibility = :visibility")
-            ->setParameter('visibility', TeamVisibilityEnum::LOCAL)
+            ->setParameter('visibility', ScopeVisibilityEnum::LOCAL)
             ->innerJoin("$alias.zone", 'zone')
             ->leftJoin('zone.parents', 'parent_zone')
             ->andWhere('zone IN (:zones) OR parent_zone IN (:zones)')

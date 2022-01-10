@@ -5,7 +5,7 @@ namespace App\Entity\Team;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Api\Filter\TeamScopeFilter;
+use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -15,7 +15,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
-use App\Team\TeamVisibilityEnum;
+use App\Scope\ScopeVisibilityEnum;
 use App\Validator\Scope\ScopeVisibility;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "partial",
  * })
  *
- * @ApiFilter(TeamScopeFilter::class)
+ * @ApiFilter(ScopeVisibilityFilter::class)
  *
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
@@ -109,7 +109,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * @ORM\Column(length=30)
      *
      * @Assert\NotBlank(message="team.visibility.not_blank")
-     * @Assert\Choice(choices=App\Team\TeamVisibilityEnum::ALL, message="team.visibility.choice")
+     * @Assert\Choice(choices=App\Scope\ScopeVisibilityEnum::ALL, message="team.visibility.choice")
      *
      * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
      */
@@ -246,8 +246,8 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     public function setZone(?Zone $zone): void
     {
         $this->visibility = null !== $zone
-            ? TeamVisibilityEnum::LOCAL
-            : TeamVisibilityEnum::NATIONAL
+            ? ScopeVisibilityEnum::LOCAL
+            : ScopeVisibilityEnum::NATIONAL
         ;
 
         $this->zone = $zone;

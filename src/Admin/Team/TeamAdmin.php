@@ -6,8 +6,8 @@ use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Team\Team;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
+use App\Scope\ScopeVisibilityEnum;
 use App\Team\TeamMemberHistoryManager;
-use App\Team\TeamVisibilityEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -82,7 +82,7 @@ class TeamAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => TeamVisibilityEnum::ALL,
+                    'choices' => ScopeVisibilityEnum::ALL,
                     'choice_label' => function (string $choice) {
                         return "team.visibility.$choice";
                     },
