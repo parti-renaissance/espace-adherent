@@ -78,6 +78,18 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
         }
 
         if ($surveyQuestion->getQuestion()) {
+            if ($surveyQuestion->getQuestion()->isChoiceType()
+                && \in_array($question['question']['type'], SurveyQuestionTypeEnum::CHOICE_TYPES, true)) {
+                $oldChoicesIds = array_map(function (Choice $choice) {return $choice->getId(); }, $surveyQuestion->getQuestion()->getChoices()->toArray());
+
+                foreach ($this->handleElementToRemove($oldChoicesIds, $question['question']['choices']) as $choiceItem) {
+                    $choiceToRemove = $this->choiceRepository->find($choiceItem);
+                    if ($choiceToRemove && $surveyQuestion->getQuestion()->getChoices()->contains($choiceToRemove)) {
+                        $surveyQuestion->getQuestion()->removeChoice($choiceToRemove);
+                    }
+                }
+            }
+
             $this->applyChanges($surveyQuestion->getQuestion(), $question['question'], $format, $context);
         } else {
             $newQuestion = new Question();
@@ -100,7 +112,7 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
             case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
                 $question->setType($data['type']);
                 $question->setContent($data['content']);
-                $this->applyChoiceChanges($question, $data['choices']);
+                $this->applyChoiceChanges($question, $data['choices'], $format, $context);
                 break;
         }
     }
