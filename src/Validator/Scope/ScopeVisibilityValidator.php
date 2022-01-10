@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validator\Team;
+namespace App\Validator\Scope;
 
 use App\Entity\Adherent;
-use App\Entity\Team\Team;
+use App\Entity\EntityScopeVisibilityInterface;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
@@ -13,8 +13,9 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class TeamZoneValidator extends ConstraintValidator
+class ScopeVisibilityValidator extends ConstraintValidator
 {
     private AuthorizationChecker $authorizationChecker;
     private RequestStack $requestStack;
@@ -34,21 +35,21 @@ class TeamZoneValidator extends ConstraintValidator
     }
 
     /**
-     * @param Team                $value
-     * @param TeamZone|Constraint $constraint
+     * @param EntityScopeVisibilityInterface $value
+     * @param ScopeVisibility|Constraint     $constraint
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof TeamZone) {
-            throw new UnexpectedTypeException($constraint, TeamZone::class);
+        if (!$constraint instanceof ScopeVisibility) {
+            throw new UnexpectedTypeException($constraint, ScopeVisibility::class);
         }
 
         if (null === $value) {
             return;
         }
 
-        if (!$value instanceof Team) {
-            throw new UnexpectedTypeException($value, Team::class);
+        if (!$value instanceof EntityScopeVisibilityInterface) {
+            throw new UnexpectedValueException($value, EntityScopeVisibilityInterface::class);
         }
 
         $scopeGenerator = $this->authorizationChecker->getScopeGenerator($this->getRequest(), $this->getAdherent());

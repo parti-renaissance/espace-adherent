@@ -12,10 +12,11 @@ use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Team\TeamVisibilityEnum;
-use App\Validator\Team\TeamZone;
+use App\Validator\Scope\ScopeVisibility;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -80,9 +81,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     errorPath="name"
  * )
  *
- * @TeamZone
+ * @ScopeVisibility
  */
-class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

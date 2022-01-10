@@ -1216,6 +1216,8 @@ scope.app.jemarche: Je m'engage
 # Team
 #
 team.type.phoning: Phoning
+team.visibility.local: Locale
+team.visibility.national: Nationale
 
 #
 # TeamMemberHistory

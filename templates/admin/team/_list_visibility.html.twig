@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set visibility = object.visibility %}
+
+    <span class="label label-{{ constant('App\\Team\\TeamVisibilityEnum::LOCAL') == visibility ? 'primary' : 'success' }}">
+        {{ ('team.visibility.' ~ visibility)|trans }}
+    </span>
+{% endblock %}
