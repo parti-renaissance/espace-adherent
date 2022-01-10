@@ -8,6 +8,7 @@ use App\Entity\Pap\Campaign;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
@@ -56,6 +57,11 @@ class CampaignAdmin extends AbstractAdmin
                     'label' => 'Date de fin',
                     'error_bubbling' => true,
                     'attr' => ['class' => 'width-140'],
+                ])
+                ->add('zone', ModelAutocompleteType::class, [
+                    'property' => 'name',
+                    'required' => false,
+                    'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                 ])
             ->end()
         ;
