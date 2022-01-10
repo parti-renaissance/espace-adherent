@@ -3,16 +3,16 @@
 namespace App\Security\Voter\Team;
 
 use App\Entity\Adherent;
-use App\Entity\Team\Team;
+use App\Entity\EntityScopeVisibilityInterface;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\Security\Core\Security;
 
-class EditTeamVoter extends AbstractAdherentVoter
+class ScopeVisibilityVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'CAN_EDIT_TEAM';
+    public const PERMISSION = 'SCOPE_CAN_EDIT';
 
     private Security $security;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
@@ -53,6 +53,6 @@ class EditTeamVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $subject)
     {
-        return self::PERMISSION === $attribute && $subject instanceof Team;
+        return self::PERMISSION === $attribute && $subject instanceof EntityScopeVisibilityInterface;
     }
 }

@@ -5,10 +5,8 @@ namespace App\Validator\Scope;
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Geo\ManagedZoneProvider;
-use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,21 +15,18 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ScopeVisibilityValidator extends ConstraintValidator
 {
-    private AuthorizationChecker $authorizationChecker;
-    private RequestStack $requestStack;
     private Security $security;
     private ManagedZoneProvider $managedZoneProvider;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     public function __construct(
-        AuthorizationChecker $authorizationChecker,
-        RequestStack $requestStack,
         Security $security,
-        ManagedZoneProvider $managedZoneProvider
+        ManagedZoneProvider $managedZoneProvider,
+        ScopeGeneratorResolver $scopeGeneratorResolver
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->requestStack = $requestStack;
         $this->security = $security;
         $this->managedZoneProvider = $managedZoneProvider;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     /**
@@ -52,7 +47,11 @@ class ScopeVisibilityValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, EntityScopeVisibilityInterface::class);
         }
 
-        $scopeGenerator = $this->authorizationChecker->getScopeGenerator($this->getRequest(), $this->getAdherent());
+        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
+
+        if (!$scopeGenerator) {
+            return;
+        }
 
         if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
             if (null !== $value->getZone()) {
@@ -91,10 +90,5 @@ class ScopeVisibilityValidator extends ConstraintValidator
     private function getAdherent(): Adherent
     {
         return $this->security->getUser();
-    }
-
-    private function getRequest(): Request
-    {
-        return $this->requestStack->getMasterRequest();
     }
 }
