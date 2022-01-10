@@ -10,7 +10,7 @@ final class Version20211207152117 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE team ADD zone_id INT UNSIGNED DEFAULT NULL, ADD visibility VARCHAR(30) NOT NULL');
+        $this->addSql('ALTER TABLE team ADD zone_id INT UNSIGNED DEFAULT NULL, ADD visibility VARCHAR(30) DEFAULT NULL');
         $this->addSql('UPDATE team SET visibility = :visibility', ['visibility' => ScopeVisibilityEnum::NATIONAL]);
         $this->addSql('ALTER TABLE team CHANGE visibility visibility VARCHAR(30) NOT NULL');
         $this->addSql('ALTER TABLE
