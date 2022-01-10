@@ -191,11 +191,11 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "zone: team.zone.national_scope_with_zone",
+      "detail": "zone: Un rôle national ne peut pas définir de zone.",
       "violations": [
         {
           "propertyPath": "zone",
-          "message": "team.zone.national_scope_with_zone"
+          "message": "Un rôle national ne peut pas définir de zone."
         }
       ]
     }
@@ -328,11 +328,11 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "zone: team.zone.local_scope_with_unmanaged_zone",
+      "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
           "propertyPath": "zone",
-          "message": "team.zone.local_scope_with_unmanaged_zone"
+          "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }
       ]
     }
@@ -365,11 +365,11 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "zone: team.zone.local_scope_without_zone",
+      "detail": "zone: Veuillez spécifier une zone.",
       "violations": [
         {
           "propertyPath": "zone",
-          "message": "team.zone.local_scope_without_zone"
+          "message": "Veuillez spécifier une zone."
         }
       ]
     }

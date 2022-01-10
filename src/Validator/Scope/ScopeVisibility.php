@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class ScopeVisibility extends Constraint
 {
-    public string $nationalScopeWithZoneMessage = 'team.zone.national_scope_with_zone';
-    public string $localScopeWithoutZoneMessage = 'team.zone.local_scope_without_zone';
-    public string $localScopeWithUnmanagedZoneMessage = 'team.zone.local_scope_with_unmanaged_zone';
+    public string $nationalScopeWithZoneMessage = 'scope.zone.national_scope_with_zone';
+    public string $localScopeWithoutZoneMessage = 'scope.zone.local_scope_without_zone';
+    public string $localScopeWithUnmanagedZoneMessage = 'scope.zone.local_scope_with_unmanaged_zone';
 
     public function getTargets()
     {

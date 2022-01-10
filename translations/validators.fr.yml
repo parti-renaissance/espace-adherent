@@ -532,7 +532,7 @@ team.name.max_length: Le nom de l'équipe ne doit pas dépasser {{ limit }} cara
 team.type.not_blank: Veuillez spécifier un type d'équipe.
 team.type.choice: Le type d'équipe n'est pas valide.
 team.visibility.not_blank: Veuillez spécifier une visibilité.
-team.visibility.choice: Veuillez spécifier une visibilité valide ("national" ou "local").
+team.visibility.choice: Veuillez spécifier une visibilité valide.
 
 #
 # Phoning
@@ -560,3 +560,10 @@ jecoute_region.zone.not_unique: Une campagne existe déjà pour cette zone.
 
 adherent.zone_based_role.duplicate_type: Adhérent ne doit pas avoir plusieurs rôles du même type.
 adherent.zone_based_role.invalid_zone_type: Le type de zone "{{zone_type}}" n'est pas autorisé pour le rôle "{{role_type}}".
+
+#
+# Scope
+#
+scope.zone.national_scope_with_zone: Un rôle national ne peut pas définir de zone.
+scope.zone.local_scope_without_zone: Veuillez spécifier une zone.
+scope.zone.local_scope_with_unmanaged_zone: La zone spécifiée n'est pas gérée par votre rôle.
