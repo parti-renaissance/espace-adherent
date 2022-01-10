@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Security\Voter\Team;
+namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
-use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\Security\Core\Security;
 
 class ScopeVisibilityVoter extends AbstractAdherentVoter
