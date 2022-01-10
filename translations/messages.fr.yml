@@ -1216,8 +1216,6 @@ scope.app.jemarche: Je m'engage
 # Team
 #
 team.type.phoning: Phoning
-team.visibility.local: Locale
-team.visibility.national: Nationale
 
 #
 # TeamMemberHistory
@@ -1250,3 +1248,9 @@ mailchimp_contact.status.unsubscribed: Désabonné
 mailchimp_contact.status.cleaned: Cleaned
 
 adherent.zone_based_role_type.jemengage_admin: JeMengage admin
+
+#
+# Scope
+#
+scope.visibility.local: Locale
+scope.visibility.national: Nationale

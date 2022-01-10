@@ -946,6 +946,10 @@
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
         </service>
+
+        <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.team.team" />
+        </service>
         <!--
         ######################################################
         # Politique

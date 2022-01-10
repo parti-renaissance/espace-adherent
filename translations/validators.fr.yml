@@ -73,7 +73,7 @@ constraint.unique_in_collection: Un élément avec la valeur "%value%" existe d�
 #
 # Adherent
 #
-adhernet.uuid.adherent_not_found: Aucun adhérent trouvé pour l'UUID "{{ value }}".
+adherent.uuid.adherent_not_found: Aucun adhérent trouvé pour l'UUID "{{ value }}".
 adherent.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 adherent.birthdate.minimum_required_age: Vous devez être âgé d'au moins 15 ans pour adhérer.
 adherent.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour adhérer.

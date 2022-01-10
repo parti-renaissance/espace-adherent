@@ -595,11 +595,11 @@ Feature:
     {
       "type": "https://symfony.com/errors/validation",
       "title": "Validation Failed",
-      "detail": "[0].adherent_uuid: adherent.uuid.adherent_not_found",
+      "detail": "[0].adherent_uuid: Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\".",
       "violations": [
         {
           "propertyPath": "[0].adherent_uuid",
-          "title": "adherent.uuid.adherent_not_found",
+          "title": "Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\".",
           "parameters": {
             "{{ value }}": "c1051bb4-d103-4f74-8988-acbcafc7fdc3"
           }
@@ -619,7 +619,7 @@ Feature:
     ]
     """
     Then the response status code should be 401
-@debug
+
   Scenario: As a user granted with team feature, I can remove a member from a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"

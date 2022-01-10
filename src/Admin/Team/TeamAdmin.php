@@ -2,20 +2,16 @@
 
 namespace App\Admin\Team;
 
-use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Team\Team;
 use App\Form\Admin\Team\MemberAdherentAutocompleteType;
 use App\Form\Admin\Team\MemberType;
-use App\Scope\ScopeVisibilityEnum;
 use App\Team\TeamMemberHistoryManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -46,7 +42,7 @@ class TeamAdmin extends AbstractAdmin
                 ])
                 ->add('zone', ModelAutocompleteType::class, [
                     'property' => 'name',
-                    'help' => 'Laissez vide pour créer une équipe nationale.',
+                    'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                 ])
             ->end()
             ->with('Membres 👥', ['class' => 'col-md-6'])
@@ -77,28 +73,6 @@ class TeamAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => MemberAdherentAutocompleteType::class,
             ])
-            ->add('visibility', ChoiceFilter::class, [
-                'label' => 'Visibilité',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => ScopeVisibilityEnum::ALL,
-                    'choice_label' => function (string $choice) {
-                        return "team.visibility.$choice";
-                    },
-                ],
-            ])
-            ->add('zone', ZoneAutocompleteFilter::class, [
-                'label' => 'Zone',
-                'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'admin_code' => $this->getCode(),
-                    'property' => [
-                        'name',
-                        'code',
-                    ],
-                ],
-            ])
         ;
     }
 
@@ -111,14 +85,6 @@ class TeamAdmin extends AbstractAdmin
             ->add('members', null, [
                 'label' => 'Membres',
                 'template' => 'admin/team/_list_members.html.twig',
-            ])
-            ->add('visibility', null, [
-                'label' => 'Visibilité',
-                'template' => 'admin/team/_list_visibility.html.twig',
-            ])
-            ->add('zone', null, [
-                'label' => 'Zone',
-                'template' => 'admin/team/_list_zone.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
