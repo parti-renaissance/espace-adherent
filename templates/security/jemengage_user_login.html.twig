@@ -3,9 +3,9 @@
 {% block title 'Connectez-vous avec vos identifiants' %}
 
 {% block content %}
-    <section class="l__inner b__nudge--top">
-        <h1 style="margin-top: 45px" id="title">Connectez-vous</h1>
-
+    <div class="login-container">
+        <h1 id="title">Je m'engage</h1>
+        <div id="subtitle">Connectez-vous avec vos identifiants afin d'accéder à cette application</div>
         {% if error %}
             <div id="auth-error" class="form__error">
                 {{- error.messageKey|trans(error.messageData)|raw -}}
@@ -24,14 +24,16 @@
                     {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
                     {{ form_errors(form._login_password) }}
                     {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
-
-                    <a href="{{ path('app_jemengage_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
+                    <div class="lost-password">
+                        <a href="{{ path('app_jemengage_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ?</a>
+                    </div>
                 </li>
 
-                <li>
+                <li style="text-align: center">
                     <button class="btn">Connexion</button>
                 </li>
             </ul>
         {{ form_end(form) }}
-    </section>
+    </div>
+    <div class="signature">Majorité présidentielle</div>
 {% endblock %}
