@@ -69,7 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "status": "exact",
  * })
  * @ApiFilter(AdherentIdentityFilter::class, properties={"questioner"})
- * @ApiFilter(DateFilter::class, properties={"createdAt"})
+ * @ApiFilter(DateFilter::class, properties={"createdAt", "beginAt"})
  */
 class CampaignHistory implements DataSurveyAwareInterface
 {
@@ -222,6 +222,16 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Groups({"pap_campaign_history_write"})
      */
     private ?bool $toJoin = null;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotBlank
+     * @Assert\DateTime
+     *
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
+     */
+    private $beginAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -428,6 +438,16 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->toJoin = $toJoin;
     }
 
+    public function getBeginAt(): \DateTimeInterface
+    {
+        return $this->beginAt;
+    }
+
+    public function setBeginAt(\DateTimeInterface $beginAt): void
+    {
+        $this->beginAt = $beginAt;
+    }
+
     public function getFinishAt(): ?\DateTimeInterface
     {
         return $this->finishAt;
@@ -443,7 +463,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      */
     public function getDuration(): int
     {
-        return $this->finishAt ? $this->finishAt->getTimestamp() - $this->createdAt->getTimestamp() : 0;
+        return $this->finishAt ? $this->finishAt->getTimestamp() - $this->beginAt->getTimestamp() : 0;
     }
 
     public function isDoorOpenStatus(): bool

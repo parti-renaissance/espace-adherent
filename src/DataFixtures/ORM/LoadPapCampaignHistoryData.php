@@ -148,7 +148,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         string $door,
         Adherent $questioner = null,
         Survey $survey = null,
-        \DateTime $createdAt = null,
+        \DateTime $beginAt = null,
         \DateTime $finishAt = null,
         string $uuid = null
     ): CampaignHistory {
@@ -159,7 +159,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $campaignHistory->setBuildingBlock($buildingBlock);
         $campaignHistory->setFloor($floor);
         $campaignHistory->setDoor($door);
-        $campaignHistory->setCreatedAt($createdAt ?? new \DateTime('-10 minutes'));
+        $campaignHistory->setCreatedAt($beginAt ?? new \DateTime('-10 minutes'));
+        $campaignHistory->setBeginAt($beginAt ?? new \DateTime('-10 minutes'));
         $campaignHistory->setFinishAt($finishAt ?? new \DateTime('-5 minutes'));
         $campaignHistory->setQuestioner($questioner);
 

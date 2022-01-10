@@ -483,7 +483,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.",
+        "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.\nbegin_at: Cette valeur ne doit pas être vide.",
         "violations": [
             {
                 "propertyPath": "building",
@@ -492,6 +492,10 @@ Feature:
             {
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
+            },
+            {
+                "message": "Cette valeur ne doit pas être vide.",
+                "propertyPath": "begin_at"
             }
         ]
     }
@@ -503,6 +507,7 @@ Feature:
     And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
     """
     {
+        "begin_at": "2022-01-10 10:10:10",
         "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
         "building": "0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f",
         "status": "door_closed",
@@ -547,29 +552,6 @@ Feature:
     {
         "uuid": "6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da",
         "status": "accept_to_answer"
-    }
-    """
-
-  Scenario: As a logged-in user I can post a pap campaign history
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
-    """
-    {
-        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-        "building": "0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f",
-        "status": "door_closed",
-        "building_block": "A",
-        "floor": 1,
-        "door": "3"
-    }
-    """
-    Then the response status code should be 201
-    And the JSON should be equal to:
-    """
-    {
-        "uuid": "@uuid@",
-        "status": "door_closed"
     }
     """
 
@@ -1336,6 +1318,7 @@ Feature:
                     "gender": null,
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
+                    "begin_at": "@string@.isDateTime()",
                     "finish_at": "@string@.isDateTime()",
                     "duration": 0
                 },
@@ -1376,6 +1359,7 @@ Feature:
                     "gender": null,
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
+                    "begin_at": "@string@.isDateTime()",
                     "finish_at": "@string@.isDateTime()",
                     "duration": 420
                 },
@@ -1415,6 +1399,7 @@ Feature:
                     "gender": null,
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
+                    "begin_at": "@string@.isDateTime()",
                     "finish_at": "@string@.isDateTime()",
                     "duration": 300
                 },
