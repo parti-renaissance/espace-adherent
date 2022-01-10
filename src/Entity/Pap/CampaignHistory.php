@@ -231,7 +231,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
-    private $beginAt;
+    private ?\DateTime $beginAt = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -438,7 +438,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         $this->toJoin = $toJoin;
     }
 
-    public function getBeginAt(): \DateTimeInterface
+    public function getBeginAt(): ?\DateTimeInterface
     {
         return $this->beginAt;
     }

@@ -483,7 +483,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.\nbegin_at: Cette valeur ne doit pas être vide.",
+        "detail": "building: Cette valeur ne doit pas être nulle.\nstatus: Le statut n'est pas valide.",
         "violations": [
             {
                 "propertyPath": "building",
@@ -492,10 +492,6 @@ Feature:
             {
                 "propertyPath": "status",
                 "message": "Le statut n'est pas valide."
-            },
-            {
-                "message": "Cette valeur ne doit pas être vide.",
-                "propertyPath": "begin_at"
             }
         ]
     }
