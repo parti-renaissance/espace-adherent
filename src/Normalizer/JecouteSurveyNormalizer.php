@@ -27,12 +27,13 @@ class JecouteSurveyNormalizer implements NormalizerInterface, NormalizerAwareInt
 
         $data['questions'] = array_map(function (SurveyQuestion $surveyQuestion) use ($format, $context) {
             $question = $surveyQuestion->getQuestion();
+            $choices = $this->normalizer->normalize($question->getChoices(), $format, $context);
 
             return [
                 'id' => $surveyQuestion->getId(),
                 'type' => $question->getType(),
                 'content' => $question->getContent(),
-                'choices' => $this->normalizer->normalize($question->getChoices(), $format, $context),
+                'choices' => array_values($choices),
             ];
         }, $object->getQuestions()->toArray());
 

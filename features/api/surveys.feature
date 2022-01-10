@@ -1446,14 +1446,14 @@ Feature:
   Scenario: As a DC user with referent role I can unpublished a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
     """
     {
       "published": false
     }
     """
     Then the response status code should be 200
-    And the JSON node "published" should be equal to false
+    And the JSON node "published" should be false
 
   Scenario: As a DC user with referent role I can update a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
@@ -1466,7 +1466,7 @@ Feature:
       "published": true,
       "questions": [
         {
-          "id": 6,
+          "id": 1,
           "question": {
             "type": "simple_field",
             "content": "Qu'est ce qui a changé près de chez vous?",
@@ -1474,22 +1474,39 @@ Feature:
           }
         },
         {
-          "id": 7,
+          "id": 2,
           "question": {
             "type": "multiple_choice",
             "content": "5ans de plus?",
             "choices": [
               {
-                "id": 5,
+                "id": 1,
                 "content": "Oui"
               },
               {
-                "id": 6,
+                "id": 2,
                 "content": "Non"
               },
               {
-                "id": 7,
+                "id": null,
                 "content": "Je ne sais pas"
+              }
+            ]
+          }
+        },
+        {
+          "id": 3,
+          "question": {
+            "type": "unique_choice",
+            "content": "Êtes vous satisfait?",
+            "choices": [
+              {
+                "id": 3,
+                "content": "Oui"
+              },
+              {
+                "id": 4,
+                "content": "Non"
               }
             ]
           }
@@ -1537,6 +1554,21 @@ Feature:
             {
               "id": @integer@,
               "content": "Je ne sais pas"
+            }
+          ]
+        },
+        {
+          "id": @integer@,
+          "type": "unique_choice",
+          "content": "Êtes vous satisfait?",
+          "choices": [
+            {
+              "id": @integer@,
+              "content": "Oui"
+            },
+            {
+              "id": @integer@,
+              "content": "Non"
             }
           ]
         }
