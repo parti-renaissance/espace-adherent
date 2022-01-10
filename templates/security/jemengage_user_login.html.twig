@@ -24,13 +24,13 @@
                     {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
                     {{ form_errors(form._login_password) }}
                     {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
-                    <div class="lost-password">
+                    <div class="forgot-password">
                         <a href="{{ path('app_jemengage_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ?</a>
                     </div>
                 </li>
 
-                <li style="text-align: center">
-                    <button class="btn">Connexion</button>
+                <li>
+                    <button class="btn capitalize">Connexion</button>
                 </li>
             </ul>
         {{ form_end(form) }}
