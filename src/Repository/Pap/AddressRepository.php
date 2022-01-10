@@ -3,6 +3,7 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\Address;
+use App\Entity\Pap\Campaign;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -75,5 +76,23 @@ SQL;
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function countByPapCampaign(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('address')
+            ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countVotersByPapCampaign(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('address')
+            ->select('SUM(address.votersCount)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }
