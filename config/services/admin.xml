@@ -950,6 +950,7 @@
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.pap.campaign" />
+            <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
         </service>
         <!--
         ######################################################

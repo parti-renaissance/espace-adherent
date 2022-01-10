@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\DatePickerType;
@@ -89,6 +90,11 @@ class CampaignAdmin extends AbstractAdmin
                         ;
                     },
                     'required' => !$this->isPermanent(),
+                ])
+                ->add('zone', ModelAutocompleteType::class, [
+                    'property' => 'name',
+                    'required' => false,
+                    'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                 ])
             ->end()
         ;
