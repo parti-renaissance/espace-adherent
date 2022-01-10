@@ -445,4 +445,14 @@ class CampaignHistory implements DataSurveyAwareInterface
     {
         return $this->finishAt ? $this->finishAt->getTimestamp() - $this->createdAt->getTimestamp() : 0;
     }
+
+    public function isDoorOpenStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::DOOR_OPEN === $this->status;
+    }
+
+    public function isContactLaterStatus(): bool
+    {
+        return CampaignHistoryStatusEnum::CONTACT_LATER === $this->status;
+    }
 }

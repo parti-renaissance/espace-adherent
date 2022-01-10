@@ -46,6 +46,9 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
         if (($context['item_operation_name'] ?? null) === 'get') {
             $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object);
             $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object);
+            $campaign['nb_to_join'] = $object->getCampaignHistoriesToJoin()->count();
+            $campaign['nb_door_open'] = $object->getCampaignHistoriesDoorOpen()->count();
+            $campaign['nb_contact_later'] = $object->getCampaignHistoriesContactLater()->count();
         }
 
         return $campaign;

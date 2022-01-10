@@ -148,7 +148,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "profile_read",
      *     "phoning_campaign_call_read",
      *     "phoning_campaign_history_read_list",
-     *     "pap_campaign_history_read_list"
+     *     "pap_campaign_history_read_list",
+     *     "pap_campaign_replies_list",
      * })
      */
     private $gender;
@@ -1236,7 +1237,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @SymfonySerializer\Groups({"export", "phoning_campaign_history_read_list", "pap_campaign_history_read_list"})
+     * @SymfonySerializer\Groups({
+     *     "export",
+     *     "phoning_campaign_history_read_list",
+     *     "pap_campaign_history_read_list",
+     *     "pap_campaign_replies_list",
+     * })
      */
     public function getAge(): ?int
     {
