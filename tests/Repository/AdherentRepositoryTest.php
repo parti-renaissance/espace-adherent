@@ -270,7 +270,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
                 ['deputy@en-marche-dev.fr', 'deputy-ch-li@en-marche-dev.fr', 'laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld', 'deputy-75-2@en-marche-dev.fr'],
             ],
             [
-                ['amin' => 55, 'amax' => 60],
+                ['amin' => 55, 'amax' => 65],
                 ['referent@en-marche-dev.fr'],
             ],
             // Name
