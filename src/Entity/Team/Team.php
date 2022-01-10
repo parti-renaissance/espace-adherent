@@ -13,9 +13,9 @@ use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
-use App\Scope\ScopeVisibilityEnum;
 use App\Validator\Scope\ScopeVisibility;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -89,6 +89,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
+    use EntityScopeVisibilityTrait;
 
     /**
      * @ORM\Column(length=255)
@@ -106,16 +107,6 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     private ?string $name;
 
     /**
-     * @ORM\Column(length=30)
-     *
-     * @Assert\NotBlank(message="team.visibility.not_blank")
-     * @Assert\Choice(choices=App\Scope\ScopeVisibilityEnum::ALL, message="team.visibility.choice")
-     *
-     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
-     */
-    private string $visibility;
-
-    /**
      * @var Member[]|Collection
      *
      * @ORM\OneToMany(
@@ -131,14 +122,6 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
     private $members;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=true)
-     *
-     * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write"})
-     */
-    private ?Zone $zone;
 
     public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [], Zone $zone = null)
     {
@@ -236,25 +219,5 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     public function reorderMembersCollection(): void
     {
         $this->members = new ArrayCollection(array_values($this->members->matching(Criteria::create()->orderBy(['createdAt' => 'DESC']))->toArray()));
-    }
-
-    public function getZone(): ?Zone
-    {
-        return $this->zone;
-    }
-
-    public function setZone(?Zone $zone): void
-    {
-        $this->visibility = null !== $zone
-            ? ScopeVisibilityEnum::LOCAL
-            : ScopeVisibilityEnum::NATIONAL
-        ;
-
-        $this->zone = $zone;
-    }
-
-    public function getVisibility(): string
-    {
-        return $this->visibility;
     }
 }
