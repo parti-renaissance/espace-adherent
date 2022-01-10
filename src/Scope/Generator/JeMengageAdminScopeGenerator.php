@@ -17,7 +17,7 @@ class JeMengageAdminScopeGenerator extends AbstractScopeGenerator
         return $adherent->hasZoneBasedRole(ScopeEnum::JEMENGAGE_ADMIN);
     }
 
-    protected function getZones(Adherent $adherent): array
+    public function getZones(Adherent $adherent): array
     {
         return $adherent->findZoneBasedRole(ScopeEnum::JEMENGAGE_ADMIN)->getZones()->toArray();
     }
