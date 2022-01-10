@@ -33,7 +33,6 @@ class CampaignHistoryStatusEnum extends Enum
 
     public const FINISHED_STATUS = [
         self::DOOR_CLOSED,
-        self::ACCEPT_TO_ANSWER,
         self::DONT_ACCEPT_TO_ANSWER,
         self::CONTACT_LATER,
     ];
