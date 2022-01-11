@@ -19,7 +19,7 @@ body.jemengage {
         margin-bottom: 24px;
     }
 
-    #title, #subtitle, input, a, .btn {
+    .flash-info, #subtitle, input, a, .btn {
         font-family: "Poppins", sans-serif;
     }
 
@@ -61,22 +61,27 @@ body.jemengage {
         margin-bottom: 62px;
     }
 
+    .flash-info, #auth-error {
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 21px;
+        background: #CC0613 !important;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 36px;
+    }
+
+    .flash-info {
+        max-width: 483px;
+        margin: 0 auto 36px;
+    }
+
     .login-container {
         display: flex;
         flex-direction: column;
-        width: 483px;
+        max-width: 483px;
         margin: 0 auto;
-
-        #auth-error {
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 21px;
-            background: #CC0613 !important;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 36px;
-        }
 
         // target email and password inputs
         li input:nth-child(-n+2) {
@@ -109,6 +114,10 @@ body.jemengage {
                 border: none;
             }
         }
+
+        @media (max-width: $tablet) {
+            padding: 16px;
+        }
     }
 
     .forgot-password-container {
@@ -127,6 +136,10 @@ body.jemengage {
             width: 100%;
             margin-right: 0;
             margin-bottom: 36px;
+        }
+
+        @media (max-width: $tablet) {
+            padding: 16px;
         }
     }
 }
