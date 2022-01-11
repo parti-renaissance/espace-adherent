@@ -55,4 +55,9 @@ trait EntityScopeVisibilityTrait
     {
         return $this->visibility;
     }
+
+    public function isNationalVisibility(): bool
+    {
+        return ScopeVisibilityEnum::NATIONAL === $this->visibility;
+    }
 }

@@ -121,7 +121,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
-    private $members;
+    private Collection $members;
 
     public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [], Zone $zone = null)
     {

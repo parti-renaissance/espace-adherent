@@ -63,7 +63,6 @@ Feature:
     ]
     """
 
-
   Scenario: As an anonymous I can not remove an adherent from a team
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
     Then the response status code should be 401
@@ -72,25 +71,6 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-17816bf2d819?scope=phoning_national_manager"
     Then the response status code should be 404
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   Scenario: As a user granted with national scope, I can get the list of national teams only
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"

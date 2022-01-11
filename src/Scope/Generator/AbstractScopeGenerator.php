@@ -8,7 +8,6 @@ use App\Entity\Scope as ScopeEntity;
 use App\Repository\ScopeRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
-use App\Scope\ScopeEnum;
 
 abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
 {
@@ -37,11 +36,6 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         $this->delegatedAccess = null;
 
         return $scope;
-    }
-
-    public function isNational(): bool
-    {
-        return \in_array($this->getCode(), ScopeEnum::NATIONAL_SCOPES, true);
     }
 
     public function setDelegatedAccess(DelegatedAccess $delegatedAccess): void

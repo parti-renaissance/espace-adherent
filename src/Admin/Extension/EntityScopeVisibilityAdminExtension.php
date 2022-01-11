@@ -48,11 +48,11 @@ class EntityScopeVisibilityAdminExtension extends AbstractAdminExtension
         $listMapper
             ->add('visibility', null, [
                 'label' => 'Visibilité',
-                'template' => 'admin/scope/_list_visibility.html.twig',
+                'template' => 'admin/scope/list_visibility.html.twig',
             ])
             ->add('zone', null, [
                 'label' => 'Zone',
-                'template' => 'admin/scope/_list_zone.html.twig',
+                'template' => 'admin/scope/list_zone.html.twig',
             ])
         ;
 
