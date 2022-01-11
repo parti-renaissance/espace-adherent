@@ -7,8 +7,6 @@ use App\Entity\Jecoute\Question;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\SurveyQuestionTypeEnum;
-use App\Repository\Jecoute\ChoiceRepository;
-use App\Repository\Jecoute\SurveyQuestionRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -18,15 +16,6 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
     use DenormalizerAwareTrait;
 
     private const ALREADY_CALLED = 'JE_MENGAGE_WEB_SURVEY_UPDATE_DENORMALIZER_ALREADY_CALLED';
-
-    private SurveyQuestionRepository $surveyQuestionRepository;
-    private ChoiceRepository $choiceRepository;
-
-    public function __construct(SurveyQuestionRepository $surveyQuestionRepository, ChoiceRepository $choiceRepository)
-    {
-        $this->surveyQuestionRepository = $surveyQuestionRepository;
-        $this->choiceRepository = $choiceRepository;
-    }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
@@ -39,12 +28,9 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
         $survey = $this->denormalizer->denormalize($data, $type, $format, $context);
 
         if ($questionData) {
-            $oldQuestionsIds = array_map(function (SurveyQuestion $surveyQuestion) {return $surveyQuestion->getId(); }, $survey->getQuestions()->toArray());
-
-            foreach ($this->handleElementToRemove($oldQuestionsIds, $questionData) as $item) {
-                $surveyQuestionToRemove = $this->surveyQuestionRepository->find($item);
-                if ($surveyQuestionToRemove && $survey->getQuestions()->contains($surveyQuestionToRemove)) {
-                    $survey->removeQuestion($surveyQuestionToRemove);
+            foreach ($survey->getQuestions()->toArray() as $surveyQuestion) {
+                if (!\in_array($surveyQuestion->getId(), $this->payloadIds($questionData), true)) {
+                    $survey->removeQuestion($surveyQuestion);
                 }
             }
 
@@ -79,13 +65,11 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
         if ($surveyQuestion->getQuestion()) {
             if ($surveyQuestion->getQuestion()->isChoiceType()
-                && \in_array($question['question']['type'], SurveyQuestionTypeEnum::CHOICE_TYPES, true)) {
-                $oldChoicesIds = array_map(function (Choice $choice) {return $choice->getId(); }, $surveyQuestion->getQuestion()->getChoices()->toArray());
-
-                foreach ($this->handleElementToRemove($oldChoicesIds, $question['question']['choices']) as $choiceItem) {
-                    $choiceToRemove = $this->choiceRepository->find($choiceItem);
-                    if ($choiceToRemove && $surveyQuestion->getQuestion()->getChoices()->contains($choiceToRemove)) {
-                        $surveyQuestion->getQuestion()->removeChoice($choiceToRemove);
+                && \in_array($question['question']['type'], SurveyQuestionTypeEnum::CHOICE_TYPES, true)
+            ) {
+                foreach ($surveyQuestion->getQuestion()->getChoices()->toArray() as $choice) {
+                    if (!\in_array($choice->getId(), $this->payloadIds($question['question']['choices']), true)) {
+                        $surveyQuestion->getQuestion()->removeChoice($choice);
                     }
                 }
             }
@@ -135,7 +119,7 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
         }
     }
 
-    private function handleElementToRemove(array $oldIds, array $data): array
+    private function payloadIds(array $data): array
     {
         $dataIds = [];
         foreach ($data as $element) {
@@ -144,6 +128,6 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
             }
         }
 
-        return array_diff($oldIds, $dataIds);
+        return $dataIds;
     }
 }
