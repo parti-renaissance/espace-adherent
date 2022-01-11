@@ -16,6 +16,8 @@ interface ScopeGeneratorInterface
 
     public function getCode(): string;
 
+    public function isNational(): bool;
+
     public function setDelegatedAccess(DelegatedAccess $delegatedAccess): void;
 
     public function getDelegatedAccess(): ?DelegatedAccess;

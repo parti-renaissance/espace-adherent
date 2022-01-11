@@ -5,7 +5,6 @@ namespace App\Validator\Scope;
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Geo\ManagedZoneProvider;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
@@ -53,7 +52,7 @@ class ScopeVisibilityValidator extends ConstraintValidator
             return;
         }
 
-        if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if ($scopeGenerator->isNational()) {
             if (null !== $value->getZone()) {
                 $this
                     ->context
