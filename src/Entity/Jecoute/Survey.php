@@ -52,7 +52,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
  *             }
- *         }
+ *         },
+ *         "put": {
+ *             "path": "/v3/surveys/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
+ *             "denormalization_context": {"groups": {"survey_write_dc"}},
+ *             "normalization_context": {"groups": {"survey_read_dc"}},
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
@@ -155,7 +162,11 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups("survey_list_dc", "survey_read_dc", "survey_write_dc")
+     * @SymfonySerializer\Groups(
+     *     "survey_list_dc",
+     *     "survey_read_dc",
+     *     "survey_write_dc",
+     * )
      */
     private $published;
 

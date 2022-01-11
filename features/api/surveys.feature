@@ -1442,3 +1442,137 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a DC user with referent role I can unpublished a local survey
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
+    """
+    {
+      "published": false
+    }
+    """
+    Then the response status code should be 200
+    And the JSON node "published" should be false
+
+  Scenario: As a DC user with referent role I can update a local survey
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
+    """
+    {
+      "name": "5ans à l'écoute",
+      "zone": "e3efe5c5-906e-11eb-a875-0242ac150002",
+      "published": true,
+      "questions": [
+        {
+          "id": 1,
+          "question": {
+            "type": "simple_field",
+            "content": "Qu'est ce qui a changé près de chez vous?",
+            "choices": []
+          }
+        },
+        {
+          "id": 2,
+          "question": {
+            "type": "multiple_choice",
+            "content": "5ans de plus?",
+            "choices": [
+              {
+                "id": 1,
+                "content": "Oui"
+              },
+              {
+                "id": 2,
+                "content": "Non"
+              },
+              {
+                "id": null,
+                "content": "Je ne sais pas"
+              }
+            ]
+          }
+        },
+        {
+          "id": 3,
+          "question": {
+            "type": "unique_choice",
+            "content": "Êtes vous satisfait?",
+            "choices": [
+              {
+                "id": 3,
+                "content": "Oui"
+              },
+              {
+                "id": 4,
+                "content": "Non"
+              }
+            ]
+          }
+        }
+      ]
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "city": null,
+      "zone": {
+        "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+        "code": "77",
+        "name": "Seine-et-Marne"
+      },
+      "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+      "name": "5ans à l'écoute",
+      "published": true,
+      "creator": {
+        "first_name": "Referent",
+        "last_name": "Referent"
+      },
+      "questions": [
+        {
+          "id": 1,
+          "type": "simple_field",
+          "content": "Qu'est ce qui a changé près de chez vous?",
+          "choices": []
+        },
+        {
+          "id": 2,
+          "type": "multiple_choice",
+          "content": "5ans de plus?",
+          "choices": [
+            {
+              "id": 1,
+              "content": "Oui"
+            },
+            {
+              "id": 2,
+              "content": "Non"
+            },
+            {
+              "id": @integer@,
+              "content": "Je ne sais pas"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "unique_choice",
+          "content": "Êtes vous satisfait?",
+          "choices": [
+            {
+              "id": 3,
+              "content": "Oui"
+            },
+            {
+              "id": 4,
+              "content": "Non"
+            }
+          ]
+        }
+      ]
+    }
+    """
+

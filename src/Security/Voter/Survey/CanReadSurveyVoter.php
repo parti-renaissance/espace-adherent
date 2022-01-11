@@ -13,7 +13,7 @@ use App\Scope\ScopeEnum;
 use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ReadSurveyVoter extends AbstractAdherentVoter
+class CanReadSurveyVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_READ_SURVEY';
 
