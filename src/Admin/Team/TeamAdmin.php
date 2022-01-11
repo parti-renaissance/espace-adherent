@@ -42,6 +42,7 @@ class TeamAdmin extends AbstractAdmin
                 ])
                 ->add('zone', ModelAutocompleteType::class, [
                     'property' => 'name',
+                    'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                 ])
             ->end()

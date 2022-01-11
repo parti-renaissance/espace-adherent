@@ -2,13 +2,19 @@
 
 namespace App\Entity\Pap;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
+use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/pap_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') and is_granted('SCOPE_CAN_EDIT', object)",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *         },
  *         "get_questioners_with_scores": {
@@ -83,12 +89,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
+ *
+ * @ApiFilter(ScopeVisibilityFilter::class)
+ *
+ * @ScopeVisibility
  */
-class Campaign implements IndexableEntityInterface
+class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorTrait;
+    use EntityScopeVisibilityTrait;
 
     /**
      * @var string|null
@@ -185,7 +196,8 @@ class Campaign implements IndexableEntityInterface
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
         int $nbAddresses = 0,
-        int $nbVoters = 0
+        int $nbVoters = 0,
+        Zone $zone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;
@@ -198,6 +210,8 @@ class Campaign implements IndexableEntityInterface
         $this->nbVoters = $nbVoters;
 
         $this->campaignHistories = new ArrayCollection();
+
+        $this->setZone($zone);
     }
 
     public function __toString(): string

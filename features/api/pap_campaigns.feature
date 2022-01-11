@@ -77,7 +77,9 @@ Feature:
             "goal": 600,
             "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
-            "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+            "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+            "visibility": "national",
+            "zone": null
         },
         {
             "title": "Campagne de 5 jours suivants",
@@ -85,7 +87,9 @@ Feature:
             "goal": 500,
             "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
-            "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024"
+            "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+            "visibility": "national",
+            "zone": null
         }
     ]
     """
@@ -115,7 +119,9 @@ Feature:
                 "nb_surveys": 3,
                 "nb_visited_doors": 5,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "visibility": "national",
+                "zone": null
             },
             {
                 "title": "Campagne de 5 jours suivants",
@@ -127,7 +133,9 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "visibility": "national",
+                "zone": null
             },
             {
                 "title": "Campagne dans 10 jours",
@@ -139,7 +147,9 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "visibility": "national",
+                "zone": null
             },
             {
                 "title": "Campagne dans 20 jours",
@@ -151,7 +161,9 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "visibility": "national",
+                "zone": null
             },
             {
                 "title": "Campagne terminé",
@@ -163,7 +175,9 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "visibility": "national",
+                "zone": null
             }
         ]
     }
@@ -181,7 +195,9 @@ Feature:
         "goal": 600,
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
-        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "visibility": "national",
+        "zone": null
     }
     """
 
@@ -206,7 +222,9 @@ Feature:
         "nb_contact_later": 1,
         "nb_door_open": 0,
         "nb_to_join": 0,
-        "average_visit_time": 140
+        "average_visit_time": 140,
+        "visibility": "national",
+        "zone": null
     }
     """
 
