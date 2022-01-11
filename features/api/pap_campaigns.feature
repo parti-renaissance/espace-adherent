@@ -113,7 +113,9 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "nb_surveys": 3,
-                "nb_visited_doors": 5
+                "nb_visited_doors": 5,
+                "nb_addresses": 4,
+                "nb_voters": 7
             },
             {
                 "title": "Campagne de 5 jours suivants",
@@ -123,7 +125,9 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
                 "nb_surveys": 0,
-                "nb_visited_doors": 1
+                "nb_visited_doors": 1,
+                "nb_addresses": 4,
+                "nb_voters": 7
             },
             {
                 "title": "Campagne dans 10 jours",
@@ -133,7 +137,9 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
                 "nb_surveys": 0,
-                "nb_visited_doors": 0
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7
             },
             {
                 "title": "Campagne dans 20 jours",
@@ -143,7 +149,9 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
                 "nb_surveys": 0,
-                "nb_visited_doors": 0
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7
             },
             {
                 "title": "Campagne terminé",
@@ -153,7 +161,9 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
                 "nb_surveys": 0,
-                "nb_visited_doors": 1
+                "nb_visited_doors": 1,
+                "nb_addresses": 4,
+                "nb_voters": 7
             }
         ]
     }
@@ -190,6 +200,8 @@ Feature:
         "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
         "nb_surveys": 0,
         "nb_visited_doors": 1,
+        "nb_addresses": 4,
+        "nb_voters": 7,
         "nb_collected_contacts": 0,
         "nb_contact_later": 1,
         "nb_door_open": 0,

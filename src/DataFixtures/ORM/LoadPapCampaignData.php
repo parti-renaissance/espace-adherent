@@ -103,7 +103,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         Survey $survey,
         int $goal,
         string $beginAt,
-        string $finishAt
+        string $finishAt,
+        int $nbAddresses = 4,
+        int $nbVoters = 7
     ): Campaign {
         return new Campaign(
             Uuid::fromString($uuid),
@@ -112,7 +114,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $survey,
             $goal,
             new Chronos($beginAt),
-            new Chronos($finishAt)
+            new Chronos($finishAt),
+            $nbAddresses,
+            $nbVoters
         );
     }
 }

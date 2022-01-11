@@ -160,6 +160,16 @@ class Campaign implements IndexableEntityInterface
     private $survey;
 
     /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     */
+    private int $nbAddresses = 0;
+
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     */
+    private int $nbVoters = 0;
+
+    /**
      * @var Collection|CampaignHistory[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="campaign", fetch="EXTRA_LAZY")
@@ -173,7 +183,9 @@ class Campaign implements IndexableEntityInterface
         Survey $survey = null,
         int $goal = null,
         \DateTimeInterface $beginAt = null,
-        \DateTimeInterface $finishAt = null
+        \DateTimeInterface $finishAt = null,
+        int $nbAddresses = 0,
+        int $nbVoters = 0
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;
@@ -182,6 +194,9 @@ class Campaign implements IndexableEntityInterface
         $this->goal = $goal;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
+        $this->nbAddresses = $nbAddresses;
+        $this->nbVoters = $nbVoters;
+
         $this->campaignHistories = new ArrayCollection();
     }
 
@@ -253,6 +268,26 @@ class Campaign implements IndexableEntityInterface
     public function isFinished(): bool
     {
         return null !== $this->finishAt && $this->finishAt <= new \DateTime();
+    }
+
+    public function getNbAddresses(): int
+    {
+        return $this->nbAddresses;
+    }
+
+    public function setNbAddresses(int $nbAddresses): void
+    {
+        $this->nbAddresses = $nbAddresses;
+    }
+
+    public function getNbVoters(): int
+    {
+        return $this->nbVoters;
+    }
+
+    public function setNbVoters(int $nbVoters): void
+    {
+        $this->nbVoters = $nbVoters;
     }
 
     /**

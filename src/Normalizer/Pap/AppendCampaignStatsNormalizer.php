@@ -3,6 +3,7 @@
 namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Campaign;
+use App\Repository\Pap\AddressRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
 use App\Scope\FeatureEnum;
 use App\Security\Voter\FeatureVoter;
@@ -19,13 +20,16 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
     private AuthorizationCheckerInterface $authorizationChecker;
     private CampaignHistoryRepository $campaignHistoryRepository;
+    private AddressRepository $addressRepository;
 
     public function __construct(
         CampaignHistoryRepository $campaignHistoryRepository,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        AddressRepository $addressRepository
     ) {
         $this->campaignHistoryRepository = $campaignHistoryRepository;
         $this->authorizationChecker = $authorizationChecker;
+        $this->addressRepository = $addressRepository;
     }
 
     /**
@@ -43,6 +47,8 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
         $campaign['nb_visited_doors'] = $this->campaignHistoryRepository->countVisitedDoors($object);
+        $campaign['nb_addresses'] = $object->getNbAddresses();
+        $campaign['nb_voters'] = $object->getNbVoters();
         if (($context['item_operation_name'] ?? null) === 'get') {
             $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object);
             $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object);
