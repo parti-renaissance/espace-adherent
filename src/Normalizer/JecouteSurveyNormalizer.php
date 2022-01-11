@@ -31,13 +31,14 @@ class JecouteSurveyNormalizer implements NormalizerInterface, NormalizerAwareInt
 
             if (isset($context['item_operation_name']) && 'put' === $context['item_operation_name']) {
                 $choices = $this->normalizer->normalize($question->getChoicesOrdered(), $format, $context);
+                $choices = array_values($choices);
             }
 
             return [
                 'id' => $surveyQuestion->getId(),
                 'type' => $question->getType(),
                 'content' => $question->getContent(),
-                'choices' => array_values($choices),
+                'choices' => $choices,
             ];
         }, $object->getQuestions()->toArray());
 

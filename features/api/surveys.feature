@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to get all surveys
   As a non logged-in user
@@ -1533,22 +1533,22 @@ Feature:
       },
       "questions": [
         {
-          "id": @integer@,
+          "id": 1,
           "type": "simple_field",
           "content": "Qu'est ce qui a changé près de chez vous?",
           "choices": []
         },
         {
-          "id": @integer@,
+          "id": 2,
           "type": "multiple_choice",
           "content": "5ans de plus?",
           "choices": [
             {
-              "id": @integer@,
+              "id": 1,
               "content": "Oui"
             },
             {
-              "id": @integer@,
+              "id": 2,
               "content": "Non"
             },
             {
@@ -1558,16 +1558,16 @@ Feature:
           ]
         },
         {
-          "id": @integer@,
+          "id": 3,
           "type": "unique_choice",
           "content": "Êtes vous satisfait?",
           "choices": [
             {
-              "id": @integer@,
+              "id": 3,
               "content": "Oui"
             },
             {
-              "id": @integer@,
+              "id": 4,
               "content": "Non"
             }
           ]
