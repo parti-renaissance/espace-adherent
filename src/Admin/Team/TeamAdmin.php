@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,6 +39,10 @@ class TeamAdmin extends AbstractAdmin
             ->with('Informations ⚙️', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
                     'label' => 'Nom',
+                ])
+                ->add('zone', ModelAutocompleteType::class, [
+                    'property' => 'name',
+                    'help' => 'Laissez vide pour appliquer une visibilité nationale.',
                 ])
             ->end()
             ->with('Membres 👥', ['class' => 'col-md-6'])

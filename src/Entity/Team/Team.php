@@ -5,13 +5,18 @@ namespace App\Entity\Team;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Geo\Zone;
+use App\Validator\Scope\ScopeVisibility;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -54,6 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/teams/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_EDIT', object)"
  *         }
  *     }
  * )
@@ -61,6 +67,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  * })
+ *
+ * @ApiFilter(ScopeVisibilityFilter::class)
  *
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
  * @ORM\Table(uniqueConstraints={
@@ -72,17 +80,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="team.name.already_exists",
  *     errorPath="name"
  * )
+ *
+ * @ScopeVisibility
  */
-class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
+class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
+    use EntityScopeVisibilityTrait;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(length=255)
      *
      * @Assert\NotBlank(message="team.name.not_blank")
@@ -92,9 +101,10 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      *     minMessage="team.name.min_length",
      *     maxMessage="team.name.max_length"
      * )
+     *
      * @SymfonySerializer\Groups({"team_read", "team_list_read", "team_write", "phoning_campaign_read", "phoning_campaign_list"})
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var Member[]|Collection
@@ -111,9 +121,9 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
-    private $members;
+    private Collection $members;
 
-    public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [])
+    public function __construct(UuidInterface $uuid = null, string $name = null, array $members = [], Zone $zone = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
@@ -122,6 +132,8 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
         foreach ($members as $member) {
             $this->addMember($member);
         }
+
+        $this->setZone($zone);
     }
 
     public function __toString(): string

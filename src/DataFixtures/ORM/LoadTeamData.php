@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\Team\Member;
 use App\Entity\Team\Team;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,6 +15,8 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
 {
     public const TEAM_1_UUID = '3deeb1f5-819e-4629-85a1-eb75c916ce2f';
     public const TEAM_2_UUID = '6434f2ac-edd0-412a-9c4b-99ab4b039146';
+    public const TEAM_3_UUID = 'c608c447-8c45-4ee7-b39c-7d0217d1c6db';
+    public const TEAM_4_UUID = 'ba9ab5dd-c8da-4721-8acb-5a96e285aec3';
 
     public const MEMBER_1_UUID = '934ccb1d-9742-41e2-87e2-4ee439565f6a';
     public const MEMBER_2_UUID = 'a8981a72-4660-4cb0-bc08-725a0c8c9afe';
@@ -22,6 +25,8 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
     public const MEMBER_5_UUID = '5a0d85bf-2c66-4bc3-aa29-c07b03951bc4';
     public const MEMBER_6_UUID = 'a33fa2f6-e7ee-4755-a399-bfc93015529e';
     public const MEMBER_7_UUID = '76dd7e44-1a7e-4d2f-bdd8-018690ac5211';
+    public const MEMBER_8_UUID = '71b6d39b-d7f9-4b3d-9ad2-9cc9881eb8a7';
+    public const MEMBER_9_UUID = '538ebe4a-afe6-4af7-a264-c3d82ff98222';
 
     public function load(ObjectManager $manager)
     {
@@ -48,8 +53,26 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         $team2->addMember($member4);
         $this->setReference('team-2', $team2);
 
+        $team3 = $this->createTeam(
+            self::TEAM_3_UUID,
+            'Équipe locale du département 92',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
+        );
+        $team3->setCreatedAt(new \DateTime('-8 hours'));
+        $team3->addMember($this->createMember(self::MEMBER_8_UUID, $this->getReference('adherent-1')));
+
+        $team4 = $this->createTeam(
+            self::TEAM_4_UUID,
+            'Équipe locale de la ville de Lille (59350)',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')
+        );
+        $team4->setCreatedAt(new \DateTime('-7 hours'));
+        $team4->addMember($this->createMember(self::MEMBER_9_UUID, $this->getReference('adherent-4')));
+
         $manager->persist($team1);
         $manager->persist($team2);
+        $manager->persist($team3);
+        $manager->persist($team4);
 
         $manager->flush();
     }
@@ -59,12 +82,13 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         return [
             LoadAdherentData::class,
             LoadAdminData::class,
+            LoadGeoZoneData::class,
         ];
     }
 
-    private function createTeam(string $uuid, string $name): Team
+    private function createTeam(string $uuid, string $name, Zone $zone = null): Team
     {
-        return new Team(Uuid::fromString($uuid), $name);
+        return new Team(Uuid::fromString($uuid), $name, [], $zone);
     }
 
     private function createMember(string $uuid, Adherent $adherent): Member

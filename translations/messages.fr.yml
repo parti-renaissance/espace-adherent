@@ -1248,3 +1248,9 @@ mailchimp_contact.status.unsubscribed: Désabonné
 mailchimp_contact.status.cleaned: Cleaned
 
 adherent.zone_based_role_type.jemengage_admin: JeMengage admin
+
+#
+# Scope
+#
+scope.visibility.local: Locale
+scope.visibility.national: Nationale

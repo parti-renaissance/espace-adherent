@@ -17,7 +17,7 @@ class PapScopeGenerator extends AbstractScopeGenerator
         return $adherent->hasPapUserRole();
     }
 
-    public function getZones(Adherent $adherent): array
+    protected function getZones(Adherent $adherent): array
     {
         return [];
     }
