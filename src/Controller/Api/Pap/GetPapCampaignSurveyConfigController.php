@@ -30,9 +30,9 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                 [
                     'description' => 'Afin d’améliorer l’analyse des réponses à ce sondage vous pouvez renseigner le profil de votre interlocuteur. Toutes ces informations sont facultatives. ',
                     'questions' => [
-                        $this->buildQuestion('gender', 'choice', 'Quel est votre genre ?', true, Genders::MALE_FEMALE_LABELS, 'single_row'),
-                        $this->buildQuestion('age_range', 'choice', 'Sa tranche d\'âge', true, AgeRangeEnum::choices(), 'cols_2'),
-                        $this->buildQuestion('profession', 'choice', 'Sa profession', true, ProfessionEnum::choices(), 'cols_1'),
+                        $this->buildQuestion('gender', 'choice', 'Quel est votre genre ?', false, Genders::MALE_FEMALE_LABELS, 'single_row'),
+                        $this->buildQuestion('age_range', 'choice', 'Sa tranche d\'âge', false, AgeRangeEnum::choices(), 'cols_2'),
+                        $this->buildQuestion('profession', 'choice', 'Sa profession', false, ProfessionEnum::choices(), 'cols_1'),
                     ],
                 ],
                 [
