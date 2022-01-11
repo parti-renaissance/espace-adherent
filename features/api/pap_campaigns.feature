@@ -307,7 +307,7 @@ Feature:
                         "type": "choice",
                         "options": {
                             "label": "Quel est votre genre ?",
-                            "required": true,
+                            "required": false,
                             "multiple": false,
                             "choices": {
                                 "female": "Femme",
@@ -321,7 +321,7 @@ Feature:
                         "type": "choice",
                         "options": {
                             "label": "Sa tranche d'âge",
-                            "required": true,
+                            "required": false,
                             "multiple": false,
                             "choices": {
                                 "less_than_20": "-20 ans",
@@ -340,7 +340,7 @@ Feature:
                         "type": "choice",
                         "options": {
                             "label": "Sa profession",
-                            "required": true,
+                            "required": false,
                             "multiple": false,
                             "choices": {
                                 "employees": "Employé",
