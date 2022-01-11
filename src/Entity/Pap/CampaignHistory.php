@@ -229,7 +229,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotBlank
      * @Assert\DateTime
      *
-     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list", "survey_replies_list"})
      */
     private ?\DateTime $beginAt = null;
 
@@ -238,7 +238,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\DateTime
      *
-     * @Groups({"pap_campaign_replies_list"})
+     * @Groups({"pap_campaign_replies_list", "survey_replies_list"})
      */
     private ?\DateTime $finishAt = null;
 

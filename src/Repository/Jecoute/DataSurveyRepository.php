@@ -14,6 +14,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DataSurveyRepository extends ServiceEntityRepository
@@ -116,32 +117,29 @@ class DataSurveyRepository extends ServiceEntityRepository
 
     public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
     {
-        $qb = $this->createQueryBuilder('ds')
-            ->addSelect('jemarcheDataSurvey')
-            ->addSelect('partial phoningCampaignHistory.{id}')
-            ->addSelect('partial papCampaignHistory.{id}')
-            ->addSelect('partial author.{id, firstName, lastName}')
-            ->addSelect('partial adherent.{id, firstName, lastName, emailAddress, postAddress.postalCode, gender, position}')
-            ->leftJoin('ds.author', 'author')
-            ->leftJoin('ds.jemarcheDataSurvey', 'jemarcheDataSurvey')
-            ->leftJoin('ds.phoningCampaignHistory', 'phoningCampaignHistory')
-            ->leftJoin('ds.papCampaignHistory', 'papCampaignHistory')
-            ->leftJoin('phoningCampaignHistory.adherent', 'adherent')
-            ->where('ds.survey = :survey')
-            ->setParameter('survey', $survey)
+        return $this->createSurveyQueryBuilder($survey, $zones)
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->iterate()
         ;
+    }
 
-        if ($zones) {
-            $qb
-                ->distinct()
-                ->innerJoin('author.zones', 'zone')
-                ->innerJoin('zone.parents', 'parent')
-                ->andWhere('zone IN (:zones) OR parent IN (:zones)')
-                ->setParameter('zones', $zones)
-            ;
+    /**
+     * @return DataSurvey[]|PaginatorInterface|iterable
+     */
+    public function findDataSurveyForSurvey(
+        Survey $survey,
+        array $zones = [],
+        int $page = 1,
+        ?int $limit = 30
+    ): iterable {
+        $qb = $this->createSurveyQueryBuilder($survey, $zones);
+
+        if (!$limit) {
+            return $qb->getQuery()->getResult();
         }
 
-        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
+        return $this->configurePaginator($qb, $page, $limit);
     }
 
     public function countSurveysForBuilding(Building $building, string $buildingBlock = null, int $floor = null): int
@@ -181,5 +179,35 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    private function createSurveyQueryBuilder(Survey $survey, array $zones = []): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('ds')
+            ->addSelect('jemarcheDataSurvey')
+            ->addSelect('partial phoningCampaignHistory.{id, uuid, beginAt, finishAt}')
+            ->addSelect('partial papCampaignHistory.{id, uuid, beginAt, finishAt, firstName, lastName, emailAddress, gender, ageRange}')
+            ->addSelect('partial author.{id, firstName, lastName, gender, birthdate, uuid}')
+            ->addSelect('partial adherent.{id, firstName, lastName, emailAddress, postAddress.postalCode, gender, position, birthdate}')
+            ->leftJoin('ds.author', 'author')
+            ->leftJoin('ds.jemarcheDataSurvey', 'jemarcheDataSurvey')
+            ->leftJoin('ds.phoningCampaignHistory', 'phoningCampaignHistory')
+            ->leftJoin('ds.papCampaignHistory', 'papCampaignHistory')
+            ->leftJoin('phoningCampaignHistory.adherent', 'adherent')
+            ->where('ds.survey = :survey')
+            ->setParameter('survey', $survey)
+        ;
+
+        if ($zones) {
+            $qb
+                ->distinct()
+                ->innerJoin('author.zones', 'zone')
+                ->innerJoin('zone.parents', 'parent')
+                ->andWhere('zone IN (:zones) OR parent IN (:zones)')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        return $qb;
     }
 }

@@ -79,6 +79,7 @@ trait EntityIdentityTrait
      *     "pap_campaign_read_after_write",
      *     "phoning_campaign_replies_list",
      *     "pap_campaign_replies_list",
+     *     "survey_replies_list",
      *     "jecoute_resource_links_read",
      * })
      *

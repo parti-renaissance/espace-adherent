@@ -205,7 +205,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\NotBlank
      * @Assert\DateTime
      *
-     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
+     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list", "survey_replies_list"})
      */
     private $beginAt;
 
@@ -220,7 +220,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *     message="phoning.campaign_history.finish_at.invalid"
      * )
      *
-     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list"})
+     * @Groups({"phoning_campaign_history_read_list", "phoning_campaign_replies_list", "survey_replies_list"})
      */
     private $finishAt;
 
