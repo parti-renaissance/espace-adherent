@@ -121,13 +121,6 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
     private function payloadIds(array $data): array
     {
-        $dataIds = [];
-        foreach ($data as $element) {
-            if (isset($element['id'])) {
-                $dataIds[] = (int) $element['id'];
-            }
-        }
-
-        return $dataIds;
+        return array_map('intval', array_column($data, 'id'));
     }
 }
