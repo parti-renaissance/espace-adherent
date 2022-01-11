@@ -570,12 +570,16 @@ Feature:
             "team": {
               "name": "Première équipe de phoning",
               "uuid": "@uuid@",
-              "members_count": 3
+              "members_count": 3,
+              "visibility": "national",
+              "zone": null
             },
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 12,
-            "nb_surveys": 6
+            "nb_surveys": 6,
+            "visibility": "national",
+            "zone": null
          },
          {
             "title": "Campagne pour les femmes",
@@ -584,12 +588,16 @@ Feature:
             "team": {
               "name": "Deuxième équipe de phoning",
               "uuid": "@uuid@",
-              "members_count": 4
+              "members_count": 4,
+              "visibility": "national",
+              "zone": null
             },
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 6,
-            "nb_surveys": 5
+            "nb_surveys": 5,
+            "visibility": "national",
+            "zone": null
          },
          {
             "title": "Campagne sur l'horizon 2030",
@@ -598,12 +606,16 @@ Feature:
             "team": {
               "name": "Deuxième équipe de phoning",
               "uuid": "@uuid@",
-              "members_count": 4
+              "members_count": 4,
+              "visibility": "national",
+              "zone": null
             },
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 4,
-            "nb_surveys": 3
+            "nb_surveys": 3,
+            "visibility": "national",
+            "zone": null
          },
          {
             "title": "Campagne termin\u00e9",
@@ -612,12 +624,16 @@ Feature:
             "team": {
               "name": "Première équipe de phoning",
               "uuid": "@uuid@",
-              "members_count": 3
+              "members_count": 3,
+              "visibility": "national",
+              "zone": null
             },
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 0,
-            "nb_surveys": 0
+            "nb_surveys": 0,
+            "visibility": "national",
+            "zone": null
          },
          {
             "title": "Campagne sans adhérents dispo à appeler",
@@ -626,12 +642,16 @@ Feature:
             "team": {
               "name": "Première équipe de phoning",
               "uuid": "@uuid@",
-              "members_count": 3
+              "members_count": 3,
+              "visibility": "national",
+              "zone": null
             },
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 0,
-            "nb_surveys": 0
+            "nb_surveys": 0,
+            "visibility": "national",
+            "zone": null
          },
          {
             "title": "Campagne avec l'audience contenant tous les paramètres",
@@ -640,12 +660,16 @@ Feature:
             "team": {
               "name": "Deuxième équipe de phoning",
               "uuid": "@uuid@",
-              "members_count": 4
+              "members_count": 4,
+              "visibility": "national",
+              "zone": null
             },
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 0,
-            "nb_surveys": 0
+            "nb_surveys": 0,
+            "visibility": "national",
+            "zone": null
          },
          {
             "title": "Campagne permanente",
@@ -655,7 +679,9 @@ Feature:
             "uuid": "@uuid@",
             "creator": "Admin",
             "nb_calls": 1,
-            "nb_surveys": 0
+            "nb_surveys": 0,
+            "visibility": "national",
+            "zone": null
          }
       ]
     }
@@ -677,7 +703,9 @@ Feature:
         "uuid": "@uuid@",
         "created_at": "@string@.isDateTime()",
         "updated_at": "@string@.isDateTime()",
-        "members_count": 3
+        "members_count": 3,
+        "visibility": "national",
+        "zone": null
       },
       "audience": {
         "uuid": "@uuid@",
@@ -722,7 +750,9 @@ Feature:
       "to_remind": 1,
       "not_respond": 2,
       "nb_failed": 1,
-      "average_calling_time": 0
+      "average_calling_time": 0,
+      "visibility": "national",
+      "zone": null
     }
     """
 
@@ -767,7 +797,9 @@ Feature:
         "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
         "created_at": "@string@.isDateTime()",
         "updated_at": "@string@.isDateTime()",
-        "members_count": 4
+        "members_count": 4,
+        "visibility": "national",
+        "zone": null
       },
       "audience": {
         "uuid": "@uuid@",
@@ -806,7 +838,9 @@ Feature:
       "updated_at": "@string@.isDateTime()",
       "creator": "Referent R.",
       "nb_calls": 0,
-      "nb_surveys": 0
+      "nb_surveys": 0,
+      "visibility": "national",
+      "zone": null
     }
     """
 
@@ -900,7 +934,9 @@ Feature:
         "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
         "created_at": "@string@.isDateTime()",
         "updated_at": "@string@.isDateTime()",
-        "members_count": 4
+        "members_count": 4,
+        "visibility": "national",
+        "zone": null
       },
       "audience": {
         "uuid": "@uuid@",
@@ -939,7 +975,9 @@ Feature:
       "updated_at": "@string@.isDateTime()",
       "creator": "Admin",
       "nb_calls": 12,
-      "nb_surveys": 6
+      "nb_surveys": 6,
+      "visibility": "national",
+      "zone": null
     }
     """
 
@@ -1632,12 +1670,16 @@ Feature:
       "brief": "### Décidons aujourd'hui de la France de demain",
       "goal": 500,
       "finish_at": "@string@.isDateTime()",
+      "visibility": "national",
+      "zone": null,
       "team": {
         "name": "Deuxième équipe de phoning",
         "uuid": "@uuid@",
         "created_at": "@string@.isDateTime()",
         "updated_at": "@string@.isDateTime()",
-        "members_count": 4
+        "members_count": 4,
+        "visibility": "national",
+        "zone": null
       },
       "audience": {
         "uuid": "@uuid@",
@@ -1674,6 +1716,8 @@ Feature:
       "to_remind": 0,
       "not_respond": 0,
       "nb_failed": 1,
-      "average_calling_time": 400
+      "average_calling_time": 400,
+      "visibility": "national",
+      "zone": null
     }
     """
