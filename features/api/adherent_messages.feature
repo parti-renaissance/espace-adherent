@@ -5,7 +5,7 @@ Feature:
   I should be able to access API adherent messages
 
   Scenario: As a logged-in user I can not update adherent message filter with not my segment
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
     """
@@ -25,16 +25,14 @@ Feature:
           {
              "propertyPath":"segment",
              "title":"Le segment n'est pas autorisé",
-             "parameters":[
-                
-             ]
+             "parameters":[]
           }
        ]
     }
     """
 
   Scenario: As a logged-in user I can update adherent message filter with segment
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
     """
@@ -50,7 +48,7 @@ Feature:
     """
 
   Scenario Outline: As a logged-in (delegated) referent I can retrive my messages
-    Given I am logged with "<user>" via OAuth client "Data-Corner"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/adherent_messages?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
@@ -146,11 +144,11 @@ Feature:
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a DC referent I cannot delete a message already sent
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "DELETE" request to "/api/v3/adherent_messages/65f6cdbf-0707-4940-86d8-cc1755aab17e?scope=referent"
     Then the response status code should be 403
 
   Scenario: As a DC referent I can delete a draft message
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "DELETE" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f?scope=referent"
     Then the response status code should be 204

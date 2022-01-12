@@ -2,14 +2,16 @@
 
 namespace App\Admin\OAuth;
 
+use App\Admin\AbstractAdmin;
+use App\AppCodeEnum;
 use App\Form\WebHookType;
 use App\OAuth\ClientManager;
 use App\OAuth\Form\GrantTypesType;
 use App\OAuth\Form\ScopesType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -76,6 +78,7 @@ class ClientAdmin extends AbstractAdmin
         $showMapper
             ->with('Informations')
                 ->add('name', null, ['label' => 'Nom'])
+                ->add('code', null, ['label' => 'Code'])
                 ->add('description', null, ['label' => 'Description'])
                 ->add('redirectUris', 'array', [
                     'label' => 'Adresses de redirection',
@@ -108,6 +111,11 @@ class ClientAdmin extends AbstractAdmin
         $formMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('code', ChoiceType::class, [
+                'label' => 'Code',
+                'required' => false,
+                'choices' => array_combine(AppCodeEnum::toArray(), AppCodeEnum::toArray()),
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -150,10 +158,5 @@ class ClientAdmin extends AbstractAdmin
     public function setClientManager(ClientManager $clientManager): void
     {
         $this->clientManager = $clientManager;
-    }
-
-    protected function configureBatchActions($actions)
-    {
-        return [];
     }
 }

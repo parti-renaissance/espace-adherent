@@ -69,6 +69,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
             'oauth_user_id' => $psrRequest->getAttribute('oauth_user_id'),
             'oauth_scopes' => $psrRequest->getAttribute('oauth_scopes'),
             'oauth_device_id' => $psrRequest->getAttribute('oauth_device_id'),
+            'oauth_client_code' => $psrRequest->getAttribute('oauth_client_code'),
         ];
     }
 
@@ -100,6 +101,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         }
 
         $user->addRoles($roles);
+        $user->setAuthAppCode($credentials['oauth_client_code'] ?? null);
 
         return $user;
     }

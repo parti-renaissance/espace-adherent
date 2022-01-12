@@ -805,6 +805,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $papUserRole = false;
 
+    private ?string $authAppCode = null;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -3074,5 +3076,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         );
 
         return $matched->count() ? $matched->first() : null;
+    }
+
+    public function getAuthAppCode(): ?string
+    {
+        return $this->authAppCode;
+    }
+
+    public function setAuthAppCode(?string $authAppCode): void
+    {
+        $this->authAppCode = $authAppCode;
     }
 }

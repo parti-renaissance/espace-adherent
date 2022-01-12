@@ -178,7 +178,7 @@ Feature:
     """
 
   Scenario: As a logged-in device I can not get the surveys with an invalid postal code
-    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -187,7 +187,7 @@ Feature:
         "error": "Parameter \"postalCode\" missing when using a Device token."
       }
     """
-    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/jecoute/survey?postalCode=76"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -198,7 +198,7 @@ Feature:
     """
 
   Scenario: As a logged-in device I can get the surveys of my postal code and the national surveys
-    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/jecoute/survey?postalCode=77300"
     Then the response status code should be 200
     And the response should be in JSON
@@ -832,7 +832,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get the survey list filtered by the name
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys?name=national&scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -871,7 +871,7 @@ Feature:
     """
 
   Scenario: As a DC user with national role I can access only national surveys
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys?scope=national&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -920,7 +920,7 @@ Feature:
     """
 
   Scenario: As a DC user with referent role I can access to national and my local managed zones surveys
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1026,12 +1026,12 @@ Feature:
     """
 
   Scenario: As a DC user with national role I cannot read a local survey
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=national"
     Then the response status code should be 403
 
   Scenario: As a DC user with referent role I can read a local survey of my managed zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1098,7 +1098,7 @@ Feature:
     """
 
   Scenario: As a DC user with national scope I cannot create a local survey
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
     """
@@ -1155,7 +1155,7 @@ Feature:
     And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type local avec le scope national."
 
   Scenario: As a DC user with national scope I cannot create a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
     """
@@ -1211,7 +1211,7 @@ Feature:
     And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope referent."
 
   Scenario: As a DC user with national role I can create a national survey
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
     """
@@ -1324,7 +1324,7 @@ Feature:
     """
 
   Scenario: As a DC user with referent role I can create a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
     """
@@ -1444,7 +1444,7 @@ Feature:
     """
 
   Scenario: As a DC user with referent role I can unpublished a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
     """
@@ -1456,7 +1456,7 @@ Feature:
     And the JSON node "published" should be false
 
   Scenario: As a DC user with referent role I can update a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
     """

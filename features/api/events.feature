@@ -201,7 +201,7 @@ Feature:
       | detail  | this event is already cancelled |
 
   Scenario: As a DC referent I can get the list of events corresponding to my zones
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events?scope=referent&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -500,7 +500,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get an ordered list of events corresponding to my zones
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events?scope=referent&page_size=3&order[bagin_at]=asc"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -775,7 +775,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get a list of events created by me
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events?only_mine&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -913,7 +913,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get one event
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -966,7 +966,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get one event with full info
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b?scope=referent"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1021,7 +1021,7 @@ Feature:
     """
 
   Scenario: As a DC deputy I cannot create an event with missing or invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
     """
@@ -1064,7 +1064,7 @@ Feature:
     """
 
   Scenario: As a DC deputy I can create an event with invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
     """
@@ -1132,7 +1132,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can edit my default event
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5" with body:
     """
@@ -1292,7 +1292,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can cancel my default event
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel"
     Then the response status code should be 200
     And I should have 1 email
@@ -1383,7 +1383,7 @@ Feature:
     """
 
   Scenario: As a DC referent I cannot delete my event with participants
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "DELETE" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5"
     Then the response status code should be 403
 
@@ -1393,7 +1393,7 @@ Feature:
     Then the response status code should be 204
 
   Scenario: As a DC referent I can get the list of event participants
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants?scope=referent&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:

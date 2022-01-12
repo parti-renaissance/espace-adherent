@@ -14,7 +14,7 @@ Feature:
       | DELETE  | /api/v3/audience-segments/f6c36dd7-0517-4caf-ba6f-ec6822f2ec12  |
 
   Scenario Outline: As a logged-in user with no correct rights I can not audience segments
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Data-Corner"
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -24,12 +24,12 @@ Feature:
       | DELETE  | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
 
   Scenario: As a logged-in user I cannot get audience segments
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audience-segments"
     Then the response status code should be 404
 
   Scenario: As a logged-in user I can get an audience segment
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audience-segments/f6c36dd7-0517-4caf-ba6f-ec6822f2ec12"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -59,7 +59,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with no correct rights I cannot create an audience segment
-    Given I am logged with "michel.vasseur@example.ch" via OAuth client "Data-Corner"
+    Given I am logged with "michel.vasseur@example.ch" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audience-segments" with body:
     """
@@ -82,7 +82,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I cannot create an audience segment, if filter scope is not authorized
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audience-segments" with body:
     """
@@ -120,7 +120,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot create an audience segment with no data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audience-segments" with body:
     """
@@ -144,7 +144,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can create an audience segment
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audience-segments" with body:
     """
@@ -192,7 +192,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can edit my segment
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7" with body:
     """
@@ -240,12 +240,12 @@ Feature:
     """
 
   Scenario: As a logged-in user I can delete my segment
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "DELETE" request to "/api/v3/audience-segments/f6c36dd7-0517-4caf-ba6f-ec6822f2ec12"
     Then the response status code should be 204
 
   Scenario Outline: As a logged-in user I cannot manage not my audience segment
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:

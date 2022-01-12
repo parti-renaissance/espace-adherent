@@ -5,7 +5,7 @@ Feature:
   I should be able to access API email templates
 
   Scenario: I can get a logged-in user templates
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/email_templates"
     Then the response status code should be 200
     And the response should be in JSON
@@ -13,7 +13,7 @@ Feature:
     And the JSON node "items[0].label" should be equal to the string "Test Template Email"
 
   Scenario: I can get a specific email template for logged-in user
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312"
     Then the response status code should be 200
     And the response should be in JSON
@@ -28,7 +28,7 @@ Feature:
     """
 
   Scenario: I can create a new email template
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/email_templates" with body:
     """
@@ -49,7 +49,7 @@ Feature:
     """
 
   Scenario: I can update a logged-in user email template with a specific uuid
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312" with body:
     """
@@ -70,7 +70,7 @@ Feature:
     """
 
   Scenario: I can delete an email template
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile"
     When I send a "DELETE" request to "/api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312"
     Then the response status code should be 204
 
@@ -87,6 +87,6 @@ Feature:
       | DELETE | /api/v3/email_templates/7fc776c1-ead9-46cc-ada8-2601c49b5312 |
 
   Scenario: I can not access email templates data with the wrong roles
-    Given I am logged with "damien.schmidt@example.ch" via OAuth client "JeMarche App"
+    Given I am logged with "damien.schmidt@example.ch" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/email_templates"
     Then the response status code should be 403

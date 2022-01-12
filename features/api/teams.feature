@@ -5,7 +5,7 @@ Feature:
   I should be able to access API teams
 
   Scenario Outline: As a logged-in user without phoning team manager right I can not access teams endpoints
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
 
@@ -20,7 +20,7 @@ Feature:
       | DELETE | /api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager |
 
   Scenario: As a logged-in user I get empty result when query value is null
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/adherents/autocomplete?q=&scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -33,7 +33,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can search an adherent with autocomplete search
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/adherents/autocomplete?q=petit&scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -68,12 +68,12 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a logged-in user with phoning team manager right I can not remove an adherent who does not exist from a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-17816bf2d819?scope=phoning_national_manager"
     Then the response status code should be 404
 
   Scenario: As a user granted with national scope, I can get the list of national teams only
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams?scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
@@ -109,7 +109,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can create a national team
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
     """
@@ -132,7 +132,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can update a national team
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager" with body:
     """
@@ -155,7 +155,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can not create a local team
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
     """
@@ -182,7 +182,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can not update a local team
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=phoning_national_manager" with body:
     """
@@ -193,7 +193,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a user granted with local scope, I can get the list of local teams in the zones I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
@@ -237,7 +237,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can create a local team in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
     """
@@ -265,7 +265,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can update a local team in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
     """
@@ -292,7 +292,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not create a local team in a zone I am not manager of
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
     """
@@ -319,7 +319,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not update a local team in a zone I am not manager of
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
     """
@@ -330,7 +330,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a user granted with local scope, I can not create a national team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
     """
@@ -356,7 +356,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not update a national team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=referent" with body:
     """
@@ -392,7 +392,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a user granted with team feature, I can add a member to a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
@@ -442,7 +442,7 @@ Feature:
     """
 
   Scenario: As a user granted with team feature, I can not add the same member twice to the same team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     And I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
@@ -491,7 +491,7 @@ Feature:
     """
 
   Scenario: As a user granted with team feature, I should see validation errors when trying to add an adherent to a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     And I add "Content-Type" header equal to "application/json"
 
     # Empty request
@@ -601,7 +601,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a user granted with team feature, I can remove a member from a team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
@@ -669,7 +669,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a user granted with team feature, I can filter the team list by name
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams?name=Deuxi&scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON

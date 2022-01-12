@@ -15,7 +15,7 @@ Feature:
       | DELETE  | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c  |
 
   Scenario: As a logged-in user I can not create an audience if I have no rights
-    Given I am logged with "carl999@example.fr" via OAuth client "Data-Corner"
+    Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
@@ -26,7 +26,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can not create an audience if I have no rights for this audience type
-    Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
@@ -37,7 +37,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can not create an audience with no data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
@@ -63,7 +63,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can not create an audience with invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
@@ -109,7 +109,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can create an audience
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/audiences" with body:
     """
@@ -157,7 +157,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can edit an audience
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c" with body:
     """
@@ -204,12 +204,12 @@ Feature:
     """
 
   Scenario: As a logged-in user with correct rights I can delete an audience
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "DELETE" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c"
     Then the response status code should be 204
 
   Scenario Outline: As a logged-in user with no correct rights I can not manage an audience
-    Given I am logged with "<user>" via OAuth client "Data-Corner"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -225,17 +225,17 @@ Feature:
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
 
   Scenario: As a logged-in user with correct rights, but no audience type, I can not get audiences
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences"
     Then the response status code should be 403
 
   Scenario: As a logged-in referent I can not get deputy audiences
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences?scope=deputy"
     Then the response status code should be 403
 
   Scenario: As a logged-in referent I can get referent audiences
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
@@ -254,7 +254,7 @@ Feature:
     """
 
   Scenario: As a logged-in deputy I can get deputy audiences
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences?scope=deputy"
     Then the response status code should be 200
     And the response should be in JSON
@@ -296,7 +296,7 @@ Feature:
     """
 
   Scenario: As a logged-in deputy I can get a candidate audience with all parameters
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c"
     Then the response status code should be 200
     And the response should be in JSON
@@ -325,7 +325,7 @@ Feature:
     """
 
   Scenario: As a logged-in deputy I can get a candidate audience with some parameters
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences/bd298079-f763-4c7a-9a8a-a243d01d0e31"
     Then the response status code should be 200
     And the response should be in JSON
