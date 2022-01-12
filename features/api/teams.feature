@@ -236,6 +236,35 @@ Feature:
     }
     """
 
+  Scenario: As a user granted with local scope, I can get a local team in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "name": "Équipe locale de la ville de Lille (59350)",
+      "uuid": "ba9ab5dd-c8da-4721-8acb-5a96e285aec3",
+      "visibility": "local",
+      "zone": {
+        "code": "59350",
+        "name": "Lille",
+        "uuid": "e3f21338-906e-11eb-a875-0242ac150002"
+      },
+      "members": [
+        {
+          "adherent_uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+          "first_name": "Lucie",
+          "last_name": "Olivera",
+          "postal_code": "75009",
+          "registered_at": "@string@.isDateTime()"
+        }
+      ],
+      "creator": "Admin"
+    }
+    """
+
   Scenario: As a user granted with local scope, I can create a local team in a zone I am manager of
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
@@ -290,6 +319,11 @@ Feature:
       "members": "@array@.count(1)"
     }
     """
+
+  Scenario: As a user granted with local scope, I can not get a local team in a zone I am not manager of
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/teams/a4ad9bde-9fd5-4eda-92e5-9e5576cac9e2?scope=referent"
+    Then the response status code should be 403
 
   Scenario: As a user granted with local scope, I can not create a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"

@@ -44,7 +44,11 @@ trait GeoTrait
      *     "audience_segment_read",
      *     "phoning_campaign_read",
      *     "team_read",
-     *     "team_list_read"
+     *     "team_list_read",
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
+     *     "phoning_campaign_read",
+     *     "phoning_campaign_list"
      * })
      */
     private $code;
@@ -68,7 +72,11 @@ trait GeoTrait
      *     "audience_segment_read",
      *     "phoning_campaign_read",
      *     "team_read",
-     *     "team_list_read"
+     *     "team_list_read",
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
+     *     "phoning_campaign_read",
+     *     "phoning_campaign_list"
      * })
      */
     private $name;

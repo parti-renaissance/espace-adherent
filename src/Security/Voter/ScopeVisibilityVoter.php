@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Security;
 
 class ScopeVisibilityVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'SCOPE_CAN_EDIT';
+    public const PERMISSION = 'SCOPE_CAN_MANAGE';
 
     private Security $security;
     private ScopeGeneratorResolver $scopeGeneratorResolver;

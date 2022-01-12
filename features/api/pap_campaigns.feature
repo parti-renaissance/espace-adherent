@@ -64,6 +64,445 @@ Feature:
     When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da"
     Then the response status code should be 403
 
+  Scenario: As a user granted with national scope, I can get the list of national campaigns only
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=pap_national_manager"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 5,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 3
+      },
+      "items": [
+        {
+          "begin_at": "@string@.isDateTime()",
+          "brief": "**Campagne** de 10 jours suivants",
+          "finish_at": "@string@.isDateTime()",
+          "goal": 600,
+          "nb_addresses": 4,
+          "nb_surveys": 3,
+          "nb_visited_doors": 5,
+          "nb_voters": 7,
+          "title": "Campagne de 10 jours suivants",
+          "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+          "visibility": "national",
+          "zone": null
+        },
+        {
+          "begin_at": "@string@.isDateTime()",
+          "brief": "**Campagne** de 5 jours suivants",
+          "finish_at": "@string@.isDateTime()",
+          "goal": 500,
+          "nb_addresses": 4,
+          "nb_surveys": 0,
+          "nb_visited_doors": 1,
+          "nb_voters": 7,
+          "title": "Campagne de 5 jours suivants",
+          "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+          "visibility": "national",
+          "zone": null
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can create a national campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "Nouvelle campagne PAP",
+      "brief": "**NOUVEAU**",
+      "goal": 200,
+      "begin_at": "2022-05-01 00:00:00",
+      "finish_at": "2022-05-31 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Nouvelle campagne PAP",
+      "brief": "**NOUVEAU**",
+      "goal": 200,
+      "begin_at": "2022-05-01T00:00:00+02:00",
+      "finish_at": "2022-05-31T00:00:00+02:00",
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      },
+      "uuid": "@uuid@",
+      "visibility": "national",
+      "zone": null
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can update a national campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "NOUVEAU Campagne de 10 jours suivants",
+      "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+      "goal": 1000,
+      "begin_at": "2022-04-01 00:00:00",
+      "finish_at": "2022-04-30 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "NOUVEAU Campagne de 10 jours suivants",
+      "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+      "goal": 1000,
+      "begin_at": "2022-04-01T00:00:00+02:00",
+      "finish_at": "2022-04-30T00:00:00+02:00",
+      "survey": {
+          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      },
+      "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+      "visibility": "national",
+      "zone": null
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can not create a local campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "Nouvelle campagne PAP",
+      "brief": "**NOUVEAU**",
+      "goal": 200,
+      "begin_at": "2022-05-01 00:00:00",
+      "finish_at": "2022-05-31 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: Un rôle national ne peut pas définir de zone.",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "Un rôle national ne peut pas définir de zone."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can not update a local campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/31f24b6c-0884-461a-af34-dbbb7b1276ab?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne de 10 jours suivants"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As a user granted with local scope, I can get the list of local campaigns in the zones I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 2,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "title": "Campagne locale du département 92",
+          "brief": null,
+          "goal": 100,
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+          "visibility": "local",
+          "zone": {
+            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+            "code": "92",
+            "name": "Hauts-de-Seine"
+          },
+          "nb_surveys": 0,
+          "nb_visited_doors": 0,
+          "nb_addresses": 4,
+          "nb_voters": 7
+        },
+        {
+          "title": "Campagne locale de la ville de Lille (59350)",
+          "brief": null,
+          "goal": 100,
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
+          "visibility": "local",
+          "zone": {
+            "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+            "code": "59350",
+            "name": "Lille"
+          },
+          "nb_surveys": 0,
+          "nb_visited_doors": 0,
+          "nb_addresses": 4,
+          "nb_voters": 7
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can get a local campaign in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I send a "GET" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne locale du département 92",
+      "brief": null,
+      "goal": 100,
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+      "visibility": "local",
+      "zone": {
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "code": "92",
+        "name": "Hauts-de-Seine"
+      },
+      "nb_surveys": 0,
+      "nb_visited_doors": 0,
+      "nb_addresses": 4,
+      "nb_voters": 7,
+      "nb_collected_contacts": 0,
+      "nb_contact_later": 0,
+      "nb_door_open": 0,
+      "nb_to_join": 0,
+      "average_visit_time": 0
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can create a local campaign in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 200,
+        "begin_at": "2022-05-01 00:00:00",
+        "finish_at": "2022-05-31 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 200,
+        "begin_at": "2022-05-01T00:00:00+02:00",
+        "finish_at": "2022-05-31T00:00:00+02:00",
+        "survey": {
+            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+        },
+        "uuid": "@uuid@",
+        "visibility": "local",
+        "zone": {
+          "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+          "code": "92",
+          "name": "Hauts-de-Seine"
+        }
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can update a local campaign in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=referent" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne locale du département 92"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "**NOUVEAU** Campagne locale du département 92",
+      "brief": null,
+      "goal": 100,
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+      "visibility": "local",
+      "zone": {
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "code": "92",
+        "name": "Hauts-de-Seine"
+      },
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      }
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
+      """
+      {
+          "title": "Nouvelle campagne PAP",
+          "brief": "**NOUVEAU**",
+          "goal": 200,
+          "begin_at": "2022-05-01 00:00:00",
+          "finish_at": "2022-05-31 00:00:00",
+          "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+          "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002"
+      }
+      """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "La zone spécifiée n'est pas gérée par votre rôle."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=referent" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne locale du département 92"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As a user granted with local scope, I can not create a national campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
+      """
+      {
+          "title": "Nouvelle campagne PAP",
+          "brief": "**NOUVEAU**",
+          "goal": 200,
+          "begin_at": "2022-05-01 00:00:00",
+          "finish_at": "2022-05-31 00:00:00",
+          "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      }
+      """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: Veuillez spécifier une zone.",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "Veuillez spécifier une zone."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can not update a national campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "NOUVEAU Campagne de 10 jours suivants",
+      "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+      "goal": 1000,
+      "begin_at": "2022-04-01 00:00:00",
+      "finish_at": "2022-04-30 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As an anonymous user, I can not get the list of campaigns
+    Given I send a "GET" request to "/api/v3/pap_campaigns?scope=referent"
+    Then the response status code should be 401
+
+  Scenario: As an anonymous user, I can not create a campaign
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "Nouvelle campagne PAP",
+      "brief": "**NOUVEAU**",
+      "goal": 200,
+      "begin_at": "2022-05-01 00:00:00",
+      "finish_at": "2022-05-31 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 401
+
+  Scenario: As an anonymous user, I can not update a campaign
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    """
+    {
+      "title": "NOUVEAU Campagne de 10 jours suivants",
+      "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+      "goal": 1000,
+      "begin_at": "2022-04-01 00:00:00",
+      "finish_at": "2022-04-30 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 401
+
   Scenario: As a logged-in user I can get active PAP campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap_campaigns?pagination=false"
@@ -166,7 +605,7 @@ Feature:
                 "zone": null
             },
             {
-                "title": "Campagne terminé",
+                "title": "Campagne terminée",
                 "brief": null,
                 "goal": 100,
                 "begin_at": "@string@.isDateTime()",
@@ -208,7 +647,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "title": "Campagne terminé",
+        "title": "Campagne terminée",
         "brief": null,
         "goal": 100,
         "begin_at": "@string@.isDateTime()",
@@ -720,66 +1159,6 @@ Feature:
                 "message": "Cette valeur doit être supérieure à \"0\"."
             }
         ]
-    }
-    """
-
-  Scenario: As a logged-in user I can create a campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
-    """
-    {
-        "title": "Nouvelle campagne PAP",
-        "brief": "**NOUVEAU**",
-        "goal": 200,
-        "begin_at": "2022-05-01 00:00:00",
-        "finish_at": "2022-05-31 00:00:00",
-        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-    }
-    """
-    Then the response status code should be 201
-    And the JSON should be equal to:
-    """
-    {
-        "title": "Nouvelle campagne PAP",
-        "brief": "**NOUVEAU**",
-        "goal": 200,
-        "begin_at": "2022-05-01T00:00:00+02:00",
-        "finish_at": "2022-05-31T00:00:00+02:00",
-        "survey": {
-            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-        },
-        "uuid": "@uuid@"
-    }
-    """
-
-  Scenario: As a logged-in user I can update a campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
-    """
-    {
-        "title": "NOUVEAU Campagne de 10 jours suivants",
-        "brief": "NOUVEAU **Campagne** de 10 jours suivants",
-        "goal": 1000,
-        "begin_at": "2022-04-01 00:00:00",
-        "finish_at": "2022-04-30 00:00:00",
-        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-    }
-    """
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-        "title": "NOUVEAU Campagne de 10 jours suivants",
-        "brief": "NOUVEAU **Campagne** de 10 jours suivants",
-        "goal": 1000,
-        "begin_at": "2022-04-01T00:00:00+02:00",
-        "finish_at": "2022-04-30T00:00:00+02:00",
-        "survey": {
-            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-        },
-        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     }
     """
 
