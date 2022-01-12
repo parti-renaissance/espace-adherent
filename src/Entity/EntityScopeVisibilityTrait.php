@@ -19,8 +19,9 @@ trait EntityScopeVisibilityTrait
      * @SymfonySerializer\Groups({
      *     "team_read",
      *     "team_list_read",
-     *     "team_write",
-     *     "pap_campaign_read"
+     *     "pap_campaign_read",
+     *     "phoning_campaign_read",
+     *     "phoning_campaign_list"
      * })
      */
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
@@ -34,7 +35,10 @@ trait EntityScopeVisibilityTrait
      *     "team_list_read",
      *     "team_write",
      *     "pap_campaign_read",
-     *     "pap_campaign_write"
+     *     "pap_campaign_write",
+     *     "phoning_campaign_read",
+     *     "phoning_campaign_list",
+     *     "phoning_campaign_write"
      * })
      */
     private ?Zone $zone = null;

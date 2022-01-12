@@ -2,8 +2,10 @@
 
 namespace App\Entity\Phoning;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdherentBlameableInterface;
@@ -11,11 +13,15 @@ use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Team\Team;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -54,7 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/phoning_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_EDIT', object)"
  *         },
  *         "get_with_scores_public": {
  *             "method": "GET",
@@ -111,13 +117,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
+ *
+ * @ApiFilter(ScopeVisibilityFilter::class)
+ *
+ * @ScopeVisibility
  */
-class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface
+class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
+    use EntityScopeVisibilityTrait;
 
     /**
      * @var string|null
@@ -232,7 +243,8 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         AudienceSnapshot $audience = null,
         Survey $survey = null,
         int $goal = null,
-        \DateTimeInterface $finishAt = null
+        \DateTimeInterface $finishAt = null,
+        Zone $zone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;
@@ -243,6 +255,8 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         $this->goal = $goal;
         $this->finishAt = $finishAt;
         $this->campaignHistories = new ArrayCollection();
+
+        $this->setZone($zone);
     }
 
     public function __toString(): string
