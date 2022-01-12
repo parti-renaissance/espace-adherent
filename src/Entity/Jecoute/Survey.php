@@ -77,7 +77,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             },
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
- *             }
+ *             },
+ *             "pagination_maximum_items_per_page": 1000
  *         }
  *     },
  *     subresourceOperations={
