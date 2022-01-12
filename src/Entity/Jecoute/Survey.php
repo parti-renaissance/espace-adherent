@@ -67,7 +67,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') or is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
  *             "normalization_context": {
  *                 "groups": {"survey_list_dc"}
- *             }
+ *             },
+ *             "maximum_items_per_page": 1000
  *         },
  *         "post": {
  *             "path": "/v3/surveys",
@@ -77,8 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             },
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
- *             },
- *             "maximum_items_per_page": 1000
+ *             }
  *         }
  *     },
  *     subresourceOperations={
