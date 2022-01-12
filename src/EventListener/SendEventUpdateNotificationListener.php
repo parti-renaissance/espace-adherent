@@ -2,15 +2,19 @@
 
 namespace App\EventListener;
 
+use App\AppCodeEnum;
 use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CoalitionEvent;
+use App\Entity\Event\EventRegistration;
 use App\Entity\PostAddress;
 use App\Event\EventEvent;
 use App\Events;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Coalition\CoalitionsEventUpdateMessage;
 use App\Mailer\Message\EventUpdateMessage;
+use App\Mailer\Message\JeMengage\JeMengageEventUpdateMessage;
+use App\Mailer\Message\Message;
 use App\Repository\EventRegistrationRepository;
 use DateTimeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -89,32 +93,58 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     private function doPostUpdate(BaseEvent $event): void
     {
-        if ($this->matchChanges($event)) {
-            $subscriptions = $this->registrationRepository->findByEvent($event);
+        if (!$this->matchChanges($event)) {
+            return;
+        }
 
-            if (\count($subscriptions) > 0) {
-                $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
+        if (!$subscriptions = $this->registrationRepository->findByEvent($event)->toArray()) {
+            return;
+        }
 
-                foreach ($chunks as $recipient) {
-                    $this->mailer->sendMessage(
-                        $event->isCoalitionsEvent()
-                            ? CoalitionsEventUpdateMessage::create(
-                            $recipient,
-                            $event,
-                            $event instanceof CoalitionEvent
-                                ? $this->coalitionUrlGenerator->generateCoalitionEventLink($event)
-                                : $this->coalitionUrlGenerator->generateCauseEventLink($event),
-                        )
-                        : EventUpdateMessage::create(
-                            $recipient,
-                            $event->getOrganizer(),
-                            $event,
-                            $this->urlGenerator->generate('app_committee_event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
-                            $this->urlGenerator->generate('app_committee_event_export_ical', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
-                        )
-                    );
-                }
+        $apps = array_unique(array_map(function (EventRegistration $eventRegistration): ?string {
+            return $eventRegistration->getSource();
+        }, $subscriptions));
+
+        foreach ($apps as $appCode) {
+            $recipients = array_filter($subscriptions, function (EventRegistration $eventRegistration) use ($appCode): bool {
+                return $eventRegistration->getSource() === $appCode;
+            });
+
+            foreach (array_chunk($recipients, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
+                $message = $this->createMessage($event, $chunk, $appCode);
+
+                $this->mailer->sendMessage($message);
             }
         }
+    }
+
+    private function createMessage(BaseEvent $event, array $recipients, ?string $appCode): Message
+    {
+        if ($event->isCoalitionsEvent()) {
+            return CoalitionsEventUpdateMessage::create(
+                $recipients,
+                $event,
+                $event instanceof CoalitionEvent
+                    ? $this->coalitionUrlGenerator->generateCoalitionEventLink($event)
+                    : $this->coalitionUrlGenerator->generateCauseEventLink($event),
+            );
+        }
+
+        if (AppCodeEnum::isJeMengageMobileApp($appCode)) {
+            return JeMengageEventUpdateMessage::create(
+                $recipients,
+                $event->getOrganizer(),
+                $event,
+                $this->urlGenerator->generate('app_committee_event_export_ical', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+            );
+        }
+
+        return EventUpdateMessage::create(
+            $recipients,
+            $event->getOrganizer(),
+            $event,
+            $this->urlGenerator->generate('app_committee_event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->urlGenerator->generate('app_committee_event_export_ical', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+        );
     }
 }

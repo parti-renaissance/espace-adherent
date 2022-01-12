@@ -20,7 +20,7 @@ Feature:
       | GET     | /api/v3/je-mengage/rgpd   |
 
   Scenario: As a logged-in user I can get a campaign survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner" with scope "jemengage_admin"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     And I send a "GET" request to "/api/v3/je-mengage/rgpd"
     Then the response status code should be 200
     And the JSON should be equal to:

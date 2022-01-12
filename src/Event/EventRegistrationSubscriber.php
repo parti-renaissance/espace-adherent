@@ -2,12 +2,14 @@
 
 namespace App\Event;
 
+use App\AppCodeEnum;
 use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\CoalitionEvent;
 use App\Events;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Coalition\CoalitionsEventRegistrationConfirmationMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\JeMengage\JeMengageEventRegistrationConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -40,6 +42,7 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
 
         $registration = $event->getRegistration();
         $registrationEvent = $registration->getEvent();
+
         if ($registrationEvent->isCoalitionsEvent()) {
             $message = CoalitionsEventRegistrationConfirmationMessage::create(
                 $registration,
@@ -47,12 +50,15 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
                     ? $this->coalitionUrlGenerator->generateCoalitionEventLink($registrationEvent)
                     : $this->coalitionUrlGenerator->generateCauseEventLink($registrationEvent)
             );
+        } elseif (AppCodeEnum::isJeMengageMobileApp($registration->getSource())) {
+            $message = JeMengageEventRegistrationConfirmationMessage::createFromRegistration(
+                $registration,
+                $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
+            );
         } else {
             $message = EventRegistrationConfirmationMessage::createFromRegistration(
                 $registration,
-                $this->generateUrl('app_committee_event_show', [
-                    'slug' => $event->getSlug(),
-                ])
+                $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
             );
         }
 

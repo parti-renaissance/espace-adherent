@@ -2,9 +2,7 @@
 
 namespace Tests\App\Mailer\Message;
 
-use App\Entity\Event\EventRegistration;
 use App\Mailer\Message\EventCancellationMessage;
-use App\Mailer\Message\EventNotificationMessage;
 use App\Mailer\Message\MessageRecipient;
 
 class EventCancellationMessageTest extends AbstractEventMessageTest
@@ -21,10 +19,7 @@ class EventCancellationMessageTest extends AbstractEventMessageTest
             $recipients,
             $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron'),
             $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
-            self::SEARCH_EVENTS_URL,
-            function (EventRegistration $registration) {
-                return EventNotificationMessage::getRecipientVars($registration->getFirstName());
-            }
+            self::SEARCH_EVENTS_URL
         );
 
         $this->assertSame('event-cancellation', $message->generateTemplateName());
