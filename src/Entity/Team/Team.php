@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"team_list_read"}
  *             },
- *             "pagination_maximum_items_per_page": 1000
+ *             "maximum_items_per_page": 1000
  *         },
  *         "post": {
  *             "path": "/v3/teams",
