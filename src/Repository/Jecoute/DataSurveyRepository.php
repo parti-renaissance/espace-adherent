@@ -133,13 +133,13 @@ class DataSurveyRepository extends ServiceEntityRepository
         int $page = 1,
         ?int $limit = 30
     ): iterable {
-        $qb = $this->createSurveyQueryBuilder($survey, $zones);
+        $queryBuilder = $this->createSurveyQueryBuilder($survey, $zones);
 
         if (!$limit) {
-            return $qb->getQuery()->getResult();
+            return $queryBuilder->getQuery()->getResult();
         }
 
-        return $this->configurePaginator($qb, $page, $limit);
+        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 
     public function countSurveysForBuilding(Building $building, string $buildingBlock = null, int $floor = null): int
