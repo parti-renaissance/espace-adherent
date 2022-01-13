@@ -1577,7 +1577,7 @@ Feature:
     """
 
   Scenario: As a DC user with national role I can get a national survey replies
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=national"
     Then the response status code should be 200
     And the JSON should be equal to:
