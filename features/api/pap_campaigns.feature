@@ -65,7 +65,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a user granted with national scope, I can get the list of national campaigns only
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns?scope=pap_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
@@ -113,7 +113,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can create a national campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
@@ -146,7 +146,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can update a national campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
     """
@@ -179,7 +179,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can not create a local campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
@@ -211,7 +211,7 @@ Feature:
     """
 
   Scenario: As a user granted with national scope, I can not update a local campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaigns/31f24b6c-0884-461a-af34-dbbb7b1276ab?scope=pap_national_manager" with body:
     """
@@ -222,7 +222,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a user granted with local scope, I can get the list of local campaigns in the zones I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
@@ -278,7 +278,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can get a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
@@ -310,7 +310,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can create a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
     """
@@ -348,7 +348,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can update a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=referent" with body:
     """
@@ -380,7 +380,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
       """
@@ -412,7 +412,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=referent" with body:
     """
@@ -423,7 +423,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a user granted with local scope, I can not create a national campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
       """
@@ -454,7 +454,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not update a national campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
     """

@@ -237,7 +237,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can get a local team in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent"
     Then the response status code should be 200
     And the response should be in JSON
@@ -321,7 +321,7 @@ Feature:
     """
 
   Scenario: As a user granted with local scope, I can not get a local team in a zone I am not manager of
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams/a4ad9bde-9fd5-4eda-92e5-9e5576cac9e2?scope=referent"
     Then the response status code should be 403
 
