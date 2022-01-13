@@ -252,8 +252,8 @@ Feature:
           },
           "nb_surveys": 0,
           "nb_visited_doors": 0,
-          "nb_addresses": 4,
-          "nb_voters": 7
+          "nb_addresses": 0,
+          "nb_voters": 0
         },
         {
           "title": "Campagne locale de la ville de Lille (59350)",
@@ -270,8 +270,8 @@ Feature:
           },
           "nb_surveys": 0,
           "nb_visited_doors": 0,
-          "nb_addresses": 4,
-          "nb_voters": 7
+          "nb_addresses": 0,
+          "nb_voters": 0
         }
       ]
     }
@@ -299,8 +299,8 @@ Feature:
       },
       "nb_surveys": 0,
       "nb_visited_doors": 0,
-      "nb_addresses": 4,
-      "nb_voters": 7,
+      "nb_addresses": 0,
+      "nb_voters": 0,
       "nb_collected_contacts": 0,
       "nb_contact_later": 0,
       "nb_door_open": 0,

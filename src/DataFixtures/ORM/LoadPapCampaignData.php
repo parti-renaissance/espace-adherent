@@ -35,7 +35,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $nationalSurvey3,
             600,
             '-1 hour',
-            '+10 days'
+            '+10 days',
+            4,
+            7
         );
         $this->addReference('pap-campaign-1', $campaign1);
 
@@ -46,7 +48,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $nationalSurvey2,
             500,
             '-1 hour',
-            '+5 days'
+            '+5 days',
+            4,
+            7
         );
         $this->addReference('pap-campaign-2', $campaign2);
 
@@ -57,7 +61,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $nationalSurvey2,
             400,
             '+10 days',
-            '+20 days'
+            '+20 days',
+            4,
+            7
         );
         $this->addReference('pap-campaign-3', $campaign3);
 
@@ -68,7 +74,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $nationalSurvey2,
             400,
             '+20 days',
-            '+30 days'
+            '+30 days',
+            4,
+            7
         );
         $this->addReference('pap-campaign-4', $campaign4);
 
@@ -79,7 +87,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $nationalSurvey1,
             100,
             '2021-11-01',
-            '2021-11-12'
+            '2021-11-12',
+            4,
+            7
         );
         $this->addReference('pap-campaign-finished', $campaignFinished);
 
@@ -91,8 +101,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             100,
             '+10 days',
             '+20 days',
-            4,
-            7,
+            0,
+            0,
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
         );
 
@@ -104,8 +114,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             100,
             '+10 days',
             '+20 days',
-            4,
-            7,
+            0,
+            0,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')
         );
 
@@ -117,8 +127,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             100,
             '+10 days',
             '+20 days',
-            4,
-            7,
+            0,
+            0,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088')
         );
 
@@ -151,8 +161,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         int $goal,
         string $beginAt,
         string $finishAt,
-        int $nbAddresses = 4,
-        int $nbVoters = 7,
+        int $nbAddresses = 0,
+        int $nbVoters = 0,
         Zone $zone = null
     ): Campaign {
         return new Campaign(
