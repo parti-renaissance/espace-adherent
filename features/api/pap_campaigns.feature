@@ -252,7 +252,7 @@ Feature:
           },
           "nb_surveys": 0,
           "nb_visited_doors": 0,
-          "nb_addresses": 0,
+          "nb_addresses": 1,
           "nb_voters": 0
         },
         {
@@ -299,7 +299,7 @@ Feature:
       },
       "nb_surveys": 0,
       "nb_visited_doors": 0,
-      "nb_addresses": 0,
+      "nb_addresses": 1,
       "nb_voters": 0,
       "nb_collected_contacts": 0,
       "nb_contact_later": 0,
