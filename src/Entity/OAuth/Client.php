@@ -40,6 +40,13 @@ class Client implements EntitySoftDeletedInterface
     private $name;
 
     /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Choice(callback={"App\AppCodeEnum", "toArray"})
+     */
+    private ?string $code = null;
+
+    /**
      * @Assert\Length(
      *     min=10,
      *     max=200,
@@ -266,5 +273,15 @@ class Client implements EntitySoftDeletedInterface
     public function setRequestedRoles(?array $requestedRoles): void
     {
         $this->requestedRoles = $requestedRoles;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 }

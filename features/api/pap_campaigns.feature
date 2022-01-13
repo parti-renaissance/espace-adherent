@@ -15,7 +15,7 @@ Feature:
       | PUT     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb  |
 
   Scenario Outline: As a JeMarche App user I can not get not active PAP campaigns
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 404
     Examples:
@@ -24,7 +24,7 @@ Feature:
       | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb    |
 
   Scenario Outline: As a user with no correct rights I can not create or edit PAP campaign
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -35,7 +35,7 @@ Feature:
       | PUT     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9            |
 
   Scenario Outline: As a logged-in user with no PAP user role I cannot get and manage PAP campaigns
-    Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -48,7 +48,7 @@ Feature:
       | GET     | /api/v3/pap_campaigns/tutorial                                            |
 
   Scenario Outline: As a logged-in user with no correct rights I cannot get PAP campaigns on DC
-    Given I am logged with "benjyd@aol.com" via OAuth client "Data-Corner"
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -60,12 +60,12 @@ Feature:
       | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=phoning_national_manager  |
 
   Scenario: As a JeMarche App user I cannot update not my PAP campaign
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can get active PAP campaigns
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap_campaigns?pagination=false"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -95,7 +95,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get all PAP campaigns
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns?scope=pap_national_manager&page_size=5"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -184,7 +184,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get one PAP campaign
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -202,7 +202,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get passed PAP campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb?scope=pap_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -229,12 +229,12 @@ Feature:
     """
 
   Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     And I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey"
     Then the response status code should be 403
 
   Scenario: As a logged-in user with correct rights I can get a campaign survey
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -279,7 +279,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with correct rights I can get a campaign survey config
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey-config"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -487,7 +487,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get a campaign survey
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/pap_campaigns/tutorial"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -498,7 +498,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot post a pap campaign history with wrong data
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
     """
@@ -528,7 +528,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can post a pap campaign history
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaign_histories" with body:
     """
@@ -552,7 +552,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can update my pap campaign history
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
     """
@@ -582,7 +582,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot update a pap campaign history with invalid data
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
     """
@@ -631,7 +631,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can update a pap campaign history
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaign_histories/6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da" with body:
     """
@@ -662,7 +662,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can not create a campaign with no data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
@@ -694,7 +694,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can not create a campaign with invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
@@ -724,7 +724,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can create a campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
     """
@@ -754,7 +754,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can update a campaign
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
     """
@@ -784,7 +784,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get PAP campaign ranking
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/ranking"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -851,7 +851,7 @@ Feature:
     """
 
   Scenario: As a DC PAP national manager I can get the list of PAP campaign histories
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1094,7 +1094,7 @@ Feature:
     """
 
   Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by questioner
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&questioner=Patrick"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1177,7 +1177,7 @@ Feature:
     """
 
   Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by status
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&status=contact_later"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1260,7 +1260,7 @@ Feature:
     """
 
   Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by begin date
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&createdAt[after]=2021-11-09&createdAt[before]=2021-12-11"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1311,7 +1311,7 @@ Feature:
     """
 
   Scenario:  As a DC PAP national manager I can get the list of a campaign replies
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=pap_national_manager&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1451,7 +1451,7 @@ Feature:
     """
 
   Scenario: As a DC PAP national manger I can get PAP campaigns KPI
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=pap_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1467,7 +1467,7 @@ Feature:
     """
 
   Scenario: As a DC PAP national manager I can get a PAP questioners with their stats
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=pap_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:

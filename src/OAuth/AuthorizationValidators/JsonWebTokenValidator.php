@@ -24,6 +24,9 @@ class JsonWebTokenValidator extends BearerTokenValidator
         $accessToken = $this->accessTokenRepository->findAccessToken($request->getAttribute('oauth_access_token_id'));
         $device = $accessToken->getDevice();
 
-        return $request->withAttribute('oauth_device_id', $device ? $device->getIdentifier() : null);
+        return $request
+            ->withAttribute('oauth_device_id', $device ? $device->getIdentifier() : null)
+            ->withAttribute('oauth_client_code', $accessToken->getClient()->getCode())
+        ;
     }
 }

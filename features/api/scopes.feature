@@ -4,7 +4,7 @@ Feature:
   I should be able to request them via the API
 
   Scenario:
-    When I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scopes"
     Then the response status code should be 200
     And the response should be in JSON
@@ -95,7 +95,7 @@ Feature:
     """
 
   Scenario:
-    When I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scope/deputy"
     Then the response status code should be 200
     And the response should be in JSON
@@ -127,7 +127,7 @@ Feature:
     """
 
   Scenario:
-    When I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    When I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scope/national"
     Then the response status code should be 200
     And the response should be in JSON
@@ -165,7 +165,7 @@ Feature:
     """
 
   Scenario:
-    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Data-Corner"
+    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scopes"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -229,7 +229,7 @@ Feature:
     """
 
   Scenario:
-    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Data-Corner"
+    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scope/delegated_411faa64-202d-4ff2-91ce-c98b29af28ef"
     Then the response status code should be 200
     And the response should be in JSON
@@ -257,7 +257,7 @@ Feature:
     """
 
   Scenario:
-    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "Data-Corner"
+    When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scope/test"
     Then the response status code should be 403
     And the response should be in JSON

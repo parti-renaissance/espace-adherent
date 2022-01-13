@@ -15,7 +15,7 @@ Feature:
       | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4   |
 
   Scenario Outline: As a logged-in user with no correct rights I can not manage ripostes
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -27,7 +27,7 @@ Feature:
       | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/riposte  |
 
   Scenario Outline: As a logged-in user with correct rights I can get, edit or delete any riposte (not mine, disabled or old more that 24 hours)
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>?scope=national"
     Then the response status code should be <status>
     Examples:
@@ -46,7 +46,7 @@ Feature:
       | PUT    | /api/v3/ripostes/80b2eb70-38c3-425e-8c1d-a90e84e1a4b3/action/source_view | 200    |
 
   Scenario: As a logged-in user I can retrieve all ripostes
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/ripostes?scope=national"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -144,7 +144,7 @@ Feature:
     """
 
   Scenario: As a logged-in jemarche app user I can retrieve only active ripostes
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/ripostes"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -188,7 +188,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get a riposte
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4?scope=national"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -218,7 +218,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with no correct rights I cannot create a riposte
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
@@ -233,7 +233,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I cannot create a riposte with no data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
@@ -265,7 +265,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot create a riposte with invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
     """
@@ -304,7 +304,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can create a riposte
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/ripostes?scope=national" with body:
@@ -349,7 +349,7 @@ Feature:
       | body  | Le texte de la nouvelle riposte d'aujourd'hui |
 
   Scenario: As a logged-in user I can edit a riposte
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4?scope=national" with body:
     """
@@ -390,7 +390,7 @@ Feature:
     And I should have 0 notification
 
   Scenario: As a logged-in user I cannot increment number of invalid action on a riposte
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "PUT" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/some_action"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -402,7 +402,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can increment number of some action on a riposte
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "PUT" request to "/api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/source_view"
     Then the response status code should be 200
     And the JSON should be equal to:

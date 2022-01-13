@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\AppCodeEnum;
 use App\Entity\OAuth\Client;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
@@ -139,12 +140,13 @@ class LoadClientData extends Fixture
 
         $client10 = new Client(
             Uuid::fromString(self::CLIENT_10_UUID),
-            'JeMarche App',
-            'JeMarche App',
+            'JeMengage Mobile',
+            'JeMengage Mobile 📱',
             'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
             [GrantTypeEnum::PASSWORD, GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
+        $client10->setCode(AppCodeEnum::JEMENGAGE_MOBILE);
         $client10->setAskUserForAuthorization(false);
         $client10->addSupportedScope(Scope::JEMARCHE_APP);
 
@@ -158,6 +160,7 @@ class LoadClientData extends Fixture
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
+        $client11->setCode(AppCodeEnum::COALITIONS);
         $client11->addSupportedScope(Scope::WRITE_EVENT);
         $client11->addSupportedScope(Scope::READ_PROFILE);
         $client11->addSupportedScope(Scope::WRITE_PROFILE);
@@ -166,12 +169,13 @@ class LoadClientData extends Fixture
 
         $client12 = new Client(
             Uuid::fromString(self::CLIENT_12_UUID),
-            'Data-Corner',
-            'Data-Corner',
+            'JeMengage Web',
+            'JeMengage Web 🇫🇷',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://localhost:3000/auth']
         );
+        $client12->setCode(AppCodeEnum::JEMENGAGE_WEB);
         $client12->setAskUserForAuthorization(false);
         $client12->setRequestedRoles([DataCornerVoter::DATA_CORNER]);
         $client12->addSupportedScope(Scope::JEMENGAGE_ADMIN);

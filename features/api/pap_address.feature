@@ -16,7 +16,7 @@ Feature:
     | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history          |
 
   Scenario Outline: As a logged-in user with no PAP user role I cannot get and manage PAP campaigns
-    Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "deputy-75-2@en-marche-dev.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -27,7 +27,7 @@ Feature:
       | PUT     | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd                  |
 
   Scenario Outline: As a logged-in user I can retrieve addresses near a given position ordered by distance
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/address/near?latitude=<latitude>&longitude=<longitude>&zoom=16"
     Then the response status code should be 200
     And the response should be in JSON
@@ -43,7 +43,7 @@ Feature:
       | 48.877018    | 2.32154   | [{"uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"}, {"uuid": "ccfd846a-5439-42ad-85ce-286baf4e7269"}, {"uuid": "04e1d76f-c727-4612-afab-2dec2d71a480"}, {"uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"}] |
 
   Scenario: As a logged-in user I can retrieve latitude & longitude of addresses near a given position
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     # 62 rue du rocher, Paris 8ème
     When I send a "GET" request to "/api/v3/pap/address/near?latitude=48.877018&longitude=2.32154&zoom=16"
     Then the response status code should be 200
@@ -164,7 +164,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can retrieve full address information for a given address identifier
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
     Then the response status code should be 200
     And the response should be in JSON
@@ -182,7 +182,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can retrieve the voter list for a given address identifier
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters"
     Then the response status code should be 200
     And the response should be in JSON
@@ -209,7 +209,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can retrieve the building block list for a given building identifier
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks"
     Then the response status code should be 200
     And the response should be in JSON
@@ -248,7 +248,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can retrieve the building block list for a given building identifier for a PAP campaign
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks?campaign_uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     Then the response status code should be 200
     And the response should be in JSON
@@ -325,7 +325,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can open and close a building
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
     """
     {
@@ -356,7 +356,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can open and close a building block
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
     """
     {
@@ -389,7 +389,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can open and close a floor
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
     """
     {
@@ -422,7 +422,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot retrieve building history if no "campaign_uuid" passed
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -431,7 +431,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot retrieve building history for invalid campaign
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history?campaign_uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf8"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -440,7 +440,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can retrieve building history
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history?campaign_uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
     Then the response status code should be 200
     And the response should be in JSON
@@ -501,7 +501,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot change building type with invalid type
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
     """
@@ -527,7 +527,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can change building type
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b" with body:
     """

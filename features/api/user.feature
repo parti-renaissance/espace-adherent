@@ -8,7 +8,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can get my informations with additional informations based on granted scope
-    Given I am logged with "carl999@example.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/me"
     Then the response status code should be 200
     And the response should be in JSON
@@ -37,7 +37,7 @@ Feature:
     """
 
   Scenario: As a logged-in device I can get my information with additional information based on granted scope
-    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/me"
     Then the response status code should be 200
     And the response should be in JSON

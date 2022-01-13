@@ -204,7 +204,7 @@ Feature:
     Then the response status code should be 404
 
   Scenario: As a DC referent I can get the news list
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/jecoute/news?scope=referent&page_size=10"
     Then the response status code should be 200
     And the response should be in JSON
@@ -288,7 +288,7 @@ Feature:
     """
 
   Scenario: As a DC user with national role I can get the news list
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/jecoute/news?scope=national"
     Then the response status code should be 200
     And the response should be in JSON
@@ -335,7 +335,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with no correct rights I cannot create a news
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Data-Corner"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=deputy" with body:
     """
@@ -346,7 +346,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a logged-in user I cannot create a news with no data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
     """
@@ -374,7 +374,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot create a news with invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
     """
@@ -410,7 +410,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can create a news
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=national" with body:
@@ -447,7 +447,7 @@ Feature:
       | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
 
   Scenario: As a logged-in user I can update a news of my zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=referent" with body:
     """
@@ -481,7 +481,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with National role I can update a news
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/jecoute/news/232f99b8-7a0c-40ed-ba9e-bf8f33e19052?scope=national" with body:
     """
@@ -492,7 +492,7 @@ Feature:
     Then the response status code should be 200
 
   Scenario: As a logged-in user I cannot update a news out of my zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/jecoute/news/25632c43-c224-4745-84d7-09dfa8249367?scope=referent" with body:
     """
@@ -508,7 +508,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As a DC referent I cannot create a local news without a zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
@@ -537,7 +537,7 @@ Feature:
     """
 
   Scenario: As a DC referent I cannot create a local news with a city zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """
@@ -567,7 +567,7 @@ Feature:
     """
 
   Scenario: As a DC referent I cannot create a local news with a non managed zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
     """

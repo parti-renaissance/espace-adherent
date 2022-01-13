@@ -16,7 +16,7 @@ Feature:
       | GET    | /api/v3/phoning_campaigns/tutorial                                                    |
 
   Scenario Outline: As a logged-in user with no correct rights I cannot get regular phoning campaigns (only permanent)
-    Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Mobile"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -26,7 +26,7 @@ Feature:
       | POST   | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
 
   Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns on DC
-    Given I am logged with "benjyd@aol.com" via OAuth client "Data-Corner"
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -40,7 +40,7 @@ Feature:
       | PUT    | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager         |
 
   Scenario: As a logged-in user I can get my phoning campaigns
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMarche App"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/phoning_campaigns/scores"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -181,7 +181,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get one of my phoning campaigns
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/phoning_campaigns/4d91b94c-4b39-43c7-9c88-f4be7e2fe0bc/scores"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -229,7 +229,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with correct rights I can get a phone number to call
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I send a "POST" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start"
     Then the response status code should be 201
     And the JSON should be equal to:
@@ -249,7 +249,7 @@ Feature:
     """
 
   Scenario: As a logged-in user, I can start a call for my contact (permanent campaign)
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I send a "POST" request to "/api/v3/phoning_campaigns/b48af58c-51e8-4f1b-a432-deace2969fda/start"
     Then the response status code should be 201
     And the JSON should be equal to:
@@ -261,7 +261,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with correct rights I cannot get a phone number to call if no available number
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I send a "POST" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668/start"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -273,7 +273,7 @@ Feature:
     """
 
   Scenario: As a logged-in user with correct rights I cannot get a phone number to call if the campaign is finished
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I send a "POST" request to "/api/v3/phoning_campaigns/fdc99fb4-0492-4488-a53d-b7aa02888ffe/start"
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -285,7 +285,7 @@ Feature:
     """
 
   Scenario: As a logged-in user, a caller of the phoning campaign history, I can get a phoning campaign history configuration
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -372,12 +372,12 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot change not my phoning campaign history
-    Given I am logged with "kiroule.p@blabla.tld" via OAuth client "JeMarche App"
+    Given I am logged with "kiroule.p@blabla.tld" via OAuth client "JeMengage Mobile"
     When I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I cannot change my phoning campaign history with wrong data
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
     """
@@ -402,7 +402,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can change only status of my phoning campaign history
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
     """
@@ -420,7 +420,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can change my phoning campaign history
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055" with body:
     """
@@ -488,12 +488,12 @@ Feature:
     """
 
   Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
-    Given I am logged with "benjyd@aol.com" via OAuth client "JeMarche App"
+    Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Mobile"
     When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey"
     Then the response status code should be 403
 
   Scenario: As a logged-in user I can get a campaign survey
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     And I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/survey"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -538,7 +538,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get the phoning campaigns survey tutorial
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     And I send a "GET" request to "/api/v3/phoning_campaigns/tutorial"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -549,7 +549,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get the list of phoning campaigns
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -688,7 +688,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get one phone campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -757,7 +757,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can create a new phoning campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
@@ -845,7 +845,7 @@ Feature:
     """
 
   Scenario: As a DC referent I cannot create a phoning campaign without the title the goal or the survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
     """
@@ -894,7 +894,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can update a phoning campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager" with body:
     """
@@ -982,7 +982,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get the list of phoning campaign histories
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1071,7 +1071,7 @@ Feature:
     """
 
   Scenario Outline: As a DC referent I can get the list of phoning campaign histories filtered by campaign title or uuid
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "<url>"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1164,7 +1164,7 @@ Feature:
       | /api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.uuid=4ebb184c-24d9-4aeb-bb36-afe44f294387 |
 
   Scenario: As a DC referent I can get the list of phoning campaign histories filtered by caller
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&caller=Pierre"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1253,7 +1253,7 @@ Feature:
    """
 
   Scenario: As a DC referent I can get the list of phoning campaign histories filtered by adherent
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&adherent=Adrien"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1310,7 +1310,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get the list of phoning campaign histories filtered by status
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&status=to-unsubscribe"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1405,7 +1405,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get the list of phoning campaign histories filtered by begin date
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&beginAt[after]=2021-07-01&beginAt[before]=2021-07-31"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1456,7 +1456,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get a phoning campaign callers with their stats
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1502,7 +1502,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get the list of a campaign replies
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies?scope=phoning_national_manager&page=1&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1644,7 +1644,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get phoning campaigns KPI
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -1660,7 +1660,7 @@ Feature:
     """
 
   Scenario: As a DC referent I can get a phoning campaign details with the calling time average
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "Data-Corner"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc?scope=phoning_national_manager&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
