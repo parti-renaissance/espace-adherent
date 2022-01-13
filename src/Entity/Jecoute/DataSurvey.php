@@ -26,12 +26,16 @@ class DataSurvey implements AuthorInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Groups({"survey_replies_list"})
      */
     private $author;
 
     /**
      * @var string|null
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"survey_replies_list"})
      */
     private $authorPostalCode;
 
@@ -83,7 +87,7 @@ class DataSurvey implements AuthorInterface
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="dataSurvey")
      *
-     * @Groups("phoning_campaign_replies_list")
+     * @Groups({"phoning_campaign_replies_list", "survey_replies_list"})
      */
     private $phoningCampaignHistory;
 
@@ -92,7 +96,7 @@ class DataSurvey implements AuthorInterface
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="dataSurvey")
      *
-     * @Groups("pap_campaign_replies_list")
+     * @Groups({"pap_campaign_replies_list", "survey_replies_list"})
      */
     private $papCampaignHistory;
 

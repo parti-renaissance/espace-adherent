@@ -33,6 +33,42 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
 
         $dataSurvey = $this->normalizer->normalize($object, $format, $context);
 
+        if (\in_array('survey_replies_list', $context['groups'] ?? [], true)) {
+            if ($object->isOfPhoningCampaignHistory()) {
+                $dataSurvey['type'] = 'Phoning';
+                $dataSurvey['interviewed'] = $object->getPhoningCampaignHistory()->getAdherent()
+                    ? [
+                        'first_name' => $object->getPhoningCampaignHistory()->getAdherent()->getFirstName(),
+                        'last_name' => $object->getPhoningCampaignHistory()->getAdherent()->getFirstName(),
+                        'gender' => $object->getPhoningCampaignHistory()->getAdherent()->getGender(),
+                        'age_range' => null,
+                    ]
+                    : null;
+                $dataSurvey['begin_at'] = $dataSurvey['phoning_campaign_history']['begin_at'] ?? null;
+                $dataSurvey['finish_at'] = $dataSurvey['phoning_campaign_history']['finish_at'] ?? null;
+            } elseif ($object->isOfPapCampaignHistory()) {
+                $dataSurvey['type'] = 'PAP';
+                $dataSurvey['interviewed'] = [
+                    'first_name' => $object->getPapCampaignHistory()->getFirstName(),
+                    'last_name' => $object->getPapCampaignHistory()->getLastName(),
+                    'gender' => $object->getPapCampaignHistory()->getGender(),
+                    'age_range' => $object->getPapCampaignHistory()->getAgeRange(),
+                ];
+                $dataSurvey['begin_at'] = $dataSurvey['pap_campaign_history']['begin_at'] ?? null;
+                $dataSurvey['finish_at'] = $dataSurvey['pap_campaign_history']['finish_at'] ?? null;
+            } elseif ($object->isOfJemarcheDataSurvey()) {
+                $dataSurvey['type'] = 'Libre';
+                $dataSurvey['interviewed'] = [
+                    'first_name' => $object->getJemarcheDataSurvey()->getFirstName(),
+                    'last_name' => $object->getJemarcheDataSurvey()->getLastName(),
+                    'gender' => $object->getJemarcheDataSurvey()->getGender(),
+                    'age_range' => $object->getJemarcheDataSurvey()->getAgeRange(),
+                ];
+                $dataSurvey['begin_at'] = null;
+                $dataSurvey['finish_at'] = $this->normalizer->normalize($object->getPostedAt(), $format, $context);
+            }
+            unset($dataSurvey['pap_campaign_history'], $dataSurvey['phoning_campaign_history']);
+        }
         $questions = $this->surveyQuestionRepository->findForSurvey($object->getSurvey());
 
         $answers = [];
@@ -84,7 +120,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
         return
             empty($context[self::DATA_SURVEY_ALREADY_CALLED])
             && $data instanceof DataSurvey
-            && array_intersect(['phoning_campaign_replies_list', 'pap_campaign_replies_list'], $context['groups'] ?? [])
+            && array_intersect(['phoning_campaign_replies_list', 'pap_campaign_replies_list', 'survey_replies_list'], $context['groups'] ?? [])
         ;
     }
 

@@ -1525,12 +1525,16 @@ Feature:
                     "caller": {
                         "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                         "first_name": "Lucie",
-                        "last_name": "Olivera"
+                        "last_name": "Olivera",
+                        "gender": "female",
+                        "age": @integer@
                     },
                     "adherent": {
                         "uuid": "@uuid@",
                         "first_name": "Adherent 34",
-                        "last_name": "Fa34ke"
+                        "last_name": "Fa34ke",
+                        "gender": "female",
+                        "age": @integer@
                     },
                     "campaign": {
                         "title": "Campagne sur l'horizon 2030",
@@ -1567,12 +1571,16 @@ Feature:
                     "caller": {
                         "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                         "first_name": "Lucie",
-                        "last_name": "Olivera"
+                        "last_name": "Olivera",
+                        "gender": "female",
+                        "age": @integer@
                     },
                     "adherent": {
                         "uuid": "@uuid@",
                         "first_name": "Adherent 37",
-                        "last_name": "Fa37ke"
+                        "last_name": "Fa37ke",
+                        "gender": "male",
+                        "age": @integer@
                     },
                     "campaign": {
                         "title": "Campagne sur l'horizon 2030",
@@ -1608,12 +1616,16 @@ Feature:
                     "caller": {
                         "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
                         "first_name": "Lucie",
-                        "last_name": "Olivera"
+                        "last_name": "Olivera",
+                        "gender": "female",
+                        "age": @integer@
                     },
                     "adherent": {
                         "uuid": "@uuid@",
                         "first_name": "Adherent 40",
-                        "last_name": "Fa40ke"
+                        "last_name": "Fa40ke",
+                        "gender": "female",
+                        "age": @integer@
                     },
                     "campaign": {
                         "title": "Campagne sur l'horizon 2030",

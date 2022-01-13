@@ -1576,3 +1576,231 @@ Feature:
     }
     """
 
+  Scenario: As a DC user with national role I can get a national survey replies
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=national"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 6,
+        "items_per_page": 30,
+        "count": 6,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "author": {
+            "gender": "male",
+            "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+            "first_name": "Patrick",
+            "last_name": "Bialès",
+            "age": @integer@
+          },
+          "author_postal_code": "75000",
+          "uuid": "@uuid@",
+          "type": "PAP",
+          "interviewed": {
+            "first_name": null,
+            "last_name": null,
+            "gender": null,
+            "age_range": null
+          },
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "answers": [
+            {
+              "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+              "type": "simple_field",
+              "answer": "Vie publique, répartition des pouvoirs et démocratie"
+            },
+            {
+              "question": "L'écologie est selon vous, importante pour :",
+              "type": "multiple_choice",
+              "answer": [
+                "L'héritage laissé aux générations futures",
+                "Le bien-être sanitaire"
+              ]
+            }
+          ]
+        },
+        {
+          "author": {
+            "gender": "male",
+            "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+            "first_name": "Patrick",
+            "last_name": "Bialès",
+            "age": @integer@
+          },
+          "author_postal_code": "75000",
+          "uuid": "@uuid@",
+          "type": "PAP",
+          "interviewed": {
+            "first_name": null,
+            "last_name": null,
+            "gender": null,
+            "age_range": null
+          },
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "answers": [
+            {
+              "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+              "type": "simple_field",
+              "answer": "Les ressources énergétiques"
+            },
+            {
+              "question": "L'écologie est selon vous, importante pour :",
+              "type": "multiple_choice",
+              "answer": [
+                "L'aspect financier",
+                "La préservation de l'environnement"
+              ]
+            }
+          ]
+        },
+        {
+          "author": {
+            "gender": "male",
+            "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+            "first_name": "Patrick",
+            "last_name": "Bialès",
+            "age": @integer@
+          },
+          "author_postal_code": "75000",
+          "uuid": "@uuid@",
+          "type": "PAP",
+          "interviewed": {
+            "first_name": null,
+            "last_name": null,
+            "gender": null,
+            "age_range": null
+          },
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "answers": [
+            {
+              "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+              "type": "simple_field",
+              "answer": "Nouvelles technologies"
+            },
+            {
+              "question": "L'écologie est selon vous, importante pour :",
+              "type": "multiple_choice",
+              "answer": [
+                "L'héritage laissé aux générations futures",
+                "Le bien-être sanitaire"
+              ]
+            }
+          ]
+        },
+        {
+          "author": {
+            "gender": "female",
+            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+            "first_name": "Lucie",
+            "last_name": "Olivera",
+            "age": @integer@
+          },
+          "author_postal_code": "75009",
+          "uuid": "@uuid@",
+          "type": "Phoning",
+          "interviewed": {
+            "first_name": "Adherent 40",
+            "last_name": "Adherent 40",
+            "gender": "female",
+            "age_range": null
+          },
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "answers": [
+            {
+              "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+              "type": "simple_field",
+              "answer": "l'écologie sera le sujet le plus important"
+            },
+            {
+              "question": "L'écologie est selon vous, importante pour :",
+              "type": "multiple_choice",
+              "answer": [
+                "L'héritage laissé aux générations futures",
+                "Le bien-être sanitaire"
+              ]
+            }
+          ]
+        },
+        {
+          "author": {
+            "gender": "female",
+            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+            "first_name": "Lucie",
+            "last_name": "Olivera",
+            "age": @integer@
+          },
+          "author_postal_code": "75009",
+          "uuid": "@uuid@",
+          "type": "Phoning",
+          "interviewed": {
+            "first_name": "Adherent 34",
+            "last_name": "Adherent 34",
+            "gender": "female",
+            "age_range": null
+          },
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "answers": [
+            {
+              "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+              "type": "simple_field",
+              "answer": "le pouvoir d'achat"
+            },
+            {
+              "question": "L'écologie est selon vous, importante pour :",
+              "type": "multiple_choice",
+              "answer": [
+                "L'aspect financier",
+                "La préservation de l'environnement"
+              ]
+            }
+          ]
+        },
+        {
+          "author": {
+            "gender": "female",
+            "uuid": "29461c49-6316-5be1-9ac3-17816bf2d819",
+            "first_name": "Lucie",
+            "last_name": "Olivera",
+            "age": @integer@
+          },
+          "author_postal_code": "75009",
+          "uuid": "@uuid@",
+          "type": "Phoning",
+          "interviewed": {
+            "first_name": "Adherent 37",
+            "last_name": "Adherent 37",
+            "gender": "male",
+            "age_range": null
+          },
+          "begin_at": "@string@.isDateTime()",
+          "finish_at": "@string@.isDateTime()",
+          "answers": [
+            {
+              "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+              "type": "simple_field",
+              "answer": "la conquête de l'espace"
+            },
+            {
+              "question": "L'écologie est selon vous, importante pour :",
+              "type": "multiple_choice",
+              "answer": [
+                "L'héritage laissé aux générations futures",
+                "Le bien-être sanitaire"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    """

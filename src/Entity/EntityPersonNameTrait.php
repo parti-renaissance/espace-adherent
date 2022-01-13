@@ -32,6 +32,7 @@ trait EntityPersonNameTrait
      *     "pap_campaign_history_read_list",
      *     "survey_list_dc",
      *     "survey_read_dc",
+     *     "survey_replies_list",
      * })
      *
      * @JMS\Groups({"adherent_change_diff"})
@@ -62,6 +63,7 @@ trait EntityPersonNameTrait
      *     "pap_campaign_history_read_list",
      *     "survey_list_dc",
      *     "survey_read_dc",
+     *     "survey_replies_list",
      * })
      *
      * @JMS\Groups({"adherent_change_diff"})
