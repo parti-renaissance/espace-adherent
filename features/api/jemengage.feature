@@ -19,7 +19,7 @@ Feature:
       | method  | url                       |
       | GET     | /api/v3/je-mengage/rgpd   |
 
-  Scenario: As a logged-in user I can get a campaign survey
+  Scenario: As a logged-in user I can get a RGPD text
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     And I send a "GET" request to "/api/v3/je-mengage/rgpd"
     Then the response status code should be 200
@@ -30,7 +30,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can get a campaign survey
+  Scenario: As a logged-in user I can get a RGPD text
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/je-mengage/rgpd"
     Then the response status code should be 200

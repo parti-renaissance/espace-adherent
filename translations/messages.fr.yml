@@ -1254,3 +1254,8 @@ adherent.zone_based_role_type.jemengage_admin: JeMengage admin
 #
 scope.visibility.local: Locale
 scope.visibility.national: Nationale
+
+#
+# Exception
+#
+Account is disabled.: Votre compte a été désactivé par un administrateur.

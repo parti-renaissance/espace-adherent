@@ -104,7 +104,7 @@ class AdherentSecurityControllerTest extends WebTestCase
             'Registered disabled account' => [
                 'simple-user-disabled@example.ch',
                 'secret!12345',
-                'Account is disabled.',
+                'Votre compte a été désactivé par un administrateur.',
             ],
         ];
     }
