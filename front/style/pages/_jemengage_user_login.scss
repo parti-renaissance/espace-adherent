@@ -19,7 +19,7 @@ body.jemengage {
         margin-bottom: 24px;
     }
 
-    .flash-info, #subtitle, input, a, .btn {
+    .flash-info, #auth-error, #subtitle, input, a, .btn {
         font-family: "Poppins", sans-serif;
     }
 
@@ -33,10 +33,9 @@ body.jemengage {
     }
 
     .btn {
-        font-family: "Nunito Sans";
         font-size: 18px;
-        font-weight: 800;
-        line-height: 24px;
+        font-weight: 600;
+        line-height: 27px;
         color: #FFFFFF;
         background:#2834C4 !important;
         border-radius: 6px !important;
@@ -49,16 +48,6 @@ body.jemengage {
     
     .capitalize {
         text-transform: capitalize;
-    }
-
-    .signature {
-        text-transform: uppercase;
-        text-align: center;
-        position: absolute;
-        bottom: 0;
-        margin: 0 auto;
-        width: 100%;
-        margin-bottom: 62px;
     }
 
     .flash-info, #auth-error {
@@ -106,11 +95,10 @@ body.jemengage {
             margin: 32px 0 36px;
 
             a {
-                font-family: "Nunito Sans";
                 color: #2834C3 !important;
                 font-size: 14px;
-                font-weight: 600;
-                line-height: 19px;
+                font-weight: 500;
+                line-height: 21px;
                 border: none;
             }
         }
