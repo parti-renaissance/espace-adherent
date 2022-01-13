@@ -11,6 +11,7 @@ use App\Form\LoginType;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentResetPasswordHandler;
 use App\Membership\MembershipNotifier;
+use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
@@ -90,7 +91,13 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
-            if (($adherent = $adherentRepository->findOneByEmail($email)) && $currentApp === $adherent->getSource()) {
+            if (
+                ($adherent = $adherentRepository->findOneByEmail($email))
+                && (
+                    $currentApp === $adherent->getSource()
+                    || (null === $adherent->getSource() && MembershipSourceEnum::JEMENGAGE === $currentApp)
+                )
+            ) {
                 $handler->handle($adherent, $currentApp);
             }
 
