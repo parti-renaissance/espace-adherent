@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     defaults={"_format": "json"}
  * )
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'survey')")
+ * @Security("is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_READ_SURVEY', survey)")
  */
 class GetSurveyRepliesController extends AbstractController
 {

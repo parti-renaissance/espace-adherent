@@ -149,6 +149,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "phoning_campaign_call_read",
      *     "phoning_campaign_history_read_list",
      *     "pap_campaign_history_read_list",
+     *     "pap_campaign_replies_list",
      *     "phoning_campaign_replies_list",
      *     "survey_replies_list",
      * })
