@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Event;
 
+use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationCommand;
@@ -35,6 +36,9 @@ class SubscribeAsAdherentController extends AbstractController
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * @param UserInterface|Adherent $adherent
+     */
     public function __invoke(Request $request, BaseEvent $event, UserInterface $adherent): Response
     {
         if ($event->isCancelled()) {
@@ -62,8 +66,9 @@ class SubscribeAsAdherentController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $event->incrementParticipantsCount();
         $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
+        $registration->setSource($adherent->getAuthAppCode());
+        $event->incrementParticipantsCount();
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(new EventRegistrationEvent(

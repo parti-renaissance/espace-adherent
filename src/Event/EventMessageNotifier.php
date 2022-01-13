@@ -2,6 +2,7 @@
 
 namespace App\Event;
 
+use App\AppCodeEnum;
 use App\Coalition\CoalitionUrlGenerator;
 use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
@@ -15,6 +16,7 @@ use App\Mailer\Message\Coalition\CauseEventCreationMessage;
 use App\Mailer\Message\Coalition\CoalitionsEventCancellationMessage;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventNotificationMessage;
+use App\Mailer\Message\JeMengage\JeMengageEventCancellationMessage;
 use App\Mailer\Message\Message;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -82,16 +84,25 @@ class EventMessageNotifier implements EventSubscriberInterface
             return;
         }
 
-        $subscriptions = $this->registrationRepository->findByEvent($event->getEvent());
+        if (!$subscriptions = $this->registrationRepository->findByEvent($event->getEvent())->toArray()) {
+            return;
+        }
 
-        if (\count($subscriptions) > 0) {
-            $chunks = array_chunk($subscriptions->toArray(), MailerService::PAYLOAD_MAXSIZE);
+        $apps = array_unique(array_map(function (EventRegistration $eventRegistration): ?string {
+            return $eventRegistration->getSource();
+        }, $subscriptions));
 
-            foreach ($chunks as $chunk) {
+        foreach ($apps as $appCode) {
+            $recipients = array_filter($subscriptions, function (EventRegistration $eventRegistration) use ($appCode): bool {
+                return $eventRegistration->getSource() === $appCode;
+            });
+
+            foreach (array_chunk($recipients, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
                 $this->mailer->sendMessage($this->createCancelMessage(
                     $chunk,
                     $event->getEvent(),
-                    $event->getAuthor()
+                    $event->getAuthor(),
+                    $appCode
                 ));
             }
         }
@@ -124,21 +135,27 @@ class EventMessageNotifier implements EventSubscriberInterface
         );
     }
 
-    private function createCancelMessage(array $registered, BaseEvent $event, Adherent $host): Message
+    private function createCancelMessage(array $registered, BaseEvent $event, Adherent $host, ?string $appCode): Message
     {
         if ($event->isCoalitionsEvent()) {
             return CoalitionsEventCancellationMessage::create($registered, $event);
-        } else {
-            return EventCancellationMessage::create(
+        }
+
+        if (AppCodeEnum::isJeMengageMobileApp($appCode)) {
+            return JeMengageEventCancellationMessage::create(
                 $registered,
                 $host,
                 $event,
-                $this->generateUrl('app_search_events'),
-                function (EventRegistration $registration) {
-                    return EventCancellationMessage::getRecipientVars($registration->getFirstName());
-                }
+                $this->generateUrl('app_search_events')
             );
         }
+
+        return EventCancellationMessage::create(
+            $registered,
+            $host,
+            $event,
+            $this->generateUrl('app_search_events')
+        );
     }
 
     private function generateUrl(string $route, array $params = []): string

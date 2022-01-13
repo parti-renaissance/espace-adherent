@@ -10,4 +10,14 @@ final class AppCodeEnum extends Enum
     public const COALITIONS = 'coalitions';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';
+
+    public static function isJeMengageMobileApp(?string $code): bool
+    {
+        return self::JEMENGAGE_MOBILE === $code;
+    }
+
+    public static function isCoalitionsApp(?string $code): bool
+    {
+        return self::COALITIONS === $code;
+    }
 }

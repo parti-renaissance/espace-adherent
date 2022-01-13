@@ -1,22 +1,16 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\JeMengage;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class EventCancellationMessage extends Message
+final class JeMengageEventCancellationMessage extends AbstractJeMengageMessage
 {
-    /**
-     * Creates a new message instance for a list of recipients.
-     *
-     * @param EventRegistration[] $recipients
-     *
-     * @return EventCancellationMessage
-     */
-    public static function create(array $recipients, Adherent $host, BaseEvent $event, string $eventsLink): self
+    public static function create(array $recipients, Adherent $host, BaseEvent $event, string $eventsLink): Message
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');
@@ -27,15 +21,15 @@ final class EventCancellationMessage extends Message
             throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, \get_class($recipient)));
         }
 
-        $message = new self(
+        $message = self::updateSenderInfo(new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
             sprintf('L\'événement "%s" a été annulé.', $event->getName()),
-            static::getTemplateVars($event->getName(), $eventsLink),
+            ['event_name' => $event->getName(), 'events_url' => $eventsLink],
             self::getRecipientVars($recipient),
             $host->getEmailAddress()
-        );
+        ));
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(
@@ -48,18 +42,8 @@ final class EventCancellationMessage extends Message
         return $message;
     }
 
-    private static function getTemplateVars(string $eventName, string $eventsLink): array
+    public static function getRecipientVars(EventRegistration $eventRegistration): array
     {
-        return [
-            'event_name' => $eventName,
-            'event_slug' => $eventsLink,
-        ];
-    }
-
-    private static function getRecipientVars(EventRegistration $eventRegistration): array
-    {
-        return [
-            'target_firstname' => self::escape($eventRegistration->getFirstName()),
-        ];
+        return ['first_name' => self::escape($eventRegistration->getFirstName())];
     }
 }

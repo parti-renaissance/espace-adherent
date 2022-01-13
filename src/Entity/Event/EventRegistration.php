@@ -53,6 +53,11 @@ class EventRegistration
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $source = null;
+
     public function __construct(
         UuidInterface $uuid,
         BaseEvent $event,
@@ -125,5 +130,15 @@ class EventRegistration
         }
 
         return $adherent && $this->adherentUuid->equals($adherent->getUuid());
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(?string $source): void
+    {
+        $this->source = $source;
     }
 }
