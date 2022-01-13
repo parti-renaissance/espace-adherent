@@ -5,6 +5,7 @@ namespace App\Admin\Pap;
 use App\Admin\AbstractAdmin;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Pap\Campaign;
+use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,11 +18,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 
 class CampaignAdmin extends AbstractAdmin
 {
     private Security $security;
+    private MessageBusInterface $bus;
 
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -137,9 +140,35 @@ class CampaignAdmin extends AbstractAdmin
         $object->setAdministrator($this->security->getUser());
     }
 
+    /**
+     * @param Campaign $object
+     */
+    public function postPersist($object)
+    {
+        parent::postPersist($object);
+
+        $this->bus->dispatch(new UpdateCampaignAddressInfoCommand($object->getUuid()));
+    }
+
+    /**
+     * @param Campaign $object
+     */
+    public function postUpdate($object)
+    {
+        parent::postUpdate($object);
+
+        $this->bus->dispatch(new UpdateCampaignAddressInfoCommand($object->getUuid()));
+    }
+
     /** @required */
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    /** @required */
+    public function setBus(MessageBusInterface $bus): void
+    {
+        $this->bus = $bus;
     }
 }
