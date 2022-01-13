@@ -12,7 +12,7 @@ Feature:
       | GET     | /api/v3/je-mengage/rgpd   |
 
   Scenario Outline: As a logged-in user with no correct rights I cannot get Jemengage endpoints
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
     And I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
@@ -31,7 +31,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can get a campaign survey
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMarche App" with scope "jemarche_app"
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/je-mengage/rgpd"
     Then the response status code should be 200
     And the JSON should be equal to:
