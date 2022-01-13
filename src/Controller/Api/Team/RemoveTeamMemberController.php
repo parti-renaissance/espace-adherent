@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * )
  * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_EDIT', team)")
+ * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)")
  */
 class RemoveTeamMemberController extends AbstractController
 {

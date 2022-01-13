@@ -4,6 +4,7 @@ namespace App\Repository\Pap;
 
 use App\Entity\Pap\Campaign;
 use App\Repository\UuidEntityRepositoryTrait;
+use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,9 +18,9 @@ class CampaignRepository extends ServiceEntityRepository
         parent::__construct($registry, Campaign::class);
     }
 
-    public function findCampaignsKpi(): array
+    public function findCampaignsKpi(array $zones = []): array
     {
-        return $this->createQueryBuilder('campaign')
+        $qb = $this->createQueryBuilder('campaign')
             ->select('COUNT(DISTINCT campaign.id) AS nb_campaigns')
             ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL, campaign.id, null)) AS nb_ongoing_campaigns')
             ->addSelect('COUNT(campaignHistory.id) AS nb_visited_doors')
@@ -37,6 +38,24 @@ class CampaignRepository extends ServiceEntityRepository
                 'now' => new \DateTime(),
                 'last_30d' => new \DateTime('-30 days'),
             ])
+        ;
+
+        if (!empty($zones)) {
+            $qb
+                ->andWhere('campaign.visibility = :visibility')
+                ->setParameter('visibility', ScopeVisibilityEnum::LOCAL)
+                ->innerJoin('campaign.zone', 'zone')
+                ->leftJoin('zone.parents', 'zone_parent')
+                ->andWhere('zone IN (:zones) OR zone_parent IN (:zones)')
+            ;
+        } else {
+            $qb
+                ->andWhere('campaign.visibility = :visibility')
+                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getSingleResult()
         ;

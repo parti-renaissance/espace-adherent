@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *     methods={"PUT"}
  * )
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_EDIT', team)")
+ * @Security("is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)")
  */
 class AddTeamMembersController extends AbstractController
 {

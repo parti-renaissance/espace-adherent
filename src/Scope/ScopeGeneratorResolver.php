@@ -26,15 +26,30 @@ class ScopeGeneratorResolver
 
     public function resolve(): ?ScopeGeneratorInterface
     {
-        $adherent = $this->security->getUser();
-        if (!$adherent instanceof Adherent) {
+        $currentUser = $this->getCurrentUser();
+
+        if (!$currentUser) {
             return null;
         }
 
         return $this->authorizationChecker->getScopeGenerator(
             $this->getRequest(),
-            $adherent
+            $currentUser
         );
+    }
+
+    public function generate(): ?Scope
+    {
+        $scopeGenerator = $this->resolve();
+
+        return $scopeGenerator ? $scopeGenerator->generate($this->getCurrentUser()) : null;
+    }
+
+    private function getCurrentUser(): ?Adherent
+    {
+        $adherent = $this->security->getUser();
+
+        return $adherent instanceof Adherent ? $adherent : null;
     }
 
     private function getRequest(): Request

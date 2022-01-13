@@ -20,6 +20,7 @@ trait EntityScopeVisibilityTrait
      *     "team_read",
      *     "team_list_read",
      *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
      *     "phoning_campaign_read",
      *     "phoning_campaign_list"
      * })
@@ -36,6 +37,7 @@ trait EntityScopeVisibilityTrait
      *     "team_write",
      *     "pap_campaign_read",
      *     "pap_campaign_write",
+     *     "pap_campaign_read_after_write",
      *     "phoning_campaign_read",
      *     "phoning_campaign_list",
      *     "phoning_campaign_write"

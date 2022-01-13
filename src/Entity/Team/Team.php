@@ -55,12 +55,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/teams/{id}",
- *             "requirements": {"id": "%pattern_uuid%"}
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "put": {
  *             "path": "/v3/teams/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_EDIT', object)"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         }
  *     }
  * )

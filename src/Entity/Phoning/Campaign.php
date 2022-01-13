@@ -60,7 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/phoning_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_EDIT', object)"
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_MANAGE', object)"
  *         },
  *         "get_with_scores_public": {
  *             "method": "GET",
