@@ -8,12 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     name="adherent_tags",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="adherent_tag_name_unique", columns="name")
- *     }
- * )
+ * @ORM\Table(name="adherent_tags")
  *
  * @UniqueEntity("name")
  */

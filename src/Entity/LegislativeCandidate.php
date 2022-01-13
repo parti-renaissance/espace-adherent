@@ -8,9 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="legislative_candidates", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="legislative_candidates_slug_unique", columns="slug")
- * })
+ * @ORM\Table(name="legislative_candidates")
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeCandidateRepository")
  *
  * @UniqueEntity(fields="slug", groups="Admin")
@@ -68,7 +66,7 @@ class LegislativeCandidate implements EntityMediaInterface
     private $emailAddress;
 
     /**
-     * @ORM\Column(length=100)
+     * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"districtName"})
      *
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")

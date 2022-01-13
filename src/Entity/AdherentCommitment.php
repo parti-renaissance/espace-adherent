@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdherentCommitmentRepository")
- * @ORM\Table(name="adherent_commitment")
  */
 class AdherentCommitment
 {

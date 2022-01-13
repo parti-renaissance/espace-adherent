@@ -37,7 +37,7 @@ abstract class AbstractBiography implements ImageOwnerInterface
     protected $lastName;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @Gedmo\Slug(fields={"firstName", "lastName"})
      */

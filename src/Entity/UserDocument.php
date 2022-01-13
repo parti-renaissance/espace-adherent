@@ -10,12 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(
- *     name="user_documents",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="document_uuid_unique", columns="uuid")
- *     }
- * )
+ * @ORM\Table(name="user_documents")
  * @ORM\Entity(repositoryClass="App\Repository\UserDocumentRepository")
  */
 class UserDocument

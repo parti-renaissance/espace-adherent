@@ -6,12 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     name="elected_representative_zone_category",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="elected_representative_zone_category_name_unique", columns={"name"})
- *     })
- * )
+ * @ORM\Table(name="elected_representative_zone_category")
  */
 class ZoneCategory
 {
@@ -48,7 +43,7 @@ class ZoneCategory
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      */
     private $name;
 

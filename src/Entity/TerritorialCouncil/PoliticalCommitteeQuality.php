@@ -8,7 +8,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table
  * @ORM\Entity
  *
  * @UniqueEntity(fields={"politicalCommitteeMembership", "name"})
@@ -31,7 +30,7 @@ class PoliticalCommitteeQuality
     private $politicalCommitteeMembership;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)

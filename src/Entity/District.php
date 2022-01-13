@@ -10,14 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  *  - Other countries: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
  *
  * @ORM\Entity(repositoryClass="App\Repository\DistrictRepository")
- * @ORM\Table(
- *     name="districts",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="district_code_unique", columns="code"),
- *         @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"}),
- *         @ORM\UniqueConstraint(name="district_referent_tag_unique", columns="referent_tag_id")
- *     }
- * )
+ * @ORM\Table(name="districts", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"}),
+ * })
  */
 class District
 {
@@ -44,7 +39,7 @@ class District
     /**
      * @var string
      *
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, unique=true)
      */
     private $code;
 
@@ -81,6 +76,7 @@ class District
      * @var ReferentTag|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\ReferentTag")
+     * @ORM\JoinColumn(unique=true)
      */
     private $referentTag;
 

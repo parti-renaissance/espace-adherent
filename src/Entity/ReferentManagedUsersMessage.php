@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="referent_managed_users_message")
  * @ORM\Entity(repositoryClass="App\Repository\ReferentManagedUsersMessageRepository")
  */
 class ReferentManagedUsersMessage extends ManagedUsersMessage

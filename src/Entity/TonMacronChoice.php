@@ -7,10 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="ton_macron_choices", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="ton_macron_choices_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="ton_macron_choices_content_key_unique", columns="content_key")
- * })
+ * @ORM\Table(name="ton_macron_choices")
  * @ORM\Entity(repositoryClass="App\Repository\TonMacronChoiceRepository")
  */
 class TonMacronChoice
@@ -43,7 +40,7 @@ class TonMacronChoice
     private $step;
 
     /**
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, unique=true)
      */
     private $contentKey;
 

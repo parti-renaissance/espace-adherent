@@ -10,15 +10,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\VotePlaceRepository")
- * @ORM\Table(
- *     name="pap_vote_place",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"uuid"})
- *     },
- *     indexes={
- *         @ORM\Index(columns={"latitude", "longitude"}),
- *     },
- * )
+ * @ORM\Table(name="pap_vote_place", indexes={
+ *     @ORM\Index(columns={"latitude", "longitude"}),
+ * })
  */
 class VotePlace
 {

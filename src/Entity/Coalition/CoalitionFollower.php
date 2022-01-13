@@ -11,11 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="coalition_follower_uuid_unique", columns="uuid")
- *     }
- * )
  *
  * @UniqueEntity(fields={"coalition", "adherent"}, errorPath="adherent")
  */

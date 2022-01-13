@@ -9,13 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Biography\ExecutiveOfficeMemberRepository")
- * @ORM\Table(
- *     name="biography_executive_office_member",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="executive_office_member_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="executive_office_member_slug_unique", columns="slug")
- *     }
- * )
+ * @ORM\Table(name="biography_executive_office_member")
  *
  * @UniqueExecutiveOfficeMemberRole
  */

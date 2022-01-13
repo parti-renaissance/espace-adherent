@@ -17,16 +17,10 @@ use Ramsey\Uuid\Uuid;
  *     "community_event": "CommunityEventReport",
  * })
  *
- * @ORM\Table(
- *     name="reports",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="report_uuid_unique", columns="uuid"),
- *     },
- *     indexes={
- *         @ORM\Index(name="report_status_idx", columns="status"),
- *         @ORM\Index(name="report_type_idx", columns="type")
- *     }
- * )
+ * @ORM\Table(name="reports", indexes={
+ *     @ORM\Index(name="report_status_idx", columns="status"),
+ *     @ORM\Index(name="report_type_idx", columns="type")
+ * })
  */
 abstract class Report
 {

@@ -11,9 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="referent", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="referent_slug_unique", columns="slug")
- * })
  * @ORM\Entity(repositoryClass="App\Repository\ReferentRepository")
  *
  * @UniqueEntity(fields="slug", groups="Admin")
@@ -55,7 +52,7 @@ class Referent implements EntityMediaInterface
     private $emailAddress;
 
     /**
-     * @ORM\Column(length=100)
+     * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"firstName", "lastName"})
      *
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
@@ -91,7 +88,7 @@ class Referent implements EntityMediaInterface
     private $description;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column
      * @Assert\NotBlank
      */
     private $areaLabel = '';

@@ -25,7 +25,7 @@ class PoliticalCommittee implements InstanceEntityInterface
     private $territorialCouncil;
 
     /**
-     * @ORM\Column(length=255, unique=true)
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)

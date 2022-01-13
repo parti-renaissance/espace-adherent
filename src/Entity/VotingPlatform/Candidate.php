@@ -11,7 +11,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity
- *
  * @ORM\Table(name="voting_platform_candidate")
  */
 class Candidate

@@ -9,12 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     name="geo_data",
- *     indexes={
- *         @ORM\Index(name="geo_data_geo_shape_idx", columns={"geo_shape"}, flags={"spatial"})
- *     }
- * )
+ * @ORM\Table(name="geo_data", indexes={
+ *     @ORM\Index(name="geo_data_geo_shape_idx", columns={"geo_shape"}, flags={"spatial"})
+ * })
  */
 class GeoData
 {

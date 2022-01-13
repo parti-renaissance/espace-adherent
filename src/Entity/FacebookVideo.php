@@ -39,7 +39,7 @@ class FacebookVideo
     private $twitterUrl;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\Length(max=255)
      * @Assert\NotBlank

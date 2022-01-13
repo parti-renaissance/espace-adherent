@@ -11,10 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     name="mooc_chapter",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_chapter_slug", columns="slug")}
- * )
+ * @ORM\Table(name="mooc_chapter")
  *
  * @UniqueEntity(fields={"slug", "mooc"})
  */
@@ -36,7 +33,7 @@ class Chapter
     private $title;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
      */
     private $slug;

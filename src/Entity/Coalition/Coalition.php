@@ -47,12 +47,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  *
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="coalition_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="coalition_name_unique", columns="name")
- *     }
- * )
  * @ORM\Entity(repositoryClass="App\Repository\Coalition\CoalitionRepository")
  */
 class Coalition implements ExposedImageOwnerInterface, FollowedInterface
@@ -75,7 +69,7 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @SymfonySerializer\Groups({"coalition_read", "cause_read", "event_read", "event_list_read"})
      */

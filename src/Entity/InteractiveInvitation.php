@@ -4,14 +4,11 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InteractiveInvitationRepository")
- * @ORM\Table(name="interactive_invitations", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="interactive_invitations_uuid_unique", columns="uuid")
- * })
+ * @ORM\Table(name="interactive_invitations")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({

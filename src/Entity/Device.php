@@ -35,10 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Table(name="devices", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="devices_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="devices_device_uuid_unique", columns="device_uuid")
- * })
+ * @ORM\Table(name="devices")
  * @ORM\Entity(repositoryClass="App\Repository\DeviceRepository")
  */
 class Device
@@ -50,7 +47,7 @@ class Device
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      *
      * @ApiProperty(identifier=false)
      *

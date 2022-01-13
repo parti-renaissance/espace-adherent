@@ -10,7 +10,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\CandidateGroupRepository")
- *
  * @ORM\Table(name="voting_platform_candidate_group")
  */
 class CandidateGroup

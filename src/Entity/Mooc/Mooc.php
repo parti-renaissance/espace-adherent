@@ -16,11 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MoocRepository")
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="mooc_slug", columns="slug")
- *     }
- * )
  *
  * @UniqueEntity("title")
  * @Assert\Expression(
@@ -59,7 +54,7 @@ class Mooc
     private $description;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
      *
      * @JMS\Groups({"mooc_list"})

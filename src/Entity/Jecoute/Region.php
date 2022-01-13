@@ -39,7 +39,7 @@ class Region
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      */
     protected $uuid;
 

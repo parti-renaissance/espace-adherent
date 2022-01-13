@@ -9,9 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="administrators", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="administrators_email_address_unique", columns="email_address")
- * })
+ * @ORM\Table(name="administrators")
  * @ORM\Entity(repositoryClass="App\Repository\AdministratorRepository")
  *
  * @UniqueEntity(fields={"emailAddress"})
@@ -30,7 +28,7 @@ class Administrator implements UserInterface, TwoFactorInterface
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @Assert\Email
      * @Assert\NotBlank

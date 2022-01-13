@@ -88,7 +88,7 @@ class HomeBlock
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */

@@ -107,7 +107,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      *
      * @SymfonySerializer\Groups({
      *     "data_survey_write",

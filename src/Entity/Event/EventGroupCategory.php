@@ -9,12 +9,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventGroupCategoryRepository")
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="event_group_category_name_unique", columns="name"),
- *         @ORM\UniqueConstraint(name="event_group_category_slug_unique", columns="slug")
- *     }
- * )
  *
  * @UniqueEntity("name")
  */
