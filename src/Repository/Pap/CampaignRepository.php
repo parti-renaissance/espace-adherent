@@ -3,8 +3,8 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\Campaign;
+use App\Repository\ScopeVisibilityEntityRepositoryTrait;
 use App\Repository\UuidEntityRepositoryTrait;
-use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CampaignRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use ScopeVisibilityEntityRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -20,7 +21,7 @@ class CampaignRepository extends ServiceEntityRepository
 
     public function findCampaignsKpi(array $zones = []): array
     {
-        $qb = $this->createQueryBuilder('campaign')
+        $queryBuilder = $this->createQueryBuilder('campaign')
             ->select('COUNT(DISTINCT campaign.id) AS nb_campaigns')
             ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL, campaign.id, null)) AS nb_ongoing_campaigns')
             ->addSelect('COUNT(campaignHistory.id) AS nb_visited_doors')
@@ -34,27 +35,17 @@ class CampaignRepository extends ServiceEntityRepository
                 'campaignHistory.door IS NOT NULL'
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
-            ->where('campaign.visibility = :visibility')
             ->setParameters([
                 'now' => new \DateTime(),
                 'last_30d' => new \DateTime('-30 days'),
-                'visibility' => !empty($zones) ? ScopeVisibilityEnum::LOCAL : ScopeVisibilityEnum::NATIONAL,
             ])
         ;
 
-        if (!empty($zones)) {
-            $qb
-                ->innerJoin('campaign.zone', 'zone')
-                ->leftJoin('zone.parents', 'zone_parent')
-                ->andWhere('zone IN (:zones) OR zone_parent IN (:zones)')
-                ->setParameter('zones', $zones)
-        } else {
-            $qb
-                ->andWhere('campaign.visibility = :visibility')
-                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
-            ;
-        }
+        $this->addScopeVisibility($queryBuilder, $zones);
 
-        return $qb->getQuery()->getSingleResult();
+        return $queryBuilder
+            ->getQuery()
+            ->getSingleResult()
+        ;
     }
 }

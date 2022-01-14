@@ -5,13 +5,15 @@ namespace App\Repository\Phoning;
 use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
 use App\Phoning\CampaignHistoryStatusEnum;
-use App\Scope\ScopeVisibilityEnum;
+use App\Repository\ScopeVisibilityEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CampaignRepository extends ServiceEntityRepository
 {
+    use ScopeVisibilityEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Campaign::class);
@@ -51,7 +53,7 @@ class CampaignRepository extends ServiceEntityRepository
 
     public function findPhoningCampaignsKpi(array $zones = []): array
     {
-        $qb = $this->createQueryBuilder('campaign')
+        $queryBuilder = $this->createQueryBuilder('campaign')
             ->select('COUNT(DISTINCT campaign.id) AS nb_campaigns')
             ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL, campaign.id, null)) AS nb_ongoing_campaigns')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
@@ -72,23 +74,9 @@ class CampaignRepository extends ServiceEntityRepository
             ])
         ;
 
-        if (!empty($zones)) {
-            $qb
-                ->andWhere('campaign.visibility = :visibility')
-                ->setParameter('visibility', ScopeVisibilityEnum::LOCAL)
-                ->innerJoin('campaign.zone', 'zone')
-                ->leftJoin('zone.parents', 'zone_parent')
-                ->andWhere('zone IN (:zones) OR zone_parent IN (:zones)')
-                ->setParameter('zones', $zones)
-            ;
-        } else {
-            $qb
-                ->andWhere('campaign.visibility = :visibility')
-                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
-            ;
-        }
+        $this->addScopeVisibility($queryBuilder, $zones);
 
-        return $qb
+        return $queryBuilder
             ->getQuery()
             ->getSingleResult()
         ;
