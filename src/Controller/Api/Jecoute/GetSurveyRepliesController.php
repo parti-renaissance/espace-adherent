@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\Jecoute;
 
-use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Survey;
@@ -30,8 +29,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GetSurveyRepliesController extends AbstractController
 {
-    use AccessDelegatorTrait;
-
     private AuthorizationChecker $authorizationChecker;
     private ZoneRepository $zoneRepository;
 
@@ -48,11 +45,15 @@ class GetSurveyRepliesController extends AbstractController
         DataSurveyRepository $dataSurveyRepository,
         SurveyExporter $exporter
     ): Response {
-        $user = $this->getMainUser($request->getSession());
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
         $scopeGenerator = $this->authorizationChecker->getScopeGenerator(
             $request,
             $user
         );
+
+        $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $user;
 
         $zoneCodes = [];
         if (ScopeEnum::REFERENT === $scopeGenerator->getCode() && $survey->isNational()) {
