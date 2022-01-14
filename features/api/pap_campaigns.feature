@@ -315,13 +315,13 @@ Feature:
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
     """
     {
-        "title": "Nouvelle campagne PAP",
-        "brief": "**NOUVEAU**",
-        "goal": 200,
-        "begin_at": "2022-05-01 00:00:00",
-        "finish_at": "2022-05-31 00:00:00",
-        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-        "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      "title": "Nouvelle campagne PAP",
+      "brief": "**NOUVEAU**",
+      "goal": 200,
+      "begin_at": "2022-05-01 00:00:00",
+      "finish_at": "2022-05-31 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
     }
     """
     Then the response status code should be 201
@@ -329,21 +329,21 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "title": "Nouvelle campagne PAP",
-        "brief": "**NOUVEAU**",
-        "goal": 200,
-        "begin_at": "2022-05-01T00:00:00+02:00",
-        "finish_at": "2022-05-31T00:00:00+02:00",
-        "survey": {
-            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-        },
-        "uuid": "@uuid@",
-        "visibility": "local",
-        "zone": {
-          "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-          "code": "92",
-          "name": "Hauts-de-Seine"
-        }
+      "title": "Nouvelle campagne PAP",
+      "brief": "**NOUVEAU**",
+      "goal": 200,
+      "begin_at": "2022-05-01T00:00:00+02:00",
+      "finish_at": "2022-05-31T00:00:00+02:00",
+      "survey": {
+          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      },
+      "uuid": "@uuid@",
+      "visibility": "local",
+      "zone": {
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+        "code": "92",
+        "name": "Hauts-de-Seine"
+      }
     }
     """
 
@@ -385,13 +385,13 @@ Feature:
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
       """
       {
-          "title": "Nouvelle campagne PAP",
-          "brief": "**NOUVEAU**",
-          "goal": 200,
-          "begin_at": "2022-05-01 00:00:00",
-          "finish_at": "2022-05-31 00:00:00",
-          "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-          "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002"
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 200,
+        "begin_at": "2022-05-01 00:00:00",
+        "finish_at": "2022-05-31 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002"
       }
       """
     Then the response status code should be 400
@@ -417,7 +417,7 @@ Feature:
     And I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=referent" with body:
     """
     {
-      "title": "**NOUVEAU** Campagne locale du département 92"
+      "title": "**NOUVEAU** Campagne locale de la ville de Nice (06088)"
     }
     """
     Then the response status code should be 403
@@ -1827,6 +1827,22 @@ Feature:
         "nb_visited_doors_last_30d": "6",
         "nb_surveys": "3",
         "nb_surveys_last_30d": "3"
+    }
+    """
+
+  Scenario: As a DC referent I can get PAP campaigns KPI
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "nb_campaigns": "2",
+        "nb_ongoing_campaigns": "2",
+        "nb_visited_doors": "0",
+        "nb_visited_doors_last_30d": "0",
+        "nb_surveys": "0",
+        "nb_surveys_last_30d": "0"
     }
     """
 

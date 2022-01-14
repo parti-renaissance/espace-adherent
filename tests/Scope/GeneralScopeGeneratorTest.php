@@ -64,7 +64,10 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
             ],
             [
                 'code' => 'pap_national_manager',
-                'zones' => [],
+                'zones' => [[
+                    'code' => 'FR',
+                    'name' => 'France',
+                ]],
                 'apps' => ['data_corner'],
                 'features' => ['pap'],
             ],

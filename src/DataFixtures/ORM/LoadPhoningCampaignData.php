@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Audience\AudienceSnapshot;
+use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
@@ -22,6 +23,9 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
     public const CAMPAIGN_5_UUID = 'cc8f32ce-176c-42c8-a7e9-b854cc8fc61e';
     public const CAMPAIGN_6_UUID = 'b48af58c-51e8-4f1b-a432-deace2969fda';
     public const CAMPAIGN_7_UUID = '9ca189b7-7635-4c3a-880b-6ce5cd10e8bc';
+    public const CAMPAIGN_8_UUID = '2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e';
+    public const CAMPAIGN_9_UUID = 'd687cd2a-0870-49de-ba12-468202f70099';
+    public const CAMPAIGN_10_UUID = 'f909c7b5-aafd-4785-8b09-edebbf5814ee';
 
     public function load(ObjectManager $manager)
     {
@@ -72,7 +76,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
 
         $campaignFinished = $this->createCampaign(
             self::CAMPAIGN_3_UUID,
-            'Campagne terminé',
+            'Campagne terminée',
             null,
             $team1,
             $nationalSurvey1,
@@ -84,7 +88,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
 
         $campaignNoAdherent = $this->createCampaign(
             self::CAMPAIGN_4_UUID,
-            'Campagne sans adhérents dispo à appeler',
+            'Campagne sans adhérent dispo à appeler',
             null,
             $team1,
             $nationalSurvey1,
@@ -120,12 +124,48 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $audience->setZones([$zone]);
         $this->addReference('campaign-all-params', $campaignWithAllAudienceParameters);
 
+        $campaign92 = $this->createCampaign(
+            self::CAMPAIGN_8_UUID,
+            'Campagne locale du département 92',
+            null,
+            $team1,
+            $nationalSurvey1,
+            10,
+            '+10 days',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
+        );
+
+        $campaign59350 = $this->createCampaign(
+            self::CAMPAIGN_9_UUID,
+            'Campagne locale de la ville de Lille (59350)',
+            null,
+            $team1,
+            $nationalSurvey1,
+            10,
+            '+10 days',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')
+        );
+
+        $campaign06088 = $this->createCampaign(
+            self::CAMPAIGN_10_UUID,
+            'Campagne locale de la ville de Nice (06088)',
+            null,
+            $team1,
+            $nationalSurvey1,
+            10,
+            '+10 days',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088')
+        );
+
         $manager->persist($campaign1);
         $manager->persist($campaign2);
         $manager->persist($campaign3);
         $manager->persist($campaignFinished);
         $manager->persist($campaignNoAdherent);
         $manager->persist($campaignWithAllAudienceParameters);
+        $manager->persist($campaign92);
+        $manager->persist($campaign59350);
+        $manager->persist($campaign06088);
 
         $manager->persist($campaign = new Campaign(
             Uuid::fromString(self::CAMPAIGN_6_UUID),
@@ -161,8 +201,9 @@ BRIEF,
         Team $team,
         Survey $survey,
         int $goal,
-        string $finishAt
+        string $finishAt,
+        Zone $zone = null
     ): Campaign {
-        return new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, new Chronos($finishAt));
+        return new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, new Chronos($finishAt), $zone);
     }
 }

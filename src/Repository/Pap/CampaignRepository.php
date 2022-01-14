@@ -48,6 +48,10 @@ class CampaignRepository extends ServiceEntityRepository
                 ->leftJoin('zone.parents', 'zone_parent')
                 ->andWhere('zone IN (:zones) OR zone_parent IN (:zones)')
                 ->setParameter('zones', $zones)
+        } else {
+            $qb
+                ->andWhere('campaign.visibility = :visibility')
+                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
             ;
         }
 

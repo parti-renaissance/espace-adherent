@@ -25,6 +25,722 @@ Feature:
       | GET    | /api/v3/phoning_campaign_histories/47bf09fb-db03-40c3-b951-6fe6bbe1f055/survey-config |
       | POST   | /api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/start                  |
 
+  Scenario: As a user granted with national scope, I can get the list of national campaigns only
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+      "total_items": 7,
+      "items_per_page": 2,
+      "count": 2,
+      "current_page": 1,
+      "last_page": 4
+      },
+      "items": [
+        {
+          "title": "Campagne sans adhérent dispo à appeler",
+          "goal": 100,
+          "finish_at": "@string@.isDateTime()",
+          "team": {
+            "name": "Première équipe de phoning",
+            "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
+            "visibility": "national",
+            "zone": null,
+            "members_count": 3
+          },
+          "uuid": "b5e1b850-faec-4da7-8da6-d64b94494668",
+          "visibility": "national",
+          "zone": null,
+          "creator": "Admin",
+          "nb_calls": 0,
+          "nb_surveys": 0
+        },
+        {
+          "title": "Campagne avec l'audience contenant tous les paramètres",
+          "goal": 10,
+          "finish_at": "@string@.isDateTime()",
+          "team": {
+            "name": "Deuxième équipe de phoning",
+            "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+            "visibility": "national",
+            "zone": null,
+            "members_count": 4
+          },
+          "uuid": "cc8f32ce-176c-42c8-a7e9-b854cc8fc61e",
+          "visibility": "national",
+          "zone": null,
+          "creator": "Admin",
+          "nb_calls": 0,
+          "nb_surveys": 0
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can create a national campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "first_name": "john",
+        "last_name": "Doe",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "2020-11-08T10:25:20.677Z",
+        "is_certified": true,
+        "is_committee_member": false,
+        "has_sms_subscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Deuxième équipe de phoning",
+        "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "members_count": 4,
+        "visibility": "national",
+        "zone": null
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [
+          {
+            "uuid": "e3efe563-906e-11eb-a875-0242ac150002",
+            "code": "75",
+            "name": "Paris",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()"
+          }
+        ],
+        "first_name": "john",
+        "last_name": "Doe",
+        "gender": "male",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "@string@.isDateTime()",
+        "registered_until": null,
+        "is_committee_member": false,
+        "is_certified": true,
+        "has_email_subscription": null,
+        "has_sms_subscription": false
+      },
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1"
+      },
+      "permanent": false,
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "creator": "Député P.",
+      "nb_calls": 0,
+      "nb_surveys": 0,
+      "visibility": "national",
+      "zone": null
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can update a national campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler",
+      "brief": null,
+      "goal": 100,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Première équipe de phoning",
+        "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "visibility": "national",
+        "zone": null,
+        "members_count": 3
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [],
+        "first_name": null,
+        "last_name": null,
+        "gender": "other",
+        "age_min": null,
+        "age_max": null,
+        "registered_since": null,
+        "registered_until": null,
+        "is_committee_member": null,
+        "is_certified": null,
+        "has_email_subscription": null,
+        "has_sms_subscription": null
+      },
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1"
+      },
+      "permanent": false,
+      "uuid": "b5e1b850-faec-4da7-8da6-d64b94494668",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "visibility": "national",
+      "zone": null,
+      "creator": "Admin",
+      "nb_calls": 0,
+      "nb_surveys": 0
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can not create a local campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "first_name": "john",
+        "last_name": "Doe",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "2020-11-08T10:25:20.677Z",
+        "is_certified": true,
+        "is_committee_member": false,
+        "has_sms_subscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "detail": "zone: Un rôle national ne peut pas définir de zone.",
+      "title": "An error occurred",
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "violations": [
+        {
+          "message": "Un rôle national ne peut pas définir de zone.",
+          "propertyPath": "zone"
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can not update a local campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne locale du département 92"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As a user granted with local scope, I can get the list of local campaigns in the zones I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    And I send a "GET" request to "/api/v3/phoning_campaigns?scope=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 2,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "title": "Campagne locale du département 92",
+          "goal": 10,
+          "finish_at": "@string@.isDateTime()",
+          "team": {
+            "name": "Première équipe de phoning",
+            "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
+            "visibility": "national",
+            "zone": null,
+            "members_count": 3
+          },
+          "uuid": "2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e",
+          "visibility": "local",
+          "zone": {
+            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+            "code": "92",
+            "name": "Hauts-de-Seine"
+          },
+          "creator": "Admin",
+          "nb_calls": 0,
+          "nb_surveys": 0
+        },
+        {
+          "title": "Campagne locale de la ville de Lille (59350)",
+          "goal": 10,
+          "finish_at": "@string@.isDateTime()",
+          "team": {
+            "name": "Première équipe de phoning",
+            "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
+            "visibility": "national",
+            "zone": null,
+            "members_count": 3
+          },
+          "uuid": "d687cd2a-0870-49de-ba12-468202f70099",
+          "visibility": "local",
+          "zone": {
+            "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+            "code": "59350",
+            "name": "Lille"
+          },
+          "creator": "Admin",
+          "nb_calls": 0,
+          "nb_surveys": 0
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can get a local campaign in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    And I send a "GET" request to "/api/v3/phoning_campaigns/d687cd2a-0870-49de-ba12-468202f70099?scope=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne locale de la ville de Lille (59350)",
+      "brief": null,
+      "goal": 10,
+      "finish_at": "@string@.isDateTime()",
+      "team": {
+        "name": "Première équipe de phoning",
+        "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "visibility": "national",
+        "zone": null,
+        "members_count": 3
+      },
+      "audience": {
+        "uuid": "@uuid@",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "zones": [],
+        "first_name": null,
+        "last_name": null,
+        "gender": null,
+        "age_min": null,
+        "age_max": null,
+        "registered_since": null,
+        "registered_until": null,
+        "is_committee_member": null,
+        "is_certified": null,
+        "has_email_subscription": null,
+        "has_sms_subscription": null
+      },
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1"
+      },
+      "permanent": false,
+      "uuid": "d687cd2a-0870-49de-ba12-468202f70099",
+      "created_at": "@string@.isDateTime()",
+      "updated_at": "@string@.isDateTime()",
+      "visibility": "local",
+      "zone": {
+        "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+        "code": "59350",
+        "name": "Lille",
+        "created_at": "@string@.isDateTime()",
+        "updated_at": "@string@.isDateTime()"
+      },
+      "creator": "Admin",
+      "nb_calls": 0,
+      "nb_surveys": 0,
+      "nb_un_join": 0,
+      "nb_un_subscribe": 0,
+      "to_remind": 0,
+      "not_respond": 0,
+      "nb_failed": 0,
+      "average_calling_time": 0
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can create a local campaign in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=referent" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "first_name": "john",
+        "last_name": "Doe",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "2020-11-08T10:25:20.677Z",
+        "is_certified": true,
+        "is_committee_member": false,
+        "has_sms_subscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "audience": {
+        "age_max": 80,
+        "age_min": 30,
+        "created_at": "@string@.isDateTime()",
+        "first_name": "john",
+        "gender": "male",
+        "has_email_subscription": null,
+        "has_sms_subscription": false,
+        "is_certified": true,
+        "is_committee_member": false,
+        "last_name": "Doe",
+        "registered_since": "2020-11-08T00:00:00+01:00",
+        "registered_until": null,
+        "updated_at": "@string@.isDateTime()",
+        "uuid": "@uuid@",
+        "zones": [
+          {
+            "code": "75",
+            "created_at": "@string@.isDateTime()",
+            "name": "Paris",
+            "updated_at": "@string@.isDateTime()",
+            "uuid": "e3efe563-906e-11eb-a875-0242ac150002"
+          }
+        ]
+      },
+      "brief": "Cette Campagne est un test",
+      "created_at": "@string@.isDateTime()",
+      "creator": "Referent R.",
+      "finish_at": "@string@.isDateTime()",
+      "goal": 50,
+      "nb_calls": 0,
+      "nb_surveys": 0,
+      "permanent": false,
+      "survey": {
+        "created_at": "@string@.isDateTime()",
+        "name": "Questionnaire national numéro 1",
+        "updated_at": "@string@.isDateTime()",
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      },
+      "team": {
+        "created_at": "@string@.isDateTime()",
+        "members_count": 4,
+        "name": "Deuxième équipe de phoning",
+        "updated_at": "@string@.isDateTime()",
+        "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+        "visibility": "national",
+        "zone": null
+      },
+      "title": "Campagne Novembre 2021",
+      "updated_at": "@string@.isDateTime()",
+      "uuid": "@uuid@",
+      "visibility": "local",
+      "zone": {
+        "code": "59350",
+        "created_at": "@string@.isDateTime()",
+        "name": "Lille",
+        "updated_at": "@string@.isDateTime()",
+        "uuid": "e3f21338-906e-11eb-a875-0242ac150002"
+      }
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can update a local campaign in a zone I am manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=referent" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne locale du département 92"
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "audience": {
+        "age_max": null,
+        "age_min": null,
+        "created_at": "@string@.isDateTime()",
+        "first_name": null,
+        "gender": null,
+        "has_email_subscription": null,
+        "has_sms_subscription": null,
+        "is_certified": null,
+        "is_committee_member": null,
+        "last_name": null,
+        "registered_since": null,
+        "registered_until": null,
+        "updated_at": "@string@.isDateTime()",
+        "uuid": "@uuid@",
+        "zones": []
+      },
+      "brief": null,
+      "created_at": "@string@.isDateTime()",
+      "creator": "Admin",
+      "finish_at": "@string@.isDateTime()",
+      "goal": 10,
+      "nb_calls": 0,
+      "nb_surveys": 0,
+      "permanent": false,
+      "survey": {
+      "created_at": "@string@.isDateTime()",
+      "name": "Questionnaire national numéro 1",
+      "updated_at": "@string@.isDateTime()",
+      "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      },
+      "team": {
+        "created_at": "@string@.isDateTime()",
+        "members_count": 3,
+        "name": "Première équipe de phoning",
+        "updated_at": "@string@.isDateTime()",
+        "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
+        "visibility": "national",
+        "zone": null
+      },
+      "title": "**NOUVEAU** Campagne locale du département 92",
+      "updated_at": "@string@.isDateTime()",
+      "uuid": "2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e",
+      "visibility": "local",
+      "zone": {
+        "code": "92",
+        "created_at": "@string@.isDateTime()",
+        "name": "Hauts-de-Seine",
+        "updated_at": "2021-04-22T12:08:51+02:00",
+        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+      }
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=referent" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "first_name": "john",
+        "last_name": "Doe",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "2020-11-08T10:25:20.677Z",
+        "is_certified": true,
+        "is_committee_member": false,
+        "has_sms_subscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+      "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "La zone spécifiée n'est pas gérée par votre rôle."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/f909c7b5-aafd-4785-8b09-edebbf5814ee?scope=referent" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne locale de la ville de Nice (06088)"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As a user granted with local scope, I can not create a national campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=referent" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "first_name": "john",
+        "last_name": "Doe",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "2020-11-08T10:25:20.677Z",
+        "is_certified": true,
+        "is_committee_member": false,
+        "has_sms_subscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "zone: Veuillez spécifier une zone.",
+      "violations": [
+        {
+          "propertyPath": "zone",
+          "message": "Veuillez spécifier une zone."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can not update a national campaign
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=referent" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
+    }
+    """
+    Then the response status code should be 403
+
+  Scenario: As an anonymous user, I can not get the list of campaigns
+    Given I send a "GET" request to "/api/v3/phoning_campaigns?scope=referent"
+    Then the response status code should be 401
+
+  Scenario: As an anonymous user, I can not create a campaign
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "Campagne Novembre 2021",
+      "brief": "Cette Campagne est un test",
+      "goal": 50,
+      "finish_at": "+10 days",
+      "team": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
+      "audience": {
+        "gender": "male",
+        "first_name": "john",
+        "last_name": "Doe",
+        "age_min": 30,
+        "age_max": 80,
+        "registered_since": "2020-11-08T10:25:20.677Z",
+        "is_certified": true,
+        "is_committee_member": false,
+        "has_sms_subscription": false,
+        "zones": [
+          "e3efe563-906e-11eb-a875-0242ac150002"
+        ]
+      },
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+    }
+    """
+    Then the response status code should be 401
+
+  Scenario: As an anonymous user, I can not update a campaign
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=phoning_national_manager" with body:
+    """
+    {
+      "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
+    }
+    """
+    Then the response status code should be 401
+
   Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns on DC
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
@@ -618,7 +1334,7 @@ Feature:
             "zone": null
          },
          {
-            "title": "Campagne termin\u00e9",
+            "title": "Campagne terminée",
             "goal": 100,
             "finish_at": "@string@.isDateTime()",
             "team": {
@@ -636,7 +1352,7 @@ Feature:
             "zone": null
          },
          {
-            "title": "Campagne sans adhérents dispo à appeler",
+            "title": "Campagne sans adhérent dispo à appeler",
             "goal": 100,
             "finish_at": "@string@.isDateTime()",
             "team": {
@@ -1655,7 +2371,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get phoning campaigns KPI
+  Scenario: As a DC phoning national manager I can get phoning campaigns KPI
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=phoning_national_manager"
     Then the response status code should be 200
@@ -1668,6 +2384,22 @@ Feature:
       "nb_calls_last_30d": "18",
       "nb_surveys": "14",
       "nb_surveys_last_30d": "14"
+    }
+    """
+
+  Scenario: As a DC referent I can get phoning campaigns KPI
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "nb_campaigns": "2",
+      "nb_ongoing_campaigns": "2",
+      "nb_calls": "0",
+      "nb_calls_last_30d": "0",
+      "nb_surveys": "0",
+      "nb_surveys_last_30d": "0"
     }
     """
 

@@ -84,4 +84,9 @@ class Scope
     {
         return \in_array($featureCode, $this->features, true);
     }
+
+    public function isNational(): bool
+    {
+        return \in_array($this->code, ScopeEnum::NATIONAL_SCOPES, true);
+    }
 }
