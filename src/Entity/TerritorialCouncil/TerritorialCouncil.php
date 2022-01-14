@@ -20,13 +20,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="territorial_council_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="territorial_council_name_unique", columns="name"),
- *         @ORM\UniqueConstraint(name="territorial_council_codes_unique", columns="codes")
- *     }
- * )
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilRepository")
  *
  * @UniqueEntity("name")
@@ -40,7 +33,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
     use StaticSegmentTrait;
 
     /**
-     * @ORM\Column(length=255, unique=true)
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)

@@ -8,12 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     name="donation_tags",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="donation_tag_label_unique", columns="label")
- *     }
- * )
+ * @ORM\Table(name="donation_tags")
  *
  * @UniqueEntity("label")
  */

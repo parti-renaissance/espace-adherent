@@ -92,7 +92,7 @@ class Zone implements GeoInterface
      *
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      *
      * @SymfonySerializer\Groups({
      *     "zone_read",

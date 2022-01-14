@@ -8,11 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ScopeRepository")
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="scope_code_unique", columns="code")
- *     }
- * )
  *
  * @UniqueEntity("code")
  */
@@ -30,7 +25,7 @@ class Scope
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)

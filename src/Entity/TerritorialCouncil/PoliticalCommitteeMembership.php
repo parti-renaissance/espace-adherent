@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository")
  *
  * @UniqueEntity(fields={"adherent", "politicalCommittee"})

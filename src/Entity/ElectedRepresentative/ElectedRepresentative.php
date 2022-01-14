@@ -94,7 +94,7 @@ class ElectedRepresentative
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max="255")
      */
@@ -103,7 +103,7 @@ class ElectedRepresentative
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")

@@ -87,10 +87,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Table(name="adherents", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
- * })
+ * @ORM\Table(name="adherents")
  * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
  * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
  *
@@ -164,7 +161,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $customGender;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("emailAddress")

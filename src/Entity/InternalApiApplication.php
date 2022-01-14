@@ -8,12 +8,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(
- *     name="internal_api_application",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="internal_application_uuid_unique", columns="uuid")
- *     }
- * )
  * @ORM\Entity(repositoryClass="App\Repository\InternalApiApplicationRepository")
  */
 class InternalApiApplication

@@ -110,9 +110,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "title": "partial",
  * })
  *
- * @ORM\Table(name="jecoute_news", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="jecoute_news_uuid_unique", columns="uuid")
- * }))
+ * @ORM\Table(name="jecoute_news")
  * @ORM\Entity
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="author",
@@ -148,7 +146,7 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      *
      * @ApiProperty(identifier=true)
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      *
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
      */

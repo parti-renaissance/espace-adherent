@@ -16,7 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\AddressRepository")
  * @ORM\Table(name="pap_address", indexes={
- *     @ORM\Index(columns={"uuid"}),
  *     @ORM\Index(columns={"offset_x", "offset_y"}),
  *     @ORM\Index(columns={"latitude", "longitude"})
  * })

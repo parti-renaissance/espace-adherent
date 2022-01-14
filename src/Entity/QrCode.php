@@ -9,10 +9,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="qr_code_uuid", columns="uuid"),
- *     @ORM\UniqueConstraint(name="qr_code_name", columns="name"),
- * })
  * @ORM\Entity(repositoryClass="App\Repository\QrCodeRepository")
  *
  * @UniqueEntity("name")

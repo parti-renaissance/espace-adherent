@@ -6,9 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ConsularDistrictRepository")
- * @ORM\Table(
- *     uniqueConstraints={@ORM\UniqueConstraint(name="consular_district_code_unique", columns="code")}
- * )
  */
 class ConsularDistrict
 {
@@ -38,7 +35,7 @@ class ConsularDistrict
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      */
     private $code;
 

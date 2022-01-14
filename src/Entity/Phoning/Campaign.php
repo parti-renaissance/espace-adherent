@@ -33,9 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Phoning\CampaignRepository")
- * @ORM\Table(name="phoning_campaign", uniqueConstraints={
- *     @ORM\UniqueConstraint(columns={"uuid"})
- * })
+ * @ORM\Table(name="phoning_campaign")
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *

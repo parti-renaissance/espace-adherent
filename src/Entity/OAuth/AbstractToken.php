@@ -16,7 +16,7 @@ abstract class AbstractToken implements TokenInterface
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      */
     private $identifier;
 

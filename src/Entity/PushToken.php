@@ -52,7 +52,7 @@ class PushToken
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      *
      * @ApiProperty(identifier=false)
      */

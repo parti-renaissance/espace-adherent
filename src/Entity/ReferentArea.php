@@ -8,9 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferentAreaRepository")
- * @ORM\Table(name="referent_area", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="referent_area_area_code_unique", columns="area_code")
- * })
  * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
  */
 class ReferentArea
@@ -38,7 +35,7 @@ class ReferentArea
     private $id;
 
     /**
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, unique=true)
      *
      * @Assert\NotBlank(groups="Admin")
      */

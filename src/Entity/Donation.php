@@ -17,9 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="donations", indexes={
- *     @ORM\Index(name="donation_uuid_idx", columns={"uuid"}),
  *     @ORM\Index(name="donation_duration_idx", columns={"duration"}),
- *     @ORM\Index(name="donation_status_idx", columns={"status"})
+ *     @ORM\Index(name="donation_status_idx", columns={"status"}),
  * })
  *
  * @ORM\Entity(repositoryClass="App\Repository\DonationRepository")

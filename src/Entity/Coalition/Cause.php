@@ -94,12 +94,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "followersCount"})
  * @ApiFilter(MyCausesFilter::class)
  *
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="cause_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="cause_name_unique", columns="name")
- *     }
- * )
  * @ORM\Entity(repositoryClass="App\Repository\Coalition\CauseRepository")
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="author",
@@ -144,7 +138,7 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @SymfonySerializer\Groups({"cause_read", "cause_write", "event_read", "event_list_read"})
      *

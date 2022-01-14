@@ -32,7 +32,7 @@ class TerritorialCouncilQuality
     private $territorialCouncilMembership;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
@@ -42,7 +42,7 @@ class TerritorialCouncilQuality
     private $name;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)

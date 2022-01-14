@@ -79,12 +79,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ORM\Entity
- * @ORM\Table(
- *     name="email_templates",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="email_template_uuid_unique", columns="uuid")
- *     }
- * )
+ * @ORM\Table(name="email_templates")
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="author",
  *         joinColumns={

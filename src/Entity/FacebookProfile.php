@@ -7,10 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Table(name="facebook_profiles", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="facebook_profile_uuid", columns="uuid"),
- *     @ORM\UniqueConstraint(name="facebook_profile_facebook_id", columns="facebook_id")
- * })
+ * @ORM\Table(name="facebook_profiles")
  * @ORM\Entity(repositoryClass="App\Repository\FacebookProfileRepository")
  */
 class FacebookProfile
@@ -21,7 +18,7 @@ class FacebookProfile
     /**
      * @var string
      *
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, unique=true)
      */
     private $facebookId;
 

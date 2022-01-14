@@ -17,16 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Filesystem\FileRepository")
- * @ORM\Table(name="filesystem_file",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="filesystem_file_slug_unique", columns="slug")
- *     },
- *     indexes={
- *         @ORM\Index(columns={"type"}),
- *         @ORM\Index(columns={"name"})
- *     })
+ * @ORM\Table(name="filesystem_file", indexes={
+ *     @ORM\Index(columns={"type"}),
+ *     @ORM\Index(columns={"name"})
+ * })
  *
- *     @UniqueEntity(fields={"name"}, repositoryMethod="findDirectoryByName", message="file.validation.name.not_unique")
+ * @UniqueEntity(fields={"name"}, repositoryMethod="findDirectoryByName", message="file.validation.name.not_unique")
  */
 class File
 {
@@ -48,7 +44,7 @@ class File
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"name"}, unique=true)
      */
     private $slug;
@@ -150,7 +146,7 @@ class File
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255, maxMessage="file.validation.filename_length")
      */

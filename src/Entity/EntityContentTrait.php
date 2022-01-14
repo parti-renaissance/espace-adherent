@@ -30,7 +30,7 @@ trait EntityContentTrait
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255)
+     * @ORM\Column
      *
      * @Assert\Length(min=10, max=255)
      * @Assert\NotBlank
@@ -40,7 +40,7 @@ trait EntityContentTrait
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(min=10, max=255)
      */
@@ -49,7 +49,7 @@ trait EntityContentTrait
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
      */

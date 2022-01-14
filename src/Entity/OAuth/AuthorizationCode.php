@@ -8,10 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OAuth\AuthorizationCodeRepository")
- * @ORM\Table(name="oauth_auth_codes", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="oauth_auth_codes_uuid_unique", columns="uuid"),
- *     @ORM\UniqueConstraint(name="oauth_auth_codes_identifier_unique", columns="identifier")
- * })
+ * @ORM\Table(name="oauth_auth_codes")
  */
 class AuthorizationCode extends AbstractGrantToken
 {

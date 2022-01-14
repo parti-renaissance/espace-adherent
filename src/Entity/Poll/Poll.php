@@ -14,13 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @ORM\Table(
- *     name="poll",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="poll_uuid_unique", columns="uuid")
- *     }
- * )
+ * @ORM\Table(name="poll")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({

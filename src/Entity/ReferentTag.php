@@ -11,13 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReferentTagRepository")
- * @ORM\Table(
- *     name="referent_tags",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="referent_tag_name_unique", columns="name"),
- *         @ORM\UniqueConstraint(name="referent_tag_code_unique", columns="code")
- *     }
- * )
+ * @ORM\Table(name="referent_tags")
  *
  * @UniqueEntity("name")
  * @UniqueEntity("code")

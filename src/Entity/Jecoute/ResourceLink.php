@@ -30,12 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\ResourceLinkRepository")
- * @ORM\Table(
- *     name="jecoute_resource_link",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"uuid"})
- *     }
- * )
+ * @ORM\Table(name="jecoute_resource_link")
  */
 class ResourceLink implements ExposedImageOwnerInterface
 {

@@ -32,7 +32,7 @@ class PoliticalFunction
     /**
      * @var string|null
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max="255")
      */

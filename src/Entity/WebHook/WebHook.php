@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WebHookRepository")
  * @ORM\Table(name="web_hooks", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="web_hook_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
  * })
  * @UniqueEntity(fields={"event", "client"})

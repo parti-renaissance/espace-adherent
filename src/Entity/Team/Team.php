@@ -73,9 +73,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
  * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="team_name_unique", columns={"name"}),
- * })
  *
  * @UniqueEntity(
  *     fields={"name"},
@@ -94,7 +91,7 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     use EntityScopeVisibilityTrait;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank(message="team.name.not_blank")
      * @Assert\Length(

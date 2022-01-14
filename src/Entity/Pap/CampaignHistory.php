@@ -22,9 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\CampaignHistoryRepository")
- * @ORM\Table(name="pap_campaign_history", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="pap_campaign_history_uuid_unique", columns="uuid"),
- * })
+ * @ORM\Table(name="pap_campaign_history")
  *
  * @ApiResource(
  *     shortName="PapCampaignHistory",

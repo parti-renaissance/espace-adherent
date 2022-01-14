@@ -11,9 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="election_city_card", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="city_card_city_unique", columns="city_id")
- * })
+ * @ORM\Table(name="election_city_card")
  *
  * @UniqueEntity("city")
  */
@@ -63,7 +61,7 @@ class CityCard
      * @var City
      *
      * @ORM\OneToOne(targetEntity=City::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
      */
     private $city;
 

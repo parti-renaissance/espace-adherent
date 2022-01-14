@@ -52,10 +52,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\Event\BaseEventRepository")
  * @ORM\Table(
  *     name="events",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="event_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="event_slug_unique", columns="slug")
- *     },
  *     indexes={
  *         @ORM\Index(columns={"begin_at"}),
  *         @ORM\Index(columns={"finish_at"}),
@@ -226,7 +222,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="uuid", unique=true)
      *
      * @SymfonySerializer\Groups({"event_read", "event_list_read"})
      *
@@ -277,7 +273,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var string|null
      *
-     * @ORM\Column(length=130)
+     * @ORM\Column(length=130, unique=true)
      * @Gedmo\Slug(
      *     fields={"beginAt", "canonicalName"},
      *     dateFormat="Y-m-d",
