@@ -132,7 +132,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->addSelect('COUNT(campaignHistory.dataSurvey) as nb_surveys')
             ->innerJoin('campaignHistory.building', 'building')
             ->innerJoin('building.address', 'address')
-            ->innerJoin('address.zone', 'zone')
+            ->innerJoin('address.zones', 'zone')
             ->where('campaignHistory.campaign = :campaign')
             ->setParameter('campaign', $campaign)
             ->groupBy('zone.id')

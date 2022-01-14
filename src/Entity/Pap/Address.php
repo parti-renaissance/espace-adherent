@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +43,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Address
 {
     use EntityIdentityTrait;
+    use EntityZoneTrait;
+
+    /**
+     * @var Collection|Zone[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     * @ORM\JoinTable(name="pap_address_zone")
+     */
+    protected $zones;
 
     /**
      * @ORM\Column(nullable=true)
@@ -135,11 +145,6 @@ class Address
      */
     public ?VotePlace $votePlace = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     */
-    private ?Zone $zone;
-
     public function __construct(
         UuidInterface $uuid = null,
         string $number = null,
@@ -147,7 +152,6 @@ class Address
         string $inseeCode = null,
         array $postalCodes = null,
         string $cityName = null,
-        Zone $zone = null,
         int $offsetX = null,
         int $offsetY = null,
         float $latitude = null,
@@ -159,12 +163,12 @@ class Address
         $this->inseeCode = $inseeCode;
         $this->postalCodes = $postalCodes;
         $this->cityName = $cityName;
-        $this->zone = $zone;
         $this->offsetX = $offsetX;
         $this->offsetY = $offsetY;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->voters = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function getNumber(): ?string
@@ -286,15 +290,5 @@ class Address
     public function getPostalCodes(): ?array
     {
         return $this->postalCodes;
-    }
-
-    public function getZone(): ?Zone
-    {
-        return $this->zone;
-    }
-
-    public function setZone(Zone $zone): void
-    {
-        $this->zone = $zone;
     }
 }

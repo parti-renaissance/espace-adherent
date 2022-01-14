@@ -101,7 +101,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             100,
             '+10 days',
             '+20 days',
-            0,
+            1,
             0,
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
         );

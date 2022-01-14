@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Geo\Zone;
 use App\Entity\Pap\Address;
 use App\Entity\Pap\VotePlace;
 use App\Entity\Pap\Voter;
@@ -18,6 +17,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const ADDRESS_02_UUID = 'ccfd846a-5439-42ad-85ce-286baf4e7269';
     private const ADDRESS_03_UUID = '702eda29-39c6-4b3d-b28f-3fd3806747b2';
     private const ADDRESS_04_UUID = '04e1d76f-c727-4612-afab-2dec2d71a480';
+    private const ADDRESS_05_UUID = 'd2c0d38c-2224-41c2-acb5-78b5dad06819';
 
     private const VOTER_01_UUID = 'bdb9d49c-20f5-44c0-bc4a-d8b75f85ee95';
     private const VOTER_02_UUID = '0cf560f0-c5ec-43ef-9ea1-b6fd2a2dc339';
@@ -41,12 +41,12 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45080,
             48.878708,
             2.319111
         );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $address->addVoter($this->createVoter(self::VOTER_01_UUID, 'John', 'Doe', Genders::MALE, '-30 years', '75108_0001'));
         $address->addVoter($this->createVoter(self::VOTER_02_UUID, 'Jane', 'Doe', Genders::FEMALE, '-29 years', '75108_0001'));
         $address->votePlace = $vpParis8a;
@@ -60,12 +60,12 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45080,
             48.879078,
             2.318631
         );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $address->addVoter($this->createVoter(self::VOTER_03_UUID, 'Jack', 'Doe', Genders::MALE, '-55 years', '75108_0001'));
         $address->votePlace = $vpParis8a;
         $this->addReference('address-2', $address);
@@ -78,12 +78,12 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45079,
             48.879246,
             2.318427
         );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $address->addVoter($this->createVoter(self::VOTER_04_UUID, 'Mickaël', 'Doe', Genders::MALE, '-44 years', '75108_0001'));
         $address->addVoter($this->createVoter(self::VOTER_05_UUID, 'Mickaëla', 'Doe', Genders::FEMALE, '-45 years', '75108_0001'));
         $address->addVoter($this->createVoter(self::VOTER_06_UUID, 'Mickaël Jr', 'Doe', Genders::MALE, '-22 years', '75108_0001'));
@@ -98,15 +98,32 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             '75108',
             ['75008'],
             'Paris 8ème',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
             66380,
             45080,
             48.879166,
             2.318761
         );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $address->addVoter($this->createVoter(self::VOTER_07_UUID, 'Patrick', 'Simpson Jones', Genders::MALE, '-70 years', '75108_0001'));
         $this->addReference('address-4', $address);
         $address->votePlace = $vpParis8b;
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_05_UUID,
+            '92',
+            'Boulevard Victor Hugo',
+            '92024',
+            ['92024'],
+            'Clichy',
+            66379,
+            45067,
+            48.90117,
+            2.316956
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $this->addReference('address-5', $address);
         $manager->persist($address);
 
         $manager->flush();
@@ -119,7 +136,6 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         string $inseeCode,
         ?array $postalCodes,
         string $cityName,
-        Zone $zone,
         int $offsetX,
         int $offsetY,
         float $latitude,
@@ -132,7 +148,6 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
             $inseeCode,
             $postalCodes,
             $cityName,
-            $zone,
             $offsetX,
             $offsetY,
             $latitude,
