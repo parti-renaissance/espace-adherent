@@ -41,9 +41,9 @@ class AdherentZoneBasedRole
         $this->zones = new ArrayCollection();
     }
 
-    public static function createJeMengageAdmin(Zone $zone): self
+    public static function createCorrespondent(Zone $zone): self
     {
-        $role = new self(ScopeEnum::JEMENGAGE_ADMIN);
+        $role = new self(ScopeEnum::CORRESPONDENT);
         $role->addZone($zone);
 
         return $role;

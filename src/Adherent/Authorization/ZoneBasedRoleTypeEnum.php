@@ -8,11 +8,11 @@ use App\Scope\ScopeEnum;
 final class ZoneBasedRoleTypeEnum
 {
     public const ALL = [
-        ScopeEnum::JEMENGAGE_ADMIN,
+        ScopeEnum::CORRESPONDENT,
     ];
 
     public const ZONE_TYPES = [
-        ScopeEnum::JEMENGAGE_ADMIN => [
+        ScopeEnum::CORRESPONDENT => [
             Zone::DEPARTMENT,
         ],
     ];

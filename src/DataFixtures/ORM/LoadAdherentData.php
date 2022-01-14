@@ -1063,7 +1063,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
-        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createJeMengageAdmin(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
+        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createCorrespondent(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => Uuid::uuid4(),
