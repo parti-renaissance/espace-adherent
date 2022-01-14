@@ -10,7 +10,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class RiposteOpenGraph extends Constraint
 {
-    public $message = 'riposte.open_graph.can_not_fetch';
+    public $noOpenGraphMessage = 'riposte.open_graph.can_not_fetch';
+    public $emptyOpenGraphTitleMessage = 'riposte.open_graph.empty_title';
+    public $emptyOpenGraphDescriptionMessage = 'riposte.open_graph.empty_description';
 
     public function getTargets()
     {

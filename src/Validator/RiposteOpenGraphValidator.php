@@ -28,10 +28,33 @@ class RiposteOpenGraphValidator extends ConstraintValidator
             return;
         }
 
-        if (empty($value->getOpenGraph())) {
+        $openGraph = $value->getOpenGraph();
+        if (empty($openGraph) || empty($openGraph['description'])) {
             $this
                 ->context
-                ->buildViolation($constraint->message)
+                ->buildViolation($constraint->noOpenGraphMessage)
+                ->atPath('sourceUrl')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if (!isset($openGraph['title']) || empty($openGraph['title'])) {
+            $this
+                ->context
+                ->buildViolation($constraint->emptyOpenGraphTitleMessage)
+                ->atPath('sourceUrl')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if (!isset($openGraph['description']) || empty($openGraph['description'])) {
+            $this
+                ->context
+                ->buildViolation($constraint->emptyOpenGraphDescriptionMessage)
                 ->atPath('sourceUrl')
                 ->addViolation()
             ;
