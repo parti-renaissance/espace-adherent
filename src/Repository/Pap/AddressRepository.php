@@ -4,12 +4,15 @@ namespace App\Repository\Pap;
 
 use App\Entity\Pap\Address;
 use App\Entity\Pap\Campaign;
+use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class AddressRepository extends ServiceEntityRepository
 {
+    use GeoZoneTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Address::class);
@@ -80,8 +83,27 @@ SQL;
 
     public function countByPapCampaign(Campaign $campaign): int
     {
-        return (int) $this->createQueryBuilder('address')
-            ->select('COUNT(1)')
+        if ($campaign->isNationalVisibility()) {
+            return (int) $this->createQueryBuilder('address')
+                ->select('COUNT(1)')
+                ->getQuery()
+                ->getSingleScalarResult()
+            ;
+        }
+
+        $qb = $this->createQueryBuilder('address');
+        $qb = $this->withGeoZones(
+            [$campaign->getZone()],
+            $qb,
+            'address',
+            Address::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        return (int) $qb
+            ->select('COUNT(DISTINCT address.id)')
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -89,7 +111,26 @@ SQL;
 
     public function countVotersByPapCampaign(Campaign $campaign): int
     {
-        return (int) $this->createQueryBuilder('address')
+        if ($campaign->isNationalVisibility()) {
+            return (int) $this->createQueryBuilder('address')
+                ->select('SUM(address.votersCount)')
+                ->getQuery()
+                ->getSingleScalarResult()
+            ;
+        }
+
+        $qb = $this->createQueryBuilder('address');
+        $qb = $this->withGeoZones(
+            [$campaign->getZone()],
+            $qb,
+            'address',
+            Address::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        return (int) $qb
             ->select('SUM(address.votersCount)')
             ->getQuery()
             ->getSingleScalarResult()
