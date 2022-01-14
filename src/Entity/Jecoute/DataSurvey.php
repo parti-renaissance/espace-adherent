@@ -16,7 +16,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="jecoute_data_survey")
+ * @ORM\Table(name="jecoute_data_survey", indexes={
+ *     @ORM\Index(columns={"author_postal_code"}),
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\DataSurveyRepository")
  */
 class DataSurvey implements AuthorInterface

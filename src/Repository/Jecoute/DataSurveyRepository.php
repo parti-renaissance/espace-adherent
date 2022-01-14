@@ -115,9 +115,9 @@ class DataSurveyRepository extends ServiceEntityRepository
         ;
     }
 
-    public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
+    public function iterateForSurvey(Survey $survey, array $zones = [], array $departmentCodes = []): IterableResult
     {
-        return $this->createSurveyQueryBuilder($survey, $zones)
+        return $this->createSurveyQueryBuilder($survey, $zones, $departmentCodes)
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->iterate()
@@ -130,10 +130,11 @@ class DataSurveyRepository extends ServiceEntityRepository
     public function findDataSurveyForSurvey(
         Survey $survey,
         array $zones = [],
+        array $departmentCodes = [],
         int $page = 1,
         ?int $limit = 30
     ): iterable {
-        $queryBuilder = $this->createSurveyQueryBuilder($survey, $zones);
+        $queryBuilder = $this->createSurveyQueryBuilder($survey, $zones, $departmentCodes);
 
         if (!$limit) {
             return $queryBuilder->getQuery()->getResult();
@@ -181,8 +182,11 @@ class DataSurveyRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createSurveyQueryBuilder(Survey $survey, array $zones = []): QueryBuilder
-    {
+    private function createSurveyQueryBuilder(
+        Survey $survey,
+        array $zones = [],
+        array $departmentCodes = []
+    ): QueryBuilder {
         $qb = $this->createQueryBuilder('ds')
             ->addSelect('jemarcheDataSurvey')
             ->addSelect('partial phoningCampaignHistory.{id, uuid, beginAt, finishAt}')
@@ -206,6 +210,15 @@ class DataSurveyRepository extends ServiceEntityRepository
                 ->andWhere('zone IN (:zones) OR parent IN (:zones)')
                 ->setParameter('zones', $zones)
             ;
+        }
+
+        if ($departmentCodes) {
+            $postalCodeExpression = $qb->expr()->orX();
+            foreach ($departmentCodes as $key => $code) {
+                $postalCodeExpression->add("ds.authorPostalCode LIKE :code_$key");
+                $qb->setParameter("code_$key", "$code%");
+            }
+            $qb->andWhere($postalCodeExpression);
         }
 
         return $qb;
