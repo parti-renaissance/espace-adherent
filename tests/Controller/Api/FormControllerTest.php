@@ -150,9 +150,7 @@ class FormControllerTest extends WebTestCase
             "/api/form/validate/$urlKey",
             $requestParams,
             [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         static::assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

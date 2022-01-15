@@ -16,7 +16,6 @@ use App\Event\EventTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -37,9 +36,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
      */
     private $committee;
 
-    /**
-     * @JMS\Exclude
-     */
     private $type;
 
     /**
@@ -131,11 +127,9 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("committeeUuid")
-     * @JMS\Groups({"event_read"})
+     * @Groups({"event_sync"})
      */
-    public function getCommitteeUuidAsString(): ?string
+    public function getCommitteeUuid(): ?string
     {
         if (!$committee = $this->getCommittee()) {
             return null;
@@ -145,11 +139,9 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("categoryName")
-     * @JMS\Groups({"event_read"})
+     * @Groups({"event_sync"})
      */
-    public function getEventCategoryName(): ?string
+    public function getCategoryName(): ?string
     {
         if (!$category = $this->getCategory()) {
             return null;
@@ -164,9 +156,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("organizerUuid")
-     * @JMS\Groups({"event_read"})
+     * @Groups({"event_sync"})
      */
     public function getOrganizerUuid(): ?string
     {

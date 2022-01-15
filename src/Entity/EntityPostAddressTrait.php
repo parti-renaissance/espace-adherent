@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
@@ -33,10 +32,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "committee_read"})
-     * @JMS\VirtualProperty
-     *
-     * @SymfonySerializer\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"user_profile", "adherent_change_diff", "committee_sync"})
      */
     public function getCountry(): ?string
     {
@@ -49,8 +45,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read"})
-     * @JMS\VirtualProperty
+     * @SymfonySerializer\Groups({"committee_sync"})
      */
     public function getAddress(): ?string
     {
@@ -58,11 +53,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "user_profile", "committee_read"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("zipCode")
-     *
-     * @SymfonySerializer\Groups({"user_profile", "export", "adherent_autocomplete"})
+     * @SymfonySerializer\Groups({"adherent_change_diff", "user_profile", "committee_sync", "export", "adherent_autocomplete"})
      */
     public function getPostalCode(): ?string
     {
@@ -70,9 +61,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "committee_read"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("city")
+     * @SymfonySerializer\Groups({"adherent_change_diff", "committee_sync"})
      */
     public function getCityName(): ?string
     {
@@ -90,9 +79,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("latitude")
+     * @SymfonySerializer\Groups({"committee_sync"})
      */
     public function getLatitude(): ?float
     {
@@ -100,9 +87,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"committee_read"})
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("longitude")
+     * @SymfonySerializer\Groups({"committee_sync"})
      */
     public function getLongitude(): ?float
     {

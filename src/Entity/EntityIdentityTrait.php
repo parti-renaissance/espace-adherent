@@ -50,6 +50,7 @@ trait EntityIdentityTrait
      *     "message_read",
      *     "event_list_read",
      *     "event_read",
+     *     "event_sync",
      *     "audience_read",
      *     "audience_list_read",
      *     "riposte_list_read",
@@ -81,6 +82,8 @@ trait EntityIdentityTrait
      *     "pap_campaign_replies_list",
      *     "survey_replies_list",
      *     "jecoute_resource_links_read",
+     *     "committee_sync",
+     *     "adherent_change_diff",
      * })
      *
      * @ApiProperty(

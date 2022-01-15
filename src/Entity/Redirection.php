@@ -4,15 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="redirections")
  * @ORM\Entity(repositoryClass="App\Repository\RedirectionRepository")
  * @ORM\EntityListeners({"App\EntityListener\RedirectionListener"})
- *
- * @Serializer\ExclusionPolicy("all")
  */
 class Redirection
 {
@@ -32,8 +29,6 @@ class Redirection
      *
      * @Assert\NotBlank
      * @Assert\Length(max=10000)
-     *
-     * @Serializer\Expose
      */
     private $from;
 
@@ -44,8 +39,6 @@ class Redirection
      *
      * @Assert\NotBlank
      * @Assert\Length(max=10000)
-     *
-     * @Serializer\Expose
      */
     private $to;
 
@@ -56,8 +49,6 @@ class Redirection
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices={301, 302})
-     *
-     * @Serializer\Expose
      */
     private $type;
 

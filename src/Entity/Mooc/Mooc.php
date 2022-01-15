@@ -10,8 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,7 +40,7 @@ class Mooc
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @JMS\Groups({"mooc_list"})
+     * @Groups({"mooc_list"})
      */
     private $title;
 
@@ -49,7 +49,7 @@ class Mooc
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @JMS\Groups({"mooc_list"})
+     * @Groups({"mooc_list"})
      */
     private $description;
 
@@ -57,7 +57,7 @@ class Mooc
      * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
      *
-     * @JMS\Groups({"mooc_list"})
+     * @Groups({"mooc_list"})
      */
     private $slug;
 
@@ -229,13 +229,11 @@ class Mooc
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("chapter_count"),
-     * @JMS\Groups({"mooc_list"})
+     * @Groups({"mooc_list"})
      */
-    public function countChapters(): int
+    public function getChapterCount(): int
     {
-        return \count($this->chapters);
+        return $this->chapters->count();
     }
 
     public function addChapter(Chapter $chapter): void

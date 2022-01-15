@@ -4,10 +4,9 @@ namespace App\Committee\EventListener;
 
 use App\Committee\CommitteeEvent;
 use App\Events;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CommitteeSubscriber implements EventSubscriberInterface
 {
@@ -42,7 +41,7 @@ class CommitteeSubscriber implements EventSubscriberInterface
         return $this->serializer->serialize(
             $event->getCommittee(),
             'json',
-            SerializationContext::create()->setGroups(['committee_read'])
+            ['groups' => ['committee_sync']]
         );
     }
 

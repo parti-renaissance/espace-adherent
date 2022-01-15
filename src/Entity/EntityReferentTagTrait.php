@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @deprecated Use {@see App\Entity\EntityZoneTrait} instead
@@ -44,9 +45,8 @@ trait EntityReferentTagTrait
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("tags")
-     * @JMS\Groups({"committee_read", "event_read"})
+     * @Groups({"committee_sync", "event_sync"})
+     * @SerializedName("tags")
      */
     public function getReferentTagsCodes(): array
     {

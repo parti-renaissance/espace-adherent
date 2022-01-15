@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMSSerializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,8 +51,7 @@ class ReferentTag
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      *
-     * @JMSSerializer\Groups({"adherent_change_diff"})
-     * @SymfonySerializer\Groups({"read_api"})
+     * @SymfonySerializer\Groups({"read_api", "adherent_change_diff"})
      */
     private $code;
 

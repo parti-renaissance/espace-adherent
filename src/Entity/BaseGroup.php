@@ -5,10 +5,10 @@ namespace App\Entity;
 use App\Entity\Report\ReportableInterface;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * An abstract group class.
@@ -32,7 +32,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @ORM\Column(length=20)
      *
-     * @JMS\Groups({"committee_read"})
+     * @Groups({"committee_sync"})
      */
     protected $status;
 
@@ -67,8 +67,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @JMS\Groups({"committee_read"})
-     * @JMS\SerializedName("membersCount")
+     * @Groups({"committee_sync"})
      */
     protected $membersCount;
 
@@ -191,11 +190,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
         return $this->uuid->equals($other->getUuid());
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid"),
-     * @JMS\Groups({"committee_read"})
-     */
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();

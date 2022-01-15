@@ -54,7 +54,6 @@
         "h4cc/wkhtmltoimage-amd64": "^0.12.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "imagine/imagine": "^0.7",
-        "jms/serializer-bundle": "^2.1",
         "knplabs/doctrine-behaviors": "^2.0.0",
         "knplabs/knp-snappy-bundle": "^1.5",
         "knplabs/knp-time-bundle": "^1.7",

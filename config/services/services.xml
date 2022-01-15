@@ -60,11 +60,6 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
 
-        <!-- Serializer -->
-        <service id="App\Serializer\MoocSerializerSubscriber">
-            <tag name="jms_serializer.event_subscriber" />
-        </service>
-
         <!-- Timeline -->
         <service id="App\Timeline\TimelineImageFactory">
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
