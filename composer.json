@@ -44,7 +44,7 @@
         "egulias/email-validator": "^3.0",
         "endroid/qr-code-bundle": "^3.4.2",
         "enmarche/majority-judgment": "^0.0.3",
-        "exercise/htmlpurifier-bundle": "^1.0",
+        "exercise/htmlpurifier-bundle": "^3.1",
         "facebook/graph-sdk": "^5.4",
         "fusonic/opengraph": "^2.1",
         "geocoder-php/google-maps-provider": "^4.5",
@@ -190,12 +190,17 @@
         "symfony/polyfill-php56": "*",
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php73": "*"
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*"
     },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/ottaviano/cartographer"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ottaviano/HTMLPurifierBundle"
         }
     ],
     "conflict": {

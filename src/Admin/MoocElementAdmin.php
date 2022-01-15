@@ -50,7 +50,7 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
                     ->add('content', PurifiedTextareaType::class, [
                         'label' => 'Contenu',
                         'attr' => ['class' => 'ck-editor-advanced'],
-                        'purifier_type' => 'enrich_content',
+                        'purify_html_profile' => 'enrich_content',
                     ])
                     ->add('chapter', EntityType::class, [
                         'class' => Chapter::class,
@@ -78,7 +78,7 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
                     ->add('shareEmailBody', PurifiedTextareaType::class, [
                         'label' => 'Corps de l\'email de partage',
                         'attr' => ['rows' => 5, 'maxlength' => 500],
-                        'purifier_type' => 'enrich_content',
+                        'purify_html_profile' => 'enrich_content',
                     ])
                 ->end()
                 ->with('Liens attachés', ['class' => 'col-md-6'])

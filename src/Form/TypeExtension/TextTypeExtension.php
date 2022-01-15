@@ -19,7 +19,7 @@ class TextTypeExtension extends AbstractTypeExtension
         return TextType::class;
     }
 
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [TextType::class];
     }

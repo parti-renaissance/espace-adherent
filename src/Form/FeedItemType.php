@@ -19,7 +19,7 @@ class FeedItemType extends AbstractType
                     'maxlength' => 6000,
                     'placeholder' => 'Écrivez ici votre message',
                 ],
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'with_character_count' => true,
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])

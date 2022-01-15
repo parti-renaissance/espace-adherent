@@ -53,7 +53,7 @@ class EditDesignationType extends AbstractType
             ->add('description', PurifiedTextareaType::class, [
                 'attr' => ['maxlength' => 2000],
                 'with_character_count' => true,
-                'purifier_type' => 'basic_content',
+                'purify_html_profile' => 'basic_content',
             ])
             ->add('save', SubmitType::class)
         ;

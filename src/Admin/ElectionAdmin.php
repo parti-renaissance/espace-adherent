@@ -20,19 +20,19 @@ class ElectionAdmin extends AbstractAdmin
             ])
             ->add('introduction', PurifiedTextareaType::class, [
                 'label' => 'Introduction',
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'attr' => ['class' => 'ck-editor'],
             ])
             ->add('proposalContent', PurifiedTextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les propositions',
                 'required' => false,
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'attr' => ['class' => 'ck-editor'],
             ])
             ->add('requestContent', PurifiedTextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les demandes',
                 'required' => false,
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'attr' => ['class' => 'ck-editor'],
             ])
             ->add('rounds', CollectionType::class, [

@@ -34,7 +34,7 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
                     ->add('content', PurifiedTextareaType::class, [
                         'label' => 'Contenu',
                         'attr' => ['class' => 'ck-editor'],
-                        'purifier_type' => 'enrich_content',
+                        'purify_html_profile' => 'enrich_content',
                     ])
                 ->end()
                 ->with('Boutons de partage', ['class' => 'col-md-4'])
@@ -50,7 +50,7 @@ class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
                     ->add('shareEmailBody', PurifiedTextareaType::class, [
                         'label' => 'Corps de l\'email de partage',
                         'attr' => ['rows' => 5, 'maxlength' => 500],
-                        'purifier_type' => 'enrich_content',
+                        'purify_html_profile' => 'enrich_content',
                     ])
                 ->end()
         ;
