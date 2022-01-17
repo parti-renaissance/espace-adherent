@@ -12,6 +12,7 @@ twig:
         google_maps_api_key:    "%env(GMAPS_API_KEY)%"
         algolia_app_id:         "%env(ALGOLIA_APP_ID)%"
         algolia_api_key:        "%env(ALGOLIA_FRONT_API_KEY)%"
+        algolia_index_prefix:   "%env(ALGOLIA_INDEX_PREFIX)%"
         url_legacy:             "https://adherents.en-marche.fr"
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
         legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"

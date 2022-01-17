@@ -60,7 +60,7 @@ export default (di) => {
             appId={appId}
             appKey={appKey}
             blacklist={di.get('algoliaBlacklist')}
-            environment={di.get('environment')}
+            environment={di.get('algoliaIndexPrefix')}
         />,
         searchEngine
     );

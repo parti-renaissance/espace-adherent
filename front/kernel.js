@@ -9,7 +9,7 @@ import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
 window.Kernel = class {
-    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist, user) {
+    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist, algoliaIndexPrefix, user) {
         let app = false;
         let vendor = false;
 
@@ -40,6 +40,7 @@ window.Kernel = class {
                     algoliaAppId,
                     algoliaAppPublicKey,
                     algoliaBlacklist: decode(algoliaBlacklist).split(','),
+                    algoliaIndexPrefix,
                 });
             }
         };
