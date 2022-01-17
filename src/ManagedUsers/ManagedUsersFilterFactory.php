@@ -2,31 +2,27 @@
 
 namespace App\ManagedUsers;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
-use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\Filter\ManagedUsersFilterFactoryInterface;
+use App\Scope\GeneralScopeGenerator;
 
 class ManagedUsersFilterFactory
 {
-    private $managedZoneProvider;
-    /** @var ManagedUsersFilterFactoryInterface[] */
-    private $factories;
+    /** @var iterable|ManagedUsersFilterFactoryInterface[] */
+    private iterable $factories;
+    private GeneralScopeGenerator $scopeGenerator;
 
-    public function __construct(ManagedZoneProvider $managedZoneProvider, iterable $factories)
+    public function __construct(GeneralScopeGenerator $scopeGenerator, iterable $factories)
     {
-        $this->managedZoneProvider = $managedZoneProvider;
+        $this->scopeGenerator = $scopeGenerator;
         $this->factories = $factories;
     }
 
-    public function create(string $spaceCode, Adherent $adherent): ?ManagedUsersFilter
+    public function createForZones(string $scopeCode, array $zones): ?ManagedUsersFilter
     {
         foreach ($this->factories as $factory) {
-            if ($factory->support($spaceCode)) {
-                return $factory->create(
-                    $adherent,
-                    $this->managedZoneProvider->getManagedZones($adherent, $spaceCode)
-                );
+            if ($factory->support($scopeCode)) {
+                return $factory->create($zones);
             }
         }
 
@@ -35,10 +31,8 @@ class ManagedUsersFilterFactory
 
     public function createForScope(string $scopeCode, Adherent $adherent): ?ManagedUsersFilter
     {
-        if (!isset(AdherentSpaceEnum::SCOPES[$scopeCode])) {
-            return null;
-        }
+        $scope = $this->scopeGenerator->getGenerator($scopeCode, $adherent)->generate($adherent);
 
-        return $this->create(AdherentSpaceEnum::SCOPES[$scopeCode], $adherent);
+        return $this->createForZones($scopeCode, $scope->getZones());
     }
 }

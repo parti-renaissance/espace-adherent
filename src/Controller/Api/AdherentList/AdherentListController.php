@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\AdherentList;
 
+use App\Entity\Adherent;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
 use App\Normalizer\ManagedUserNormalizer;
@@ -46,6 +47,7 @@ class AdherentListController extends AbstractController
         $this->denormalizer = $denormalizer;
     }
 
+    /** @param UserInterface|Adherent $user */
     public function __invoke(Request $request, UserInterface $user): Response
     {
         try {
@@ -56,8 +58,8 @@ class AdherentListController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $scopeCode = $this->authorizationChecker->getScope($request);
-        $filter = $this->filterFactory->createForScope($scopeCode, $user);
+        $scopeGenerator = $this->authorizationChecker->getScopeGenerator($request, $user);
+        $filter = $this->filterFactory->createForZones($scopeGenerator->getCode(), $scopeGenerator->generate($user)->getZones());
 
         $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

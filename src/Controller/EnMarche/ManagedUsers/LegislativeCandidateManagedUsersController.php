@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\AdherentSpace\AdherentSpaceEnum;
+use App\Scope\ScopeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,5 +17,10 @@ class LegislativeCandidateManagedUsersController extends AbstractManagedUsersCon
     protected function getSpaceType(): string
     {
         return AdherentSpaceEnum::LEGISLATIVE_CANDIDATE;
+    }
+
+    protected function getScopeCode(): string
+    {
+        return ScopeEnum::CANDIDATE;
     }
 }

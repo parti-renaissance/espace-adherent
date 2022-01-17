@@ -68,9 +68,14 @@ abstract class AbstractManagedUsersController extends AbstractController
 
     abstract protected function getSpaceType(): string;
 
+    abstract protected function getScopeCode(): string;
+
     protected function createFilterModel(SessionInterface $session, Adherent $adherent): ManagedUsersFilter
     {
-        $model = $this->filterFactory->create($this->getSpaceType(), $adherent);
+        $model = $this->filterFactory->createForZones(
+            $this->getScopeCode(),
+            $this->managedZoneProvider->getManagedZones($adherent, $this->getSpaceType())
+        );
 
         $model->setCommitteeUuids($this->getRestrictedCommittees($session));
         $model->setCities($this->getRestrictedCities($session));

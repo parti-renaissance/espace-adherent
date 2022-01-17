@@ -2,14 +2,14 @@
 
 namespace App\ManagedUsers\Filter;
 
-use App\AdherentSpace\AdherentSpaceEnum;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
 class CandidateFilterFactory extends AbstractFilterFactory
 {
-    public function support(string $spaceCode): bool
+    public function support(string $scopeCode): bool
     {
-        return \in_array($spaceCode, [AdherentSpaceEnum::CANDIDATE, AdherentSpaceEnum::LEGISLATIVE_CANDIDATE], true);
+        return ScopeEnum::CANDIDATE === $scopeCode;
     }
 
     protected function getSubscriptionType(): string
