@@ -34,30 +34,23 @@ class CampaignRepository extends ServiceEntityRepository
                 'campaignHistory.door IS NOT NULL'
             )
             ->leftJoin('campaignHistory.dataSurvey', 'dataSurvey')
+            ->where('campaign.visibility = :visibility')
             ->setParameters([
                 'now' => new \DateTime(),
                 'last_30d' => new \DateTime('-30 days'),
+                'visibility' => !empty($zones) ? ScopeVisibilityEnum::LOCAL : ScopeVisibilityEnum::NATIONAL,
             ])
         ;
 
         if (!empty($zones)) {
             $qb
-                ->andWhere('campaign.visibility = :visibility')
-                ->setParameter('visibility', ScopeVisibilityEnum::LOCAL)
                 ->innerJoin('campaign.zone', 'zone')
                 ->leftJoin('zone.parents', 'zone_parent')
                 ->andWhere('zone IN (:zones) OR zone_parent IN (:zones)')
-            ;
-        } else {
-            $qb
-                ->andWhere('campaign.visibility = :visibility')
-                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
+                ->setParameter('zones', $zones)
             ;
         }
 
-        return $qb
-            ->getQuery()
-            ->getSingleResult()
-        ;
+        return $qb->getQuery()->getSingleResult();
     }
 }
