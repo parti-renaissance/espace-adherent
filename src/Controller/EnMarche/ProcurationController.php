@@ -15,6 +15,7 @@ use App\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -188,6 +189,10 @@ class ProcurationController extends AbstractController
     {
         if ($privateToken !== $request->generatePrivateToken()) {
             throw $this->createNotFoundException('Invalid token.');
+        }
+
+        if (!$request->isEnabled()) {
+            throw new BadRequestHttpException();
         }
 
         return $this->render('procuration/request/my_request.html.twig', [

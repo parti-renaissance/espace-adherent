@@ -352,6 +352,13 @@ class ProcurationRequest
      */
     public $reachable = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Assert\Type("bool")
+     */
+    private bool $enabled = false;
+
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
@@ -745,5 +752,15 @@ class ProcurationRequest
     public function setState(?string $state): void
     {
         $this->state = $state;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }
