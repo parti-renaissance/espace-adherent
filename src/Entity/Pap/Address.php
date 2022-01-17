@@ -101,14 +101,14 @@ class Address
     /**
      * @ORM\Column(type="geo_point", nullable=true)
      *
-     * @Groups({"pap_address_list"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?float $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
      *
-     * @Groups({"pap_address_list"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?float $longitude;
 
@@ -136,7 +136,7 @@ class Address
      *     orphanRemoval=true
      * )
      *
-     * @Groups({"pap_address_list"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     private ?Building $building = null;
 
