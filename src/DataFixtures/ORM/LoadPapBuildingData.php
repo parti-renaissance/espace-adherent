@@ -27,12 +27,14 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
     public const BUILDING_02_UUID = 'faf30370-80c5-4a46-8c31-f6a361bfa23b';
     public const BUILDING_03_UUID = '2bffd913-34fe-48ad-95f4-7381812b93dd';
     public const BUILDING_04_UUID = '0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f';
+    public const BUILDING_05_UUID = '22f94373-6186-4c6a-a3d5-fd0b8b3d92cf';
 
     public const BUILDING_BLOCK_01_UUID = '40c972e7-3ae9-45d7-8d18-4df636382a01';
     public const BUILDING_BLOCK_02_UUID = '55fc7719-d1a8-47c5-a08a-812e7ce1d6dc';
     public const BUILDING_BLOCK_03_UUID = 'd2a9605a-7f03-49f8-956b-3870cb77dad4';
     public const BUILDING_BLOCK_04_UUID = '734d965b-0b3a-4258-a32e-0fca71a451e7';
     public const BUILDING_BLOCK_05_UUID = '19e469ea-f56d-4f1d-a942-b4cc368aed8b';
+    public const BUILDING_BLOCK_06_UUID = '817722ed-0396-444f-987a-d4d336242e41';
 
     public const FLOOR_01_UUID = 'bc407152-703a-4a08-ba70-27fcb87329c8';
     public const FLOOR_02_UUID = '7fb64baa-48be-4e55-8955-f9100f79143f';
@@ -46,6 +48,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
     {
         $events = [];
         $campaign1 = $this->getReference('pap-campaign-1');
+        $campaign92 = $this->getReference('pap-campaign-92');
         $building = new Building(Uuid::fromString(self::BUILDING_01_UUID));
         $building->setType(BuildingTypeEnum::BUILDING);
         $building->setAddress($this->getReference('address-1'));
@@ -134,6 +137,21 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             $events
         );
         $this->addReference('building-4', $building);
+        $manager->persist($building);
+
+        $building = new Building(Uuid::fromString(self::BUILDING_05_UUID));
+        $building->setType(BuildingTypeEnum::BUILDING);
+        $building->setAddress($this->getReference('address-92-1'));
+        $building->setCurrentCampaign($campaign92);
+        $building->addStatistic(new BuildingStatistics($building, $campaign92));
+        $this->createBuildingBlock(
+            self::BUILDING_BLOCK_06_UUID,
+            'A',
+            $building,
+            [$this->getReference('pap-campaign-92')],
+            $events
+        );
+        $this->addReference('building-92-1', $building);
         $manager->persist($building);
 
         foreach ($events as $event) {

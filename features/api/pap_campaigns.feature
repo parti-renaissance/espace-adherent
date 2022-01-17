@@ -221,59 +221,129 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a user granted with local scope, I can get the list of local campaigns in the zones I am manager of
+  Scenario: As a user granted with local scope, I can get the list of national and local campaigns in the zones I am manager of
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent&page_size=10"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
-      "metadata": {
-        "total_items": 2,
-        "items_per_page": 2,
-        "count": 2,
-        "current_page": 1,
-        "last_page": 1
-      },
-      "items": [
-        {
-          "title": "Campagne locale du département 92",
-          "brief": null,
-          "goal": 100,
-          "begin_at": "@string@.isDateTime()",
-          "finish_at": "@string@.isDateTime()",
-          "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
-          "visibility": "local",
-          "zone": {
-            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-            "code": "92",
-            "name": "Hauts-de-Seine"
-          },
-          "nb_surveys": 0,
-          "nb_visited_doors": 0,
-          "nb_addresses": 1,
-          "nb_voters": 0
+        "metadata": {
+            "total_items": 7,
+            "items_per_page": 10,
+            "count": 7,
+            "current_page": 1,
+            "last_page": 1
         },
-        {
-          "title": "Campagne locale de la ville de Lille (59350)",
-          "brief": null,
-          "goal": 100,
-          "begin_at": "@string@.isDateTime()",
-          "finish_at": "@string@.isDateTime()",
-          "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
-          "visibility": "local",
-          "zone": {
-            "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
-            "code": "59350",
-            "name": "Lille"
-          },
-          "nb_surveys": 0,
-          "nb_visited_doors": 0,
-          "nb_addresses": 0,
-          "nb_voters": 0
-        }
-      ]
+        "items": [
+            {
+                "title": "Campagne de 10 jours suivants",
+                "brief": "**Campagne** de 10 jours suivants",
+                "goal": 600,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 3,
+                "nb_visited_doors": 5,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne de 5 jours suivants",
+                "brief": "**Campagne** de 5 jours suivants",
+                "goal": 500,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 1,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne dans 10 jours",
+                "brief": "### Campagne dans 10 jours",
+                "goal": 400,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne dans 20 jours",
+                "brief": "### Campagne dans 20 jours",
+                "goal": 400,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne termin\u00e9e",
+                "brief": null,
+                "goal": 100,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 1,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne locale du d\u00e9partement 92",
+                "brief": null,
+                "goal": 100,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+                "visibility": "local",
+                "zone": {
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                    "code": "92",
+                    "name": "Hauts-de-Seine"
+                },
+                "nb_surveys": 0,
+                "nb_visited_doors": 1,
+                "nb_addresses": 1,
+                "nb_voters": 0
+            },
+            {
+                "title": "Campagne locale de la ville de Lille (59350)",
+                "brief": null,
+                "goal": 100,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
+                "visibility": "local",
+                "zone": {
+                    "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+                    "code": "59350",
+                    "name": "Lille"
+                },
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 0,
+                "nb_voters": 0
+            }
+        ]
     }
     """
 
@@ -298,7 +368,7 @@ Feature:
         "name": "Hauts-de-Seine"
       },
       "nb_surveys": 0,
-      "nb_visited_doors": 0,
+      "nb_visited_doors": 1,
       "nb_addresses": 1,
       "nb_voters": 0,
       "nb_collected_contacts": 0,
@@ -1214,7 +1284,7 @@ Feature:
     ]
     """
 
-  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories
+  Scenario: As a PAP national manager I can get the list of PAP campaign histories
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&page_size=10"
     Then the response status code should be 200
@@ -1457,7 +1527,299 @@ Feature:
     }
     """
 
-  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by questioner
+  Scenario: As a referent I can get the list of PAP campaign histories
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=referent&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 10,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule",
+                    "age": 57
+                },
+                "campaign": {
+                    "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "92",
+                        "address": "Boulevard Victor Hugo",
+                        "postal_codes": [
+                            "92024"
+                        ],
+                        "city_name": "Clichy",
+                        "uuid": "d2c0d38c-2224-41c2-acb5-78b5dad06819"
+                    },
+                    "uuid": "22f94373-6186-4c6a-a3d5-fd0b8b3d92cf"
+                },
+                "status": "door_closed",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 0
+            }
+        ]
+    }
+    """
+    When I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=referent&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 7,
+            "items_per_page": 10,
+            "count": 7,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "age": 68
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "door_open",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 900
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "age": 68
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "dont_accept_to_answer",
+                "building_block": "A",
+                "floor": 0,
+                "door": "02",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 60
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "11",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "12",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 420
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "13",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 0
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule",
+                    "age": 57
+                },
+                "campaign": {
+                    "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 3,
+                "door": "33",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule",
+                    "age": 57
+                },
+                "campaign": {
+                    "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "contact_later",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 140
+            }
+        ]
+    }
+    """
+
+  Scenario: As a PAP national manager I can get the list of PAP campaign histories filtered by questioner
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&questioner=Patrick"
     Then the response status code should be 200
@@ -1540,7 +1902,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by status
+  Scenario: As a PAP national manager I can get the list of PAP campaign histories filtered by status
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&status=contact_later"
     Then the response status code should be 200
@@ -1623,7 +1985,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC PAP national manager I can get the list of PAP campaign histories filtered by begin date
+  Scenario: As a PAP national manager I can get the list of PAP campaign histories filtered by begin date
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&createdAt[after]=2021-11-09&createdAt[before]=2021-12-11"
     Then the response status code should be 200
@@ -1674,7 +2036,7 @@ Feature:
     }
     """
 
-  Scenario:  As a DC PAP national manager I can get the list of a campaign replies
+  Scenario:  As a PAP national manager I can get the list of a campaign replies
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=pap_national_manager&page_size=10"
     Then the response status code should be 200
@@ -1814,7 +2176,165 @@ Feature:
     }
     """
 
-  Scenario: As a DC PAP national manger I can get PAP campaigns KPI
+  Scenario:  As a referent I can get the list of a national campaign replies of my managed zones
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=referent&page_size=10"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 3,
+            "items_per_page": 10,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "pap_campaign_history": {
+                    "questioner": {
+                        "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                        "first_name": "Patrick",
+                        "last_name": "Bialès",
+                        "age": @integer@,
+                        "gender": "male"
+                    },
+                    "first_name": null,
+                    "last_name": null,
+                    "gender": null,
+                    "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "duration": 0
+                },
+                "uuid": "@uuid@",
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
+                        "answer": "Nouvelles technologies"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
+                        "answer": [
+                            "L'héritage laissé aux générations futures",
+                            "Le bien-être sanitaire"
+                        ]
+                    }
+                ]
+            },
+            {
+                "uuid": "@uuid@",
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "pap_campaign_history": {
+                    "questioner": {
+                        "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                        "first_name": "Patrick",
+                        "last_name": "Bialès",
+                        "age": @integer@,
+                        "gender": "male"
+                    },
+                    "first_name": null,
+                    "last_name": null,
+                    "gender": null,
+                    "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "duration": 420
+                },
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
+                        "answer": "Les ressources énergétiques"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
+                        "answer": [
+                            "L'aspect financier",
+                            "La préservation de l'environnement"
+                        ]
+                    }
+                ]
+            },
+            {
+                "uuid": "@uuid@",
+                "survey": {
+                    "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                    "name": "Les enjeux des 10 prochaines années",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "pap_campaign_history": {
+                    "questioner": {
+                        "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                        "first_name": "Patrick",
+                        "last_name": "Bialès",
+                        "age": @integer@,
+                        "gender": "male"
+                    },
+                    "first_name": null,
+                    "last_name": null,
+                    "gender": null,
+                    "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "begin_at": "@string@.isDateTime()",
+                    "finish_at": "@string@.isDateTime()",
+                    "duration": 300
+                },
+                "answers": [
+                    {
+                        "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
+                        "type": "simple_field",
+                        "answer": "Vie publique, répartition des pouvoirs et démocratie"
+                    },
+                    {
+                        "question": "L'écologie est selon vous, importante pour :",
+                        "type": "multiple_choice",
+                        "answer": [
+                            "L'héritage laissé aux générations futures",
+                            "Le bien-être sanitaire"
+                        ]
+
+                    }
+                ]
+            }
+        ]
+    }
+    """
+
+    Scenario:  As a referent I get an empty list of a national campaign replies, if no replies in my managed zones
+      Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+      When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=referent"
+      Then the response status code should be 200
+      And the JSON should be equal to:
+      """
+      {
+          "metadata": {
+              "total_items": 0,
+              "items_per_page": 30,
+              "count": 0,
+              "current_page": 1,
+              "last_page": 1
+          },
+          "items": []
+      }
+      """
+
+  Scenario: As a PAP national manger I can get PAP campaigns KPI
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=pap_national_manager"
     Then the response status code should be 200
@@ -1830,7 +2350,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get PAP campaigns KPI
+  Scenario: As a referent I can get PAP campaigns KPI
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=referent"
     Then the response status code should be 200
@@ -1846,7 +2366,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC PAP national manager I can get a PAP questioners with their stats
+  Scenario: As a PAP national manager I can get a PAP questioners with their stats
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=pap_national_manager"
     Then the response status code should be 200
@@ -1897,6 +2417,36 @@ Feature:
             "count": 1,
             "current_page": 2,
             "last_page": 2
+        },
+        "items": [
+            {
+                "first_name": "Jacques",
+                "last_name": "Picard",
+                "nb_visited_doors": "2",
+                "nb_surveys": "0",
+                "nb_accept_to_answer": "0",
+                "nb_dont_accept_to_answer": "1",
+                "nb_contact_later": "0",
+                "nb_door_open": "1",
+                "door_closed": "0"
+            }
+        ]
+    }
+    """
+
+  Scenario: As a referent I can get a PAP questioners with their stats
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 100,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
         },
         "items": [
             {

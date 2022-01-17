@@ -105,6 +105,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             0,
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
         );
+        $this->addReference('pap-campaign-92', $campaign92);
 
         $campaign59350 = $this->createCampaign(
             self::CAMPAIGN_7_UUID,

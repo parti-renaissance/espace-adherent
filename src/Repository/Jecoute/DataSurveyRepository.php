@@ -6,10 +6,12 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
+use App\Entity\Pap\Address;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\Phoning\Campaign as PhoningCampaign;
+use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -21,6 +23,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class DataSurveyRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -75,8 +78,12 @@ class DataSurveyRepository extends ServiceEntityRepository
     /**
      * @return DataSurvey[]|PaginatorInterface|iterable
      */
-    public function findPapCampaignDataSurveys(PapCampaign $campaign, int $page = 1, ?int $limit = 30): iterable
-    {
+    public function findPapCampaignDataSurveys(
+        PapCampaign $campaign,
+        array $zones,
+        int $page = 1,
+        ?int $limit = 30
+    ): iterable {
         $qb = $this
             ->createQueryBuilder('ds')
             ->leftJoin('ds.survey', 'survey')
@@ -92,6 +99,22 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->setParameter('campaign', $campaign)
         ;
 
+        if ($zones) {
+            $qb
+                ->innerJoin('campaignHistory.building', 'building')
+                ->innerJoin('building.address', 'address')
+            ;
+            $this->withGeoZones(
+                $zones,
+                $qb,
+                'address',
+                Address::class,
+                'a2',
+                'zones',
+                'z2'
+            );
+        }
+
         if (!$limit) {
             return $qb->getQuery()->getResult();
         }
@@ -99,17 +122,40 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $this->configurePaginator($qb, $page, $limit);
     }
 
-    public function iterateForPapCampaignDataSurveys(PapCampaign $campaign): IterableResult
+    public function iterateForPapCampaignDataSurveys(PapCampaign $campaign, array $zones = []): IterableResult
     {
-        return $this->createQueryBuilder('ds')
+        $qb = $this->createQueryBuilder('ds')
             ->addSelect('survey', 'campaignHistory', 'author', 'campaign')
             ->leftJoin('ds.survey', 'survey')
             ->leftJoin('ds.author', 'author')
             ->leftJoin('ds.papCampaignHistory', 'campaignHistory')
             ->leftJoin('campaignHistory.campaign', 'campaign')
             ->where('campaign = :campaign')
-            ->orderBy('campaignHistory.createdAt', 'DESC')
             ->setParameter('campaign', $campaign)
+        ;
+
+        if ($zones) {
+            $addressIds = array_column($this->createEntityInGeoZonesQueryBuilder(
+                    $zones,
+                    Address::class,
+                    'a2',
+                    'zones',
+                    'z2'
+                )
+                ->getQuery()
+                ->getArrayResult(), 'id'
+            );
+
+            $qb
+                ->leftJoin('campaignHistory.building', 'building')
+                ->leftJoin('building.address', 'address')
+                ->andWhere('address.id IN (:ids)')
+                ->setParameter('ids', $addressIds)
+            ;
+        }
+
+        return $qb
+            ->orderBy('campaignHistory.createdAt', 'DESC')
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->iterate()

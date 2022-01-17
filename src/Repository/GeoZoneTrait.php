@@ -94,4 +94,49 @@ trait GeoZoneTrait
 
         return $zoneQueryBuilder;
     }
+
+    public function createEntityInGeoZonesQueryBuilder(
+        array $zones,
+        string $entityClass,
+        string $entityClassAlias,
+        string $zoneRelation,
+        string $zoneRelationAlias,
+        bool $withParents = true,
+        string $zoneParentAlias = 'zone_parent'
+    ): QueryBuilder {
+        $zoneQueryBuilder = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->from($entityClass, $entityClassAlias)
+            ->select($select = sprintf('%s.id', $entityClassAlias))
+            ->innerJoin(sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
+            ->groupBy($select)
+        ;
+
+        $orX = $zoneQueryBuilder->expr()->orX();
+        $orX->add(sprintf('%s IN (:zone_ids)', $zoneRelationAlias));
+
+        $zoneQueryBuilder->setParameter('zone_ids', array_map(static function (Zone $zone): int {
+            return $zone->getId();
+        }, $zones));
+
+        if ($withParents) {
+            $parents = array_filter(array_map(static function (Zone $zone): ?int {
+                return $zone->isCityGrouper() ? null : $zone->getId();
+            }, $zones));
+
+            if ($parents) {
+                if (!\in_array($zoneParentAlias, $zoneQueryBuilder->getAllAliases(), true)) {
+                    $zoneQueryBuilder->innerJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
+                }
+
+                $orX->add(sprintf('%s IN (:zone_parent_ids)', $zoneParentAlias));
+                $zoneQueryBuilder->setParameter('zone_parent_ids', $parents);
+            }
+        }
+
+        $zoneQueryBuilder->where($orX);
+
+        return $zoneQueryBuilder;
+    }
 }

@@ -7,6 +7,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
+use App\Repository\GeoZoneTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -15,6 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CampaignHistoryRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
