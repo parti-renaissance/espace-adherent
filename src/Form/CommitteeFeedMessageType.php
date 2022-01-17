@@ -29,7 +29,7 @@ class CommitteeFeedMessageType extends AbstractType
                     'maxlength' => 6000,
                     'placeholder' => 'Écrivez ici votre message',
                 ],
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'with_character_count' => true,
             ])
             ->add('published', CheckboxType::class, [

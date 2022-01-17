@@ -17,7 +17,7 @@ class ContactMembersType extends AbstractType
                 'attr' => ['placeholder' => 'Entrez l\'objet de votre message'],
             ])
             ->add('message', PurifiedTextareaType::class, [
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'attr' => ['placeholder' => 'Écrivez votre message'],
             ])
         ;

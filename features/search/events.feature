@@ -18,6 +18,5 @@ Feature:
 
     When I am logged as "jacques.picard@en-marche.fr"
     Then I am on "/evenements"
-    Then print last response
-    Then I should see "1 inscrit"
+    And I should see "1 inscrit"
     And I should see "2 inscrits"

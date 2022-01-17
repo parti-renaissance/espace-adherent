@@ -214,14 +214,6 @@ services:
         arguments:
             $generators: !tagged_iterator 'app.adherent.scope_generator'
 
-    # Form
-    App\Form\PurifiedTextareaType:
-        arguments:
-            -
-                default: '@app.html_purifier.default'
-                enrich_content: '@app.html_purifier.enrich_content'
-                basic_content: '@app.html_purifier.basic_content'
-
     App\Algolia\SearchService:
         decorates: 'search.service'
         arguments:

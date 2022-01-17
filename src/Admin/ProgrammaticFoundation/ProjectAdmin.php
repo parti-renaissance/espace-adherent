@@ -114,7 +114,7 @@ class ProjectAdmin extends AbstractAdmin
                 ->add('content', PurifiedTextareaType::class, [
                     'label' => 'Contenu',
                     'attr' => ['class' => 'ck-editor-advanced'],
-                    'purifier_type' => 'enrich_content',
+                    'purify_html_profile' => 'enrich_content',
                 ])
                 ->add('city', ChoiceType::class, [
                     'label' => 'Taille de ville',

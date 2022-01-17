@@ -21,7 +21,7 @@ class DeputyMessageType extends AbstractType
                 'attr' => [
                     'maxlength' => 6000,
                 ],
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
                 'with_character_count' => true,
             ])
         ;

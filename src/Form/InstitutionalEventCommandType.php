@@ -35,14 +35,14 @@ class InstitutionalEventCommandType extends BaseEventCommandType
                 'class' => $options['event_category_class'],
             ])
             ->add('description', PurifiedTextareaType::class, [
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
             ])
             ->add('address', AddressType::class)
             ->add('timeZone', TimezoneType::class, [
                 'choices' => $this->getTimezones(),
             ])
             ->add('invitations', PurifiedTextareaType::class, [
-                'purifier_type' => 'enrich_content',
+                'purify_html_profile' => 'enrich_content',
             ])
             ->remove('capacity')
         ;

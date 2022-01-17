@@ -249,12 +249,12 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
         $this->events = new ArrayCollection();
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }

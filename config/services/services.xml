@@ -19,9 +19,6 @@
         </service>
 
         <!-- EventListener -->
-        <service id="App\EventListener\ControllerListener">
-            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" priority="8" />
-        </service>
         <prototype namespace="App\EntityListener\" resource="../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
@@ -75,15 +72,6 @@
         </service>
 
         <!-- HTML Purifiers -->
-        <service id="app.html_purifier.default" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
-            <argument type="service" id="exercise_html_purifier.default"/>
-        </service>
-        <service id="app.html_purifier.enrich_content" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
-            <argument type="service" id="exercise_html_purifier.enrich_content"/>
-        </service>
-        <service id="app.html_purifier.basic_content" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
-            <argument type="service" id="exercise_html_purifier.basic_content"/>
-        </service>
         <service id="App\HTMLPurifier\Injector\ImageDimension">
             <argument>%image_max_length%</argument>
         </service>

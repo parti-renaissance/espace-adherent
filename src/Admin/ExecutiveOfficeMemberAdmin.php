@@ -64,7 +64,7 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                     'label' => 'Contenu',
                     'required' => false,
                     'attr' => ['class' => 'ck-editor'],
-                    'purifier_type' => 'enrich_content',
+                    'purify_html_profile' => 'enrich_content',
                     'help' => 'Le contenu de la biographie sera présent dans la fiche du membre.',
                 ])
                 ->add('published', null, [

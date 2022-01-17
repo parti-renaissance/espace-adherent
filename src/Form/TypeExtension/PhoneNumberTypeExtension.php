@@ -32,7 +32,7 @@ class PhoneNumberTypeExtension extends AbstractTypeExtension
         return PhoneNumberType::class;
     }
 
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [PhoneNumberType::class];
     }

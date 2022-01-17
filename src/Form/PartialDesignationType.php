@@ -27,7 +27,7 @@ class PartialDesignationType extends AbstractType
                 'attr' => [
                     'maxlength' => 2000,
                 ],
-                'purifier_type' => 'basic_content',
+                'purify_html_profile' => 'basic_content',
                 'with_character_count' => true,
             ])
             ->add('back', SubmitType::class)
