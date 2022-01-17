@@ -47,6 +47,7 @@
                     {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
                     {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
                     '{{ algolia_blacklist|base64_encode }}',
+                    '{{ algolia_index_prefix }}',
                     '{{ app.user ? app.user.getUsername() }}'
                 );
             });
