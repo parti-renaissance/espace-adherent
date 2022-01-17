@@ -45,7 +45,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                 [
                     'description' => null,
                     'questions' => [
-                        $this->buildQuestion('to_contact', 'boolean', 'Souhaite-t-il être au courant des résultats de cette consultation via e-mail ?', false, null, null, null, null, 'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu\'il est informé des droits dont il dispose sur ses données.'),
+                        $this->buildQuestion('to_contact', 'boolean', 'Souhaite-t-il être tenu au courant des résultats de cette consultation par e-mail ?', true, null, null, null, null, 'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu\'il est informé des droits dont il dispose sur ses données.'),
                         $this->buildQuestion(
                             'profil',
                             'compound',
@@ -62,7 +62,6 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                                 'choices' => [true],
                             ]
                         ),
-                        $this->buildQuestion('to_join', 'boolean', 'Souhaite adhérer ?', false, null, null, ['question' => 'to_contact', 'choices' => [true]], null, 'En cochant oui, vous certifiez qu\'il souhait adhérer.'),
                     ],
                 ],
             ],

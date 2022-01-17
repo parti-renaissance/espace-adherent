@@ -856,8 +856,8 @@ Feature:
                         "code": "to_contact",
                         "type": "boolean",
                         "options": {
-                            "label": "Souhaite-t-il être au courant des résultats de cette consultation via e-mail ?",
-                            "required": false,
+                            "label": "Souhaite-t-il être tenu au courant des résultats de cette consultation par e-mail ?",
+                            "required": true,
                             "help": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données."
                         }
                     },
@@ -902,21 +902,6 @@ Feature:
                                     }
                                 }
                             ]
-                        }
-                    },
-                    {
-                        "code": "to_join",
-                        "type": "boolean",
-                        "dependency": {
-                            "question": "to_contact",
-                            "choices": [
-                                true
-                            ]
-                        },
-                        "options": {
-                            "label": "Souhaite adhérer ?",
-                            "required": false,
-                            "help": "En cochant oui, vous certifiez qu'il souhait adhérer."
                         }
                     }
                 ]
