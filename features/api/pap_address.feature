@@ -163,6 +163,7 @@ Feature:
     ]
     """
 
+  @debug
   Scenario: As a logged-in user I can retrieve full address information for a given address identifier
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
@@ -177,6 +178,27 @@ Feature:
       "insee_code": "75108",
       "postal_codes": ["75008"],
       "city_name": "Paris 8ème",
+      "latitude": 48.878708,
+      "longitude": 2.319111,
+      "building": {
+        "type": "building",
+        "uuid": "@uuid@",
+        "campaign_statistics": {
+           "campaign": {
+               "uuid": "@uuid@"
+           },
+           "status": "todo",
+           "last_passage": "@string@.isDateTime()",
+           "last_passage_done_by": {
+             "uuid": "@uuid@",
+             "first_name": "Adherent 33",
+             "last_name": "Fa33ke"
+           },
+           "nb_visited_doors": 0,
+           "nb_surveys": 0,
+           "uuid": "@uuid@"
+        }
+      },
       "voters_count": 2
     }
     """

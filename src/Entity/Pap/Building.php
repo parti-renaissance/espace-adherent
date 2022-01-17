@@ -29,6 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/pap/buildings/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
+ *         },
  *         "put": {
  *             "path": "/v3/pap/buildings/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
@@ -58,7 +63,7 @@ class Building implements CampaignStatisticsOwnerInterface
      *     strict=true
      * )
      *
-     * @Groups({"pap_address_list", "pap_building_read", "pap_building_write"})
+     * @Groups({"pap_address_list", "pap_building_read", "pap_building_write", "pap_address_read"})
      */
     private ?string $type = null;
 
@@ -174,7 +179,7 @@ class Building implements CampaignStatisticsOwnerInterface
     }
 
     /**
-     * @Groups({"pap_address_list"})
+     * @Groups({"pap_address_list", "pap_address_read"})
      */
     public function getCampaignStatistics(): ?CampaignStatisticsInterface
     {
