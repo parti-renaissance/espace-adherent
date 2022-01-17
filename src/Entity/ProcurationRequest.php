@@ -353,7 +353,7 @@ class ProcurationRequest
     public $reachable = false;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": true})
+     * @ORM\Column(type="boolean", options={"default": false})
      *
      * @Assert\Type("bool")
      */
