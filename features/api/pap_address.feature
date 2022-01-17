@@ -163,7 +163,6 @@ Feature:
     ]
     """
 
-  @debug
   Scenario: As a logged-in user I can retrieve full address information for a given address identifier
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
