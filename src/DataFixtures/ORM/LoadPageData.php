@@ -126,6 +126,24 @@ class LoadPageData extends Fixture
         ]));
 
         $manager->persist($this->pageFactory->createFromArray([
+            'keywords' => 'mentions légales',
+            'title' => 'Mentions légales',
+            'slug' => 'je-mengage-mentions-legales',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../legalities.md'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($this->pageFactory->createFromArray([
+            'keywords' => 'politique de protection des données',
+            'title' => 'Politique de protection des données à caractère personnel',
+            'slug' => 'je-mengage-politique-protection-donnees',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../data_policy.md'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'politique cookies',
             'title' => 'Politique des Cookies',
             'slug' => 'politique-cookies',

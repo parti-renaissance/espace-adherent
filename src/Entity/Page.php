@@ -2,12 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"page_read"},
+ *         },
+ *     },
+ *     itemOperations={"get"},
+ *     collectionOperations={}
+ * )
+ *
  * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
  *
@@ -37,8 +49,22 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @ApiProperty(identifier=false)
      */
     private $id;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100, unique=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=100)
+     *
+     * @ApiProperty(identifier=true)
+     */
+    private $slug;
 
     /**
      * @var string|null
@@ -62,6 +88,16 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = $slug;
     }
 
     public function getLayout(): string
