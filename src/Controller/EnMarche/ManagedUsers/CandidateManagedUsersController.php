@@ -6,6 +6,7 @@ use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Form\ManagedUsers\CandidateManagedUsersFilterType;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Scope\ScopeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,11 @@ class CandidateManagedUsersController extends AbstractManagedUsersController
     protected function getSpaceType(): string
     {
         return AdherentSpaceEnum::CANDIDATE;
+    }
+
+    protected function getScopeCode(): string
+    {
+        return ScopeEnum::CANDIDATE;
     }
 
     protected function createFilterForm(ManagedUsersFilter $filter, Adherent $mainAdherent): FormInterface

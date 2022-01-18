@@ -2,12 +2,11 @@
 
 namespace App\ManagedUsers\Filter;
 
-use App\Entity\Adherent;
 use App\ManagedUsers\ManagedUsersFilter;
 
 interface ManagedUsersFilterFactoryInterface
 {
-    public function support(string $spaceCode): bool;
+    public function support(string $scopeCode): bool;
 
-    public function create(Adherent $adherent, array $zones): ManagedUsersFilter;
+    public function create(array $zones): ManagedUsersFilter;
 }

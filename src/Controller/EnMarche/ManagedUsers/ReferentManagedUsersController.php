@@ -6,6 +6,7 @@ use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Form\ManagedUsers\ReferentManagedUsersFilterType;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Scope\ScopeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,11 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
     protected function getSpaceType(): string
     {
         return AdherentSpaceEnum::REFERENT;
+    }
+
+    protected function getScopeCode(): string
+    {
+        return ScopeEnum::REFERENT;
     }
 
     protected function createFilterForm(ManagedUsersFilter $filter, Adherent $mainAdherent): FormInterface

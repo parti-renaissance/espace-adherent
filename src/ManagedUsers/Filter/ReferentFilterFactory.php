@@ -2,14 +2,14 @@
 
 namespace App\ManagedUsers\Filter;
 
-use App\AdherentSpace\AdherentSpaceEnum;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
 class ReferentFilterFactory extends AbstractFilterFactory
 {
-    public function support(string $spaceCode): bool
+    public function support(string $scopeCode): bool
     {
-        return AdherentSpaceEnum::REFERENT === $spaceCode;
+        return ScopeEnum::REFERENT === $scopeCode || ScopeEnum::CORRESPONDENT === $scopeCode;
     }
 
     protected function getSubscriptionType(): string
