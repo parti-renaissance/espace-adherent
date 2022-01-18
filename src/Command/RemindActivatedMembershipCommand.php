@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Adherent;
-use App\Membership\MembershipRequestHandler;
+use App\Membership\MembershipNotifier;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -15,18 +15,18 @@ class RemindActivatedMembershipCommand extends Command
 {
     protected static $defaultName = 'app:membership:remind-activated';
 
-    private $membershipRequestHandler;
+    private $membershipNotifier;
     private $adherentRepository;
     private $em;
 
     public function __construct(
-        MembershipRequestHandler $membershipRequestHandler,
+        MembershipNotifier $membershipNotifier,
         AdherentRepository $adherentRepository,
         ObjectManager $em
     ) {
         parent::__construct();
 
-        $this->membershipRequestHandler = $membershipRequestHandler;
+        $this->membershipNotifier = $membershipNotifier;
         $this->adherentRepository = $adherentRepository;
         $this->em = $em;
     }
@@ -45,7 +45,7 @@ class RemindActivatedMembershipCommand extends Command
 
         while ($adherents = $this->findActivated($from, 100)) {
             foreach ($adherents as $adherent) {
-                if ($this->membershipRequestHandler->sendEmailReminder($adherent)) {
+                if ($this->membershipNotifier->sendEmailReminder($adherent)) {
                     $adherent->setMembershipReminded();
 
                     $this->em->flush();
