@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
- *         "order": {"createdAt": "DESC"},
  *         "normalization_context": {
  *             "groups": {"page_read"},
  *         },
