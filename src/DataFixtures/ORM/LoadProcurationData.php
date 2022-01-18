@@ -161,7 +161,9 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Saighterse',
             array_merge($presidentialElections->getRounds()->toArray(), $legislativeElections->getRounds()->toArray()),
-            ProcurationRequest::REASON_HEALTH
+            ProcurationRequest::REASON_HEALTH,
+            true,
+            true
         ));
 
         $manager->persist($request2 = $this->createRequest(
@@ -521,7 +523,8 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         string $voteOffice,
         iterable $electionRounds,
         string $reason = ProcurationRequest::REASON_HOLIDAYS,
-        bool $requestFromFrance = true
+        bool $requestFromFrance = true,
+        bool $enabled = false
     ): ProcurationRequest {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);
@@ -547,6 +550,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         $request->setElectionRounds($electionRounds);
         $request->setReason($reason);
         $request->setRequestFromFrance($requestFromFrance);
+        $request->setEnabled($enabled);
 
         return $request;
     }

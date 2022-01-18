@@ -107,6 +107,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
                     ],
                     'expanded' => true,
                 ])
+                ->add('enabled', null, [
+                    'label' => 'Active',
+                ])
             ->end()
         ;
     }
@@ -212,6 +215,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'label' => 'Date',
                 'field_type' => DateRangePickerType::class,
             ])
+            ->add('enabled', null, [
+                'label' => 'Active',
+            ])
         ;
     }
 
@@ -239,6 +245,10 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'label' => 'Statut',
                 'virtual_field' => true,
                 'template' => 'admin/procuration/request_list_status.html.twig',
+            ])
+            ->add('enabled', null, [
+                'editable' => true,
+                'label' => 'Active',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date',
