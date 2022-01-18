@@ -53,7 +53,6 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     private $usedAt;
 
     final private function __construct(
-        UuidInterface $uuid,
         UuidInterface $adherentUuid,
         \DateTime $createdAt,
         \DateTime $expiration,
@@ -63,7 +62,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
             throw new \InvalidArgumentException('Expiration date must be in the future.');
         }
 
-        $this->uuid = $uuid;
+        $this->uuid = Uuid::uuid4();
         $this->value = $value;
         $this->adherentUuid = $adherentUuid;
         $this->createdAt = $createdAt;
@@ -79,7 +78,6 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         $adherentUuid = clone $adherent->getUuid();
 
         return new static(
-            static::createUuid((string) $adherentUuid),
             $adherentUuid,
             $timestamp,
             new \DateTime($lifetime),
@@ -95,17 +93,11 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         $timestamp = new \DateTime('now');
 
         return new static(
-            static::createUuid($adherentUuid),
             Uuid::fromString($adherentUuid),
             $timestamp,
             new \DateTime($lifetime),
             SHA1::fromString($hash)
         );
-    }
-
-    public static function createUuid(string $adherentUuid): UuidInterface
-    {
-        return Uuid::uuid5(Uuid::NAMESPACE_OID, $adherentUuid);
     }
 
     public function getValue(): SHA1
