@@ -354,8 +354,6 @@ class ProcurationRequest
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Assert\Type("bool")
      */
     private bool $enabled = false;
 
