@@ -31,8 +31,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * The group current status.
      *
      * @ORM\Column(length=20)
-     *
-     * @Groups({"committee_sync"})
      */
     protected $status;
 
@@ -193,5 +191,10 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 }

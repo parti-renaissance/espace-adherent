@@ -53,7 +53,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"adherent_change_diff", "user_profile", "committee_sync", "export", "adherent_autocomplete"})
+     * @SymfonySerializer\Groups({"adherent_change_diff", "user_profile", "export", "adherent_autocomplete"})
      */
     public function getPostalCode(): ?string
     {
@@ -61,7 +61,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"adherent_change_diff", "committee_sync"})
+     * @SymfonySerializer\Groups({"adherent_change_diff"})
      */
     public function getCityName(): ?string
     {

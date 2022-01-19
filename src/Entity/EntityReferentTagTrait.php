@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @deprecated Use {@see App\Entity\EntityZoneTrait} instead
@@ -44,10 +42,6 @@ trait EntityReferentTagTrait
         $this->referentTags->clear();
     }
 
-    /**
-     * @Groups({"committee_sync", "event_sync"})
-     * @SerializedName("tags")
-     */
     public function getReferentTagsCodes(): array
     {
         return array_map(function (ReferentTag $referentTag) {

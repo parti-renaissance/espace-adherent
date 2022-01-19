@@ -223,7 +223,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_sync", "event_list_read"})
      *
      * @ApiProperty(identifier=true)
      */

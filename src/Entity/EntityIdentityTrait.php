@@ -50,7 +50,6 @@ trait EntityIdentityTrait
      *     "message_read",
      *     "event_list_read",
      *     "event_read",
-     *     "event_sync",
      *     "audience_read",
      *     "audience_list_read",
      *     "riposte_list_read",
