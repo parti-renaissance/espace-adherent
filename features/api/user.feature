@@ -14,26 +14,54 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-      {
-        "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
-        "email_address": "carl999@example.fr",
-        "email_subscribed": true,
-        "first_name": "Carl",
-        "last_name": "Mirabeau",
-        "country": "FR",
-        "postal_code": "73100",
-        "nickname": "pont",
-        "use_nickname": false,
-        "certified": false,
-        "comments_cgu_accepted": false,
-        "elected": false,
-        "larem": false,
-        "detailed_roles": [],
-        "surveys": {
-          "total": 0,
-          "last_month": 0
-        }
+    {
+      "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
+      "email_address": "carl999@example.fr",
+      "email_subscribed": true,
+      "first_name": "Carl",
+      "last_name": "Mirabeau",
+      "country": "FR",
+      "postal_code": "73100",
+      "nickname": "pont",
+      "use_nickname": false,
+      "certified": false,
+      "comments_cgu_accepted": false,
+      "elected": false,
+      "larem": false,
+      "detailed_roles": [],
+      "surveys": {
+        "total": 0,
+        "last_month": 0
       }
+    }
+    """
+
+    When I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+    And I send a "GET" request to "/api/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "nickname": "kikouslove",
+        "email_address": "jacques.picard@en-marche.fr",
+        "comments_cgu_accepted": false,
+        "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+        "first_name": "Jacques",
+        "last_name": "Picard",
+        "elected": false,
+        "larem": true,
+        "use_nickname": true,
+        "detailed_roles": [],
+        "certified": true,
+        "email_subscribed": true,
+        "country": "FR",
+        "postal_code": "75008",
+        "surveys": {
+            "total": 7,
+            "last_month": 7
+        }
+    }
     """
 
   Scenario: As a logged-in device I can get my information with additional information based on granted scope
