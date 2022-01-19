@@ -3,18 +3,12 @@
 namespace App\Controller\Api;
 
 use App\Entity\Mooc\Mooc;
-use App\Normalizer\MoocNormalizer;
 use App\Repository\MoocRepository;
 use App\Sitemap\SitemapFactory;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/mooc")
@@ -24,18 +18,9 @@ class MoocController extends AbstractController
     /**
      * @Route("", name="api_mooc_landing", methods={"GET"})
      */
-    public function moocLandingPageAction(MoocRepository $moocRepository, SerializerInterface $serializer): Response
+    public function moocLandingPageAction(MoocRepository $moocRepository): Response
     {
-        return new JsonResponse(
-            $serializer->serialize(
-                $moocRepository->findAllOrdered(),
-                'json',
-                SerializationContext::create()->setGroups('mooc_list')
-            ),
-            JsonResponse::HTTP_OK,
-            [],
-            true
-        );
+        return $this->json($moocRepository->findAllOrdered(), Response::HTTP_OK, [], ['groups' => ['mooc_list']]);
     }
 
     /**
@@ -52,22 +37,13 @@ class MoocController extends AbstractController
      * @Route("/{slug}", name="api_mooc", methods={"GET"})
      * @Entity("mooc", expr="repository.findOneBySlug(slug)")
      */
-    public function moocAction(Mooc $mooc, MoocNormalizer $normalizer): Response
+    public function moocAction(Mooc $mooc): Response
     {
-        $serializer = new Serializer([$normalizer], [new JsonEncoder()]);
-
-        return new JsonResponse(
-            $serializer->serialize($mooc, 'json'),
-            JsonResponse::HTTP_OK,
-            [],
-            true
-        );
+        return $this->json($mooc, Response::HTTP_OK, [], ['groups' => ['mooc_read']]);
     }
 
     private function createXmlResponse(string $content): Response
     {
-        return new Response($content, Response::HTTP_OK, [
-            'Content-Type' => 'text/xml',
-        ]);
+        return new Response($content, Response::HTTP_OK, ['Content-Type' => 'text/xml']);
     }
 }

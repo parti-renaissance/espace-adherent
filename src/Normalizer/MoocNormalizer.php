@@ -15,10 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MoocNormalizer implements NormalizerInterface
 {
-    private const FORMAT = 'json';
-
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
@@ -43,9 +40,10 @@ class MoocNormalizer implements NormalizerInterface
         return $this->normalizeMooc($object, $elements);
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return self::FORMAT === $format && $data instanceof Mooc;
+        return $data instanceof Mooc
+            && \in_array('mooc_read', $context['groups'] ?? []);
     }
 
     private function normalizeMooc(Mooc $mooc, array $elements): array

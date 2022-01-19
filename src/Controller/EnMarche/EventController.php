@@ -15,7 +15,7 @@ use App\Form\EventInvitationType;
 use App\Form\EventRegistrationType;
 use App\Repository\EventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
-use JMS\Serializer\SerializerInterface;
+use App\Serializer\Encoder\ICalEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -63,7 +64,7 @@ class EventController extends AbstractController
     {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
 
-        $response = new Response($serializer->serialize($event, 'ical'), Response::HTTP_OK);
+        $response = new Response($serializer->serialize($event, ICalEncoder::FORMAT), Response::HTTP_OK);
         $response->headers->set('Content-Type', 'text/calendar');
         $response->headers->set('Content-Disposition', $disposition);
 

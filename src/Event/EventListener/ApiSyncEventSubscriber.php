@@ -5,10 +5,10 @@ namespace App\Event\EventListener;
 use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
+use App\Normalizer\ApiSyncCommitteeEventNormalizer;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiSyncEventSubscriber implements EventSubscriberInterface
 {
@@ -47,7 +47,7 @@ class ApiSyncEventSubscriber implements EventSubscriberInterface
         return $this->serializer->serialize(
             $event->getEvent(),
             'json',
-            SerializationContext::create()->setGroups(['event_read'])
+            ['groups' => [ApiSyncCommitteeEventNormalizer::GROUP]]
         );
     }
 

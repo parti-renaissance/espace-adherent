@@ -130,17 +130,6 @@
             </argument>
         </service>
 
-        <!-- Serializer -->
-        <service id="app.serializer_visitor.ical_serialization_visitor" class="App\Serializer\IcalSerializationVisitor" public="false">
-            <tag name="jms_serializer.serialization_visitor" format="ical"/>
-
-            <argument type="service" id="jms_serializer.naming_strategy" />
-        </service>
-
-        <service id="app.committee_serializer.committee_event_ical_handler" class="App\Serializer\EventICalHandler">
-            <tag name="jms_serializer.subscribing_handler" />
-        </service>
-
         <!-- Form -->
         <service id="App\Form\TypeExtension\FormTypeExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />

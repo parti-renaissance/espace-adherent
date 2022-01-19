@@ -14,7 +14,6 @@ use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -109,11 +108,6 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
         $this->elections = new ArrayCollection();
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid")
-     * @JMS\Groups({"adherent_change_diff"})
-     */
     public function getUuidToString(): string
     {
         return $this->uuid->toString();

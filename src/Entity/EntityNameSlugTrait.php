@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityNameSlugTrait
@@ -23,8 +22,8 @@ trait EntityNameSlugTrait
      *     "cause_read",
      *     "cause_write",
      *     "event_read",
+     *     "committee_sync",
      * })
-     * @JMS\Groups({"committee_read"})
      */
     protected $name;
 
@@ -50,8 +49,8 @@ trait EntityNameSlugTrait
      *     "cause_read",
      *     "event_list_read",
      *     "event_read",
+     *     "committee_sync",
      * })
-     * @JMS\Groups({"committee_read"})
      */
     protected $slug;
 

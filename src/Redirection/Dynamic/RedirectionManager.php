@@ -5,8 +5,8 @@ namespace App\Redirection\Dynamic;
 use App\Entity\Redirection;
 use App\Repository\RedirectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\SerializerInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class RedirectionManager
 {

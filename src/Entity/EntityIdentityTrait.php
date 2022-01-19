@@ -81,6 +81,8 @@ trait EntityIdentityTrait
      *     "pap_campaign_replies_list",
      *     "survey_replies_list",
      *     "jecoute_resource_links_read",
+     *     "committee_sync",
+     *     "adherent_change_diff",
      * })
      *
      * @ApiProperty(

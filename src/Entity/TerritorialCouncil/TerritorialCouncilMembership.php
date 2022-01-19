@@ -8,7 +8,6 @@ use App\Entity\UuidEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -38,7 +37,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", inversedBy="memberships", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
-     * @JMS\Groups({"adherent_change_diff"})
+     * @Groups({"adherent_change_diff"})
      */
     private $territorialCouncil;
 
