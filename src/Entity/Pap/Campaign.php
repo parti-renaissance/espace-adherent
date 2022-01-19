@@ -171,14 +171,14 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     private $survey;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
-    private int $nbAddresses = 0;
+    private int $nbAddresses;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
-    private int $nbVoters = 0;
+    private int $nbVoters;
 
     /**
      * @var Collection|CampaignHistory[]
