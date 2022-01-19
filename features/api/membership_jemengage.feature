@@ -4,6 +4,75 @@ Feature:
   As a non logged-in user
   I should be able to access API membership
 
+  Scenario: As a non logged-in user I cannot create a JeMengage user with empty and wrong data
+    Given I send a "POST" request to "/api/membership?source=jemengage" with body:
+    """
+    {
+      "phone": "0"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://symfony.com/errors/validation",
+        "title": "Validation Failed",
+        "detail": "last_name: Cette valeur ne doit pas être vide.\ngender: Veuillez renseigner un genre.\nbirthdate: Vous devez spécifier votre date de naissance.\nphone: Cette valeur n'est pas un numéro de téléphone valide.\nemail_address: Cette valeur ne doit pas être vide.\ncgu_accepted: Vous devez accepter la charte.",
+        "violations": [
+            {
+                "propertyPath": "last_name",
+                "title": "Cette valeur ne doit pas être vide.",
+                "parameters": {
+                    "{{ value }}": "null"
+                },
+                "type": "@string@"
+            },
+            {
+                "propertyPath": "gender",
+                "title": "Veuillez renseigner un genre.",
+                "parameters": {
+                    "{{ value }}": "null"
+                },
+                "type": "@string@"
+            },
+            {
+                "propertyPath": "birthdate",
+                "title": "Vous devez spécifier votre date de naissance.",
+                "parameters": {
+                    "{{ value }}": "null"
+                },
+                "type": "@string@"
+            },
+            {
+                "propertyPath": "phone",
+                "title": "Cette valeur n'est pas un numéro de téléphone valide.",
+                "parameters": {
+                    "{{ types }}": "phone number",
+                    "{{ value }}": "@string@"
+                },
+                "type": "@string@"
+            },
+            {
+                "propertyPath": "email_address",
+                "title": "Cette valeur ne doit pas être vide.",
+                "parameters": {
+                    "{{ value }}": "\"\""
+                },
+                "type": "@string@"
+            },
+            {
+                "propertyPath": "cgu_accepted",
+                "title": "Vous devez accepter la charte.",
+                "parameters": {
+                    "{{ value }}": "false"
+                },
+                "type": "@string@"
+            }
+        ]
+    }
+    """
+
   Scenario: As a non logged-in user I can create a JeMengage user
     Given I send a "POST" request to "/api/membership?source=jemengage" with body:
     """
@@ -42,7 +111,7 @@ Feature:
           },
           {
             "name": "create_password_link",
-            "content": "http:\/\/login.jemengage.code\/changer-mot-de-passe\/@string@\/@string@"
+            "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
           }
         ],
         "from_name": "Je-mengage.fr",
@@ -84,7 +153,7 @@ Feature:
             },
             {
               "name": "create_password_link",
-              "content": "http:\/\/login.jemengage.code\/changer-mot-de-passe\/@string@\/@string@"
+              "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
             }
           ],
           "from_name": "Je-mengage.fr",

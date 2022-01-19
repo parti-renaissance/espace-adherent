@@ -53,6 +53,12 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
             }
 
             return $phoneNumber;
+        } elseif (\strlen($data) < 2 || \strlen($data) > 17) {
+            $phoneNumber = new PhoneNumber();
+            $phoneNumber->setCountryCode(33);
+            $phoneNumber->setNationalNumber($data);
+
+            return $phoneNumber;
         }
 
         return $this->util->parse($data, Address::FRANCE);
