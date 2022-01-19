@@ -4,6 +4,7 @@ namespace App\Api\Filter;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\Jecoute\News;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeVisibilityEnum;
@@ -42,5 +43,14 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
             ->andWhere('zone IN (:zones) OR parent_zone IN (:zones)')
             ->setParameter('zones', $scope->getZones())
         ;
+    }
+
+    protected function getAllowedOperationNames(string $resourceClass): array
+    {
+        if (is_a($resourceClass, News::class, true)) {
+            return ['get_private'];
+        }
+
+        return ['get'];
     }
 }

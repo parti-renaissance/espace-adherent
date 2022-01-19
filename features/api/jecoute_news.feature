@@ -225,6 +225,7 @@ Feature:
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": null,
                 "created_at": "@string@.isDateTime()",
+                "visibility": "local",
                 "zone": {
                     "code": "59",
                     "created_at": "@string@.isDateTime()",
@@ -241,6 +242,7 @@ Feature:
                 "text": "Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "visibility": "local",
                 "zone": {
                     "code": "92",
                     "created_at": "@string@.isDateTime()",
@@ -257,6 +259,7 @@ Feature:
                 "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "visibility": "local",
                 "zone": {
                     "code": "59",
                     "created_at": "@string@.isDateTime()",
@@ -273,6 +276,7 @@ Feature:
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "visibility": "local",
                 "zone": {
                     "code": "92",
                     "created_at": "@string@.isDateTime()",
@@ -296,9 +300,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 2,
+            "total_items": 1,
             "items_per_page": 2,
-            "count": 2,
+            "count": 1,
             "current_page": 1,
             "last_page": 1
         },
@@ -309,25 +313,10 @@ Feature:
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": "https://en-marche.fr",
                 "created_at": "@string@.isDateTime()",
+                "visibility": "national",
                 "zone": null,
                 "notification": true,
                 "published": false,
-                "creator": "Anonyme"
-            },
-            {
-                "uuid": "560bab7a-d624-47d6-bf5e-3864c2406daf",
-                "title": "Nouvelle actualité à 92 de l'admin",
-                "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
-                "external_link": "https://referent.en-marche.fr",
-                "created_at": "@string@.isDateTime()",
-                "zone": {
-                    "code": "92",
-                    "created_at": "@string@.isDateTime()",
-                    "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
-                },
-                "notification": true,
-                "published": true,
                 "creator": "Anonyme"
             }
         ]
@@ -432,6 +421,7 @@ Feature:
         "title": "Une nouvelle actualité d'aujourd'hui",
         "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
         "external_link": "http://test.en-marche.fr",
+        "visibility": "national",
         "zone": null,
         "created_at": "@string@.isDateTime()",
         "global": true,
@@ -467,6 +457,7 @@ Feature:
       "title": "[Référent] Nouveau titre",
       "text": "Nouveau texte",
       "external_link": "https://nouveau.en-marche.fr",
+      "visibility": "local",
       "zone": {
           "code": "59",
           "created_at": "@string@.isDateTime()",
@@ -526,11 +517,11 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "zone: Une zone est nécessaire pour une actualité référente",
+        "detail": "zone: Veuillez spécifier une zone.",
         "violations": [
             {
                 "propertyPath": "zone",
-                "message": "Une zone est nécessaire pour une actualité référente"
+                "message": "Veuillez spécifier une zone."
             }
         ]
     }
@@ -545,7 +536,7 @@ Feature:
       "title": "Une nouvelle actualité d'aujourd'hui",
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
-      "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002",
+      "zone": "e3f21338-906e-11eb-a875-0242ac150002",
       "notification": true,
       "published": true
     }
@@ -586,11 +577,11 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "zone: Oups, vous n'avez pas accès à cette zone !",
+      "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
           "propertyPath": "zone",
-          "message": "Oups, vous n'avez pas accès à cette zone !"
+          "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }
       ]
     }

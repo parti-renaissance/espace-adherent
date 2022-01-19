@@ -5,7 +5,6 @@ namespace App\Validator\Jecoute;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
-use App\Geo\ManagedZoneProvider;
 use App\Jecoute\JecouteSpaceEnum;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
@@ -15,12 +14,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class ReferentNewsValidator extends ConstraintValidator
 {
     private Security $security;
-    private ManagedZoneProvider $managedZoneProvider;
 
-    public function __construct(Security $security, ManagedZoneProvider $managedZoneProvider)
+    public function __construct(Security $security)
     {
         $this->security = $security;
-        $this->managedZoneProvider = $managedZoneProvider;
     }
 
     /**
@@ -38,28 +35,14 @@ class ReferentNewsValidator extends ConstraintValidator
             return;
         }
 
-        if (null === $value->getZone()) {
-            $this->context->buildViolation($constraint->zoneNotNull)
-                ->atPath('zone')
-                ->addViolation()
-            ;
+        $zone = $value->getZone();
 
+        if (null === $zone) {
             return;
         }
 
-        if (!\in_array($value->getZone()->getType(), [Zone::BOROUGH, Zone::DEPARTMENT, Zone::REGION], true)) {
+        if (!\in_array($zone->getType(), [Zone::BOROUGH, Zone::DEPARTMENT, Zone::REGION], true)) {
             $this->context->buildViolation($constraint->invalidZoneType)
-                ->atPath('zone')
-                ->addViolation()
-            ;
-
-            return;
-        }
-
-        $managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, 'referent');
-
-        if (!$this->managedZoneProvider->zoneBelongsToSome($value->getZone(), $managedZonesIds)) {
-            $this->context->buildViolation($constraint->invalidManagedZone)
                 ->atPath('zone')
                 ->addViolation()
             ;

@@ -8,17 +8,21 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JecouteNewsScopeFilter;
 use App\Api\Filter\JecouteNewsZipCodeFilter;
+use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
+use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Validator\Jecoute\NewsTarget;
 use App\Validator\Jecoute\ReferentNews;
+use App\Validator\Scope\ScopeVisibility;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -109,6 +113,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "uuid": "exact",
  *     "title": "partial",
  * })
+ * @ApiFilter(ScopeVisibilityFilter::class)
  *
  * @ORM\Table(name="jecoute_news")
  * @ORM\Entity
@@ -124,37 +129,33 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ReferentNews
  * @NewsTarget(groups="Admin")
+ * @ScopeVisibility
  */
-class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface
+class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface, EntityScopeVisibilityInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;
+    use EntityScopeVisibilityTrait;
 
     /**
-     * @var int|null
-     *
      * @ApiProperty(identifier=false)
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var UuidInterface
-     *
      * @ApiProperty(identifier=true)
      *
      * @ORM\Column(type="uuid", unique=true)
      *
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc"})
      */
-    private $uuid;
+    private UuidInterface $uuid;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column
      *
      * @Assert\Length(max=120)
@@ -162,11 +163,9 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      *
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
-    private $title;
+    private ?string $title;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="text")
      *
      * @Assert\Length(max=1000)
@@ -174,75 +173,51 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      *
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
-    private $text;
+    private ?string $text;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
      *
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
-    private $externalLink;
+    private ?string $externalLink;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(nullable=true)
      */
-    private $topic;
+    private ?string $topic;
 
     /**
-     * @var Zone|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
-     */
-    private $zone;
-
-    /**
-     * @var Administrator|null
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $createdBy;
+    private ?Administrator $createdBy = null;
 
     /**
-     * @var bool
-     *
      * @SymfonySerializer\Groups({"jecoute_news_write_national"})
      */
-    private $global = false;
+    private bool $global = false;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean", options={"default": 0})
      *
      * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
-    private $notification = false;
+    private bool $notification;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean", options={"default": 1})
      *
      * @SymfonySerializer\Groups({"jecoute_news_read_dc", "jecoute_news_write"})
      */
-    private $published = true;
+    private bool $published;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(nullable=true)
      */
-    private $space;
+    private ?string $space = null;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -259,9 +234,10 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
         $this->text = $text;
         $this->topic = $topic;
         $this->externalLink = $externalLink;
-        $this->zone = $zone;
         $this->notification = $notification;
         $this->published = $published;
+
+        $this->setZone($zone);
     }
 
     public function __toString()
@@ -317,16 +293,6 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     public function setTopic(?string $topic): void
     {
         $this->topic = $topic;
-    }
-
-    public function getZone(): ?Zone
-    {
-        return $this->zone;
-    }
-
-    public function setZone(?Zone $zone): void
-    {
-        $this->zone = $zone;
     }
 
     public function getCreatedBy(): ?Administrator

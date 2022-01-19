@@ -42,7 +42,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
         }
     }
 
-    protected function getAllowedOperationNames(): array
+    protected function getAllowedOperationNames(string $resourceClass): array
     {
         return ['get_private'];
     }
