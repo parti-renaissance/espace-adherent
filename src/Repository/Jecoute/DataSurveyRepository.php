@@ -3,6 +3,7 @@
 namespace App\Repository\Jecoute;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Building;
@@ -180,6 +181,32 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function countByAdherent(Adherent $adherent, \DateTimeInterface $minPostedAt = null): int
+    {
+        $qb = $this->createQueryBuilder('dataSurvey')
+            ->select('COUNT(1)')
+            ->andWhere('dataSurvey.author = :adherent')
+            ->setParameter('adherent', $adherent)
+        ;
+
+        if ($minPostedAt) {
+            $qb
+                ->andWhere('dataSurvey.postedAt >= :min_posted_at')
+                ->setParameter('min_posted_at', $minPostedAt)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countByAdherentForLastMonth(Adherent $adherent): int
+    {
+        return $this->countByAdherent($adherent, (new \DateTime('now'))->modify('-1 month'));
     }
 
     private function createSurveyQueryBuilder(

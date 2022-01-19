@@ -2,7 +2,6 @@
 
 namespace App\Repository\Jecoute;
 
-use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\Jecoute\Survey;
@@ -59,35 +58,6 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
-    }
-
-    public function countByAdherent(Adherent $adherent, \DateTimeInterface $minPostedAt = null): int
-    {
-        $qb = $this->createCountByAdherentQueryBuilder($adherent);
-
-        if ($minPostedAt) {
-            $this->applyMinPostedAt($qb, $minPostedAt);
-        }
-
-        return $qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function countByAdherentForLastMonth(Adherent $adherent): int
-    {
-        return $this->countByAdherent($adherent, (new \DateTime('now'))->modify('-1 month'));
-    }
-
-    private function createCountByAdherentQueryBuilder(Adherent $adherent): QueryBuilder
-    {
-        return $this->createQueryBuilder('jds')
-            ->leftJoin('jds.dataSurvey', 'dataSurvey')
-            ->select('COUNT(1)')
-            ->andWhere('dataSurvey.author = :adherent')
-            ->setParameter('adherent', $adherent)
-        ;
     }
 
     public function countByDevice(Device $device, \DateTimeInterface $minPostedAt = null): int
