@@ -95,7 +95,7 @@
                             <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
                         {% endfor %}
                         <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
-                    {% elseif app.debug %}
+                    {% elseif app.environment != 'prod' %}
                         <input type="hidden" name="g-recaptcha-response" value="fake" />
                     {% endif %}
                 </li>

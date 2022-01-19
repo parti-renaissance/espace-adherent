@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Webmozart\Assert\Assert;

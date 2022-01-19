@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\Entity\Notification;
 use App\Repository\NotificationRepository;
 use Behat\Gherkin\Node\TableNode;

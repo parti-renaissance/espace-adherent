@@ -1,15 +1,14 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\Repository\EmailRepository;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
 
 class EmailContext extends RawMinkContext
 {
-    use KernelDictionary;
-
     /**
      * @var JsonContext
      */
@@ -19,6 +18,13 @@ class EmailContext extends RawMinkContext
      * @var array|null
      */
     private $currentEmailPayload;
+
+    private $emailRepository;
+
+    public function __construct(EmailRepository $emailRepository)
+    {
+        $this->emailRepository = $emailRepository;
+    }
 
     /**
      * @BeforeScenario
@@ -35,9 +41,7 @@ class EmailContext extends RawMinkContext
      */
     public function iShouldHaveMessages(int $number)
     {
-        $emailRepository = $this->getEmailRepository();
-
-        if (($nb = $emailRepository->count([])) !== $number) {
+        if (($nb = $this->emailRepository->count([])) !== $number) {
             throw new \RuntimeException(sprintf('I found %d email(s) instead of %d', $nb, $number));
         }
     }
@@ -47,8 +51,7 @@ class EmailContext extends RawMinkContext
      */
     public function iShouldHaveEmailForWithPayload(string $emailType, $emailRecipient, PyStringNode $json)
     {
-        $emailRepository = $this->getEmailRepository();
-        $emails = $emailRepository->findRecipientMessages($emailType, $emailRecipient);
+        $emails = $this->emailRepository->findRecipientMessages($emailType, $emailRecipient);
 
         if (1 !== \count($emails)) {
             throw new \RuntimeException(sprintf('I found %s email(s) instead of 1', \count($emails)));
@@ -88,10 +91,5 @@ class EmailContext extends RawMinkContext
         }
 
         $this->visitPath($link);
-    }
-
-    private function getEmailRepository(): EmailRepository
-    {
-        return $this->getContainer()->get(EmailRepository::class);
     }
 }

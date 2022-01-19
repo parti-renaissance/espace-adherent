@@ -1,23 +1,22 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
+use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
-class FixtureContext extends RawMinkContext
+class FixtureContext implements Context
 {
-    use KernelDictionary;
-
     private $executor;
     private $purger;
     private $fixturesLoader;
 
-    public function __construct(SymfonyFixturesLoader $fixturesLoader, EntityManager $manager)
+    public function __construct(SymfonyFixturesLoader $fixturesLoader, EntityManagerInterface $manager)
     {
         $this->fixturesLoader = $fixturesLoader;
         $this->executor = new ORMExecutor($manager, $this->purger = new ORMPurger($manager));
@@ -43,7 +42,7 @@ class FixtureContext extends RawMinkContext
         }
 
         if (!$fixtures) {
-            throw new InvalidArgumentException(sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures)));
+            throw new \InvalidArgumentException(sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures)));
         }
 
         $this->executor->execute($fixtures);

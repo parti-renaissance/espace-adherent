@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\Committee\CommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -7,7 +9,7 @@ use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;
 use App\Event\CommitteeEventEvent;
 use App\Membership\Event\UserEvent;
 use Behat\Behat\Context\Context;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SyncWithAPIContext implements Context
@@ -15,7 +17,7 @@ class SyncWithAPIContext implements Context
     private $doctrine;
     private $dispatcher;
 
-    public function __construct(Registry $doctrine, EventDispatcherInterface $dispatcher)
+    public function __construct(ManagerRegistry $doctrine, EventDispatcherInterface $dispatcher)
     {
         $this->doctrine = $doctrine;
         $this->dispatcher = $dispatcher;

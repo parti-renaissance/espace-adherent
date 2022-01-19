@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use Behat\Behat\Context\Context;
 use Cake\Chronos\Chronos;
 

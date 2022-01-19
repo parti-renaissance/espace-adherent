@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Repository\DonatorRepository;
@@ -24,7 +26,7 @@ class DonationContext extends RawMinkContext
      */
     public function before(BeforeScenarioScope $scope)
     {
-        $this->restContext = $scope->getEnvironment()->getContext(\RestContext::class);
+        $this->restContext = $scope->getEnvironment()->getContext(RestContext::class);
     }
 
     /**

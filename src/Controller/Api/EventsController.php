@@ -104,7 +104,7 @@ class EventsController extends AbstractController
         $uuids = $body['uuids'] ?? null;
 
         if (!\is_array($uuids) || empty($uuids)) {
-            throw new BadRequestHttpException('Parameter "uuids" should be an array of uuids.');
+            return $this->json(['detail' => 'Parameter "uuids" should be an array of uuids.'], Response::HTTP_BAD_REQUEST);
         }
 
         $events = $eventRepository->findWithRegistrationByUuids($uuids, $user);

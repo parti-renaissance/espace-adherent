@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\OAuth\AccessToken;
@@ -9,6 +11,7 @@ use App\OAuth\Model\Client as ClientModel;
 use App\OAuth\Model\Scope;
 use App\Repository\AdherentRepository;
 use App\Repository\OAuth\ClientRepository;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -23,27 +26,28 @@ use Ramsey\Uuid\Uuid;
 
 class RestContext extends BehatchRestContext
 {
-    private $httpCallResultPool;
-    private $entityManager;
-    private $privateCryptKey;
+    private HttpCallResultPool $httpCallResultPool;
 
-    /**
-     * @var string|null
-     */
-    private $accessToken;
-    private $authorizationCode;
+    private EntityManagerInterface $entityManager;
+    private CryptKey $privateCryptKey;
+    private ?string $accessToken = null;
 
-    public function __construct(
-        Request $request,
-        HttpCallResultPool $httpCallResultPool,
-        EntityManagerInterface $entityManager,
-        string $sslPrivateKey
-    ) {
+    public function __construct(HttpCallResultPool $httpCallResultPool, Request $request)
+    {
         parent::__construct($request);
 
         $this->httpCallResultPool = $httpCallResultPool;
-        $this->entityManager = $entityManager;
-        $this->privateCryptKey = new CryptKey($sslPrivateKey);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function before(BeforeScenarioScope $scope)
+    {
+        /** @var DIContext $diContext */
+        $diContext = $scope->getEnvironment()->getContext(DIContext::class);
+        $this->entityManager = $diContext->get('doctrine')->getManager();
+        $this->privateCryptKey = new CryptKey($diContext->getParameter('ssl_private_key'));
     }
 
     /**
@@ -128,11 +132,11 @@ class RestContext extends BehatchRestContext
     /**
      * @Given I send a :method request to :url with the access token
      */
-    public function iSendARequestToWithAccessToken(string $method, string $url): void
+    public function iSendARequestToWithAccessToken(string $method, string $url)
     {
         $accessToken = $this->getAccessTokenFromLastResponse();
 
-        $this->iSendARequestTo($method, $url.'?'.http_build_query(['access_token' => $accessToken]));
+        return $this->iSendARequestTo($method, $url.'?'.http_build_query(['access_token' => $accessToken]));
     }
 
     /**
@@ -157,23 +161,26 @@ class RestContext extends BehatchRestContext
         return $json['access_token'];
     }
 
-    public function iSendARequestToWithParameters($method, $url, TableNode $data)
-    {
-        $this->addAccessTokenToTheAuthorizationHeader();
-
-        return parent::iSendARequestToWithParameters($method, $url, $data);
-    }
-
     public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
     {
         $this->addAccessTokenToTheAuthorizationHeader();
 
-        parent::iSendARequestTo($method, $url, $body, $files);
+        $this->setAcceptApplicationJsonHeader($url);
+
+        return parent::iSendARequestTo($method, $url, $body, $files);
+    }
+
+    public function iSendARequestToWithParameters($method, $url, TableNode $data)
+    {
+        $this->addAccessTokenToTheAuthorizationHeader();
+        $this->setAcceptApplicationJsonHeader($url);
+
+        return parent::iSendARequestToWithParameters($method, $url, $data);
     }
 
     public function iSendARequestToWithBody($method, $url, PyStringNode $body)
     {
-        $this->addAccessTokenToTheAuthorizationHeader();
+        $this->setAcceptApplicationJsonHeader($url);
 
         return parent::iSendARequestToWithBody($method, $url, $body);
     }
@@ -231,21 +238,6 @@ class RestContext extends BehatchRestContext
         $this->iAddHeaderEqualTo('Authorization', 'Bearer '.$this->accessToken);
     }
 
-    /**
-     * Checks, whether the header name matches to given pattern
-     *
-     * @Then the header :name should match :value
-     */
-    public function theHeaderShouldMatch($name, $pattern)
-    {
-        $actual = $this->request->getHttpHeader($name);
-
-        $this->assert(
-            preg_match($pattern, $actual) > 0,
-            "The header '$actual' does not match the pattern '$pattern'."
-        );
-    }
-
     private function getJwtFromAccessToken(AccessToken $accessToken): string
     {
         $client = new ClientModel($accessToken->getClient()->getUuid()->toString(), []);
@@ -283,5 +275,12 @@ class RestContext extends BehatchRestContext
         }
 
         return $driver->getClient();
+    }
+
+    private function setAcceptApplicationJsonHeader(string $url): void
+    {
+        if (preg_match('#^/?(api|oauth)/#', $url) && false === strpos($url, 'oauth/v2/auth')) {
+            $this->iAddHeaderEqualTo('Accept', 'application/json');
+        }
     }
 }
