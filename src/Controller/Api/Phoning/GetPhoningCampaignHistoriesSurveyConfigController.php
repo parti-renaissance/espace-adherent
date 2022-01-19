@@ -30,45 +30,47 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
                 ],
                 'satisfaction_questions' => $adherent ? array_merge(
                     (!$adherent->isEmailSubscribed() ?
-                        [
+                        [[
                             'code' => 'need_email_renewal',
                             'label' => 'Souhaitez-vous vous réabonner à nos emails ?',
                             'type' => 'boolean',
-                        ] : []),
-                    (!$adherent->hasSmsSubscriptionType() ? [
-                        [
+                        ]] : []
+                    ),
+                    (!$adherent->hasSmsSubscriptionType() ?
+                        [[
                             'code' => 'need_sms_renewal',
                             'label' => 'Souhaitez-vous vous réabonner à nos SMS ?',
                             'type' => 'boolean',
+                        ]] : []
+                    ),
+                    [
+                        [
+                            'code' => 'postal_code_checked',
+                            'label' => sprintf(
+                                'Habitez-vous toujours à %s (%s) ?',
+                                $adherent->getCityName(),
+                                $adherent->getPostalCode()
+                            ),
+                            'type' => 'boolean',
                         ],
-                    ] : []), [
-                          [
-                              'code' => 'postal_code_checked',
-                              'label' => sprintf(
-                                  'Habitez-vous toujours à %s (%s) ?',
-                                  $adherent->getCityName(),
-                                  $adherent->getPostalCode()
-                              ),
-                              'type' => 'boolean',
-                          ],
-                          [
-                              'code' => 'profession',
-                              'label' => 'Quel est votre métier ?',
-                              'type' => 'text',
-                          ],
-                          [
-                              'code' => 'engagement',
-                              'label' => 'Souhaitez-vous vous (re)engager sur le terrain ?',
-                              'type' => 'choice',
-                              'choices' => CampaignHistoryEngagementEnum::LABELS,
-                          ],
-                          [
-                              'code' => 'note',
-                              'label' => 'Comment s\'est passé cet appel ?',
-                              'type' => 'note',
-                              'values' => [1, 2, 3, 4, 5],
-                          ],
-                      ]
+                        [
+                            'code' => 'profession',
+                            'label' => 'Quel est votre métier ?',
+                            'type' => 'text',
+                        ],
+                        [
+                            'code' => 'engagement',
+                            'label' => 'Souhaitez-vous vous (re)engager sur le terrain ?',
+                            'type' => 'choice',
+                            'choices' => CampaignHistoryEngagementEnum::LABELS,
+                        ],
+                        [
+                            'code' => 'note',
+                            'label' => 'Comment s\'est passé cet appel ?',
+                            'type' => 'note',
+                            'values' => [1, 2, 3, 4, 5],
+                        ],
+                    ]
                 ) : [],
             ]
         );
