@@ -6,6 +6,7 @@ use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
@@ -30,6 +31,7 @@ class AdherentMessageTypeEnum extends Enum
     public const CANDIDATE = 'candidate';
     public const CANDIDATE_JECOUTE = 'candidate_jecoute';
     public const COALITIONS = 'coalitions';
+    public const CORRESPONDENT = 'correspondent';
 
     public const CLASSES = [
         self::DEPUTY => DeputyAdherentMessage::class,
@@ -44,6 +46,7 @@ class AdherentMessageTypeEnum extends Enum
         self::CANDIDATE => CandidateAdherentMessage::class,
         self::CANDIDATE_JECOUTE => CandidateJecouteMessage::class,
         self::COALITIONS => CoalitionsMessage::class,
+        self::CORRESPONDENT => CorrespondentAdherentMessage::class,
     ];
 
     public const ROLES = [
@@ -67,5 +70,7 @@ class AdherentMessageTypeEnum extends Enum
         CandidateJecouteMessage::class => ['ROLE_CANDIDATE', 'ROLE_DELEGATED_CANDIDATE'],
 
         CoalitionsMessage::class => 'ROLE_CAUSE_AUTHOR',
+
+        CorrespondentAdherentMessage::class => ['ROLE_CORRESPONDENT'],
     ];
 }

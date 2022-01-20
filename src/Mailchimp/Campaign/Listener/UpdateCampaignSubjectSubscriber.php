@@ -53,6 +53,9 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::COALITIONS:
                 $prefix = '✊';
                 break;
+            case AdherentMessageTypeEnum::CORRESPONDENT:
+                $prefix = '[Correspondant]';
+                break;
             default:
                 $prefix = '';
         }

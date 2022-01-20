@@ -152,3 +152,57 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "DELETE" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f?scope=referent"
     Then the response status code should be 204
+
+  Scenario: As a Correspondent I can create a message
+    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/adherent_messages?scope=correspondent" with body:
+    """
+    {
+      "type": "correspondent",
+      "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
+      "subject": "L'objet du mail",
+      "content": "<table>...</table>",
+      "json_content": "{\"foo\": \"bar\", \"items\": [1, 2, true, \"hello world\"]}"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@",
+      "created_at": "@string@.isDateTime()",
+      "author": {
+        "uuid": "@uuid@",
+        "first_name": "Jules",
+        "last_name": "Fullstack"
+      },
+      "label": "Label du message qui permet de le retrouver dans la liste des messages envoy\u00e9s",
+      "subject": "L'objet du mail",
+      "status": "draft",
+      "sent_at": null,
+      "recipient_count": 0,
+      "source": "api",
+      "synchronized": false,
+      "from_name": "Jules Fullstack | La République En Marche !",
+      "statistics": {
+        "sent": 0,
+        "opens": 0,
+        "open_rate": 0,
+        "clicks": 0,
+        "click_rate": 0,
+        "unsubscribe": 0,
+        "unsubscribe_rate": 0
+      },
+      "zones": [
+        {
+          "code": "92",
+          "name": "Hauts-de-Seine",
+          "postal_code": [],
+          "type": "department",
+          "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+        }
+      ]
+    }
+    """

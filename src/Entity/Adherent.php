@@ -39,6 +39,7 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
@@ -1079,6 +1080,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->hasPapUserRole()) {
             $roles[] = 'ROLE_PAP_USER';
+        }
+
+        if ($this->isCorrespondent()) {
+            $roles[] = 'ROLE_CORRESPONDENT';
         }
 
         // Must be at the end as it uses $roles array
@@ -2307,6 +2312,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isDelegatedSenator()
             || $this->isCandidate()
             || $this->isDelegatedCandidate()
+            || $this->isCorrespondent()
         ;
     }
 
@@ -2664,6 +2670,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         return false;
+    }
+
+    public function isCorrespondent(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::CORRESPONDENT);
+    }
+
+    public function getCorrespondentZone(): Zone
+    {
+        return $this->findZoneBasedRole(ScopeEnum::CORRESPONDENT)->getZones()->first();
     }
 
     public function getLreArea(): ?LreArea

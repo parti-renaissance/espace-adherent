@@ -44,6 +44,8 @@ abstract class FilterFactory
                 return static::createCandidateJecouteFilter($user);
             case AdherentMessageTypeEnum::COALITIONS:
                 return static::createCoalitionsFilter($user);
+            case AdherentMessageTypeEnum::CORRESPONDENT:
+                return static::createCorrespondentFilter($user);
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
@@ -153,5 +155,14 @@ abstract class FilterFactory
         }
 
         return new CoalitionsFilter();
+    }
+
+    private static function createCorrespondentFilter(Adherent $user): AdherentGeoZoneFilter
+    {
+        if (!$user->isCorrespondent()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a correspondent');
+        }
+
+        return new AdherentGeoZoneFilter($user->getCorrespondentZone());
     }
 }

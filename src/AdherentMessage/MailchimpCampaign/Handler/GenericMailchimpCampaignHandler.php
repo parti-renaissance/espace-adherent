@@ -6,6 +6,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
+use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 
 class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
@@ -14,6 +15,7 @@ class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterfa
         CandidateAdherentMessage::class,
         CandidateJecouteMessage::class,
         CoalitionsMessage::class,
+        CorrespondentAdherentMessage::class,
     ];
 
     public function handle(AdherentMessageInterface $message): void
