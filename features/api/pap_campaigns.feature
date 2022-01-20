@@ -1548,7 +1548,7 @@ Feature:
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
                     "last_name": "Kiroule",
-                    "age": 57
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
@@ -1597,7 +1597,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1629,7 +1629,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1661,7 +1661,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1693,7 +1693,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1725,7 +1725,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1757,7 +1757,7 @@ Feature:
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
                     "last_name": "Kiroule",
-                    "age": 57
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
@@ -1789,7 +1789,7 @@ Feature:
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
                     "last_name": "Kiroule",
-                    "age": 57
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
@@ -2359,8 +2359,8 @@ Feature:
     {
         "nb_campaigns": "2",
         "nb_ongoing_campaigns": "2",
-        "nb_visited_doors": "0",
-        "nb_visited_doors_last_30d": "0",
+        "nb_visited_doors": "2",
+        "nb_visited_doors_last_30d": "2",
         "nb_surveys": "0",
         "nb_surveys_last_30d": "0"
     }
