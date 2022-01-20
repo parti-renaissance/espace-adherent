@@ -567,3 +567,12 @@ scope.visibility.choice: Veuillez spécifier une visibilité valide.
 scope.zone.national_scope_with_zone: Un rôle national ne peut pas définir de zone.
 scope.zone.local_scope_without_zone: Veuillez spécifier une zone.
 scope.zone.local_scope_with_unmanaged_zone: La zone spécifiée n'est pas gérée par votre rôle.
+
+#
+# MyTeam
+#
+my_team.member.adherent.already_in_collection: L'adhérent "%value%" fait déjà partie de cette équipe.
+my_team.member.adherent.not_blank: Veuillez sélectionner un militant.
+my_team.member.role.not_blank: Veuillez sélectionner une position.
+my_team.member.role.invalid_choice: Cette position n'est pas valide.
+my_team.member.scope_features.invalid_choice: Accès délégués ne sont pas valides.

@@ -1064,6 +1064,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createCorrespondent(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));
+        $this->addReference('correspondent-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => Uuid::uuid4(),

@@ -67,6 +67,7 @@ trait EntityIdentityTrait
      *     "jemarche_data_survey_read",
      *     "team_read",
      *     "team_list_read",
+     *     "my_team_read",
      *     "pap_campaign_read",
      *     "adherent_autocomplete",
      *     "pap_campaign_history_read",
