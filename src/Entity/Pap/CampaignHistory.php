@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\AdherentIdentityFilter;
+use App\Api\Filter\PapCampaignHistoryScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -31,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "iri": true,
  *             "groups": {"pap_campaign_history_read"},
  *         },
+ *         "filters": {PapCampaignHistoryScopeFilter::class},
  *         "denormalization_context": {"groups": {"pap_campaign_history_write"}},
  *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
  *     },

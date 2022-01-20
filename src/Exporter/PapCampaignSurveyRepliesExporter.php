@@ -30,7 +30,7 @@ class PapCampaignSurveyRepliesExporter
         $this->exporter = $exporter;
     }
 
-    public function export(Campaign $campaign, string $format): StreamedResponse
+    public function export(Campaign $campaign, array $zones, string $format): StreamedResponse
     {
         $survey = $campaign->getSurvey();
         $questions = $this->surveyQuestionRepository->findForSurvey($survey);
@@ -44,7 +44,7 @@ class PapCampaignSurveyRepliesExporter
                 $format
             ),
             new IteratorCallbackSourceIterator(
-                $this->dataSurveyRepository->iterateForPapCampaignDataSurveys($campaign),
+                $this->dataSurveyRepository->iterateForPapCampaignDataSurveys($campaign, $zones),
                 function (array $data) use ($questions) {
                     /** @var DataSurvey $dataSurvey */
                     $dataSurvey = $data[0];

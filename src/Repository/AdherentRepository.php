@@ -15,6 +15,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Pap\Address;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
@@ -1443,6 +1444,7 @@ SQL;
 
     public function findFullScoresByPapCampaign(
         PapCampaign $campaign,
+        array $zones = [],
         int $page = 1,
         int $limit = 100
     ): PaginatorInterface {
@@ -1468,6 +1470,18 @@ SQL;
                 'door_closed' => PapCampaignHistoryStatusEnum::DOOR_CLOSED,
             ])
         ;
+
+        if ($zones) {
+            $qb = $this->withGeoZones(
+                $zones,
+                $qb,
+                'adherent',
+                Adherent::class,
+                'a2',
+                'zones',
+                'z2'
+            );
+        }
 
         return $this->configurePaginator($qb, $page, $limit, null, false);
     }

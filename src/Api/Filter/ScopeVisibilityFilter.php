@@ -5,6 +5,7 @@ namespace App\Api\Filter;
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\Jecoute\News;
+use App\Entity\Pap\Campaign;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeVisibilityEnum;
@@ -30,6 +31,24 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
             $queryBuilder
                 ->andWhere("$alias.visibility = :visibility")
                 ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
+            ;
+
+            return;
+        }
+
+        if (Campaign::class === $queryBuilder->getRootEntities()[0]) {
+            $queryBuilder
+                ->leftJoin("$alias.zone", 'zone')
+                ->leftJoin('zone.parents', 'parent_zone')
+                ->andWhere(
+                    $queryBuilder->expr()->orX(
+                        "($alias.visibility = :local AND (zone IN (:zones) OR parent_zone IN (:zones)))",
+                        "$alias.visibility = :national"
+                    )
+                )
+                ->setParameter('local', ScopeVisibilityEnum::LOCAL)
+                ->setParameter('national', ScopeVisibilityEnum::NATIONAL)
+                ->setParameter('zones', $scope->getZones())
             ;
 
             return;

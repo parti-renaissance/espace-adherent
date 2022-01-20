@@ -5,6 +5,8 @@ namespace App\Controller\Api\Pap;
 use App\Entity\Pap\Campaign;
 use App\Exporter\PapCampaignSurveyRepliesExporter;
 use App\Repository\Jecoute\DataSurveyRepository;
+use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,15 +31,23 @@ class GetPapCampaignSurveyRepliesController extends AbstractController
         Campaign $campaign,
         string $_format,
         DataSurveyRepository $dataSurveyRepository,
-        PapCampaignSurveyRepliesExporter $exporter
+        PapCampaignSurveyRepliesExporter $exporter,
+        ScopeGeneratorResolver $scopeGeneratorResolver
     ): Response {
+        $zones = [];
+        $scope = $scopeGeneratorResolver->generate();
+        if (!\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+            $zones = $scope->getZones();
+        }
+
         if ('json' !== $_format) {
-            return $exporter->export($campaign, $_format);
+            return $exporter->export($campaign, $zones, $_format);
         }
 
         return $this->json(
             $dataSurveyRepository->findPapCampaignDataSurveys(
                 $campaign,
+                $zones,
                 $request->query->getInt('page', 1),
                 $request->query->getInt('page_size', 30)
             ),

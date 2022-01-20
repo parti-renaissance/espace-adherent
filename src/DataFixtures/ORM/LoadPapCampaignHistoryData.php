@@ -26,16 +26,19 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $campaign2 = $this->getReference('pap-campaign-2');
         /** @var Campaign $campaignFinished */
         $campaignFinished = $this->getReference('pap-campaign-finished');
+        /** @var Campaign $campaign92 */
+        $campaign92 = $this->getReference('pap-campaign-92');
 
         $adherent3 = $this->getReference('adherent-3');
         $adherent12 = $this->getReference('adherent-12');
         $adherent16 = $this->getReference('adherent-16');
 
-        $nationalSurvey1 = $this->getReference('national-survey-1');
         $nationalSurvey3 = $this->getReference('national-survey-3');
 
         /** @var Building $building3 */
         $building3 = $this->getReference('building-3');
+        /** @var Building $building4 */
+        $building92_1 = $this->getReference('building-92-1');
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign1,
@@ -134,6 +137,21 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             new \DateTime('2021-11-10 10:12:30')
         ));
         $stats = $building3->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaignFinished);
+        $stats->setVisitedDoors(['01']);
+
+        $manager->persist($this->createPapCampaignHistory(
+            $campaign92,
+            $building92_1,
+            CampaignHistoryStatusEnum::DOOR_CLOSED,
+            'A',
+            0,
+            '01',
+            $adherent12,
+            null,
+            new \DateTime('-2 hours'),
+            new \DateTime('-2 hours')
+        ));
+        $stats = $building92_1->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign92);
         $stats->setVisitedDoors(['01']);
 
         $manager->flush();

@@ -123,7 +123,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         );
         $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
-        $this->addReference('address-5', $address);
+        $this->addReference('address-92-1', $address);
         $manager->persist($address);
 
         $manager->flush();
