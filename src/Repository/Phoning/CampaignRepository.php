@@ -5,12 +5,15 @@ namespace App\Repository\Phoning;
 use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\Repository\ScopeVisibilityEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CampaignRepository extends ServiceEntityRepository
 {
+    use ScopeVisibilityEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Campaign::class);
@@ -48,9 +51,9 @@ class CampaignRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findPhoningCampaignsKpi(): array
+    public function findPhoningCampaignsKpi(array $zones = []): array
     {
-        return $this->createQueryBuilder('campaign')
+        $queryBuilder = $this->createQueryBuilder('campaign')
             ->select('COUNT(DISTINCT campaign.id) AS nb_campaigns')
             ->addSelect('COUNT(DISTINCT IF(campaign.finishAt >= :now OR campaign.finishAt IS NULL, campaign.id, null)) AS nb_ongoing_campaigns')
             ->addSelect('COUNT(campaignHistory.id) AS nb_calls')
@@ -69,6 +72,11 @@ class CampaignRepository extends ServiceEntityRepository
                 'last_30d' => new \DateTime('-30 days'),
                 'send' => CampaignHistoryStatusEnum::SEND,
             ])
+        ;
+
+        $this->addScopeVisibility($queryBuilder, $zones);
+
+        return $queryBuilder
             ->getQuery()
             ->getSingleResult()
         ;

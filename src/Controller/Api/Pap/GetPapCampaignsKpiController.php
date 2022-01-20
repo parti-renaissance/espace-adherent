@@ -18,6 +18,6 @@ class GetPapCampaignsKpiController
             throw new BadRequestHttpException('Unable to resolve scope from request.');
         }
 
-        return $campaignRepository->findCampaignsKpi($scope->getZones());
+        return $campaignRepository->findCampaignsKpi(!$scope->isNational() ? $scope->getZones() : []);
     }
 }
