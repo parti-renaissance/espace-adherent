@@ -1199,6 +1199,7 @@ scope.feature.dashboard: Vue d'ensemble
 scope.feature.contacts: Contacts
 scope.feature.messages: Messagerie
 scope.feature.events: Événements
+scope.feature.my_team: Mon équipe
 scope.feature.mobile_app: Application Mobile
 scope.feature.elections: Élections
 scope.feature.ripostes: Ripostes

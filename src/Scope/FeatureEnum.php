@@ -11,6 +11,7 @@ class FeatureEnum extends Enum
     public const CONTACTS = 'contacts';
     public const MESSAGES = 'messages';
     public const EVENTS = 'events';
+    public const MY_TEAM = 'my_team';
     public const MOBILE_APP = 'mobile_app';
     public const ELECTIONS = 'elections';
     public const PHONING = 'phoning';
@@ -26,6 +27,7 @@ class FeatureEnum extends Enum
         self::CONTACTS,
         self::MESSAGES,
         self::EVENTS,
+        self::MY_TEAM,
         self::MOBILE_APP,
         self::NEWS,
         self::ELECTIONS,
