@@ -23,7 +23,7 @@ trait EntityScopeVisibilityTrait
      *     "pap_campaign_read_after_write",
      *     "phoning_campaign_read",
      *     "phoning_campaign_list",
-     *     "jecoute_news_read_dc"
+     *     "jecoute_news_read_dc",
      * })
      */
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
@@ -43,7 +43,7 @@ trait EntityScopeVisibilityTrait
      *     "phoning_campaign_list",
      *     "phoning_campaign_write",
      *     "jecoute_news_read_dc",
-     *     "jecoute_news_write"
+     *     "jecoute_news_write",
      * })
      */
     private ?Zone $zone = null;
