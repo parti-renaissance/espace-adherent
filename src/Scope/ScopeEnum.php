@@ -44,5 +44,6 @@ class ScopeEnum extends Enum
         self::DEPUTY,
         self::SENATOR,
         self::CANDIDATE,
+        self::CORRESPONDENT,
     ];
 }
