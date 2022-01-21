@@ -34,6 +34,10 @@ class ManagedZoneProvider
             return $adherent->getManagedArea() ? $adherent->getManagedArea()->getZones()->toArray() : [];
         }
 
+        if (AdherentSpaceEnum::CORRESPONDENT === $spaceType) {
+            return [$adherent->getCorrespondentZone()];
+        }
+
         if (AdherentSpaceEnum::SENATOR === $spaceType) {
             return $adherent->getSenatorArea() ? [$adherent->getSenatorArea()->getDepartmentTag()->getZone()] : [];
         }
