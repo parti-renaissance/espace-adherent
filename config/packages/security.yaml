@@ -410,6 +410,9 @@ security:
             - ROLE_JECOUTE_REGION
             - ROLE_AUDIENCE
 
+        ROLE_CORRESPONDENT:
+            - ROLE_AUDIENCE
+
         ROLE_DEPUTY:
             - ROLE_AUDIENCE
 
