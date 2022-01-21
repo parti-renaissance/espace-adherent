@@ -19,12 +19,11 @@ class InitializeMyTeamController extends AbstractController
         EntityManagerInterface $entityManager
     ): ?MyTeam {
         if (!$scopeCode = $request->query->get('scope')) {
-            throw new BadRequestHttpException('Pas de scope.');
+            throw new BadRequestHttpException('Aucun scope renseigné.');
         }
 
-        $scope = $scopeGeneratorResolver->generate();
-        if (!$scope) {
-            throw new BadRequestHttpException('L\'utilisateur n\'a pas de scope demandé.');
+        if (null === $scopeGeneratorResolver->resolve()) {
+            throw new BadRequestHttpException('Vous n\'avez pas accès au scope demandé.');
         }
 
         $user = $this->getUser();

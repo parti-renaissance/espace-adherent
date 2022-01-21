@@ -41,7 +41,7 @@ Feature:
     }
     """
 
-  Scenario: As a referent I will get my team, when I want create it and it exists
+  Scenario: As a referent I will get my team when I want to create it, but it already exists
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "POST" request to "/api/v3/my_teams?scope=referent"
     Then the response status code should be 201

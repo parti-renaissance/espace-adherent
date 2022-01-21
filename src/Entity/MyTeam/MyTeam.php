@@ -14,6 +14,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Entity(repositoryClass="App\Repository\MyTeam\MyTeamRepository")
+ *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -29,8 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     }
  * )
- *
- * @ORM\Entity(repositoryClass="App\Repository\MyTeam\MyTeamRepository")
  */
 class MyTeam
 {
