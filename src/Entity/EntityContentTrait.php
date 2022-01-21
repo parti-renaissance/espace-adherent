@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityContentTrait
@@ -15,8 +14,6 @@ trait EntityContentTrait
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Groups({"page_read"})
      */
     private $title;
 
@@ -64,8 +61,6 @@ trait EntityContentTrait
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"page_read"})
      */
     private $content;
 

@@ -49,6 +49,18 @@ Vous disposez également de la faculté de donner des directives sur le sort de 
 Vous pouvez consulter notre Politique de protection des données (si vous êtes élu(e)s, la Politique de protection des données des élu(e)s) et exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale : La République En Marche, 68 rue du Rocher, 75008 Paris, France ou électronique suivante : **mes-donnees@en-marche.fr **ou encore en contactant notre DPO à l’adresse : **dpo@en-marche.fr**.'
         ));
 
+        $manager->persist($this->createCmsBlock(
+            'je-mengage-mentions-legales',
+            'Mentions légales du site je-mengage.fr',
+            file_get_contents(__DIR__.'/../legalities.md')
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'je-mengage-politique-protection-donnees',
+            'Politique de protection des données à caractère personnel du je-mengage.fr',
+            file_get_contents(__DIR__.'/../data_policy.md')
+        ));
+
         $manager->flush();
     }
 

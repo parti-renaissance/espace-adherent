@@ -2,24 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"page_read"},
- *         },
- *     },
- *     itemOperations={"get"},
- *     collectionOperations={}
- * )
- *
  * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
  *
@@ -49,8 +37,6 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @ApiProperty(identifier=false)
      */
     private $id;
 
@@ -61,8 +47,6 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @ApiProperty(identifier=true)
      */
     private $slug;
 
