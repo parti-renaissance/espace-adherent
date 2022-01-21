@@ -24,7 +24,7 @@ Feature:
       }
     """
 
-  Scenario: As a non logged-in user I can get legalities texts
+  Scenario: As a non logged-in user I can get data protection policy text
     Given I send a "GET" request to "/api/je-mengage/je-mengage-politique-protection-donnees"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -34,6 +34,6 @@ Feature:
       }
     """
 
-  Scenario: As a non logged-in user I can get legalities texts
+  Scenario: As a non logged-in user I cannot get a non-existent mentions text
     Given I send a "GET" request to "/api/je-mengage/je-mengage-mentions"
     Then the response status code should be 404
