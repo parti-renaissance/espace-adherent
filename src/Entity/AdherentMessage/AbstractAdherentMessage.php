@@ -39,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     AdherentMessageTypeEnum::CANDIDATE: "CandidateAdherentMessage",
  *     AdherentMessageTypeEnum::CANDIDATE_JECOUTE: "CandidateJecouteMessage",
  *     AdherentMessageTypeEnum::COALITIONS: "CoalitionsMessage",
+ *     AdherentMessageTypeEnum::CORRESPONDENT: "CorrespondentAdherentMessage",
  * })
  *
  * @ApiResource(
