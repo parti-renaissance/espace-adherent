@@ -27,7 +27,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
     {
         $team1 = $this->createMyTeam(self::TEAM_1_UUID, $this->getReference('adherent-8'), ScopeEnum::REFERENT);
         $team1->addMember($this->createMember(
-            $this->getReference('adherent-2'),
+            $this->getReference('adherent-5'),
             RoleEnum::COMMUNICATION_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::EVENTS],
             self::MEMBER_1_UUID
@@ -38,11 +38,11 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
             [FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
             self::MEMBER_2_UUID
         ));
-        $this->setReference('my-team-referent_1', $team1);
+        $this->setReference('my-team-referent-1', $team1);
 
         $team2 = $this->createMyTeam(self::TEAM_2_UUID, $this->getReference('correspondent-1'), ScopeEnum::CORRESPONDENT);
         $team2->addMember($this->createMember(
-            $this->getReference('adherent-2'),
+            $this->getReference('adherent-5'),
             RoleEnum::LOGISTICS_MANAGER,
             [FeatureEnum::CONTACTS],
             self::MEMBER_3_UUID
