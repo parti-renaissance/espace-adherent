@@ -5,7 +5,7 @@ Feature:
   I should be able to access Jemengage API
 
   Scenario: As a non logged-in user I can get a RGPD text
-    Given I send a "GET" request to "/api/je-mengage/je-mengage-rgpd"
+    Given I send a "GET" request to "/api/je-mengage/rgpd"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
