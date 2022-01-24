@@ -39,6 +39,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             4,
             7
         );
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-8-a'));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-8-b'));
         $this->addReference('pap-campaign-1', $campaign1);
 
         $campaign2 = $this->createCampaign(
@@ -52,6 +54,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             4,
             7
         );
+        $campaign2->addVotePlace($this->getReference('pap-vote-place--paris-8-a'));
+        $campaign2->addVotePlace($this->getReference('pap-vote-place--paris-8-b'));
         $this->addReference('pap-campaign-2', $campaign2);
 
         $campaign3 = $this->createCampaign(
@@ -151,6 +155,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             LoadAdminData::class,
             LoadJecouteSurveyData::class,
             LoadGeoZoneData::class,
+            LoadPapVotePlaceData::class,
         ];
     }
 

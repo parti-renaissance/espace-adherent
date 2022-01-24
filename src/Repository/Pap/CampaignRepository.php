@@ -48,4 +48,27 @@ class CampaignRepository extends ServiceEntityRepository
             ->getSingleResult()
         ;
     }
+
+    public function countActiveCampaign(): int
+    {
+        return $this->createQueryBuilder('campaign')
+            ->select('COUNT(1)')
+            ->where('campaign.finishAt IS NOT NULL AND campaign.finishAt > :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function findActiveCampaignsVotePlaceIds(): array
+    {
+        return array_column($this->createQueryBuilder('campaign')
+            ->select('DISTINCT votePlace.id')
+            ->innerJoin('campaign.votePlaces', 'votePlace')
+            ->where('campaign.finishAt IS NOT NULL AND campaign.finishAt > :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getArrayResult(), 'id'
+        );
+    }
 }
