@@ -35,10 +35,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
  *     },
  *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/my_team_members/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *         },
  *         "put": {
  *             "path": "/v3/my_team_members/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *         },
+ *         "delete": {
+ *             "path": "/v3/my_team_members/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')",
+ *         }
  *     },
  *     collectionOperations={
  *         "post": {

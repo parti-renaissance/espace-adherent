@@ -11,7 +11,9 @@ Feature:
       | method | url                                                          |
       | POST   | /api/v3/my_teams                                             |
       | POST   | /api/v3/my_team_members                                      |
-      | PUT    | /api/v3/my_team_members/7fab9d6c-71a1-4257-b42b-c6b9b2350a26 |
+      | PUT    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559 |
+      | GET    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559 |
+      | DELETE | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559 |
 
   Scenario Outline: As a logged-in user without correct right I cannot access teams endpoints
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -19,8 +21,10 @@ Feature:
     Then the response status code should be 403
 
     Examples:
-      | method | url                                                          |
-      | POST   | /api/v3/my_teams                                             |
+      | method | url                                                                          |
+      | POST   | /api/v3/my_teams?scope=referent                                              |
+      | GET    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent  |
+      | DELETE | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent  |
 
   Scenario: As a referent I cannot create my team if no scope
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -75,7 +79,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "adherent: Ce militant ne peut pas être ajouter à l'équipe.\nadherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Cette position n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
+        "detail": "adherent: Ce militant ne peut pas être ajouter à l'équipe.\nadherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
         "violations": [
             {
                 "propertyPath": "adherent",
@@ -87,7 +91,7 @@ Feature:
             },
             {
                 "propertyPath": "role",
-                "message": "Cette position n'est pas valide."
+                "message": "Ce poste n'est pas valide."
             },
             {
                 "propertyPath": "scope_features",
@@ -228,3 +232,40 @@ Feature:
     }
     """
 
+  Scenario: As a referent I can get a member of my team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "team": {
+            "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
+        },
+        "adherent": {
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "first_name": "Gisele",
+            "last_name": "Berthoux"
+        },
+        "role": "communication_manager",
+        "scope_features": [
+            "contacts",
+            "messages",
+            "events"
+        ],
+        "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
+    }
+    """
+
+  Scenario: As a referent I can delete a member of my team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    Then the response status code should be 204
+
+  Scenario: As a referent I cannot delete a member of not my team
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    Then the response status code should be 403

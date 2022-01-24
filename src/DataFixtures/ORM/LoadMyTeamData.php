@@ -56,6 +56,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $this->setReference('my-team-correspondent-1', $team2);
 
         $manager->persist($team1);
+        $manager->persist($team2);
 
         $manager->flush();
     }
