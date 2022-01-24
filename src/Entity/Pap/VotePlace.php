@@ -48,14 +48,14 @@ class VotePlace
     public ?float $deltaAveragePredictions2017;
 
     /**
-     * @ORM\Column(name="abstention_2017", type="float", nullable=true)
+     * @ORM\Column(name="abstentions_2017", type="float", nullable=true)
      */
-    public ?float $abstention2017;
+    public ?float $abstentions2017;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    public ?int $nbMisRegistrations;
+    public ?int $nbMisregistrations;
 
     public function __construct(
         ?float $latitude,
@@ -63,15 +63,15 @@ class VotePlace
         UuidInterface $uuid = null,
         ?float $deltaPredictionAndResult2017 = null,
         ?float $deltaAveragePredictions017 = null,
-        ?float $abstention2017 = null,
-        ?int $nbMisRegistrations = null
+        ?float $abstentions2017 = null,
+        ?int $nbMisregistrations = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->deltaPredictionAndResult2017 = $deltaPredictionAndResult2017;
         $this->deltaAveragePredictions2017 = $deltaAveragePredictions017;
-        $this->abstention2017 = $abstention2017;
-        $this->nbMisRegistrations = $nbMisRegistrations;
+        $this->abstentions2017 = $abstentions2017;
+        $this->nbMisregistrations = $nbMisregistrations;
     }
 }

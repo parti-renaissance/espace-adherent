@@ -31,9 +31,9 @@ final class Version20220124162602 extends AbstractMigration
         ADD
           delta_average_predictions_2017 DOUBLE PRECISION DEFAULT NULL,
         ADD
-          abstention_2017 DOUBLE PRECISION DEFAULT NULL,
+          abstentions_2017 DOUBLE PRECISION DEFAULT NULL,
         ADD
-          nb_mis_registrations INT DEFAULT NULL');
+          nb_misregistrations INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -46,8 +46,8 @@ final class Version20220124162602 extends AbstractMigration
         DROP
           delta_average_predictions_2017,
         DROP
-          abstention_2017,
+          abstentions_2017,
         DROP
-          nb_mis_registrations');
+          nb_misregistrations');
     }
 }

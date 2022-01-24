@@ -60,7 +60,7 @@ class CampaignRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findCampaignsVotePlaceIds(): array
+    public function findActiveCampaignsVotePlaceIds(): array
     {
         return array_column($this->createQueryBuilder('campaign')
             ->select('DISTINCT votePlace.id')

@@ -37,7 +37,7 @@ class GetNearPointsController extends AbstractController
             return $this->json([], Response::HTTP_OK);
         }
 
-        $votePlaceIds = $campaignRepository->findCampaignsVotePlaceIds();
+        $votePlaceIds = $campaignRepository->findActiveCampaignsVotePlaceIds();
 
         return $this->json($addressRepository->findNear(
             $request->query->filter('latitude', null, \FILTER_VALIDATE_FLOAT),
