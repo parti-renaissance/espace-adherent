@@ -3,6 +3,7 @@
 namespace App\Entity\MyTeam;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Filter\MyTeamScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -11,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,12 +20,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     attributes={
+ *         "filters": {MyTeamScopeFilter::class},
  *         "normalization_context": {
  *             "groups": {"my_team_read"}
  *         },
  *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
  *     },
  *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/my_teams",
+ *             "normalization_context": {
+ *                 "groups": {"my_team_read_list"}
+ *             },
+ *         },
  *         "post": {
  *             "defaults": {"_api_receive": false},
  *             "path": "/v3/my_teams",
@@ -50,6 +59,8 @@ class MyTeam
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
+     *
+     * @Groups({"my_team_read_list"})
      */
     private string $scope;
 
@@ -62,6 +73,8 @@ class MyTeam
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
+     *
+     * @Groups({"my_team_read_list"})
      */
     private Collection $members;
 
