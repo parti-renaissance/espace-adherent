@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+    <head>
+        {% if cookiebot_cbid %}
+            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_cbid }}" data-blockingmode="auto" type="text/javascript"></script>
+        {% endif %}
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+        <title>{% block title 'Je-mengage.fr' %}</title>
+
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
+        <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
+        {% block stylesheets '' %}
+
+        {% block favicon %}
+            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% endblock %}
+    </head>
+    <body>
+        {% block flash_message %}
+            {% for label, messages in app.flashes(['info', 'error']) %}
+                {% if messages|length %}
+                    <div class="flash flash--{{ label }}">
+                        {% for message in messages %}
+                            <div class="flash__inner">{{ message|trans }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endblock %}
+
+        {% block content '' %}
+
+        <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
+
+        {% block javascripts '' %}
+
+        <script type="text/javascript">
+            on(window, 'load', function() {
+                Kernel.boot(
+                    '{{ app_version }}',
+                    {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    '{{ app_environment }}',
+                    {{ algolia_app_id ? ('\''~algolia_app_id|e('js')~'\'')|raw : 'null' }},
+                    {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
+                    '{{ algolia_blacklist|base64_encode }}',
+                    '{{ algolia_index_prefix }}',
+                    '{{ app.user ? app.user.getUsername() }}'
+                );
+            });
+        </script>
+
+        {% block final_javascripts '' %}
+    </body>
+</html>

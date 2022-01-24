@@ -12,6 +12,7 @@ framework:
         handler_id:  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
     fragments:       ~
     http_method_override: true
+    error_controller: App\Controller\ErrorController
     assets: ~
     cache:
         app: cache.adapter.doctrine

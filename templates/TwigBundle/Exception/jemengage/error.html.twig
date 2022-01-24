@@ -1,0 +1,17 @@
+{% extends 'jemengage/base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title 'Page introuvable' %}
+
+{% block content %}
+    <main class="error">
+        <section class="l__wrapper--slim">
+            <div class="error__box error__box--500">{{ status_code }}</div>
+            <div>
+                <h1>
+                    Une erreur inattendue s'est produite.
+                </h1>
+            </div>
+        </section>
+    </main>
+{% endblock %}
