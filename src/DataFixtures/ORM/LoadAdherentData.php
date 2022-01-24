@@ -70,6 +70,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
     public const ASSESSOR_UUID = 'ae341e67-6e4c-4ead-b4be-1ade6693d512';
     public const MUNICIPAL_MANAGER_UUID = 'c2ba1ce4-e103-415f-a67a-260b8c651b55';
     public const SENATORIAL_CANDIDATE_UUID = 'ab03c939-8f70-40a8-b2cd-d147ec7fd09e';
+    public const COALITIONS_USER_1_UUID = '7dd297ad-a84c-4bbd-9fd2-d1152ebc3044';
 
     public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
     public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
@@ -1067,7 +1068,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $this->addReference('correspondent-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
-            'uuid' => Uuid::uuid4(),
+            'uuid' => self::COALITIONS_USER_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'coalitions-user-1@en-marche-dev.fr',
             'gender' => GenderEnum::MALE,
@@ -1080,6 +1081,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::COALITIONS);
+        $this->addReference('coalitions-user-1', $adherent);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);

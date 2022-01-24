@@ -2,13 +2,16 @@
 
 namespace App\Entity\MyTeam;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Validator\MyTeamMember as AssertMemberValid;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,6 +21,32 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @UniqueEntity(fields={"team", "adherent"}, errorPath="adherent", message="my_team.member.adherent.already_in_collection")
+ *
+ * @ApiResource(
+ *     shortName="MyTeamMember",
+ *     attributes={
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"my_team_member_read"},
+ *         },
+ *         "denormalization_context": {
+ *             "groups": {"my_team_member_write"}
+ *         },
+ *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
+ *     },
+ *     itemOperations={
+ *         "put": {
+ *             "path": "/v3/my_team_members/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "post": {
+ *             "path": "/v3/my_team_members",
+ *             "denormalization_context": {"groups": {"my_team_member_write", "my_team_member_post"}}
+ *         }
+ *     }
+ * )
  */
 class Member
 {
@@ -27,6 +56,8 @@ class Member
     /**
      * @ORM\ManyToOne(targetEntity=MyTeam::class, inversedBy="members")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({"my_team_member_read", "my_team_member_write"})
      */
     private ?MyTeam $team = null;
 
@@ -35,6 +66,9 @@ class Member
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank(message="my_team.member.adherent.not_blank")
+     * @AssertMemberValid
+     *
+     * @Groups({"my_team_member_read", "my_team_member_write"})
      */
     private ?Adherent $adherent = null;
 
@@ -43,13 +77,21 @@ class Member
      *
      * @Assert\NotBlank(message="my_team.member.role.not_blank")
      * @Assert\Choice(choices=App\MyTeam\RoleEnum::ALL, message="my_team.member.role.invalid_choice")
+     *
+     * @Groups({"my_team_member_read", "my_team_member_write"})
      */
     private ?string $role = null;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Choice(choices=App\Scope\FeatureEnum::ALL, multiple=true, message="my_team.member.scope_features.invalid_choice")
+     * @Assert\Choice(
+     *     choices=App\Scope\FeatureEnum::AVAILABLE_FOR_DELEGATED_ACCESSES,
+     *     multiple=true,
+     *     multipleMessage="my_team.member.scope_features.invalid_choice"
+     * )
+     *
+     * @Groups({"my_team_member_read", "my_team_member_write"})
      */
     private array $scopeFeatures = [];
 

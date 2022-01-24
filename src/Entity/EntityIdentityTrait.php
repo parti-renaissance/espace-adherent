@@ -68,6 +68,8 @@ trait EntityIdentityTrait
      *     "team_read",
      *     "team_list_read",
      *     "my_team_read",
+     *     "my_team_member_read",
+     *     "my_team_member_post",
      *     "pap_campaign_read",
      *     "adherent_autocomplete",
      *     "pap_campaign_history_read",

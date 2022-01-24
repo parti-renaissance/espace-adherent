@@ -571,8 +571,8 @@ scope.zone.local_scope_with_unmanaged_zone: La zone spécifiée n'est pas géré
 #
 # MyTeam
 #
-my_team.member.adherent.already_in_collection: L'adhérent "%value%" fait déjà partie de cette équipe.
+my_team.member.adherent.already_in_collection: Le militant fait déjà partie de cette équipe.
 my_team.member.adherent.not_blank: Veuillez sélectionner un militant.
 my_team.member.role.not_blank: Veuillez sélectionner une position.
 my_team.member.role.invalid_choice: Cette position n'est pas valide.
-my_team.member.scope_features.invalid_choice: Accès délégués ne sont pas valides.
+my_team.member.scope_features.invalid_choice: Une ou plusieurs des accès délégués ne sont pas valides.
