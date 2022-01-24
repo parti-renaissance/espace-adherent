@@ -10,6 +10,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class MyTeamMember extends Constraint
 {
-    public $messageInvalidAdherentSource = "Ce militant n'est pas disponible pour l'ajout dans l'équipe.";
+    public $messageInvalidAdherentSource = "Ce militant ne peut pas être ajouter à l'équipe.";
     public $messageInvalidAdherent = 'Le militant choisi ne fait pas partie de la zone géographique que vous gérez.';
 }

@@ -54,7 +54,7 @@ Feature:
     }
     """
 
-  Scenario: As a referent I cann't add a new member in my team with invalid data
+  Scenario: As a referent I cannot add a new member in my team with invalid data
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
@@ -75,11 +75,11 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "adherent: Ce militant n'est pas disponible pour l'ajout dans l'équipe.\nadherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Cette position n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
+        "detail": "adherent: Ce militant ne peut pas être ajouter à l'équipe.\nadherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Cette position n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
         "violations": [
             {
                 "propertyPath": "adherent",
-                "message": "Ce militant n'est pas disponible pour l'ajout dans l'équipe."
+                "message": "Ce militant ne peut pas être ajouter à l'équipe."
             },
             {
                 "message": "Le militant choisi ne fait pas partie de la zone géographique que vous gérez.",
@@ -97,7 +97,7 @@ Feature:
     }
     """
 
-  Scenario: As a referent I cann't add a new member in my team, if the user is already in my team
+  Scenario: As a referent I cannot add a new member in my team, if the user is already in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
@@ -128,7 +128,7 @@ Feature:
     }
     """
 
-  Scenario: As a referent I cann't add a new member in my team, if the user is not in my managed zone
+  Scenario: As a referent I cannot add a new member in my team, if the user is not in my managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
@@ -182,6 +182,8 @@ Feature:
             "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
         },
         "adherent": {
+            "first_name": "Francis",
+            "last_name": "Brioul",
             "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4"
         },
         "role": "mobilization_manager",
@@ -214,6 +216,8 @@ Feature:
             "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
         },
         "adherent": {
+            "first_name": "Francis",
+            "last_name": "Brioul",
             "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4"
         },
         "role": "logistics_manager",

@@ -34,6 +34,7 @@ trait EntityPersonNameTrait
      *     "survey_read_dc",
      *     "survey_replies_list",
      *     "adherent_change_diff",
+     *     "my_team_member_read",
      * })
      */
     private $firstName = '';
@@ -64,6 +65,7 @@ trait EntityPersonNameTrait
      *     "survey_read_dc",
      *     "survey_replies_list",
      *     "adherent_change_diff",
+     *     "my_team_member_read",
      * })
      */
     private $lastName = '';
