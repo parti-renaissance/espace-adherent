@@ -9,6 +9,7 @@ Feature:
     Then the response status code should be 401
     Examples:
       | method | url                                                          |
+      | GET    | /api/v3/my_teams                                             |
       | POST   | /api/v3/my_teams                                             |
       | POST   | /api/v3/my_team_members                                      |
       | PUT    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559 |
@@ -22,6 +23,7 @@ Feature:
 
     Examples:
       | method | url                                                                          |
+      | GET    | /api/v3/my_teams?scope=referent                                              |
       | POST   | /api/v3/my_teams?scope=referent                                              |
       | GET    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent  |
       | DELETE | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent  |
@@ -269,3 +271,76 @@ Feature:
     When I add "Content-Type" header equal to "application/json"
     And I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
     Then the response status code should be 403
+
+  Scenario: As a referent I can get my team with members
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/my_teams?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 2,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "scope": "referent",
+                "members": [
+                    {
+                        "adherent": {
+                            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                            "first_name": "Jacques",
+                            "last_name": "Picard"
+                        },
+                        "role": "mobilization_manager",
+                        "scope_features": [
+                            "contacts",
+                            "events"
+                        ],
+                        "uuid": "7e82bb82-4b1e-4244-b484-7a51301df420"
+                    },
+                    {
+                        "adherent": {
+                            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                            "first_name": "Gisele",
+                            "last_name": "Berthoux"
+                        },
+                        "role": "communication_manager",
+                        "scope_features": [
+                            "contacts",
+                            "messages",
+                            "events"
+                        ],
+                        "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
+                    }
+                ],
+                "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
+            }
+        ]
+    }
+    """
+
+  Scenario: As a referent I can get my team members, if I doesn't have my team
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/my_teams?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 0,
+            "items_per_page": 2,
+            "count": 0,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+        ]
+    }
+    """

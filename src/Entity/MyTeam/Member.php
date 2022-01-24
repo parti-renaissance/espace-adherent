@@ -77,7 +77,7 @@ class Member
      * @Assert\NotBlank(message="my_team.member.adherent.not_blank")
      * @AssertMemberValid
      *
-     * @Groups({"my_team_member_read", "my_team_member_write"})
+     * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
     private ?Adherent $adherent = null;
 
@@ -87,7 +87,7 @@ class Member
      * @Assert\NotBlank(message="my_team.member.role.not_blank")
      * @Assert\Choice(choices=App\MyTeam\RoleEnum::ALL, message="my_team.member.role.invalid_choice")
      *
-     * @Groups({"my_team_member_read", "my_team_member_write"})
+     * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
     private ?string $role = null;
 
@@ -100,7 +100,7 @@ class Member
      *     multipleMessage="my_team.member.scope_features.invalid_choice"
      * )
      *
-     * @Groups({"my_team_member_read", "my_team_member_write"})
+     * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
     private array $scopeFeatures = [];
 

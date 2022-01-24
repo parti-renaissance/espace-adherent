@@ -68,6 +68,7 @@ trait EntityIdentityTrait
      *     "team_read",
      *     "team_list_read",
      *     "my_team_read",
+     *     "my_team_read_list",
      *     "my_team_member_read",
      *     "my_team_member_post",
      *     "pap_campaign_read",
