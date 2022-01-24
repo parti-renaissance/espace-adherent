@@ -19,8 +19,13 @@ class AddressRepository extends ServiceEntityRepository
     }
 
     /** @return Address[] */
-    public function findNear(float $latitude, float $longitude, int $zoom, int $limit = 300): array
-    {
+    public function findNear(
+        float $latitude,
+        float $longitude,
+        int $zoom,
+        int $limit = 300,
+        array $votePlaces = []
+    ): array {
         $sql = <<<SQL
             SELECT address.id
             FROM pap_address AS address
@@ -77,6 +82,13 @@ SQL;
             ->setParameter('longitude', $longitude)
             ->orderBy('distance', 'ASC')
         ;
+
+        if ($votePlaces) {
+            $qb
+                ->andWhere('address.votePlace IN (:vote_place_ids)')
+                ->setParameter('vote_place_ids', $votePlaces)
+            ;
+        }
 
         return $qb->getQuery()->getResult();
     }

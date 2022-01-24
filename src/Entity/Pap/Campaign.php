@@ -187,6 +187,14 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
      */
     private $campaignHistories;
 
+    /**
+     * @var VotePlace[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace")
+     * @ORM\JoinTable(name="pap_campaign_vote_place")
+     */
+    private $votePlaces;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -210,6 +218,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
         $this->nbVoters = $nbVoters;
 
         $this->campaignHistories = new ArrayCollection();
+        $this->votePlaces = new ArrayCollection();
 
         $this->setZone($zone);
     }
@@ -333,6 +342,28 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
         return $this->campaignHistories->filter(function (CampaignHistory $campaignHistory) {
             return $campaignHistory->isContactLaterStatus();
         });
+    }
+
+    public function addVotePlace(VotePlace $votePlace): void
+    {
+        if (!$this->votePlaces->contains($votePlace)) {
+            $this->votePlaces->add($votePlace);
+        }
+    }
+
+    public function removeVotePlace(VotePlace $votePlace): void
+    {
+        $this->votePlaces->removeElement($votePlace);
+    }
+
+    public function getVotePlaces(): Collection
+    {
+        return $this->votePlaces;
+    }
+
+    public function setVotePlaces(array $votePlaces): void
+    {
+        $this->votePlaces = $votePlaces;
     }
 
     public function getIndexOptions(): array

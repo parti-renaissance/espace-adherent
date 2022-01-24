@@ -37,10 +37,41 @@ class VotePlace
      */
     public ?string $code = null;
 
-    public function __construct(?float $latitude, ?float $longitude, UuidInterface $uuid = null)
-    {
+    /**
+     * @ORM\Column(name="delta_prediction_and_result_2017", type="float", nullable=true)
+     */
+    public ?float $deltaPredictionAndResult2017;
+
+    /**
+     * @ORM\Column(name="delta_average_predictions_2017", type="float", nullable=true)
+     */
+    public ?float $deltaAveragePredictions2017;
+
+    /**
+     * @ORM\Column(name="abstention_2017", type="float", nullable=true)
+     */
+    public ?float $abstention2017;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    public ?int $nbMisRegistrations;
+
+    public function __construct(
+        ?float $latitude,
+        ?float $longitude,
+        UuidInterface $uuid = null,
+        ?float $deltaPredictionAndResult2017 = null,
+        ?float $deltaAveragePredictions017 = null,
+        ?float $abstention2017 = null,
+        ?int $nbMisRegistrations = null
+    ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->deltaPredictionAndResult2017 = $deltaPredictionAndResult2017;
+        $this->deltaAveragePredictions2017 = $deltaAveragePredictions017;
+        $this->abstention2017 = $abstention2017;
+        $this->nbMisRegistrations = $nbMisRegistrations;
     }
 }
