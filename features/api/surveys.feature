@@ -8,6 +8,11 @@ Feature:
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 401
 
+  Scenario: As a simple logged-in user I can get the surveys
+    Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    When I send a "GET" request to "/api/jecoute/survey"
+    Then the response status code should be 200
+
   Scenario: As a logged-in user I can get the surveys of my referent(s) and the national surveys
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     When I send a "GET" request to "/api/jecoute/survey"
@@ -436,8 +441,8 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can reply to a national survey
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+  Scenario Outline: As a logged-in user I can reply to a national survey
+    Given I am logged with "<email>" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
@@ -504,6 +509,10 @@ Feature:
       }
     }
     """
+    Examples:
+      | email                       |
+      | michelle.dufour@example.ch  |
+      | simple-user@example.ch      |
 
   Scenario: As a logged-in user I can reply to a national survey without agreeing to join
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"

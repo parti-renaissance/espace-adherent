@@ -26,6 +26,16 @@ Feature:
       | DELETE  | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                 |
       | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/riposte  |
 
+  Scenario Outline: As a simple logged-in user on Jemengage mobile I can get and use ripostes
+    Given I am logged with "simple-user@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 200
+    Examples:
+      | method  | url                                                                   |
+      | GET     | /api/v3/ripostes                                                      |
+      | GET     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4                 |
+      | PUT     | /api/v3/ripostes/220bd36e-4ac4-488a-8473-8e99a71efba4/action/riposte  |
+
   Scenario Outline: As a logged-in user with correct rights I can get, edit or delete any riposte (not mine, disabled or old more that 24 hours)
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>?scope=national"
