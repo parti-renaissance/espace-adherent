@@ -4,14 +4,9 @@
 {% block page_title 'Page introuvable' %}
 
 {% block content %}
-    <main class="error">
-        <section class="l__wrapper--slim">
-            <div class="error__box error__box--404"></div>
-            <div>
-                <h1>
-                    Cette page n'existe pas !
-                </h1>
-            </div>
-        </section>
-    </main>
+    <div id="jemengage-error-container">
+        <div id="title">Je m'engage</div>
+        <div id="errorType">404</div>
+        <div id="body">Cette page n'existe pas.</div>
+    </div>
 {% endblock %}
