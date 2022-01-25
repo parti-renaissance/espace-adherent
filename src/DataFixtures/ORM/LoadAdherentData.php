@@ -834,6 +834,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699008800',
         ]);
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
@@ -852,6 +853,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
@@ -871,6 +873,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699887766',
         ]);
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
         $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
@@ -1062,6 +1065,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699008800',
         ]));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createCorrespondent(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')));

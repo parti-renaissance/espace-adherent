@@ -1489,20 +1489,38 @@ SQL;
     /**
      * @return Adherent[]
      */
-    public function findAdherentByAutocompletion(?string $name, int $limit = 10): array
+    public function findAdherentByAutocompletion(?string $name, array $zones = [], int $limit = 10): array
     {
         if (!$name) {
             return [];
         }
 
-        return $this->createQueryBuilder('a')
-            ->Where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
+        $qb = $this->createQueryBuilder('a')
+            ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
             ->andWhere('a.adherent = :true')
             ->andWhere('a.status = :status')
-            ->andWhere('a.source IS NULL')
-            ->setParameter('name', '%'.strtolower(trim($name)).'%')
-            ->setParameter('status', Adherent::ENABLED)
-            ->setParameter('true', true)
+            ->andWhere('(a.source IS NULL OR a.source = :jemengage_source)')
+            ->setParameters([
+                'jemengage_source' => MembershipSourceEnum::JEMENGAGE,
+                'name' => '%'.strtolower(trim($name)).'%',
+                'status' => Adherent::ENABLED,
+                'true' => true,
+            ])
+        ;
+
+        if ($zones) {
+            $this->withGeoZones(
+                $zones,
+                $qb,
+                'a',
+                Adherent::class,
+                'a2',
+                'zones',
+                'z2'
+            );
+        }
+
+        return $qb
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

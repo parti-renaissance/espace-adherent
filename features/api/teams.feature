@@ -63,6 +63,30 @@ Feature:
     ]
     """
 
+  Scenario: As a referent I can search an adherent with autocomplete search in my managed zone
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=bert&scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+    ]
+    """
+    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=jules&scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "registered_at": "2017-01-25T19:31:45+01:00",
+            "uuid": "@uuid@",
+            "first_name": "Jules",
+            "last_name": "Fullstack",
+            "postal_code": "77000"
+        }
+    ]
+    """
+
   Scenario: As an anonymous I can not remove an adherent from a team
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
     Then the response status code should be 401
