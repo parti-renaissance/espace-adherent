@@ -116,6 +116,11 @@ class DocumentsControllerTest extends WebTestCase
     {
         $documentsRoot = '/espace-adherent/documents/dossier';
 
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/dir3');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->logout($this->client);
+
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/dir3');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -130,10 +135,6 @@ class DocumentsControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/referents/dir4');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
         $this->logout($this->client);
-
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-        $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/dir3');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testDocumentsRead()
@@ -155,6 +156,11 @@ class DocumentsControllerTest extends WebTestCase
     {
         $documentsRoot = '/espace-adherent/documents/telecharger';
 
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->logout($this->client);
+
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
@@ -168,11 +174,6 @@ class DocumentsControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/referents/document-referent-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
-        $this->logout($this->client);
-
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-        $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->logout($this->client);
     }
 }

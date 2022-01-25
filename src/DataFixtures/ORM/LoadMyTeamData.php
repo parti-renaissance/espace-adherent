@@ -26,33 +26,41 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $team1 = $this->createMyTeam(self::TEAM_1_UUID, $this->getReference('adherent-8'), ScopeEnum::REFERENT);
-        $team1->addMember($this->createMember(
+        $member1_1 = $this->createMember(
             $this->getReference('adherent-5'),
             RoleEnum::COMMUNICATION_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::EVENTS],
             self::MEMBER_1_UUID
-        ));
-        $team1->addMember($this->createMember(
+        );
+        $this->setReference('my_team_member_1_1', $member1_1);
+        $member1_2 = $this->createMember(
             $this->getReference('adherent-3'),
             RoleEnum::MOBILIZATION_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
             self::MEMBER_2_UUID
-        ));
+        );
+        $this->setReference('my_team_member_1_2', $member1_2);
+        $team1->addMember($member1_1);
+        $team1->addMember($member1_2);
         $this->setReference('my-team-referent-1', $team1);
 
         $team2 = $this->createMyTeam(self::TEAM_2_UUID, $this->getReference('correspondent-1'), ScopeEnum::CORRESPONDENT);
-        $team2->addMember($this->createMember(
+        $member2_1 = $this->createMember(
             $this->getReference('adherent-5'),
             RoleEnum::LOGISTICS_MANAGER,
             [FeatureEnum::CONTACTS],
             self::MEMBER_3_UUID
-        ));
-        $team2->addMember($this->createMember(
+        );
+        $this->setReference('my_team_member_2_1', $member2_1);
+        $member2_2 = $this->createMember(
             $this->getReference('adherent-9'),
-            RoleEnum::COMPLIANCE_AND_FINANCE_MANAGERS,
+            RoleEnum::COMPLIANCE_AND_FINANCE_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::EVENTS],
             self::MEMBER_4_UUID
-        ));
+        );
+        $this->setReference('my_team_member_2_2', $member2_2);
+        $team2->addMember($member2_1);
+        $team2->addMember($member2_2);
         $this->setReference('my-team-correspondent-1', $team2);
 
         $manager->persist($team1);

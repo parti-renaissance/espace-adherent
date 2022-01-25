@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Scope\FeatureEnum;
 use App\Validator\MyTeamMember as AssertMemberValid;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\MyTeam\MemberRepository")
  * @ORM\Table(name="my_team_member", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="team_member_unique", columns={"team_id", "adherent_id"}),
  * })
@@ -154,6 +155,13 @@ class Member
     public function setScopeFeatures(array $scopeFeatures): void
     {
         $this->scopeFeatures = $scopeFeatures;
+    }
+
+    public function getScopeFeaturesAsAccesses(): array
+    {
+        return array_map(function (string $feature) {
+            return array_flip(FeatureEnum::DELEGATED_ACCESSES_MAPPING)[$feature];
+        }, $this->scopeFeatures);
     }
 
     public function __toString(): string

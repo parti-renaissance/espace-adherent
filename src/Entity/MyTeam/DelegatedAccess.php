@@ -73,6 +73,17 @@ class DelegatedAccess
     public const ACCESS_ELECTED_REPRESENTATIVES = 'elected_representatives';
     public const ACCESS_FILES = 'files';
     public const ACCESS_INSTITUTIONAL_EVENTS = 'institutional_events';
+    // access corresponding to scope features
+    public const ACCESS_DASHBOARD = 'dashboard';
+    public const ACCESS_NEWS = 'news';
+    public const ACCESS_ELECTIONS = 'elections';
+    public const ACCESS_RIPOSTES = 'ripostes';
+    public const ACCESS_PHONING = 'phoning';
+    public const ACCESS_PAP = 'pap';
+    public const ACCESS_TEAM = 'team';
+    public const ACCESS_PHONING_CAMPAIGN = 'phoning_campaign';
+    public const ACCESS_SURVEY = 'survey';
+
     public const ACCESSES = [
         self::ACCESS_MESSAGES,
         self::ACCESS_EVENTS,
