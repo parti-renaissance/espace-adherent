@@ -5,6 +5,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
   As an anonymous user or connected user
   I should be able to donate punctually or subscribe foreach month
 
+  @skip
   Scenario: An anonymous user can donate successfully
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
@@ -44,6 +45,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click on the "1" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
 
+  @skip
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
@@ -114,6 +116,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And the "Prénom" field should contain "Dupont"
     And the "Adresse e-mail" field should contain "jean.dupont@en-marche.fr"
 
+  @skip
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before
     Given the following fixtures are loaded:
       | LoadAdherentData          |
@@ -200,6 +203,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click on the "1" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
 
+  @skip
   Scenario: The logged user can continue to donate punctually with a subscription currently running
     Given the following fixtures are loaded:
       | LoadDonationData          |
