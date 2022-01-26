@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/jecoute/survey")
- * @Security("(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
+ * @Security("(is_granted('ROLE_USER') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
  */
 class SurveyController extends AbstractController
 {
