@@ -16,6 +16,7 @@ use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -37,7 +38,7 @@ class CampaignAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Informations ⚙️')
+            ->with('Informations ⚙️', ['class' => 'col-md-6'])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                 ])
@@ -65,6 +66,46 @@ class CampaignAdmin extends AbstractAdmin
                     'property' => 'name',
                     'required' => false,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
+                ])
+            ->end()
+            ->with('Filtre - Ciblage par bureau de vote', ['class' => 'col-md-6'])
+                ->add('deltaPredictionAndResultMin2017', PercentType::class, [
+                    'label' => 'Ecart entre prédiction et résultat 2017 - Min',
+                    'scale' => 2,
+                    'required' => false,
+                ])
+                ->add('deltaPredictionAndResultMax2017', PercentType::class, [
+                    'label' => 'Ecart entre prédiction et résultat 2017 - Max',
+                    'scale' => 2,
+                    'required' => false,
+                ])
+                ->add('deltaAveragePredictionsMin', PercentType::class, [
+                    'label' => 'Ecart prediction et prediction moyennes - Min',
+                    'scale' => 2,
+                    'required' => false,
+                ])
+                ->add('deltaAveragePredictionsMax', PercentType::class, [
+                    'label' => 'Ecart prediction et prediction moyennes - Max',
+                    'scale' => 2,
+                    'required' => false,
+                ])
+                ->add('abstentionsMin2017', PercentType::class, [
+                    'label' => 'Taux d\'abstention 2017 - Min',
+                    'scale' => 2,
+                    'required' => false,
+                ])
+                ->add('abstentionsMax2017', PercentType::class, [
+                    'label' => 'Taux d\'abstention 2017 - Max',
+                    'scale' => 2,
+                    'required' => false,
+                ])
+                ->add('misregistrationsPriorityMin', IntegerType::class, [
+                    'label' => 'Liste des Priorité de mal inscrits - Min',
+                    'required' => false,
+                ])
+                ->add('misregistrationsPriorityMax', IntegerType::class, [
+                    'label' => 'Liste des Priorité de mal inscrits - Max',
+                    'required' => false,
                 ])
             ->end()
         ;

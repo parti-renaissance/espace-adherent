@@ -26,17 +26,22 @@ class AddressRepository extends ServiceEntityRepository
         int $limit = 300,
         array $votePlaces = []
     ): array {
-        $sql = <<<SQL
-            SELECT address.id
+        $newparams = [];
+        foreach ($votePlaces as $n => $val) {
+            $newparams[] = ":id_$n";
+        }
+        $sql = 'SELECT address.id
             FROM pap_address AS address
+            INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
                 address.offset_x BETWEEN 
                     2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) - 1)
                     AND 2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) + 1)
                 AND address.offset_y BETWEEN 
                     2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) - 1)
-                    AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)
-            ORDER BY 
+                    AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)';
+        $sql .= ' AND address.vote_place_id IN ('.implode(', ', $newparams).')';
+        $sql .= ' ORDER BY 
                 (6371 * 
                      ACOS(
                        COS(RADIANS(:latitude)) 
@@ -45,8 +50,7 @@ class AddressRepository extends ServiceEntityRepository
                      + SIN(RADIANS(:latitude)) 
                      * SIN(RADIANS(address.latitude))
                  ))
-            LIMIT :limit
-SQL;
+            LIMIT :limit';
 
         $stmt = $this
             ->getEntityManager()
@@ -54,12 +58,17 @@ SQL;
             ->prepare($sql)
         ;
 
+        foreach ($votePlaces as $n => $val) {
+            $val = (int) $val;
+            $stmt->bindParam("id_$n", $val, \PDO::PARAM_INT);
+        }
         $stmt->bindParam('latitude', $latitude);
         $stmt->bindParam('longitude', $longitude);
         $stmt->bindParam('zoom', $zoom, \PDO::PARAM_INT);
         $stmt->bindParam('limit', $limit, \PDO::PARAM_INT);
 
         $result = $stmt->executeQuery();
+        dd($result->fetchAllAssociative());
 
         $qb = $this
             ->createQueryBuilder('address')
@@ -82,13 +91,6 @@ SQL;
             ->setParameter('longitude', $longitude)
             ->orderBy('distance', 'ASC')
         ;
-
-        if ($votePlaces) {
-            $qb
-                ->andWhere('address.votePlace IN (:vote_place_ids)')
-                ->setParameter('vote_place_ids', $votePlaces)
-            ;
-        }
 
         return $qb->getQuery()->getResult();
     }
