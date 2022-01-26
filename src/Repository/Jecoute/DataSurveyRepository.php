@@ -201,7 +201,7 @@ class DataSurveyRepository extends ServiceEntityRepository
             $params += ['buildingBlock' => $buildingBlock];
         }
 
-        if ($floor) {
+        if (null !== $floor) {
             $conditions .= ' AND campaignHistory.floor = :floor';
             $params += ['floor' => $floor];
         }
