@@ -37,10 +37,10 @@ Feature:
     """
     Examples:
       | latitude     | longitude | addresses |
-      # 68 rue du rocher, Paris 8ème => 65, 70, 67, 55 rue du rocher
-      | 48.879001640 | 2.3187434 | [{"uuid": "ccfd846a-5439-42ad-85ce-286baf4e7269"}, {"uuid": "04e1d76f-c727-4612-afab-2dec2d71a480"}, {"uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"}, {"uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"}] |
-      # 54 rue du rocher, Paris 8ème => 55, 65, 70, 67 rue du rocher
-      | 48.877018    | 2.32154   | [{"uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"}, {"uuid": "ccfd846a-5439-42ad-85ce-286baf4e7269"}, {"uuid": "04e1d76f-c727-4612-afab-2dec2d71a480"}, {"uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"}] |
+      # 68 rue du rocher, Paris 8ème =>70, 67 rue du rocher
+      | 48.879001640 | 2.3187434 | [{"uuid": "04e1d76f-c727-4612-afab-2dec2d71a480"}, {"uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"}] |
+      # 54 rue du rocher, Paris 8ème => 70, 67 rue du rocher
+      | 48.877018    | 2.32154   | [{"uuid": "04e1d76f-c727-4612-afab-2dec2d71a480"}, {"uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"}] |
 
   Scenario: As a logged-in user I can retrieve latitude & longitude of addresses near a given position
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
@@ -52,62 +52,6 @@ Feature:
     # 55, 65, 70, 67 rue du rocher, Paris 8ème
     """
     [
-        {
-            "number": "55",
-            "address": "Rue du Rocher",
-            "insee_code": "75108",
-            "postal_codes": ["75008"],
-            "voters_count": 2,
-            "city_name": "Paris 8ème",
-            "latitude": 48.878708,
-            "longitude": 2.319111,
-            "building": {
-                "type": "building",
-                "uuid": "@uuid@",
-                "campaign_statistics": {
-                    "campaign": {
-                        "uuid": "@uuid@"
-                    },
-                    "status": "todo",
-                    "last_passage": "@string@.isDateTime()",
-                    "last_passage_done_by": {
-                        "uuid": "@uuid@",
-                        "first_name": "Adherent 33",
-                        "last_name": "Fa33ke"
-                    },
-                    "nb_visited_doors": 0,
-                    "nb_surveys": 0,
-                    "uuid": "@uuid@"
-                }
-            },
-            "uuid": "@uuid@"
-        },
-        {
-            "number": "65",
-            "address": "Rue du Rocher",
-            "insee_code": "75108",
-            "postal_codes": ["75008"],
-            "voters_count": 1,
-            "city_name": "Paris 8ème",
-            "latitude": 48.879078,
-            "longitude": 2.318631,
-            "building": {
-                "type": "building",
-                "uuid": "@uuid@",
-                "campaign_statistics": {
-                    "campaign": {
-                        "uuid": "@uuid@"
-                    },
-                    "status": "todo",
-                    "last_passage": null,
-                    "last_passage_done_by": null,
-                    "nb_visited_doors": 0,
-                    "nb_surveys": 0,
-                    "uuid": "@uuid@"
-                }
-            },
-            "uuid": "@uuid@"
-        },
         {
             "number": "70",
             "address": "Rue du Rocher",

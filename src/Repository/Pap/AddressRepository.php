@@ -26,11 +26,8 @@ class AddressRepository extends ServiceEntityRepository
         int $limit = 300,
         array $votePlaces = []
     ): array {
-        $newparams = [];
-        foreach ($votePlaces as $n => $val) {
-            $newparams[] = ":id_$n";
-        }
-        $sql = 'SELECT address.id
+        $sql = <<<SQL
+        SELECT address.id
             FROM pap_address AS address
             INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
@@ -39,9 +36,17 @@ class AddressRepository extends ServiceEntityRepository
                     AND 2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) + 1)
                 AND address.offset_y BETWEEN 
                     2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) - 1)
-                    AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)';
-        $sql .= ' AND address.vote_place_id IN ('.implode(', ', $newparams).')';
-        $sql .= ' ORDER BY 
+                    AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)
+                And address.vote_place_id IN (
+SQL;
+        $comma = '';
+        for ($i = 0, $iMax = \count($votePlaces); $i < $iMax; ++$i) {
+            $sql .= $comma.$votePlaces[$i];
+            $comma = ', ';
+        }
+        $sql .= ') ';
+        $sql .= <<<SQL
+            ORDER BY 
                 (6371 * 
                      ACOS(
                        COS(RADIANS(:latitude)) 
@@ -50,25 +55,20 @@ class AddressRepository extends ServiceEntityRepository
                      + SIN(RADIANS(:latitude)) 
                      * SIN(RADIANS(address.latitude))
                  ))
-            LIMIT :limit';
-
+            LIMIT :limit
+SQL;
         $stmt = $this
             ->getEntityManager()
             ->getConnection()
             ->prepare($sql)
         ;
 
-        foreach ($votePlaces as $n => $val) {
-            $val = (int) $val;
-            $stmt->bindParam("id_$n", $val, \PDO::PARAM_INT);
-        }
         $stmt->bindParam('latitude', $latitude);
         $stmt->bindParam('longitude', $longitude);
         $stmt->bindParam('zoom', $zoom, \PDO::PARAM_INT);
         $stmt->bindParam('limit', $limit, \PDO::PARAM_INT);
 
         $result = $stmt->executeQuery();
-        dd($result->fetchAllAssociative());
 
         $qb = $this
             ->createQueryBuilder('address')

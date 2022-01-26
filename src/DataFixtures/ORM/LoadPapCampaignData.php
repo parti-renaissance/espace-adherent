@@ -46,10 +46,10 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         $campaign1->addVotePlace($this->getReference('pap-vote-place--anthony-b'));
         $campaign1->addVotePlace($this->getReference('pap-vote-place--sartrouville-a'));
         $campaign1->addVotePlace($this->getReference('pap-vote-place--sartrouville-b'));
-        //$campaign1->setDeltaPredictionAndResultMin2017(1.5/100);
-        //$campaign1->setAbstentionsMin2017(10/100);
-        //$campaign1->setMisregistrationsPriorityMin(1);
-        //$campaign1->setMisregistrationsPriorityMax(1);
+        $campaign1->setDeltaPredictionAndResultMin2017(1.5 / 100);
+        $campaign1->setAbstentionsMin2017(10 / 100);
+        $campaign1->setMisregistrationsPriorityMin(1);
+        $campaign1->setMisregistrationsPriorityMax(1);
         $this->addReference('pap-campaign-1', $campaign1);
 
         $campaign2 = $this->createCampaign(
