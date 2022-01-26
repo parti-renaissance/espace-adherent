@@ -39,11 +39,7 @@ class AddressRepository extends ServiceEntityRepository
                     AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)
                 And address.vote_place_id IN (
 SQL;
-        $comma = '';
-        for ($i = 0, $iMax = \count($votePlaces); $i < $iMax; ++$i) {
-            $sql .= $comma.$votePlaces[$i];
-            $comma = ', ';
-        }
+        $sql .= implode(', ', $votePlaces);
         $sql .= ') ';
         $sql .= <<<SQL
             ORDER BY 

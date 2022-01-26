@@ -198,42 +198,42 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     /**
      * @ORM\Column(name="delta_prediction_and_result_min_2017", type="float", nullable=true)
      */
-    private ?float $deltaPredictionAndResultMin2017;
+    private ?float $deltaPredictionAndResultMin2017 = null;
 
     /**
      * @ORM\Column(name="delta_prediction_and_result_max_2017", type="float", nullable=true)
      */
-    private ?float $deltaPredictionAndResultMax2017;
+    private ?float $deltaPredictionAndResultMax2017 = null;
 
     /**
      * @ORM\Column(name="delta_average_predictions_min", type="float", nullable=true)
      */
-    private ?float $deltaAveragePredictionsMin;
+    private ?float $deltaAveragePredictionsMin = null;
 
     /**
      * @ORM\Column(name="delta_average_predictions_max", type="float", nullable=true)
      */
-    private ?float $deltaAveragePredictionsMax;
+    private ?float $deltaAveragePredictionsMax = null;
 
     /**
      * @ORM\Column(name="abstentions_min_2017", type="float", nullable=true)
      */
-    private ?float $abstentionsMin2017;
+    private ?float $abstentionsMin2017 = null;
 
     /**
      * @ORM\Column(name="abstentions_max_2017", type="float", nullable=true)
      */
-    private ?float $abstentionsMax2017;
+    private ?float $abstentionsMax2017 = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $misregistrationsPriorityMin;
+    private ?int $misregistrationsPriorityMin = null;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $misregistrationsPriorityMax;
+    private ?int $misregistrationsPriorityMax = null;
 
     public function __construct(
         UuidInterface $uuid = null,

@@ -79,35 +79,59 @@ class CampaignRepository extends ServiceEntityRepository
 
         if ($activeCampaign) {
             if ($deltaPredictionAndResultMin2017 = $activeCampaign->getDeltaPredictionAndResultMin2017()) {
-                $queryBuilder->andWhere(sprintf('votePlace.deltaPredictionAndResult2017 >= %s', $deltaPredictionAndResultMin2017));
+                $queryBuilder
+                    ->andWhere('votePlace.deltaPredictionAndResult2017 >= :deltaPredictionAndResultMin2017')
+                    ->setParameter('deltaPredictionAndResultMin2017', $deltaPredictionAndResultMin2017)
+                ;
             }
 
             if ($deltaPredictionAndResultMax2017 = $activeCampaign->getDeltaPredictionAndResultMax2017()) {
-                $queryBuilder->andWhere(sprintf('votePlace.deltaPredictionAndResult2017 <= %s', $deltaPredictionAndResultMax2017));
+                $queryBuilder
+                    ->andWhere('votePlace.deltaPredictionAndResult2017 <= :deltaPredictionAndResultMax2017')
+                    ->setParameter('deltaPredictionAndResultMax2017', $deltaPredictionAndResultMax2017)
+                ;
             }
 
             if ($deltaAveragePredictionsMin = $activeCampaign->getDeltaAveragePredictionsMin()) {
-                $queryBuilder->andWhere(sprintf('votePlace.deltaAveragePredictions >= %s', $deltaAveragePredictionsMin));
+                $queryBuilder
+                    ->andWhere('votePlace.deltaAveragePredictions >= :deltaAveragePredictionsMin')
+                    ->setParameter('deltaAveragePredictionsMin', $deltaAveragePredictionsMin)
+                ;
             }
 
             if ($deltaAveragePredictionsMax = $activeCampaign->getDeltaAveragePredictionsMax()) {
-                $queryBuilder->andWhere(sprintf('votePlace.deltaAveragePredictions <= %s', $deltaAveragePredictionsMax));
+                $queryBuilder
+                    ->andWhere('votePlace.deltaAveragePredictions <= :deltaAveragePredictionsMax')
+                    ->setParameter('deltaAveragePredictionsMax', $deltaAveragePredictionsMax)
+                ;
             }
 
             if ($abstentionsMin2017 = $activeCampaign->getAbstentionsMin2017()) {
-                $queryBuilder->andWhere(sprintf('votePlace.abstentions2017 >= %s', $abstentionsMin2017));
+                $queryBuilder
+                    ->andWhere('votePlace.abstentions2017 >= :abstentionsMin2017')
+                    ->setParameter('abstentionsMin2017', $abstentionsMin2017)
+                ;
             }
 
             if ($abstentionsMax2017 = $activeCampaign->getAbstentionsMax2017()) {
-                $queryBuilder->andWhere(sprintf('votePlace.abstentions2017 <= %s', $abstentionsMax2017));
+                $queryBuilder
+                    ->andWhere('votePlace.abstentions2017 <= :abstentionsMax2017')
+                    ->setParameter('abstentionsMax2017', $abstentionsMax2017)
+                ;
             }
 
             if ($misregistrationsPriorityMin = $activeCampaign->getMisregistrationsPriorityMin()) {
-                $queryBuilder->andWhere(sprintf('votePlace.misregistrationsPriority >= %s', $misregistrationsPriorityMin));
+                $queryBuilder
+                    ->andWhere('votePlace.misregistrationsPriority >= :misregistrationsPriorityMin')
+                    ->setParameter('misregistrationsPriorityMin', $misregistrationsPriorityMin)
+                ;
             }
 
             if ($misregistrationsPriorityMax = $activeCampaign->getMisregistrationsPriorityMax()) {
-                $queryBuilder->andWhere(sprintf('votePlace.misregistrationsPriority <= %s', $misregistrationsPriorityMax));
+                $queryBuilder
+                    ->andWhere('votePlace.misregistrationsPriority <= :misregistrationsPriorityMax')
+                    ->setParameter('misregistrationsPriorityMax', $misregistrationsPriorityMax)
+                ;
             }
         }
 

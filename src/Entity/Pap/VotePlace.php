@@ -40,22 +40,22 @@ class VotePlace
     /**
      * @ORM\Column(name="delta_prediction_and_result_2017", type="float", nullable=true)
      */
-    public ?float $deltaPredictionAndResult2017;
+    public ?float $deltaPredictionAndResult2017 = null;
 
     /**
      * @ORM\Column(name="delta_average_predictions", type="float", nullable=true)
      */
-    public ?float $deltaAveragePredictions;
+    public ?float $deltaAveragePredictions = null;
 
     /**
      * @ORM\Column(name="abstentions_2017", type="float", nullable=true)
      */
-    public ?float $abstentions2017;
+    public ?float $abstentions2017 = null;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    public ?int $misregistrationsPriority;
+    public ?int $misregistrationsPriority = null;
 
     public function __construct(
         ?float $latitude,
