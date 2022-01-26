@@ -18,6 +18,10 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const ADDRESS_03_UUID = '702eda29-39c6-4b3d-b28f-3fd3806747b2';
     private const ADDRESS_04_UUID = '04e1d76f-c727-4612-afab-2dec2d71a480';
     private const ADDRESS_05_UUID = 'd2c0d38c-2224-41c2-acb5-78b5dad06819';
+    private const ADDRESS_06_UUID = '0590d744-61cf-4b56-8c63-d82c1886c2f3';
+    private const ADDRESS_07_UUID = '6bb9c99f-48cb-44a8-9a94-10258020ebc6';
+    private const ADDRESS_08_UUID = 'a10477b9-4a17-4ace-b0c8-22fbdccf154d';
+    private const ADDRESS_09_UUID = '967614e4-0783-47d6-96f7-edec7ec390d1';
 
     private const VOTER_01_UUID = 'bdb9d49c-20f5-44c0-bc4a-d8b75f85ee95';
     private const VOTER_02_UUID = '0cf560f0-c5ec-43ef-9ea1-b6fd2a2dc339';
@@ -26,6 +30,12 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const VOTER_05_UUID = '348fd353-9819-4dfc-848d-211672ebb6b9';
     private const VOTER_06_UUID = '881cd07e-efce-4fda-890b-70ad277c8c32';
     private const VOTER_07_UUID = '536f8caa-a644-449e-8bdf-aca3475d9276';
+    private const VOTER_08_UUID = '1e0a100f-aad5-44a8-93d4-e746199e409b';
+    private const VOTER_09_UUID = 'ed0a6ef3-a046-4926-a1d9-078d6e6b3315';
+    private const VOTER_10_UUID = '12c73366-8120-4fad-9ec0-b51a982964e7';
+    private const VOTER_11_UUID = 'c35e572a-c362-414d-aee5-8fe514f2bf6b';
+    private const VOTER_12_UUID = '416b6055-f339-48b7-910a-482cad149cec';
+    private const VOTER_13_UUID = '4cac97a2-b501-49d6-908a-26d5d314bfc4';
 
     public function load(ObjectManager $manager)
     {
@@ -33,7 +43,23 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $vpParis8a = $this->getReference('pap-vote-place--paris-8-a');
         /** @var VotePlace $vpParis8b */
         $vpParis8b = $this->getReference('pap-vote-place--paris-8-b');
-
+        /** @var VotePlace $vpParis3b */
+        $vpParis3b = $this->getReference('pap-vote-place--paris-3-b');
+        /** @var VotePlace $vpAnthonya */
+        $vpAnthonya = $this->getReference('pap-vote-place--anthony-a');
+        /** @var VotePlace $vpAnthonyb */
+        $vpAnthonyb = $this->getReference('pap-vote-place--anthony-b');
+        /** @var VotePlace $vpAnthonyc */
+        $vpAnthonyc = $this->getReference('pap-vote-place--anthony-c');
+        /** @var VotePlace $vpSartrouvillea */
+        $vpSartrouvillea = $this->getReference('pap-vote-place--sartrouville-a');
+        /** @var VotePlace $vSartrouvilleb */
+        $vpSartrouvilleb = $this->getReference('pap-vote-place--sartrouville-b');
+        /** @var VotePlace $vpSartrouvilec */
+        $vpSartrouvilec = $this->getReference('pap-vote-place--sartrouville-c');
+        /** @var VotePlace $vpAchereLAForeta */
+        $vpAchereLAForeta = $this->getReference('pap-vote-place--achere-la-forêt-a');
+        /** @var VotePlace $vpParis3b */
         $address = $this->createAddress(
             self::ADDRESS_01_UUID,
             '55',
@@ -124,6 +150,80 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $this->addReference('address-92-1', $address);
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_06_UUID,
+            '25',
+            'Rue Béranger',
+            '75103',
+            ['75003'],
+            'Paris',
+            66396,
+            45086,
+            48.866875,
+            2.363124
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75103'));
+        $address->addVoter($this->createVoter(self::VOTER_08_UUID, 'Ludo', 'Forest', Genders::MALE, '-55 years', '75103_0002'));
+        $address->votePlace = $vpParis3b;
+        $this->addReference('address-75-3', $address);
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_07_UUID,
+            '18',
+            'Rue des Augustins',
+            '92002',
+            ['92160'],
+            'Anthony',
+            66370,
+            45150,
+            48.751938,
+            2.293015
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
+        $address->addVoter($this->createVoter(self::VOTER_09_UUID, 'Lucas', 'Dubois', Genders::MALE, '-30 years', '92002_0001'));
+        $address->addVoter($this->createVoter(self::VOTER_10_UUID, 'Vincent', 'PEYROUSSE', Genders::FEMALE, '-33 years', '92002_0001'));
+        $address->votePlace = $vpAnthonya;
+        $this->addReference('address-92-2', $address);
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_08_UUID,
+            '3',
+            'Rue Angélique',
+            '92002',
+            ['92160'],
+            'Anthony',
+            66371,
+            45150,
+            48.752205,
+            2.293538
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
+        $address->addVoter($this->createVoter(self::VOTER_11_UUID, 'Roger', 'VASSEUX', Genders::MALE, '-26 years', '92002_0001'));
+        $address->addVoter($this->createVoter(self::VOTER_12_UUID, 'Harold', 'BEAUVOIS', Genders::MALE, '-33 years', '92002_0001'));
+        $address->votePlace = $vpAnthonya;
+        $this->addReference('address-92-3', $address);
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_09_UUID,
+            '31',
+            'Avenue Galliéni',
+            '92002',
+            ['92160'],
+            'Anthony',
+            66372,
+            45145,
+            48.760296,
+            2.29762
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
+        $address->addVoter($this->createVoter(self::VOTER_13_UUID, 'Kevin', 'HEDIEUX', Genders::MALE, '-60 years', '92002_0002'));
+        $address->votePlace = $vpAnthonyb;
+        $this->addReference('address-92-4', $address);
         $manager->persist($address);
 
         $manager->flush();

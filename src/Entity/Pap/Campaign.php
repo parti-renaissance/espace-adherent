@@ -195,6 +195,46 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
      */
     private $votePlaces;
 
+    /**
+     * @ORM\Column(name="delta_prediction_and_result_min_2017", type="float", nullable=true)
+     */
+    private ?float $deltaPredictionAndResultMin2017 = null;
+
+    /**
+     * @ORM\Column(name="delta_prediction_and_result_max_2017", type="float", nullable=true)
+     */
+    private ?float $deltaPredictionAndResultMax2017 = null;
+
+    /**
+     * @ORM\Column(name="delta_average_predictions_min", type="float", nullable=true)
+     */
+    private ?float $deltaAveragePredictionsMin = null;
+
+    /**
+     * @ORM\Column(name="delta_average_predictions_max", type="float", nullable=true)
+     */
+    private ?float $deltaAveragePredictionsMax = null;
+
+    /**
+     * @ORM\Column(name="abstentions_min_2017", type="float", nullable=true)
+     */
+    private ?float $abstentionsMin2017 = null;
+
+    /**
+     * @ORM\Column(name="abstentions_max_2017", type="float", nullable=true)
+     */
+    private ?float $abstentionsMax2017 = null;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $misregistrationsPriorityMin = null;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $misregistrationsPriorityMax = null;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -364,6 +404,86 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     public function setVotePlaces(array $votePlaces): void
     {
         $this->votePlaces = $votePlaces;
+    }
+
+    public function getDeltaPredictionAndResultMin2017(): ?float
+    {
+        return $this->deltaPredictionAndResultMin2017;
+    }
+
+    public function setDeltaPredictionAndResultMin2017(?float $deltaPredictionAndResultMin2017): void
+    {
+        $this->deltaPredictionAndResultMin2017 = $deltaPredictionAndResultMin2017;
+    }
+
+    public function getDeltaPredictionAndResultMax2017(): ?float
+    {
+        return $this->deltaPredictionAndResultMax2017;
+    }
+
+    public function setDeltaPredictionAndResultMax2017(?float $deltaPredictionAndResultMax2017): void
+    {
+        $this->deltaPredictionAndResultMax2017 = $deltaPredictionAndResultMax2017;
+    }
+
+    public function getDeltaAveragePredictionsMin(): ?float
+    {
+        return $this->deltaAveragePredictionsMin;
+    }
+
+    public function setDeltaAveragePredictionsMin(?float $deltaAveragePredictionsMin): void
+    {
+        $this->deltaAveragePredictionsMin = $deltaAveragePredictionsMin;
+    }
+
+    public function getDeltaAveragePredictionsMax(): ?float
+    {
+        return $this->deltaAveragePredictionsMax;
+    }
+
+    public function setDeltaAveragePredictionsMax(?float $deltaAveragePredictionsMax): void
+    {
+        $this->deltaAveragePredictionsMax = $deltaAveragePredictionsMax;
+    }
+
+    public function getAbstentionsMin2017(): ?float
+    {
+        return $this->abstentionsMin2017;
+    }
+
+    public function setAbstentionsMin2017(?float $abstentionsMin2017): void
+    {
+        $this->abstentionsMin2017 = $abstentionsMin2017;
+    }
+
+    public function getAbstentionsMax2017(): ?float
+    {
+        return $this->abstentionsMax2017;
+    }
+
+    public function setAbstentionsMax2017(?float $abstentionsMax2017): void
+    {
+        $this->abstentionsMax2017 = $abstentionsMax2017;
+    }
+
+    public function getMisregistrationsPriorityMin(): ?int
+    {
+        return $this->misregistrationsPriorityMin;
+    }
+
+    public function setMisregistrationsPriorityMin(?int $misregistrationsPriorityMin): void
+    {
+        $this->misregistrationsPriorityMin = $misregistrationsPriorityMin;
+    }
+
+    public function getMisregistrationsPriorityMax(): ?int
+    {
+        return $this->misregistrationsPriorityMax;
+    }
+
+    public function setMisregistrationsPriorityMax(?int $misregistrationsPriorityMax): void
+    {
+        $this->misregistrationsPriorityMax = $misregistrationsPriorityMax;
     }
 
     public function getIndexOptions(): array

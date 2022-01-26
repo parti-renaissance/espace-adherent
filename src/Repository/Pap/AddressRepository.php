@@ -27,8 +27,9 @@ class AddressRepository extends ServiceEntityRepository
         array $votePlaces = []
     ): array {
         $sql = <<<SQL
-            SELECT address.id
+        SELECT address.id
             FROM pap_address AS address
+            INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
                 address.offset_x BETWEEN 
                     2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) - 1)
@@ -36,6 +37,11 @@ class AddressRepository extends ServiceEntityRepository
                 AND address.offset_y BETWEEN 
                     2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) - 1)
                     AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)
+                And address.vote_place_id IN (
+SQL;
+        $sql .= implode(', ', $votePlaces);
+        $sql .= ') ';
+        $sql .= <<<SQL
             ORDER BY 
                 (6371 * 
                      ACOS(
@@ -47,7 +53,6 @@ class AddressRepository extends ServiceEntityRepository
                  ))
             LIMIT :limit
 SQL;
-
         $stmt = $this
             ->getEntityManager()
             ->getConnection()
@@ -82,13 +87,6 @@ SQL;
             ->setParameter('longitude', $longitude)
             ->orderBy('distance', 'ASC')
         ;
-
-        if ($votePlaces) {
-            $qb
-                ->andWhere('address.votePlace IN (:vote_place_ids)')
-                ->setParameter('vote_place_ids', $votePlaces)
-            ;
-        }
 
         return $qb->getQuery()->getResult();
     }

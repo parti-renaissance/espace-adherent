@@ -40,38 +40,38 @@ class VotePlace
     /**
      * @ORM\Column(name="delta_prediction_and_result_2017", type="float", nullable=true)
      */
-    public ?float $deltaPredictionAndResult2017;
+    public ?float $deltaPredictionAndResult2017 = null;
 
     /**
-     * @ORM\Column(name="delta_average_predictions_2017", type="float", nullable=true)
+     * @ORM\Column(name="delta_average_predictions", type="float", nullable=true)
      */
-    public ?float $deltaAveragePredictions2017;
+    public ?float $deltaAveragePredictions = null;
 
     /**
      * @ORM\Column(name="abstentions_2017", type="float", nullable=true)
      */
-    public ?float $abstentions2017;
+    public ?float $abstentions2017 = null;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="smallint", nullable=true)
      */
-    public ?int $nbMisregistrations;
+    public ?int $misregistrationsPriority = null;
 
     public function __construct(
         ?float $latitude,
         ?float $longitude,
         UuidInterface $uuid = null,
         ?float $deltaPredictionAndResult2017 = null,
-        ?float $deltaAveragePredictions017 = null,
+        ?float $deltaAveragePredictions = null,
         ?float $abstentions2017 = null,
-        ?int $nbMisregistrations = null
+        ?int $misregistrationsPriority = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->deltaPredictionAndResult2017 = $deltaPredictionAndResult2017;
-        $this->deltaAveragePredictions2017 = $deltaAveragePredictions017;
+        $this->deltaAveragePredictions = $deltaAveragePredictions;
         $this->abstentions2017 = $abstentions2017;
-        $this->nbMisregistrations = $nbMisregistrations;
+        $this->misregistrationsPriority = $misregistrationsPriority;
     }
 }
