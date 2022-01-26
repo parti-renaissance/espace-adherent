@@ -47,7 +47,7 @@ class AppUrlGenerator extends AbstractAppUrlGenerator
             return $this->urlGenerator->generate('app_jemengage_creation_confirmation');
         }
 
-        return $this->appAuthHost;
+        return '//'.$this->appAuthHost;
     }
 
     public function generateLoginLink(): string
