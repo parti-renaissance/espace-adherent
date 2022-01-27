@@ -4,6 +4,7 @@ namespace Tests\App\EntityListener;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\MyTeam;
 use Tests\App\AbstractKernelTestCase;
 
 class RevokeDelegatedAccessListenerTest extends AbstractKernelTestCase
@@ -37,10 +38,12 @@ class RevokeDelegatedAccessListenerTest extends AbstractKernelTestCase
         $referent = $this->manager->getRepository(Adherent::class)->findOneByEmail('referent@en-marche-dev.fr');
 
         $this->assertCount(3, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $referent]));
+        $this->assertCount(1, $this->manager->getRepository(MyTeam::class)->findBy(['owner' => $referent]));
 
         $referent->setManagedArea(null);
         $this->manager->flush();
 
         $this->assertCount(0, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $referent]));
+        $this->assertCount(1, $this->manager->getRepository(MyTeam::class)->findBy(['owner' => $referent]));
     }
 }
