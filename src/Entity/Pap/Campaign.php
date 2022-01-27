@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
@@ -91,6 +92,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(ScopeVisibilityFilter::class)
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "visibility": "exact",
+ * })
  *
  * @ScopeVisibility
  */
