@@ -32,11 +32,11 @@ class AddressRepository extends ServiceEntityRepository
             INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
                 address.offset_x BETWEEN 
-                    2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) - 1)
-                    AND 2 * (17 - :zoom) * FLOOR((:longitude + 180) / 360 * (1 << :zoom) + 1)
+                    FLOOR((:longitude + 180) / 360 * (1 << 17)) - (1 << greatest((17 - :zoom), 0))
+                    AND FLOOR((:longitude + 180) / 360 * (1 << 17)) + (1 << greatest((17 - :zoom), 0))
                 AND address.offset_y BETWEEN 
-                    2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) - 1)
-                    AND 2 * (17 - :zoom) * FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << :zoom) + 1)
+                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) - (1 << greatest((17 - :zoom), 0))
+                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) + (1 << greatest((17 - :zoom), 0))
                 And address.vote_place_id IN (
 SQL;
         $sql .= implode(', ', $votePlaces);
