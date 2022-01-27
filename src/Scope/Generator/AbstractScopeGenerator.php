@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\Scope as ScopeEntity;
 use App\Repository\ScopeRepository;
+use App\Scope\DelegatedAccess as ScopeDelegatedAccess;
 use App\Scope\FeatureEnum;
 use App\Scope\Scope;
 
@@ -25,12 +26,22 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
     {
         $scopeEntity = $this->findScope($this->getCode());
 
+        $delegatedAccess = null;
+        if ($this->delegatedAccess) {
+            $delegatedAccess = new ScopeDelegatedAccess(
+                $this->delegatedAccess->getDelegator(),
+                $this->delegatedAccess->getType(),
+                $this->delegatedAccess->getRole()
+            );
+        }
+
         $scope = new Scope(
             $this->getScopeCode($scopeEntity),
             $this->getScopeName($scopeEntity),
             $this->getZones($this->delegatedAccess ? $this->delegatedAccess->getDelegator() : $adherent),
             $scopeEntity->getApps(),
-            $this->getFeatures($scopeEntity)
+            $this->getFeatures($scopeEntity),
+            $delegatedAccess
         );
 
         $this->delegatedAccess = null;

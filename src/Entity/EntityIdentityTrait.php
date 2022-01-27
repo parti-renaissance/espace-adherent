@@ -87,6 +87,7 @@ trait EntityIdentityTrait
      *     "jecoute_resource_links_read",
      *     "committee_sync",
      *     "adherent_change_diff",
+     *     "scope",
      * })
      *
      * @ApiProperty(
