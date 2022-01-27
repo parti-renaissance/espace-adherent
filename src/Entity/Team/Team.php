@@ -68,6 +68,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
+ *     "visibility": "exact",
  * })
  *
  * @ApiFilter(ScopeVisibilityFilter::class)

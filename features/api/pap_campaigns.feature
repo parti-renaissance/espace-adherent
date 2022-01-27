@@ -294,7 +294,7 @@ Feature:
                 "nb_voters": 7
             },
             {
-                "title": "Campagne termin\u00e9e",
+                "title": "Campagne terminée",
                 "brief": null,
                 "goal": 100,
                 "begin_at": "@string@.isDateTime()",
@@ -308,7 +308,7 @@ Feature:
                 "nb_voters": 7
             },
             {
-                "title": "Campagne locale du d\u00e9partement 92",
+                "title": "Campagne locale du département 92",
                 "brief": null,
                 "goal": 100,
                 "begin_at": "@string@.isDateTime()",
@@ -342,6 +342,150 @@ Feature:
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
                 "nb_voters": 0
+            }
+        ]
+    }
+    """
+
+  Scenario: As a user granted with local scope, I can filter campaigns by visibility
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent&page_size=10&visibility=local"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 2,
+            "items_per_page": 10,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "title": "Campagne locale du département 92",
+                "brief": null,
+                "goal": 100,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+                "visibility": "local",
+                "zone": {
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                    "code": "92",
+                    "name": "Hauts-de-Seine"
+                },
+                "nb_surveys": 0,
+                "nb_visited_doors": 1,
+                "nb_addresses": 1,
+                "nb_voters": 0
+            },
+            {
+                "title": "Campagne locale de la ville de Lille (59350)",
+                "brief": null,
+                "goal": 100,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
+                "visibility": "local",
+                "zone": {
+                    "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
+                    "code": "59350",
+                    "name": "Lille"
+                },
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 0,
+                "nb_voters": 0
+            }
+        ]
+    }
+    """
+
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent&page_size=10&visibility=national"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 5,
+            "items_per_page": 10,
+            "count": 5,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "title": "Campagne de 10 jours suivants",
+                "brief": "**Campagne** de 10 jours suivants",
+                "goal": 600,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 3,
+                "nb_visited_doors": 5,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne de 5 jours suivants",
+                "brief": "**Campagne** de 5 jours suivants",
+                "goal": 500,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 1,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne dans 10 jours",
+                "brief": "### Campagne dans 10 jours",
+                "goal": 400,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne dans 20 jours",
+                "brief": "### Campagne dans 20 jours",
+                "goal": 400,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7
+            },
+            {
+                "title": "Campagne terminée",
+                "brief": null,
+                "goal": 100,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+                "visibility": "national",
+                "zone": null,
+                "nb_surveys": 0,
+                "nb_visited_doors": 1,
+                "nb_addresses": 4,
+                "nb_voters": 7
             }
         ]
     }
