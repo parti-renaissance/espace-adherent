@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "normalization_context": {
  *             "groups": {"my_team_read"}
  *         },
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
+ *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'my_team')"
  *     },
  *     collectionOperations={
  *         "get": {
