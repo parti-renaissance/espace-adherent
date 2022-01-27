@@ -29,8 +29,10 @@ final class Version20220126182307 extends AbstractMigration
           misregistrations_priority_max INT DEFAULT NULL');
         $this->addSql('ALTER TABLE
           pap_vote_place
-        CHANGE
-          nb_misregistrations misregistrations_priority SMALLINT DEFAULT NULL,
+        ADD
+          misregistrations_priority SMALLINT DEFAULT NULL,
+        DROP
+          nb_misregistrations,
         CHANGE
           delta_average_predictions_2017 delta_average_predictions DOUBLE PRECISION DEFAULT NULL');
     }
