@@ -63,11 +63,6 @@ class LoadSubscriptionTypeData extends Fixture
                 'code' => SubscriptionTypeEnum::SENATOR_EMAIL,
                 'externalId' => null,
             ],
-            [
-                'label' => 'Recevoir les e-mails de mon/ma correspondant(e)',
-                'code' => SubscriptionTypeEnum::CORRESPONDENT_EMAIL,
-                'externalId' => null,
-            ],
         ];
     }
 }
