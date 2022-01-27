@@ -128,7 +128,8 @@ Feature:
         "mobile_app",
         "elections",
         "ripostes"
-      ]
+      ],
+      "delegated_access": null
     }
     """
 
@@ -167,7 +168,8 @@ Feature:
         "team",
         "phoning_campaign",
         "survey"
-      ]
+      ],
+      "delegated_access": null
     }
     """
 
@@ -317,7 +319,16 @@ Feature:
         "dashboard",
         "contacts",
         "messages"
-      ]
+      ],
+      "delegated_access": {
+          "delegator": {
+              "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
+              "first_name": "Bob",
+              "last_name": "Senateur (59)"
+          },
+          "type": "senator",
+          "role": "Collaborateur parlementaire"
+      }
     }
     """
 

@@ -36,6 +36,7 @@ trait EntityPersonNameTrait
      *     "adherent_change_diff",
      *     "my_team_member_read",
      *     "my_team_read_list",
+     *     "scope",
      * })
      */
     private $firstName = '';
@@ -68,6 +69,7 @@ trait EntityPersonNameTrait
      *     "adherent_change_diff",
      *     "my_team_member_read",
      *     "my_team_read_list",
+     *     "scope",
      * })
      */
     private $lastName = '';

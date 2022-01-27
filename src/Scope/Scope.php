@@ -3,53 +3,54 @@
 namespace App\Scope;
 
 use App\Entity\Geo\Zone;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 class Scope
 {
     /**
-     * @var string
-     *
      * @SymfonySerializer\Groups({"scopes", "scope"})
      */
-    private $code;
+    private string $code;
 
     /**
-     * @var string
-     *
      * @SymfonySerializer\Groups({"scopes", "scope"})
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var Collection|Zone[]
-     *
      * @SymfonySerializer\Groups({"scopes", "scope"})
      */
-    private $zones;
+    private array $zones;
 
     /**
-     * @var array
-     *
      * @SymfonySerializer\Groups({"scopes", "scope"})
      */
-    private $apps;
+    private array $apps;
 
     /**
-     * @var array
-     *
      * @SymfonySerializer\Groups({"scope"})
      */
-    private $features;
+    private array $features;
 
-    public function __construct(string $code, string $name, array $zones, array $apps, array $features)
-    {
+    /**
+     * @SymfonySerializer\Groups({"scope"})
+     */
+    private ?DelegatedAccess $delegatedAccess;
+
+    public function __construct(
+        string $code,
+        string $name,
+        array $zones,
+        array $apps,
+        array $features,
+        DelegatedAccess $delegatedAccess = null
+    ) {
         $this->code = $code;
         $this->name = $name;
         $this->zones = $zones;
         $this->apps = $apps;
         $this->features = $features;
+        $this->delegatedAccess = $delegatedAccess;
     }
 
     public function getCode(): string
@@ -70,7 +71,7 @@ class Scope
         return $this->zones;
     }
 
-    public function getApps(): ?array
+    public function getApps(): array
     {
         return $this->apps;
     }
@@ -78,6 +79,11 @@ class Scope
     public function getFeatures(): array
     {
         return $this->features;
+    }
+
+    public function getDelegatedAccess(): ?DelegatedAccess
+    {
+        return $this->delegatedAccess;
     }
 
     public function hasFeature(string $featureCode): bool
