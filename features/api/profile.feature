@@ -67,6 +67,10 @@ Feature:
             {
                 "label": "Recevoir les e-mails de mon/ma sénateur/trice",
                 "code": "senator_email"
+            },
+            {
+                "label": "Recevoir les e-mails de mon/ma correspondant(e)",
+                "code": "correspondent_email"
             }
         ],
         "interests": [],
@@ -904,6 +908,10 @@ Feature:
         {
           "code": "senator_email",
           "label": "Recevoir les e-mails de mon/ma sénateur/trice"
+        },
+        {
+          "code": "correspondent_email",
+          "label": "Recevoir les e-mails de mon/ma correspondant(e)"
         }
       ],
       "positions": [
