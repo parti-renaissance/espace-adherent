@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\Member;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -10,15 +11,19 @@ use Ramsey\Uuid\Uuid;
 
 class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterface
 {
-    private const ACCESS_UUID_1 = '2e80d106-4bcb-4b28-97c9-3856fc235b27';
-    private const ACCESS_UUID_2 = 'f4ce89da-1272-4a01-a47e-4ce5248ce018';
-    private const ACCESS_UUID_3 = '96076afb-2243-4251-97fe-8201d50c3256';
-    private const ACCESS_UUID_4 = '411faa64-202d-4ff2-91ce-c98b29af28ef';
-    private const ACCESS_UUID_5 = 'd2315289-a3fd-419c-a3dd-3e1ff71b754d';
-    private const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
+    public const ACCESS_UUID_1 = '2e80d106-4bcb-4b28-97c9-3856fc235b27';
+    public const ACCESS_UUID_2 = 'f4ce89da-1272-4a01-a47e-4ce5248ce018';
+    public const ACCESS_UUID_3 = '96076afb-2243-4251-97fe-8201d50c3256';
+    public const ACCESS_UUID_4 = '411faa64-202d-4ff2-91ce-c98b29af28ef';
+    public const ACCESS_UUID_5 = 'd2315289-a3fd-419c-a3dd-3e1ff71b754d';
+    public const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
     public const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
-    private const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
-    private const ACCESS_UUID_9 = '2c0107d4-75d6-4874-ad38-2060112c0049';
+    public const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
+    public const ACCESS_UUID_9 = '2c0107d4-75d6-4874-ad38-2060112c0049';
+    public const ACCESS_UUID_10 = 'ef339f8e-e9d0-4f22-b98f-1a7526246cad';
+    public const ACCESS_UUID_11 = '433e368f-fd4e-4a24-9f01-b667f8e3b9f2';
+    public const ACCESS_UUID_12 = '6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec';
+    public const ACCESS_UUID_13 = '2c6134f7-4312-45c4-9ab7-89f2b0731f86';
 
     public function load(ObjectManager $manager)
     {
@@ -127,6 +132,26 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         ]);
         $manager->persist($delegatedAccess9);
 
+        // access for MyTeam members
+        $members = [
+            self::ACCESS_UUID_10 => 'my_team_member_1_1',
+            self::ACCESS_UUID_11 => 'my_team_member_1_2',
+            self::ACCESS_UUID_12 => 'my_team_member_2_1',
+            self::ACCESS_UUID_13 => 'my_team_member_2_2',
+        ];
+        foreach ($members as $uuid => $reference) {
+            /** @var Member $member */
+            $member = $this->getReference($reference);
+            $team = $member->getTeam();
+            $delegatedAccess = new DelegatedAccess(Uuid::fromString($uuid));
+            $delegatedAccess->setDelegated($member->getAdherent());
+            $delegatedAccess->setDelegator($team->getOwner());
+            $delegatedAccess->setRole($member->getRole());
+            $delegatedAccess->setType($team->getScope());
+            $delegatedAccess->setAccesses($member->getScopeFeaturesAsAccesses());
+            $manager->persist($delegatedAccess);
+        }
+
         $manager->flush();
     }
 
@@ -134,6 +159,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     {
         return [
             LoadAdherentData::class,
+            LoadMyTeamData::class,
         ];
     }
 }

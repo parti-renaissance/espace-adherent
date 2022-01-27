@@ -164,6 +164,41 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'zones' => [],
                 'apps' => ['jemarche'],
             ],
+            [
+                'code' => 'delegated_433e368f-fd4e-4a24-9f01-b667f8e3b9f2',
+                'zones' => [
+                    [
+                        'code' => '13',
+                        'name' => 'Bouches-du-Rhône',
+                    ],
+                    [
+                        'code' => '59',
+                        'name' => 'Nord',
+                    ],
+                    [
+                        'code' => '76',
+                        'name' => 'Seine-Maritime',
+                    ],
+                    [
+                        'code' => '77',
+                        'name' => 'Seine-et-Marne',
+                    ],
+                    [
+                        'code' => '92',
+                        'name' => 'Hauts-de-Seine',
+                    ],
+                    [
+                        'code' => 'ES',
+                        'name' => 'Espagne',
+                    ],
+                    [
+                        'code' => 'CH',
+                        'name' => 'Suisse',
+                    ],
+                ],
+                'apps' => ['data_corner'],
+                'features' => ['dashboard', 'contacts', 'events'],
+            ],
         ]];
         yield [LoadAdherentData::ADHERENT_2_UUID, []];
     }

@@ -231,6 +231,64 @@ Feature:
           }
         ],
         "apps": []
+      },
+      {
+        "apps": [
+          "data_corner"
+        ],
+        "code": "delegated_ef339f8e-e9d0-4f22-b98f-1a7526246cad",
+        "name": "Référent délégué",
+        "zones": [
+          {
+            "code": "13",
+            "name": "Bouches-du-Rhône",
+            "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
+          },
+          {
+            "code": "59",
+            "name": "Nord",
+            "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+          },
+          {
+            "code": "76",
+            "name": "Seine-Maritime",
+            "uuid": "e3efef5d-906e-11eb-a875-0242ac150002"
+          },
+          {
+            "code": "77",
+            "name": "Seine-et-Marne",
+            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
+          },
+          {
+            "code": "92",
+            "name": "Hauts-de-Seine",
+            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+          },
+          {
+            "code": "ES",
+            "name": "Espagne",
+            "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002"
+          },
+          {
+            "code": "CH",
+            "name": "Suisse",
+            "uuid": "e3efcea1-906e-11eb-a875-0242ac150002"
+          }
+        ]
+      },
+      {
+        "apps": [
+          "data_corner"
+        ],
+        "code": "delegated_6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec",
+        "name": "Correspondant délégué",
+        "zones": [
+          {
+              "code": "92",
+              "name": "Hauts-de-Seine",
+              "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+          }
+        ]
       }
     ]
     """

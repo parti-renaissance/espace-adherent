@@ -36,7 +36,7 @@ class RevokeDelegatedAccessListenerTest extends AbstractKernelTestCase
     {
         $referent = $this->manager->getRepository(Adherent::class)->findOneByEmail('referent@en-marche-dev.fr');
 
-        $this->assertCount(1, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $referent]));
+        $this->assertCount(3, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $referent]));
 
         $referent->setManagedArea(null);
         $this->manager->flush();

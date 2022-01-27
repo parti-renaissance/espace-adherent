@@ -29,6 +29,8 @@ use App\Entity\Invite;
 use App\Entity\JeMarcheReport;
 use App\Entity\MyEuropeChoice;
 use App\Entity\MyEuropeInvitation;
+use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\Member;
 use App\Entity\NewsletterInvite;
 use App\Entity\NewsletterSubscription;
 use App\Entity\Pap\Building;
@@ -78,6 +80,8 @@ use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
 use App\Repository\MyEuropeChoiceRepository;
 use App\Repository\MyEuropeInvitationRepository;
+use App\Repository\MyTeam\DelegatedAccessRepository;
+use App\Repository\MyTeam\MemberRepository;
 use App\Repository\NewsletterInviteRepository;
 use App\Repository\NewsletterSubscriptionRepository;
 use App\Repository\Pap\BuildingEventRepository;
@@ -407,6 +411,16 @@ trait TestHelperTrait
     public function getBuildingRepository(): BuildingRepository
     {
         return $this->getRepository(Building::class);
+    }
+
+    public function getMyTeamMemberRepository(): MemberRepository
+    {
+        return $this->getRepository(Member::class);
+    }
+
+    public function getDelegatedAccessRepository(): DelegatedAccessRepository
+    {
+        return $this->getRepository(DelegatedAccess::class);
     }
 
     /**
