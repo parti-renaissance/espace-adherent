@@ -8,6 +8,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Scope\FeatureEnum;
 use App\Validator\MyTeamMember as AssertMemberValid;
+use App\Validator\MyTeamMemberScopeFeatures as AssertScopeFeaturesValid;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -100,6 +101,7 @@ class Member
      *     multiple=true,
      *     multipleMessage="my_team.member.scope_features.invalid_choice"
      * )
+     * @AssertScopeFeaturesValid
      *
      * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */

@@ -103,6 +103,42 @@ Feature:
     }
     """
 
+  Scenario: As a correspondent I cannot add a new member in my team with invalid data (no user and not correspondent features)
+    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/my_team_members?scope=correspondent" with body:
+    """
+    {
+        "team": "17921a6c-cf1c-4b49-9aac-06bd3913c3f7",
+        "role": "compliance_and_finance_manager",
+        "scope_features": [
+          "team",
+          "phoning_campaign",
+          "news",
+          "survey"
+        ]
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "adherent: Veuillez sélectionner un militant.\nscope_features: Vous pouvez déléguer que les accès que vous possédez.",
+        "violations": [
+            {
+                "propertyPath": "adherent",
+                "message": "Veuillez sélectionner un militant."
+            },
+            {
+                "propertyPath": "scope_features",
+                "message": "Vous pouvez déléguer que les accès que vous possédez."
+            }
+        ]
+    }
+    """
+
   Scenario: As a referent I cannot add a new member in my team, if the user is already in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"

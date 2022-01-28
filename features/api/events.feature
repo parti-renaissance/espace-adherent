@@ -1063,7 +1063,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC deputy I can create an event with invalid data
+  Scenario: As a DC deputy I can create an event
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
@@ -1072,8 +1072,8 @@ Feature:
         "name": "Nouveau événement",
         "category": "kiosque",
         "description": "Une description de l'événement",
-        "begin_at": "2022-01-29 16:30:30",
-        "finish_at": "2022-01-30 16:30:30",
+        "begin_at": "2023-01-29 16:30:30",
+        "finish_at": "2023-01-30 16:30:30",
         "capacity": 100,
         "mode": "online",
         "visio_url": "https://en-marche.fr/reunions/123",
@@ -1095,11 +1095,11 @@ Feature:
     {
         "uuid": "@uuid@",
         "name": "Nouveau événement",
-        "slug": "2022-01-29-nouveau-evenement",
+        "slug": "2023-01-29-nouveau-evenement",
         "description": "Une description de l'événement",
         "time_zone": "Europe/Paris",
-        "begin_at": "2022-01-29T16:30:30+01:00",
-        "finish_at": "2022-01-30T16:30:30+01:00",
+        "begin_at": "2023-01-29T16:30:30+01:00",
+        "finish_at": "2023-01-30T16:30:30+01:00",
         "organizer": {
             "uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
             "first_name": "Député",
