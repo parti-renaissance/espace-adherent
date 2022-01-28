@@ -53,7 +53,7 @@
     "randomatic": "^3.0.0",
     "react": "^17.0.2",
     "react-addons-test-utils": "^15.3.2",
-    "react-data-grid": "^2.0.6",
+    "react-data-grid": "^6.1.0",
     "react-dom": "^17.0.2",
     "react-power-select": "^1.0.0-beta.17",
     "regenerator-runtime": "^0.13.9",
