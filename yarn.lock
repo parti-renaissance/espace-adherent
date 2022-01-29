@@ -6186,10 +6186,14 @@ react-addons-test-utils@^15.3.2:
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
   integrity sha1-wStu/cIkfBDae4dw0YUICnsEcVY=
 
-react-data-grid@^2.0.6:
-  version "2.0.80"
-  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-2.0.80.tgz#e6ee6eb33ac9421ec8bd7ddb760f43537f6a1c1d"
-  integrity sha1-5u5uszrJQh7IvX3bdg9DU39qHB0=
+react-data-grid@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-6.1.0.tgz#04f5a3032fd097c54cd494b000a366d5bad6b39d"
+  integrity sha512-N1UtiHvsowEPzhx0VPqQKvGgSza/YNljczbisFDGMjawiGApS2taMv7h+EDXDx49CdaA6ur4eYS0z10x63IUpw==
+  dependencies:
+    object-assign "^4.1.1"
+    react-is-deprecated "^0.1.2"
+    shallowequal "^1.1.0"
 
 react-dom@^17.0.2:
   version "17.0.2"
@@ -6199,6 +6203,11 @@ react-dom@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-is-deprecated@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-is-deprecated/-/react-is-deprecated-0.1.2.tgz#301148f86ea428fe8e673eca7a372160b7579dbd"
+  integrity sha1-MBFI+G6kKP6OZz7KejchYLdXnb0=
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -6660,6 +6669,11 @@ shallow-clone@^3.0.0:
   integrity sha512-/6KqX+GVUdqPuPPd2LxDDxzX6CAbjJehAAOKlNpqqUpAqPM6HeL8f+o3a+JsyGjn2lv0WY8UsTgUJjU9Ok55NA==
   dependencies:
     kind-of "^6.0.2"
+
+shallowequal@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
+  integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==
 
 shebang-command@^2.0.0:
   version "2.0.0"
