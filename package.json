@@ -43,7 +43,7 @@
     "js-base64": "^3.7.2",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
-    "mini-css-extract-plugin": "^1.6.2",
+    "mini-css-extract-plugin": "^2.4.6",
     "mocha": "^9.2.0",
     "mocha-webpack": "^1.0.0",
     "moment": "^2.29.1",
