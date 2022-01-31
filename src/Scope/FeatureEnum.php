@@ -45,25 +45,29 @@ class FeatureEnum extends Enum
         DelegatedAccess::ACCESS_EVENTS => self::EVENTS,
         DelegatedAccess::ACCESS_JECOUTE => self::MOBILE_APP,
         DelegatedAccess::ACCESS_DASHBOARD => self::DASHBOARD,
+        DelegatedAccess::ACCESS_MOBILE_APP => self::MOBILE_APP,
         DelegatedAccess::ACCESS_NEWS => self::NEWS,
         DelegatedAccess::ACCESS_ELECTIONS => self::ELECTIONS,
-        DelegatedAccess::ACCESS_RIPOSTES => self::RIPOSTES,
-        DelegatedAccess::ACCESS_PHONING => self::PHONING,
         DelegatedAccess::ACCESS_PAP => self::PAP,
         DelegatedAccess::ACCESS_TEAM => self::TEAM,
         DelegatedAccess::ACCESS_PHONING_CAMPAIGN => self::PHONING_CAMPAIGN,
         DelegatedAccess::ACCESS_SURVEY => self::SURVEY,
     ];
 
+    public const DELEGATED_ACCESSES_BY_DEFAULT = [
+        self::DASHBOARD,
+        self::MOBILE_APP,
+    ];
+
     public const AVAILABLE_FOR_DELEGATED_ACCESSES = [
         self::DASHBOARD,
+        self::MOBILE_APP,
         self::CONTACTS,
         self::MESSAGES,
         self::EVENTS,
         self::NEWS,
         self::ELECTIONS,
         self::RIPOSTES,
-        self::PHONING,
         self::PAP,
         self::TEAM,
         self::PHONING_CAMPAIGN,

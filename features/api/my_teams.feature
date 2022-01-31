@@ -231,7 +231,9 @@ Feature:
         "role": "mobilization_manager",
         "scope_features": [
             "contacts",
-            "messages"
+            "messages",
+            "dashboard",
+            "mobile_app"
         ],
         "uuid": "@uuid@"
     }
@@ -264,7 +266,9 @@ Feature:
         },
         "role": "logistics_manager",
         "scope_features": [
-            "events"
+            "events",
+            "dashboard",
+            "mobile_app"
         ],
         "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
     }
