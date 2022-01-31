@@ -67,7 +67,6 @@ class FeatureEnum extends Enum
         self::EVENTS,
         self::NEWS,
         self::ELECTIONS,
-        self::RIPOSTES,
         self::PAP,
         self::TEAM,
         self::PHONING_CAMPAIGN,

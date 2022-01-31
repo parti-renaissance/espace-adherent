@@ -4,6 +4,7 @@ namespace App\Validator\Scope;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
@@ -47,13 +48,13 @@ class ScopeVisibilityValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, EntityScopeVisibilityInterface::class);
         }
 
-        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
+        $scope = $this->scopeGeneratorResolver->generate();
 
-        if (!$scopeGenerator) {
+        if (!$scope) {
             return;
         }
 
-        if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if (\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
             if (!$value->isNationalVisibility()) {
                 $this
                     ->context
@@ -77,7 +78,9 @@ class ScopeVisibilityValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->managedZoneProvider->isManagerOfZone($this->getAdherent(), $scopeGenerator->getCode(), $value->getZone())) {
+        if (!$this->managedZoneProvider->zoneBelongsToSome($value->getZone(), array_map(
+            static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
+        )) {
             $this
                 ->context
                 ->buildViolation($constraint->localScopeWithUnmanagedZoneMessage)

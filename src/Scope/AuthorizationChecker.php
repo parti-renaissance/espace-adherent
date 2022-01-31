@@ -31,7 +31,8 @@ class AuthorizationChecker
             throw new ScopeQueryParamMissingException();
         }
 
-        if (!ScopeEnum::isValid($scope)) {
+        if (!ScopeEnum::isValid($scope)
+            && !ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX === substr($scope, 0, \strlen(ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX))) {
             throw new InvalidScopeException();
         }
 

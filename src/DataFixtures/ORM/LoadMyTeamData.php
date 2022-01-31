@@ -20,8 +20,9 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
 
     public const MEMBER_1_UUID = 'd11d6ddd-dfba-4972-97b2-4c0bdf289559';
     public const MEMBER_2_UUID = '7e82bb82-4b1e-4244-b484-7a51301df420';
-    public const MEMBER_3_UUID = 'b299bcf7-882b-4fce-8dc1-c1b24ceeeef5';
-    public const MEMBER_4_UUID = 'b65b3b8e-ad92-46ae-a226-25e286828929';
+    public const MEMBER_3_UUID = 'e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93';
+    public const MEMBER_4_UUID = 'b299bcf7-882b-4fce-8dc1-c1b24ceeeef5';
+    public const MEMBER_5_UUID = 'b65b3b8e-ad92-46ae-a226-25e286828929';
 
     public function load(ObjectManager $manager)
     {
@@ -40,8 +41,16 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
             self::MEMBER_2_UUID
         );
         $this->setReference('my_team_member_1_2', $member1_2);
+        $member1_3 = $this->createMember(
+            $this->getReference('senator-59'),
+            RoleEnum::MOBILIZATION_MANAGER,
+            FeatureEnum::AVAILABLE_FOR_DELEGATED_ACCESSES,
+            self::MEMBER_3_UUID
+        );
+        $this->setReference('my_team_member_1_3', $member1_3);
         $team1->addMember($member1_1);
         $team1->addMember($member1_2);
+        $team1->addMember($member1_3);
         $this->setReference('my-team-referent-1', $team1);
 
         $team2 = $this->createMyTeam(self::TEAM_2_UUID, $this->getReference('correspondent-1'), ScopeEnum::CORRESPONDENT);
@@ -49,14 +58,14 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
             $this->getReference('adherent-5'),
             RoleEnum::LOGISTICS_MANAGER,
             [FeatureEnum::CONTACTS],
-            self::MEMBER_3_UUID
+            self::MEMBER_4_UUID
         );
         $this->setReference('my_team_member_2_1', $member2_1);
         $member2_2 = $this->createMember(
             $this->getReference('adherent-9'),
             RoleEnum::COMPLIANCE_AND_FINANCE_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::EVENTS],
-            self::MEMBER_4_UUID
+            self::MEMBER_5_UUID
         );
         $this->setReference('my_team_member_2_2', $member2_2);
         $team2->addMember($member2_1);

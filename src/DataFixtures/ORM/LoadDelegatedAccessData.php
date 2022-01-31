@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
+use App\Scope\FeatureEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -93,10 +94,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
         $delegatedAccess7->setRole('Collaborateur parlementaire');
         $delegatedAccess7->setType('referent');
-        $delegatedAccess7->setAccesses([
-            DelegatedAccess::ACCESS_ADHERENTS,
-            DelegatedAccess::ACCESS_MESSAGES,
-        ]);
+        $delegatedAccess7->setAccesses(array_flip(FeatureEnum::DELEGATED_ACCESSES_MAPPING));
 
         $manager->persist($delegatedAccess7);
 

@@ -357,6 +357,28 @@ Feature:
                             "events"
                         ],
                         "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
+                    },
+                    {
+                        "adherent": {
+                            "first_name": "Bob",
+                            "last_name": "Senateur (59)",
+                            "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7"
+                        },
+                        "role": "mobilization_manager",
+                        "scope_features": [
+                            "dashboard",
+                            "mobile_app",
+                            "contacts",
+                            "messages",
+                            "events",
+                            "news",
+                            "elections",
+                            "pap",
+                            "team",
+                            "phoning_campaign",
+                            "survey"
+                        ],
+                        "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }
                 ],
                 "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"

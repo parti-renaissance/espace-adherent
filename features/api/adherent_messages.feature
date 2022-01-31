@@ -167,7 +167,7 @@ Feature:
     """
     {
         "subject": "@string@",
-        "content": "<html><head><title>@string@</b></div></div></body></html>\n",
+        "content": "<html><head><title>@string@</body></html>\n",
         "json_content": null
     }
     """

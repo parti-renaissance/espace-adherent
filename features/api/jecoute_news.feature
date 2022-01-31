@@ -203,9 +203,9 @@ Feature:
     When I send a "GET" request to "/api/jecoute/news/0bc3f920-da90-4773-80e1-a388005926ff"
     Then the response status code should be 404
 
-  Scenario: As a DC referent I can get the news list
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/jecoute/news?scope=referent&page_size=10"
+  Scenario Outline: As a (delegated) referent I can get the news list
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/jecoute/news?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -290,8 +290,12 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC user with national role I can get the news list
+  Scenario: As a user with national role I can get the news list
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/jecoute/news?scope=national"
     Then the response status code should be 200
@@ -398,7 +402,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can create a news
+  Scenario: As a logged-in user with role national I can create a news
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
@@ -436,10 +440,87 @@ Feature:
       | title | Une nouvelle actualité d'aujourd'hui          |
       | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
 
-  Scenario: As a logged-in user I can update a news of my zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a (delegated) referent I can create a news
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "external_link": "http://test.en-marche.fr",
+      "global": true,
+      "notification": true,
+      "published": true,
+      "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "title": "[Référent] Une nouvelle actualité d'aujourd'hui",
+        "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+        "external_link": "http://test.en-marche.fr",
+        "visibility": "local",
+        "zone": {
+            "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+            "code": "77",
+            "name": "Seine-et-Marne",
+            "created_at": "@string@.isDateTime()"
+        },
+        "created_at": "@string@.isDateTime()",
+        "notification": true,
+        "published": true,
+        "creator": "Referent Referent"
+    }
+    """
+    And I should have 1 notification "NewsCreatedNotification" with data:
+      | key   | value                                             |
+      | topic | staging_jemarche_department_77                    |
+      | title | [Référent] Une nouvelle actualité d'aujourd'hui   |
+      | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a (delegated) referent I can get a news
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=<scope>&page_size=10"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "6c70f8e8-6bce-4376-8b9e-3ce342880673",
+        "title": "[Référent] Nouvelle actualité non publiée à 59 du référent délégué",
+        "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
+        "external_link": "https://referent.en-marche.fr",
+        "created_at": "@string@.isDateTime()",
+        "visibility": "local",
+        "zone": {
+            "code": "59",
+            "created_at": "@string@.isDateTime()",
+            "name": "Nord",
+            "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
+        },
+        "notification": true,
+        "published": false,
+        "creator": "Bob Senateur (59)"
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a logged-in user I can update a news of my zone
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=<scope>" with body:
     """
     {
       "title": "[Référent] Nouveau titre",
@@ -470,6 +551,10 @@ Feature:
       "creator": "Bob Senateur (59)"
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a logged-in user with National role I can update a news
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -498,7 +583,7 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a DC referent I cannot create a local news without a zone
+  Scenario: As a referent I cannot create a local news without a zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
@@ -527,7 +612,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I cannot create a local news with a city zone
+  Scenario: As a referent I cannot create a local news with a city zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
@@ -557,7 +642,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I cannot create a local news with a non managed zone
+  Scenario: As a referent I cannot create a local news with a non managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
