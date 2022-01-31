@@ -3,8 +3,8 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\Campaign;
-use App\Repository\ScopeVisibilityEntityRepositoryTrait;
 use App\Repository\UuidEntityRepositoryTrait;
+use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,7 +12,6 @@ use Doctrine\Persistence\ManagerRegistry;
 class CampaignRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
-    use ScopeVisibilityEntityRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,7 +40,12 @@ class CampaignRepository extends ServiceEntityRepository
             ])
         ;
 
-        $this->addScopeVisibility($queryBuilder, $zones);
+        if (empty($zones)) {
+            $queryBuilder
+                ->andWhere('campaign.visibility = :visibility')
+                ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
+            ;
+        }
 
         return $queryBuilder
             ->getQuery()
