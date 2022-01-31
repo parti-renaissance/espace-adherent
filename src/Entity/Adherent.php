@@ -2307,12 +2307,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 'ROLE_LEGISLATIVE_CANDIDATE',
                 'ROLE_CAUSE_AUTHOR',
             ])
-            || $this->isDelegatedReferent()
-            || $this->isDelegatedDeputy()
-            || $this->isDelegatedSenator()
             || $this->isCandidate()
             || $this->isDelegatedCandidate()
             || $this->isCorrespondent()
+            || $this->hasDelegatedAccess(DelegatedAccess::ACCESS_MESSAGES)
         ;
     }
 
@@ -2581,6 +2579,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         /** @var DelegatedAccess $delegatedAccess */
         foreach ($this->getReceivedDelegatedAccesses() as $delegatedAccess) {
             if ($delegatedAccess->getDelegator() === $delegator && (!$access || \in_array($access, $delegatedAccess->getAccesses(), true))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasDelegatedAccess(string $access): bool
+    {
+        foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
+            if (\in_array($access, $delegatedAccess->getAccesses())) {
                 return true;
             }
         }

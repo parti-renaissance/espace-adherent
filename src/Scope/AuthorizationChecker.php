@@ -70,6 +70,10 @@ class AuthorizationChecker
     {
         $scope = $this->getScope($request);
 
+        if (!$scope) {
+            return null;
+        }
+
         try {
             return $this->scopeGenerator->getGenerator($scope, $adherent);
         } catch (NotFoundScopeGeneratorException $e) {
