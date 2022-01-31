@@ -5,18 +5,15 @@ namespace App\Committee\EventListener;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeEvent;
 use App\Events;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitializeSupervisorMandatesListener implements EventSubscriberInterface
 {
     private $mandateManager;
-    private $entityManager;
 
-    public function __construct(CommitteeAdherentMandateManager $mandateManager, EntityManagerInterface $entityManager)
+    public function __construct(CommitteeAdherentMandateManager $mandateManager)
     {
         $this->mandateManager = $mandateManager;
-        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents()

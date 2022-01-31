@@ -2,6 +2,7 @@
 
 namespace App\EntityListener;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\District;
 use App\Entity\ReferentManagedArea;
@@ -21,12 +22,16 @@ class RevokeDelegatedAccessListener
 
     public function preUpdate(Adherent $adherent, PreUpdateEventArgs $args): void
     {
-        if (
-            $this->deputyLostAccess($args) ||
-            $this->senatorLostAccess($args) ||
-            $this->referentLostAccess($args)
-        ) {
-            $this->delegatedAccessRepository->removeFromDelegator($adherent);
+        if ($this->deputyLostAccess($args)) {
+            $this->delegatedAccessRepository->removeFromDelegator($adherent, AdherentSpaceEnum::DEPUTY);
+        }
+
+        if ($this->senatorLostAccess($args)) {
+            $this->delegatedAccessRepository->removeFromDelegator($adherent, AdherentSpaceEnum::SENATOR);
+        }
+
+        if ($this->referentLostAccess($args)) {
+            $this->delegatedAccessRepository->removeFromDelegator($adherent, AdherentSpaceEnum::REFERENT);
         }
     }
 

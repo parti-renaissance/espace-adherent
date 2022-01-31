@@ -20,12 +20,13 @@ class DelegatedAccessRepository extends ServiceEntityRepository
         return $this->findOneBy(['uuid' => $uuid]);
     }
 
-    public function removeFromDelegator(Adherent $adherent): void
+    public function removeFromDelegator(Adherent $adherent, string $type): void
     {
         $this->createQueryBuilder('da')
             ->delete()
-            ->where('da.delegator = :adherent')
+            ->where('da.delegator = :adherent AND da.type = :type')
             ->setParameter('adherent', $adherent)
+            ->setParameter('type', $type)
             ->getQuery()
             ->execute()
         ;

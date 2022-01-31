@@ -4,6 +4,8 @@ namespace Tests\App\Admin;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
+use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\MyTeam;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest;
@@ -175,6 +177,44 @@ class AdherentAdminTest extends AbstractWebCaseTest
 
         $this->client->request('GET', '/conseil-national');
         $this->assertStatusCode(200, $this->client);
+    }
+
+    public function testCorrespondentDelegatedAccessAreRemovedWhenAdherentLostHisAccess()
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->manager->getRepository(Adherent::class)->findOneByEmail('je-mengage-user-1@en-marche-dev.fr');
+
+        $this->assertCount(1, $this->manager->getRepository(MyTeam::class)->findBy(['owner' => $adherent]));
+        $this->assertCount(2, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $adherent]));
+
+        $this->authenticateAsAdmin($this->client);
+
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
+
+        $csrfInput = $crawler->filter('form input[id$=__token]')->first();
+        $token = $csrfInput->attr('value');
+        $formName = str_replace('__token', '', $csrfInput->attr('id'));
+
+        $form = $crawler->selectButton('Mettre à jour')->form();
+
+        $values = $form->getPhpValues()[$formName];
+        $values['lastName'] = 'Fullstackk';
+        $values['zoneBasedRoles'] = [];
+
+        $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values]);
+
+        $this->assertClientIsRedirectedTo(sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()), $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $errors = $crawler->filter('.sonata-ba-field-error-messages > li');
+        $error = $crawler->filter('.alert-danger');
+
+        $this->assertSame(0, $errors->count());
+        $this->assertSame(0, $error->count());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $this->manager->getRepository(MyTeam::class)->findBy(['owner' => $adherent]));
+        $this->assertCount(0, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $adherent]));
     }
 
     protected function setUp(): void

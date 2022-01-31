@@ -1005,6 +1005,7 @@ class AdherentAdmin extends AbstractAdmin
 
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
+        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED_IN_ADMIN);
     }
 
     protected function configureListFields(ListMapper $listMapper)
