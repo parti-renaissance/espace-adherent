@@ -179,7 +179,7 @@ class AdherentAdminTest extends AbstractWebCaseTest
         $this->assertStatusCode(200, $this->client);
     }
 
-    public function testCorrespondentDelegatedAccessAreRemovedWhenAdherentLostHisAcce()
+    public function testCorrespondentDelegatedAccessAreRemovedWhenAdherentLostHisAccess()
     {
         /** @var Adherent $adherent */
         $adherent = $this->manager->getRepository(Adherent::class)->findOneByEmail('je-mengage-user-1@en-marche-dev.fr');
