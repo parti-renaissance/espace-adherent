@@ -36,7 +36,7 @@ class MailchimpWebhookControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         self::assertTrue($adherent->isEmailSubscribed());
-        self::assertCount(7, $adherent->getSubscriptionTypeCodes());
+        self::assertCount(8, $adherent->getSubscriptionTypeCodes());
     }
 
     public function testCleanAdherentViaMailchimpWebhook(): void
