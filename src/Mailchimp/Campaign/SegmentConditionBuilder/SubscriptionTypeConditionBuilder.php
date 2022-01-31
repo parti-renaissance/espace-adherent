@@ -32,6 +32,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             SenatorAdherentMessage::class,
             LegislativeCandidateAdherentMessage::class,
             CandidateAdherentMessage::class,
+            CorrespondentAdherentMessage::class,
         ], true);
     }
 
