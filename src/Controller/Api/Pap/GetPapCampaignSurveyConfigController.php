@@ -5,7 +5,6 @@ namespace App\Controller\Api\Pap;
 use App\Jecoute\AgeRangeEnum;
 use App\Jecoute\ProfessionEnum;
 use App\Pap\CampaignHistoryStatusEnum;
-use App\Pap\CampaignHistoryVoterStatusEnum;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,14 +37,16 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                 [
                     'description' => null,
                     'questions' => [
-                        $this->buildQuestion('voter_status', 'choice', 'Est-il inscrit sur les listes électorales ?', false, CampaignHistoryVoterStatusEnum::LABELS, 'cols_1'),
-                        $this->buildQuestion('voter_postal_code', 'text', 'Quel est le code postal de la commune de vote ?', true, CampaignHistoryVoterStatusEnum::LABELS, null, ['question' => 'voter_status', 'choices' => [CampaignHistoryVoterStatusEnum::REGISTERED_ELSEWHERE]], 'Code postal'),
-                    ],
-                ],
-                [
-                    'description' => null,
-                    'questions' => [
-                        $this->buildQuestion('to_contact', 'boolean', 'Souhaite-t-il être tenu au courant des résultats de cette consultation par e-mail ?', true, null, null, null, null, 'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu\'il est informé des droits dont il dispose sur ses données.'),
+                        $this->buildQuestion(
+                            'to_contact',
+                            'boolean',
+                            'Souhaite-t-il être tenu au courant des résultats de cette consultation et recevoir notre actualité politique par e-mail ?',
+                            true,
+                            null,
+                            null,
+                            null,
+                            null,
+                            'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par La République En Marche et qu\'il est informé des droits dont il dispose sur ses données - notamment, la possibilité de se désinscrire à tout moment.'),
                         $this->buildQuestion(
                             'profil',
                             'compound',

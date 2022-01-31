@@ -954,17 +954,17 @@ Feature:
             "response_status": [
                 {
                     "code": "dont_accept_to_answer",
-                    "label": "N'accepte pas",
+                    "label": "Ne souhaite pas répondre",
                     "success_status": false
                 },
                 {
                     "code": "contact_later",
-                    "label": "Repasser plus tard",
+                    "label": "N'est pas le temps de répondre cette fois-ci",
                     "success_status": false
                 },
                 {
                     "code": "accept_to_answer",
-                    "label": "Accepte de répondre aux questions",
+                    "label": "Accepte d'échanger",
                     "success_status": true
                 }
             ]
@@ -1020,45 +1020,10 @@ Feature:
                                 "intermediate_professions": "Profession intermédiaire",
                                 "self_contractor": "Indépendant et professions libérales",
                                 "retirees": "Retraité",
-                                "student": "Étudiant"
+                                "student": "Étudiant",
+                                "unemployed": "En recherche d'emploi"
                             },
                             "widget": "cols_1"
-                        }
-                    }
-                ]
-            },
-            {
-                "description": null,
-                "questions": [
-                    {
-                        "code": "voter_status",
-                        "type": "choice",
-                        "options": {
-                            "label": "Est-il inscrit sur les listes électorales ?",
-                            "required": false,
-                            "multiple": false,
-                            "choices": {
-                                "not_voter": "Pas électeur",
-                                "not_registered": "Pas inscrit",
-                                "registered": "Inscrit sur les listes",
-                                "registered_elsewhere": "Inscrit ailleurs"
-                            },
-                            "widget": "cols_1"
-                        }
-                    },
-                    {
-                        "code": "voter_postal_code",
-                        "type": "text",
-                        "dependency": {
-                            "question": "voter_status",
-                            "choices": [
-                                "registered_elsewhere"
-                            ]
-                        },
-                        "options": {
-                            "label": "Quel est le code postal de la commune de vote ?",
-                            "required": true,
-                            "placeholder": "Code postal"
                         }
                     }
                 ]
@@ -1070,9 +1035,9 @@ Feature:
                         "code": "to_contact",
                         "type": "boolean",
                         "options": {
-                            "label": "Souhaite-t-il être tenu au courant des résultats de cette consultation par e-mail ?",
+                            "label": "Souhaite-t-il être tenu au courant des résultats de cette consultation et recevoir notre actualité politique par e-mail ?",
                             "required": true,
-                            "help": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche dans le cadre de ce sondage et qu'il est informé des droits dont il dispose sur ses données."
+                            "help": "En cochant oui, vous certifiez qu'il consent à ce que ses données personnelles soient traitées par La République En Marche et qu'il est informé des droits dont il dispose sur ses données - notamment, la possibilité de se désinscrire à tout moment."
                         }
                     },
                     {

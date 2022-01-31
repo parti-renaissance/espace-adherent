@@ -427,7 +427,7 @@ Feature:
             "building_block": "A",
             "floor": 0,
             "door": "02",
-            "status_label": "N'accepte pas",
+            "status_label": "Ne souhaite pas répondre",
             "questioner": {
                 "partial_name": "Jacques P."
             }
@@ -437,7 +437,7 @@ Feature:
             "building_block": "A",
             "floor": 1,
             "door": "11",
-            "status_label": "Accepte de répondre aux questions",
+            "status_label": "Accepte d'échanger",
             "questioner": {
                 "partial_name": "Patrick B."
             }
@@ -447,7 +447,7 @@ Feature:
             "building_block": "A",
             "floor": 1,
             "door": "12",
-            "status_label": "Accepte de répondre aux questions",
+            "status_label": "Accepte d'échanger",
             "questioner": {
                 "partial_name": "Patrick B."
             }
@@ -457,7 +457,7 @@ Feature:
             "building_block": "A",
             "floor": 1,
             "door": "13",
-            "status_label": "Accepte de répondre aux questions",
+            "status_label": "Accepte d'échanger",
             "questioner": {
                 "partial_name": "Patrick B."
             }

@@ -17,6 +17,7 @@ class ProfessionEnum extends Enum
     public const STUDENT = 'student';
     public const HOME_PARENT = 'home_parent';
     public const JOBSEEKER = 'jobseeker';
+    public const UNEMPLOYED = 'unemployed';
 
     public static function all(): array
     {
@@ -32,6 +33,7 @@ class ProfessionEnum extends Enum
             self::STUDENT,
             self::HOME_PARENT,
             self::JOBSEEKER,
+            self::UNEMPLOYED,
         ];
     }
 
@@ -45,6 +47,7 @@ class ProfessionEnum extends Enum
             self::SELF_CONTRACTOR => 'Indépendant et professions libérales',
             self::RETIREES => 'Retraité',
             self::STUDENT => 'Étudiant',
+            self::UNEMPLOYED => 'En recherche d\'emploi',
         ];
     }
 }

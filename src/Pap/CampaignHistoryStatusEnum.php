@@ -15,9 +15,9 @@ class CampaignHistoryStatusEnum extends Enum
     public const LABELS = [
         self::DOOR_OPEN => 'Porte ouverte',
         self::DOOR_CLOSED => 'Porte fermée',
-        self::ACCEPT_TO_ANSWER => 'Accepte de répondre aux questions',
-        self::DONT_ACCEPT_TO_ANSWER => 'N\'accepte pas',
-        self::CONTACT_LATER => 'Repasser plus tard',
+        self::ACCEPT_TO_ANSWER => 'Accepte d\'échanger',
+        self::DONT_ACCEPT_TO_ANSWER => 'Ne souhaite pas répondre',
+        self::CONTACT_LATER => 'N\'est pas le temps de répondre cette fois-ci',
     ];
 
     public const DOOR_STATUS = [
