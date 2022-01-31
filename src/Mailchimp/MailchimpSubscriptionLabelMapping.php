@@ -12,6 +12,7 @@ final class MailchimpSubscriptionLabelMapping
         'Recevoir les e-mails de mon député' => SubscriptionTypeEnum::DEPUTY_EMAIL,
         'Recevoir les e-mails de mon animateur de comité' => SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
         'Recevoir les e-mails de mon référent territorial' => SubscriptionTypeEnum::REFERENT_EMAIL,
+        'Recevoir les e-maile mon/ma correspondant(e)' => SubscriptionTypeEnum::CORRESPONDENT_EMAIL,
         'Recevoir les e-mails de mes candidat(e)s LaREM' => SubscriptionTypeEnum::CANDIDATE_EMAIL,
         'Recevoir les e-mails de mon/ma sénateur/trice' => SubscriptionTypeEnum::SENATOR_EMAIL,
         'Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS' => SubscriptionTypeEnum::MILITANT_ACTION_SMS,
