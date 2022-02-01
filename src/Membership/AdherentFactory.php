@@ -71,6 +71,7 @@ class AdherentFactory
         );
         $adherent->setNationality($request->nationality);
         $adherent->setSource($request->getSource());
+        $adherent->setPapUserRole(true);
 
         return $adherent;
     }
@@ -101,6 +102,7 @@ class AdherentFactory
 
         if (!$request->isAsUser()) {
             $adherent->join();
+            $adherent->setPapUserRole(true);
         }
 
         return $adherent;

@@ -314,10 +314,10 @@ class MembershipControllerTest extends WebTestCase
                     ],
                     'password' => '12345678',
                     'address' => [
-                        'address' => '1 rue des alouettes',
-                        'postalCode' => '94320',
-                        'cityName' => 'Thiais',
-                        'city' => '94320-94073',
+                        'address' => '92 bld victor hugo',
+                        'postalCode' => '92110',
+                        'cityName' => 'Clichy',
+                        'city' => '92110-92024',
                         'country' => 'FR',
                     ],
                     'birthdate' => [
@@ -327,12 +327,21 @@ class MembershipControllerTest extends WebTestCase
                     ],
                     'gender' => 'other',
                     'customGender' => 'my custom gender',
+                    'nationality' => 'FR',
                     'conditions' => true,
                     'allowEmailNotifications' => true,
                     'allowMobileNotifications' => true,
                 ],
             ]
         );
+
+        $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
+
+        $adherent = $this->getAdherentRepository()->findOneByEmail('custom.gender@example.fr');
+
+        self::assertSame('other', $adherent->getGender());
+        self::assertSame('my custom gender', $adherent->getCustomGender());
+        self::assertTrue($adherent->hasPapUserRole());
     }
 
     private static function createFormData(): array
