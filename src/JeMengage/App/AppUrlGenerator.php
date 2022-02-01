@@ -29,7 +29,7 @@ class AppUrlGenerator extends AbstractAppUrlGenerator
 
     public function guessAppCodeFromRequest(Request $request): ?string
     {
-        if ($request->attributes->get('app_domain') === $this->appAuthHost) {
+        if ($request->attributes->get('app_domain', $request->getHost()) === $this->appAuthHost) {
             return static::getAppCode();
         }
 
