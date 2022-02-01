@@ -17,7 +17,7 @@ class CampaignHistoryStatusEnum extends Enum
         self::DOOR_CLOSED => 'Porte fermée',
         self::ACCEPT_TO_ANSWER => 'Accepte d\'échanger',
         self::DONT_ACCEPT_TO_ANSWER => 'Ne souhaite pas répondre',
-        self::CONTACT_LATER => 'N\'est pas le temps de répondre cette fois-ci',
+        self::CONTACT_LATER => 'N\'a pas le temps de répondre cette fois-ci',
     ];
 
     public const DOOR_STATUS = [
