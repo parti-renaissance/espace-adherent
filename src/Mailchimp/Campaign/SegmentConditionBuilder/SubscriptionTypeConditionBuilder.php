@@ -112,6 +112,9 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             case ScopeEnum::SENATOR:
                 $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
                 break;
+            case ScopeEnum::CORRESPONDENT:
+                $interestKeys[] = SubscriptionTypeEnum::CORRESPONDENT_EMAIL;
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Scope %s does not match any subscription type', $scope));
         }
