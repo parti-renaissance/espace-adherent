@@ -5,6 +5,7 @@ namespace App\Api\Filter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Event\BaseEvent;
+use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
@@ -12,8 +13,8 @@ final class MyCreatedEventsFilter extends AbstractContextAwareFilter
 {
     private const PROPERTY_NAME = 'only_mine';
 
-    /** @var Security */
-    private $security;
+    private Security $security;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     protected function filterProperty(
         string $property,
@@ -29,6 +30,11 @@ final class MyCreatedEventsFilter extends AbstractContextAwareFilter
             || !$user = $this->security->getUser()
         ) {
             return;
+        }
+
+        $scope = $this->scopeGeneratorResolver->generate();
+        if ($scope && ($delegatedAccess = $scope->getDelegatedAccess())) {
+            $user = $delegatedAccess->getDelegator();
         }
 
         $alias = $queryBuilder->getRootAliases()[0];
@@ -53,5 +59,11 @@ final class MyCreatedEventsFilter extends AbstractContextAwareFilter
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    /** @required */
+    public function setScopeGeneratorResolver(ScopeGeneratorResolver $scopeGeneratorResolver): void
+    {
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 }

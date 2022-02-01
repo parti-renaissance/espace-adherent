@@ -29,13 +29,14 @@ class LoadInstitutionalEventData extends AbstractLoadEventData implements Depend
             'name' => 'Evénement institutionnel numéro 1',
             'category' => $this->getReference('institutional-event-category-1'),
             'description' => 'Un événement institutionnel',
-            'address' => PostAddress::createFrenchAddress('16 rue de la Paix', '75008-75108', null, 48.869331, 2.331595),
+            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
             'begin_at' => (new Chronos('+3 days'))->setTime(9, 30, 00, 000),
             'finish_at' => (new Chronos('+3 days'))->setTime(19, 00, 00, 000),
             'capacity' => 10,
             'time_zone' => 'Europe/Paris',
         ]);
         $institutionalEvent1->setPublished(true);
+        $institutionalEvent1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
 
         $manager->persist($institutionalEvent1);
 
@@ -47,6 +48,7 @@ class LoadInstitutionalEventData extends AbstractLoadEventData implements Depend
         return [
             LoadAdherentData::class,
             LoadInstitutionalEventCategoryData::class,
+            LoadReferentTagsZonesLinksData::class,
         ];
     }
 }

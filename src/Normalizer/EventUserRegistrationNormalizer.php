@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Repository\EventRegistrationRepository;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -16,13 +17,18 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
 
     public const EVENT_USER_REGISTRATION_ALREADY_CALLED = 'event_user_registration_normalizer';
 
-    private $security;
-    private $eventRegistrationRepository;
+    private Security $security;
+    private EventRegistrationRepository $eventRegistrationRepository;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(Security $security, EventRegistrationRepository $eventRegistrationRepository)
-    {
+    public function __construct(
+        Security $security,
+        EventRegistrationRepository $eventRegistrationRepository,
+        ScopeGeneratorResolver $scopeGeneratorResolver
+    ) {
         $this->security = $security;
         $this->eventRegistrationRepository = $eventRegistrationRepository;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     public function normalize($object, $format = null, array $context = [])
@@ -31,9 +37,15 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
 
         $event = $this->normalizer->normalize($object, $format, $context);
 
+        $scope = $this->scopeGeneratorResolver->generate();
+        $user = $scope && ($delegatedAccess = $scope->getDelegatedAccess())
+            ? $delegatedAccess->getDelegator()
+            : $this->security->getUser()
+        ;
+
         $registration = $this->eventRegistrationRepository->findAdherentRegistration(
             $object->getUuid()->toString(),
-            $this->security->getUser()->getUuid()->toString()
+            $user->getUuid()->toString()
         );
 
         $event['user_registered_at'] = $registration ? $registration->getCreatedAt()->format(\DateTime::RFC3339) : null;

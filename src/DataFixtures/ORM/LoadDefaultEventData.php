@@ -39,6 +39,8 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event1->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event1->setMode(BaseEvent::MODE_ONLINE);
         $event1->setTimeZone('Europe/Paris');
+        $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
+        $event1->setPostAddress(PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
         $event1->setOrganizer($referent);
 
         $event2 = new DefaultEvent(Uuid::fromString(self::EVENT_2_UUID));
@@ -54,6 +56,8 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event2->setOrganizer($referent);
         $event2->setPrivate(true);
         $event2->setElectoral(true);
+        $event2->setPostAddress(PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
+        $event2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
 
         $event3 = new DefaultEvent(Uuid::fromString(self::EVENT_3_UUID));
         $event3->setName('Un événement du référent annulé');
@@ -67,6 +71,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event3->setTimeZone('Europe/Paris');
         $event3->setOrganizer($referent);
         $event3->setPostAddress(PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
+        $event3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $event3->cancel();
 
         $manager->persist($event1);
@@ -93,6 +98,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
             LoadUserData::class,
             LoadAdherentData::class,
             LoadEventCategoryData::class,
+            LoadReferentTagsZonesLinksData::class,
         ];
     }
 }
