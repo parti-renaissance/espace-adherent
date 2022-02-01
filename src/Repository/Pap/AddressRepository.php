@@ -34,11 +34,11 @@ class AddressRepository extends ServiceEntityRepository
             INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
                 address.offset_x BETWEEN 
-                    FLOOR((:longitude - :delta_longitude / 2 + 180) / 360 * (1 << 17)) 
-                    AND FLOOR((:longitude + :delta_longitude / 2 + 180) / 360 * (1 << 17))
+                    FLOOR((:longitude - :delta_longitude / 2 + 180) / 360 * 131072) 
+                    AND FLOOR((:longitude + :delta_longitude / 2 + 180) / 360 * 131072)
                 AND address.offset_y BETWEEN 
-                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude + :delta_latitude / 2)) + 1.0 / COS(RADIANS(:latitude + :delta_latitude / 2))) / PI()) / 2.0 * (1 << 17))
-                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude - :delta_latitude / 2)) + 1.0 / COS(RADIANS(:latitude - :delta_latitude / 2))) / PI()) / 2.0 * (1 << 17))
+                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude + :delta_latitude / 2)) + 1.0 / COS(RADIANS(:latitude + :delta_latitude / 2))) / PI()) / 2.0 * 131072)
+                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude - :delta_latitude / 2)) + 1.0 / COS(RADIANS(:latitude - :delta_latitude / 2))) / PI()) / 2.0 * 131072)
                 And address.vote_place_id IN (
 SQL;
         } else {
@@ -48,11 +48,11 @@ SQL;
             INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
                 address.offset_x BETWEEN 
-                 FLOOR((:longitude + 180) / 360 * (1 << 17)) - (1 << greatest((17 - 15), 0))
-                    AND FLOOR((:longitude + 180) / 360 * (1 << 17)) + (1 << greatest((17 - 15), 0))
+                 FLOOR((:longitude + 180) / 360 * 131072) - 32
+                    AND FLOOR((:longitude + 180) / 360 * 131072) + 32
                 AND address.offset_y BETWEEN 
-                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) - (1 << greatest((17 - 15), 0))
-                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) + (1 << greatest((17 - 15), 0))
+                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * 131072) - 32
+                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * 131072) + 32
                 And address.vote_place_id IN (
 SQL;
         }
