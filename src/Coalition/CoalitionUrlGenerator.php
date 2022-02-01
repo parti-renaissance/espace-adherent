@@ -39,7 +39,7 @@ class CoalitionUrlGenerator extends AbstractAppUrlGenerator
 
     public function guessAppCodeFromRequest(Request $request): ?string
     {
-        if ($request->attributes->get('app_domain') === $this->coalitionsAuthHost) {
+        if ($request->attributes->get('app_domain', $request->getHost()) === $this->coalitionsAuthHost) {
             return static::getAppCode();
         }
 

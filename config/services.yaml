@@ -330,3 +330,14 @@ services:
         tags: ['monolog.processor']
     Symfony\Bridge\Monolog\Processor\SwitchUserTokenProcessor:
         tags: ['monolog.processor']
+
+    App\ErrorRenderer\TwigErrorRenderer:
+        decorates: 'twig.error_renderer.html'
+        arguments:
+            $fallbackErrorRenderer: '@App\ErrorRenderer\TwigErrorRenderer.inner'
+            $debug: !service
+                class: 'bool'
+                factory: Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer::isDebug
+                arguments:
+                    - '@request_stack'
+                    - '%kernel.debug%'
