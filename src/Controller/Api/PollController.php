@@ -73,17 +73,14 @@ class PollController extends AbstractController
     /**
      * @Route("/v3/polls", name="api_poll", methods={"GET"})
      * @Route("/v3/polls/{postalCode}", name="api_poll_by_postal_code", methods={"GET"})
-     *
-     * @throws NotFoundHttpException If no poll to return
      */
     public function getPollByPostalCode(?string $postalCode, PollManager $pollManager): JsonResponse
     {
-        $poll = $pollManager->findActivePoll($postalCode);
-
-        if (!$poll) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->json($poll, Response::HTTP_OK, [], ['groups' => ['poll_read']]);
+        return $this->json(
+            $pollManager->findActivePoll($postalCode),
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['poll_read']]
+        );
     }
 }
