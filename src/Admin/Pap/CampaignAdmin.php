@@ -70,22 +70,22 @@ class CampaignAdmin extends AbstractAdmin
             ->end()
             ->with('Filtre - Ciblage par bureau de vote', ['class' => 'col-md-6'])
                 ->add('deltaPredictionAndResultMin2017', PercentType::class, [
-                    'label' => 'Ecart entre prédiction et résultat 2017 - Min',
+                    'label' => 'Écart entre prédiction et résultat 2017 - Min',
                     'scale' => 2,
                     'required' => false,
                 ])
                 ->add('deltaPredictionAndResultMax2017', PercentType::class, [
-                    'label' => 'Ecart entre prédiction et résultat 2017 - Max',
+                    'label' => 'Écart entre prédiction et résultat 2017 - Max',
                     'scale' => 2,
                     'required' => false,
                 ])
                 ->add('deltaAveragePredictionsMin', PercentType::class, [
-                    'label' => 'Ecart prediction et prediction moyennes - Min',
+                    'label' => 'Écart prediction et prediction moyenne - Min',
                     'scale' => 2,
                     'required' => false,
                 ])
                 ->add('deltaAveragePredictionsMax', PercentType::class, [
-                    'label' => 'Ecart prediction et prediction moyennes - Max',
+                    'label' => 'Écart prediction et prediction moyenne - Max',
                     'scale' => 2,
                     'required' => false,
                 ])
@@ -100,11 +100,11 @@ class CampaignAdmin extends AbstractAdmin
                     'required' => false,
                 ])
                 ->add('misregistrationsPriorityMin', IntegerType::class, [
-                    'label' => 'Liste des Priorité de mal inscrits - Min',
+                    'label' => 'Liste des priorités de mal-inscrits - Min',
                     'required' => false,
                 ])
                 ->add('misregistrationsPriorityMax', IntegerType::class, [
-                    'label' => 'Liste des Priorité de mal inscrits - Max',
+                    'label' => 'Liste des priorités de mal-inscrits - Max',
                     'required' => false,
                 ])
             ->end()
