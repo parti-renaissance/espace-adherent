@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class GetNearPointsController extends AbstractController
 {
     private const MAX_LIMIT = 300;
-    private const ZOOM = 12;
 
     /**
      * @Route("/v3/pap/address/near", name="api_pap_get_near_addresses", methods={"GET"})
@@ -24,13 +23,13 @@ class GetNearPointsController extends AbstractController
         AddressRepository $addressRepository,
         CampaignRepository $campaignRepository
     ): Response {
-        if (
-            !$request->query->has('latitude')
-            || !$request->query->has('longitude')
-            || !$request->query->has('zoom')
+        if (!$request->query->has('latitude') || !$request->query->has('longitude')
         ) {
-            throw new BadRequestHttpException('Some required parameters are missing. (latitude, longitude, zoom)');
+            throw new BadRequestHttpException('Some required parameters are missing. (latitude, longitude)');
         }
+
+        $latitudeDelta = $request->query->has('latitudeDelta') ? $request->query->filter('latitudeDelta', null, \FILTER_VALIDATE_FLOAT) : null;
+        $longitudeDelta = $request->query->has('longitudeDelta') ? $request->query->filter('longitudeDelta', null, \FILTER_VALIDATE_FLOAT) : null;
 
         $limit = $request->query->getInt('limit', self::MAX_LIMIT);
 
@@ -45,8 +44,8 @@ class GetNearPointsController extends AbstractController
         return $this->json($addressRepository->findNear(
             $request->query->filter('latitude', null, \FILTER_VALIDATE_FLOAT),
             $request->query->filter('longitude', null, \FILTER_VALIDATE_FLOAT),
-            //$request->query->getInt('zoom')
-            self::ZOOM, // we add this fix value only for the pap campaign on 29 Jan 2022 due to a wrong zoom value send by the app mobile
+            $latitudeDelta,
+            $longitudeDelta,
             $limit > self::MAX_LIMIT ? self::MAX_LIMIT : $limit,
             $votePlaceIds
         ), Response::HTTP_OK, [], ['groups' => ['pap_address_list']]);
