@@ -57,7 +57,7 @@
     "react-power-select": "^1.0.0-beta.17",
     "regenerator-runtime": "^0.13.9",
     "reqwest": "^2.0.5",
-    "sass": "^1.49.0",
+    "sass": "^1.49.4",
     "sass-loader": "^10.1.1",
     "select2": "^4.0.13",
     "sshpk": "^1.17.0",
