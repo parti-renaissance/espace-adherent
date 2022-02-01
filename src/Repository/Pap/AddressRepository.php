@@ -22,23 +22,41 @@ class AddressRepository extends ServiceEntityRepository
     public function findNear(
         float $latitude,
         float $longitude,
-        int $zoom,
+        ?float $latitudeDelta,
+        ?float $longitudeDelta,
         int $limit = 300,
         array $votePlaces = []
     ): array {
-        $sql = <<<SQL
+        if (null !== $latitudeDelta && null !== $longitudeDelta) {
+            $sql = <<<SQL
         SELECT address.id
             FROM pap_address AS address
             INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
             WHERE 
                 address.offset_x BETWEEN 
-                    FLOOR((:longitude + 180) / 360 * (1 << 17)) - (1 << greatest((17 - :zoom), 0))
-                    AND FLOOR((:longitude + 180) / 360 * (1 << 17)) + (1 << greatest((17 - :zoom), 0))
+                    FLOOR((:longitude - :delta_longitude / 2 + 180) / 360 * (1 << 17)) 
+                    AND FLOOR((:longitude + :delta_longitude / 2 + 180) / 360 * (1 << 17))
                 AND address.offset_y BETWEEN 
-                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) - (1 << greatest((17 - :zoom), 0))
-                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) + (1 << greatest((17 - :zoom), 0))
+                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude + :delta_latitude / 2)) + 1.0 / COS(RADIANS(:latitude + :delta_latitude / 2))) / PI()) / 2.0 * (1 << 17))
+                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude - :delta_latitude / 2)) + 1.0 / COS(RADIANS(:latitude - :delta_latitude / 2))) / PI()) / 2.0 * (1 << 17))
                 And address.vote_place_id IN (
 SQL;
+        } else {
+            $sql = <<<SQL
+        SELECT address.id
+            FROM pap_address AS address
+            INNER JOIN pap_vote_place pvp ON pvp.id = address.vote_place_id
+            WHERE 
+                address.offset_x BETWEEN 
+                 FLOOR((:longitude + 180) / 360 * (1 << 17)) - (1 << greatest((17 - 15), 0))
+                    AND FLOOR((:longitude + 180) / 360 * (1 << 17)) + (1 << greatest((17 - 15), 0))
+                AND address.offset_y BETWEEN 
+                    FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) - (1 << greatest((17 - 15), 0))
+                    AND FLOOR((1.0 - LN(TAN(RADIANS(:latitude)) + 1.0 / COS(RADIANS(:latitude))) / PI()) / 2.0 * (1 << 17)) + (1 << greatest((17 - 15), 0))
+                And address.vote_place_id IN (
+SQL;
+        }
+
         $sql .= implode(', ', $votePlaces);
         $sql .= ') ';
         $sql .= <<<SQL
@@ -61,8 +79,12 @@ SQL;
 
         $stmt->bindParam('latitude', $latitude);
         $stmt->bindParam('longitude', $longitude);
-        $stmt->bindParam('zoom', $zoom, \PDO::PARAM_INT);
         $stmt->bindParam('limit', $limit, \PDO::PARAM_INT);
+
+        if (null !== $latitudeDelta && null !== $longitudeDelta) {
+            $stmt->bindParam('delta_latitude', $latitudeDelta);
+            $stmt->bindParam('delta_longitude', $longitudeDelta);
+        }
 
         $result = $stmt->executeQuery();
 
