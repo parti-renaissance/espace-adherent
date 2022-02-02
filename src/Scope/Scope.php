@@ -93,6 +93,11 @@ class Scope
 
     public function isNational(): bool
     {
-        return \in_array($this->code, ScopeEnum::NATIONAL_SCOPES, true);
+        return \in_array($this->getDelegatorCode() ?? $this->code, ScopeEnum::NATIONAL_SCOPES, true);
+    }
+
+    public function getDelegatorCode(): ?string
+    {
+        return $this->delegatedAccess ? $this->delegatedAccess->getType() : null;
     }
 }

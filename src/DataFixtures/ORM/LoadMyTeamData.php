@@ -17,12 +17,16 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
 {
     public const TEAM_1_UUID = '7fab9d6c-71a1-4257-b42b-c6b9b2350a26';
     public const TEAM_2_UUID = '17921a6c-cf1c-4b49-9aac-06bd3913c3f7';
+    public const TEAM_3_UUID = '9ea7ea50-146b-4022-87bc-b687b17e69ed';
 
     public const MEMBER_1_UUID = 'd11d6ddd-dfba-4972-97b2-4c0bdf289559';
     public const MEMBER_2_UUID = '7e82bb82-4b1e-4244-b484-7a51301df420';
     public const MEMBER_3_UUID = 'e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93';
+
     public const MEMBER_4_UUID = 'b299bcf7-882b-4fce-8dc1-c1b24ceeeef5';
     public const MEMBER_5_UUID = 'b65b3b8e-ad92-46ae-a226-25e286828929';
+
+    public const MEMBER_6_UUID = '5fb67010-aa4d-47e9-8183-d36e8fc6526d';
 
     public function load(ObjectManager $manager)
     {
@@ -72,8 +76,20 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team2->addMember($member2_2);
         $this->setReference('my-team-correspondent-1', $team2);
 
+        $team3 = $this->createMyTeam(self::TEAM_3_UUID, $this->getReference('adherent-8'), ScopeEnum::PHONING_NATIONAL_MANAGER);
+        $member3_1 = $this->createMember(
+            $this->getReference('adherent-7'),
+            RoleEnum::COMMUNICATION_MANAGER,
+            [FeatureEnum::PHONING_CAMPAIGN, FeatureEnum::TEAM],
+            self::MEMBER_6_UUID
+        );
+        $this->setReference('my_team_member_3_1', $member3_1);
+        $team3->addMember($member3_1);
+        $this->setReference('my-team-phoning-1', $team3);
+
         $manager->persist($team1);
         $manager->persist($team2);
+        $manager->persist($team3);
 
         $manager->flush();
     }

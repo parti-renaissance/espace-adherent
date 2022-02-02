@@ -4,8 +4,8 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 
@@ -29,13 +29,13 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
+        $scope = $this->scopeGeneratorResolver->generate();
 
-        if (null === $scopeGenerator) {
+        if (!$scope) {
             return false;
         }
 
-        if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if ($scope->isNational()) {
             return null === $subject->getZone();
         }
 
@@ -43,10 +43,8 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return $this->managedZoneProvider->isManagerOfZone(
-            $this->security->getUser(),
-            $scopeGenerator->getCode(),
-            $subject->getZone()
+        return $this->managedZoneProvider->zoneBelongsToSome($subject->getZone(), array_map(
+            static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
         );
     }
 

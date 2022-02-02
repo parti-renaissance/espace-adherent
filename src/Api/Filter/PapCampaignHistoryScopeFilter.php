@@ -5,7 +5,6 @@ namespace App\Api\Filter;
 use App\Entity\Adherent;
 use App\Entity\Pap\CampaignHistory;
 use App\Scope\Generator\ScopeGeneratorInterface;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
 
@@ -23,7 +22,7 @@ final class PapCampaignHistoryScopeFilter extends AbstractScopeFilter
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $scope = $scopeGenerator->generate($currentUser);
-        if (\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if ($scope->isNational()) {
             $queryBuilder
                 ->innerJoin("$alias.campaign", 'campaign')
                 ->andWhere('campaign.visibility = :visibility')
