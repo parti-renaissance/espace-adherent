@@ -176,4 +176,8 @@ Feature:
     Given I freeze the clock to "+3 days"
     And I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/polls/69003"
-    Then the response status code should be 404
+    Then the response status code should be 200
+    And the response should be equal to
+    """
+    null
+    """
