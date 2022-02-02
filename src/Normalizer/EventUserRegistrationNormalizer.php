@@ -5,7 +5,6 @@ namespace App\Normalizer;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Repository\EventRegistrationRepository;
-use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -19,16 +18,11 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
 
     private Security $security;
     private EventRegistrationRepository $eventRegistrationRepository;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(
-        Security $security,
-        EventRegistrationRepository $eventRegistrationRepository,
-        ScopeGeneratorResolver $scopeGeneratorResolver
-    ) {
+    public function __construct(Security $security, EventRegistrationRepository $eventRegistrationRepository)
+    {
         $this->security = $security;
         $this->eventRegistrationRepository = $eventRegistrationRepository;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     public function normalize($object, $format = null, array $context = [])
@@ -37,12 +31,9 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
 
         $event = $this->normalizer->normalize($object, $format, $context);
 
-        $scope = $this->scopeGeneratorResolver->generate();
-        $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
-
         $registration = $this->eventRegistrationRepository->findAdherentRegistration(
             $object->getUuid()->toString(),
-            $user->getUuid()->toString()
+            $this->security->getUser()->getUuid()->toString()
         );
 
         $event['user_registered_at'] = $registration ? $registration->getCreatedAt()->format(\DateTime::RFC3339) : null;

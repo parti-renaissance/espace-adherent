@@ -202,17 +202,17 @@ Feature:
 
   Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=11"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=9"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
             "total_items": 11,
-            "items_per_page": 11,
-            "count": 11,
+            "items_per_page": 9,
+            "count": 9,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
             {
@@ -563,72 +563,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": null
-            },
-            {
-                "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
-                "name": "Nouvel événement online",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": null,
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": "online",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
-            },
-            {
-                "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
-                "name": "Nouvel événement online privé et électoral",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                    "first_name": "Referent",
-                    "last_name": "Referent"
-                },
-                "participants_count": 0,
-                "status": "SCHEDULED",
-                "capacity": 50,
-                "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
-                    "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": null,
-                "private": true,
-                "electoral": true,
-                "visio_url": null,
-                "mode": "online",
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
             }
         ]
     }
@@ -820,7 +754,7 @@ Feature:
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
+                "user_registered_at": "@string@||@null@"
             },
             {
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
@@ -853,7 +787,7 @@ Feature:
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
+                "user_registered_at": "@string@||@null@"
             },
             {
                 "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
@@ -1011,7 +945,7 @@ Feature:
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
+                "user_registered_at": "@string@||@null@"
             },
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -1044,7 +978,7 @@ Feature:
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
+                "user_registered_at": "@string@||@null@"
             }
         ]
     }

@@ -101,9 +101,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         $scopeFeatures = $scopeEntity->getFeatures();
 
         if ($this->delegatedAccess) {
-            $inheritedFeatures = [
-                FeatureEnum::DASHBOARD,
-            ];
+            $inheritedFeatures = FeatureEnum::DELEGATED_ACCESSES_BY_DEFAULT;
 
             foreach ($this->delegatedAccess->getAccesses() as $delegatedFeature) {
                 if (\array_key_exists($delegatedFeature, FeatureEnum::DELEGATED_ACCESSES_MAPPING)) {
