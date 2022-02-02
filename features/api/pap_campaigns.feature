@@ -47,7 +47,7 @@ Feature:
       | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/survey-config  |
       | GET     | /api/v3/pap_campaigns/tutorial                                            |
 
-  Scenario Outline: As a logged-in user with no correct rights I cannot get PAP campaigns on DC
+  Scenario Outline: As a logged-in user with no correct rights I cannot get PAP campaigns
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
@@ -221,9 +221,9 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a user granted with local scope, I can get the list of national and local campaigns in the zones I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent&page_size=10"
+  Scenario Outline: As a user granted with local scope, I can get the list of national and local campaigns in the zones I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -346,10 +346,14 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can filter campaigns by visibility
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent&page_size=10&visibility=local"
+  Scenario Outline: As a user granted with local scope, I can filter campaigns by visibility
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=<scope>&page_size=10&visibility=local"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -403,7 +407,7 @@ Feature:
     }
     """
 
-    When I send a "GET" request to "/api/v3/pap_campaigns?scope=referent&page_size=10&visibility=national"
+    When I send a "GET" request to "/api/v3/pap_campaigns?scope=<scope>&page_size=10&visibility=national"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -490,10 +494,14 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can get a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=referent"
+  Scenario Outline: As a user granted with local scope, I can get a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -522,11 +530,15 @@ Feature:
       "average_visit_time": 0
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can create a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can create a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Nouvelle campagne PAP",
@@ -560,11 +572,15 @@ Feature:
       }
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can update a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can update a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale du département 92"
@@ -592,11 +608,15 @@ Feature:
       }
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=<scope>" with body:
       """
       {
         "title": "Nouvelle campagne PAP",
@@ -624,17 +644,25 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale de la ville de Nice (06088)"
     }
     """
     Then the response status code should be 403
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user granted with local scope, I can not create a national campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -1636,9 +1664,9 @@ Feature:
     }
     """
 
-  Scenario: As a referent I can get the list of PAP campaign histories
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=referent&page_size=10"
+  Scenario Outline: As a (delegated) referent I can get the list of PAP campaign histories
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1686,6 +1714,12 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a referent I can get the list of PAP campaign histories
     When I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=referent&page_size=10"
     Then the response status code should be 200
@@ -2425,23 +2459,27 @@ Feature:
     }
     """
 
-    Scenario:  As a referent I get an empty list of a national campaign replies, if no replies in my managed zones
-      Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-      When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=referent"
-      Then the response status code should be 200
-      And the JSON should be equal to:
-      """
-      {
-          "metadata": {
-              "total_items": 0,
-              "items_per_page": 30,
-              "count": 0,
-              "current_page": 1,
-              "last_page": 1
-          },
-          "items": []
-      }
-      """
+  Scenario Outline: As a (delegated) referent I get an empty list of a national campaign replies, if no replies in my managed zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 0,
+            "items_per_page": 30,
+            "count": 0,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": []
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a PAP national manger I can get PAP campaigns KPI
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -2459,9 +2497,9 @@ Feature:
     }
     """
 
-  Scenario: As a referent I can get PAP campaigns KPI
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=referent"
+  Scenario Outline: As a (delegated) referent I can get PAP campaigns KPI
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/kpi?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -2474,6 +2512,10 @@ Feature:
         "nb_surveys_last_30d": "0"
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a PAP national manager I can get a PAP questioners with their stats
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -2572,3 +2614,25 @@ Feature:
         ]
     }
     """
+
+  Scenario Outline: As a (delegated) referent I get an empty list of PAP questioners, if no replies in my managed zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 0,
+            "items_per_page": 100,
+            "count": 0,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": []
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
