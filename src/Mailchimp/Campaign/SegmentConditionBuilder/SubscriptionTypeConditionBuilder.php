@@ -72,7 +72,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             case CorrespondentAdherentMessage::class:
-                $interestKeys[] = SubscriptionTypeEnum::CORRESPONDENT_EMAIL;
+                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
 
             case MunicipalChiefAdherentMessage::class:
@@ -113,7 +113,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
                 break;
             case ScopeEnum::CORRESPONDENT:
-                $interestKeys[] = SubscriptionTypeEnum::CORRESPONDENT_EMAIL;
+                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Scope %s does not match any subscription type', $scope));
