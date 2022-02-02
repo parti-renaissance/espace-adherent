@@ -67,7 +67,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
             ;
         }
 
-        if (ScopeEnum::REFERENT === $scopeCode) {
+        if (\in_array($scopeCode, ScopeEnum::LOCAL_SCOPES, true)) {
             if ($value instanceof NationalSurvey) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameters([
@@ -80,7 +80,9 @@ class SurveyScopeTargetValidator extends ConstraintValidator
 
             if ($value instanceof LocalSurvey
                 && $value->getZone()
-                && !$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())
+                && (!$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())
+                    || ($currentUser->isCorrespondent() && $currentUser->getCorrespondentZone() !== $value->getZone())
+                )
             ) {
                 $this->context->buildViolation($constraint->invalidManagedZone)
                     ->atPath('zone')
