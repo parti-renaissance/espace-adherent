@@ -8,12 +8,13 @@ use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataSurveyRepository;
-use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -29,12 +30,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GetSurveyRepliesController extends AbstractController
 {
-    private AuthorizationChecker $authorizationChecker;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
     private ZoneRepository $zoneRepository;
 
-    public function __construct(AuthorizationChecker $authorizationChecker, ZoneRepository $zoneRepository)
+    public function __construct(ScopeGeneratorResolver $scopeGeneratorResolver, ZoneRepository $zoneRepository)
     {
-        $this->authorizationChecker = $authorizationChecker;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->zoneRepository = $zoneRepository;
     }
 
@@ -45,22 +46,18 @@ class GetSurveyRepliesController extends AbstractController
         DataSurveyRepository $dataSurveyRepository,
         SurveyExporter $exporter
     ): Response {
-        /** @var Adherent $user */
-        $user = $this->getUser();
+        $scope = $this->scopeGeneratorResolver->generate();
 
-        $scopeGenerator = $this->authorizationChecker->getScopeGenerator(
-            $request,
-            $user
-        );
-
-        $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $user;
+        if (!$scope) {
+            throw new BadRequestHttpException('Unable to resolve scope from request.');
+        }
 
         $zoneCodes = [];
-        if (ScopeEnum::REFERENT === $scopeGenerator->getCode() && $survey->isNational()) {
-            $zones = $this->getZones($user);
-
+        $user = $scope->getDelegator() ?? $this->getUser();
+        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
+        if (ScopeEnum::REFERENT === $scopeCode && $survey->isNational()) {
             /** @var Zone $zone */
-            foreach ($zones as $zone) {
+            foreach ($this->getZones($user) as $zone) {
                 switch ($zone->getType()) {
                     case Zone::DEPARTMENT:
                         $zoneCodes[] = $zone->getCode();

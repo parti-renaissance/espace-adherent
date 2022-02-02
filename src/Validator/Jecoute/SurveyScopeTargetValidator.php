@@ -3,15 +3,14 @@
 namespace App\Validator\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Geo\ManagedZoneProvider;
 use App\Jecoute\SurveyTypeEnum;
-use App\Scope\AuthorizationChecker;
-use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\ScopeEnum;
-use Symfony\Component\HttpFoundation\RequestStack;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -21,20 +20,17 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 class SurveyScopeTargetValidator extends ConstraintValidator
 {
     private Security $security;
-    private RequestStack $requestStack;
-    private AuthorizationChecker $authorizationChecker;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
     private ManagedZoneProvider $managedZoneProvider;
 
     public function __construct(
         Security $security,
-        RequestStack $requestStack,
-        AuthorizationChecker $authorizationChecker,
+        ScopeGeneratorResolver $scopeGeneratorResolver,
         ManagedZoneProvider $managedZoneProvider
     ) {
         $this->managedZoneProvider = $managedZoneProvider;
         $this->security = $security;
-        $this->requestStack = $requestStack;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     public function validate($value, Constraint $constraint)
@@ -57,33 +53,26 @@ class SurveyScopeTargetValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->authorizationChecker->getScope($this->requestStack->getMasterRequest())) {
+        if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return;
         }
 
-        try {
-            $scopeGenerator = $this->authorizationChecker->getScopeGenerator($this->requestStack->getMasterRequest(), $currentUser);
-        } catch (ScopeExceptionInterface $e) {
-            return;
-        }
-
-        if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)
-            && $value instanceof LocalSurvey
-        ) {
+        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
+        if ($scope->isNational() && $value instanceof LocalSurvey) {
             $this->context->buildViolation($constraint->message)
                 ->setParameters([
-                    '{{ scope }}' => $scopeGenerator->getCode(),
+                    '{{ scope }}' => $scopeCode,
                     '{{ type }}' => SurveyTypeEnum::LOCAL,
                 ])
                 ->addViolation()
             ;
         }
 
-        if (ScopeEnum::REFERENT === $scopeGenerator->getCode()) {
+        if (ScopeEnum::REFERENT === $scopeCode) {
             if ($value instanceof NationalSurvey) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameters([
-                        '{{ scope }}' => $scopeGenerator->getCode(),
+                        '{{ scope }}' => $scopeCode,
                         '{{ type }}' => SurveyTypeEnum::NATIONAL,
                     ])
                     ->addViolation()
@@ -92,7 +81,9 @@ class SurveyScopeTargetValidator extends ConstraintValidator
 
             if ($value instanceof LocalSurvey
                 && $value->getZone()
-                && !$this->managedZoneProvider->isManagerOfZone($currentUser, $scopeGenerator->getCode(), $value->getZone())
+                && !$this->managedZoneProvider->zoneBelongsToSome($value->getZone(), array_map(
+                    static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
+                )
             ) {
                 $this->context->buildViolation($constraint->invalidManagedZone)
                     ->atPath('zone')

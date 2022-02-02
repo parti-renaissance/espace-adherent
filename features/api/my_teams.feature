@@ -383,8 +383,8 @@ Feature:
     }
     """
 
-  Scenario: As a referent I can get my team members, if I doesn't have my team
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+  Scenario: As a referent I get an empty list of my team members, if I doesn't have my team
+    Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/v3/my_teams?scope=referent"
     Then the response status code should be 200
