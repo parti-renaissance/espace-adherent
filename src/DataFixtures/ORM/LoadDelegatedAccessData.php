@@ -25,7 +25,6 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     public const ACCESS_UUID_11 = '433e368f-fd4e-4a24-9f01-b667f8e3b9f2';
     public const ACCESS_UUID_12 = '6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec';
     public const ACCESS_UUID_13 = '2c6134f7-4312-45c4-9ab7-89f2b0731f86';
-    public const ACCESS_UUID_14 = '689757d2-dea5-49d1-95fe-281fc860ff77';
 
     public function load(ObjectManager $manager)
     {
@@ -137,7 +136,6 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             self::ACCESS_UUID_11 => 'my_team_member_1_2',
             self::ACCESS_UUID_12 => 'my_team_member_2_1',
             self::ACCESS_UUID_13 => 'my_team_member_2_2',
-            self::ACCESS_UUID_14 => 'my_team_member_3_1',
         ];
         foreach ($members as $uuid => $reference) {
             /** @var Member $member */

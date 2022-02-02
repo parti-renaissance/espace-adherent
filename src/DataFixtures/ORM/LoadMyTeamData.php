@@ -76,20 +76,8 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team2->addMember($member2_2);
         $this->setReference('my-team-correspondent-1', $team2);
 
-        $team3 = $this->createMyTeam(self::TEAM_3_UUID, $this->getReference('adherent-8'), ScopeEnum::PHONING_NATIONAL_MANAGER);
-        $member3_1 = $this->createMember(
-            $this->getReference('adherent-7'),
-            RoleEnum::COMMUNICATION_MANAGER,
-            [FeatureEnum::PHONING_CAMPAIGN, FeatureEnum::TEAM],
-            self::MEMBER_6_UUID
-        );
-        $this->setReference('my_team_member_3_1', $member3_1);
-        $team3->addMember($member3_1);
-        $this->setReference('my-team-phoning-1', $team3);
-
         $manager->persist($team1);
         $manager->persist($team2);
-        $manager->persist($team3);
 
         $manager->flush();
     }

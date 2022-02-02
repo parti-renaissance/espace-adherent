@@ -476,9 +476,9 @@ Feature:
     """
     Then the response status code should be 401
 
-  Scenario Outline: As a user granted with team feature, I can add a member to a team
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=<scope>"
+  Scenario: As a user granted with team feature, I can add a member to a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -494,7 +494,7 @@ Feature:
     """
 
     When I add "Content-Type" header equal to "application/json"
-    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=<scope>" with body:
+    When I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/add-members?scope=phoning_national_manager" with body:
     """
     [
       {
@@ -525,10 +525,6 @@ Feature:
       ]
     }
     """
-    Examples:
-      | user                      | scope                                           |
-      | referent@en-marche-dev.fr | phoning_national_manager                        |
-      | francis.brioul@yahoo.com  | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario: As a user granted with team feature, I can not add the same member twice to the same team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -689,9 +685,9 @@ Feature:
     """
     Then the response status code should be 401
 
-  Scenario Outline: As a user granted with team feature, I can remove a member from a team
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=<scope>"
+  Scenario: As a user granted with team feature, I can remove a member from a team
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -716,7 +712,7 @@ Feature:
     }
     """
 
-    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/29461c49-6316-5be1-9ac3-17816bf2d819?scope=<scope>"
+    When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/29461c49-6316-5be1-9ac3-17816bf2d819?scope=phoning_national_manager"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -752,18 +748,14 @@ Feature:
       ]
     }
     """
-    Examples:
-      | user                      | scope                                           |
-      | referent@en-marche-dev.fr | phoning_national_manager                        |
-      | francis.brioul@yahoo.com  | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario: As an anonymous user, I can not remove a member from a team
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
     Then the response status code should be 401
 
-  Scenario Outline: As a user granted with team feature, I can filter the team list by name
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/teams?name=Deuxi&scope=<scope>"
+  Scenario: As a user granted with team feature, I can filter the team list by name
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/teams?name=Deuxi&scope=phoning_national_manager"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -788,7 +780,3 @@ Feature:
       ]
     }
     """
-    Examples:
-      | user                      | scope                                           |
-      | referent@en-marche-dev.fr | phoning_national_manager                        |
-      | francis.brioul@yahoo.com  | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
