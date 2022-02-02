@@ -30,10 +30,7 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
         $context[self::ALREADY_CALLED] = true;
 
         $scope = $this->scopeGeneratorResolver->generate();
-        $adherent = $scope && ($delegatedAccess = $scope->getDelegatedAccess())
-            ? $delegatedAccess->getDelegator()
-            : $this->security->getUser()
-        ;
+        $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
 
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
         if (!$data->getId()) {

@@ -25,12 +25,16 @@ class ChangeJecouteNewsVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         $scope = $this->scopeGeneratorResolver->generate();
+
+        if (!$scope) {
+            return false;
+        }
+
         if (ScopeEnum::NATIONAL === $scope->getCode()) {
             return !$subject->getSpace();
         }
 
-        $scopeCode = $scope->getDelegatedAccess() ? $scope->getDelegatedAccess()->getType() : $scope->getCode();
-        if (ScopeEnum::REFERENT === $scopeCode) {
+        if (ScopeEnum::REFERENT === ($scope->getDelegatorCode() ?? $scope->getCode())) {
             if (!$zone = $subject->getZone()) {
                 return false;
             }

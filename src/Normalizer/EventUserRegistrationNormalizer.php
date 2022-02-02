@@ -38,10 +38,7 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
         $event = $this->normalizer->normalize($object, $format, $context);
 
         $scope = $this->scopeGeneratorResolver->generate();
-        $user = $scope && ($delegatedAccess = $scope->getDelegatedAccess())
-            ? $delegatedAccess->getDelegator()
-            : $this->security->getUser()
-        ;
+        $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
 
         $registration = $this->eventRegistrationRepository->findAdherentRegistration(
             $object->getUuid()->toString(),

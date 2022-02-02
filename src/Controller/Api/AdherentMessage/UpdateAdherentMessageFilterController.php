@@ -46,9 +46,8 @@ class UpdateAdherentMessageFilterController extends AbstractController
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
         }
 
-        $scope = $scopeGeneratorResolver->generate();
-        if ($scope && ($delegatedAccess = $scope->getDelegatedAccess())) {
-            $adherent = $delegatedAccess->getDelegator();
+        if (($scope = $scopeGeneratorResolver->generate()) && $scope->getDelegatedAccess()) {
+            $adherent = $scope->getDelegator();
         }
 
         if (!$filter = $data->getFilter()) {

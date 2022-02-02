@@ -74,9 +74,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         if (!$news->getId()) {
             $scope = $this->scopeGeneratorResolver->generate();
-            $scopeCode = $scope
-                ? ($scope->getDelegatedAccess() ? $scope->getDelegatedAccess()->getType() : $scope->getCode())
-                : null;
+            $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
             if (ScopeEnum::REFERENT === $scopeCode) {
                 $news->setSpace(JecouteSpaceEnum::REFERENT_SPACE);
             }

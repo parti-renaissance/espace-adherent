@@ -33,9 +33,7 @@ final class MyCreatedEventsFilter extends AbstractContextAwareFilter
         }
 
         $scope = $this->scopeGeneratorResolver->generate();
-        if ($scope && ($delegatedAccess = $scope->getDelegatedAccess())) {
-            $user = $delegatedAccess->getDelegator();
-        }
+        $user = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $user;
 
         $alias = $queryBuilder->getRootAliases()[0];
         $queryBuilder

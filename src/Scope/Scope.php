@@ -2,6 +2,7 @@
 
 namespace App\Scope;
 
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
@@ -99,5 +100,10 @@ class Scope
     public function getDelegatorCode(): ?string
     {
         return $this->delegatedAccess ? $this->delegatedAccess->getType() : null;
+    }
+
+    public function getDelegator(): ?Adherent
+    {
+        return $this->delegatedAccess ? $this->delegatedAccess->getDelegator() : null;
     }
 }
