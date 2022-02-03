@@ -39,21 +39,26 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testExportPhoningCampaignRepliesInXls(): void
+    /** @dataProvider provideReferents */
+    public function testExportPhoningCampaignRepliesInXls(string $email, string $scope): void
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
             GrantTypeEnum::PASSWORD,
             null,
-            'referent@en-marche-dev.fr',
+            $email,
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xls?scope=phoning_national_manager', [], [], [
-            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-        ]);
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xls?scope=%s', $scope),
+            [],
+            [],
+            ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
+        );
         $responseContent = ob_get_clean();
 
         $this->isSuccessful($response = $this->client->getResponse());
@@ -68,5 +73,11 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends WebTestCase
         $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
         $this->assertStringContainsString('<td>Fa40ke</td><td>Adherent 40</td><td>l\'écologie sera le sujet le plus important</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td>', $responseContent);
         $this->assertStringContainsString('<td>Fa34ke</td><td>Adherent 34</td><td>le pouvoir d\'achat</td><td>L\'aspect financier, La préservation de l\'environnement</td>', $responseContent);
+    }
+
+    public function provideReferents(): iterable
+    {
+        yield ['referent@en-marche-dev.fr', 'referent'];
+        yield ['senateur@en-marche-dev.fr', 'delegated_08f40730-d807-4975-8773-69d8fae1da74'];
     }
 }

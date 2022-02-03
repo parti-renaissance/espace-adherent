@@ -2319,9 +2319,9 @@ Feature:
     }
     """
 
-  Scenario:  As a referent I can get the list of a national campaign replies of my managed zones
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=referent&page_size=10"
+  Scenario Outline:  As a (delegated) referent I can get the list of a national campaign replies of my managed zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -2458,6 +2458,10 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                            | scope                                           |
+      | referent-75-77@en-marche-dev.fr | referent                                        |
+      | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario Outline: As a (delegated) referent I get an empty list of a national campaign replies, if no replies in my managed zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
