@@ -2466,12 +2466,12 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "2",
-        "nb_ongoing_campaigns": "2",
-        "nb_visited_doors": "2",
-        "nb_visited_doors_last_30d": "2",
-        "nb_surveys": "0",
-        "nb_surveys_last_30d": "0"
+        "nb_campaigns": "7",
+        "nb_ongoing_campaigns": "6",
+        "nb_visited_doors": "9",
+        "nb_visited_doors_last_30d": "8",
+        "nb_surveys": "3",
+        "nb_surveys_last_30d": "3"
     }
     """
 

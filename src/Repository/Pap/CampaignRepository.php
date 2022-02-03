@@ -3,16 +3,16 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\Campaign;
-use App\Repository\ScopeVisibilityEntityRepositoryTrait;
 use App\Repository\UuidEntityRepositoryTrait;
+use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CampaignRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
-    use ScopeVisibilityEntityRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,12 +41,38 @@ class CampaignRepository extends ServiceEntityRepository
             ])
         ;
 
-        $this->addScopeVisibility($queryBuilder, $zones);
+        $this->applyKpiScopeVisibility($queryBuilder, $zones);
 
         return $queryBuilder
             ->getQuery()
             ->getSingleResult()
         ;
+    }
+
+    private function applyKpiScopeVisibility(QueryBuilder $queryBuilder, array $zones): void
+    {
+        $condition = $queryBuilder->expr()->orX();
+
+        $condition->add('campaign.visibility = :visibility_national');
+        $queryBuilder->setParameter('visibility_national', ScopeVisibilityEnum::NATIONAL);
+
+        if (!empty($zones)) {
+            $condition->add(
+                $queryBuilder->expr()->andX(
+                    'campaign.visibility = :visibility_local',
+                    'zone IN (:zones) OR zone_parent IN (:zones)'
+                )
+            );
+
+            $queryBuilder
+                ->leftJoin('campaign.zone', 'zone')
+                ->leftJoin('zone.parents', 'zone_parent')
+                ->setParameter('visibility_local', ScopeVisibilityEnum::LOCAL)
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        $queryBuilder->andWhere($condition);
     }
 
     public function countActiveCampaign(): int
