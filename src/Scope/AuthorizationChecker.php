@@ -32,7 +32,7 @@ class AuthorizationChecker
         }
 
         if (!ScopeEnum::isValid($scope)
-            && !ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX === substr($scope, 0, \strlen(ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX))) {
+            && !GeneralScopeGenerator::isDelegatedScopeCode($scope)) {
             throw new InvalidScopeException();
         }
 

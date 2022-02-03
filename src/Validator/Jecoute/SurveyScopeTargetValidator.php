@@ -3,7 +3,6 @@
 namespace App\Validator\Jecoute;
 
 use App\Entity\Adherent;
-use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
@@ -81,9 +80,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
 
             if ($value instanceof LocalSurvey
                 && $value->getZone()
-                && !$this->managedZoneProvider->zoneBelongsToSome($value->getZone(), array_map(
-                    static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
-                )
+                && !$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())
             ) {
                 $this->context->buildViolation($constraint->invalidManagedZone)
                     ->atPath('zone')

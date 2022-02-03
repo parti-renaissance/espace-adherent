@@ -3,7 +3,6 @@
 namespace App\Security\Voter\Survey;
 
 use App\Entity\Adherent;
-use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
@@ -46,9 +45,7 @@ class CanReadSurveyVoter extends AbstractAdherentVoter
             }
 
             if ($subject instanceof LocalSurvey) {
-                return $this->managedZoneProvider->zoneBelongsToSome($subject->getZone(), array_map(
-                    static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
-                );
+                return $this->managedZoneProvider->zoneBelongsToSomeZones($subject->getZone(), $scope->getZones());
             }
         }
 

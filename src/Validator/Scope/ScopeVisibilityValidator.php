@@ -4,7 +4,6 @@ namespace App\Validator\Scope;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
-use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
@@ -77,9 +76,7 @@ class ScopeVisibilityValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->managedZoneProvider->zoneBelongsToSome($value->getZone(), array_map(
-            static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
-        )) {
+        if (!$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())) {
             $this
                 ->context
                 ->buildViolation($constraint->localScopeWithUnmanagedZoneMessage)

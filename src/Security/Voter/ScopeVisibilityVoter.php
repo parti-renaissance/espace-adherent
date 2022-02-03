@@ -4,7 +4,6 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
-use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
@@ -43,9 +42,7 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return $this->managedZoneProvider->zoneBelongsToSome($subject->getZone(), array_map(
-            static function (Zone $zone) { return $zone->getId(); }, $scope->getZones())
-        );
+        return $this->managedZoneProvider->zoneBelongsToSomeZones($subject->getZone(), $scope->getZones());
     }
 
     protected function supports($attribute, $subject)

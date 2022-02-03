@@ -56,9 +56,7 @@ class GeneralScopeGenerator
 
     public function getGenerator(string $scopeCode, Adherent $adherent): ScopeGeneratorInterface
     {
-        $isDelegatedScopeCode = $this->isDelegatedScopeCode($scopeCode);
-
-        if ($isDelegatedScopeCode) {
+        if (self::isDelegatedScopeCode($scopeCode)) {
             $delegatedAccess = $this->findDelegatedAccess($scopeCode);
 
             if (!$delegatedAccess) {
@@ -94,7 +92,7 @@ class GeneralScopeGenerator
         throw new NotFoundScopeGeneratorException("Scope generator not found for '$scopeCode'");
     }
 
-    private function isDelegatedScopeCode(string $scopeCode): bool
+    public static function isDelegatedScopeCode(string $scopeCode): bool
     {
         return ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX === substr($scopeCode, 0, \strlen(ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX));
     }
