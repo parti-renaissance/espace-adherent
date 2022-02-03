@@ -16,8 +16,8 @@ class EventUserRegistrationNormalizer implements NormalizerInterface, Normalizer
 
     public const EVENT_USER_REGISTRATION_ALREADY_CALLED = 'event_user_registration_normalizer';
 
-    private $security;
-    private $eventRegistrationRepository;
+    private Security $security;
+    private EventRegistrationRepository $eventRegistrationRepository;
 
     public function __construct(Security $security, EventRegistrationRepository $eventRegistrationRepository)
     {

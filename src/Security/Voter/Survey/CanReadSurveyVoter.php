@@ -2,61 +2,50 @@
 
 namespace App\Security\Voter\Survey;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Geo\ManagedZoneProvider;
-use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class CanReadSurveyVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_READ_SURVEY';
 
     private ManagedZoneProvider $managedZoneProvider;
-    private AuthorizationChecker $authorizationChecker;
-    private RequestStack $requestStack;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     public function __construct(
         ManagedZoneProvider $managedZoneProvider,
-        AuthorizationChecker $authorizationChecker,
-        RequestStack $requestStack
+        ScopeGeneratorResolver $scopeGeneratorResolver
     ) {
         $this->managedZoneProvider = $managedZoneProvider;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->requestStack = $requestStack;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $scopeGenerator = $this->authorizationChecker->getScopeGenerator(
-            $this->requestStack->getMasterRequest(),
-            $adherent
-        );
+        $scope = $this->scopeGeneratorResolver->generate();
 
-        if (null === $scopeGenerator) {
+        if (!$scope) {
             return false;
         }
 
-        if (\in_array($scopeGenerator->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if ($scope->isNational()) {
             return $subject->isNational();
         }
 
-        if (ScopeEnum::REFERENT === $scopeGenerator->getCode()) {
+        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
+        if (ScopeEnum::REFERENT === $scopeCode) {
             if ($subject instanceof NationalSurvey) {
                 return true;
             }
 
             if ($subject instanceof LocalSurvey) {
-                return $this->managedZoneProvider->isManagerOfZone(
-                    $adherent,
-                    AdherentSpaceEnum::SCOPES[$scopeGenerator->getCode()],
-                    $subject->getZone()
-                );
+                return $this->managedZoneProvider->zoneBelongsToSomeZones($subject->getZone(), $scope->getZones());
             }
         }
 

@@ -353,6 +353,28 @@ Feature:
                             "events"
                         ],
                         "uuid": "d11d6ddd-dfba-4972-97b2-4c0bdf289559"
+                    },
+                    {
+                        "adherent": {
+                            "first_name": "Bob",
+                            "last_name": "Senateur (59)",
+                            "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7"
+                        },
+                        "role": "mobilization_manager",
+                        "scope_features": [
+                            "dashboard",
+                            "mobile_app",
+                            "contacts",
+                            "messages",
+                            "events",
+                            "news",
+                            "elections",
+                            "pap",
+                            "team",
+                            "phoning_campaign",
+                            "survey"
+                        ],
+                        "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }
                 ],
                 "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
@@ -361,8 +383,8 @@ Feature:
     }
     """
 
-  Scenario: As a referent I can get my team members, if I doesn't have my team
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+  Scenario: As a referent I get an empty list of my team members, if I doesn't have my team
+    Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/v3/my_teams?scope=referent"
     Then the response status code should be 200

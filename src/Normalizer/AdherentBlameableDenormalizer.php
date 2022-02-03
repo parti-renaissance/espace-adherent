@@ -4,6 +4,7 @@ namespace App\Normalizer;
 
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -16,21 +17,26 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
     private const ALREADY_CALLED = 'ADHERENT_BLAMEABLE_DENORMALIZER_ALREADY_CALLED';
 
     private Security $security;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, ScopeGeneratorResolver $scopeGeneratorResolver)
     {
         $this->security = $security;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
+        $scope = $this->scopeGeneratorResolver->generate();
+        $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
+
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
         if (!$data->getId()) {
-            $data->setCreatedByAdherent($this->security->getUser());
+            $data->setCreatedByAdherent($adherent);
         }
-        $data->setUpdatedByAdherent($this->security->getUser());
+        $data->setUpdatedByAdherent($adherent);
 
         return $data;
     }

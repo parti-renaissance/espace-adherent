@@ -77,6 +77,13 @@ class ManagedZoneProvider
         );
     }
 
+    public function zoneBelongsToSomeZones(Zone $zone, array $zones): bool
+    {
+        return $this->zoneBelongsToSome($zone, array_map(
+            static function (Zone $zone) { return $zone->getId(); }, $zones)
+        );
+    }
+
     public function zoneBelongsToSome(Zone $zone, array $managedIds): bool
     {
         $ids = array_map(static function (Zone $zone): int {

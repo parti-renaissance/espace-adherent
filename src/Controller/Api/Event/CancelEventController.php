@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @Security("event.getAuthor() === user")
+ * @Security("is_granted('CAN_MANAGE_EVENT', event)")
  */
 class CancelEventController extends AbstractController
 {

@@ -840,7 +840,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get the survey list filtered by the name
+  Scenario: As a phoning national manager I can get the survey list filtered by the name
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys?name=national&scope=phoning_national_manager"
     Then the response status code should be 200
@@ -879,7 +879,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC user with national role I can access only national surveys
+  Scenario: As a user with national role I can access only national surveys
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys?scope=national&page_size=10"
     Then the response status code should be 200
@@ -928,9 +928,9 @@ Feature:
     }
     """
 
-  Scenario: As a DC user with referent role I can access to national and my local managed zones surveys
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=10"
+  Scenario Outline: As a user with (delegated) referent role I can access to national and my local managed zones surveys
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1033,15 +1033,19 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC user with national role I cannot read a local survey
+  Scenario: As a user with national role I cannot read a local survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=national"
     Then the response status code should be 403
 
-  Scenario: As a DC user with referent role I can read a local survey of my managed zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent"
+  Scenario Outline: As a user with a (delegated) referent role I can read a local survey of my managed zone
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1105,8 +1109,12 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC user with national scope I cannot create a local survey
+  Scenario: As a user with national scope I cannot create a local survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
@@ -1163,7 +1171,7 @@ Feature:
     Then the response status code should be 400
     And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type local avec le scope national."
 
-  Scenario: As a DC user with national scope I cannot create a local survey
+  Scenario: As a user with national scope I cannot create a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
@@ -1219,7 +1227,7 @@ Feature:
     Then the response status code should be 400
     And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope referent."
 
-  Scenario: As a DC user with national role I can create a national survey
+  Scenario: As a user with national role I can create a national survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/surveys?scope=national" with body:
@@ -1332,10 +1340,10 @@ Feature:
     }
     """
 
-  Scenario: As a DC user with referent role I can create a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user with a (delegated) referent role I can create a local survey
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/surveys?scope=<scope>" with body:
     """
     {
         "type": "local",
@@ -1451,11 +1459,15 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC user with referent role I can unpublished a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user with (delegated) referent role I can unpublished a local survey
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
     """
     {
       "published": false
@@ -1463,11 +1475,15 @@ Feature:
     """
     Then the response status code should be 200
     And the JSON node "published" should be false
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC user with referent role I can update a local survey
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user with (delegated) referent role I can update a local survey
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
     """
     {
       "name": "5ans à l'écoute",
@@ -1584,8 +1600,12 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC user with national role I can get a national survey replies
+  Scenario: As a user with national role I can get a national survey replies
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=national"
     Then the response status code should be 200
@@ -1814,8 +1834,34 @@ Feature:
     }
     """
 
-  Scenario: As a JeMengage Web user with referent role I can get a national survey replies of my zones
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=referent"
+  Scenario Outline: As a user with (delegated) referent role I can get a national survey replies of my zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=<scope>"
     Then the response status code should be 200
     And the JSON node items should have 6 element
+    Examples:
+      | user                            | scope                                           |
+      | referent-75-77@en-marche-dev.fr | referent                                        |
+      | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
+
+  Scenario Outline: As a user with (delegated) referent role I get an empty list, if no national survey replies in my zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 0,
+        "items_per_page": 30,
+        "count": 0,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": []
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

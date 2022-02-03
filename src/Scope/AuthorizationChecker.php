@@ -31,7 +31,8 @@ class AuthorizationChecker
             throw new ScopeQueryParamMissingException();
         }
 
-        if (!ScopeEnum::isValid($scope)) {
+        if (!ScopeEnum::isValid($scope)
+            && !GeneralScopeGenerator::isDelegatedScopeCode($scope)) {
             throw new InvalidScopeException();
         }
 
@@ -69,6 +70,10 @@ class AuthorizationChecker
     public function getScopeGenerator(Request $request, Adherent $adherent): ?ScopeGeneratorInterface
     {
         $scope = $this->getScope($request);
+
+        if (!$scope) {
+            return null;
+        }
 
         try {
             return $this->scopeGenerator->getGenerator($scope, $adherent);

@@ -318,7 +318,8 @@ Feature:
       "features": [
         "dashboard",
         "contacts",
-        "messages"
+        "messages",
+        "mobile_app"
       ],
       "delegated_access": {
           "delegator": {

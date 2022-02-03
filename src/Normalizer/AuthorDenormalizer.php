@@ -4,6 +4,7 @@ namespace App\Normalizer;
 
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -15,11 +16,13 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
     private const ALREADY_CALLED = 'AUTHOR_DENORMALIZER_ALREADY_CALLED';
 
-    private $security;
+    private Security $security;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, ScopeGeneratorResolver $scopeGeneratorResolver)
     {
         $this->security = $security;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -29,7 +32,8 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
 
         if (!$data->getId()) {
-            $data->setAuthor($this->security->getUser());
+            $scope = $this->scopeGeneratorResolver->generate();
+            $data->setAuthor($scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser());
         }
 
         return $data;

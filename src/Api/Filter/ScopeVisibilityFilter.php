@@ -7,7 +7,6 @@ use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\Jecoute\News;
 use App\Entity\Pap\Campaign;
 use App\Scope\Generator\ScopeGeneratorInterface;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
 
@@ -27,7 +26,7 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
 
         $scope = $scopeGenerator->generate($currentUser);
 
-        if (\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if ($scope->isNational()) {
             $queryBuilder
                 ->andWhere("$alias.visibility = :visibility")
                 ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)

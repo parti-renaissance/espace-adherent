@@ -7,11 +7,11 @@ Feature:
   Background:
     Given I freeze the clock to "2018-05-18"
 
-  Scenario: As a non logged-in user I can not get events count in the referent managed zone
+  Scenario: As a non logged-in user I cannot get events count in the referent managed zone
     When I am on "/api/statistics/events/count"
     Then the response status code should be 401
 
-  Scenario Outline: As an adherent I can not get events count in the referent managed zone
+  Scenario Outline: As an adherent I cannot get events count in the referent managed zone
     When I am logged as "jacques.picard@en-marche.fr"
     And I am on "<url>"
     Then the response status code should be 401
@@ -56,7 +56,7 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can not get events count in the referent managed zone
+  Scenario: As a non logged-in user I cannot get events count in the referent managed zone
     When I am on "/api/statistics/events/count-by-month?country=fr"
     Then the response status code should be 401
 

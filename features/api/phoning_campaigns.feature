@@ -289,9 +289,9 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a user granted with local scope, I can get the list of local campaigns in the zones I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    And I send a "GET" request to "/api/v3/phoning_campaigns?scope=referent"
+  Scenario Outline: As a user granted with (delegated) local scope, I can get the list of local campaigns in the zones I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    And I send a "GET" request to "/api/v3/phoning_campaigns?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -352,10 +352,14 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can get a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    And I send a "GET" request to "/api/v3/phoning_campaigns/d687cd2a-0870-49de-ba12-468202f70099?scope=referent"
+  Scenario Outline: As a user granted with local scope, I can get a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    And I send a "GET" request to "/api/v3/phoning_campaigns/d687cd2a-0870-49de-ba12-468202f70099?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -420,11 +424,15 @@ Feature:
       "average_calling_time": 0
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can create a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can create a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -516,11 +524,15 @@ Feature:
       }
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can update a local campaign in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can update a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/2c0f981b-4e2a-448a-a0c2-aebca3b3eb1e?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale du département 92"
@@ -584,11 +596,15 @@ Feature:
       }
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -630,22 +646,30 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/f909c7b5-aafd-4785-8b09-edebbf5814ee?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/f909c7b5-aafd-4785-8b09-edebbf5814ee?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne locale de la ville de Nice (06088)"
     }
     """
     Then the response status code should be 403
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not create a national campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not create a national campaign
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/phoning_campaigns?scope=<scope>" with body:
     """
     {
       "title": "Campagne Novembre 2021",
@@ -686,17 +710,25 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not update a national campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not update a national campaign
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/phoning_campaigns/b5e1b850-faec-4da7-8da6-d64b94494668?scope=<scope>" with body:
     """
     {
       "title": "**NOUVEAU** Campagne sans adhérent dispo à appeler"
     }
     """
     Then the response status code should be 403
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As an anonymous user, I can not get the list of campaigns
     Given I send a "GET" request to "/api/v3/phoning_campaigns?scope=referent"
@@ -741,7 +773,7 @@ Feature:
     """
     Then the response status code should be 401
 
-  Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns on DC
+  Scenario Outline: As a logged-in user with no correct rights I cannot get phoning campaigns
     Given I am logged with "benjyd@aol.com" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
@@ -1264,7 +1296,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get the list of phoning campaigns
+  Scenario: As a phoning national manager I can get the list of phoning campaigns
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager&page_size=10"
     Then the response status code should be 200
@@ -1403,7 +1435,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get one phone campaign
+  Scenario: As a phoning national manager I can get one phone campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager&page_size=10"
     Then the response status code should be 200
@@ -1472,7 +1504,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can create a new phoning campaign
+  Scenario: As a phoning national manager I can create a new phoning campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
@@ -1560,7 +1592,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I cannot create a phoning campaign without the title the goal or the survey
+  Scenario: As a phoning national manager I cannot create a phoning campaign without the title the goal or the survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/phoning_campaigns?scope=phoning_national_manager" with body:
@@ -1609,7 +1641,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can update a phoning campaign
+  Scenario: As a phoning national manager I can update a phoning campaign
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387?scope=phoning_national_manager" with body:
@@ -1697,7 +1729,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get the list of phoning campaign histories
+  Scenario: As a phoning national manager I can get the list of phoning campaign histories
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager"
     Then the response status code should be 200
@@ -1786,7 +1818,7 @@ Feature:
     }
     """
 
-  Scenario Outline: As a DC referent I can get the list of phoning campaign histories filtered by campaign title or uuid
+  Scenario Outline: As a phoning national manager I can get the list of phoning campaign histories filtered by campaign title or uuid
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "<url>"
     Then the response status code should be 200
@@ -1879,7 +1911,7 @@ Feature:
       | /api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.title=campagne%20pour%20les%20hommes      |
       | /api/v3/phoning_campaign_histories?scope=phoning_national_manager&campaign.uuid=4ebb184c-24d9-4aeb-bb36-afe44f294387 |
 
-  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by caller
+  Scenario: As a phoning national manager I can get the list of phoning campaign histories filtered by caller
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&caller=Pierre"
     Then the response status code should be 200
@@ -1968,7 +2000,7 @@ Feature:
    }
    """
 
-  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by adherent
+  Scenario: As a phoning national manager I can get the list of phoning campaign histories filtered by adherent
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&adherent=Adrien"
     Then the response status code should be 200
@@ -2025,7 +2057,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by status
+  Scenario: As a phoning national manager I can get the list of phoning campaign histories filtered by status
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&status=to-unsubscribe"
     Then the response status code should be 200
@@ -2120,7 +2152,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get the list of phoning campaign histories filtered by begin date
+  Scenario: As a phoning national manager I can get the list of phoning campaign histories filtered by begin date
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaign_histories?scope=phoning_national_manager&beginAt[after]=2021-07-01&beginAt[before]=2021-07-31"
     Then the response status code should be 200
@@ -2171,9 +2203,9 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get a phoning campaign callers with their stats
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=phoning_national_manager"
+  Scenario Outline: As a phoning national manager I can get a phoning campaign callers with their stats
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/4ebb184c-24d9-4aeb-bb36-afe44f294387/callers?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -2216,8 +2248,13 @@ Feature:
       }
     ]
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | phoning_national_manager                       |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I can get the list of a campaign replies
+  Scenario: As a phoning national manager I can get the list of a campaign replies
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies?scope=phoning_national_manager&page=1&page_size=10"
     Then the response status code should be 200
@@ -2371,7 +2408,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC phoning national manager I can get phoning campaigns KPI
+  Scenario: As a phoning national manager I can get phoning campaigns KPI
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=phoning_national_manager"
     Then the response status code should be 200
@@ -2387,9 +2424,9 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get phoning campaigns KPI
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=referent"
+  Scenario Outline: As a (delegated) referent I can get phoning campaigns KPI
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/phoning_campaigns/kpi?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -2402,8 +2439,12 @@ Feature:
       "nb_surveys_last_30d": "0"
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I can get a phoning campaign details with the calling time average
+  Scenario: As a phoning national manager referent I can get a phoning campaign details with the calling time average
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc?scope=phoning_national_manager&page_size=10"
     Then the response status code should be 200

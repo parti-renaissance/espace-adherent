@@ -5,7 +5,6 @@ namespace App\Controller\Api\Pap;
 use App\Entity\Pap\Campaign;
 use App\Exporter\PapCampaignSurveyRepliesExporter;
 use App\Repository\Jecoute\DataSurveyRepository;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +35,7 @@ class GetPapCampaignSurveyRepliesController extends AbstractController
     ): Response {
         $zones = [];
         $scope = $scopeGeneratorResolver->generate();
-        if (!\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if (!$scope->isNational()) {
             $zones = $scope->getZones();
         }
 

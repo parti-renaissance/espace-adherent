@@ -5,8 +5,8 @@ namespace App\Normalizer;
 use App\Entity\Jecoute\News;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Jecoute\NewsTitlePrefix;
-use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeEnum;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -24,16 +24,16 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
     private const DENORMALIZER_ALREADY_CALLED = 'NEWS_DENORMALIZER_ALREADY_CALLED';
 
     private RequestStack $requestStack;
-    private AuthorizationChecker $authorizationChecker;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
     private $newsTitlePrefix;
 
     public function __construct(
         RequestStack $requestStack,
-        AuthorizationChecker $authorizationChecker,
+        ScopeGeneratorResolver $scopeGeneratorResolver,
         NewsTitlePrefix $newsTitlePrefix
     ) {
         $this->requestStack = $requestStack;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->newsTitlePrefix = $newsTitlePrefix;
     }
 
@@ -73,8 +73,9 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         $news = $this->denormalizer->denormalize($data, $type, $format, $context);
 
         if (!$news->getId()) {
-            $scope = $this->authorizationChecker->getScope($this->requestStack->getMasterRequest());
-            if (ScopeEnum::REFERENT === $scope) {
+            $scope = $this->scopeGeneratorResolver->generate();
+            $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
+            if (ScopeEnum::REFERENT === $scopeCode) {
                 $news->setSpace(JecouteSpaceEnum::REFERENT_SPACE);
             }
         }

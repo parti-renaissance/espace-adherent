@@ -5,7 +5,6 @@ namespace App\Controller\Api\Pap;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Pap\Campaign;
 use App\Repository\AdherentRepository;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,7 +18,7 @@ class GetPapCampaignQuestionersStatsController
     ): PaginatorInterface {
         $zones = [];
         $scope = $scopeGeneratorResolver->generate();
-        if (!\in_array($scope->getCode(), ScopeEnum::NATIONAL_SCOPES, true)) {
+        if (!$scope->isNational()) {
             $zones = $scope->getZones();
         }
 

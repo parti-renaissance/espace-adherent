@@ -63,7 +63,7 @@ Feature:
     And the JSON nodes should match:
       | metadata.total_items  | 22 |
 
-  Scenario: As a non logged-in user I can not check if I'm registered for events
+  Scenario: As a non logged-in user I cannot check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
     """
     {
@@ -74,7 +74,7 @@ Feature:
     """
     Then the response status code should be 401
 
-  Scenario: As a logged-in user I can not check if I'm registered for events if no uuids
+  Scenario: As a logged-in user I cannot check if I'm registered for events if no uuids
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "POST" request to "/api/v3/events/registered" with body:
     """
@@ -120,7 +120,7 @@ Feature:
       | items[0].organizer.first_name | Jacques                              |
       | items[0].organizer.last_name  | Picard                               |
 
-  Scenario: As a logged-in user I can not delete an event of another adherent
+  Scenario: As a logged-in user I cannot delete an event of another adherent
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
     Then the response status code should be 403
@@ -130,7 +130,7 @@ Feature:
     When I send a "DELETE" request to "/api/v3/events/472d1f86-6522-4122-a0f4-abd69d17bb2d"
     Then the response status code should be 204
 
-  Scenario: As a logged-in user I can not cancel an event of another adherent
+  Scenario: As a logged-in user I cannot cancel an event of another adherent
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "PUT" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8/cancel"
     Then the response status code should be 403
@@ -191,7 +191,7 @@ Feature:
     }
     """
 
-  Scenario: As logged-in user I can not cancel an already cancelled event
+  Scenario: As logged-in user I cannot cancel an already cancelled event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "PUT" request to "/api/v3/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e/cancel"
     Then the response status code should be 400
@@ -200,19 +200,19 @@ Feature:
       | title   | An error occurred               |
       | detail  | this event is already cancelled |
 
-  Scenario: As a DC referent I can get the list of events corresponding to my zones
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?scope=referent&page_size=10"
+  Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=9"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 7,
-            "items_per_page": 10,
-            "count": 7,
+            "total_items": 11,
+            "items_per_page": 9,
+            "count": 9,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
             {
@@ -416,6 +416,42 @@ Feature:
                 "user_registered_at": null
             },
             {
+                "category": {
+                    "name": "Comité politique",
+                    "slug": "comite-politique"
+                },
+                "uuid": "3f46976e-e76a-476e-86d7-575c6d3bc15e",
+                "name": "Evénement institutionnel numéro 1",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": null,
+                "post_address": {
+                    "address": "47 rue Martre",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
+                    "country": "FR",
+                    "latitude": 48.9016,
+                    "longitude": 2.305268
+                },
+                "created_at": "@string@.isDateTime()",
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
                 "uuid": "defd812f-265c-4196-bd33-72fe39e5a2a1",
                 "name": "Réunion de réflexion dammarienne",
                 "time_zone": "Europe/Paris",
@@ -494,24 +530,61 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": null
+            },
+            {
+                "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
+                "name": "Un événement du référent annulé",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "CANCELLED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": null,
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": "online",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
             }
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I can get an ordered list of events corresponding to my zones
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?scope=referent&page_size=3&order[bagin_at]=asc"
+  Scenario Outline: As a referent I can get an ordered list of events corresponding to my zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[beginAt]=asc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 11,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
-            "last_page": 3
+            "last_page": 4
         },
         "items": [
             {
@@ -637,69 +710,29 @@ Feature:
         ]
     }
     """
-    When I send a "GET" request to "/api/v3/events?scope=referent&page_size=3&order[finish_at]=desc"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[finishAt]=desc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 11,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
-            "last_page": 3
+            "last_page": 4
         },
         "items": [
             {
-                "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
-                "name": "Grand Meeting de Marseille",
+                "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
+                "name": "Nouvel événement online privé et électoral",
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "first_name": "Jacques",
-                    "last_name": "Picard"
-                },
-                "participants_count": 1,
-                "status": "SCHEDULED",
-                "capacity": 2000,
-                "post_address": {
-                    "address": "2 Place de la Major",
-                    "postal_code": "13002",
-                    "city": "13002-13202",
-                    "city_name": "Marseille 2e",
-                    "country": "FR",
-                    "latitude": 43.298492,
-                    "longitude": 5.362377
-                },
-                "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Atelier du programme",
-                    "slug": "atelier-du-programme"
-                },
-                "private": false,
-                "electoral": false,
-                "visio_url": null,
-                "mode": null,
-                "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
-            },
-            {
-                "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
-                "name": "Événements à Fontainebleau 1",
-                "time_zone": "Europe/Paris",
-                "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
-                "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -714,32 +747,25 @@ Feature:
                     "longitude": 2.698759
                 },
                 "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Atelier du programme",
-                    "slug": "atelier-du-programme"
-                },
-                "private": false,
-                "electoral": false,
+                "category": null,
+                "private": true,
+                "electoral": true,
                 "visio_url": null,
-                "mode": null,
+                "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "user_registered_at": "@string@||@null@"
             },
             {
-                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
-                "name": "Événements à Fontainebleau 2",
+                "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
+                "name": "Nouvel événement online",
                 "time_zone": "Europe/Paris",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
-                    "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -754,18 +780,44 @@ Feature:
                     "longitude": 2.698759
                 },
                 "created_at": "@string@.isDateTime()",
-                "category": {
-                    "event_group_category": {
-                        "name": "événement",
-                        "slug": "evenement"
-                    },
-                    "name": "Conférence-débat",
-                    "slug": "conference-debat"
-                },
+                "category": null,
                 "private": false,
                 "electoral": false,
                 "visio_url": null,
-                "mode": null,
+                "mode": "online",
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": "@string@||@null@"
+            },
+            {
+                "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
+                "name": "Un événement du référent annulé",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "participants_count": 0,
+                "status": "CANCELLED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "category": null,
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "user_registered_at": null
@@ -773,14 +825,18 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I can get a list of events created by me
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events?only_mine&page_size=10"
+  Scenario Outline: As a (delegated) referent I can get a list of events created by me
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&only_mine&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-        {
+    {
         "metadata": {
             "total_items": 4,
             "items_per_page": 10,
@@ -808,14 +864,18 @@ Feature:
                 "status": "SCHEDULED",
                 "capacity": null,
                 "post_address": {
-                    "address": "16 rue de la Paix",
-                    "postal_code": "75008",
-                    "city": "75008-75108",
-                    "city_name": "Paris 8e",
+                    "address": "47 rue Martre",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
                     "country": "FR",
-                    "latitude": 48.869331,
-                    "longitude": 2.331595
+                    "latitude": 48.9016,
+                    "longitude": 2.305268
                 },
+                "created_at": "@string@.isDateTime()",
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
@@ -844,7 +904,11 @@ Feature:
                     "latitude": 48.404766,
                     "longitude": 2.698759
                 },
+                "created_at": "@string@.isDateTime()",
                 "category": null,
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
@@ -865,19 +929,23 @@ Feature:
                 "status": "SCHEDULED",
                 "capacity": 50,
                 "post_address": {
-                    "address": null,
-                    "postal_code": null,
-                    "city": null,
-                    "city_name": null,
-                    "country": null,
-                    "latitude": null,
-                    "longitude": null
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
                 },
+                "created_at": "@string@.isDateTime()",
                 "category": null,
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
+                "user_registered_at": "@string@||@null@"
             },
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -894,25 +962,33 @@ Feature:
                 "status": "SCHEDULED",
                 "capacity": 50,
                 "post_address": {
-                    "address": null,
-                    "postal_code": null,
-                    "city": null,
-                    "city_name": null,
-                    "country": null,
-                    "latitude": null,
-                    "longitude": null
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
                 },
+                "created_at": "@string@.isDateTime()",
                 "category": null,
+                "private": true,
+                "electoral": true,
+                "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@.isDateTime()"
+                "user_registered_at": "@string@||@null@"
             }
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I can get one event
+  Scenario: As a referent I can get one event
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
     Then the response status code should be 200
@@ -965,9 +1041,9 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can get one event with full info
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b?scope=referent"
+  Scenario Outline: As a (delegated) referent I can get one event with full info
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events/0e5f9f02-fa33-4c2c-a700-4235d752315b?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1019,8 +1095,12 @@ Feature:
         "user_registered_at": null
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC deputy I cannot create an event with missing or invalid data
+  Scenario: As a deputy I cannot create an event with missing or invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
@@ -1063,7 +1143,7 @@ Feature:
     }
     """
 
-  Scenario: As a DC deputy I can create an event
+  Scenario: As a deputy I can create an event
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
@@ -1131,10 +1211,10 @@ Feature:
     }
     """
 
-  Scenario: As a DC referent I can edit my default event
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+  Scenario Outline: As a (delegated) referent I can edit my (delegator's) default event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5" with body:
+    And I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5?scope=<scope>" with body:
     """
     {
       "description": "Nouvelle description",
@@ -1290,10 +1370,14 @@ Feature:
        }
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I can cancel my default event
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel"
+  Scenario Outline: As a (delegated) referent I can cancel my (delegator's) default event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel?scope=<scope>"
     Then the response status code should be 200
     And I should have 1 email
     And I should have 1 email "EventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
@@ -1381,20 +1465,28 @@ Feature:
        }
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a DC referent I cannot delete my event with participants
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "DELETE" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5"
+  Scenario Outline: As a (delegated) referent I cannot delete my (delegator's) event with participants
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "DELETE" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5?scope=<scope>"
     Then the response status code should be 403
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a logged-in user I can delete my event with no participants
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/events/462d7faf-09d2-4679-989e-287929f50be8"
     Then the response status code should be 204
 
-  Scenario: As a DC referent I can get the list of event participants
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants?scope=referent&page_size=10"
+  Scenario Outline: As a (delegated) referent I can get the list of event participants
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1438,3 +1530,7 @@ Feature:
         ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

@@ -63,29 +63,32 @@ Feature:
     ]
     """
 
-  Scenario: As a referent I can search an adherent with autocomplete search in my managed zone
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=bert&scope=referent"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    [
-    ]
-    """
-    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=jules&scope=referent"
+  Scenario Outline: As a (delegated) referent I can search an adherent with autocomplete search in my managed zone
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=bert&scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     [
         {
-            "registered_at": "2017-01-25T19:31:45+01:00",
-            "uuid": "@uuid@",
-            "first_name": "Jules",
-            "last_name": "Fullstack",
-            "postal_code": "77000"
+            "first_name": "Gisele",
+            "last_name": "Berthoux",
+            "postal_code": "92110",
+            "registered_at": "2017-01-08T05:55:43+01:00",
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084"
         }
     ]
     """
+    When I send a "GET" request to "/api/v3/adherents/autocomplete?q=jacques&scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    []
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As an anonymous I can not remove an adherent from a team
     When I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146/members/918f07e5-676b-49c0-b76d-72ce01cb2404?scope=phoning_national_manager"
@@ -216,9 +219,9 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a user granted with local scope, I can get the list of local teams in the zones I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/teams?scope=referent"
+  Scenario Outline: As a user granted with local scope, I can get the list of local teams in the zones I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/teams?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -259,10 +262,14 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can get a local team in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent"
+  Scenario Outline: As a user granted with local scope, I can get a local team in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -288,14 +295,18 @@ Feature:
       "creator": "Admin"
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can create a local team in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can create a local team in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
-      "name": "Nouvelle équipe locale de phoning dans le 92",
+      "name": "Nouvelle équipe locale de phoning dans le 92 <title>",
       "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
     }
     """
@@ -304,7 +315,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "name": "Nouvelle équipe locale de phoning dans le 92",
+      "name": "Nouvelle équipe locale de phoning dans le 92 <title>",
       "uuid": "@uuid@",
       "visibility": "local",
       "zone": {
@@ -316,11 +327,15 @@ Feature:
       "members": []
     }
     """
+    Examples:
+      | user                      | scope                                          | title |
+      | referent@en-marche-dev.fr | referent                                       | ref   |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | sen   |
 
-  Scenario: As a user granted with local scope, I can update a local team in a zone I am manager of
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can update a local team in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=<scope>" with body:
     """
     {
       "name": "Equipe d'appel - 59"
@@ -343,6 +358,10 @@ Feature:
       "members": "@array@.count(1)"
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user granted with local scope, I can not get a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -387,10 +406,10 @@ Feature:
     """
     Then the response status code should be 403
 
-  Scenario: As a user granted with local scope, I can not create a national team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not create a national team
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
       "name": "Nouvelle équipe nationale de phoning"
@@ -412,17 +431,25 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not update a national team
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a user granted with local scope, I can not update a national team
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=referent" with body:
+    And I send a "PUT" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=<scope>" with body:
     """
     {
       "name": "Equipe d'appel - IDF"
     }
     """
     Then the response status code should be 403
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As an anonymous user, I can not get the list of teams
     Given I send a "GET" request to "/api/v3/teams?scope=referent"

@@ -20,14 +20,17 @@ class ReferentEventManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-referent/evenements');
 
-        $this->assertCount(7, $crawler->filter('tbody tr.event__item'));
-        $this->assertStringContainsString('Réunion de réflexion marseillaise', $crawler->filter('tbody tr.event__item')->eq(0)->text());
-        $this->assertStringContainsString('Réunion de réflexion dammarienne', $crawler->filter('tbody tr.event__item')->eq(1)->text());
-        $this->assertStringContainsString('Réunion de réflexion bellifontaine', $crawler->filter('tbody tr.event__item')->eq(2)->text());
-        $this->assertStringContainsString('Event of non AL', $crawler->filter('tbody tr.event__item')->eq(3)->text());
-        $this->assertStringContainsString('Événements à Fontainebleau 2', $crawler->filter('tbody tr.event__item')->eq(4)->text());
-        $this->assertStringContainsString('Événements à Fontainebleau 1', $crawler->filter('tbody tr.event__item')->eq(5)->text());
-        $this->assertStringContainsString('Grand Meeting de Marseille', $crawler->filter('tbody tr.event__item')->eq(6)->text());
+        $this->assertStringContainsString('Nouvel événement online privé et électoral', $crawler->filter('tbody tr.event__item')->eq(0)->text());
+        $this->assertStringContainsString('Nouvel événement online', $crawler->filter('tbody tr.event__item')->eq(1)->text());
+        $this->assertStringContainsString('Un événement du référent annulé', $crawler->filter('tbody tr.event__item')->eq(2)->text());
+        $this->assertStringContainsString('Réunion de réflexion marseillaise', $crawler->filter('tbody tr.event__item')->eq(3)->text());
+        $this->assertStringContainsString('Réunion de réflexion dammarienne', $crawler->filter('tbody tr.event__item')->eq(4)->text());
+        $this->assertStringContainsString(' Evénement institutionnel numéro 1', $crawler->filter('tbody tr.event__item')->eq(5)->text());
+        $this->assertStringContainsString('Réunion de réflexion bellifontaine', $crawler->filter('tbody tr.event__item')->eq(6)->text());
+        $this->assertStringContainsString('Event of non AL', $crawler->filter('tbody tr.event__item')->eq(7)->text());
+        $this->assertStringContainsString('Événements à Fontainebleau 2', $crawler->filter('tbody tr.event__item')->eq(8)->text());
+        $this->assertStringContainsString('Événements à Fontainebleau 1', $crawler->filter('tbody tr.event__item')->eq(9)->text());
+        $this->assertStringContainsString('Grand Meeting de Marseille', $crawler->filter('tbody tr.event__item')->eq(10)->text());
     }
 
     public function testCreateEvent(): void

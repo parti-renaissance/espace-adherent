@@ -5,6 +5,7 @@ namespace App\Controller\Api\AdherentMessage;
 use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\Filter\FilterFactory;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,10 +36,18 @@ class UpdateAdherentMessageFilterController extends AbstractController
         $this->validator = $validator;
     }
 
-    public function __invoke(Request $request, UserInterface $adherent, AbstractAdherentMessage $data): Response
-    {
+    public function __invoke(
+        Request $request,
+        UserInterface $adherent,
+        AbstractAdherentMessage $data,
+        ScopeGeneratorResolver $scopeGeneratorResolver
+    ): Response {
         if ($data->isSent()) {
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
+        }
+
+        if (($scope = $scopeGeneratorResolver->generate()) && $scope->getDelegatedAccess()) {
+            $adherent = $scope->getDelegator();
         }
 
         if (!$filter = $data->getFilter()) {

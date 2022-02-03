@@ -100,12 +100,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "put": {
  *             "path": "/v3/events/{id}",
- *             "access_control": "object.getAuthor() == user",
+ *             "access_control": "is_granted('CAN_MANAGE_EVENT', object)",
  *         },
  *         "delete": {
  *             "path": "/v3/events/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "object.getAuthor() == user and is_granted('CAN_DELETE_EVENT', object)",
+ *             "access_control": "is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
