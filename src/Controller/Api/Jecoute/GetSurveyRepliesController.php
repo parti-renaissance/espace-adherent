@@ -54,8 +54,7 @@ class GetSurveyRepliesController extends AbstractController
 
         $zoneCodes = [];
         $user = $scope->getDelegator() ?? $this->getUser();
-        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
-        if (\in_array($scopeCode, ScopeEnum::LOCAL_SCOPES, true) && $survey->isNational()) {
+        if (!$scope->isNational() && $survey->isNational()) {
             /** @var Zone $zone */
             foreach ($this->getZones($user) as $zone) {
                 switch ($zone->getType()) {
