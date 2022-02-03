@@ -1,7 +1,7 @@
 @api
 Feature:
   In order to complete PAP campaigns
-  I should be able to retrieve addresses for a given position and additional datas
+  I should be able to retrieve addresses for a given position and additional data
 
   Scenario Outline: As an anonymous I can not get address and voters information
     When I send a "GET" request to "<url>"
