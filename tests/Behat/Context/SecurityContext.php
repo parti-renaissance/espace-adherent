@@ -1,27 +1,39 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\Entity\Adherent;
-use App\Entity\Administrator;
 use App\Repository\AdherentRepository;
 use App\Repository\AdministratorRepository;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 class SecurityContext extends RawMinkContext
 {
-    use KernelDictionary;
+    private SessionInterface $session;
+    private AdherentRepository $adherentRepository;
+    private AdministratorRepository $administratorRepository;
+
+    public function __construct(
+        SessionInterface $session,
+        AdherentRepository $adherentRepository,
+        AdministratorRepository $administratorRepository
+    ) {
+        $this->session = $session;
+        $this->adherentRepository = $adherentRepository;
+        $this->administratorRepository = $administratorRepository;
+    }
 
     /**
      * @When I am logged as :email
      */
     public function iAmLoggedAs(string $email): void
     {
-        if (!$user = $this->getAdherentRepository()->findOneBy(['emailAddress' => $email])) {
+        if (!$user = $this->adherentRepository->findOneBy(['emailAddress' => $email])) {
             throw new \Exception(sprintf('Adherent %s not found', $email));
         }
 
@@ -33,7 +45,7 @@ class SecurityContext extends RawMinkContext
      */
     public function iAmLoggedAsAdmin(string $email): void
     {
-        if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
+        if (!$user = $this->administratorRepository->loadUserByUsername($email)) {
             throw new \Exception(sprintf('Admin %s not found', $email));
         }
 
@@ -43,7 +55,6 @@ class SecurityContext extends RawMinkContext
     private function loginAs(UserInterface $user, string $firewallName): void
     {
         $driver = $this->getSession()->getDriver();
-        $session = $this->getContainer()->get('session');
 
         if ($driver instanceof Selenium2Driver) {
             $page = $this->getSession()->getPage();
@@ -57,21 +68,11 @@ class SecurityContext extends RawMinkContext
         }
 
         $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
-        $session->set('_security_main_context', serialize($token));
-        $session->save();
+        $this->session->set('_security_main_context', serialize($token));
+        $this->session->save();
 
         $client = $driver->getClient();
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
-        $this->getSession()->setCookie($session->getName(), $session->getId());
-    }
-
-    protected function getAdherentRepository(): AdherentRepository
-    {
-        return $this->getContainer()->get('doctrine')->getRepository(Adherent::class);
-    }
-
-    protected function getAdministratorRepository(): AdministratorRepository
-    {
-        return $this->getContainer()->get('doctrine')->getRepository(Administrator::class);
+        $client->getCookieJar()->set(new Cookie($this->session->getName(), $this->session->getId()));
+        $this->getSession()->setCookie($this->session->getName(), $this->session->getId());
     }
 }

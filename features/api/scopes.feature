@@ -336,5 +336,3 @@ Feature:
     When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/profile/me/scope/test"
     Then the response status code should be 403
-    And the response should be in JSON
-    And the JSON node "detail" should be equal to "User has no required scope."

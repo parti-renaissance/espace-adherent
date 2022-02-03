@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use App\Entity\ReferentTag;
 use App\Repository\AdherentRepository;
 use Behat\MinkExtension\Context\RawMinkContext;

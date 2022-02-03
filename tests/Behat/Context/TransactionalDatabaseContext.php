@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Behat\Context;
+
 use Behat\Behat\Context\Context;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 

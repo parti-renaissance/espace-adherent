@@ -14,6 +14,14 @@ services:
         autoconfigure: true
         public: true
 
+    Tests\App\Behat\:
+        resource: '../tests/Behat/*'
+        exclude:
+            - '../tests/Behat/Context/JsonContext.php'
+            - '../tests/Behat/Context/RestContext.php'
+
+    Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader: '@doctrine.fixtures.loader'
+
     app.map.google_maps_static_provider:
         class: 'Tests\App\Test\Map\DummyStaticMapProvider'
 
