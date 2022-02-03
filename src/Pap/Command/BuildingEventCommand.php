@@ -2,10 +2,9 @@
 
 namespace App\Pap\Command;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class BuildingEventCommand implements AsynchronousMessageInterface
+class BuildingEventCommand
 {
     private UuidInterface $buildingUuid;
     private UuidInterface $campaignUuid;
