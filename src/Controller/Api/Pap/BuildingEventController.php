@@ -4,6 +4,7 @@ namespace App\Controller\Api\Pap;
 
 use App\Entity\Pap\Building;
 use App\Entity\Pap\BuildingEvent;
+use App\Pap\Command\BuildingEventAsyncCommand;
 use App\Pap\Command\BuildingEventCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -54,7 +55,11 @@ class BuildingEventController extends AbstractController
         $entityManager->persist($buildingEvent);
         $entityManager->flush();
 
-        $bus->dispatch(new BuildingEventCommand($building->getUuid(), $buildingEvent->getCampaign()->getUuid()));
+        try {
+            $bus->dispatch(new BuildingEventCommand($building->getUuid(), $buildingEvent->getCampaign()->getUuid()));
+        } catch (\RuntimeException $exception) {
+            $bus->dispatch(new BuildingEventAsyncCommand($building->getUuid(), $buildingEvent->getCampaign()->getUuid()));
+        }
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

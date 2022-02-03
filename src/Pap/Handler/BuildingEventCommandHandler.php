@@ -8,7 +8,7 @@ use App\Entity\Pap\CampaignStatisticsOwnerInterface;
 use App\Pap\BuildingEventActionEnum;
 use App\Pap\BuildingEventTypeEnum;
 use App\Pap\BuildingStatusEnum;
-use App\Pap\Command\BuildingEventCommand;
+use App\Pap\Command\BuildingEventCommandInterface;
 use App\Repository\Pap\BuildingEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -24,7 +24,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
         $this->buildingEventRepository = $buildingEventRepository;
     }
 
-    public function __invoke(BuildingEventCommand $command): void
+    public function __invoke(BuildingEventCommandInterface $command): void
     {
         foreach (BuildingEventTypeEnum::toArray() as $type) {
             $buildingEvent = $this->buildingEventRepository->findLastByType($type, $command->getBuildingUuid(), $command->getCampaignUuid());

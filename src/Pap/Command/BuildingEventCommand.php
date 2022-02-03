@@ -4,7 +4,7 @@ namespace App\Pap\Command;
 
 use Ramsey\Uuid\UuidInterface;
 
-class BuildingEventCommand
+class BuildingEventCommand implements BuildingEventCommandInterface
 {
     private UuidInterface $buildingUuid;
     private UuidInterface $campaignUuid;
