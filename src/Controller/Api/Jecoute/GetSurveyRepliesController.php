@@ -8,7 +8,6 @@ use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataSurveyRepository;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
