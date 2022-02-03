@@ -44,7 +44,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     {
         return (int) $this
             ->createQueryBuilder('campaignHistory')
-            ->select('COUNT(DISTINCT CONCAT(campaignHistory.floor, \'-\', campaignHistory.door))')
+            ->select('COUNT(DISTINCT CONCAT_WS(\'-\', campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door))')
             ->where('campaignHistory.building = :building')
             ->setParameter('building', $building)
             ->getQuery()
