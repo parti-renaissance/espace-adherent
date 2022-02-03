@@ -8,6 +8,7 @@ use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Geo\ManagedZoneProvider;
 use App\Jecoute\SurveyTypeEnum;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
@@ -66,7 +67,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
             ;
         }
 
-        if (!$scope->isNational()) {
+        if (\in_array($scopeCode, ScopeEnum::LOCAL_SCOPES, true)) {
             if ($value instanceof NationalSurvey) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameters([
