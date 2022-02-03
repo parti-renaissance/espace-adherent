@@ -21,7 +21,7 @@
     "algoliasearch": "^4.12.1",
     "atob": "^2.1.0",
     "babel-loader": "^8.2.3",
-    "clipboard": "^2.0.9",
+    "clipboard": "^2.0.10",
     "copy-webpack-plugin": "^6.4.1",
     "core-js": "^3.21.0",
     "cropperjs": "^1.5.12",
