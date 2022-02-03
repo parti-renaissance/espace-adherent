@@ -1,4 +1,3 @@
-@skip
 Feature:
   As an APP
   In order to sync all users with API
