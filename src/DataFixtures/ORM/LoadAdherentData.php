@@ -1064,6 +1064,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'birthdate' => '1942-01-10',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699008800',
+            'is_adherent' => false,
         ]));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));
@@ -1082,6 +1083,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1942-01-10',
             'registered_at' => '2017-01-25 19:31:45',
+            'is_adherent' => false,
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::COALITIONS);

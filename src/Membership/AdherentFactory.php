@@ -137,7 +137,7 @@ class AdherentFactory
             $data['custom_gender'] ?? null
         );
 
-        if (!isset($data['isAdherent']) || $data['isAdherent']) {
+        if (!isset($data['is_adherent']) || $data['is_adherent']) {
             $adherent->join();
         }
 
