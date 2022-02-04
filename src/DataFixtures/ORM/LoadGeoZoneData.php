@@ -30,7 +30,7 @@ class LoadGeoZoneData extends Fixture
     {
         if (null === static::$zoneCache) {
             $file = fopen(__DIR__.'/../geo/geo-zones.csv', 'rb');
-            $header = $row = fgetcsv($file, 0, ';');
+            $header = fgetcsv($file, 0, ';');
             static::$zoneCache = [];
 
             while ($row = fgetcsv($file, 0, ';')) {

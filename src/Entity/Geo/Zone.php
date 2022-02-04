@@ -43,7 +43,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *         @ORM\UniqueConstraint(name="geo_zone_code_type_unique", columns={"code", "type"})
  *     },
  *     indexes={
- *         @ORM\Index(name="geo_zone_type_idx", columns="type")
+ *         @ORM\Index(columns={"type"}),
+ *         @ORM\Index(columns={"tags"}),
  *     }
  * )
  * @ORM\AttributeOverrides({
@@ -169,6 +170,11 @@ class Zone implements GeoInterface
      */
     private $postalCode;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $tags = null;
+
     public function __construct(string $type, string $code, string $name, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -222,6 +228,11 @@ class Zone implements GeoInterface
     public function isRegion(): bool
     {
         return Zone::REGION === $this->type;
+    }
+
+    public function isDistrict(): bool
+    {
+        return Zone::DISTRICT === $this->type;
     }
 
     public function isCityGrouper(): bool

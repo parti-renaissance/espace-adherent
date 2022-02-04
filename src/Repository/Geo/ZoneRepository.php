@@ -409,4 +409,16 @@ class ZoneRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /** @return Zone[] */
+    public function findByTag(string $tag): array
+    {
+        return $this->createQueryBuilder('zone')
+            ->where('FIND_IN_SET(:tag, zone.tags) > 0')
+            ->orderBy('zone.name')
+            ->setParameter('tag', $tag)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
