@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\CoalitionEventRepository")
  */
-class CoalitionEvent extends BaseEvent
+class CoalitionEvent extends BaseEventWithCategory
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="events")

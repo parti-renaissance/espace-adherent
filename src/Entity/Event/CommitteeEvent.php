@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
-class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ExposedObjectInterface
+class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ExposedObjectInterface
 {
     use UserDocumentTrait;
 
