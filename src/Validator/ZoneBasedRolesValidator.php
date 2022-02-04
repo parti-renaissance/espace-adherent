@@ -53,6 +53,16 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                 continue;
             }
 
+            if ($role->getZones()->isEmpty()) {
+                $this->context
+                    ->buildViolation($constraint->emptyZoneMessage)
+                    ->setParameter('{{role_type}}', $role->getType())
+                    ->addViolation()
+                ;
+
+                continue;
+            }
+
             foreach ($role->getZones() as $zone) {
                 if (!\in_array($zone->getType(), $allowedTypes, true)) {
                     $this->context
