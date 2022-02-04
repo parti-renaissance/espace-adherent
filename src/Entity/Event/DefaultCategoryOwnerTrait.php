@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait DefaultCategoryOwnerTrait
 {
     /**
-     * @var EventCategory|null
+     * @var EventCategoryInterface|EventCategory|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
      *
@@ -16,12 +16,12 @@ trait DefaultCategoryOwnerTrait
      */
     protected $category;
 
-    public function getCategory(): ?EventCategory
+    public function getCategory(): ?EventCategoryInterface
     {
         return $this->category;
     }
 
-    public function setCategory(?EventCategory $category): void
+    public function setCategory(?EventCategoryInterface $category): void
     {
         $this->category = $category;
     }

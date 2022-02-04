@@ -455,6 +455,12 @@ event.cancel: Annuler l'événement
 event.manage_participants: Gérer les participants
 event.back_to_list: Retour à la liste des événements
 event.personal_data_collect: J’accepte que LaREM traite mes données personnelles ci-dessus et les partage avec l’organisateur de l’événement %organisator_name%
+event_type.cause: Cause
+event_type.coalition: Coalition
+event_type.municipal: Municipal
+event_type.institutional: Institutionnel
+event_type.committee: Comité
+event_type.default: Standard
 
 #
 # Board Member

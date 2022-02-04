@@ -4,12 +4,13 @@ namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\CommitteeEventEvent;
+use App\Event\EventEvent;
 use App\Events;
 use App\Form\EventCategoryType;
 use App\Form\UnitedNationsCountryType;
 use App\Referent\ReferentTagManager;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -27,13 +28,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
-
     private $dispatcher;
     private $referentTagManager;
 
@@ -82,8 +76,13 @@ class EventAdmin extends AbstractAdmin
                 ->add('category', null, [
                     'label' => 'Catégorie',
                 ])
+                ->add('type', 'trans', [
+                    'format' => 'event_type.%s',
+                ])
                 ->add('committee', null, [
                     'label' => 'Comité organisateur',
+                    'virtual_field' => true,
+                    'template' => 'admin/event/show_committee.html.twig',
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
@@ -145,14 +144,21 @@ class EventAdmin extends AbstractAdmin
 
     public function preUpdate($object)
     {
-        $this->dispatcher->dispatch(new CommitteeEventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
+        $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
     }
 
+    /**
+     * @param BaseEvent $object
+     */
     public function postUpdate($object)
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $event = new CommitteeEventEvent($object->getOrganizer(), $object);
+        if ($object instanceof CommitteeEvent) {
+            $event = new CommitteeEventEvent($object->getOrganizer(), $object);
+        } else {
+            $event = new EventEvent($object->getOrganizer(), $object);
+        }
 
         $this->dispatcher->dispatch($event, Events::EVENT_UPDATED);
     }
@@ -167,10 +173,16 @@ class EventAdmin extends AbstractAdmin
                 ->add('category', EventCategoryType::class, [
                     'label' => 'Catégorie',
                 ])
-                ->add('committee', null, [
-                    'label' => 'Comité organisateur',
-                ])
-                ->add('description', null, [
+        ;
+
+        if (CommitteeEvent::class === $this->getActiveSubClass()) {
+            $formMapper->add('committee', null, [
+                'label' => 'Comité organisateur',
+            ]);
+        }
+
+        $formMapper
+            ->add('description', null, [
                     'label' => 'Description',
                     'attr' => [
                         'rows' => '3',
@@ -233,7 +245,7 @@ class EventAdmin extends AbstractAdmin
                 'label' => 'Nom',
             ])
             ->add('category', null, [
-                'label' => 'Type',
+                'label' => 'Catégorie',
                 'show_filter' => true,
             ])
             ->add('createdAt', DateRangeFilter::class, [
@@ -306,11 +318,19 @@ class EventAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id', null, [
+                'label' => 'Id',
+            ])
+            ->add('type', 'trans', [
+                'format' => 'event_type.%s',
+            ])
             ->add('name', null, [
                 'label' => 'Nom',
             ])
             ->add('committee', null, [
                 'label' => 'Comité organisateur',
+                'virtual_field' => true,
+                'template' => 'admin/event/list_committee.html.twig',
             ])
             ->add('organizer', null, [
                 'label' => 'Organisateur',

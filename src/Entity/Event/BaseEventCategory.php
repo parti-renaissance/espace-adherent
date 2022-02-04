@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class BaseEventCategory
+abstract class BaseEventCategory implements EventCategoryInterface
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';

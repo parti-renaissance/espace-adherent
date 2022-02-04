@@ -24,8 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CauseEvent extends BaseEvent
 {
-    use DefaultCategoryOwnerTrait;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Cause", inversedBy="events")
      *
