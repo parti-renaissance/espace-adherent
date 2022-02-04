@@ -59,6 +59,8 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                     ->setParameter('{{role_type}}', $role->getType())
                     ->addViolation()
                 ;
+
+                continue;
             }
 
             foreach ($role->getZones() as $zone) {
