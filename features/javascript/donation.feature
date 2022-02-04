@@ -5,7 +5,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
   As an anonymous user or connected user
   I should be able to donate punctually or subscribe foreach month
 
-  @skip
   Scenario: An anonymous user can donate successfully
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
@@ -36,16 +35,16 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click the "td#ticketCell img" selector
     Then I should see "Continuons à transformer notre pays ensemble !"
 
-  @skip
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
@@ -78,10 +77,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click the "td#ticketCell img" selector
     And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -116,7 +115,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And the "Prénom" field should contain "Dupont"
     And the "Adresse e-mail" field should contain "jean.dupont@en-marche.fr"
 
-  @skip
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before
     Given the following fixtures are loaded:
       | LoadAdherentData          |
@@ -144,10 +142,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click the "td#ticketCell img" selector
     And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -197,13 +195,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click the "td#ticketCell img" selector
     Then I should see "Continuons à transformer notre pays ensemble !"
 
-  @skip
   Scenario: The logged user can continue to donate punctually with a subscription currently running
     Given the following fixtures are loaded:
       | LoadDonationData          |
@@ -240,11 +237,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click the "td#ticketCell img" selector
     Then I should see "Continuons à transformer notre pays ensemble !"
