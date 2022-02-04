@@ -1865,3 +1865,9 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a Correspondent user I can get the list of national surveys and my correspondent zone surveys
+    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys?scope=correspondent&page_size=10"
+    Then the response status code should be 200
+    And the JSON node items should have 4 element

@@ -8,8 +8,8 @@ use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataSurveyRepository;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
+use App\Security\Voter\Survey\CanReadSurveyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +55,7 @@ class GetSurveyRepliesController extends AbstractController
         $zoneCodes = [];
         $user = $scope->getDelegator() ?? $this->getUser();
         $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
-        if (ScopeEnum::REFERENT === $scopeCode && $survey->isNational()) {
+        if (\in_array($scopeCode, CanReadSurveyVoter::LOCAL_SCOPES, true) && $survey->isNational()) {
             /** @var Zone $zone */
             foreach ($this->getZones($user) as $zone) {
                 switch ($zone->getType()) {
@@ -92,6 +92,6 @@ class GetSurveyRepliesController extends AbstractController
 
     protected function getZones(Adherent $adherent): array
     {
-        return $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
+        return $adherent->isCorrespondent() ? [$adherent->getCorrespondentZone()] : $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
     }
 }

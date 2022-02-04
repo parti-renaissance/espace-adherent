@@ -49,6 +49,20 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
                     ->setParameter('zones', $this->zoneRepository->findForJecouteByReferentTags($user->getManagedArea()->getTags()->toArray()))
                 ;
                 break;
+            case ScopeEnum::CORRESPONDENT:
+                $queryBuilder
+                    ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
+                    ->leftJoin('ls.zone', 'zone')
+                    ->leftJoin('zone.parents', 'parent')
+                    ->orWhere((new Orx())
+                        ->add(sprintf('%s INSTANCE OF :national', $alias))
+                        ->add(sprintf('%s INSTANCE OF :local AND (zone = :zone OR parent IN (:zone))', $alias))
+                    )
+                    ->setParameter('national', SurveyTypeEnum::NATIONAL)
+                    ->setParameter('local', SurveyTypeEnum::LOCAL)
+                    ->setParameter('zone', $user->getCorrespondentZone())
+                ;
+                break;
         }
     }
 

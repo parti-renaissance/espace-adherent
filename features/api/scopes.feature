@@ -127,7 +127,8 @@ Feature:
         "events",
         "mobile_app",
         "elections",
-        "ripostes"
+        "ripostes",
+        "survey"
       ],
       "delegated_access": null
     }

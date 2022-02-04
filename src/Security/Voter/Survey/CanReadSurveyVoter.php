@@ -14,6 +14,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 class CanReadSurveyVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_READ_SURVEY';
+    public const LOCAL_SCOPES = [ScopeEnum::REFERENT, ScopeEnum::CORRESPONDENT];
 
     private ManagedZoneProvider $managedZoneProvider;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
@@ -39,13 +40,15 @@ class CanReadSurveyVoter extends AbstractAdherentVoter
         }
 
         $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
-        if (ScopeEnum::REFERENT === $scopeCode) {
+        if (\in_array($scopeCode, self::LOCAL_SCOPES, true)) {
             if ($subject instanceof NationalSurvey) {
                 return true;
             }
 
             if ($subject instanceof LocalSurvey) {
-                return $this->managedZoneProvider->zoneBelongsToSomeZones($subject->getZone(), $scope->getZones());
+                return $this->managedZoneProvider->zoneBelongsToSomeZones($subject->getZone(), $scope->getZones())
+                    || ($adherent->isCorrespondent() && $subject->getZone() === $adherent->getCorrespondentZone())
+                ;
             }
         }
 

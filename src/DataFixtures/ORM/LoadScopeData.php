@@ -19,6 +19,7 @@ class LoadScopeData extends Fixture
         FeatureEnum::MOBILE_APP,
         FeatureEnum::ELECTIONS,
         FeatureEnum::RIPOSTES,
+        FeatureEnum::SURVEY,
     ];
 
     public function load(ObjectManager $manager)
