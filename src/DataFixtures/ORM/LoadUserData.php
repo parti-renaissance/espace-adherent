@@ -37,7 +37,7 @@ class LoadUserData extends Fixture
             'first_name' => 'Simple',
             'last_name' => 'User',
             'address' => PostAddress::createForeignAddress('CH', '8057', null, ''),
-            'isAdherent' => false,
+            'is_adherent' => false,
         ]);
         $key1 = AdherentActivationToken::generate($user1);
         $user1->activate($key1, '2017-01-25 19:34:02');
@@ -50,7 +50,7 @@ class LoadUserData extends Fixture
             'first_name' => 'Simple',
             'last_name' => 'User',
             'address' => PostAddress::createForeignAddress('CH', '8057', null, ''),
-            'isAdherent' => false,
+            'is_adherent' => false,
         ]);
         $user3 = $this->adherentFactory->createFromArray([
             'uuid' => self::USER_3_UUID,
@@ -59,7 +59,7 @@ class LoadUserData extends Fixture
             'first_name' => 'Simple',
             'last_name' => 'User',
             'address' => PostAddress::createForeignAddress('CH', '8057', null, ''),
-            'isAdherent' => false,
+            'is_adherent' => false,
         ]);
         $key3 = AdherentActivationToken::generate($user3);
         $user3->activate($key3, '2017-01-25 19:34:02');
@@ -75,7 +75,7 @@ class LoadUserData extends Fixture
             'first_name' => 'Simple',
             'last_name' => 'User',
             'address' => PostAddress::createForeignAddress('CH', '8057', null, ''),
-            'isAdherent' => false,
+            'is_adherent' => false,
         ]);
         $key4 = AdherentActivationToken::generate($user4);
         $user4->activate($key4, '2017-01-25 19:34:02');
