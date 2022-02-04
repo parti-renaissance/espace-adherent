@@ -58,7 +58,7 @@
     "regenerator-runtime": "^0.13.9",
     "reqwest": "^2.0.5",
     "sass": "^1.49.7",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^10.2.1",
     "select2": "^4.0.13",
     "sshpk": "^1.17.0",
     "stackblur-canvas": "^2.5.0",
