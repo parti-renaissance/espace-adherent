@@ -54,11 +54,11 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
                     ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
                     ->orWhere((new Orx())
                         ->add(sprintf('%s INSTANCE OF :national', $alias))
-                        ->add(sprintf('%s INSTANCE OF :local AND ls.zone = :zone', $alias))
+                        ->add(sprintf('%s INSTANCE OF :local AND ls.zone IN (:zones)', $alias))
                     )
                     ->setParameter('national', SurveyTypeEnum::NATIONAL)
                     ->setParameter('local', SurveyTypeEnum::LOCAL)
-                    ->setParameter('zone', $user->getCorrespondentZone())
+                    ->setParameter('zones', array_merge([$user->getCorrespondentZone()], $user->getCorrespondentZone()->getChildren()))
                 ;
                 break;
         }

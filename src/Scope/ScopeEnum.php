@@ -39,11 +39,6 @@ class ScopeEnum extends Enum
         self::PHONING_NATIONAL_MANAGER,
     ];
 
-    public const LOCAL_SCOPES = [
-        self::REFERENT,
-        self::CORRESPONDENT,
-    ];
-
     public const FOR_AUDIENCE_SEGMENT = [
         self::REFERENT,
         self::DEPUTY,
