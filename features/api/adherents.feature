@@ -276,3 +276,340 @@ Feature:
     """
     Then the response status code should be 200
     And the response should be in JSON
+
+  Scenario Outline: As a user with (delegated) referent role I can get columns to list adherents
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/adherents/columns?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "key": "gender",
+            "label": "Genre",
+            "type": "trans",
+            "messages": {
+                "female": "Femme",
+                "male": "Homme",
+                "other": "Autre"
+            },
+            "filter": {
+                "type": "select"
+            }
+        },
+        {
+            "key": "first_name",
+            "label": "Prénom",
+            "filter": {
+                "type": "string"
+            }
+        },
+        {
+            "key": "last_name",
+            "label": "Nom",
+            "filter": {
+                "type": "string"
+            }
+        },
+        {
+            "key": "email_subscription",
+            "label": "Abonné email",
+            "type": "boolean",
+            "filter": {
+                "type": "boolean"
+            }
+        },
+        {
+            "key": "sms_subscription",
+            "label": "Abonné tel",
+            "type": "boolean",
+            "filter": {
+                "type": "boolean"
+            }
+        },
+        {
+            "key": "postal_code",
+            "label": "Code postal",
+            "filter": {
+                "type": "string"
+            }
+        },
+        {
+            "key": "city_code",
+            "label": "Code commune"
+        },
+        {
+            "key": "city",
+            "label": "Commune",
+            "filter": {
+                "type": "string"
+            }
+        },
+        {
+            "key": "department_code",
+            "label": "Code département"
+        },
+        {
+            "key": "department",
+            "label": "Département"
+        },
+        {
+            "key": "region_code",
+            "label": "Code région"
+        },
+        {
+            "key": "region",
+            "label": "Région"
+        },
+        {
+            "key": "interests",
+            "label": "Intérêts",
+            "type": "array|trans",
+            "messages": {
+                "culture": "Culture",
+                "democratie": "Démocratie",
+                "economie": "Économie",
+                "education": "Éducation",
+                "jeunesse": "Jeunesse",
+                "egalite": "Égalité F/H",
+                "europe": "Europe",
+                "inclusion": "Inclusion",
+                "international": "International",
+                "justice": "Justice",
+                "lgbt": "LGBT+",
+                "numerique": "Numérique",
+                "puissance_publique": "Puissance publique",
+                "republique": "République",
+                "ruralite": "Ruralité",
+                "sante": "Santé",
+                "securite_et_defense": "Sécurité et Défense",
+                "solidarites": "Solidarités",
+                "sport": "Sport",
+                "transition_ecologique": "Transition écologique",
+                "travail": "Travail",
+                "villes_et_quartiers": "Villes et quartiers",
+                "famille": "Famille"
+            },
+            "filter": {
+                "type": "select",
+                "options": {
+                    "multiple": true
+                }
+            }
+        }
+    ]
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user with (delegated) referent role I can get filters list to filter adherents
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "code": "gender",
+            "label": "Genre",
+            "options": {
+                "choices": {
+                    "female": "Femme",
+                    "male": "Homme",
+                    "other": "Autre"
+                }
+            },
+            "type": "select"
+        },
+        {
+            "code": "firstName",
+            "label": "Prénom",
+            "options": null,
+            "type": "text"
+        },
+        {
+            "code": "lastName",
+            "label": "Nom",
+            "options": null,
+            "type": "text"
+        },
+        {
+            "code": "age",
+            "label": "Âge",
+            "options": null,
+            "type": "integer_interval"
+        },
+        {
+            "code": "registered",
+            "label": "Adhésion",
+            "options": null,
+            "type": "date_interval"
+        },
+        {
+            "code": "isCommitteeMember",
+            "label": "Membre d'un comité",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
+            "code": "isCertified",
+            "label": "Certifié",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
+            "code": "zones",
+            "label": "Zone géographique",
+            "options": {
+                "url": "/api/v3/zone/autocomplete",
+                "query_param": "q",
+                "value_param": "uuid",
+                "label_param": "name",
+                "multiple": true,
+                "required": false
+            },
+            "type": "autocomplete"
+        }
+    ]
+    """
+      Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user with (delegated) referent role I can get adherents of my zones
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 4,
+            "items_per_page": 100,
+            "count": 4,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "postal_code": "77000",
+                "city": "Melun",
+                "country": "FR",
+                "first_name": "Francis",
+                "last_name": "Brioul",
+                "gender": "male",
+                "interests": [],
+                "city_code": "77288",
+                "department_code": "77",
+                "department": "Seine-et-Marne",
+                "region_code": "11",
+                "region": "Île-de-France",
+                "sms_subscription": false,
+                "email_subscription": false
+            },
+            {
+                "postal_code": "8802",
+                "city": "Kilchberg",
+                "country": "CH",
+                "first_name": "Michel",
+                "last_name": "VASSEUR",
+                "gender": "male",
+                "interests": [
+                    "numerique"
+                ],
+                "city_code": null,
+                "department_code": null,
+                "department": null,
+                "region_code": null,
+                "region": null,
+                "sms_subscription": true,
+                "email_subscription": true
+            },
+            {
+                "postal_code": "92110",
+                "city": "Clichy",
+                "country": "FR",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "gender": "female",
+                "interests": [],
+                "city_code": null,
+                "department_code": "92",
+                "department": "Hauts-de-Seine",
+                "region_code": "11",
+                "region": "Île-de-France",
+                "sms_subscription": true,
+                "email_subscription": true
+            },
+            {
+                "postal_code": "8057",
+                "city": "Zürich",
+                "country": "CH",
+                "first_name": "Michelle",
+                "last_name": "Dufour",
+                "gender": "male",
+                "interests": [
+                    "europe",
+                    "numerique",
+                    "sante"
+                ],
+                "city_code": null,
+                "department_code": null,
+                "department": null,
+                "region_code": null,
+                "region": null,
+                "sms_subscription": true,
+                "email_subscription": false
+            }
+        ]
+    }
+    """
+    When I send a "GET" request to "/api/v3/adherents?scope=<scope>&firstName=Francis&lastName=Brioul&gender=male&registered%5Bstart%5D=2016-01-01&registered%5Bend%5D=2042-01-01&age%5Bmin%5D=18&age%5Bmax%5D=100&isCommitteeMember=1&isCertified=0&emailSubscription=0&smsSubscription=0"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 1,
+            "items_per_page": 100,
+            "count": 1,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "postal_code": "77000",
+                "city": "Melun",
+                "country": "FR",
+                "first_name": "Francis",
+                "last_name": "Brioul",
+                "gender": "male",
+                "interests": [],
+                "city_code": "77288",
+                "department_code": "77",
+                "department": "Seine-et-Marne",
+                "region_code": "11",
+                "region": "Île-de-France",
+                "sms_subscription": false,
+                "email_subscription": false
+            }
+        ]
+    }
+    """
+      Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

@@ -39,21 +39,26 @@ class ExportSurveyAnswersControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    public function testExportSurveyRepliesInXls(): void
+    /** @dataProvider provideUsers */
+    public function testExportSurveyRepliesInXls(string $email, string $scope): void
     {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
             GrantTypeEnum::PASSWORD,
             null,
-            'deputy@en-marche-dev.fr',
+            $email,
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xls?scope=national', [], [], [
-            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-        ]);
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xls?scope=%s', $scope),
+            [],
+            [],
+            ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
+        );
         $responseContent = ob_get_clean();
 
         $this->isSuccessful($response = $this->client->getResponse());
@@ -71,5 +76,12 @@ class ExportSurveyAnswersControllerTest extends WebTestCase
         $this->assertStringContainsString('<td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td>', $responseContent);
         $this->assertStringContainsString('<td>l\'écologie sera le sujet le plus important</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td>', $responseContent);
         $this->assertStringContainsString('<td>le pouvoir d\'achat</td><td>L\'aspect financier, La préservation de l\'environnement</td>', $responseContent);
+    }
+
+    public function provideUsers(): iterable
+    {
+        yield ['deputy@en-marche-dev.fr', 'national'];
+        yield ['referent-75-77@en-marche-dev.fr', 'referent'];
+        yield ['francis.brioul@yahoo.com', 'delegated_689757d2-dea5-49d1-95fe-281fc860ff77'];
     }
 }
