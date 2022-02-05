@@ -38,3 +38,9 @@ services:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
             - {base_uri: 'https://maps.googleapis.com', timeout: 2}
+
+    app.http_client.facebook_graph_api:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - {base_uri: 'https://graph.facebook.com', timeout: 2}

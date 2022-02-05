@@ -2,17 +2,16 @@
 
 namespace App\Facebook;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use function GuzzleHttp\Psr7\copy_to_string;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PictureImporter
 {
-    private $client;
-    private $cache;
+    private HttpClientInterface $client;
+    private CacheItemPoolInterface $cache;
 
-    public function __construct(ClientInterface $client, CacheItemPoolInterface $cache)
+    public function __construct(HttpClientInterface $client, CacheItemPoolInterface $cache)
     {
         $this->client = $client;
         $this->cache = $cache;
@@ -24,12 +23,12 @@ class PictureImporter
 
         if (!$cacheItem->isHit()) {
             try {
-                $response = $this->client->request('GET', '/'.$facebookId.'/picture?width=1500&height=1500');
-            } catch (GuzzleException $exception) {
+                $content = $this->client->request('GET', '/'.$facebookId.'/picture?width=1500&height=1500')->getContent();
+            } catch (TransportExceptionInterface $exception) {
                 return null;
             }
 
-            $cacheItem->set(copy_to_string($response->getBody()));
+            $cacheItem->set($content);
             $cacheItem->expiresAfter(60);
 
             $this->cache->save($cacheItem);
