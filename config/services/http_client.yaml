@@ -44,3 +44,15 @@ services:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
             - {base_uri: 'https://graph.facebook.com', timeout: 2}
+
+    app.http_client.mailchimp_api:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - {
+                base_uri: 'https://us16.api.mailchimp.com',
+                timeout: 60,
+                auth_bearer: '%env(MAILCHIMP_API_KEY)%'
+                headers:
+                    'User-Agent': 'En-Marche!'
+            }

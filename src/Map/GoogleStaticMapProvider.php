@@ -18,8 +18,12 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
     private $logger;
     private $key;
 
-    public function __construct(HttpClientInterface $client, AdapterInterface $cache, LoggerInterface $logger, string $key)
-    {
+    public function __construct(
+        HttpClientInterface $client,
+        AdapterInterface $cache,
+        LoggerInterface $logger,
+        string $key
+    ) {
         $this->client = $client;
         $this->cache = $cache;
         $this->logger = $logger;

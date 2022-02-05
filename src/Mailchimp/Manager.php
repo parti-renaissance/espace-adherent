@@ -298,8 +298,7 @@ class Manager implements LoggerAwareInterface
     {
         $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
         $response = $this->driver->createStaticSegment($name, $listId);
-
-        $responseData = $this->driver->toArray($response);
+        $responseData = $response->toArray();
 
         if (200 === $response->getStatusCode()) {
             return $responseData['id'] ?? null;
@@ -338,7 +337,7 @@ class Manager implements LoggerAwareInterface
             $response = $this->driver->createDynamicSegment($listId, $requestBuilder->createEditSegmentRequestFromDynamicSegment($segment));
         }
 
-        $responseData = $this->driver->toArray($response);
+        $responseData = $response->toArray();
 
         if (200 === $response->getStatusCode()) {
             $segment->setMailchimpId($responseData['id']);

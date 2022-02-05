@@ -7,22 +7,22 @@ use App\Mailchimp\Campaign\Request\EditCampaignRequest;
 use App\Mailchimp\MailchimpSegment\Request\EditSegmentRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Driver implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private $client;
-    private $listId;
-    /** @var ResponseInterface|null */
-    private $lastResponse;
+    private HttpClientInterface $client;
+    private string $listId;
+    private ?ResponseInterface $lastResponse = null;
 
-    public function __construct(ClientInterface $client, string $listId)
+    public function __construct(HttpClientInterface $client, string $listId)
     {
         $this->client = $client;
         $this->listId = $listId;
@@ -48,7 +48,7 @@ class Driver implements LoggerAwareInterface
             return [];
         }
 
-        return array_column($this->toArray($response)['tags'] ?? [], 'name');
+        return array_column($response->toArray()['tags'] ?? [], 'name');
     }
 
     public function updateMemberTags(MemberTagsRequest $request, string $listId): bool
@@ -65,7 +65,7 @@ class Driver implements LoggerAwareInterface
         $response = $this->send('GET', sprintf('/campaigns/%s/content', $campaignId));
 
         if ($this->isSuccessfulResponse($response)) {
-            return $this->toArray($response)['html'] ?? '';
+            return $response->toArray()['html'] ?? '';
         }
 
         $this->logger->error(sprintf('[API] Error: %s', $response->getBody()), ['campaignId' => $campaignId]);
@@ -77,14 +77,14 @@ class Driver implements LoggerAwareInterface
     {
         $response = $this->send('POST', '/campaigns', $request->toArray());
 
-        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
+        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
 
     public function updateCampaign(string $campaignId, EditCampaignRequest $request): array
     {
         $response = $this->send('PATCH', sprintf('/campaigns/%s', $campaignId), $request->toArray());
 
-        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
+        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
 
     public function editCampaignContent(string $campaignId, EditCampaignContentRequest $request): bool
@@ -120,7 +120,7 @@ class Driver implements LoggerAwareInterface
 
         $response = $this->send('GET', sprintf('/lists/%s/segments?%s', $listId, http_build_query($params)));
 
-        return $this->isSuccessfulResponse($response) ? $this->toArray($response)['segments'] : [];
+        return $this->isSuccessfulResponse($response) ? $response->toArray()['segments'] : [];
     }
 
     public function createStaticSegment(string $name, string $listId, array $emails = []): ResponseInterface
@@ -181,21 +181,16 @@ class Driver implements LoggerAwareInterface
     {
         $response = $this->send('GET', sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
 
-        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
+        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
 
     public function getLastError(): ?string
     {
-        if ($this->lastResponse && ($data = $this->toArray($this->lastResponse)) && isset($data['detail'])) {
+        if ($this->lastResponse && ($data = $this->lastResponse->toArray()) && isset($data['detail'])) {
             return $data['detail'];
         }
 
         return null;
-    }
-
-    public function toArray(ResponseInterface $response): array
-    {
-        return \GuzzleHttp\json_decode((string) $response->getBody(), true);
     }
 
     private function sendRequest(string $method, string $uri, array $body = []): bool
@@ -213,13 +208,17 @@ class Driver implements LoggerAwareInterface
                 '/3.0/'.ltrim($uri, '/'),
                 ($body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : [])
             );
-        } catch (RequestException $e) {
+        } catch (HttpExceptionInterface $e) {
             $this->logger->error(sprintf(
                 '[API] Error: %s',
-                ($response = $e->getResponse()) ? $response->getBody() : 'Unknown'
+                ($response = $e->getResponse()) ? $response->getContent() : 'Unknown'
             ), ['exception' => $e]);
 
             return $this->lastResponse = $response;
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error(sprintf('[API] Error: %s', $e->getMessage()), ['exception' => $e]);
+
+            return null;
         }
     }
 
