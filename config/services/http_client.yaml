@@ -11,35 +11,24 @@ services:
         Symfony\Contracts\HttpClient\HttpClientInterface:
             tags: ['http_client.client']
 
+    # default http client
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: [ 'Symfony\Component\HttpClient\HttpClient', 'create' ]
+
     app.http_client.mailchimp_signup:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory:
-            - Symfony\Component\HttpClient\HttpClient
-            - create
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
             - {base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%', timeout: 15}
 
     app.http_client.geo_gouv:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory:
-            - Symfony\Component\HttpClient\HttpClient
-            - create
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments: [base_uri: '%env(GEO_GOUV_API_HOST)%']
 
-    app.http_client.ovh_cloud:
+    app.http_client.mandrill_api:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory:
-            - Symfony\Component\HttpClient\HttpClient
-            - create
-
-    Symfony\Contracts\HttpClient\HttpClientInterface:
-        class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory:
-            - Symfony\Component\HttpClient\HttpClient
-            - create
-
-    app.http_client.internal_api_proxy:
-        class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory:
-            - Symfony\Component\HttpClient\HttpClient
-            - create
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - {base_uri: 'https://mandrillapp.com/api/1.0/', timeout: 10}

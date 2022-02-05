@@ -16,10 +16,7 @@ services:
 
     Geocoder\Geocoder: '@Tests\App\Test\Geocoder\DummyGeocoder'
 
-    app.mailer.transactional_client:
-        class: 'Tests\App\Test\Mailer\NullEmailClient'
-
-    app.mailer.campaign_client:
+    app.mailer.client:
         class: 'Tests\App\Test\Mailer\NullEmailClient'
 
     App\Recaptcha\RecaptchaApiClient:

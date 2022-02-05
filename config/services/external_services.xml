@@ -9,11 +9,12 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_transactional"/>
             <argument type="service" id="app.mailer.message_factory.transactional"/>
-            <argument type="service" id="app.mailer.transactional_client"/>
+            <argument type="service" id="app.mailer.client"/>
         </service>
 
-        <service id="app.mailer.transactional_client" class="App\Mandrill\EmailClient" public="false">
-            <argument type="service" id="csa_guzzle.client.mandrill_api"/>
+        <service id="app.mailer.client" class="App\Mandrill\EmailClient" public="false">
+            <argument type="service" id="app.http_client.mandrill_api"/>
+            <argument>%env(MANDRILL_API_KEY)%</argument>
         </service>
 
         <service id="app.mailer.transport.rabbitmq_transactional" class="App\Mailer\Transport\RabbitMQTransport" public="false">
@@ -31,11 +32,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_campaign"/>
             <argument type="service" id="app.mailer.message_factory.campaign"/>
-            <argument type="service" id="app.mailer.campaign_client"/>
-        </service>
-
-        <service id="app.mailer.campaign_client" class="App\Mandrill\EmailClient" public="false">
-            <argument type="service" id="csa_guzzle.client.mandrill_api"/>
+            <argument type="service" id="app.mailer.client"/>
         </service>
 
         <service id="app.mailer.transport.rabbitmq_campaign" class="App\Mailer\Transport\RabbitMQTransport" public="false">

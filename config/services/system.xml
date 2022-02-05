@@ -9,8 +9,7 @@
             <argument type="collection">
                 <argument key="app.mailer.campaign" type="service" id="app.mailer.campaign" />
                 <argument key="app.mailer.transactional" type="service" id="app.mailer.transactional" />
-                <argument key="app.mailer.campaign_client" type="service" id="app.mailer.campaign_client" />
-                <argument key="app.mailer.transactional_client" type="service" id="app.mailer.transactional_client" />
+                <argument key="app.mailer.client" type="service" id="app.mailer.client" />
                 <argument key="manager" type="service" id="doctrine.orm.entity_manager" />
                 <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
                 <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />
@@ -24,14 +23,14 @@
         <service id="App\Consumer\CampaignMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
             <argument type="service" id="app.consumer.service_locator" />
             <call method="setEmailClient">
-                <argument type="service" id="app.mailer.campaign_client"/>
+                <argument type="service" id="app.mailer.client"/>
             </call>
         </service>
 
         <service id="App\Consumer\TransactionalMailerConsumer" parent="app.consumer.abstract_mailer_consumer">
             <argument type="service" id="app.consumer.service_locator" />
             <call method="setEmailClient">
-                <argument type="service" id="app.mailer.transactional_client"/>
+                <argument type="service" id="app.mailer.client"/>
             </call>
         </service>
 

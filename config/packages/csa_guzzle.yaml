@@ -2,12 +2,6 @@ csa_guzzle:
     profiler: "%kernel.debug%"
     logger: true
     clients:
-        mandrill_api:
-            config:
-                api_key: '%env(MANDRILL_API_KEY)%'
-                base_uri: 'https://mandrillapp.com/api/1.0/'
-                timeout: 10.0
-
         google_maps_static_api:
             config:
                 base_uri: 'https://maps.googleapis.com'
