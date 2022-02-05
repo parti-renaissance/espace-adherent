@@ -6,10 +6,10 @@ use App\Exception\InvalidUuidException;
 use App\Mailer\EmailClientInterface;
 use App\Mailer\Exception\MailerException;
 use App\Repository\EmailRepository;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 abstract class AbstractMailerConsumer extends AbstractConsumer
 {
@@ -43,7 +43,7 @@ abstract class AbstractMailerConsumer extends AbstractConsumer
             }
 
             return $delivered ? ConsumerInterface::MSG_ACK : ConsumerInterface::MSG_REJECT_REQUEUE;
-        } catch (ClientException $clientException) {
+        } catch (HttpExceptionInterface $clientException) {
             $this->writeln($data['uuid'], 'Http Client Exception');
             $this->getLogger()->error(
                 sprintf(
@@ -55,7 +55,7 @@ abstract class AbstractMailerConsumer extends AbstractConsumer
             );
 
             return ConsumerInterface::MSG_REJECT;
-        } catch (ConnectException $error) {
+        } catch (TransportExceptionInterface $error) {
             $this->writeln($data['uuid'], 'API timeout');
             $this->getLogger()->error(
                 sprintf(

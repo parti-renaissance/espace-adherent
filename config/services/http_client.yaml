@@ -58,7 +58,6 @@ services:
             - {
                 base_uri: 'https://us16.api.mailchimp.com',
                 timeout: 60,
-                auth_bearer: '%env(MAILCHIMP_API_KEY)%'
-                headers:
-                    'User-Agent': 'En-Marche!'
+                auth_bearer: '%env(MAILCHIMP_API_KEY)%',
+                headers: {'User-Agent': 'En-Marche!'}
             }

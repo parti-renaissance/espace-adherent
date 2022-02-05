@@ -4,10 +4,11 @@ namespace Tests\App\Mailer\Transport;
 
 use App\Mailer\Exception\MailerException;
 use App\Mailer\Transport\ApiTransport;
-use GuzzleHttp\ClientInterface as HttpClientInterface;
-use GuzzleHttp\Psr7\Response as HttpResponse;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tests\App\Test\Mailer\DummyEmailClient;
 use Tests\App\Test\Mailer\DummyEmailTemplate;
 
@@ -18,7 +19,7 @@ class ApiTransportTest extends TestCase
         $this->expectException(MailerException::class);
         $this->expectExceptionMessage('Unable to send email to recipients.');
         $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
-        $httpClient->expects($this->once())->method('request')->willReturn(new HttpResponse(400));
+        $httpClient->expects($this->once())->method('request')->willReturn(new MockResponse('', ['http_code' => 400]));
 
         $client = new DummyEmailClient($httpClient);
         $transport = new ApiTransport($client);
@@ -40,15 +41,7 @@ class ApiTransportTest extends TestCase
 }
 EOF;
 
-        $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
-        $httpClient
-            ->expects($this->once())
-            ->method('request')
-            ->with('POST', 'send', [
-                'body' => json_encode($email->getBody()),
-            ])
-            ->willReturn(new HttpResponse(200, [], $body))
-        ;
+        $httpClient = new MockHttpClient([new MockResponse($body)], 'http://null');
 
         $client = new DummyEmailClient($httpClient);
         $transport = new ApiTransport($client);

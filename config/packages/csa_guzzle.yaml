@@ -1,4 +1,0 @@
-csa_guzzle:
-    profiler: "%kernel.debug%"
-    logger: true
-

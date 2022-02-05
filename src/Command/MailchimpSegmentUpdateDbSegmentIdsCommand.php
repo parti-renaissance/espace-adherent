@@ -6,11 +6,11 @@ use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use GuzzleHttp\ClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 {
@@ -27,7 +27,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
     public function __construct(
         ReferentTagRepository $referentTagRepository,
         CommitteeRepository $committeeRepository,
-        ClientInterface $mailchimpClient,
+        HttpClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
@@ -137,6 +137,6 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
             return [];
         }
 
-        return json_decode((string) $response->getBody(), true)['segments'];
+        return $response->toArray()['segments'];
     }
 }

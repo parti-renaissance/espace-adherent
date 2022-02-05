@@ -19,8 +19,8 @@ services:
     app.mailer.client:
         class: 'Tests\App\Test\Mailer\NullEmailClient'
 
-    App\Recaptcha\RecaptchaApiClient:
-        class: 'Tests\App\Test\Recaptcha\DummyRecaptchaApiClient'
+    Tests\App\Test\Recaptcha\DummyRecaptchaApiClient:
+        decorates: 'App\Recaptcha\RecaptchaApiClient'
 
     Tests\App\Test\Algolia\DummySearchService:
         decorates: 'search.service'

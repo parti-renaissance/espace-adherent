@@ -5,8 +5,8 @@ namespace Tests\App\Test\Mailer;
 use App\Mailer\EmailClientInterface;
 use App\Mailer\EmailTemplateInterface;
 use App\Mailer\Exception\MailerException;
-use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class DummyEmailClient implements EmailClientInterface
 {
@@ -27,7 +27,7 @@ class DummyEmailClient implements EmailClientInterface
             throw new MailerException('Unable to send email to recipients.');
         }
 
-        return (string) $response->getBody();
+        return $response->getContent();
     }
 
     public function renderEmail(EmailTemplateInterface $email): string

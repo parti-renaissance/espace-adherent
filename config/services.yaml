@@ -237,9 +237,6 @@ services:
     App\Recaptcha\RecaptchaApiClient:
         arguments:
             $privateKey: '%env(RECAPTCHA_PRIVATE_KEY)%'
-            $config:
-                timeout: 5.0
-                environment: '%kernel.environment%'
 
     App\Procuration\ProcurationProxyMessageFactory:
         arguments:
