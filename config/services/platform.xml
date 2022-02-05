@@ -12,7 +12,7 @@
 
         <!-- Map -->
         <service id="app.map.google_maps_static_provider" class="App\Map\GoogleStaticMapProvider">
-            <argument type="service" id="csa_guzzle.client.google_maps_static_api" />
+            <argument type="service" id="app.http_client.google_maps_static_api" />
             <argument type="service" id="cache.app" />
             <argument type="service" id="monolog.logger" />
             <argument>%env(GMAPS_API_KEY)%</argument>

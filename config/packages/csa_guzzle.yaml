@@ -2,11 +2,6 @@ csa_guzzle:
     profiler: "%kernel.debug%"
     logger: true
     clients:
-        google_maps_static_api:
-            config:
-                base_uri: 'https://maps.googleapis.com'
-                timeout: 2.0
-
         facebook_graph_api:
             config:
                 base_uri: 'https://graph.facebook.com'
