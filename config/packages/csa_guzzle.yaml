@@ -1,8 +1,4 @@
 csa_guzzle:
     profiler: "%kernel.debug%"
     logger: true
-    clients:
-        dpt_api:
-            config:
-                base_uri: '%env(DPT_API_HOST)%'
-                timeout: 15.0
+
