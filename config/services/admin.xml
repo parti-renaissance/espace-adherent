@@ -213,10 +213,20 @@
             <tag name="sonata.admin" manager-type="orm" label="Événements" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\Event\CommitteeEvent</argument>
+            <argument>App\Entity\Event\BaseEvent</argument>
             <argument />
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="App\Referent\ReferentTagManager"/>
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument>App\Entity\Event\DefaultEvent</argument>
+                    <argument>App\Entity\Event\CommitteeEvent</argument>
+                    <argument>App\Entity\Event\MunicipalEvent</argument>
+                    <argument>App\Entity\Event\InstitutionalEvent</argument>
+                    <argument>App\Entity\Event\CauseEvent</argument>
+                    <argument>App\Entity\Event\CoalitionEvent</argument>
+                </argument>
+            </call>
         </service>
 
         <service id="app.admin.institutional_event" class="App\Admin\InstitutionalEventAdmin">

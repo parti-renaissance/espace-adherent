@@ -18,7 +18,7 @@ final class InstitutionalEventInvitationMessage extends Message
             'Invitation pour '.self::escape($institutionalEvent->getName()),
             [
                 'institutional_event_name' => self::escape($institutionalEvent->getName()),
-                'institutional_event_type' => self::escape($institutionalEvent->getCategoryName()),
+                'institutional_event_type' => self::escape((string) $institutionalEvent->getCategoryName()),
                 'institutional_event_starting_day' => self::formatDate(
                     $institutionalEvent->getLocalBeginAt(), 'EEEE d MMMM y'
                 ),

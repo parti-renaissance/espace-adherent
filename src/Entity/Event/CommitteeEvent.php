@@ -24,10 +24,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
-class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ExposedObjectInterface
+class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ExposedObjectInterface
 {
     use UserDocumentTrait;
-    use DefaultCategoryOwnerTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
@@ -143,11 +142,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
      */
     public function getCategoryName(): ?string
     {
-        if (!$category = $this->getCategory()) {
-            return null;
-        }
-
-        return $category->getName();
+        return parent::getCategoryName();
     }
 
     public function isReferentEvent(): bool

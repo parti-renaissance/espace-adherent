@@ -14,10 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     itemOperations={"get"},
  * )
  */
-class DefaultEvent extends BaseEvent
+class DefaultEvent extends BaseEventWithCategory
 {
-    use DefaultCategoryOwnerTrait;
-
     public function getType(): string
     {
         return EventTypeEnum::TYPE_DEFAULT;

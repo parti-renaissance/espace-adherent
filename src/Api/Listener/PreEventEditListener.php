@@ -36,9 +36,6 @@ class PreEventEditListener implements EventSubscriberInterface
 
         $event = $request->attributes->get('data');
 
-        $this->dispatcher->dispatch(
-            new EventEvent($event->getAuthor(), $event),
-            Events::EVENT_PRE_UPDATE
-        );
+        $this->dispatcher->dispatch(new EventEvent($event->getAuthor(), $event), Events::EVENT_PRE_UPDATE);
     }
 }

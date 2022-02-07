@@ -443,6 +443,23 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      */
     protected $postAddress;
 
+    protected $category;
+
+    public function getCategory(): ?EventCategoryInterface
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?EventCategoryInterface $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getCategoryName(): ?string
+    {
+        return $this->category ? $this->category->getName() : null;
+    }
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

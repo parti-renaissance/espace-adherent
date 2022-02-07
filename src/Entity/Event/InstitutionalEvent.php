@@ -47,7 +47,7 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface, Reporta
         UuidInterface $uuid,
         ?Adherent $organizer,
         string $name,
-        InstitutionalEventCategory $category,
+        EventCategoryInterface $category,
         string $description,
         PostAddress $address,
         string $beginAt,
@@ -75,22 +75,6 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface, Reporta
         $this->referentTags = new ArrayCollection($referentTags);
         $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
-        $this->invitations = $invitations;
-    }
-
-    public function getCategory(): InstitutionalEventCategory
-    {
-        return $this->category;
-    }
-
-    public function setCategory(InstitutionalEventCategory $category): void
-    {
-        $this->category = $category;
-    }
-
-    public function getCategoryName(): string
-    {
-        return $this->category->getName();
     }
 
     public function isReferentEvent(): bool
