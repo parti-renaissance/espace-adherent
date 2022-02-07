@@ -9,6 +9,7 @@ use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -132,9 +133,10 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->addSelect('COUNT(campaignHistory.dataSurvey) as nb_surveys')
             ->innerJoin('campaignHistory.building', 'building')
             ->innerJoin('building.address', 'address')
-            ->innerJoin('address.zones', 'zone')
+            ->innerJoin('address.zones', 'zone', Join::WITH, 'zone.type IN(:zone_types)')
             ->where('campaignHistory.campaign = :campaign')
             ->setParameter('campaign', $campaign)
+            ->setParameter('zone_types', [Zone::DEPARTMENT, Zone::BOROUGH])
             ->groupBy('zone.id')
         ;
     }

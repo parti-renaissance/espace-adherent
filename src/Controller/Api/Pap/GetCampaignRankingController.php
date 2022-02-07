@@ -4,7 +4,9 @@ namespace App\Controller\Api\Pap;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Entity\Geo\ZoneTagEnum;
 use App\Entity\Pap\Campaign;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -20,11 +22,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class GetCampaignRankingController extends AbstractController
 {
     private CampaignHistoryRepository $campaignHistoryRepository;
+    private ZoneRepository $zoneRepository;
     private LoggerInterface $logger;
 
-    public function __construct(CampaignHistoryRepository $campaignHistoryRepository, LoggerInterface $logger)
-    {
+    public function __construct(
+        CampaignHistoryRepository $campaignHistoryRepository,
+        ZoneRepository $zoneRepository,
+        LoggerInterface $logger
+    ) {
         $this->campaignHistoryRepository = $campaignHistoryRepository;
+        $this->zoneRepository = $zoneRepository;
         $this->logger = $logger;
     }
 
@@ -96,43 +103,69 @@ class GetCampaignRankingController extends AbstractController
 
     private function createDepartmentalRanking(Campaign $campaign, Adherent $adherent): array
     {
+        $adherentZoneIds = [];
         $departments = $adherent->getParentZonesOfType(Zone::DEPARTMENT);
-        $department = 1 === \count($departments) ? current($departments) : null;
-        if (!$department) {
-            $this->logger->error(sprintf('Adherent with ID "%d" has no zone of type "department"', $adherent->getId()));
+        $zone = 1 === \count($departments) ? current($departments) : null;
 
-            return [];
-        } elseif ('75' === $department->getCode()) {
-            $boroughs = $adherent->getZonesOfType(Zone::BOROUGH);
-            $borough = 1 === \count($boroughs) ? current($boroughs) : null;
-            if (!$borough) {
-                $this->logger->error(sprintf('Adherent with ID "%d" has no zone of type "borough"', $adherent->getId()));
+        if ($zone) {
+            if ('75' === $zone->getCode()) {
+                $boroughs = $adherent->getZonesOfType(Zone::BOROUGH);
+                $borough = 1 === \count($boroughs) ? current($boroughs) : null;
 
-                return [];
+                if ($borough) {
+                    $zone = $borough;
+                } else {
+                    $this->logger->error(sprintf('Adherent with ID "%d" has no zone of type "borough"', $adherent->getId()));
+                }
             }
 
-            $zone = $borough;
+            $adherentZoneIds = [$zone->getId()];
         } else {
-            $zone = $department;
+            $this->logger->error(sprintf('Adherent with ID "%d" has no zone of type "department"', $adherent->getId()));
         }
 
-        $items = $this->campaignHistoryRepository->findDepartmentRanking($campaign);
+        $zonesList = array_column(array_map(function (Zone $zone) {
+            return [
+                'id' => $zone->getId(),
+                'name' => $zone->getName(),
+                'nb_visited_doors' => 0,
+                'nb_surveys' => 0,
+            ];
+        }, $this->zoneRepository->findByTag(ZoneTagEnum::DEPARTMENT_BOROUGH_LIST)), null, 'id');
+
+        foreach ($this->campaignHistoryRepository->findDepartmentRanking($campaign, $scoreBordSize = 10) as $item) {
+            $zonesList[$item['id']]['nb_visited_doors'] = (int) $item['nb_visited_doors'];
+            $zonesList[$item['id']]['nb_surveys'] = (int) $item['nb_surveys'];
+        }
+
+        usort($zonesList, function (array $a, array $b) {
+            if ($a['nb_surveys'] === $b['nb_surveys']) {
+                return strcasecmp($a['name'], $b['name']);
+            }
+
+            return $b['nb_surveys'] <=> $a['nb_surveys'];
+        });
+
         $departmentAdded = false;
         $departmentalItems = [];
-        foreach ($items as $key => $data) {
+
+        foreach (\array_slice($zonesList, 0, $scoreBordSize) as $key => $data) {
             $item = [];
             $item['rank'] = ++$key;
             $item['department'] = $data['name'];
-            $item['nb_visited_doors'] = (int) $data['nb_visited_doors'];
-            $item['nb_surveys'] = (int) $data['nb_surveys'];
-            $item['current'] = $isAdherent = $adherent->getId() === $data['id'];
+            $item['nb_visited_doors'] = $data['nb_visited_doors'];
+            $item['nb_surveys'] = $data['nb_surveys'];
+            $item['current'] = $isAdherent = \in_array($data['id'], $adherentZoneIds);
 
             $departmentAdded = $departmentAdded ?: $isAdherent;
             $departmentalItems[] = $item;
         }
 
-        if (!$departmentAdded) {
+        if (!$departmentAdded && $zone) {
             $item = [];
+            $item['rank'] = '...';
+            $item['department'] = $zone->getName();
+
             $departmentRank = $this->campaignHistoryRepository->findRankingForDepartment($campaign, $zone);
             if (\count($departmentRank) > 0) {
                 $item['nb_visited_doors'] = (int) $departmentRank[0]['nb_visited_doors'];
@@ -141,11 +174,9 @@ class GetCampaignRankingController extends AbstractController
                 $item['nb_visited_doors'] = 0;
                 $item['nb_surveys'] = 0;
             }
-
-            $item['rank'] = '...';
-            $item['department'] = $department->getName();
             $item['current'] = true;
-            $departmentalItems[] = $item;
+
+            $departmentalItems[\count($departmentalItems) - 1] = $item;
         }
 
         return $departmentalItems;

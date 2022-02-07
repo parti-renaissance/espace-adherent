@@ -86,11 +86,14 @@ trait EntityZoneTrait
     public function getParentZonesOfType(string $type): array
     {
         $zones = [];
-        foreach ($this->zones as $zone) {
-            $zones = array_merge($zones, $zone->getParentsOfType($type));
+        foreach ($this->zones as $key => $zone) {
+            /** @var Zone $zone */
+            // Move parents of District zone to the end of collection
+            // as District parents can be wrong related to non-detailed polygons
+            $zones[$zone->isDistrict() ? 1000000 : $key] = $zone->getParentsOfType($type);
         }
 
-        return array_unique($zones);
+        return array_unique(array_merge(...$zones));
     }
 
     public function getParentZones(): array

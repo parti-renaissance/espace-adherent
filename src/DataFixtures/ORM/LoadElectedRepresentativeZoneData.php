@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadZoneData extends Fixture implements DependentFixtureInterface
+class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixtureInterface
 {
     private const CITIES = [
         '06000' => 'Nice (06000,06100,06200,06300)',
@@ -165,7 +165,7 @@ class LoadZoneData extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            LoadZoneCategoryData::class,
+            LoadElectedRepresentativeZoneCategoryData::class,
             LoadReferentTagData::class,
             LoadDistrictData::class,
         ];

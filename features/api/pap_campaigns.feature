@@ -1410,6 +1410,62 @@ Feature:
                     "current": false
                 },
                 {
+                    "rank": 2,
+                    "department": "Ain",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 3,
+                    "department": "Aisne",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 4,
+                    "department": "Allier",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 5,
+                    "department": "Alpes-de-Haute-Provence",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 6,
+                    "department": "Alpes-Maritimes",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 7,
+                    "department": "Ardennes",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 8,
+                    "department": "Ardèche",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
+                    "rank": 9,
+                    "department": "Ariège",
+                    "nb_visited_doors": 0,
+                    "nb_surveys": 0,
+                    "current": false
+                },
+                {
                     "rank": "...",
                     "department": "Seine-et-Marne",
                     "nb_visited_doors": 0,
