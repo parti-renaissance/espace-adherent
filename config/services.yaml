@@ -42,7 +42,7 @@ services:
         bind:
             $environment: '%kernel.environment%'
             $canaryMode: '%env(ENABLE_CANARY)%'
-            $mailchimpClient: '@csa_guzzle.client.mailchimp_api'
+            $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $transactionalMailer: '@app.mailer.transactional'
@@ -65,7 +65,6 @@ services:
             $coalitionsAuthHost: '%coalitions_auth_host%'
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
-            $internalApiProxyClient: '@app.http_client.internal_api_proxy'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
 
     _instanceof:
@@ -238,9 +237,6 @@ services:
     App\Recaptcha\RecaptchaApiClient:
         arguments:
             $privateKey: '%env(RECAPTCHA_PRIVATE_KEY)%'
-            $config:
-                timeout: 5.0
-                environment: '%kernel.environment%'
 
     App\Procuration\ProcurationProxyMessageFactory:
         arguments:
@@ -298,12 +294,11 @@ services:
 
     App\OvhCloud\Driver:
         arguments:
-            - '@app.http_client.ovh_cloud'
-            - '%env(OVHCLOUD_APPLICATION_KEY)%'
-            - '%env(OVHCLOUD_APPLICATION_SECRET)%'
-            - '%env(OVHCLOUD_CONSUMER_KEY)%'
-            - '%env(OVHCLOUD_SERVICE_NAME)%'
-            - '%env(OVHCLOUD_SMS_SENDER_NAME)%'
+            $applicationKey: '%env(OVHCLOUD_APPLICATION_KEY)%'
+            $applicationSecret: '%env(OVHCLOUD_APPLICATION_SECRET)%'
+            $consumerKey: '%env(OVHCLOUD_CONSUMER_KEY)%'
+            $serviceName: '%env(OVHCLOUD_SERVICE_NAME)%'
+            $senderName: '%env(OVHCLOUD_SMS_SENDER_NAME)%'
 
     App\AdherentFilter\AdherentFiltersGenerator:
         arguments: [!tagged_iterator 'app.adherent_filter.builder']

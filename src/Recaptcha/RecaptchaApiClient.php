@@ -2,22 +2,22 @@
 
 namespace App\Recaptcha;
 
-use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class RecaptchaApiClient extends Client
+class RecaptchaApiClient implements RecaptchaApiClientInterface
 {
-    private $privateKey;
-    private $requestStack;
+    private const BASE_URL = 'https://www.google.com/recaptcha/api/';
 
-    public function __construct(string $privateKey, array $config = [], RequestStack $requestStack = null)
+    private HttpClientInterface $client;
+    private string $privateKey;
+    private ?RequestStack $requestStack;
+
+    public function __construct(HttpClientInterface $client, string $privateKey, RequestStack $requestStack = null)
     {
-        if (empty($config['base_uri'])) {
-            $config['base_uri'] = 'https://www.google.com/recaptcha/api/';
-        }
-
-        parent::__construct($config);
+        $this->client = $client;
 
         $this->privateKey = $privateKey;
         $this->requestStack = $requestStack;
@@ -25,15 +25,15 @@ class RecaptchaApiClient extends Client
 
     public function verify(string $answer, string $clientIp = null): bool
     {
-        $response = $this->post('siteverify', [
-            'form_params' => $this->getParameters($answer, $clientIp),
+        $response = $this->client->request('POST', self::BASE_URL.'siteverify', [
+            'body' => $this->getParameters($answer, $clientIp),
         ]);
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
             throw new \RuntimeException('Unable to verify captcha answer.');
         }
 
-        $data = json_decode((string) $response->getBody(), true);
+        $data = $response->toArray();
         if (null === $data || !isset($data['success']) || !\is_bool($data['success'])) {
             throw new \RuntimeException('Unexpected JSON response.');
         }
@@ -41,7 +41,7 @@ class RecaptchaApiClient extends Client
         return $data['success'];
     }
 
-    private function getParameters(string $answer, string $clientIp = null)
+    private function getParameters(string $answer, string $clientIp = null): array
     {
         $params = [
             'secret' => $this->privateKey,
@@ -59,23 +59,17 @@ class RecaptchaApiClient extends Client
         return $params;
     }
 
-    private function getRequest()
+    private function getRequest(): ?Request
     {
-        $request = null;
-        if ($this->requestStack) {
-            $request = $this->requestStack->getMasterRequest();
-        }
-
-        return $request;
+        return $this->requestStack ? $this->requestStack->getMasterRequest() : null;
     }
 
-    private function getClientIp()
+    private function getClientIp(): ?string
     {
-        $clientIp = null;
         if ($request = $this->getRequest()) {
-            $clientIp = $request->getClientIp();
+            return $request->getClientIp();
         }
 
-        return $clientIp;
+        return null;
     }
 }

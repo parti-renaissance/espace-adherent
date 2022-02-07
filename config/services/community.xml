@@ -37,7 +37,7 @@
 
         <!-- Facebook filters -->
         <service id="App\Facebook\PictureImporter">
-            <argument type="service" id="csa_guzzle.client.facebook_graph_api" />
+            <argument type="service" id="app.http_client.facebook_graph_api" />
             <argument type="service" id="cache.app" />
         </service>
 

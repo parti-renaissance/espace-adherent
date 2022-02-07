@@ -25,7 +25,6 @@ use App\Repository\AdherentRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Exception\ConnectException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +32,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -215,7 +215,7 @@ class AdherentController extends AbstractController
 
                 return $this->redirectToRoute('homepage');
             }
-        } catch (ConnectException $e) {
+        } catch (ExceptionInterface $e) {
             $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
         }
 

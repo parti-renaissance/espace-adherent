@@ -2,12 +2,12 @@
 
 namespace App\Command;
 
-use GuzzleHttp\ClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MailchimpListInterestsCommand extends Command
 {
@@ -20,7 +20,7 @@ class MailchimpListInterestsCommand extends Command
      */
     private $io;
 
-    public function __construct(ClientInterface $mailchimpClient)
+    public function __construct(HttpClientInterface $mailchimpClient)
     {
         $this->mailchimpClient = $mailchimpClient;
 
@@ -49,10 +49,10 @@ class MailchimpListInterestsCommand extends Command
         if (200 !== $response->getStatusCode()) {
             $this->io->error(sprintf('No Mailchimp list found with id "%s".', $listId));
 
-            return;
+            return 0;
         }
 
-        $listData = json_decode((string) $response->getBody(), true);
+        $listData = $response->toArray();
 
         $this->io->title(sprintf('Listing "%s" interests', $listData['name']));
 
@@ -78,19 +78,15 @@ class MailchimpListInterestsCommand extends Command
     {
         $url = sprintf('/3.0/lists/%s/interest-categories', $listId);
 
-        $response = $this->mailchimpClient->request('GET', $url);
-
-        return json_decode((string) $response->getBody(), true);
+        return $this->mailchimpClient->request('GET', $url)->toArray();
     }
 
     private function getInterestCategoriesInterests(string $listId, string $categoryId): array
     {
         $url = sprintf('/3.0/lists/%s/interest-categories/%s/interests', $listId, $categoryId);
 
-        $response = $this->mailchimpClient->request('GET', $url, [
+        return $this->mailchimpClient->request('GET', $url, [
             'query' => ['count' => 1000],
-        ]);
-
-        return json_decode((string) $response->getBody(), true);
+        ])->toArray();
     }
 }

@@ -25,11 +25,6 @@ class UnregistrationCommand
         return $this->reasons;
     }
 
-    public function getReasonsAsJson(): string
-    {
-        return \GuzzleHttp\json_encode($this->reasons, \JSON_PRETTY_PRINT);
-    }
-
     public function setReasons(array $reasons): void
     {
         $this->reasons = $reasons;

@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Recaptcha\RecaptchaApiClient;
+use App\Recaptcha\RecaptchaApiClientInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -12,7 +12,7 @@ class RecaptchaValidator extends ConstraintValidator
 {
     private $httpClient;
 
-    public function __construct(RecaptchaApiClient $httpClient)
+    public function __construct(RecaptchaApiClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }

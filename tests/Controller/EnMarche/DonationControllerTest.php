@@ -12,7 +12,7 @@ use App\Repository\DonatorIdentifierRepository;
 use App\Repository\DonatorRepository;
 use App\Repository\TransactionRepository;
 use Goutte\Client as PayboxClient;
-use GuzzleHttp\Client;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
@@ -61,13 +61,9 @@ class DonationControllerTest extends WebTestCase
 
     public function testPayboxPreprodIsHealthy()
     {
-        $client = new Client([
-            'base_uri' => self::PAYBOX_PREPROD_URL,
-            'timeout' => 0,
-            'allow_redirects' => false,
-        ]);
+        $client = HttpClient::createForBaseUri(self::PAYBOX_PREPROD_URL, ['timeout' => 5]);
 
-        if (Response::HTTP_OK === $client->request(Request::METHOD_HEAD)->getStatusCode()) {
+        if (Response::HTTP_OK === $client->request(Request::METHOD_HEAD, '')->getStatusCode()) {
             $this->assertSame('healthy', 'healthy');
         } else {
             $this->markTestSkipped('Paybox preprod server is not available.');

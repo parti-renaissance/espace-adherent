@@ -106,24 +106,6 @@
     "creof/wkt-parser": {
         "version": "2.2.0"
     },
-    "csa/guzzle-bundle": {
-        "version": "3.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "3.0",
-            "ref": "37c8c8a6c9b4365529a27975dced0589fea4bb48"
-        }
-    },
-    "csa/guzzle-cache-middleware": {
-        "version": "v1.0.0"
-    },
-    "csa/guzzle-history-middleware": {
-        "version": "v1.0.0"
-    },
-    "csa/guzzle-stopwatch-middleware": {
-        "version": "v1.0.0"
-    },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
         "recipe": {

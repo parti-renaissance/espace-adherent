@@ -25,7 +25,6 @@ use App\Repository\AdherentRepository;
 use App\Security\AuthenticationUtils;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MembershipController extends AbstractController
@@ -83,7 +83,7 @@ class MembershipController extends AbstractController
 
                 return $this->redirectToRoute('app_membership_complete');
             }
-        } catch (ConnectException $e) {
+        } catch (ExceptionInterface $e) {
             $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
         }
 
@@ -128,7 +128,7 @@ class MembershipController extends AbstractController
 
                 return $this->redirectToRoute('app_membership_pin_interests');
             }
-        } catch (ConnectException $e) {
+        } catch (ExceptionInterface $e) {
             $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
         }
 

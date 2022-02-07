@@ -5,17 +5,19 @@ namespace App\Mandrill;
 use App\Mailer\EmailClientInterface;
 use App\Mailer\EmailTemplateInterface;
 use App\Mailer\Exception\MailerException;
-use GuzzleHttp\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class EmailClient implements EmailClientInterface
 {
-    private $client;
+    private HttpClientInterface $client;
+    private string $apiKey;
 
-    public function __construct(ClientInterface $client)
+    public function __construct(HttpClientInterface $client, string $apiKey)
     {
         $this->client = $client;
+        $this->apiKey = $apiKey;
     }
 
     public function sendEmail(string $email): string
@@ -37,7 +39,7 @@ class EmailClient implements EmailClientInterface
     private function prepareBody(string $email): array
     {
         $body = json_decode($email, true);
-        $body['key'] = $this->client->getConfig('api_key');
+        $body['key'] = $this->apiKey;
 
         return $body;
     }
@@ -48,6 +50,6 @@ class EmailClient implements EmailClientInterface
             throw new MailerException($error);
         }
 
-        return (string) $response->getBody();
+        return $response->getContent();
     }
 }

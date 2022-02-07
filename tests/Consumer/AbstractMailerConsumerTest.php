@@ -8,7 +8,6 @@ use App\Mailer\EmailClientInterface;
 use App\Mailer\Exception\MailerException;
 use App\Repository\EmailRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AbstractMailerConsumerTest extends TestCase
 {
@@ -357,7 +357,7 @@ class AbstractMailerConsumerTest extends TestCase
         $this->assertSame(ConsumerInterface::MSG_REJECT_REQUEUE, $abstractConsumer->execute($message));
     }
 
-    public function testDoExecuteGuzzleException()
+    public function testDoExecuteHttpException()
     {
         $uuid = '0c78bf78-952e-49dc-8f85-611b7f6d4050';
         $messageClass = 'Hello World';
@@ -391,7 +391,7 @@ class AbstractMailerConsumerTest extends TestCase
             ->willReturn($email)
         ;
 
-        $connectException = $this->createMock(ConnectException::class);
+        $connectException = $this->createMock(TransportExceptionInterface::class);
 
         $emailClient = $this->createMock(EmailClientInterface::class);
         $emailClient

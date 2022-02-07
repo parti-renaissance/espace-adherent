@@ -5,12 +5,13 @@ namespace App\Command;
 use App\Entity\ReferentTag;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MailchimpCreateTagFromReferentTagCommand extends Command
 {
@@ -25,7 +26,7 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
 
     public function __construct(
         ReferentTagRepository $referentTagRepository,
-        ClientInterface $mailchimpClient,
+        HttpClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
@@ -63,15 +64,14 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
                     'name' => $tag->getCode(),
                     'static_segment' => [],
                 ]]);
-            } catch (RequestException $e) {
-                $this->io->warning($e->getRequest() ? (string) $e->getResponse()->getBody() : $e->getMessage());
+                $data = $response->toArray();
+            } catch (ExceptionInterface $e) {
+                $this->io->warning($e instanceof HttpExceptionInterface ? $e->getResponse()->getContent() : $e->getMessage());
                 $this->io->progressAdvance();
                 continue;
             }
 
             if (200 === $response->getStatusCode()) {
-                $data = json_decode((string) $response->getBody(), true);
-
                 if (isset($data['id'])) {
                     $tag->setExternalId($data['id']);
                     $this->entityManager->flush();

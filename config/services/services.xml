@@ -192,7 +192,7 @@
 
         <!-- Mailchimp -->
         <service id="App\Mailchimp\Driver">
-            <argument type="service" id="csa_guzzle.client.mailchimp_api" />
+            <argument type="service" id="app.http_client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <tag name="monolog.logger" channel="mailchimp_sync"/>
             <call method="setLogger">
@@ -250,7 +250,7 @@
         </service>
 
         <service id="App\MunicipalSite\ApiDriver">
-            <argument type="service" id="csa_guzzle.client.dpt_api" />
+            <argument type="service" id="app.http_client.dpt_api" />
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>

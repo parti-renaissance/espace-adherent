@@ -67,14 +67,14 @@ use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class AdherentMessageChangeCommandHandlerTest extends TestCase
 {
@@ -140,7 +140,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ],
                 ]]]
             )
-            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+            ->willReturn($this->createMockResponse(json_encode(['id' => 123])))
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -263,10 +263,10 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]]
             )
             ->willReturn(
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id2']))
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id2'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id2']))
             )
         ;
 
@@ -336,7 +336,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ],
                 ]]]
             )
-            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+            ->willReturn($this->createMockResponse(json_encode(['id' => 123])))
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -414,7 +414,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ],
                 ]]]
             )
-            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+            ->willReturn($this->createMockResponse(json_encode(['id' => 123])))
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -483,8 +483,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]]
             )
             ->willReturn(
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id1']))
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1']))
             )
         ;
 
@@ -763,18 +763,18 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]],
             )
             ->willReturn(
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id3'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id3'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id4'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id4'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id5'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id5'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id6'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id6']))
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id2'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id2'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id3'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id3'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id4'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id4'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id5'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id5'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id6'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id6']))
             )
         ;
 
@@ -836,8 +836,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]],
             )
             ->willReturn(
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
             )
         ;
 
@@ -889,8 +889,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]],
             )
             ->willReturn(
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
             )
         ;
 
@@ -959,8 +959,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]],
             )
             ->willReturn(
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
-                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
+                $this->createMockResponse(json_encode(['id' => 'campaign_id1'])),
             )
         ;
 
@@ -980,7 +980,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             'getMunicipalChiefManagedArea' => $this->createConfiguredMock(MunicipalChiefManagedArea::class, ['getCityName' => 'Paris 1er']),
         ]);
 
-        $this->clientMock = $this->createMock(ClientInterface::class);
+        $this->clientMock = $this->createMock(HttpClientInterface::class);
         $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
         $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::uuid4());
     }
@@ -1129,6 +1129,15 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $eventDispatcher->addSubscriber(new UpdateCampaignSubjectSubscriber());
 
         return $eventDispatcher;
+    }
+
+    private function createMockResponse(string $content, int $statusCode = 200): ResponseInterface
+    {
+        return $this->createConfiguredMock(ResponseInterface::class, [
+            'getContent' => $content,
+            'getStatusCode' => $statusCode,
+            'toArray' => json_decode($content, true),
+        ]);
     }
 }
 
