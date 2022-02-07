@@ -136,8 +136,8 @@ class MembershipRequestHandler
     public function terminateMembership(
         Adherent $adherent,
         UnregistrationCommand $command = null,
-        ?string $comment = null,
-        bool $sendMail = true
+        bool $sendMail = true,
+        ?string $comment = null
     ): void {
         $this->unregistrationHandler->handle($adherent, $command, $comment);
 

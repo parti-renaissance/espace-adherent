@@ -29,7 +29,7 @@ class BanManager
         $unregistrationCommand->setComment($reason);
         $unregistrationCommand->setExcludedBy($administrator);
 
-        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, null, false);
+        $this->membershipRequestHandler->terminateMembership($adherent, $unregistrationCommand, false);
 
         $adherentBanned = BannedAdherent::createFromAdherent($adherent);
         $this->entityManager->persist($adherentBanned);
