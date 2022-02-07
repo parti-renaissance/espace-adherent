@@ -78,11 +78,68 @@ class MyTeamMemberControllerTest extends WebTestCase
         $this->assertValidDelegatedAccesses($member, $delegatedAccess);
     }
 
+    public function testCreateMemberWithExistingEMDelegatedAccess(): void
+    {
+        $delegatedAccess = $this->delegatedAccessRepository->findOneBy(['uuid' => LoadDelegatedAccessData::ACCESS_UUID_10]);
+
+        $this->assertNotNull($delegatedAccess);
+        $this->assertNotEmpty($delegatedAccess->getAccesses());
+        $this->assertEmpty($delegatedAccess->getScopeFeatures());
+
+        $accessToken = $this->getAccessToken(
+            LoadClientData::CLIENT_12_UUID,
+            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
+            GrantTypeEnum::PASSWORD,
+            Scope::JEMENGAGE_ADMIN,
+            'referent@en-marche-dev.fr',
+            LoadAdherentData::DEFAULT_PASSWORD
+        );
+
+        $this->client->request(
+            Request::METHOD_POST,
+            '/api/v3/my_team_members?scope=referent',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+            ],
+            json_encode([
+                'team' => '7fab9d6c-71a1-4257-b42b-c6b9b2350a26',
+                'adherent' => '69fcc468-598a-49ac-a651-d4d3ee856446',
+                'role' => 'mobilization_manager',
+                'scope_features' => ['contacts', 'messages'],
+            ])
+        );
+
+        $this->assertResponseStatusCodeSame(201);
+
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->assertArrayHasKey('uuid', $response);
+
+        /** @var Member $member */
+        $member = $this->memberRepository->findOneByUuid($response['uuid']);
+
+        $this->assertNotNull($member);
+        $this->assertNotNull($team = $member->getTeam());
+
+        $delegatedAccess = $this->delegatedAccessRepository->findOneBy([
+            'delegated' => $member->getAdherent(),
+            'delegator' => $team->getOwner(),
+            'type' => $team->getScope(),
+        ]);
+
+        $this->assertSame(LoadDelegatedAccessData::ACCESS_UUID_10, $delegatedAccess->getUuid()->toString());
+        $this->assertNotEmpty($delegatedAccess->getAccesses());
+        $this->assertValidDelegatedAccesses($member, $delegatedAccess);
+    }
+
     public function testEditMember(): void
     {
-        $memberUuid = LoadMyTeamData::MEMBER_1_UUID;
+        $memberUuid = LoadMyTeamData::MEMBER_3_UUID;
         $member = $this->memberRepository->findOneByUuid($memberUuid);
-        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_10);
+        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_7);
 
         $this->assertValidDelegatedAccesses($member, $delegatedAccess);
 
@@ -138,8 +195,8 @@ class MyTeamMemberControllerTest extends WebTestCase
     public function testDeleteMember(): void
     {
         $memberUuid = LoadMyTeamData::MEMBER_1_UUID;
-        $member = $this->memberRepository->findOneByUuid(LoadMyTeamData::MEMBER_1_UUID);
-        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_10);
+        $member = $this->memberRepository->findOneByUuid($memberUuid);
+        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_11);
 
         $this->assertNotNull($member);
         $this->assertNotNull($delegatedAccess);
@@ -164,11 +221,51 @@ class MyTeamMemberControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(204);
 
         $this->manager->clear();
-        $member = $this->memberRepository->findOneByUuid(LoadMyTeamData::MEMBER_1_UUID);
-        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_10);
+        $member = $this->memberRepository->findOneByUuid($memberUuid);
+        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_11);
 
         $this->assertNull($member);
         $this->assertNull($delegatedAccess);
+    }
+
+    public function testDeleteMemberWithExistingDelegatedAccess(): void
+    {
+        $memberUuid = LoadMyTeamData::MEMBER_3_UUID;
+        $member = $this->memberRepository->findOneByUuid($memberUuid);
+        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_7);
+
+        $this->assertNotNull($member);
+        $this->assertNotNull($delegatedAccess);
+        $this->assertNotEmpty($delegatedAccess->getScopeFeatures());
+        $this->assertNotEmpty($delegatedAccess->getAccesses());
+
+        $accessToken = $this->getAccessToken(
+            LoadClientData::CLIENT_12_UUID,
+            'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
+            GrantTypeEnum::PASSWORD,
+            Scope::JEMENGAGE_ADMIN,
+            'referent@en-marche-dev.fr',
+            LoadAdherentData::DEFAULT_PASSWORD
+        );
+
+        $this->client->request(
+            Request::METHOD_DELETE,
+            sprintf('/api/v3/my_team_members/%s?scope=referent', $memberUuid),
+            [],
+            [],
+            ['HTTP_AUTHORIZATION' => "Bearer $accessToken"],
+        );
+
+        $this->assertResponseStatusCodeSame(204);
+
+        $this->manager->clear();
+        $member = $this->memberRepository->findOneByUuid(LoadMyTeamData::MEMBER_3_UUID);
+        $delegatedAccess = $this->delegatedAccessRepository->findOneByUuid(LoadDelegatedAccessData::ACCESS_UUID_7);
+
+        $this->assertNull($member);
+        $this->assertNotNull($delegatedAccess);
+        $this->assertEmpty($delegatedAccess->getScopeFeatures());
+        $this->assertNotEmpty($delegatedAccess->getAccesses());
     }
 
     private function assertValidDelegatedAccesses(Member $member, DelegatedAccess $delegatedAccess): void
@@ -177,8 +274,7 @@ class MyTeamMemberControllerTest extends WebTestCase
         $this->assertNotNull($delegatedAccess);
         $this->assertNotNull($team = $member->getTeam());
         $this->assertSame($member->getAdherent(), $delegatedAccess->getDelegated());
-        $this->assertSame($member->getRole(), $delegatedAccess->getRole());
-        $this->assertSame($member->getScopeFeaturesAsAccesses(), $delegatedAccess->getAccesses());
+        $this->assertSame($member->getScopeFeatures(), $delegatedAccess->getScopeFeatures());
         $this->assertSame($team->getOwner(), $delegatedAccess->getDelegator());
         $this->assertSame($team->getScope(), $delegatedAccess->getType());
     }

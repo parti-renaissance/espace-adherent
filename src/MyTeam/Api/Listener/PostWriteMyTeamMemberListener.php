@@ -5,8 +5,8 @@ namespace App\MyTeam\Api\Listener;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
+use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\DelegatedAccessRepository;
-use App\Scope\FeatureEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -43,10 +43,8 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         if ('delete' === $request->get('_api_item_operation_name')) {
             /** @var Member $member */
             $member = $event->getRequest()->get('data');
-            $delegatedAccess = $this->findDelegatedAccess($member);
-            if ($delegatedAccess) {
-                $this->entityManager->remove($delegatedAccess);
-                $this->entityManager->flush();
+            if ($delegatedAccess = $this->findDelegatedAccess($member)) {
+                $this->removeDelegatedAccess($delegatedAccess);
             }
 
             return;
@@ -68,19 +66,27 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         $delegatedAccess = $this->findDelegatedAccess($member);
         if ($delegatedAccess) {
             if ($member->getScopeFeatures()) {
-                $delegatedAccess->setAccesses(array_map(function (string $feature) {
-                    return array_flip(FeatureEnum::DELEGATED_ACCESSES_MAPPING)[$feature];
-                }, $member->getScopeFeatures()));
+                $delegatedAccess->setScopeFeatures($member->getScopeFeatures());
                 $this->entityManager->flush();
 
                 return;
             }
 
-            $this->entityManager->remove($delegatedAccess);
-            $this->entityManager->flush();
+            $this->removeDelegatedAccess($delegatedAccess);
         } elseif ($member->getScopeFeatures()) {
             $this->createDelegatedAccess($member);
         }
+    }
+
+    private function removeDelegatedAccess(DelegatedAccess $delegatedAccess): void
+    {
+        if (0 === \count($delegatedAccess->getAccesses())) {
+            $this->entityManager->remove($delegatedAccess);
+        } else {
+            $delegatedAccess->setScopeFeatures([]);
+        }
+
+        $this->entityManager->flush();
     }
 
     private function findDelegatedAccess(Member $member): ?DelegatedAccess
@@ -96,12 +102,19 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
 
     private function createDelegatedAccess(Member $member): void
     {
+        $delegatedAccess = $this->findDelegatedAccess($member);
+        if ($delegatedAccess) {
+            $delegatedAccess->setScopeFeatures($member->setScopeFeatures());
+
+            return;
+        }
+
         $delegatedAccess = new DelegatedAccess();
         $delegatedAccess->setDelegator($member->getTeam()->getOwner());
         $delegatedAccess->setDelegated($member->getAdherent());
         $delegatedAccess->setType($member->getTeam()->getScope());
-        $delegatedAccess->setRole($member->getRole());
-        $delegatedAccess->setAccesses($member->getScopeFeaturesAsAccesses());
+        $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()]);
+        $delegatedAccess->setScopeFeatures($member->getScopeFeatures());
 
         $this->entityManager->persist($delegatedAccess);
         $this->entityManager->flush();

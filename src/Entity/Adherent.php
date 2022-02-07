@@ -39,6 +39,7 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
+use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -2311,6 +2312,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isDelegatedCandidate()
             || $this->isCorrespondent()
             || $this->hasDelegatedAccess(DelegatedAccess::ACCESS_MESSAGES)
+            || $this->hasDelegatedScopeFeature(FeatureEnum::MESSAGES)
         ;
     }
 
@@ -2590,6 +2592,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
             if (\in_array($access, $delegatedAccess->getAccesses())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasDelegatedScopeFeature(string $feature): bool
+    {
+        foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
+            if (\in_array($feature, $delegatedAccess->getScopeFeatures())) {
                 return true;
             }
         }

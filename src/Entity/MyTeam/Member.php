@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Scope\FeatureEnum;
 use App\Validator\MyTeamMember as AssertMemberValid;
 use App\Validator\MyTeamMemberScopeFeatures as AssertScopeFeaturesValid;
 use Doctrine\ORM\Mapping as ORM;
@@ -157,13 +156,6 @@ class Member
     public function setScopeFeatures(array $scopeFeatures): void
     {
         $this->scopeFeatures = $scopeFeatures;
-    }
-
-    public function getScopeFeaturesAsAccesses(): array
-    {
-        return array_map(function (string $feature) {
-            return array_flip(FeatureEnum::DELEGATED_ACCESSES_MAPPING)[$feature];
-        }, $this->scopeFeatures);
     }
 
     public function __toString(): string

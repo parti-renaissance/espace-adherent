@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
+use App\MyTeam\RoleEnum;
 use App\Scope\FeatureEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -21,11 +22,12 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     public const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
     public const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
     public const ACCESS_UUID_9 = '2c0107d4-75d6-4874-ad38-2060112c0049';
-    public const ACCESS_UUID_10 = 'ef339f8e-e9d0-4f22-b98f-1a7526246cad';
-    public const ACCESS_UUID_11 = '433e368f-fd4e-4a24-9f01-b667f8e3b9f2';
-    public const ACCESS_UUID_12 = '6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec';
-    public const ACCESS_UUID_13 = '2c6134f7-4312-45c4-9ab7-89f2b0731f86';
-    public const ACCESS_UUID_14 = '689757d2-dea5-49d1-95fe-281fc860ff77';
+    public const ACCESS_UUID_10 = '13208e84-450d-4d44-86e7-fb5f0b7e642c';
+    public const ACCESS_UUID_11 = 'ef339f8e-e9d0-4f22-b98f-1a7526246cad';
+    public const ACCESS_UUID_12 = '433e368f-fd4e-4a24-9f01-b667f8e3b9f2';
+    public const ACCESS_UUID_13 = '6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec';
+    public const ACCESS_UUID_14 = '2c6134f7-4312-45c4-9ab7-89f2b0731f86';
+    public const ACCESS_UUID_15 = '689757d2-dea5-49d1-95fe-281fc860ff77';
 
     public function load(ObjectManager $manager)
     {
@@ -95,9 +97,24 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
         $delegatedAccess7->setRole('Collaborateur parlementaire');
         $delegatedAccess7->setType('referent');
-        $delegatedAccess7->setAccesses(array_flip(FeatureEnum::DELEGATED_ACCESSES_MAPPING));
+        $delegatedAccess7->setAccesses([
+            DelegatedAccess::ACCESS_ADHERENTS,
+            DelegatedAccess::ACCESS_MESSAGES,
+        ]);
+        $delegatedAccess7->setScopeFeatures(FeatureEnum::AVAILABLE_FOR_DELEGATED_ACCESSES);
 
         $manager->persist($delegatedAccess7);
+
+        $delegatedAccess10 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_10));
+        $delegatedAccess10->setDelegated($this->getReference('municipal-manager-lille')); // jean-claude.dusse@example.fr
+        $delegatedAccess10->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
+        $delegatedAccess10->setRole('Responsable Digital');
+        $delegatedAccess10->setType('referent');
+        $delegatedAccess10->setAccesses([
+            DelegatedAccess::ACCESS_ADHERENTS,
+        ]);
+
+        $manager->persist($delegatedAccess10);
 
         // access from candidate
         $delegatedAccess8 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_8));
@@ -133,11 +150,11 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
 
         // access for MyTeam members
         $members = [
-            self::ACCESS_UUID_10 => 'my_team_member_1_1',
-            self::ACCESS_UUID_11 => 'my_team_member_1_2',
-            self::ACCESS_UUID_12 => 'my_team_member_2_1',
-            self::ACCESS_UUID_13 => 'my_team_member_2_2',
-            self::ACCESS_UUID_14 => 'my_team_member_3_1',
+            self::ACCESS_UUID_11 => 'my_team_member_1_1',
+            self::ACCESS_UUID_12 => 'my_team_member_1_2',
+            self::ACCESS_UUID_13 => 'my_team_member_2_1',
+            self::ACCESS_UUID_14 => 'my_team_member_2_2',
+            self::ACCESS_UUID_15 => 'my_team_member_3_1',
         ];
         foreach ($members as $uuid => $reference) {
             /** @var Member $member */
@@ -146,9 +163,9 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             $delegatedAccess = new DelegatedAccess(Uuid::fromString($uuid));
             $delegatedAccess->setDelegated($member->getAdherent());
             $delegatedAccess->setDelegator($team->getOwner());
-            $delegatedAccess->setRole($member->getRole());
+            $delegatedAccess->setRole(RoleEnum::LABELS[$member->getRole()]);
             $delegatedAccess->setType($team->getScope());
-            $delegatedAccess->setAccesses($member->getScopeFeaturesAsAccesses());
+            $delegatedAccess->setScopeFeatures($member->getScopeFeatures());
             $manager->persist($delegatedAccess);
         }
 
