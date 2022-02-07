@@ -26,7 +26,7 @@ class UnregistrationHandler
         if ($command) {
             $unregistration = UnregistrationFactory::createFromUnregistrationCommandAndAdherent($command, $adherent);
         } else {
-            $unregistration = Unregistration::createFromAdherent($adherent, $comment);
+            $unregistration = $comment ? Unregistration::createFromAdherent($adherent, $comment) : Unregistration::createFromAdherent($adherent);
         }
 
         $adherent->markAsToDelete();
