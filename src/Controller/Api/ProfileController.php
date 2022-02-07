@@ -114,7 +114,7 @@ class ProfileController extends AbstractController
         TokenRevocationAuthority $tokenRevocationAuthority,
         UserInterface $user
     ): Response {
-        $handler->terminateMembership($user, null, false);
+        $handler->terminateMembership($user, null, 'Compte supprimé par l\'adhérent', false);
         $tokenRevocationAuthority->revokeUserTokens($user);
 
         return $this->json('OK');
