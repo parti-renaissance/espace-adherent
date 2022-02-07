@@ -130,12 +130,14 @@ class Unregistration
         $this->excludedBy = $admin;
     }
 
-    public static function createFromAdherent(Adherent $adherent): self
-    {
+    public static function createFromAdherent(
+        Adherent $adherent,
+        string $comment = 'Adhérent supprimé par l\'administrateur'
+    ): self {
         return new self(
             $adherent->getUuid(),
             ['autre'],
-            'Adhérent supprimé par l\'administrateur',
+            $comment,
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
             $adherent->isAdherent(),

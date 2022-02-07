@@ -21,12 +21,12 @@ class UnregistrationHandler
         $this->entityManager = $entityManager;
     }
 
-    public function handle(Adherent $adherent, UnregistrationCommand $command = null): void
+    public function handle(Adherent $adherent, UnregistrationCommand $command = null, ?string $comment = null): void
     {
         if ($command) {
             $unregistration = UnregistrationFactory::createFromUnregistrationCommandAndAdherent($command, $adherent);
         } else {
-            $unregistration = Unregistration::createFromAdherent($adherent);
+            $unregistration = $comment ? Unregistration::createFromAdherent($adherent, $comment) : Unregistration::createFromAdherent($adherent);
         }
 
         $adherent->markAsToDelete();
