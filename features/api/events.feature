@@ -16,6 +16,27 @@ Feature:
       # scheduled and private
       | 47e5a8bf-8be1-4c38-aae8-b41e6908a1b3  |
 
+  Scenario: As a logged-in Jemarche App user I can get events of my borough
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+    And I send a "GET" request to "/api/v3/events"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 8 |
+
+  Scenario: As a logged-in Jemarche App user I can get events of my department
+    When I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
+    And I send a "GET" request to "/api/v3/events"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 2 |
+
+  Scenario: As a logged-in Jemarche App user I cannot get events if no event in my department or borough
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "J'écoute" with scope "jemarche_app"
+    And I send a "GET" request to "/api/v3/events"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 0 |
+
   Scenario: As a logged-in user I cannot get not published event
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
     When I add "Content-Type" header equal to "application/json"

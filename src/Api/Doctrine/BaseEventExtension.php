@@ -8,6 +8,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
+use App\Repository\Event\BaseEventRepository;
+use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -16,11 +18,19 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
 {
     private Security $security;
     private AuthorizationCheckerInterface $authorizationChecker;
+    private ZoneRepository $zoneRepository;
+    private BaseEventRepository $baseEventRepository;
 
-    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        Security $security,
+        AuthorizationCheckerInterface $authorizationChecker,
+        ZoneRepository $zoneRepository,
+        BaseEventRepository $baseEventRepository
+    ) {
         $this->security = $security;
         $this->authorizationChecker = $authorizationChecker;
+        $this->zoneRepository = $zoneRepository;
+        $this->baseEventRepository = $baseEventRepository;
     }
 
     public function applyToItem(
@@ -81,6 +91,23 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
         }
 
         $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
+
+        /** @var $user Adherent */
+        if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
+            && $user = $this->security->getUser()) {
+            $zones = $this->zoneRepository->findDepartmentOrBoroughOfAdherent($user);
+
+            $alias = $queryBuilder->getRootAliases()[0];
+            $this->baseEventRepository->withGeoZones(
+                $zones,
+                $queryBuilder,
+                $alias,
+                BaseEvent::class,
+                'e2',
+                'zones',
+                'z2'
+            );
+        }
     }
 
     private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, string $operationName = null): void
