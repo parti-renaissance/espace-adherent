@@ -2,7 +2,6 @@
 
 namespace App\Scope;
 
-use App\Entity\MyTeam\DelegatedAccess;
 use MyCLabs\Enum\Enum;
 
 class FeatureEnum extends Enum
@@ -37,21 +36,6 @@ class FeatureEnum extends Enum
         self::TEAM,
         self::PHONING_CAMPAIGN,
         self::SURVEY,
-    ];
-
-    public const DELEGATED_ACCESSES_MAPPING = [
-        DelegatedAccess::ACCESS_ADHERENTS => self::CONTACTS,
-        DelegatedAccess::ACCESS_MESSAGES => self::MESSAGES,
-        DelegatedAccess::ACCESS_EVENTS => self::EVENTS,
-        DelegatedAccess::ACCESS_JECOUTE => self::MOBILE_APP,
-        DelegatedAccess::ACCESS_DASHBOARD => self::DASHBOARD,
-        DelegatedAccess::ACCESS_MOBILE_APP => self::MOBILE_APP,
-        DelegatedAccess::ACCESS_NEWS => self::NEWS,
-        DelegatedAccess::ACCESS_ELECTIONS => self::ELECTIONS,
-        DelegatedAccess::ACCESS_PAP => self::PAP,
-        DelegatedAccess::ACCESS_TEAM => self::TEAM,
-        DelegatedAccess::ACCESS_PHONING_CAMPAIGN => self::PHONING_CAMPAIGN,
-        DelegatedAccess::ACCESS_SURVEY => self::SURVEY,
     ];
 
     public const DELEGATED_ACCESSES_BY_DEFAULT = [

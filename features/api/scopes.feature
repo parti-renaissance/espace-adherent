@@ -316,12 +316,7 @@ Feature:
       "apps": [
         "data_corner"
       ],
-      "features": [
-        "dashboard",
-        "contacts",
-        "messages",
-        "mobile_app"
-      ],
+      "features": [],
       "delegated_access": {
           "delegator": {
               "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
@@ -331,6 +326,81 @@ Feature:
           "type": "senator",
           "role": "Collaborateur parlementaire"
       }
+    }
+    """
+
+  Scenario:
+    When I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/profile/me/scope/delegated_08f40730-d807-4975-8773-69d8fae1da74"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "code": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
+        "name": "Référent délégué",
+        "zones": [
+            {
+                "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
+                "code": "13",
+                "name": "Bouches-du-Rhône"
+            },
+            {
+                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                "code": "59",
+                "name": "Nord"
+            },
+            {
+                "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
+                "code": "76",
+                "name": "Seine-Maritime"
+            },
+            {
+                "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                "code": "77",
+                "name": "Seine-et-Marne"
+            },
+            {
+                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "code": "92",
+                "name": "Hauts-de-Seine"
+            },
+            {
+                "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
+                "code": "ES",
+                "name": "Espagne"
+            },
+            {
+                "uuid": "e3efcea1-906e-11eb-a875-0242ac150002",
+                "code": "CH",
+                "name": "Suisse"
+            }
+        ],
+        "apps": [
+            "data_corner"
+        ],
+        "features": [
+            "dashboard",
+            "contacts",
+            "messages",
+            "events",
+            "mobile_app",
+            "news",
+            "elections",
+            "pap",
+            "team",
+            "phoning_campaign",
+            "survey"
+        ],
+        "delegated_access": {
+            "delegator": {
+                "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                "first_name": "Referent",
+                "last_name": "Referent"
+            },
+            "role": "Collaborateur parlementaire",
+            "type": "referent"
+        }
     }
     """
 

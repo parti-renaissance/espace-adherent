@@ -73,15 +73,6 @@ class DelegatedAccess
     public const ACCESS_ELECTED_REPRESENTATIVES = 'elected_representatives';
     public const ACCESS_FILES = 'files';
     public const ACCESS_INSTITUTIONAL_EVENTS = 'institutional_events';
-    // access corresponding to scope features
-    public const ACCESS_DASHBOARD = 'dashboard';
-    public const ACCESS_MOBILE_APP = 'mobile_app';
-    public const ACCESS_NEWS = 'news';
-    public const ACCESS_ELECTIONS = 'elections';
-    public const ACCESS_PAP = 'pap';
-    public const ACCESS_TEAM = 'team';
-    public const ACCESS_PHONING_CAMPAIGN = 'phoning_campaign';
-    public const ACCESS_SURVEY = 'survey';
 
     public const ACCESSES = [
         self::ACCESS_MESSAGES,
@@ -121,6 +112,13 @@ class DelegatedAccess
      * @ORM\Column(type="simple_array", nullable=true)
      */
     private $accesses;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $scopeFeatures;
 
     /**
      * @var Committee[]|Collection
@@ -189,6 +187,16 @@ class DelegatedAccess
     public function setAccesses(array $accesses): void
     {
         $this->accesses = $accesses;
+    }
+
+    public function getScopeFeatures(): array
+    {
+        return $this->scopeFeatures ? array_filter($this->scopeFeatures) : [];
+    }
+
+    public function setScopeFeatures(array $scopeFeatures): void
+    {
+        $this->scopeFeatures = $scopeFeatures;
     }
 
     public function getRestrictedCommittees()

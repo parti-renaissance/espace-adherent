@@ -456,6 +456,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
+        $adherent17->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350'));
         $adherent17->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-lille', $adherent17);
