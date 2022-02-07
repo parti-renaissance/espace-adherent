@@ -75,97 +75,31 @@ class CampaignRepository extends ServiceEntityRepository
         $queryBuilder->andWhere($condition);
     }
 
-    public function countActiveCampaign(): int
+    public function getActiveCampaignIds(): array
     {
-        return $this->createQueryBuilder('campaign')
-            ->select('COUNT(1)')
-            ->where('campaign.finishAt IS NOT NULL AND campaign.finishAt > :now')
+        return array_map('intval', array_column($this->createQueryBuilder('campaign')
+            ->select('campaign.id')
+            ->where('campaign.beginAt < :now AND campaign.finishAt > :now')
             ->setParameter('now', new \DateTime())
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getScalarResult(), 'id'))
         ;
     }
 
-    public function findActiveCampaignsVotePlaceIds(): array
+    /**
+     * @return Campaign[]
+     */
+    public function findUnassociatedCampaigns(\DateTime $startDate): array
     {
-        $activeCampaign = $this->createQueryBuilder('campaign')
-            ->innerJoin('campaign.votePlaces', 'votePlace')
-            ->where('campaign.finishAt IS NOT NULL AND campaign.finishAt > :now')
-            ->setParameter('now', new \DateTime())
+        return $this->createQueryBuilder('campaign')
+            ->where('campaign.associated = :false')
+            ->andWhere('campaign.beginAt <= :date AND campaign.finishAt > :date')
+            ->setParameters([
+                'date' => $startDate,
+                'false' => false,
+            ])
             ->getQuery()
-            ->getSingleResult()
+            ->getResult()
         ;
-
-        $queryBuilder = $this->createQueryBuilder('campaign')
-            ->select('DISTINCT votePlace.id')
-            ->innerJoin('campaign.votePlaces', 'votePlace')
-            ->where('campaign.finishAt IS NOT NULL AND campaign.finishAt > :now')
-            ->setParameter('now', new \DateTime())
-        ;
-
-        if ($activeCampaign) {
-            if ($deltaPredictionAndResultMin2017 = $activeCampaign->getDeltaPredictionAndResultMin2017()) {
-                $queryBuilder
-                    ->andWhere('votePlace.deltaPredictionAndResult2017 >= :deltaPredictionAndResultMin2017')
-                    ->setParameter('deltaPredictionAndResultMin2017', $deltaPredictionAndResultMin2017)
-                ;
-            }
-
-            if ($deltaPredictionAndResultMax2017 = $activeCampaign->getDeltaPredictionAndResultMax2017()) {
-                $queryBuilder
-                    ->andWhere('votePlace.deltaPredictionAndResult2017 <= :deltaPredictionAndResultMax2017')
-                    ->setParameter('deltaPredictionAndResultMax2017', $deltaPredictionAndResultMax2017)
-                ;
-            }
-
-            if ($deltaAveragePredictionsMin = $activeCampaign->getDeltaAveragePredictionsMin()) {
-                $queryBuilder
-                    ->andWhere('votePlace.deltaAveragePredictions >= :deltaAveragePredictionsMin')
-                    ->setParameter('deltaAveragePredictionsMin', $deltaAveragePredictionsMin)
-                ;
-            }
-
-            if ($deltaAveragePredictionsMax = $activeCampaign->getDeltaAveragePredictionsMax()) {
-                $queryBuilder
-                    ->andWhere('votePlace.deltaAveragePredictions <= :deltaAveragePredictionsMax')
-                    ->setParameter('deltaAveragePredictionsMax', $deltaAveragePredictionsMax)
-                ;
-            }
-
-            if ($abstentionsMin2017 = $activeCampaign->getAbstentionsMin2017()) {
-                $queryBuilder
-                    ->andWhere('votePlace.abstentions2017 >= :abstentionsMin2017')
-                    ->setParameter('abstentionsMin2017', $abstentionsMin2017)
-                ;
-            }
-
-            if ($abstentionsMax2017 = $activeCampaign->getAbstentionsMax2017()) {
-                $queryBuilder
-                    ->andWhere('votePlace.abstentions2017 <= :abstentionsMax2017')
-                    ->setParameter('abstentionsMax2017', $abstentionsMax2017)
-                ;
-            }
-
-            if ($misregistrationsPriorityMin = $activeCampaign->getMisregistrationsPriorityMin()) {
-                $queryBuilder
-                    ->andWhere('votePlace.misregistrationsPriority >= :misregistrationsPriorityMin')
-                    ->setParameter('misregistrationsPriorityMin', $misregistrationsPriorityMin)
-                ;
-            }
-
-            if ($misregistrationsPriorityMax = $activeCampaign->getMisregistrationsPriorityMax()) {
-                $queryBuilder
-                    ->andWhere('votePlace.misregistrationsPriority <= :misregistrationsPriorityMax')
-                    ->setParameter('misregistrationsPriorityMax', $misregistrationsPriorityMax)
-                ;
-            }
-        }
-
-        return array_column(
-            $queryBuilder
-                ->getQuery()
-                ->getArrayResult(),
-            'id'
-        );
     }
 }
