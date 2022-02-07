@@ -742,6 +742,22 @@
     "sabre/xml": {
         "version": "1.5.0"
     },
+    "scheb/2fa-bundle": {
+        "version": "5.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "0a83961ef50ff91812b229a6f0caf28431d94aec"
+        },
+        "files": [
+            "config/packages/scheb_2fa.yaml",
+            "config/routes/scheb_2fa.yaml"
+        ]
+    },
+    "scheb/2fa-google-authenticator": {
+        "version": "v5.13.1"
+    },
     "scheb/two-factor-bundle": {
         "version": "3.16",
         "recipe": {
