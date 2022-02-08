@@ -24,7 +24,7 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command
     {
         $this
             ->setDescription('PAP: associate active campaign to building')
-            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in minutes for designation selection (1 min by default)', 1)
+            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in minutes for campaign selection (1 min by default)', 1)
         ;
     }
 
