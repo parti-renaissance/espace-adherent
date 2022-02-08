@@ -8,6 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
+use App\Repository\Event\BaseEventRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -16,11 +17,16 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
 {
     private Security $security;
     private AuthorizationCheckerInterface $authorizationChecker;
+    private BaseEventRepository $baseEventRepository;
 
-    public function __construct(Security $security, AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        Security $security,
+        AuthorizationCheckerInterface $authorizationChecker,
+        BaseEventRepository $baseEventRepository
+    ) {
         $this->security = $security;
         $this->authorizationChecker = $authorizationChecker;
+        $this->baseEventRepository = $baseEventRepository;
     }
 
     public function applyToItem(
@@ -81,6 +87,23 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
         }
 
         $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
+
+        /** @var $user Adherent */
+        if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
+            && $user = $this->security->getUser()) {
+            $alias = $queryBuilder->getRootAliases()[0];
+            if ($zone = $user->getParisBoroughOrDepartment()) {
+                $this->baseEventRepository->withGeoZones(
+                    [$zone],
+                    $queryBuilder,
+                    $alias,
+                    BaseEvent::class,
+                    'e2',
+                    'zones',
+                    'z2'
+                );
+            }
+        }
     }
 
     private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, string $operationName = null): void

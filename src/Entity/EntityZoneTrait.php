@@ -102,4 +102,19 @@ trait EntityZoneTrait
             return $zone->getParents();
         }, $this->zones->toArray()));
     }
+
+    public function getParisBoroughOrDepartment(): ?Zone
+    {
+        $parisBoroughs = array_filter($this->zones->toArray(), function (Zone $zone) {
+            return Zone::BOROUGH === $zone->getType() && str_starts_with($zone->getCode(), '75');
+        });
+
+        if ($parisBorough = 1 === \count($parisBoroughs) ? current($parisBoroughs) : null) {
+            return $parisBorough;
+        }
+
+        $departments = $this->getParentZonesOfType(Zone::DEPARTMENT);
+
+        return 1 === \count($departments) ? current($departments) : null;
+    }
 }
