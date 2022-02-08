@@ -459,7 +459,6 @@ class AdherentControllerTest extends WebTestCase
                     SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
                     SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
                     SubscriptionTypeEnum::REFERENT_EMAIL,
-                    SubscriptionTypeEnum::CORRESPONDENT_EMAIL,
                     SubscriptionTypeEnum::DEPUTY_EMAIL,
                 ]),
             ],
