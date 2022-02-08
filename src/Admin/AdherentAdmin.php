@@ -46,11 +46,14 @@ use App\Membership\MandatesEnum;
 use App\Membership\UserEvents;
 use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
+use App\Utils\PhoneNumberUtils;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -64,6 +67,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -90,6 +94,8 @@ class AdherentAdmin extends AbstractAdmin
     private $politicalCommitteeManager;
     /** @var InstanceQualityRepository */
     private $instanceQualityRepository;
+    private LoggerInterface $logger;
+
     /**
      * State of adherent data before update
      *
@@ -103,13 +109,15 @@ class AdherentAdmin extends AbstractAdmin
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
-        PoliticalCommitteeManager $politicalCommitteeManager
+        PoliticalCommitteeManager $politicalCommitteeManager,
+        LoggerInterface $logger
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
         $this->politicalCommitteeManager = $politicalCommitteeManager;
+        $this->logger = $logger;
     }
 
     protected function configureRoutes(RouteCollection $collection)
@@ -1071,22 +1079,65 @@ class AdherentAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    public function getDataSourceIterator()
     {
-        return [
-            'UUID' => 'uuid',
-            'Email' => 'emailAddress',
-            'Prénom' => 'firstName',
-            'Nom' => 'lastName',
-            'Date de naissance' => 'birthdate',
-            'Téléphone' => 'phone',
-            'Inscrit(e) le' => 'registeredAt',
-            'Sexe' => 'gender',
-            'Adresse' => 'postAddress.address',
-            'Code postal' => 'postAddress.postalCode',
-            'Ville' => 'postAddress.cityName',
-            'Pays' => 'postAddress.country',
-        ];
+        PhpConfigurator::disableMemoryLimit();
+
+        return new IteratorCallbackSourceIterator(
+            $this->getAdherentIterator(),
+            function (array $adherent) {
+                /** @var Adherent $adherent */
+                $adherent = $adherent[0];
+
+                try {
+                    $phone = PhoneNumberUtils::format($adherent->getPhone());
+                    $birthDate = $adherent->getBirthdate();
+                    $registeredAt = $adherent->getRegisteredAt();
+
+                    return [
+                        'UUID' => $adherent->getUuid(),
+                        'Email' => $adherent->getEmailAddress(),
+                        'Prénom' => $adherent->getFirstName(),
+                        'Nom' => $adherent->getLastName(),
+                        'Date de naissance' => $birthDate ? $birthDate->format('Y/m/d H:i:s') : null,
+                        'Téléphone' => $phone,
+                        'Inscrit(e) le' => $registeredAt ? $registeredAt->format('Y/m/d H:i:s') : null,
+                        'Sexe' => $adherent->getGender(),
+                        'Adresse' => $adherent->getAddress(),
+                        'Code postal' => $adherent->getPostalCode(),
+                        'Ville' => $adherent->getCityName(),
+                        'Pays' => $adherent->getCountry(),
+                    ];
+                } catch (\Exception $e) {
+                    $this->logger->error(
+                        sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
+                        ['exception' => $e]
+                    );
+
+                    return [
+                        'UUID' => $adherent->getUuid(),
+                        'Email' => $adherent->getEmailAddress(),
+                    ];
+                }
+            }
+        );
+    }
+
+    private function getAdherentIterator(): \Iterator
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $query = $datagrid->getQuery();
+        $alias = current($query->getRootAliases());
+
+        $query
+            ->select("DISTINCT $alias")
+        ;
+        $query->setFirstResult(0);
+        $query->setMaxResults(null);
+
+        return $query->getQuery()->iterate();
     }
 
     /** @required */
