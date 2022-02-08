@@ -1109,7 +1109,7 @@ class AdherentAdmin extends AbstractAdmin
                         'Pays' => $adherent->getCountry(),
                     ];
                 } catch (\Exception $e) {
-                    $this->logger->warning(
+                    $this->logger->error(
                         sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
                         ['exception' => $e]
                     );
