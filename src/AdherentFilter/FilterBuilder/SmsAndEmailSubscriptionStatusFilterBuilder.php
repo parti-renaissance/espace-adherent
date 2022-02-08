@@ -9,7 +9,7 @@ class SmsAndEmailSubscriptionStatusFilterBuilder implements AdherentFilterBuilde
 {
     public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($feature, [FeatureEnum::CONTACTS, FeatureEnum::PHONING], true);
+        return FeatureEnum::CONTACTS === $feature;
     }
 
     public function build(string $scope, string $feature = null): array

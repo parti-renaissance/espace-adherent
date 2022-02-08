@@ -164,7 +164,6 @@ Feature:
         "news",
         "elections",
         "ripostes",
-        "phoning",
         "pap",
         "team",
         "phoning_campaign",
