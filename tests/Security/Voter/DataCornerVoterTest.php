@@ -3,6 +3,7 @@
 namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
+use App\Repository\MyTeam\MemberRepository;
 use App\Repository\ScopeRepository;
 use App\Scope\ScopeEnum;
 use App\Security\Voter\AbstractAdherentVoter;
@@ -21,8 +22,9 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
             ScopeEnum::SENATOR,
             ScopeEnum::DEPUTY,
         ]]);
+        $memberRepository = $this->createConfiguredMock(MemberRepository::class, ['isMemberWithScopeFeatures' => []]);
 
-        return new DataCornerVoter($scopeRepository);
+        return new DataCornerVoter($scopeRepository, $memberRepository);
     }
 
     /**
