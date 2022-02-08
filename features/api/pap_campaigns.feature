@@ -753,22 +753,22 @@ Feature:
     """
     [
         {
-            "title": "Campagne de 10 jours suivants",
-            "brief": "**Campagne** de 10 jours suivants",
-            "goal": 600,
-            "begin_at": "@string@.isDateTime()",
-            "finish_at": "@string@.isDateTime()",
-            "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-            "visibility": "national",
-            "zone": null
-        },
-        {
             "title": "Campagne de 5 jours suivants",
             "brief": "**Campagne** de 5 jours suivants",
             "goal": 500,
             "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
             "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
+            "visibility": "national",
+            "zone": null
+        },
+        {
+            "title": "Campagne de 10 jours suivants",
+            "brief": "**Campagne** de 10 jours suivants",
+            "goal": 600,
+            "begin_at": "@string@.isDateTime()",
+            "finish_at": "@string@.isDateTime()",
+            "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
             "visibility": "national",
             "zone": null
         }

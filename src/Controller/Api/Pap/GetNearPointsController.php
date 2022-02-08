@@ -23,9 +23,8 @@ class GetNearPointsController extends AbstractController
         AddressRepository $addressRepository,
         CampaignRepository $campaignRepository
     ): Response {
-        if (!$request->query->has('latitude') || !$request->query->has('longitude')
-        ) {
-            throw new BadRequestHttpException('Some required parameters are missing. (latitude, longitude)');
+        if (!$request->query->has('latitude') || !$request->query->has('longitude')) {
+            return $this->json('Some required parameters are missing. (latitude, longitude)', Response::HTTP_BAD_REQUEST);
         }
 
         $latitudeDelta = $request->query->has('latitudeDelta') ? $request->query->filter('latitudeDelta', null, \FILTER_VALIDATE_FLOAT) : null;
@@ -33,21 +32,17 @@ class GetNearPointsController extends AbstractController
 
         $limit = $request->query->getInt('limit', self::MAX_LIMIT);
 
-        if (0 === $campaignRepository->countActiveCampaign()) {
-            return $this->json([], Response::HTTP_OK);
-        }
-
-        if (empty($votePlaceIds = $campaignRepository->findActiveCampaignsVotePlaceIds())) {
+        if (!$activeCampaignIds = $campaignRepository->getActiveCampaignIds()) {
             return $this->json([], Response::HTTP_OK);
         }
 
         return $this->json($addressRepository->findNear(
+            $activeCampaignIds,
             $request->query->filter('latitude', null, \FILTER_VALIDATE_FLOAT),
             $request->query->filter('longitude', null, \FILTER_VALIDATE_FLOAT),
             $latitudeDelta,
             $longitudeDelta,
-            $limit > self::MAX_LIMIT ? self::MAX_LIMIT : $limit,
-            $votePlaceIds
+            $limit > self::MAX_LIMIT ? self::MAX_LIMIT : $limit
         ), Response::HTTP_OK, [], ['groups' => ['pap_address_list']]);
     }
 

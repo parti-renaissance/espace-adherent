@@ -26,7 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\CampaignRepository")
- * @ORM\Table(name="pap_campaign")
+ * @ORM\Table(name="pap_campaign", indexes={
+ *     @ORM\Index(columns={"begin_at", "finish_at"}),
+ * })
  *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
@@ -238,6 +240,11 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $misregistrationsPriorityMax = null;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $associated = false;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -498,5 +505,10 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     public function isIndexable(): bool
     {
         return true;
+    }
+
+    public function setAssociated(bool $value): void
+    {
+        $this->associated = $value;
     }
 }
