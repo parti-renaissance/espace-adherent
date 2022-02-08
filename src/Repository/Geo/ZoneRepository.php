@@ -2,7 +2,6 @@
 
 namespace App\Repository\Geo;
 
-use App\Entity\Adherent;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
@@ -418,25 +417,6 @@ class ZoneRepository extends ServiceEntityRepository
             ->where('FIND_IN_SET(:tag, zone.tags) > 0')
             ->orderBy('zone.name')
             ->setParameter('tag', $tag)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findDepartmentOrBoroughOfAdherent(Adherent $adherent): array
-    {
-        return $this->createQueryBuilder('zone')
-            ->leftJoin('zone.children', 'children', Join::WITH, 'zone.type = :dpt AND zone.code != :dpt_paris')
-            ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'zone MEMBER OF adherent.zones OR children MEMBER OF adherent.zones')
-            ->where('(children.id IS NOT NULL) OR (zone.type = :borough AND zone.name LIKE :paris)')
-            ->andWhere('adherent = :adherent')
-            ->setParameters([
-                'adherent' => $adherent,
-                'dpt' => Zone::DEPARTMENT,
-                'borough' => Zone::BOROUGH,
-                'dpt_paris' => '75',
-                'paris' => 'Paris %',
-            ])
             ->getQuery()
             ->getResult()
         ;

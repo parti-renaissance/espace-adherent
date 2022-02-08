@@ -104,24 +104,12 @@ class GetCampaignRankingController extends AbstractController
     private function createDepartmentalRanking(Campaign $campaign, Adherent $adherent): array
     {
         $adherentZoneIds = [];
-        $departments = $adherent->getParentZonesOfType(Zone::DEPARTMENT);
-        $zone = 1 === \count($departments) ? current($departments) : null;
+        $zone = $adherent->getDepartmentOrParisBorough();
 
         if ($zone) {
-            if ('75' === $zone->getCode()) {
-                $boroughs = $adherent->getZonesOfType(Zone::BOROUGH);
-                $borough = 1 === \count($boroughs) ? current($boroughs) : null;
-
-                if ($borough) {
-                    $zone = $borough;
-                } else {
-                    $this->logger->error(sprintf('Adherent with ID "%d" has no zone of type "borough"', $adherent->getId()));
-                }
-            }
-
             $adherentZoneIds = [$zone->getId()];
         } else {
-            $this->logger->error(sprintf('Adherent with ID "%d" has no zone of type "department"', $adherent->getId()));
+            $this->logger->error(sprintf('Adherent with ID "%d" has neither zone of type "department" nor "borough"', $adherent->getId()));
         }
 
         $zonesList = array_column(array_map(function (Zone $zone) {

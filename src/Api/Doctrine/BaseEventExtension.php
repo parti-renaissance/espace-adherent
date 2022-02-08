@@ -95,18 +95,18 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
         /** @var $user Adherent */
         if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
             && $user = $this->security->getUser()) {
-            $zones = $this->zoneRepository->findDepartmentOrBoroughOfAdherent($user);
-
             $alias = $queryBuilder->getRootAliases()[0];
-            $this->baseEventRepository->withGeoZones(
-                $zones,
-                $queryBuilder,
-                $alias,
-                BaseEvent::class,
-                'e2',
-                'zones',
-                'z2'
-            );
+            if ($zone = $user->getDepartmentOrParisBorough()) {
+                $this->baseEventRepository->withGeoZones(
+                    [$zone],
+                    $queryBuilder,
+                    $alias,
+                    BaseEvent::class,
+                    'e2',
+                    'zones',
+                    'z2'
+                );
+            }
         }
     }
 
