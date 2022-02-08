@@ -2,54 +2,61 @@
 
 namespace App\Normalizer\Indexer;
 
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\BaseEvent;
+use App\Repository\Geo\ZoneRepository;
 
-class EventNormalizer extends AbstractIndexerNormalizer
+class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
-    /** @param CommitteeEvent $object */
-    public function normalize($object, $format = null, array $context = [])
-    {
-        $committee = $object->getCommittee();
-
-        return array_merge(
-            [
-                'uuid' => $object->getUuidAsString(),
-                'name' => $object->getName(),
-                'canonicalName' => $object->getCanonicalName(),
-                'slug' => $object->getSlug(),
-                'description' => $object->getDescription(),
-                'begin_at' => $this->formatDate($object->getBeginAt()),
-                'finish_at' => $this->formatDate($object->getFinishAt()),
-                'address' => $object->getInlineFormattedAddress(),
-                'address_city' => $object->getCityName(),
-                '_geoloc' => $object->getGeolocalisation(),
-                'created_at' => $this->formatDate($object->getCreatedAt()),
-                'updated_at' => $this->formatDate($object->getCreatedAt()),
-                'category' => [
-                    'name' => $object->getCategoryName(),
-                ],
-            ],
-            $committee ?
-            [
-                'committee' => [
-                    'name' => $committee->getName(),
-                    'canonicalName' => $committee->getCanonicalName(),
-                    'slug' => $committee->getSlug(),
-                    'description' => $committee->getDescription(),
-                    'membersCount' => $committee->getMembersCount(),
-                    'uuid' => $committee->getUuidAsString(),
-                    'address' => $committee->getInlineFormattedAddress(),
-                    'address_city' => $committee->getCityName(),
-                    '_geoloc' => $committee->getGeolocalisation(),
-                    'created_at' => $this->formatDate($committee->getCreatedAt()),
-                    'updated_at' => $this->formatDate($committee->getCreatedAt()),
-                ],
-            ] : []
-        );
-    }
+    private ZoneRepository $zoneRepository;
 
     protected function getClassName(): string
     {
-        return CommitteeEvent::class;
+        return BaseEvent::class;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getTitle(object $object): string
+    {
+        return $object->getName();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getDescription(object $object): ?string
+    {
+        return $object->getDescription();
+    }
+
+    /** @param BaseEvent $object */
+    protected function isLocal(object $object): bool
+    {
+        return true;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getDate(object $object): ?\DateTime
+    {
+        return $object->getCreatedAt();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getAuthor(object $object): ?string
+    {
+        return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getZoneCodes(object $object): ?array
+    {
+        $zone = $this->zoneRepository->findOneByPostalCode($object->getPostalCode());
+
+        return $this->buildZoneCodes($zone ?? null);
+    }
+
+    /**
+     * @required
+     */
+    public function setZoneRepository(ZoneRepository $zoneRepository): void
+    {
+        $this->zoneRepository = $zoneRepository;
     }
 }

@@ -27,6 +27,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Entity\IndexableEntityInterface;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
@@ -190,9 +191,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
  *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ *
  * @AssertValidEventCategory
  */
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -809,5 +812,15 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function setElectoral(bool $electoral): void
     {
         $this->electoral = $electoral;
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isActive() && $this->isPublished() && $this->isGeocoded();
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

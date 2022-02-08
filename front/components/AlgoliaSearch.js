@@ -14,7 +14,6 @@ export default class AlgoliaSearch extends React.Component {
         this.proposalsIndex = client.initIndex(`app_${props.environment}_proposal`);
         this.clarificationsIndex = client.initIndex(`app_${props.environment}_clarification`);
         this.articlesIndex = client.initIndex(`app_${props.environment}_article`);
-        this.eventsIndex = client.initIndex(`app_${props.environment}_event`);
 
         this.state = {
             term: '',
@@ -58,7 +57,6 @@ export default class AlgoliaSearch extends React.Component {
             proposal: [],
             clarification: [],
             article: [],
-            event: [],
         };
 
         if (-1 < this.blacklist.indexOf(term)) {
@@ -84,7 +82,6 @@ export default class AlgoliaSearch extends React.Component {
         this.proposalsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('proposal'));
         this.clarificationsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('clarification'));
         this.articlesIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('article'));
-        this.eventsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('event'));
     }
 
     _searchCallback(nbHits, hits) {
@@ -92,8 +89,7 @@ export default class AlgoliaSearch extends React.Component {
             .concat(hits.custom)
             .concat(hits.proposal)
             .concat(hits.clarification)
-            .concat(hits.article)
-            .concat(hits.event);
+            .concat(hits.article);
         this.setState({
             loading: false,
             hits: aggregated,
@@ -104,10 +100,6 @@ export default class AlgoliaSearch extends React.Component {
     _createImageURL(hit) {
         if ('custom' === hit.type) {
             return `/algolia/custom/${hit.id}`;
-        }
-
-        if ('event' === hit.type) {
-            return `/maps/${parseFloat(hit._geoloc.lat).toFixed(7)},${parseFloat(hit._geoloc.lng).toFixed(7)}?algolia`;
         }
 
         return `/algolia/${hit.type}/${hit.slug}`;
@@ -126,10 +118,6 @@ export default class AlgoliaSearch extends React.Component {
             return 'Actualité';
         }
 
-        if ('event' === hit.type) {
-            return 'Événement';
-        }
-
         return '';
     }
 
@@ -146,18 +134,10 @@ export default class AlgoliaSearch extends React.Component {
             return `/desintox/${hit.slug}`;
         }
 
-        if ('event' === hit.type) {
-            return `/evenements/${hit.slug}`;
-        }
-
         return hit.url;
     }
 
     _createTitle(hit) {
-        if ('event' === hit.type) {
-            return hit.name;
-        }
-
         return hit.title;
     }
 

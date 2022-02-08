@@ -2,10 +2,6 @@ algolia_search:
     doctrineSubscribedEvents: []
     prefix: 'app_%env(ALGOLIA_INDEX_PREFIX)%_'
     indices:
-        -   name: event
-            class: App\Entity\Event\CommitteeEvent
-            index_if: isIndexable
-
         -   name: article
             class: App\Entity\Article
             index_if: isIndexable
