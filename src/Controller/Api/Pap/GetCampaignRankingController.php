@@ -104,7 +104,7 @@ class GetCampaignRankingController extends AbstractController
     private function createDepartmentalRanking(Campaign $campaign, Adherent $adherent): array
     {
         $adherentZoneIds = [];
-        $zone = $adherent->getDepartmentOrParisBorough();
+        $zone = $adherent->getParisBoroughOrDepartment();
 
         if ($zone) {
             $adherentZoneIds = [$zone->getId()];

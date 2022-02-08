@@ -9,7 +9,6 @@ use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
 use App\Repository\Event\BaseEventRepository;
-use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -18,18 +17,15 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
 {
     private Security $security;
     private AuthorizationCheckerInterface $authorizationChecker;
-    private ZoneRepository $zoneRepository;
     private BaseEventRepository $baseEventRepository;
 
     public function __construct(
         Security $security,
         AuthorizationCheckerInterface $authorizationChecker,
-        ZoneRepository $zoneRepository,
         BaseEventRepository $baseEventRepository
     ) {
         $this->security = $security;
         $this->authorizationChecker = $authorizationChecker;
-        $this->zoneRepository = $zoneRepository;
         $this->baseEventRepository = $baseEventRepository;
     }
 
@@ -96,7 +92,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
         if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
             && $user = $this->security->getUser()) {
             $alias = $queryBuilder->getRootAliases()[0];
-            if ($zone = $user->getDepartmentOrParisBorough()) {
+            if ($zone = $user->getParisBoroughOrDepartment()) {
                 $this->baseEventRepository->withGeoZones(
                     [$zone],
                     $queryBuilder,

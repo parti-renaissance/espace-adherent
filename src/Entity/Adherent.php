@@ -3113,21 +3113,4 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->authAppCode = $authAppCode;
     }
-
-    public function getDepartmentOrParisBorough(): ?Zone
-    {
-        $parisBoroughs = array_filter(array_merge($this->zones->toArray(), $this->getParentZones()),
-            function (Zone $zone) {
-                return Zone::BOROUGH === $zone->getType() && '75' === $zone->getCode();
-            }
-        );
-
-        if ($parisBorough = 1 === \count($parisBoroughs) ? current($parisBoroughs) : null) {
-            return $parisBorough;
-        }
-
-        $departments = $this->getParentZonesOfType(Zone::DEPARTMENT);
-
-        return 1 === \count($departments) ? current($departments) : null;
-    }
 }
