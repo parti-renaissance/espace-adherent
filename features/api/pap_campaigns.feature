@@ -1720,6 +1720,186 @@ Feature:
     }
     """
 
+  Scenario: As a PAP national manager I can get the list of campaign histories of one PAP campaign ordered by createdAt
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&page_size=10&campaign.uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9&order[createdAt]=desc"
+    Then the response status code should be 200
+      And print last JSON response
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 5,
+            "items_per_page": 10,
+            "count": 5,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "2022-02-09T14:26:57+01:00"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "13",
+                "uuid": "1c4ed146-5fb4-4884-a997-5d48f74634c0",
+                "created_at": "2022-02-09T14:22:01+01:00",
+                "duration": 0
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "2022-02-09T14:26:57+01:00"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "12",
+                "uuid": "a0b9411e-d80a-4b19-9641-d25d36c029bc",
+                "created_at": "2022-02-09T14:02:01+01:00",
+                "duration": 420
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "2022-02-09T14:26:57+01:00"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "11",
+                "uuid": "4564b7f2-df49-420a-bbbf-f4f4600e033f",
+                "created_at": "2022-02-09T13:52:01+01:00",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "age": 68
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "2022-02-09T14:26:57+01:00"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "dont_accept_to_answer",
+                "building_block": "A",
+                "floor": 0,
+                "door": "02",
+                "uuid": "d9f0df75-3249-45d0-991e-6792fa46b464",
+                "created_at": "2022-02-07T14:17:01+01:00",
+                "duration": 60
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "age": 68
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "2022-02-09T14:26:57+01:00"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "door_open",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da",
+                "created_at": "2022-02-07T14:12:01+01:00",
+                "duration": 900
+            }
+        ]
+    }
+    """
+
   Scenario Outline: As a (delegated) referent I can get the list of PAP campaign histories
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=<scope>&page_size=10"

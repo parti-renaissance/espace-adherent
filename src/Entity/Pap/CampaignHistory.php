@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\AdherentIdentityFilter;
 use App\Api\Filter\PapCampaignHistoryScopeFilter;
@@ -67,9 +68,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(SearchFilter::class, properties={
  *     "status": "exact",
+ *     "campaign.uuid": "exact"
  * })
  * @ApiFilter(AdherentIdentityFilter::class, properties={"questioner"})
  * @ApiFilter(DateFilter::class, properties={"createdAt", "beginAt"})
+ * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  */
 class CampaignHistory implements DataSurveyAwareInterface
 {
