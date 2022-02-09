@@ -13,7 +13,6 @@ class FeatureEnum extends Enum
     public const MY_TEAM = 'my_team';
     public const MOBILE_APP = 'mobile_app';
     public const ELECTIONS = 'elections';
-    public const PHONING = 'phoning';
     public const PAP = 'pap';
     public const RIPOSTES = 'ripostes';
     public const TEAM = 'team';
@@ -31,7 +30,6 @@ class FeatureEnum extends Enum
         self::NEWS,
         self::ELECTIONS,
         self::RIPOSTES,
-        self::PHONING,
         self::PAP,
         self::TEAM,
         self::PHONING_CAMPAIGN,
