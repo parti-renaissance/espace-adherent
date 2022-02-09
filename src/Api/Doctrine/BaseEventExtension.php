@@ -100,7 +100,10 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
                     BaseEvent::class,
                     'e3',
                     'zones',
-                    'z3'
+                    'z3',
+                    null,
+                    true,
+                    'z3_zone_parent'
                 );
             }
         }
