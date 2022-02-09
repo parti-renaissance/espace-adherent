@@ -74,6 +74,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I fill in the following:
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
+    And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
@@ -139,6 +141,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I fill in the following:
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
+    And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
@@ -192,6 +196,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I fill in the following:
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
+    And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
