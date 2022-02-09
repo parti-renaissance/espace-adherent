@@ -27,6 +27,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
     public const MEMBER_5_UUID = 'b65b3b8e-ad92-46ae-a226-25e286828929';
 
     public const MEMBER_6_UUID = '5fb67010-aa4d-47e9-8183-d36e8fc6526d';
+    public const MEMBER_7_UUID = '8671bb26-c88e-48ca-9858-fb53c495be01';
 
     public function load(ObjectManager $manager)
     {
@@ -84,7 +85,15 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
             self::MEMBER_6_UUID
         );
         $this->setReference('my_team_member_3_1', $member3_1);
+        $member3_2 = $this->createMember(
+            $this->getReference('referent-child'),
+            RoleEnum::LOGISTICS_MANAGER,
+            [],
+            self::MEMBER_7_UUID
+        );
+        $this->setReference('my_team_member_3_2', $member3_2);
         $team3->addMember($member3_1);
+        $team3->addMember($member3_2);
         $this->setReference('my-team-referent-2', $team3);
 
         $manager->persist($team1);

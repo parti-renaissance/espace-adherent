@@ -588,6 +588,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $referentChild->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referentChild->addReferentTag($this->getReference('referent_tag_77'));
         $referentChild->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
+        $this->addReference('referent-child', $referent75and77);
 
         $coordinator = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_1_UUID,
