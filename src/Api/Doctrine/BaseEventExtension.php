@@ -98,9 +98,9 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
                     $queryBuilder,
                     $alias,
                     BaseEvent::class,
-                    'e2',
+                    'e3',
                     'zones',
-                    'z2'
+                    'z3'
                 );
             }
         }
