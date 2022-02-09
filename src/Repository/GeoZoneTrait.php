@@ -65,9 +65,9 @@ trait GeoZoneTrait
         ;
 
         $orX = $queryBuilder->expr()->orX();
-        $orX->add(sprintf('%s IN (:zone_ids)', $zoneRelationAlias));
+        $orX->add(sprintf('%s IN (:%s_zone_ids)', $zoneRelationAlias, $zoneRelationAlias));
 
-        $queryBuilder->setParameter('zone_ids', array_map(static function (Zone $zone): int {
+        $queryBuilder->setParameter(sprintf('%s_zone_ids', $zoneRelationAlias), array_map(static function (Zone $zone): int {
             return $zone->getId();
         }, $zones));
 
@@ -81,8 +81,8 @@ trait GeoZoneTrait
                     $zoneQueryBuilder->innerJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
                 }
 
-                $orX->add(sprintf('%s IN (:zone_parent_ids)', $zoneParentAlias));
-                $queryBuilder->setParameter('zone_parent_ids', $parents);
+                $orX->add(sprintf('%s IN (:%s_zone_parent_ids)', $zoneParentAlias, $zoneRelationAlias));
+                $queryBuilder->setParameter(sprintf('%s_zone_parent_ids', $zoneRelationAlias), $parents);
             }
         }
 
