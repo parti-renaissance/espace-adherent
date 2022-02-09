@@ -37,8 +37,7 @@ final class EventsZipCodeFilter extends AbstractContextAwareFilter
             return;
         }
 
-        $zone = $this->zoneRepository->findRegionByPostalCode($value);
-        if (null === $zone) {
+        if (!$zone = $this->zoneRepository->findRegionByPostalCode($value)) {
             return;
         }
 

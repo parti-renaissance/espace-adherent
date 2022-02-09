@@ -23,6 +23,13 @@ Feature:
     And the JSON nodes should match:
       | metadata.total_items  | 8 |
 
+  Scenario: As a logged-in Jemarche App user I can get events of my borough (with zipCode filter)
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+    And I send a "GET" request to "/api/v3/events?zipCode=75008"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 8 |
+
   Scenario: As a logged-in Jemarche App user I can get events of my department
     When I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/events"
