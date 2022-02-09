@@ -246,8 +246,8 @@ Feature:
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
                 "zone": null,
-                "nb_surveys": 3,
-                "nb_visited_doors": 5,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -261,7 +261,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -303,7 +303,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -430,8 +430,8 @@ Feature:
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
                 "zone": null,
-                "nb_surveys": 3,
-                "nb_visited_doors": 5,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -445,7 +445,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -487,7 +487,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             }
@@ -527,6 +527,7 @@ Feature:
       "nb_contact_later": 0,
       "nb_door_open": 0,
       "nb_to_join": 0,
+      "nb_open_doors": 0,
       "average_visit_time": 0
     }
     """
@@ -903,11 +904,44 @@ Feature:
         "nb_contact_later": 1,
         "nb_door_open": 0,
         "nb_to_join": 0,
+        "nb_open_doors": 1,
         "average_visit_time": 140,
         "visibility": "national",
         "zone": null
     }
     """
+
+  Scenario Outline: As a logged-in user with a local role I can get a national PAP campaign
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "title": "Campagne de 10 jours suivants",
+        "brief": "**Campagne** de 10 jours suivants",
+        "goal": 600,
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
+        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "visibility": "national",
+        "zone": null,
+        "nb_surveys": 3,
+        "nb_visited_doors": 5,
+        "nb_addresses": 4,
+        "nb_voters": 7,
+        "nb_collected_contacts": 3,
+        "average_visit_time": 336,
+        "nb_open_doors": 4,
+        "nb_to_join": 0,
+        "nb_door_open": 1,
+        "nb_contact_later": 0
+    }
+    """
+    Examples:
+      | user                            | scope                                           |
+      | referent-75-77@en-marche-dev.fr | referent                                        |
+      | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
@@ -1724,7 +1758,6 @@ Feature:
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&page_size=10&campaign.uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9&order[createdAt]=desc"
     Then the response status code should be 200
-      And print last JSON response
     And the JSON should be equal to:
     """
     {
@@ -1746,7 +1779,7 @@ Feature:
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-                    "created_at": "2022-02-09T14:26:57+01:00"
+                    "created_at": "@string@.isDateTime()"
                 },
                 "building": {
                     "address": {
@@ -1764,8 +1797,8 @@ Feature:
                 "building_block": "A",
                 "floor": 1,
                 "door": "13",
-                "uuid": "1c4ed146-5fb4-4884-a997-5d48f74634c0",
-                "created_at": "2022-02-09T14:22:01+01:00",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "duration": 0
             },
             {
@@ -1778,7 +1811,7 @@ Feature:
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-                    "created_at": "2022-02-09T14:26:57+01:00"
+                    "created_at": "@string@.isDateTime()"
                 },
                 "building": {
                     "address": {
@@ -1796,8 +1829,8 @@ Feature:
                 "building_block": "A",
                 "floor": 1,
                 "door": "12",
-                "uuid": "a0b9411e-d80a-4b19-9641-d25d36c029bc",
-                "created_at": "2022-02-09T14:02:01+01:00",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "duration": 420
             },
             {
@@ -1810,7 +1843,7 @@ Feature:
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-                    "created_at": "2022-02-09T14:26:57+01:00"
+                    "created_at": "@string@.isDateTime()"
                 },
                 "building": {
                     "address": {
@@ -1828,8 +1861,8 @@ Feature:
                 "building_block": "A",
                 "floor": 1,
                 "door": "11",
-                "uuid": "4564b7f2-df49-420a-bbbf-f4f4600e033f",
-                "created_at": "2022-02-09T13:52:01+01:00",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "duration": 300
             },
             {
@@ -1842,7 +1875,7 @@ Feature:
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-                    "created_at": "2022-02-09T14:26:57+01:00"
+                    "created_at": "@string@.isDateTime()"
                 },
                 "building": {
                     "address": {
@@ -1860,8 +1893,8 @@ Feature:
                 "building_block": "A",
                 "floor": 0,
                 "door": "02",
-                "uuid": "d9f0df75-3249-45d0-991e-6792fa46b464",
-                "created_at": "2022-02-07T14:17:01+01:00",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "duration": 60
             },
             {
@@ -1874,7 +1907,7 @@ Feature:
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-                    "created_at": "2022-02-09T14:26:57+01:00"
+                    "created_at": "@string@.isDateTime()"
                 },
                 "building": {
                     "address": {
@@ -1892,8 +1925,8 @@ Feature:
                 "building_block": "A",
                 "floor": 0,
                 "door": "01",
-                "uuid": "6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da",
-                "created_at": "2022-02-07T14:12:01+01:00",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "duration": 900
             }
         ]

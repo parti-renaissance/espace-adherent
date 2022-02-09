@@ -4,9 +4,12 @@ namespace App\Repository\Pap;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Entity\Pap\Address;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
+use App\Pap\CampaignHistoryStatusEnum;
+use App\Repository\GeoZoneTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -16,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CampaignHistoryRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -157,38 +161,101 @@ class CampaignHistoryRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findCampaignAverageVisitTime(Campaign $campaign): int
+    public function findCampaignAverageVisitTime(Campaign $campaign, array $zones = []): int
     {
-        return (int) $this->createQueryBuilder('campaignHistory')
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
             ->select('AVG(TIME_TO_SEC(TIMEDIFF(campaignHistory.finishAt, campaignHistory.beginAt))) AS average_visit_time')
-            ->where('campaignHistory.campaign = :campaign AND campaignHistory.finishAt IS NOT NULL')
+            ->andWhere('campaignHistory.campaign = :campaign AND campaignHistory.finishAt IS NOT NULL')
             ->setParameter('campaign', $campaign)
             ->getQuery()
             ->getSingleScalarResult()
         ;
     }
 
-    public function countCollectedContacts(Campaign $campaign): int
+    public function countCollectedContacts(Campaign $campaign, array $zones = []): int
     {
-        return (int) $this->createQueryBuilder('campaignHistory')
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
             ->select('COUNT(1) AS nb_collected_contacts')
-            ->where('campaignHistory.campaign = :campaign AND campaignHistory.emailAddress IS NOT NULL AND campaignHistory.emailAddress != \'\'')
+            ->andWhere('campaignHistory.campaign = :campaign AND campaignHistory.emailAddress IS NOT NULL AND campaignHistory.emailAddress != \'\'')
             ->setParameter('campaign', $campaign)
             ->getQuery()
             ->getSingleScalarResult()
         ;
     }
 
-    public function countVisitedDoors(Campaign $campaign): int
+    public function countVisitedDoors(Campaign $campaign, array $zones = []): int
     {
-        return (int) $this->createQueryBuilder('campaignHistory')
-
-            ->select('COUNT(DISTINCT CONCAT_WS(\'-\', building.id, campaignHistory.buildingBlock, campaignHistory.floor, campaignHistory.door)) AS nb_visited_doors')
-            ->innerJoin('campaignHistory.building', 'building')
-            ->where('campaignHistory.campaign = :campaign AND campaignHistory.door IS NOT NULL')
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
+            ->select('COUNT(1)')
+            ->andWhere('campaignHistory.campaign = :campaign')
             ->setParameter('campaign', $campaign)
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function countOpenDoors(Campaign $campaign, array $zones = []): int
+    {
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
+            ->select('COUNT(1)')
+            ->andWhere('campaignHistory.campaign = :campaign AND campaignHistory.status IN (:open_door)')
+            ->setParameter('campaign', $campaign)
+            ->setParameter('open_door', CampaignHistoryStatusEnum::OPEN_DOOR_STATUS)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countCampaignHistoriesWithDataSurvey(Campaign $campaign, array $zones = []): int
+    {
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
+            ->select('COUNT(1)')
+            ->andWhere('campaignHistory.dataSurvey IS NOT NULL AND campaignHistory.campaign = :campaign')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countToJoinByCampaign(Campaign $campaign, array $zones = []): int
+    {
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
+            ->select('COUNT(1)')
+            ->andWhere('campaignHistory.toJoin = :true AND campaignHistory.campaign = :campaign')
+            ->setParameter('campaign', $campaign)
+            ->setParameter('true', true)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countByCampaignAndStatus(Campaign $campaign, string $status, array $zones = []): int
+    {
+        return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
+            ->select('COUNT(1)')
+            ->andWhere('campaignHistory.status = :status AND campaignHistory.campaign = :campaign')
+            ->setParameter('campaign', $campaign)
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function createQueryBuilderWithGeoZonesCondition(array $zones): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('campaignHistory')
+            ->innerJoin('campaignHistory.building', 'building')
+            ->innerJoin('building.address', 'address')
+        ;
+
+        return $this->withGeoZones(
+            $zones,
+            $qb,
+            'address',
+            Address::class,
+            'adr2',
+            'zones',
+            'zone2'
+        );
     }
 }
