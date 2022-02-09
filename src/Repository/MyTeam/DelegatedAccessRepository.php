@@ -57,4 +57,19 @@ class DelegatedAccessRepository extends ServiceEntityRepository
             throw new \LogicException("User have multiple \"$type\" delegated accesses.");
         }
     }
+
+    public function hasDelegatedAccessWithScopeFeatures(Adherent $adherent, array $types): array
+    {
+        return $this->createQueryBuilder('delegatedAccess')
+            ->where('delegatedAccess.delegated = :adherent')
+            ->andWhere('delegatedAccess.scopeFeatures IS NOT NULL')
+            ->andWhere('delegatedAccess.type IN (:types)')
+            ->setParameters([
+                'adherent' => $adherent,
+                'types' => $types,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
