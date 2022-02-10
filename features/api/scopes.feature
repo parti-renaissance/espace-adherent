@@ -315,7 +315,12 @@ Feature:
       "apps": [
         "data_corner"
       ],
-      "features": [],
+      "features": [
+          "dashboard",
+          "contacts",
+          "messages",
+          "mobile_app"
+      ],
       "delegated_access": {
           "delegator": {
               "uuid": "021268fe-d4b3-44a7-bce9-c001191249a7",
