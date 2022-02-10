@@ -58,6 +58,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess3->setRole('Collaborateur parlementaire');
         $delegatedAccess3->setType('deputy');
         $delegatedAccess3->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_EVENTS]);
+        $delegatedAccess3->setScopeFeatures([FeatureEnum::MESSAGES, FeatureEnum::EVENTS]);
         $delegatedAccess3->setRestrictedCities(['59360', '59350', '59044', '59002']);
 
         $manager->persist($delegatedAccess3);
@@ -69,6 +70,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess4->setRole('Collaborateur parlementaire');
         $delegatedAccess4->setType('senator');
         $delegatedAccess4->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_ADHERENTS]);
+        $delegatedAccess4->setScopeFeatures([FeatureEnum::MESSAGES, FeatureEnum::CONTACTS]);
 
         $manager->persist($delegatedAccess4);
 
@@ -79,6 +81,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess5->setRole('Collaborateur parlementaire');
         $delegatedAccess5->setType('deputy');
         $delegatedAccess5->setAccesses([DelegatedAccess::ACCESS_ADHERENTS]);
+        $delegatedAccess5->setScopeFeatures([FeatureEnum::CONTACTS]);
 
         $manager->persist($delegatedAccess5);
 
@@ -131,6 +134,14 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             DelegatedAccess::ACCESS_JECOUTE,
             DelegatedAccess::ACCESS_JECOUTE_REGION,
             DelegatedAccess::ACCESS_JECOUTE_NEWS,
+        ]);
+        $delegatedAccess8->setScopeFeatures([
+            FeatureEnum::MESSAGES,
+            FeatureEnum::CONTACTS,
+            FeatureEnum::EVENTS,
+            FeatureEnum::NEWS,
+            FeatureEnum::RIPOSTES,
+            FeatureEnum::SURVEY,
         ]);
         $delegatedAccess8->setRestrictedCities(['77288', '59002']);
         $delegatedAccess8->setRestrictedCommittees([$this->getReference('committee-4')]);
