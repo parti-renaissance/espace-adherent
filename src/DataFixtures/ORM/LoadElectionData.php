@@ -14,8 +14,6 @@ class LoadElectionData extends Fixture
         $municipalElections2014 = $this->createElection(
             'Élections municipales 2014',
             <<<INTRODUCTION
-<h1>Chaque vote compte.</h1>
-
 <h2>Les élections municipales.</h2>
 INTRODUCTION,
             <<<PROPOSALCONTENT
@@ -43,9 +41,6 @@ REQUESTCONTENT
         $presidentialElections = $this->createElection(
             'Élections Présidentielles 2017',
             <<<INTRODUCTION
-<h1 class="text--larger">
-    Chaque vote compte.
-</h1>
 <h2 class="text--medium b__nudge--top l__hide--on-mobile b__nudge--bottom-small">
     Les élections présidentielles ont lieu les 24 avril et 7 mai 2017 en France (15 et 29 avril pour les Français de l'étranger du continent Américain et 16 et 30 avril pour les autres Français de l'étranger).
 </h2>
@@ -80,9 +75,6 @@ REQUESTCONTENT
         $legislativeElections = $this->createElection(
             'Élections Législatives 2017',
             <<<INTRODUCTION
-<h1 class="text--larger">
-    Chaque vote compte.
-</h1>
 <h2 class="text--medium b__nudge--top l__hide--on-mobile b__nudge--bottom-small">
     Les élections législatives ont lieu les 11 et 18 juin 2017 en France (3 et 17 juin pour les Français de l'étranger du continent Américain et 4 et 18 juin pour les autres Français de l'étranger).
 </h2>
@@ -117,9 +109,6 @@ REQUESTCONTENT
         $partialLegislativeElections = $this->createElection(
             'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise',
             <<<INTRODUCTION
-<h1 class="text--larger">
-    Chaque vote compte.
-</h1>
 <h2 class="text--medium b__nudge--top l__hide--on-mobile b__nudge--bottom-small">
     L'élection législative partielle pour la 1ère circonscription du Val-d'Oise aura lieu les 28 janvier et 4 février 2018.
 </h2>
@@ -160,8 +149,6 @@ REQUESTCONTENT
         $municipalElections = $this->createElection(
             'Élections municipales',
             <<<INTRODUCTION
-<h1>Chaque vote compte.</h1>
-
 <h2>Les élections municipales.</h2>
 INTRODUCTION,
             <<<PROPOSALCONTENT

@@ -27,6 +27,7 @@
             @include gradient-container;
             background-color: $filter--gray;
             background-blend-mode: multiply;
+            padding-top: 85px;
 
             a.text--logo:hover {
                 color: $blue;
