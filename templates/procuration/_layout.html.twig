@@ -15,19 +15,15 @@
             <section class="procuration__header--outer l__row l__row--h-stretch list__links--nav progressive-background text--center text--white"
                      data-sd="{{ static_asset('procuration_2.jpg', { w: 300, q: 20 }) }}"
                      data-hd="{{ static_asset('procuration_2.jpg', { w: 2000, q: 70 }) }}">
-                    <div class="l__wrapper l__row space--30-0">
-                        <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">EM!</a>
-                    </div>
-                    <div class="procuration__header--inner l__wrapper--slim">
-                        <h1 class="text--larger">
-                            Chaque vote compte.
-                        </h1>
-                        {% block subtitle %}
-                            <h2 class="text--medium b__nudge--top l__hide--on-mobile">
-                                La procuration avec<br/>La République En Marche !
-                            </h2>
-                        {% endblock %}
-                    </div>
+
+                <div class="procuration__header--inner l__wrapper--slim">
+                    <h1 class="text--larger">Chaque vote compte.</h1>
+                    {% block subtitle %}
+                        {% if next_election is defined and next_election %}
+                            {{ next_election.introduction|raw }}
+                        {% endif %}
+                    {% endblock %}
+                </div>
             </section>
             <section class="l__wrapper">
                 <div class="l__wrapper--slim">

@@ -41,7 +41,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertSame(
-            'Pas d\'élection en approche.',
+            'Chaque vote compte.',
             trim($crawler->filter('.procuration__header--inner')->text())
         );
         $this->assertSame(
@@ -87,8 +87,8 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
-            'La procuration avecLa République En Marche !',
-            trim($crawler->filter('.procuration__header--outer h2')->text())
+            'Chaque vote compte.',
+            trim($crawler->filter('.procuration__header--outer')->text())
         );
         $this->assertStringStartsWith(
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
@@ -131,8 +131,8 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
-            'La procuration avecLa République En Marche !',
-            trim($crawler->filter('.procuration__header--outer h2')->text())
+            'Chaque vote compte.',
+            trim($crawler->filter('.procuration__header--outer')->text())
         );
         $this->assertStringStartsWith(
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
