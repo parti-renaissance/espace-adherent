@@ -250,7 +250,7 @@ Feature:
     And I send a "POST" request to "/api/v3/adherent_messages?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
     """
     {
-      "type": "referent",
+      "type": "delegated_08f40730-d807-4975-8773-69d8fae1da74",
       "label": "Message d'un référent délégué",
       "subject": "L'objet du mail",
       "content": "<table>...</table>",

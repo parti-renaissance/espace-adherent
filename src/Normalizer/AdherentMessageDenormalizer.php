@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\AdherentMessage\AdherentMessageFactory;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -17,12 +18,24 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
     private const ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED = 'ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED';
 
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
+
+    public function __construct(ScopeGeneratorResolver $scopeGeneratorResolver)
+    {
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
+    }
+
     public function denormalize($data, $type, $format = null, array $context = [])
     {
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $messageClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
         } else {
             $messageType = $data['type'] ?? null;
+
+            if (str_starts_with($messageType, 'delegated_')) {
+                $scope = $this->scopeGeneratorResolver->generate();
+                $messageType = $scope->getDelegatorCode();
+            }
 
             if (!$messageType || !($messageClass = $this->getMessageClassFromType($messageType))) {
                 throw new UnexpectedValueException('Type value is missing or invalid');
