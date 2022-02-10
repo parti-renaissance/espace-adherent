@@ -30,24 +30,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "post": {
  *             "path": "/v3/audience-segments",
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('ROLE_AUDIENCE')",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR')",
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/audience-segments/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('ROLE_AUDIENCE') and object.getAuthor() == user",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *         },
  *         "put": {
  *             "path": "/v3/audience-segments/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('ROLE_AUDIENCE') and object.getAuthor() == user",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *         },
  *         "delete": {
  *             "path": "/v3/audience-segments/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('ROLE_AUDIENCE') and object.getAuthor() == user",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *         },
  *     }
  * )
