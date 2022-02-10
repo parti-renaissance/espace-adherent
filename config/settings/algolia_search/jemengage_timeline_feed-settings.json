@@ -10,9 +10,13 @@
     ],
     "numericAttributesToIndex": null,
     "attributesToRetrieve": [
+        "address",
         "author",
+        "begin_at",
+        "category",
         "date",
         "description",
+        "finish_at",
         "image",
         "is_local",
         "time_zone",

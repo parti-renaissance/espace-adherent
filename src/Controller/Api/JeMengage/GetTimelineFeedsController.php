@@ -41,7 +41,8 @@ class GetTimelineFeedsController extends AbstractController
             $dpt = substr($postalCode, 0, 3);
         }
 
-        $filters = ['is_national:true', 'zone_codes:department_'.$dpt];
+        $zoneFilter = 75 === (int) $dpt ? 'zone_codes:borough_'.$postalCode : 'zone_codes:department_'.$dpt;
+        $filters = ['is_national:true', $zoneFilter];
         $tagFilters = [];
 
         if ($user instanceof DeviceApiUser) {
