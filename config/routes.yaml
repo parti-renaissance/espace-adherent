@@ -67,6 +67,11 @@ app_jemengage:
     resource: "../src/Controller/JeMengage"
     type: "annotation"
 
+app_procuration:
+    host: "%procuration_host%"
+    resource: "../src/Controller/Procuration"
+    type: "annotation"
+
 #
 # Assets
 #

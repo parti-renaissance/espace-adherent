@@ -9,17 +9,17 @@ Feature:
       | LoadProcurationData |
 
   Scenario: As a non logged user, I can fill a form
-    Given I am on "/procuration/choisir/demande"
+    Given I am on "/choisir/demande"
     When I click the ".form__label" selector
     And I press "Continuer"
-    Then I should be on "procuration/je-demande/mon-lieu-de-vote"
+    Then I should be on "/je-demande/mon-lieu-de-vote"
 
     Given I fill in the following:
       | app_procuration_request[voteCountry]    | FR    |
       | app_procuration_request[votePostalCode] | 59000 |
       | app_procuration_request[voteOffice]     | Lorem |
     When I press "Je continue"
-    Then I should be on "procuration/je-demande/mes-coordonnees"
+    Then I should be on "/je-demande/mes-coordonnees"
 
     When I fill in the following:
       | app_procuration_request[country] | FR |

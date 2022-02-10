@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\EnMarche;
+namespace App\Controller\Procuration;
 
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
@@ -18,9 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/procuration")
- */
 class ProcurationController extends AbstractController
 {
     /**

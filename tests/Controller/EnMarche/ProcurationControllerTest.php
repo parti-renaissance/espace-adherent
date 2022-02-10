@@ -24,6 +24,8 @@ class ProcurationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    private const APP_HOST = 'http://procuration.avecvous.code';
+
     /** @var ProcurationRequestRepository */
     private $procurationRequestRepostitory;
 
@@ -37,7 +39,7 @@ class ProcurationControllerTest extends WebTestCase
         }, $this->getRepository(ElectionRound::class)->findAll());
         $this->getEntityManager(ElectionRound::class)->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST);
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertSame(
@@ -52,7 +54,7 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testLanding()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
@@ -83,7 +85,7 @@ class ProcurationControllerTest extends WebTestCase
             'The session should not have an election context yet.'
         );
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/choisir/'.ElectionContext::ACTION_REQUEST);
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/choisir/'.ElectionContext::ACTION_REQUEST);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
@@ -113,7 +115,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[election]' => 5]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_VOTE, $this->client);
         $this->assertTrue(
             $this->get(ProcurationSession::class)->hasElectionContext(),
             'The session should have saved an election context.'
@@ -127,7 +129,7 @@ class ProcurationControllerTest extends WebTestCase
             'The session should not have an election context yet.'
         );
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/choisir/'.ElectionContext::ACTION_PROPOSAL);
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/choisir/'.ElectionContext::ACTION_PROPOSAL);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(
@@ -156,7 +158,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[election]' => 5]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-propose', $this->client);
+        $this->assertClientIsRedirectedTo('/je-propose', $this->client);
         $this->assertTrue(
             $this->get(ProcurationSession::class)->hasElectionContext(),
             'The session should have saved an election context.'
@@ -165,9 +167,9 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testProcurationRequestLegacyIndex()
     {
-        $this->client->request(Request::METHOD_GET, '/procuration/je-demande');
+        $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-demande');
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/mon-lieu-de-vote', $this->client, false, true);
+        $this->assertClientIsRedirectedTo('/je-demande/mon-lieu-de-vote', $this->client, false, true);
     }
 
     /**
@@ -175,9 +177,9 @@ class ProcurationControllerTest extends WebTestCase
      */
     public function testProcurationRequestNeedsElectionContext(string $step)
     {
-        $this->client->request(Request::METHOD_GET, "/procuration/je-demande/$step");
+        $this->client->request(Request::METHOD_GET, self::APP_HOST."/je-demande/$step");
 
-        $this->assertClientIsRedirectedTo('/procuration/choisir/'.ElectionContext::ACTION_REQUEST, $this->client);
+        $this->assertClientIsRedirectedTo('/choisir/'.ElectionContext::ACTION_REQUEST, $this->client);
     }
 
     public function provideStepsRequiringElectionContext(): iterable
@@ -198,7 +200,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount($initialProcurationRequestCount, $this->procurationRequestRepostitory->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -212,7 +214,7 @@ class ProcurationControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
 
         $procurationRequest->setVoteCountry('FR');
         $procurationRequest->setVotePostalCode('92110');
@@ -271,7 +273,7 @@ class ProcurationControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_ELECTION_ROUNDS, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_ELECTION_ROUNDS, $this->client);
 
         $procurationRequest->setGender('male');
         $procurationRequest->setFirstNames('Paul, Jean, Martin');
@@ -319,7 +321,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_THANKS, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_THANKS, $this->client);
 
         $this->client->followRedirect();
 
@@ -358,7 +360,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -372,7 +374,7 @@ class ProcurationControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
 
         $procurationRequest->setVoteCountry('FR');
         $procurationRequest->setVotePostalCode('92110');
@@ -402,9 +404,9 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testProcurationProposalNeedsElectionContext()
     {
-        $this->client->request(Request::METHOD_GET, '/procuration/je-propose');
+        $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-propose');
 
-        $this->assertClientIsRedirectedTo('/procuration/choisir/'.ElectionContext::ACTION_PROPOSAL, $this->client);
+        $this->assertClientIsRedirectedTo('/choisir/'.ElectionContext::ACTION_PROPOSAL, $this->client);
     }
 
     public function testProcurationProposal()
@@ -416,7 +418,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose');
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-propose');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -492,7 +494,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci', $this->client);
+        $this->assertClientIsRedirectedTo('/je-propose/merci', $this->client);
 
         $this->client->followRedirect();
 
@@ -527,7 +529,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->setElectionContext();
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -541,7 +543,7 @@ class ProcurationControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
 
         // Profile
         $crawler = $this->client->followRedirect();
@@ -567,7 +569,7 @@ class ProcurationControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_ELECTION_ROUNDS, $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_ELECTION_ROUNDS, $this->client);
 
         // Profile
         $crawler = $this->client->followRedirect();
@@ -584,7 +586,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-demande/merci', $this->client);
+        $this->assertClientIsRedirectedTo('/je-demande/merci', $this->client);
 
         $this->client->followRedirect();
 
@@ -601,7 +603,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->setElectionContext();
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose');
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/je-propose');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -635,7 +637,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci', $this->client);
+        $this->assertClientIsRedirectedTo('/je-propose/merci', $this->client);
 
         $this->client->followRedirect();
 
@@ -645,14 +647,14 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testMyRequestRequiresProcessedRequest()
     {
-        $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/4/'.(Uuid::uuid4()->toString()));
+        $this->client->request(Request::METHOD_GET, self::APP_HOST.'/ma-demande/4/'.(Uuid::uuid4()->toString()));
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     public function testMyRequestRequiresValidToken()
     {
-        $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/5/'.(Uuid::uuid4()->toString()));
+        $this->client->request(Request::METHOD_GET, self::APP_HOST.'/ma-demande/5/'.(Uuid::uuid4()->toString()));
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
@@ -662,7 +664,7 @@ class ProcurationControllerTest extends WebTestCase
         /** @var ProcurationRequest $procurationRequest */
         $procurationRequest = $this->procurationRequestRepostitory->find(7);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/ma-demande/7/'.$procurationRequest->generatePrivateToken());
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST.'/ma-demande/7/'.$procurationRequest->generatePrivateToken());
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(4, $rounds = $crawler->filter('.concerned-election_rounds li'));
@@ -694,13 +696,13 @@ class ProcurationControllerTest extends WebTestCase
             throw new \InvalidArgumentException(sprintf('$action must be "%s" or "%s"', ElectionContext::ACTION_REQUEST, ElectionContext::ACTION_PROPOSAL));
         }
 
-        $crawler = $this->client->request(Request::METHOD_GET, "/procuration/choisir/$action");
+        $crawler = $this->client->request(Request::METHOD_GET, self::APP_HOST."/choisir/$action");
 
         $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[election]' => 5]));
 
         $path = ElectionContext::ACTION_REQUEST === $action ? 'je-demande/'.ProcurationRequest::STEP_URI_VOTE : 'je-propose';
 
-        $this->assertClientIsRedirectedTo("/procuration/$path", $this->client);
+        $this->assertClientIsRedirectedTo("/$path", $this->client);
 
         $this->client->followRedirect();
     }
