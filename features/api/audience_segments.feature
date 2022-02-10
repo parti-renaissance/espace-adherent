@@ -14,7 +14,7 @@ Feature:
       | DELETE  | /api/v3/audience-segments/f6c36dd7-0517-4caf-ba6f-ec6822f2ec12  |
 
   Scenario Outline: As a logged-in user with no correct rights I can not audience segments
-    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Web"
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:

@@ -2580,7 +2580,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         /** @var DelegatedAccess $delegatedAccess */
         foreach ($this->getReceivedDelegatedAccesses() as $delegatedAccess) {
-            if ($delegatedAccess->getDelegator() === $delegator && (!$access || \in_array($access, $delegatedAccess->getAccesses(), true))) {
+            if ($delegatedAccess->getDelegator() === $delegator && (!$access || \in_array($access, array_merge($delegatedAccess->getAccesses(), $delegatedAccess->getScopeFeatures()), true))) {
                 return true;
             }
         }
