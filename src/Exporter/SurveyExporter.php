@@ -116,6 +116,9 @@ class SurveyExporter
                     }
 
                     $row['Profession'] = $papCampaignHistory->getProfession() ? ProfessionEnum::choices()[$papCampaignHistory->getProfession()] : null;
+                    $row['Code postal de l\'immeuble'] = $papCampaignHistory->getBuilding()->getAddress()->getPostalCodesAsString();
+                    $row['Longitude'] = $papCampaignHistory->getBuilding()->getAddress()->getLongitude();
+                    $row['Latitude'] = $papCampaignHistory->getBuilding()->getAddress()->getLatitude();
                 } elseif ($jemarcheDataSurvey) {
                     $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
                     $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;
@@ -136,6 +139,9 @@ class SurveyExporter
                     }
 
                     $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
+                    $row['Code postal de l\'auteur'] = $jemarcheDataSurvey->getDataSurvey()->getAuthor()->getPostalCode();
+                    $row['Longitude'] = $jemarcheDataSurvey->getLongitude();
+                    $row['Latitude'] = $jemarcheDataSurvey->getLatitude();
                 } else {
                     $row['Nom'] = $row['Prénom'] = $row['Code postal'] = '';
                     $row['Tranche d\'age'] = $row['Genre'] = $row['Profession'] = '';

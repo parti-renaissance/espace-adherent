@@ -48,13 +48,17 @@ class PapCampaignSurveyRepliesExporter
                 function (array $data) use ($questions) {
                     /** @var DataSurvey $dataSurvey */
                     $dataSurvey = $data[0];
+                    $papCampaignHistory = $dataSurvey->getPapCampaignHistory();
 
                     $row = [];
                     $row['ID'] = ++$this->i;
                     $row['Nom Prénom de l\'auteur'] = (string) $dataSurvey->getAuthor();
                     $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
-                    $row['Nom'] = $dataSurvey->getPapCampaignHistory()->getLastName();
-                    $row['Prénom'] = $dataSurvey->getPapCampaignHistory()->getFirstName();
+                    $row['Nom'] = $papCampaignHistory->getLastName();
+                    $row['Prénom'] = $papCampaignHistory->getFirstName();
+                    $row['Code postal de l\'immeuble'] = $papCampaignHistory->getBuilding()->getAddress()->getPostalCodesAsString();
+                    $row['Longitude'] = $papCampaignHistory->getBuilding()->getAddress()->getLongitude();
+                    $row['Latitude'] = $papCampaignHistory->getBuilding()->getAddress()->getLatitude();
 
                     /** @var SurveyQuestion $surveyQuestion */
                     foreach ($questions as $surveyQuestion) {

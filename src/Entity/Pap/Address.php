@@ -291,4 +291,9 @@ class Address
     {
         return $this->postalCodes;
     }
+
+    public function getPostalCodesAsString(): string
+    {
+        return implode(', ', $this->postalCodes);
+    }
 }

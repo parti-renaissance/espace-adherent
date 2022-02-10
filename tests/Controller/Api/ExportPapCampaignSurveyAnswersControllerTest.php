@@ -65,10 +65,10 @@ class ExportPapCampaignSurveyAnswersControllerTest extends WebTestCase
         );
 
         $this->assertStringContainsString('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content="https://github.com/sonata-project/exporter"></head>', $responseContent);
-        $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Nouvelles technologies</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Les ressources énergétiques</td><td>L\'aspect financier, La préservation de l\'environnement</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr></table></body></html>', $responseContent);
+        $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>Code postal de l\'immeuble</th><th>Longitude</th><th>Latitude</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
+        $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Nouvelles technologies</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr>', $responseContent);
+        $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Les ressources énergétiques</td><td>L\'aspect financier, La préservation de l\'environnement</td></tr>', $responseContent);
+        $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr></table></body></html>', $responseContent);
     }
 
     public function testExportPapCampaignRepliesInXlsByReferentWithNoRepliesInManagedZones(): void
@@ -132,10 +132,10 @@ class ExportPapCampaignSurveyAnswersControllerTest extends WebTestCase
         );
 
         $this->assertStringContainsString('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content="https://github.com/sonata-project/exporter"></head>', $responseContent);
-        $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Nouvelles technologies</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Les ressources énergétiques</td><td>L\'aspect financier, La préservation de l\'environnement</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr></table></body></html>', $responseContent);
+        $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>Code postal de l\'immeuble</th><th>Longitude</th><th>Latitude</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
+        $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Nouvelles technologies</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr>', $responseContent);
+        $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Les ressources énergétiques</td><td>L\'aspect financier, La préservation de l\'environnement</td></tr>', $responseContent);
+        $this->assertStringContainsString('<td>75008</td><td>2.318427</td><td>48.879246</td><td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr></table></body></html>', $responseContent);
     }
 
     public function provideReferents(): iterable
