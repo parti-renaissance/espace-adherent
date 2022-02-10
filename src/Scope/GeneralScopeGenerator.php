@@ -47,8 +47,11 @@ class GeneralScopeGenerator
             }
 
             $generator->setDelegatedAccess($delegatedAccess);
+            $scope = $generator->generate($delegator);
 
-            $scopes[] = $generator->generate($delegator);
+            if ($scope->getFeatures()) {
+                $scopes[] = $scope;
+            }
         }
 
         return $scopes;
