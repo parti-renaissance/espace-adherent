@@ -5,13 +5,7 @@
 
 {% block procuration_content %}
     <section class="procuration__thanks l__wrapper--slim text--center space--60-0">
-        <h1 class="text--large">
-            Merci de votre participation à Procuration En Marche !
-        </h1>
-        <p class="text--body">
-            Votre formulaire a bien été envoyé.<br />
-            En cas de demande de procuration ayant lieu dans votre commune, votre responsable local vous contactera.
-        </p>
+        {{ cms_block('procuration-proxy-thanks-content') }}
 
         <div class="space--30-0">
             <div class="text--medium text--bold b__nudge--bottom">

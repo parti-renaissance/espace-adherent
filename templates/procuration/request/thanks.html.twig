@@ -4,13 +4,7 @@
 
 {% block procuration_content %}
     <section class="procuration__thanks l__wrapper--slim text--center space--60-0">
-        <h1 class="text--large">
-            Merci. Nous vous remercions de votre confiance !
-        </h1>
-        <p class="text--body b__nudge--bottom-larger">
-            Votre demande de procuration a bien été enregistrée.<br />
-            Un mandataire vous contactera dans les prochains jours pour finaliser la procuration.
-        </p>
+        {{ cms_block('procuration-request-thanks-content') }}
 
         <p>
             <a href="{{ path('app_procuration_landing') }}" class="btn">

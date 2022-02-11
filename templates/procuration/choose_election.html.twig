@@ -16,11 +16,11 @@
                             Un de nos volontaires peut porter votre voix
                         </h2>
                         <p>
-                            Si vous n'avez pas de proche de confiance qui pourrait voter pour vous dans votre commune, nous pouvons trouver quelqu’un qui portera votre voix. Remplissez simplement le formulaire. Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours. Effectuez donc votre démarche rapidement !
+                            {{ cms_block('procuration-request-form-intro') }}
                         </p>
                     {% else %}
                         <h2 class="text--medium b__nudge--bottom">
-                            Portez la voix d'un citoyen de votre ville
+                            {{ cms_block('procuration-proposal-form-header') }}
                         </h2>
                     {% endif %}
                 </div>
