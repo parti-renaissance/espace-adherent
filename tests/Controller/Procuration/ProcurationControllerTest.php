@@ -93,7 +93,7 @@ class ProcurationControllerTest extends WebTestCase
             trim($crawler->filter('.procuration__upper > section p#procuration_faq')->text())
         );
         $this->assertSame(
-            'Portez la voix d\'un citoyen de votre ville',
+            'Portez la voix d’un citoyen près de chez vous',
             trim($crawler->filter('.procuration__content h2')->text())
         );
         $this->assertCount(2, $crawler->filter('#election_context_election input[type="radio"]'));
