@@ -434,7 +434,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertCount(8, $subscriptions);
 
-        // Submit the emails subscription form with invalid data
+        // Submit the email subscriptions form with invalid data
         // We need to use a POST request because the crawler does not
         // accept any invalid choice, thus cannot submit invalid form
         $crawler = $this->client->request(Request::METHOD_POST, '/parametres/mon-compte/preferences-des-emails', [

@@ -76,8 +76,6 @@ class DonationControllerTest extends WebTestCase
      */
     public function testSuccessFullProcess(int $duration)
     {
-        $this->markTestSkipped('Paybox ask to choose a card type.');
-
         $appClient = $this->client;
         // There should not be any donation for the moment
         $this->assertCount(0, $this->donationRepository->findAll());
@@ -167,10 +165,8 @@ class DonationControllerTest extends WebTestCase
             'CVVX' => '123',
         ]));
 
-        $content = $this->payboxClient->getInternalResponse()->getContent();
-
         // Check payment was successful
-        $callbackUrl = $crawler->filter('a')->attr('href');
+        $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
         $callbackUrlRegExp = 'http://'.$this->getParameter('app_host').'/don/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
@@ -181,7 +177,6 @@ class DonationControllerTest extends WebTestCase
         $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
         $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&subscription=(\d+)&Sign=(.+)';
 
-        $this->assertMatchesRegularExpression('#'.$callbackUrlRegExp.'#', $content);
         $this->assertMatchesRegularExpression('#'.$callbackUrlRegExp.'#', $callbackUrl);
 
         $appClient->request(Request::METHOD_GET, $callbackUrl);

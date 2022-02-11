@@ -3,11 +3,10 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
          colors="true"
-         bootstrap="tests/bootstrap.php">
+         bootstrap="config/bootstrap.php">
     <php>
         <ini name="error_reporting" value="-1"/>
         <server name="APP_ENV" value="test"/>
-        <server name="PROCURATION_HOST" value="procuration.avecvous.code"/>
     </php>
 
     <testsuites>

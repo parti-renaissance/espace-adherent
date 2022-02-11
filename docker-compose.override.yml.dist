@@ -5,7 +5,7 @@ version: "3.9"
 # Then you can uncomment this section and specify networks required by each
 # container by also uncommenting services.app.networks section for example.
 # If you want to share the RabbitMQ container, make sure all your app are configured
-# with the right connection config.
+# with the right connection config.
 #
 #networks:
 #    enmarche:
