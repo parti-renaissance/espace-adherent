@@ -11,14 +11,23 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="procuration_proxies")
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
+ *
+ * @Assert\Expression(
+ *     expression="this.getVoterNumber() || (this.getGender() && this.getFirstName() && this.getLastName())",
+ *     message="procuration.voter_number_or_names",
+ *     groups={"front"}
+ * )
  */
 class ProcurationProxy
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use ElectionRoundsCollectionTrait;
 
@@ -41,13 +50,6 @@ class ProcurationProxy
     private const MAX_FRENCH_REQUESTS = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
 
     /**
      * The associated found request(s).
@@ -77,9 +79,17 @@ class ProcurationProxy
     /**
      * @var string|null
      *
-     * @ORM\Column(length=6)
+     * @ORM\Column(nullable=true)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"front"})
+     * @Assert\Length(max=255, groups={"front"})
+     */
+    private $voterNumber;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=6, nullable=true)
+     *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
@@ -90,11 +100,10 @@ class ProcurationProxy
     private $gender;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=50)
+     * @ORM\Column(length=50, nullable=true)
      *
-     * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"front"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
@@ -103,14 +112,13 @@ class ProcurationProxy
      *     groups={"front"}
      * )
      */
-    private $lastName = '';
+    private $lastName;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=100)
+     * @ORM\Column(length=100, nullable=true)
      *
-     * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(
      *     min=2,
      *     max=100,
@@ -119,7 +127,7 @@ class ProcurationProxy
      *     groups={"front"}
      * )
      */
-    private $firstNames = '';
+    private $firstNames;
 
     /**
      * @var string
@@ -344,8 +352,18 @@ class ProcurationProxy
      */
     public $reachable = false;
 
-    public function __construct()
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255, groups={"front"})
+     */
+    private $otherVoteCities;
+
+    public function __construct(UuidInterface $uuid = null)
     {
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->phone = static::createPhoneNumber();
         $this->electionRounds = new ArrayCollection();
         $this->foundRequests = new ArrayCollection();
@@ -779,5 +797,25 @@ class ProcurationProxy
     public function setAdherentReliability(): void
     {
         $this->reliability = self::RELIABILITY_ADHERENT;
+    }
+
+    public function getVoterNumber(): ?string
+    {
+        return $this->voterNumber;
+    }
+
+    public function setVoterNumber(?string $voterNumber): void
+    {
+        $this->voterNumber = $voterNumber;
+    }
+
+    public function getOtherVoteCities(): ?string
+    {
+        return $this->otherVoteCities;
+    }
+
+    public function setOtherVoteCities(?string $otherCities): void
+    {
+        $this->otherVoteCities = $otherCities;
     }
 }

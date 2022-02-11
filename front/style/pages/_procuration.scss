@@ -83,8 +83,12 @@
         }
 
         &__form {
-            background-color: $gray--lighter;
-            border: 1px solid $gray--light;
+            &__part {
+                padding: 30px;
+                background-color: $gray--lighter;
+                border: 1px solid $gray--light;
+            }
+
             padding: 30px;
             margin: 0 0 0 75px;
             text-align: left;

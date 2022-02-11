@@ -229,6 +229,16 @@ app_procuration:
     resource: "../src/Controller/Procuration"
     type: "annotation"
 
+app_api_intl:
+    host: "{app_domain}"
+    prefix: "/api/"
+    resource: "../src/Controller/IntlController.php"
+    type: "annotation"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%procuration_host%"
+
 app_nous_reussirons:
     host:     "%nous_reussirons_host%"
     path:     /
