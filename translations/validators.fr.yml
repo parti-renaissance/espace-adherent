@@ -569,6 +569,7 @@ scope.visibility.choice: Veuillez spécifier une visibilité valide.
 scope.zone.national_scope_with_zone: Un rôle national ne peut pas définir de zone.
 scope.zone.local_scope_without_zone: Veuillez spécifier une zone.
 scope.zone.local_scope_with_unmanaged_zone: La zone spécifiée n'est pas gérée par votre rôle.
+scope.address.not_in_zones: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.
 
 #
 # MyTeam

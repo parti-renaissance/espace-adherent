@@ -1131,11 +1131,17 @@ Feature:
   Scenario: As a deputy I cannot create an event with missing or invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/events" with body:
+    And I send a "POST" request to "/api/v3/events?scope=deputy" with body:
     """
     {
        "begin_at": "2018-01-01 10:10:10",
-       "finish_at": "2018-01-06 16:30:30"
+       "finish_at": "2018-01-06 16:30:30",
+       "post_address": {
+          "address": "50 rue de la villette",
+          "postal_code": "69003",
+          "city_name": "Lyon 3e",
+          "country": "FR"
+        }
     }
     """
     Then the response status code should be 400
@@ -1143,7 +1149,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le future.",
+      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le future.\npost_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
@@ -1170,6 +1176,10 @@ Feature:
           {
               "message": "La date de début doit être dans le future.",
               "propertyPath": "begin_at"
+          },
+          {
+              "propertyPath": "post_address",
+              "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
           }
       ]
     }
@@ -1190,9 +1200,9 @@ Feature:
         "mode": "online",
         "visio_url": "https://en-marche.fr/reunions/123",
         "post_address": {
-          "address": "50 rue de la villette",
-          "postal_code": "69003",
-          "city_name": "Lyon 3e",
+          "address": "62 avenue des champs-élysées",
+          "postal_code": "75008",
+          "city_name": "Paris 8e",
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
@@ -1221,13 +1231,13 @@ Feature:
         "status": "SCHEDULED",
         "capacity": 100,
         "post_address": {
-            "address": "50 rue de la villette",
-            "postal_code": "69003",
-            "city": "69003-69383",
-            "city_name": "Lyon 3e",
+            "address": "62 avenue des champs-élysées",
+            "postal_code": "75008",
+            "city": "75008-75108",
+            "city_name": "Paris 8e",
             "country": "FR",
-            "latitude": 45.759636,
-            "longitude": 4.861436
+            "latitude": 48.870590,
+            "longitude": 2.305370
         },
         "category": {
             "event_group_category": {
