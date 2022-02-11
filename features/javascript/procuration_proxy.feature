@@ -9,10 +9,10 @@ Feature:
       | LoadProcurationData |
 
   Scenario: As a non logged user, I can fill a form
-    Given I am on "/procuration/choisir/proposition"
+    Given I am on "/choisir/proposition"
     When I click the ".form__label" selector
     And I press "Continuer"
-    Then I should be on "procuration/je-propose"
+    Then I should be on "/je-propose"
     And I should see 3 "#app_procuration_proposal_proxiesCount div" element
     When I fill in the following:
       | app_procuration_proposal[voteCountry] | FR |

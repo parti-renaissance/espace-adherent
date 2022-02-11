@@ -240,8 +240,6 @@ class EventManagerControllerTest extends WebTestCase
 
     public function testOrganizerCanPrintRegistrations()
     {
-        self::markTestSkipped('Need to fix: timeout issue with wkhtmltopdf-amd64 tool');
-
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $crawler = $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne');

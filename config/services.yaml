@@ -21,6 +21,7 @@ parameters:
     coalitions_auth_host:                 "%env(COALITIONS_AUTH_HOST)%"
     jemengage_host:                       "%env(JEMENGAGE_HOST)%"
     jemengage_auth_host:                  "%env(JEMENGAGE_AUTH_HOST)%"
+    procuration_host:                     "%env(PROCURATION_HOST)%"
     nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
