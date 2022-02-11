@@ -4,6 +4,7 @@ on:
     - cron: "0 6 * * *"
 env:
   INTERVAL_OLD_IMAGES: ${{ secrets.CLEANUP_OLD_IMAGES_TIME_DIFF }}
+  IMAGE: ${{ secrets.REGISTRY_HOST }}/${{ secrets.REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
 
 jobs:
   clean:
