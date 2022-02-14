@@ -34,11 +34,14 @@
             <meta property="og:type" content="{% block open_graph_type 'website' %}" />
         {% endblock %}
 
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
-        <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
-        <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}?v2" sizes="16x16" />
-        <link rel="manifest" href="{{ asset('manifest.json') }}?v2" />
-        <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
+        {% block favicons %}
+            <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v2" />
+            <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}?v2" sizes="32x32" />
+            <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}?v2" sizes="16x16" />
+            <link rel="manifest" href="{{ asset('manifest.json') }}?v2" />
+            <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}?v2" color="#ff3680" />
+        {% endblock %}
+
         <meta name="theme-color" content="#ffffff" />
 
         {% block extra_link '' %}

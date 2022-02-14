@@ -23,8 +23,10 @@ class ProcurationRequest
     use EntityTimestampableTrait;
     use ElectionRoundsCollectionTrait;
 
-    public const REASON_PROFESSIONAL = 'profesionnal';
+    public const REASON_PROFESSIONAL = 'professional';
     public const REASON_HANDICAP = 'handicap';
+    public const REASON_PERSONAL = 'personal';
+    public const REASON_COVID19 = 'covid19';
     public const REASON_HEALTH = 'health';
     public const REASON_HELP = 'help';
     public const REASON_TRAINING = 'training';
@@ -299,10 +301,10 @@ class ProcurationRequest
      *
      * @ORM\Column(length=15)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"election_rounds"})
+     * @Assert\NotBlank(message="procuration.reason.invalid", groups={"election_rounds"})
      * @Assert\Choice(
      *     callback={"App\Entity\ProcurationRequest", "getReasons"},
-     *     message="common.gender.invalid_choice",
+     *     message="procuration.reason.invalid",
      *     strict=true,
      *     groups={"election_rounds"}
      * )
@@ -700,13 +702,12 @@ class ProcurationRequest
     public static function getReasons(): array
     {
         return [
-            self::REASON_HANDICAP,
-            self::REASON_HEALTH,
-            self::REASON_HELP,
-            self::REASON_HOLIDAYS,
-            self::REASON_PROFESSIONAL,
             self::REASON_RESIDENCY,
-            self::REASON_TRAINING,
+            self::REASON_HOLIDAYS,
+            self::REASON_HEALTH,
+            self::REASON_PROFESSIONAL,
+            self::REASON_PERSONAL,
+            self::REASON_COVID19,
         ];
     }
 
