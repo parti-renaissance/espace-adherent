@@ -3,7 +3,7 @@
 namespace Tests\App\Command;
 
 use App\Command\ProcurationSendReminderCommand;
-use App\Mailer\Message\ProcurationProxyReminderMessage;
+use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
 use Tests\App\AbstractCommandCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
 

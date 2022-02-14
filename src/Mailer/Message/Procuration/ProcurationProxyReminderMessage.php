@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Procuration;
 
 use App\Entity\ProcurationRequest;
+use App\Mailer\Message\Message;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 
-final class ProcurationProxyReminderMessage extends Message
+final class ProcurationProxyReminderMessage extends AbstractProcurationMessage
 {
-    public static function create(ProcurationRequest $request, string $infoUrl): self
+    public static function create(ProcurationRequest $request, string $infoUrl): Message
     {
         $message = new self(
             Uuid::uuid4(),
@@ -20,7 +21,7 @@ final class ProcurationProxyReminderMessage extends Message
 
         $message->addRecipient($request->getFoundProxy()->getEmailAddress());
 
-        return $message;
+        return self::updateSenderInfo($message);
     }
 
     public static function createRecipientVariables(ProcurationRequest $request, string $infoUrl): array
