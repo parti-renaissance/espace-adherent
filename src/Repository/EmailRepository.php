@@ -32,7 +32,7 @@ class EmailRepository extends ServiceEntityRepository
             ->where('e.messageClass = :class')
             ->andWhere('e.recipients LIKE :recipient')
             ->orderBy('e.createdAt', 'DESC')
-            ->setParameter('class', str_replace('App\\Mailer\\Message\\', '', $messageClass))
+            ->setParameter('class', $this->getMessageType($messageClass))
             ->setParameter('recipient', '%'.$recipient.'%')
             ->getQuery()
             ->getResult()
@@ -50,7 +50,7 @@ class EmailRepository extends ServiceEntityRepository
         if ($messageClass) {
             $qb
                 ->where('e.messageClass = :class')
-                ->setParameter('class', str_replace('App\\Mailer\\Message\\', '', $messageClass))
+                ->setParameter('class', $this->getMessageType($messageClass))
             ;
         }
 
@@ -66,7 +66,7 @@ class EmailRepository extends ServiceEntityRepository
             ->createQueryBuilder('e')
             ->where('e.messageClass = :class')
             ->orderBy('e.createdAt', 'DESC')
-            ->setParameter('class', str_replace('App\\Mailer\\Message\\', '', $messageClass))
+            ->setParameter('class', $this->getMessageType($messageClass))
             ->getQuery()
             ->getResult()
         ;
@@ -77,5 +77,12 @@ class EmailRepository extends ServiceEntityRepository
         $email->delivered($response);
 
         $this->_em->flush();
+    }
+
+    private function getMessageType(string $messageClass): string
+    {
+        $parts = explode('\\', $messageClass);
+
+        return end($parts);
     }
 }

@@ -6,6 +6,7 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCauseData;
 use App\DataFixtures\ORM\LoadCoalitionData;
 use App\Entity\Coalition\Cause;
+use App\Mailer\Message\Coalition\CauseApprovalMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
@@ -112,7 +113,7 @@ class CausesControllerTest extends WebTestCase
         $this->manager->clear();
 
         $this->assertSame(Cause::STATUS_APPROVED, $cause->getStatus());
-        $this->assertCountMails(1, 'CauseApprovalMessage', 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, CauseApprovalMessage::class, 'jacques.picard@en-marche.fr');
 
         // refuse
         $this->client->request(Request::METHOD_POST, '/espace-coalition/causes/refuser',
@@ -139,7 +140,7 @@ class CausesControllerTest extends WebTestCase
         $cause = $this->causeRepository->findOneBy(['uuid' => LoadCauseData::CAUSE_7_UUID]);
 
         $this->assertSame(Cause::STATUS_APPROVED, $cause->getStatus());
-        $this->assertCountMails(2, 'CauseApprovalMessage', 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(2, CauseApprovalMessage::class, 'jacques.picard@en-marche.fr');
     }
 
     public function testEditCauseAsCoalitionModeratorFailed(): void
