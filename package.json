@@ -17,7 +17,7 @@
     "@google/markerclusterer": "^2.0.9",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^6.17.6",
-    "@sentry/tracing": "^6.17.5",
+    "@sentry/tracing": "^6.17.7",
     "algoliasearch": "^4.12.1",
     "atob": "^2.1.0",
     "babel-loader": "^8.2.3",
