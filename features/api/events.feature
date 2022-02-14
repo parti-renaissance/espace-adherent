@@ -1143,13 +1143,17 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le future.",
+      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le future.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
           {
              "message": "La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.",
              "propertyPath": "finish_at"
+          },
+          {
+              "message": "Catégorie est requise.",
+              "propertyPath": "category"
           },
           {
               "message": "Cette valeur ne doit pas être vide.",
@@ -1246,6 +1250,7 @@ Feature:
     """
     {
       "description": "Nouvelle description",
+      "category": "kiosque",
       "begin_at": "2022-05-12 10:30:00",
       "finish_at": "2022-05-12 16:30:00",
       "mode": "online",
@@ -1288,7 +1293,14 @@ Feature:
             "latitude": null,
             "longitude": null
         },
-        "category": null,
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Kiosque",
+            "slug": "kiosque"
+        },
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null
