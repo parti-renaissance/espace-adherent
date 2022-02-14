@@ -249,6 +249,7 @@ procuration.election_rounds.min_count: Vous devez choisir au moins un tour d'él
 procuration.last_name.not_blank: Votre nom de naissance est requis.
 procuration.last_name.min_length: Votre nom de naissance doit comporter au moins {{ limit }} caractères.
 procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser {{ limit }} caractères.
+procuration.voter_number_or_names: Numéro d'électeur ou les champs d'état civil doivent être renseignés
 
 procuration.first_names.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
 procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser {{ limit }} caractères.
@@ -264,8 +265,8 @@ procuration.proposal_conditions.required: Vous devez vous engager à voter selon
 
 procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.
 
-procuration.vote_country.conditions.fr: "Attention, vous ne pouvez être mandataire que pour deux procurations. Par exemple : 2 procurations établies en France OU 1 procuration établie en France + 1 établie à l'étranger OU 2 procurations établies à l'étranger."
-procuration.vote_country.conditions.other: Attention, vous ne pouvez être mandataire que pour trois procurations dont une seule maximum établie en France selon l'article L.73 du Code électoral.
+procuration.vote_country.conditions.fr: "Attention : vous ne pouvez pas avoir plus de 2 procurations, et 1 seule d'entre elles peut être faite en France. Vous pouvez donc avoir : Soit 1 procuration établie en France Soit 1 procuration établie à l'étranger Soit 1 procuration établie en France et 1 procuration établie à l'étranger Soit 2 procurations établies à l'étranger."
+procuration.vote_country.conditions.other: "Attention : vous ne pouvez pas avoir plus de 3 procurations, et 1 seule d'entre elles peut être faite en France. Vous pouvez donc avoir : Soit 1 ou 2 ou 3 procurations établies à l'étranger Soit 1 procuration établie en France Soit 1 procuration établie en France et 1 procuration établie à l'étranger Soit 1 procuration établie en France et 2 procurations établies à l'étranger."
 procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
 procuration.state.not_empty: Vous devez remplir l'État/Province si le pays de résidence n'est pas en France.
 procuration.postal_code.not_empty: Pour la France, la saisie du code postal est obligatoire.
