@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "denormalization_context": {
  *             "groups": {"my_team_member_write"}
  *         },
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'my_team')"
+ *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
  *     },
  *     itemOperations={
  *         "get": {
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "delete": {
  *             "path": "/v3/my_team_members/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "object.getTeam().getOwner() == user and is_granted('IS_FEATURE_GRANTED', 'my_team')",
+ *             "access_control": "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')",
  *         }
  *     },
  *     collectionOperations={
