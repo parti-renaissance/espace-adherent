@@ -90,7 +90,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
 
         /** @var $user Adherent */
         if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
-            && $user = $this->security->getUser()) {
+            && ($user = $this->security->getUser()) instanceof Adherent) {
             $alias = $queryBuilder->getRootAliases()[0];
             if ($zone = $user->getParisBoroughOrDepartment()) {
                 $this->baseEventRepository->withGeoZones(
