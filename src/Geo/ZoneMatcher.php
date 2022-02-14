@@ -48,9 +48,9 @@ class ZoneMatcher
         if ($isFrance) {
             // Borough or city
             $zones[] =
-                $this->repository->findOneBy(['code' => $inseeCode = str_pad($address->getInseeCode(), 5, '0', \STR_PAD_LEFT), 'type' => Zone::BOROUGH]) ?:
-                $this->repository->findOneBy(['code' => $inseeCode, 'type' => Zone::CITY]) ?:
-                $this->matchPostalCode($address->getPostalCode())
+                $this->repository->findOneBy(['code' => str_pad($address->getInseeCode(), 5, '0', \STR_PAD_LEFT), 'type' => [Zone::BOROUGH, Zone::CITY]])
+                    ?: ($this->matchPostalCode($address->getPostalCode()
+                        ?: $this->matchPostalCode($address->getPostalCode(), $address->getCityName())))
             ;
 
             // Districts and cantons
@@ -79,20 +79,27 @@ class ZoneMatcher
         return array_values(array_filter(array_unique($zones)));
     }
 
-    public function matchPostalCode(?string $postalCode): ?Zone
+    public function matchPostalCode(?string $postalCode, ?string $cityName = null): ?Zone
     {
         if (!$postalCode) {
             return null;
         }
 
-        $cities = $this->em->getRepository(City::class)
+        $qb = $this->em->getRepository(City::class)
             ->createQueryBuilder('c')
-            ->where('c.postalCode LIKE :postal_code_1 or c.postalCode LIKE :postal_code_2')
+            ->where('(c.postalCode LIKE :postal_code_1 OR c.postalCode LIKE :postal_code_2)')
             ->setParameter('postal_code_1', $postalCode.'%')
             ->setParameter('postal_code_2', '%,'.$postalCode.'%')
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($cityName) {
+            $qb
+                ->andWhere('c.name = :city_name')
+                ->setParameter('city_name', $cityName)
+            ;
+        }
+
+        $cities = $qb->getQuery()->getResult();
 
         if (1 !== \count($cities)) {
             return null;
