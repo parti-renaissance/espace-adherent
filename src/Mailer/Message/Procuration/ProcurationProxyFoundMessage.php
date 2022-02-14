@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Procuration;
 
 use App\Entity\ProcurationRequest;
+use App\Mailer\Message\Message;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 
-final class ProcurationProxyFoundMessage extends Message
+final class ProcurationProxyFoundMessage extends AbstractProcurationMessage
 {
-    public static function create(ProcurationRequest $request, string $infosUrl): self
+    public static function create(ProcurationRequest $request, string $infosUrl): Message
     {
         $proxy = $request->getFoundProxy();
         $message = new self(
@@ -33,6 +34,6 @@ final class ProcurationProxyFoundMessage extends Message
         $message->setReplyTo($proxy->getEmailAddress());
         $message->setPreserveRecipients(true);
 
-        return $message;
+        return self::updateSenderInfo($message);
     }
 }

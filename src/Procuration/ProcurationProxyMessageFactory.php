@@ -5,11 +5,11 @@ namespace App\Procuration;
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
-use App\Mailer\Message\ProcurationProxyCancelledMessage;
-use App\Mailer\Message\ProcurationProxyFoundMessage;
-use App\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
-use App\Mailer\Message\ProcurationProxyReminderMessage;
-use App\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
+use App\Mailer\Message\Procuration\ProcurationProxyCancelledMessage;
+use App\Mailer\Message\Procuration\ProcurationProxyFoundMessage;
+use App\Mailer\Message\Procuration\ProcurationProxyRegistrationConfirmationMessage;
+use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
+use App\Mailer\Message\Procuration\ProcurationRequestRegistrationConfirmationMessage;
 use App\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
