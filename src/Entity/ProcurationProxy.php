@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
  *
  * @Assert\Expression(
- *     expression="this.getVoterNumber() || (this.getGender() && this.getFirstName() && this.getLastName())",
+ *     expression="this.getVoterNumber() || (this.getGender() && this.getFirstNames() && this.getLastName())",
  *     message="procuration.voter_number_or_names",
  *     groups={"front"}
  * )
