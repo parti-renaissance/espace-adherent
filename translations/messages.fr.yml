@@ -1267,3 +1267,12 @@ scope.visibility.national: Nationale
 # Exception
 #
 Account is disabled.: Votre compte a été désactivé par un administrateur.
+
+#
+# HeaderBlock
+#
+
+header_block.name.not_blank: Veuillez renseigner un nom pour cette entête.
+header_block.name.max_length: Le nom d'une entête ne doit pas dépasser {{ limit }} caractères.
+
+
