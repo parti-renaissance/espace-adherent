@@ -1,13 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Procuration' %}
-{% block canonical_url url('app_procuration_request', {step: constant('App\\Entity\\ProcurationRequest::STEP_URI_VOTE')}) %}
+{% set homepage_url = 'https://avecvous.fr' %}
+{% block open_graph_image 'https://avecvous.fr/wp-content/uploads/2022/01/AV-VIGNETTE-YOUTUBE-TEASER-1.jpg' %}
+{% block open_graph_image_height 900 %}
 
-{% block open_graph_image (homepage_url ~ static_asset('procuration-sharer_2.jpg', { q: 70 }))|raw %}
+{% block app_title 'Avec vous' %}
+{% block page_title 'Procuration' %}
+{% block open_graph_site_name 'Avec vous' %}
+
+{% block canonical_url url('app_procuration_request', {step: constant('App\\Entity\\ProcurationRequest::STEP_URI_VOTE')}) %}
 
 {% block banner '' %}
 {% block header '' %}
 {% block footer '' %}
+{% block json_ld '' %}
+{% block meta_rss '' %}
+
+{% block favicons %}
+    <link rel="icon" type="image/png" href="{{ asset('favicon-avecvous-32x32.png') }}" sizes="32x32" />
+{% endblock %}
 
 {% block content %}
     <main class="procuration">

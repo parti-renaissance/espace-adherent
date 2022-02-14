@@ -388,7 +388,9 @@ procuration_manager.deassociate.success: La demande de procuration a bien été 
 procuration_manager.disabled.success: La proposition du mandataire a bien été désactivée.
 procuration_manager.enabled.success: La proposition du mandataire a bien été réactivée.
 procuration_manager.db_error: Vous avez modifié la base de données exactement au même moment qu'un autre responsable procuration, ce qui a provoqué une erreur. Pourriez-vous réessayer ?
-procuration_request.reasons.profesionnal: Obligations professionnelles
+procuration_request.reasons.professional: Obligations professionnelles
+procuration_request.reasons.covid19: Virus du Covid-19
+procuration_request.reasons.personal: Contraintes personnelles
 procuration_request.reasons.handicap: En raison d'un handicap
 procuration_request.reasons.health: Pour raison de santé
 procuration_request.reasons.help: Assistance apportée à une personne

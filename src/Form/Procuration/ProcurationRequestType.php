@@ -76,13 +76,12 @@ class ProcurationRequestType extends AbstractProcurationType
                     ])
                     ->add('reason', ChoiceType::class, [
                         'choices' => [
-                            'Parce que je réside dans une commune différente de celle où je suis inscrit(e) sur une liste électorale' => ProcurationRequest::REASON_RESIDENCY,
-                            'Parce que je suis en vacances' => ProcurationRequest::REASON_HOLIDAYS,
-                            'En raison d’obligations professionnelles' => ProcurationRequest::REASON_PROFESSIONAL,
-                            'En raison d’un handicap' => ProcurationRequest::REASON_HANDICAP,
-                            'Pour raison de santé' => ProcurationRequest::REASON_HEALTH,
-                            'En raison d’assistance apportée à une personne malade ou infirme' => ProcurationRequest::REASON_HELP,
-                            'En raison d’obligations de formation' => ProcurationRequest::REASON_TRAINING,
+                            'Je ne réside pas là où je suis électeur(trice)' => ProcurationRequest::REASON_RESIDENCY,
+                            'Je serai en vacances pendant cette période' => ProcurationRequest::REASON_HOLIDAYS,
+                            'Je suis dans l’incapacité physique de me déplacer ' => ProcurationRequest::REASON_HEALTH,
+                            'J’ai des contraintes professionnelles' => ProcurationRequest::REASON_PROFESSIONAL,
+                            'J’ai des contraintes personnelles' => ProcurationRequest::REASON_PERSONAL,
+                            'Je crains le virus du Covid-19' => ProcurationRequest::REASON_COVID19,
                         ],
                     ])
                     ->add('authorization', CheckboxType::class, [

@@ -45,7 +45,7 @@
                     Sauf mention contraire, toutes les informations demandées sont obligatoires.
                 </div>
 
-                {{ form_label(procuration_form.requestFromFrance, 'Où ai-je fait ma procuration ?') }}
+                {{ form_label(procuration_form.requestFromFrance, 'Où vais-je faire ma procuration ?') }}
                 <div class="form__row form__radio-button">
                     {{ form_errors(procuration_form.requestFromFrance) }}
                     {{ form_widget(procuration_form.requestFromFrance, { attr: { class: 'form--full b__nudge--top-5' } }) }}
@@ -73,19 +73,14 @@
                     {{ form_errors(procuration_form.reachable) }}
                     <div class="form__row form__checkbox form__checkbox--large" id="procuration_reachable">
                         {{ form_widget(procuration_form.reachable) }}
-                        {{ form_label(procuration_form.reachable, "En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale.") }}
+                        {{ form_label(procuration_form.reachable, "En cochant cette case, j'accepte d'être recontacté afin de recevoir des procurations pour la prochaine échéance électorale. (non obligatoire)") }}
                     </div>
 
                     {{ form_errors(procuration_form.authorization) }}
                     <div class="form__row form__checkbox form__checkbox--large" id="procuration_authorization">
                         {{ form_widget(procuration_form.authorization) }}
-                        {{ form_label(procuration_form.authorization, "En cochant cette case, j'accepte que LaREM traite mes données dans le cadre de la plateforme de procuration en ligne. *") }}
+                        {{ form_label(procuration_form.authorization, "En cochant cette case, j'accepte les mentions d’information relatives au traitement de mes données ci-dessous.") }}
                     </div>
-                </div>
-
-                <div class="form__row b__nudge--top-40">
-                    {{ form_errors(procuration_form.reason) }}
-                    {{ form_widget(procuration_form.reason, { attr: { class: 'form--full' } }) }}
                 </div>
 
                 <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
