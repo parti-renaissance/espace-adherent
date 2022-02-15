@@ -2,7 +2,10 @@
 
 namespace App\Geo\Subscriber;
 
+use App\Address\AddressInterface;
 use App\Committee\CommitteeEvent;
+use App\Entity\PostAddress;
+use App\Entity\ZoneableEntity;
 use App\Event\EventEvent;
 use App\Events;
 use App\Geo\ZoneMatcher;
@@ -11,15 +14,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ZoneAssignerSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
-     * @var ZoneMatcher
-     */
-    private $zoneMatcher;
+    private EntityManagerInterface $em;
+    private ZoneMatcher $zoneMatcher;
 
     public function __construct(EntityManagerInterface $em, ZoneMatcher $zoneMatcher)
     {
@@ -34,17 +30,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $zones = $this->zoneMatcher->match($committee->getPostAddress());
-        if (!$zones) {
-            return;
-        }
-
-        $committee->clearZones();
-        foreach ($zones as $zone) {
-            $committee->addZone($zone);
-        }
-
-        $this->em->flush();
+        $this->assignZone($committee, $committee->getPostAddress());
     }
 
     public function assignZoneToEvent(EventEvent $eventEvent): void
@@ -54,14 +40,24 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $zones = $this->zoneMatcher->match($event->getPostAddressModel());
+        $this->assignZone($event, $event->getPostAddressModel(), true);
+    }
+
+    public function assignZone(ZoneableEntity $entity, AddressInterface $address, bool $setCity = false): void
+    {
+        $zones = $this->zoneMatcher->match($address);
         if (!$zones) {
             return;
         }
 
-        $event->clearZones();
+        $entity->clearZones();
+        $needInsee = method_exists($entity, 'setCity') && PostAddress::FRANCE === $address->getCountry()
+            && null == $address->getInseeCode() && null != $address->getPostalCode();
         foreach ($zones as $zone) {
-            $event->addZone($zone);
+            $entity->addZone($zone);
+            if ($setCity && $needInsee && $zone->isCity()) {
+                $entity->setCity(sprintf('%s-%s', $address->getPostalCode(), $zone->getCode()));
+            }
         }
 
         $this->em->flush();

@@ -126,7 +126,7 @@ class FranceCitiesBundle
         $cities = self::getPostalCodeCities($postalCode);
 
         foreach ($cities as $inseeCode => $cityName) {
-            if (self::canonicalizeCityName($cityName) === $normalizedName) {
+            if (str_starts_with(self::canonicalizeCityName($cityName), $normalizedName)) {
                 return $inseeCode;
             }
         }
