@@ -35,6 +35,7 @@ use App\Entity\ZoneableEntity;
 use App\Event\EventTypeEnum;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
+use App\Validator\AddressInScopeZones as AssertAddressInScopeZones;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
@@ -443,6 +444,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var PostAddress
      *
      * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     *
+     * @AssertAddressInScopeZones
      */
     protected $postAddress;
 
