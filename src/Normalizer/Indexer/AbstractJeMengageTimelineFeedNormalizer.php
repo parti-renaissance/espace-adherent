@@ -95,7 +95,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             return null;
         }
 
-        $codes = [sprintf('%s_%s', $zone->getType(), Zone::BOROUGH === $zone->getType() ? $zone->getPostalCodeAsString() : $zone->getCode())];
+        $codes = [sprintf('%s_%s', $zone->getType(), $zone->getCode())];
 
         foreach ($zone->getParents() as $parentZone) {
             $codes[] = sprintf('%s_%s', $parentZone->getType(), $parentZone->getCode());

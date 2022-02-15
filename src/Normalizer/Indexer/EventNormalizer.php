@@ -61,7 +61,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getBeginAt(object $object): ?\DateTime
     {
-        return $object->getFinishAt();
+        return $object->getBeginAt();
     }
 
     /** @param BaseEvent $object */

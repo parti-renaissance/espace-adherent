@@ -42,6 +42,12 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
+    protected function getBeginAt(object $object): ?\DateTime
+    {
+        return $object->getBeginAt();
+    }
+
+    /** @param Campaign $object */
     protected function getAuthor(object $object): ?string
     {
         return null;
