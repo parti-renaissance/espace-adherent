@@ -126,9 +126,13 @@ class DataSurveyRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('ds')
             ->addSelect('survey', 'campaignHistory', 'author', 'campaign')
+            ->addSelect('partial building.{id}')
+            ->addSelect('partial address.{id, postalCodes, longitude, latitude}')
             ->leftJoin('ds.survey', 'survey')
             ->leftJoin('ds.author', 'author')
             ->leftJoin('ds.papCampaignHistory', 'campaignHistory')
+            ->leftJoin('campaignHistory.building', 'building')
+            ->leftJoin('building.address', 'address')
             ->leftJoin('campaignHistory.campaign', 'campaign')
             ->where('campaign = :campaign')
             ->setParameter('campaign', $campaign)
@@ -147,8 +151,6 @@ class DataSurveyRepository extends ServiceEntityRepository
             );
 
             $qb
-                ->leftJoin('campaignHistory.building', 'building')
-                ->leftJoin('building.address', 'address')
                 ->andWhere('address.id IN (:ids)')
                 ->setParameter('ids', $addressIds)
             ;
@@ -264,12 +266,16 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->addSelect('jemarcheDataSurvey')
             ->addSelect('partial phoningCampaignHistory.{id, uuid, beginAt, finishAt}')
             ->addSelect('partial papCampaignHistory.{id, uuid, beginAt, finishAt, firstName, lastName, emailAddress, gender, ageRange}')
-            ->addSelect('partial author.{id, firstName, lastName, gender, birthdate, uuid}')
+            ->addSelect('partial building.{id}')
+            ->addSelect('partial address.{id, postalCodes, longitude, latitude}')
+            ->addSelect('partial author.{id, firstName, lastName, gender, birthdate, uuid, postAddress.postalCode}')
             ->addSelect('partial adherent.{id, firstName, lastName, emailAddress, postAddress.postalCode, gender, position, birthdate}')
             ->leftJoin('ds.author', 'author')
             ->leftJoin('ds.jemarcheDataSurvey', 'jemarcheDataSurvey')
             ->leftJoin('ds.phoningCampaignHistory', 'phoningCampaignHistory')
             ->leftJoin('ds.papCampaignHistory', 'papCampaignHistory')
+            ->leftJoin('papCampaignHistory.building', 'building')
+            ->leftJoin('building.address', 'address')
             ->leftJoin('phoningCampaignHistory.adherent', 'adherent')
             ->where('ds.survey = :survey')
             ->setParameter('survey', $survey)
