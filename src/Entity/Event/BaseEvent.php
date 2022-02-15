@@ -37,6 +37,7 @@ use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
+use App\Validator\EventCategory as AssertValidEventCategory;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -187,6 +188,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "beginAt": "start",
  * })
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
+ *
+ * @AssertValidEventCategory
  */
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface
 {
