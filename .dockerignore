@@ -2,11 +2,8 @@
 .git
 .gitignore
 .idea
-.sensiolabs.yml
 .tmp
 docker-dev.md5
-.circleci
-.eslintrc
 .php_cs.*
 docker-compose.*
 supervisord.*
