@@ -13,7 +13,7 @@
                 <div class="b__nudge--bottom text--summary">
                     {{ cms_block('procuration-proposal-cta') }}
                 </div>
-                <a href="{{ path('app_procuration_choose_election', { action: constant('App\\Procuration\\ElectionContext::ACTION_PROPOSAL') }) }}" class="btn btn--primary">
+                <a href="{{ path('app_procuration_choose_election', { action: constant('App\\Procuration\\ElectionContext::ACTION_PROPOSAL') }) }}" class="btn btn--red-secondary">
                     Je me porte mandataire
                 </a>
             </div>
@@ -24,7 +24,7 @@
                     {{ cms_block('procuration-request-cta') }}
                 </div>
 
-                <a href="{{ path('app_procuration_choose_election', { action: constant('App\\Procuration\\ElectionContext::ACTION_REQUEST') }) }}" class="btn btn--blue">
+                <a href="{{ path('app_procuration_choose_election', { action: constant('App\\Procuration\\ElectionContext::ACTION_REQUEST') }) }}" class="btn btn--blue-secondary">
                     Je donne procuration
                 </a>
             </div>
