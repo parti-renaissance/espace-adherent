@@ -37,6 +37,12 @@ class CampaignHistoryStatusEnum extends Enum
         self::CONTACT_LATER,
     ];
 
+    public const OPEN_DOOR_STATUS = [
+        self::ACCEPT_TO_ANSWER,
+        self::DONT_ACCEPT_TO_ANSWER,
+        self::CONTACT_LATER,
+    ];
+
     public const ALL = [
         self::DOOR_OPEN,
         self::DOOR_CLOSED,

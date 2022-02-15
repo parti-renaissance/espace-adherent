@@ -246,8 +246,8 @@ Feature:
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
                 "zone": null,
-                "nb_surveys": 3,
-                "nb_visited_doors": 5,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -261,7 +261,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -303,7 +303,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -430,8 +430,8 @@ Feature:
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
                 "zone": null,
-                "nb_surveys": 3,
-                "nb_visited_doors": 5,
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -445,7 +445,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             },
@@ -487,7 +487,7 @@ Feature:
                 "visibility": "national",
                 "zone": null,
                 "nb_surveys": 0,
-                "nb_visited_doors": 1,
+                "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7
             }
@@ -527,6 +527,7 @@ Feature:
       "nb_contact_later": 0,
       "nb_door_open": 0,
       "nb_to_join": 0,
+      "nb_open_doors": 0,
       "average_visit_time": 0
     }
     """
@@ -903,11 +904,44 @@ Feature:
         "nb_contact_later": 1,
         "nb_door_open": 0,
         "nb_to_join": 0,
+        "nb_open_doors": 1,
         "average_visit_time": 140,
         "visibility": "national",
         "zone": null
     }
     """
+
+  Scenario Outline: As a logged-in user with a local role I can get a national PAP campaign
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "title": "Campagne de 10 jours suivants",
+        "brief": "**Campagne** de 10 jours suivants",
+        "goal": 600,
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
+        "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+        "visibility": "national",
+        "zone": null,
+        "nb_surveys": 3,
+        "nb_visited_doors": 5,
+        "nb_addresses": 4,
+        "nb_voters": 7,
+        "nb_collected_contacts": 3,
+        "average_visit_time": 336,
+        "nb_open_doors": 4,
+        "nb_to_join": 0,
+        "nb_door_open": 1,
+        "nb_contact_later": 0
+    }
+    """
+    Examples:
+      | user                            | scope                                           |
+      | referent-75-77@en-marche-dev.fr | referent                                        |
+      | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile"
@@ -1715,6 +1749,185 @@ Feature:
                 "uuid": "@uuid@",
                 "created_at": "2021-11-10T10:10:10+01:00",
                 "duration": 140
+            }
+        ]
+    }
+    """
+
+  Scenario: As a PAP national manager I can get the list of campaign histories of one PAP campaign ordered by createdAt
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=pap_national_manager&page_size=10&campaign.uuid=d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9&order[createdAt]=desc"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 5,
+            "items_per_page": 10,
+            "count": 5,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "13",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 0
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "12",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 420
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
+                    "first_name": "Patrick",
+                    "last_name": "Bialès",
+                    "age": 71
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "accept_to_answer",
+                "building_block": "A",
+                "floor": 1,
+                "door": "11",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 300
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "age": 68
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "dont_accept_to_answer",
+                "building_block": "A",
+                "floor": 0,
+                "door": "02",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 60
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard",
+                    "age": 68
+                },
+                "campaign": {
+                    "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "702eda29-39c6-4b3d-b28f-3fd3806747b2"
+                    },
+                    "uuid": "2bffd913-34fe-48ad-95f4-7381812b93dd"
+                },
+                "status": "door_open",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 900
             }
         ]
     }
