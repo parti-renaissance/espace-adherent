@@ -304,10 +304,6 @@ services:
     App\Firebase\JeMarcheMessaging:
         lazy: true
 
-    App\Api\Filter\OrderFilter:
-        calls:
-            - ['setNameConverter', ['@api_platform.name_converter']]
-
     App\Api\Serializer\RiposteGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\RiposteGroupsContextBuilder.inner']
