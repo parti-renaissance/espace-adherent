@@ -3,10 +3,10 @@
 {% form_theme procuration_form 'procuration/_election_rounds_form.html.twig' %}
 
 {% block page_title 'Je me propose - Procuration' %}
-{% block meta_description "Chaque vote compte. Allez voter au nom d'un citoyen de votre ville." %}
+{% block meta_description "Chaque vote compte. Allez voter au nom d'un citoyen." %}
 {% block canonical_url url('app_procuration_proxy_proposal') %}
 
-{% block open_graph_image (homepage_url ~ static_asset('procuration-sharer_2.jpg', { q: 70 }))|raw %}
+{% block open_graph_image (homepage_url ~ static_asset('procuration.jpg', { q: 70 }))|raw %}
 
 {% block banner '' %}
 {% block header '' %}
@@ -48,11 +48,11 @@
                 var radioButtonsHelper = $(proxiesCountSelected+'_helper');
 
                 if ('FR' === $('#{{ procuration_form.voteCountry.vars.id }}').val()) {
-                    $(proxiesCountSelected+'_'+1).prop('checked', true);
+                    $(proxiesCountSelected+'_'+0).prop('checked', true);
                     radioButtons.last().addClass("hidden");
                     radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.fr'|trans({}, 'validators')|e('js') }}')
                 } else {
-                    $(proxiesCountSelected+'_'+2).prop('checked', true);
+                    $(proxiesCountSelected+'_'+1).prop('checked', true);
                     radioButtons.last().removeClass("hidden");
                     radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.other'|trans({}, 'validators')|e('js') }}');
                 }
@@ -71,7 +71,7 @@
                     Chaque vote compte.
                 </h1>
                 <h1 class="text--large b__nudge--top-10 l__hide--on-mobile">
-                    Allez voter au nom d'un citoyen de votre ville.
+                    Allez voter au nom d'un citoyen.
                 </h1>
             </div>
         </section>
@@ -218,7 +218,10 @@
                             {{ form_errors(procuration_form.voteOffice) }}
                             {{ form_widget(procuration_form.voteOffice, { attr: { class: 'form--full', placeholder: 'Bureau de vote' } }) }}
                             <div class="text--body text--small b__nudge--top-10">
-                                Vous pouvez trouver votre numéro de bureau de vote sur votre carte électorale.
+                                Vous pouvez trouver votre numéro de bureau de vote sur votre carte électorale ou
+                                <a href="https://www.service-public.fr/particuliers/vosdroits/services-en-ligne-et-formulaires/ISE" target="_blank">
+                                    interroger votre situation électorale
+                                </a>
                             </div>
                         </div>
 

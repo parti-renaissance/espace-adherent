@@ -424,6 +424,13 @@ button.btn {
         border-color: $blue--dark;
     }
 
+    &--blue-secondary {
+        @include btn--blue;
+
+        background-color: $blue--secondary;
+        border-color: $blue--secondary;
+    }
+
     &--no-border {
         border-color: white;
 
@@ -503,6 +510,13 @@ button.btn {
 
     &--red {
         @include btn--red;
+    }
+
+    &--red-secondary {
+        @include btn--primary;
+
+        background-color: $red--secondary;
+        border-color: $red--secondary;
     }
 
     &--muted {
