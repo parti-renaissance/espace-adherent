@@ -11,7 +11,8 @@ use League\Flysystem\FilesystemInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
-    private UrlAdapterInterface $storage;
+    /** @var UrlAdapterInterface */
+    private $storage;
 
     public function __construct(FilesystemInterface $storage)
     {
