@@ -853,6 +853,142 @@ Feature:
         ]
     }
     """
+    When I send a "GET" request to "/api/v3/events?scope=<scope>&page_size=3&order[finish_at]=asc"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 11,
+            "items_per_page": 3,
+            "count": 3,
+            "current_page": 1,
+            "last_page": 4
+        },
+        "items": [
+            {
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
+                },
+                "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
+                "name": "Grand Meeting de Marseille",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "participants_count": 1,
+                "status": "SCHEDULED",
+                "capacity": 2000,
+                "post_address": {
+                    "address": "2 Place de la Major",
+                    "postal_code": "13002",
+                    "city": "13002-13202",
+                    "city_name": "Marseille 2e",
+                    "country": "FR",
+                    "latitude": 43.298492,
+                    "longitude": 5.362377
+                },
+                "created_at": "@string@.isDateTime()",
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Atelier du programme",
+                    "slug": "atelier-du-programme"
+                },
+                "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
+                "name": "Événements à Fontainebleau 1",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            },
+            {
+                "category": {
+                    "event_group_category": {
+                        "name": "événement",
+                        "slug": "evenement"
+                    },
+                    "name": "Conférence-débat",
+                    "slug": "conference-debat"
+                },
+                "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
+                "name": "Événements à Fontainebleau 2",
+                "time_zone": "Europe/Paris",
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "organizer": {
+                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "first_name": "Francis",
+                    "last_name": "Brioul"
+                },
+                "participants_count": 0,
+                "status": "SCHEDULED",
+                "capacity": 50,
+                "post_address": {
+                    "address": "40 Rue Grande",
+                    "postal_code": "77300",
+                    "city": "77300-77186",
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": 48.404766,
+                    "longitude": 2.698759
+                },
+                "created_at": "@string@.isDateTime()",
+                "private": false,
+                "electoral": false,
+                "visio_url": null,
+                "mode": null,
+                "local_finish_at": "@string@.isDateTime()",
+                "image_url": null,
+                "user_registered_at": null
+            }
+        ]
+    }
+    """
     Examples:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |

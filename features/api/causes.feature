@@ -1173,6 +1173,14 @@ Feature:
       | items[1].name             | Cause pour la culture 2 |
       | items[1].followers_count  | 0                       |
 
+    When I send a "GET" request to "/api/causes?order[followers_count]=asc"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | items[0].name             | Cause pour l'éducation  |
+      | items[0].followers_count  | 0                       |
+      | items[1].name             | Cause pour la culture 2 |
+      | items[1].followers_count  | 0                       |
+
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/causes?order[followersCount]=desc"
     Then the response status code should be 200
