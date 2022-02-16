@@ -110,6 +110,7 @@ class ProcurationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($finalStep) {
+                $procurationRequest->setEnabled(true);
                 $procurationManager->createProcurationRequest($procurationRequest);
 
                 $procurationSession->endRequest();
