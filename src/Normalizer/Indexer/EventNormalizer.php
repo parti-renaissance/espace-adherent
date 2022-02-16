@@ -4,27 +4,23 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Geo\Zone;
-use App\Exception\InvalidUrlAdapterException;
 use App\Storage\UrlAdapterInterface;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\FilesystemInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
-    /** @var UrlAdapterInterface */
-    private $storage;
+    private UrlAdapterInterface $storageAdapter;
 
     public function __construct(FilesystemInterface $storage)
     {
-        $this->storage = $storage->getAdapter();
+        $storageAdapter = $storage->getAdapter();
 
-        if ($this->storage instanceof CachedAdapter) {
-            $this->storage = $this->storage->getAdapter();
+        if ($storageAdapter instanceof CachedAdapter) {
+            $storageAdapter = $storageAdapter->getAdapter();
         }
 
-        if (!$this->storage instanceof UrlAdapterInterface) {
-            throw new InvalidUrlAdapterException();
-        }
+        $this->storageAdapter = $storageAdapter;
     }
 
     protected function getClassName(): string
@@ -89,7 +85,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getImage(object $object): ?string
     {
-        return $object->hasImageName() ? $this->storage->getUrl($object->getImagePath()) : null;
+        return $object->hasImageName() ? $this->storageAdapter->getUrl($object->getImagePath()) : null;
     }
 
     /** @param BaseEvent $object */
