@@ -3,6 +3,8 @@
 namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\DefaultEvent;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
@@ -49,6 +51,8 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
             PhoningCampaign::class,
             News::class,
             Riposte::class,
+            CommitteeEvent::class,
+            DefaultEvent::class,
         ];
     }
 

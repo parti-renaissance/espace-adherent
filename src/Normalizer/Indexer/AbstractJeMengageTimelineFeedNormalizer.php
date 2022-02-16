@@ -14,7 +14,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'is_local' => $this->isLocal($object),
             'title' => $this->getTitle($object),
             'description' => $this->getDescription($object),
+            'category' => $this->getCategory($object),
+            'address' => $this->getAddress($object),
             'image' => $this->getImage($object),
+            'begin_at' => $this->formatDate($this->getBeginAt($object)),
+            'finish_at' => $this->formatDate($this->getFinishAt($object)),
             'date' => $this->formatDate($this->getDate($object)),
             'time_zone' => $this->getTimeZone($object),
             'author' => $this->getAuthor($object),
@@ -38,6 +42,26 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     final private function getType(): string
     {
         return TimelineFeedTypeEnum::CLASS_MAPPING[$this->getClassName()];
+    }
+
+    protected function getCategory(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getAddress(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getBeginAt(object $object): ?\DateTime
+    {
+        return null;
+    }
+
+    protected function getFinishAt(object $object): ?\DateTime
+    {
+        return null;
     }
 
     protected function isNational(object $object): bool

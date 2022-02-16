@@ -6,7 +6,6 @@ use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\ExposedObjectInterface;
-use App\Entity\IndexableEntityInterface;
 use App\Entity\PostAddress;
 use App\Entity\SynchronizedEntity;
 use App\Entity\UserDocument;
@@ -21,10 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
- *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
-class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ExposedObjectInterface
+class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity, ExposedObjectInterface
 {
     use UserDocumentTrait;
 
@@ -160,16 +157,6 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
         }
 
         return $organizer->getUuidAsString();
-    }
-
-    public function isIndexable(): bool
-    {
-        return $this->isActive() && $this->isPublished() && $this->isGeocoded();
-    }
-
-    public function getIndexOptions(): array
-    {
-        return [];
     }
 
     public function getExposedRouteName(): string

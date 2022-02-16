@@ -4,6 +4,7 @@ namespace App\Controller\Api\JeMengage;
 
 use App\Algolia\SearchService;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
+use App\Intl\FranceCitiesBundle;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\OAuth\Model\DeviceApiUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -41,7 +42,13 @@ class GetTimelineFeedsController extends AbstractController
             $dpt = substr($postalCode, 0, 3);
         }
 
-        $filters = ['is_national:true', 'zone_codes:department_'.$dpt];
+        if (75 === (int) $dpt && $code = array_search($postalCode, FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[FranceCitiesBundle::CUSTOM_CITY_CODE_PARIS])) {
+            $zoneFilter = 'zone_codes:borough_'.$code;
+        } else {
+            $zoneFilter = 'zone_codes:department_'.$dpt;
+        }
+
+        $filters = ['is_national:true', $zoneFilter];
         $tagFilters = [];
 
         if ($user instanceof DeviceApiUser) {

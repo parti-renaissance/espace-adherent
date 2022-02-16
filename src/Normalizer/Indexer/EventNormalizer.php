@@ -2,54 +2,111 @@
 
 namespace App\Normalizer\Indexer;
 
-use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Geo\Zone;
+use App\Exception\InvalidUrlAdapterException;
+use App\Storage\UrlAdapterInterface;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\FilesystemInterface;
 
-class EventNormalizer extends AbstractIndexerNormalizer
+class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
-    /** @param CommitteeEvent $object */
-    public function normalize($object, $format = null, array $context = [])
-    {
-        $committee = $object->getCommittee();
+    private UrlAdapterInterface $storage;
 
-        return array_merge(
-            [
-                'uuid' => $object->getUuidAsString(),
-                'name' => $object->getName(),
-                'canonicalName' => $object->getCanonicalName(),
-                'slug' => $object->getSlug(),
-                'description' => $object->getDescription(),
-                'begin_at' => $this->formatDate($object->getBeginAt()),
-                'finish_at' => $this->formatDate($object->getFinishAt()),
-                'address' => $object->getInlineFormattedAddress(),
-                'address_city' => $object->getCityName(),
-                '_geoloc' => $object->getGeolocalisation(),
-                'created_at' => $this->formatDate($object->getCreatedAt()),
-                'updated_at' => $this->formatDate($object->getCreatedAt()),
-                'category' => [
-                    'name' => $object->getCategoryName(),
-                ],
-            ],
-            $committee ?
-            [
-                'committee' => [
-                    'name' => $committee->getName(),
-                    'canonicalName' => $committee->getCanonicalName(),
-                    'slug' => $committee->getSlug(),
-                    'description' => $committee->getDescription(),
-                    'membersCount' => $committee->getMembersCount(),
-                    'uuid' => $committee->getUuidAsString(),
-                    'address' => $committee->getInlineFormattedAddress(),
-                    'address_city' => $committee->getCityName(),
-                    '_geoloc' => $committee->getGeolocalisation(),
-                    'created_at' => $this->formatDate($committee->getCreatedAt()),
-                    'updated_at' => $this->formatDate($committee->getCreatedAt()),
-                ],
-            ] : []
-        );
+    public function __construct(FilesystemInterface $storage)
+    {
+        $this->storage = $storage->getAdapter();
+
+        if ($this->storage instanceof CachedAdapter) {
+            $this->storage = $this->storage->getAdapter();
+        }
+
+        if (!$this->storage instanceof UrlAdapterInterface) {
+            throw new InvalidUrlAdapterException();
+        }
     }
 
     protected function getClassName(): string
     {
-        return CommitteeEvent::class;
+        return BaseEvent::class;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getTitle(object $object): string
+    {
+        return $object->getName();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getDescription(object $object): ?string
+    {
+        return $object->getDescription();
+    }
+
+    /** @param BaseEvent $object */
+    protected function isLocal(object $object): bool
+    {
+        return true;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getDate(object $object): ?\DateTime
+    {
+        return $object->getCreatedAt();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getAuthor(object $object): ?string
+    {
+        return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getCategory(object $object): ?string
+    {
+        return $object->getCategoryName();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getAddress(object $object): ?string
+    {
+        return $object->getInlineFormattedAddress();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getBeginAt(object $object): ?\DateTime
+    {
+        return $object->getBeginAt();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getFinishAt(object $object): ?\DateTime
+    {
+        return $object->getFinishAt();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getImage(object $object): ?string
+    {
+        return $object->hasImageName() ? $this->storage->getUrl($object->getImagePath()) : null;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getZoneCodes(object $object): ?array
+    {
+        if ($object->getZones()->isEmpty()) {
+            return null;
+        }
+
+        $zonesCodes = [];
+        $zones = array_filter($object->zones->toArray(), function (Zone $zone) {
+            return \in_array($zone->getType(), [Zone::BOROUGH, Zone::CITY]);
+        });
+
+        foreach ($zones as $key => $zone) {
+            $zonesCodes[$key] = $this->buildZoneCodes($zone);
+        }
+
+        return array_unique(array_merge(...$zonesCodes));
     }
 }
