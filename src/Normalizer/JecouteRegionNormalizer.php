@@ -3,7 +3,6 @@
 namespace App\Normalizer;
 
 use App\Entity\Jecoute\Region;
-use App\Exception\InvalidUrlAdapterException;
 use App\Storage\UrlAdapterInterface;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\FilesystemInterface;
@@ -17,20 +16,17 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     private const ALREADY_CALLED = 'REGION_NORMALIZER_ALREADY_CALLED';
 
-    /** @var UrlAdapterInterface */
-    private $storageAdapter;
+    private UrlAdapterInterface $storageAdapter;
 
     public function __construct(FilesystemInterface $storage)
     {
-        $this->storageAdapter = $storage->getAdapter();
+        $storageAdapter = $storage->getAdapter();
 
-        if ($this->storageAdapter instanceof CachedAdapter) {
-            $this->storageAdapter = $this->storageAdapter->getAdapter();
+        if ($storageAdapter instanceof CachedAdapter) {
+            $storageAdapter = $storageAdapter->getAdapter();
         }
 
-        if (!$this->storageAdapter instanceof UrlAdapterInterface) {
-            throw new InvalidUrlAdapterException();
-        }
+        $this->storageAdapter = $storageAdapter;
     }
 
     /**
