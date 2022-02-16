@@ -114,7 +114,7 @@ Feature:
             "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
           }
         ],
-        "from_name": "Je-mengage.fr",
+        "from_name": "Je m'engage",
         "to": [
           {
             "email": "new-user@en-marche-dev.fr",
@@ -156,7 +156,7 @@ Feature:
               "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
             }
           ],
-          "from_name": "Je-mengage.fr",
+          "from_name": "Je m'engage",
           "to": [
             {
               "email": "je-mengage-user-1@en-marche-dev.fr",

@@ -9,7 +9,7 @@ abstract class AbstractJeMengageMessage extends Message
     protected static function updateSenderInfo(Message $message): Message
     {
         $message->setSenderEmail('ne-pas-repondre@je-mengage.fr');
-        $message->setSenderName('Je-mengage.fr');
+        $message->setSenderName('Je m\'engage');
 
         return $message;
     }
