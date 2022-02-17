@@ -171,18 +171,20 @@
             {{ include('components/_footer.html.twig') }}
         {% endblock %}
 
-        <div id="search-overlay">
-            <div class="g-search__header l__wrapper l__row l__row--h-stretch">
-                <div class="text--logo"><a href="/">En Marche !</a></div>
-                <a href="javascript:void(0)" id="je-ferme-la-recherche"
-                   class="l__row l__row--center text--body link--no-decor icon--with-text--reversed btn__icon">
-                    <span>Fermer la recherche</span>
-                    {{ include('components/close.html.twig') }}
-                </a>
-            </div>
+        {% block search_widget %}
+            <div id="search-overlay">
+                <div class="g-search__header l__wrapper l__row l__row--h-stretch">
+                    <div class="text--logo"><a href="/">En Marche !</a></div>
+                    <a href="javascript:void(0)" id="je-ferme-la-recherche"
+                       class="l__row l__row--center text--body link--no-decor icon--with-text--reversed btn__icon">
+                        <span>Fermer la recherche</span>
+                        {{ include('components/close.html.twig') }}
+                    </a>
+                </div>
 
-            <div id="search-engine"></div>
-        </div>
+                <div id="search-engine"></div>
+            </div>
+        {% endblock %}
 
         {% set session_modal_context = get_session_modal_context(app.request) %}
 
