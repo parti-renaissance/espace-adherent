@@ -88,10 +88,13 @@ trait EntityZoneTrait
         $zones = [];
         foreach ($this->zones as $key => $zone) {
             /** @var Zone $zone */
-            // Move parents of District zone to the end of collection
+            // Move parents of District|Canton zone to the end of collection
             // as District parents can be wrong related to non-detailed polygons
-            $zones[$zone->isDistrict() ? 1000000 : $key] = $zone->getParentsOfType($type);
+            $newKey = \in_array($zone->getType(), [Zone::DISTRICT, Zone::CANTON], true) ? (1000000 + (int) $zone->isDistrict()) : $key;
+            $zones[$newKey] = $zone->getParentsOfType($type);
         }
+
+        sort($zones);
 
         return array_unique(array_merge(...$zones));
     }
@@ -115,6 +118,6 @@ trait EntityZoneTrait
 
         $departments = $this->getParentZonesOfType(Zone::DEPARTMENT);
 
-        return 1 === \count($departments) ? current($departments) : null;
+        return \count($departments) ? current($departments) : null;
     }
 }
