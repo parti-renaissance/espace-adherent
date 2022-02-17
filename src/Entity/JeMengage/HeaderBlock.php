@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\JeMengage\HeaderBlockRepository")
  *
- * @UniqueEntity("name", message="header_block.name.unique") niqueEn
+ * @UniqueEntity("name", message="header_block.name.unique")
  */
 class HeaderBlock implements ExposedImageOwnerInterface
 {
@@ -51,7 +51,7 @@ class HeaderBlock implements ExposedImageOwnerInterface
      *
      * @Groups({"header_block_read"})
      */
-    private ?string $prefix;
+    private ?string $prefix = null;
 
     /**
      * @ORM\Column(length=100, nullable=true)

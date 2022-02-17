@@ -31,6 +31,8 @@ class GetHeaderBlockContentController extends AbstractController
         if ($content = $headerBlock->getContent()) {
             if ($user) {
                 $content = str_replace('{{ prenom }}', $user->getFirstName(), $content);
+            } else {
+                $content = str_replace('{{ prenom }}', '', $content);
             }
 
             $content = str_replace('{{ date_echeance }}', $headerBlock->getDeadlineDate() ? $headerBlock->getDeadlineDate()->diff(new \DateTime())->days : 0, $content);
