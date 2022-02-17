@@ -6,9 +6,9 @@ use App\Entity\Adherent;
 use App\Repository\JeMengage\HeaderBlockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/je-mengage/headers/{slug}", name="api_get_jemengage_header_blocks", methods={"GET"})
@@ -22,13 +22,16 @@ class GetHeaderBlockContentController extends AbstractController
     public function __invoke(
         string $slug,
         HeaderBlockRepository $headerBlockRepository,
+        NormalizerInterface $normalizer,
         ?UserInterface $user = null
     ): JsonResponse {
         if (!$headerBlock = $headerBlockRepository->findOneBySlug($slug)) {
             throw $this->createNotFoundException();
         }
 
-        if ($content = $headerBlock->getContent()) {
+        $data = $normalizer->normalize($headerBlock, 'array', ['groups' => ['header_block_read', 'image_owner_exposed']]);
+
+        if (isset($data['content']) && $content = $data['content']) {
             if ($user) {
                 $content = str_replace('{{ prenom }}', $user->getFirstName(), $content);
             } else {
@@ -36,14 +39,9 @@ class GetHeaderBlockContentController extends AbstractController
             }
 
             $content = str_replace('{{ date_echeance }}', $headerBlock->getDeadlineDate() ? $headerBlock->getDeadlineDate()->diff(new \DateTime())->days : 0, $content);
-            $headerBlock->setContent($content);
+            $data['content'] = $content;
         }
 
-        return $this->json(
-            $headerBlock,
-            Response::HTTP_OK,
-            [],
-            ['groups' => ['header_block_read', 'image_owner_exposed']]
-        );
+        return $this->json($data);
     }
 }
