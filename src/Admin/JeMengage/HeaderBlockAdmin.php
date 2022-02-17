@@ -21,7 +21,7 @@ class HeaderBlockAdmin extends AbstractAdmin
             $formMapper
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('slug', null, [
-                        'label' => 'slug',
+                        'label' => 'Slug',
                         'disabled' => true,
                     ])
                 ->end()
@@ -88,7 +88,7 @@ HELP
                 'label' => 'Nom',
             ])
             ->add('slug', null, [
-                'label' => 'slug',
+                'label' => 'Slug',
             ])
             ->add('_image', 'thumbnail', [
                 'label' => 'Image',
