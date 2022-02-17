@@ -9,7 +9,7 @@ abstract class AbstractProcurationMessage extends Message
     protected static function updateSenderInfo(Message $message): Message
     {
         $message->setSenderEmail('contact@avecvous.fr');
-        $message->setSenderName('avec vous');
+        $message->setSenderName('Procuration avec vous');
 
         return $message;
     }

@@ -249,7 +249,6 @@ procuration.election_rounds.min_count: Vous devez choisir au moins un tour d'él
 procuration.last_name.not_blank: Votre nom de naissance est requis.
 procuration.last_name.min_length: Votre nom de naissance doit comporter au moins {{ limit }} caractères.
 procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser {{ limit }} caractères.
-procuration.voter_number_or_names: Numéro d'électeur ou les champs d'état civil doivent être renseignés
 
 procuration.first_names.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
 procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser {{ limit }} caractères.

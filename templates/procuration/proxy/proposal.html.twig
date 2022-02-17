@@ -85,41 +85,43 @@
                 {{ form_start(procuration_form) }}
                     {{ form_errors(procuration_form) }}
 
+                    <p>Sauf mention contraire, toutes les informations demandées sont obligatoires.</p>
+
+                    <div class="procuration__banner__form__part">
                         <h4 class="text--medium">Mes informations</h4>
 
-                        <p>Sauf mention contraire, toutes les informations demandées sont obligatoires.</p>
-
-                        <div class="procuration__banner__form__part">
-                            <div>
-                                {{ form_label(procuration_form.voterNumber, 'Mon numéro d’électeur', { label_attr: { class: 'text--gray' } }) }}
-                                {{ form_widget(procuration_form.voterNumber, { attr: { placeholder: '…' } }) }}
-                                {{ form_errors(procuration_form.voterNumber) }}
-                            </div>
-                        </div>
-
-                        <p class="text--medium text--center">OU</p>
-
-                        <div class="procuration__banner__form__part">
-                            <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
+                        <div class="form__row">
+                            {{ form_label(procuration_form.gender, 'Genre') }}
+                            <div class="l__row l__row--h-stretch">
                                 {{ form_widget(procuration_form.gender, { attr: { class: 'register__form__gender' } }) }}
-                                {{ form_errors(procuration_form.gender) }}
+                            </div>
+                            {{ form_errors(procuration_form.gender) }}
+                        </div>
+
+                        <div class="form__row l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class="register__form--mid">
+                                {{ form_label(procuration_form.firstNames, 'Prénom(s)') }}
+                                {{ form_widget(procuration_form.firstNames, { attr: { placeholder: 'Prénom(s)' } }) }}
+                                {{ form_errors(procuration_form.firstNames) }}
                             </div>
 
-                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                                <div class="register__form--mid">
-                                    {{ form_widget(procuration_form.firstNames, { attr: { placeholder: 'Prénom(s)' } }) }}
-                                    {{ form_errors(procuration_form.firstNames) }}
-                                </div>
-
-                                <div class="register__form--mid">
-                                    {{ form_widget(procuration_form.lastName, { attr: { placeholder: 'Nom de naissance' } }) }}
-                                    {{ form_errors(procuration_form.lastName) }}
-                                </div>
+                            <div class="register__form--mid">
+                                {{ form_label(procuration_form.lastName, 'Nom') }}
+                                {{ form_widget(procuration_form.lastName, { attr: { placeholder: 'Nom de naissance' } }) }}
+                                {{ form_errors(procuration_form.lastName) }}
                             </div>
                         </div>
 
-                        <div class="b__nudge--top-40">
-                            <label class="text--gray form form__label required">Adresse postale</label>
+                        <div class="form__row">
+                            {{ form_label(procuration_form.voterNumber, 'Mon numéro d’électeur (non obligatoire)') }}
+                            <div class="l__row l__row--h-stretch register__form--full">
+                                {{ form_widget(procuration_form.voterNumber, { attr: { placeholder: 'Numéro d\'électeur' } }) }}
+                            </div>
+                            {{ form_errors(procuration_form.voterNumber) }}
+                        </div>
+
+                        <div>
+                            <label class="form form__label required">Adresse postale</label>
                             <div class="form__row">
                                 <div class="address-autocomplete"></div>
                                 <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
@@ -163,7 +165,7 @@
                         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
                             <div class="register__form--mid">
                                 <div class="form__row">
-                                    {{ form_label(procuration_form.birthdate, 'Date de naissance', { label_attr: { class: 'text--gray' } }) }}
+                                    {{ form_label(procuration_form.birthdate, 'Date de naissance') }}
                                     <div class="l__row l__row--h-stretch">
                                         {{ form_widget(procuration_form.birthdate) }}
                                     </div>
@@ -173,7 +175,7 @@
 
                             <div class="register__form--mid">
                                 <div class="form__row">
-                                    {{ form_label(procuration_form.emailAddress, 'Adresse e-mail', { label_attr: { class: 'text--gray' } }) }}
+                                    {{ form_label(procuration_form.emailAddress, 'Adresse e-mail') }}
                                     {{ form_widget(procuration_form.emailAddress, { attr: { placeholder: 'Adresse e-mail' } }) }}
                                     {{ form_errors(procuration_form.emailAddress) }}
                                 </div>
@@ -181,15 +183,16 @@
                         </div>
 
                         <div class="l__col l__col--top register__form__phone">
-                            {{ form_label(procuration_form.phone, 'Téléphone', { label_attr: { class: 'text--gray' } }) }}
+                            {{ form_label(procuration_form.phone, 'Téléphone') }}
                             <div class="l__row l__row--top l__row--h-stretch">
                                 {{ form_widget(procuration_form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
                                 {{ form_widget(procuration_form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
                             </div>
                             {{ form_errors(procuration_form.phone) }}
                         </div>
+                    </div>
 
-                    <div class="b__nudge--top-40">
+                    <div class="b__nudge--top-40 procuration__banner__form__part">
                         <h4>Mon lieu de vote</h4>
 
                         <div class="form__row">
@@ -237,18 +240,21 @@
 
                             <div id="app_procuration_proposal_proxiesCount_helper"></div>
                         </div>
-                    </div>
 
-                    <div class="b__nudge--top-40">
-                        <p>Il est maintenant possible de porter la procuration d’un électeur d’une autre commune. Il faut toutefois se rendre dans son bureau de vote. Accepteriez-vous de vous déplacer dans d’autres communes, et si oui, lesquelles ?</p>
+                        <div class="b__nudge--top-40">
+                            <p>Il est maintenant possible de porter la procuration d’un électeur d’une autre commune. Il
+                                faut toutefois se rendre dans son bureau de vote. Accepteriez-vous de vous déplacer dans
+                                d’autres communes, et si oui, lesquelles ?</p>
 
-                        <div class="form__row">
-                            {{ form_widget(procuration_form.otherVoteCities, { attr: { placeholder: 'Autre commune' } }) }}
-                            {{ form_errors(procuration_form.otherVoteCities) }}
+                            <div class="form__row">
+                                {{ form_label(procuration_form.otherVoteCities, 'Autre commune (non obligatoire)') }}
+                                {{ form_widget(procuration_form.otherVoteCities, { attr: { class: 'form--full', placeholder: 'Autre commune' } }) }}
+                                {{ form_errors(procuration_form.otherVoteCities) }}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="b__nudge--top-40">
+                    <div class="b__nudge--top-40  procuration__banner__form__part">
                         <h4>Mes disponibilités</h4>
 
                         <h5 class="procuration__title-elections">
@@ -287,15 +293,15 @@
                         <input type="hidden" name="g-recaptcha-response" value="fake" />
                     {% endif %}
 
-                    <p class="b__nudge--top-large text--small text--gray text--justify" id="procuration_legal_notices">
-                        {{ cms_block('procuration-legal-notices') }}
-                    </p>
-
                     <div class="text--center b__nudge--top-large">
                         <button type="submit" class="btn btn--blue">
                             Je continue
                         </button>
                     </div>
+
+                    <p class="b__nudge--top-large text--small text--gray text--justify" id="procuration_legal_notices">
+                        {{ cms_block('procuration-legal-notices') }}
+                    </p>
 
                     {{ form_rest(procuration_form) }}
                 {{ form_end(procuration_form) }}
