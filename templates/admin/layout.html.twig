@@ -304,6 +304,105 @@
                  ],
              });
          });
+         $('.markdown-content-editor').each(function(key, item) {
+             var simplemde = new SimpleMDE({
+                 element: item,
+                 spellChecker: false,
+                 renderingConfig: {
+                     singleLineBreaks: false
+                 },
+                 previewConfig: {
+                     useIframe: true,
+                     editorCss: [
+                         '{{ webpack_asset('app.css') }}',
+                         '{{ asset('css/simplemde.inside.css') }}'
+                     ],
+                 },
+                 toolbar: [
+                     {
+                         name: "fullscreen",
+                         action: function() {
+                             simplemde.toggleSideBySide();
+                             simplemde.toggleFullScreen();
+                         },
+                         className: "fa fa-eye",
+                         title: "Plein écran avec prévisualisation"
+                     },
+                     "|",
+                     {
+                         name: "bold",
+                         action: SimpleMDE.toggleBold,
+                         className: "fa fa-bold",
+                         title: "Gras"
+                     },
+                     {
+                         name: "italic",
+                         action: SimpleMDE.toggleItalic,
+                         className: "fa fa-italic",
+                         title: "Italique"
+                     },
+                     {
+                         name: "heading-1",
+                         action: SimpleMDE.toggleHeading1,
+                         className: "fa fa-header fa-header-x fa-header-1",
+                         title: "Titre 1"
+                     },
+                     {
+                         name: "heading-2",
+                         action: SimpleMDE.toggleHeading2,
+                         className: "fa fa-header fa-header-x fa-header-2",
+                         title: "Titre 2"
+                     },
+                     {
+                         name: "heading-3",
+                         action: SimpleMDE.toggleHeading3,
+                         className: "fa fa-header fa-header-x fa-header-3",
+                         title: "Titre 3"
+                     },
+                     "|",
+                     {
+                         name: "link",
+                         action: function(editor) {
+                             editor.codemirror.replaceSelection("[](https://)");
+                             editor.codemirror.focus();
+                         },
+                         className: "fa fa-link",
+                         title: "URL"
+                     },
+                     {
+                         name: "image",
+                         action: function(editor) {
+                             editor.codemirror.replaceSelection("![](https://)");
+                             editor.codemirror.focus();
+                         },
+                         className: "fa fa-picture-o",
+                         title: "Image"
+                     },
+                     "|",
+                     {
+                         name: "unordered-list",
+                         action: SimpleMDE.toggleUnorderedList,
+                         className: "fa fa-list-ul",
+                         title: "Liste à puces"
+                     },
+                     {
+                         name: "ordered-list",
+                         action: SimpleMDE.toggleUnorderedList,
+                         className: "fa fa-list-ol",
+                         title: "Liste à chiffres"
+                     },
+                     "|",
+                     {
+                         name: "horizontal-rule",
+                         action: SimpleMDE.drawHorizontalRule,
+                         className: "fa fa-minus",
+                         title: "Barre de séparation horizontale"
+                     },
+                     "|",
+                     "side-by-side"
+                 ],
+             });
+         });
 
          $('.ck-editor').each(function(key, item) {
              CKEDITOR.replace(item, {

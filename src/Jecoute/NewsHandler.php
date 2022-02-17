@@ -5,19 +5,23 @@ namespace App\Jecoute;
 use App\Entity\Jecoute\News;
 use App\JeMarche\JeMarcheDeviceNotifier;
 use App\JeMarche\NotificationTopicBuilder;
+use App\Repository\Jecoute\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class NewsHandler
 {
-    private $entityManager;
-    private $deviceNotifier;
-    private $topicBuilder;
+    private NewsRepository $newsRepository;
+    private EntityManagerInterface $entityManager;
+    private JeMarcheDeviceNotifier $deviceNotifier;
+    private NotificationTopicBuilder $topicBuilder;
 
     public function __construct(
+        NewsRepository $newsRepository,
         EntityManagerInterface $entityManager,
         JeMarcheDeviceNotifier $deviceNotifier,
         NotificationTopicBuilder $topicBuilder
     ) {
+        $this->newsRepository = $newsRepository;
         $this->entityManager = $entityManager;
         $this->deviceNotifier = $deviceNotifier;
         $this->topicBuilder = $topicBuilder;
@@ -41,6 +45,15 @@ class NewsHandler
         }
 
         $this->deviceNotifier->sendNewsNotification($news);
+    }
+
+    public function changePinned(News $news): void
+    {
+        if (!$news->isPinned()) {
+            return;
+        }
+
+        $this->newsRepository->changePinned($news);
     }
 
     public function publish(News $news): void

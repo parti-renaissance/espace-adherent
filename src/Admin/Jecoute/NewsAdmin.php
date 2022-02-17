@@ -3,6 +3,7 @@
 namespace App\Admin\Jecoute;
 
 use App\Admin\AbstractAdmin;
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
@@ -11,6 +12,7 @@ use App\Repository\Geo\ZoneRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -27,8 +29,12 @@ class NewsAdmin extends AbstractAdmin
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'label',
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
+    protected $accessMapping = [
+        'pin' => 'PIN',
     ];
 
     private $security;
@@ -59,6 +65,13 @@ class NewsAdmin extends AbstractAdmin
         return parent::getTemplate($name);
     }
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+            ->add('pin', $this->getRouterIdParameter().'/pin')
+        ;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -66,11 +79,41 @@ class NewsAdmin extends AbstractAdmin
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                 ])
+                ->add('enriched', null, [
+                    'label' => 'Enrichie',
+                ])
                 ->add('text', TextareaType::class, [
-                    'label' => 'Texte',
+                    'label' => 'Texte*',
+                    'required' => false,
+                    'attr' => ['maxlength' => 1000],
+                    'help' => '1000 caractères maximum.',
+                ])
+                ->add('enrichedText', TextareaType::class, [
+                    'label' => 'Texte*',
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'markdown-content-editor',
+                        'maxlength' => 10000,
+                        'novalidate' => 'novalidate',
+                    ],
+                    'with_character_count' => true,
+                    'help' => <<<HELP
+Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br />
+10 000 caractères maximum.
+HELP
+                    ,
                 ])
                 ->add('externalLink', UrlType::class, [
                     'label' => 'Lien',
+                    'required' => false,
+                ])
+                ->add('linkLabel', TextType::class, [
+                    'label' => 'Label',
+                    'required' => false,
+                    'help' => 'Le label du lien (255 caractères maximum).',
+                ])
+                ->add('pinned', null, [
+                    'label' => 'Épinglée',
                     'required' => false,
                 ])
             ->end()
@@ -115,8 +158,26 @@ class NewsAdmin extends AbstractAdmin
                 $event->setData(true);
             }
         });
+        $text = $this->getSubject()->getText();
+        $formMapper->getFormBuilder()->get('enrichedText')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($text) {
+            if (null != $text) {
+                $event->setData($text);
+            }
+        });
 
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
         $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
+    }
+
+    public function preSubmit(FormEvent $event): void
+    {
+        $data = $event->getData();
+
+        if (isset($data['enriched']) && '1' == $data['enriched']) {
+            $data['text'] = $data['enrichedText'] ?? '';
+
+            $event->setData($data);
+        }
     }
 
     public function submit(FormEvent $event): void
@@ -138,6 +199,32 @@ class NewsAdmin extends AbstractAdmin
             ->add('createdBy', null, [
                 'label' => 'Auteur',
                 'show_filter' => true,
+            ])
+            ->add('pinned', null, [
+                'label' => 'Épinglée',
+                'show_filter' => true,
+            ])
+            ->add('zone', ZoneAutocompleteFilter::class, [
+                'label' => 'Audience',
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'property' => 'name',
+                    'minimum_input_length' => 1,
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $qb = $datagrid->getQuery();
+                        $alias = $qb->getRootAlias();
+                        $qb
+                            ->andWhere($alias.'.type IN (:types)')
+                            ->setParameter('types', [
+                                Zone::REGION,
+                                Zone::DEPARTMENT,
+                            ])
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
+                ],
             ])
             ->add('title', null, [
                 'label' => 'Titre',
@@ -176,6 +263,12 @@ class NewsAdmin extends AbstractAdmin
             ->add('published', null, [
                 'label' => 'Publiée',
             ])
+            ->add('pinned', null, [
+                'label' => 'Épinglée',
+            ])
+            ->add('enriched', null, [
+                'label' => 'Enrichie',
+            ])
             ->add('createdAt', null, [
                 'label' => 'Date',
             ])
@@ -185,6 +278,9 @@ class NewsAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
+                    'pin' => [
+                        'template' => 'admin/jecoute/news/action_pin.html.twig',
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],
@@ -205,6 +301,13 @@ class NewsAdmin extends AbstractAdmin
     public function postPersist($object)
     {
         $this->newsHandler->handleNotification($object);
+        $this->newsHandler->changePinned($object);
+    }
+
+    /** @param News $object */
+    public function postUpdate($object)
+    {
+        $this->newsHandler->changePinned($object);
     }
 
     /**

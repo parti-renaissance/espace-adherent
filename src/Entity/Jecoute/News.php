@@ -21,6 +21,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Validator\Jecoute\NewsTarget;
+use App\Validator\Jecoute\NewsText;
 use App\Validator\Jecoute\ReferentNews;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\ORM\Mapping as ORM;
@@ -129,6 +130,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ReferentNews
  * @NewsTarget(groups="Admin")
+ * @NewsText
  * @ScopeVisibility
  */
 class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface, EntityScopeVisibilityInterface
@@ -168,12 +170,11 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     /**
      * @ORM\Column(type="text")
      *
-     * @Assert\Length(max=1000)
-     * @Assert\NotBlank
-     *
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_write", "jecoute_news_read_dc"})
      */
     private ?string $text;
+
+    private ?string $enrichedText = null;
 
     /**
      * @ORM\Column(nullable=true)
@@ -183,6 +184,18 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
     private ?string $externalLink;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     * @Assert\Expression(
+     *     "value !== null or null === this.getExternalLink()",
+     *     message="news.link_label.required",
+     *     groups={"Admin"}
+     * )
+     */
+    private ?string $linkLabel;
 
     /**
      * @ORM\Column(nullable=true)
@@ -215,6 +228,16 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     private bool $published;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private bool $pinned;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private bool $enriched;
+
+    /**
      * @ORM\Column(nullable=true)
      */
     private ?string $space = null;
@@ -225,17 +248,23 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
         string $text = null,
         string $topic = null,
         string $externalLink = null,
+        string $linkLabel = null,
         Zone $zone = null,
         bool $notification = false,
-        bool $published = true
+        bool $published = true,
+        bool $pinned = false,
+        bool $enriched = false
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
         $this->text = $text;
         $this->topic = $topic;
         $this->externalLink = $externalLink;
+        $this->linkLabel = $linkLabel;
         $this->notification = $notification;
         $this->published = $published;
+        $this->pinned = $pinned;
+        $this->enriched = $enriched;
 
         $this->setZone($zone);
     }
@@ -275,6 +304,16 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
         $this->text = $text;
     }
 
+    public function getEnrichedText(): ?string
+    {
+        return $this->enrichedText;
+    }
+
+    public function setEnrichedText(?string $text): void
+    {
+        $this->enrichedText = $text;
+    }
+
     public function getExternalLink(): ?string
     {
         return $this->externalLink;
@@ -283,6 +322,16 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     public function setExternalLink(?string $externalLink): void
     {
         $this->externalLink = $externalLink;
+    }
+
+    public function getLinkLabel(): ?string
+    {
+        return $this->linkLabel;
+    }
+
+    public function setLinkLabel(?string $linkLabel): void
+    {
+        $this->linkLabel = $linkLabel;
     }
 
     public function getTopic(): ?string
@@ -333,6 +382,26 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     public function setPublished(bool $published): void
     {
         $this->published = $published;
+    }
+
+    public function isPinned(): bool
+    {
+        return $this->pinned;
+    }
+
+    public function setPinned(bool $pinned): void
+    {
+        $this->pinned = $pinned;
+    }
+
+    public function isEnriched(): bool
+    {
+        return $this->enriched;
+    }
+
+    public function setEnriched(bool $enriched): void
+    {
+        $this->enriched = $enriched;
     }
 
     public function setAuthor(Adherent $author): void

@@ -352,14 +352,14 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "title: Cette valeur ne doit pas être vide.\ntext: Cette valeur ne doit pas être vide.",
+        "detail": "text: Le texte est obligatoire.\ntitle: Cette valeur ne doit pas être vide.",
         "violations": [
             {
-                "propertyPath": "title",
-                "message": "Cette valeur ne doit pas être vide."
+                "propertyPath": "text",
+                "message": "Le texte est obligatoire."
             },
             {
-                "propertyPath": "text",
+                "propertyPath": "title",
                 "message": "Cette valeur ne doit pas être vide."
             }
         ]
@@ -384,15 +384,15 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "title: Vous devez saisir au maximum 120 caractères.\ntext: Vous devez saisir au maximum 1000 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
-        "violations": [
+         "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
+         "violations": [
+            {
+                "propertyPath": "text",
+                "message": "Le texte ne doit pas contenir plus de 1000 caractères."
+            },
             {
                 "propertyPath": "title",
                 "message": "Vous devez saisir au maximum 120 caractères."
-            },
-            {
-                "propertyPath": "text",
-                "message": "Vous devez saisir au maximum 1000 caractères."
             },
             {
                 "propertyPath": "external_link",

@@ -412,7 +412,7 @@
 
             <argument />
             <argument>App\Entity\Jecoute\News</argument>
-            <argument />
+            <argument>App\Controller\Admin\AdminJecouteNewsCRUDController</argument>
         </service>
 
         <service id="app.admin.jecoute.national_region" class="App\Admin\Jecoute\NationalRegionAdmin">
