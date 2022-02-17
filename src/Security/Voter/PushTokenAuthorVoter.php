@@ -23,7 +23,7 @@ class PushTokenAuthorVoter extends Voter
 
         if ($user instanceof Adherent) {
             return $subject->getAdherent()->equals($user);
-        } elseif ($user instanceof DeviceApiUser) {
+        } elseif ($user instanceof DeviceApiUser && $subject->getDevice()) {
             return $subject->getDevice()->equals($user->getDevice());
         }
 
