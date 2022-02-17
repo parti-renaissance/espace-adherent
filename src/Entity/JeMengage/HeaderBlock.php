@@ -49,6 +49,7 @@ class HeaderBlock implements ExposedImageOwnerInterface
      * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="header_block.prefix.not_blank")
+     * @Assert\Length(max="50", maxMessage="header_block.prefix.max_length")
      *
      * @Groups({"header_block_read"})
      */
@@ -56,6 +57,8 @@ class HeaderBlock implements ExposedImageOwnerInterface
 
     /**
      * @ORM\Column(length=100, nullable=true)
+     *
+     * @Assert\Length(max="100", maxMessage="header_block.slogan.max_length")
      *
      * @Groups({"header_block_read"})
      */

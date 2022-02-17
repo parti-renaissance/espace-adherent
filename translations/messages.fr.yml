@@ -1274,7 +1274,8 @@ Account is disabled.: Votre compte a été désactivé par un administrateur.
 
 header_block.name.not_blank: Veuillez renseigner un nom pour cette en-tête.
 header_block.name.max_length: Le nom d'une en-tête ne doit pas dépasser {{ limit }} caractères.
-
+header_block.prefix.max_length: Le préfixe d'une en-tête ne doit pas dépasser {{ limit }} caractères.
 header_block.prefixe.not_blank: Veuillez renseigner un préfixe pour cette en-tête.
+header_block.slogen.max_length: Le slogan d'une en-tête ne doit pas dépasser {{ limit }} caractères.
 
 
