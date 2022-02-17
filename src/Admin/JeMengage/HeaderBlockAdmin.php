@@ -2,9 +2,9 @@
 
 namespace App\Admin\JeMengage;
 
+use App\Admin\AbstractAdmin;
 use App\Entity\JeMengage\HeaderBlock;
 use App\Image\ImageManagerInterface;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -15,16 +15,9 @@ class HeaderBlockAdmin extends AbstractAdmin
 {
     private ImageManagerInterface $imageManager;
 
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'createdAt',
-    ];
-
     protected function configureFormFields(FormMapper $formMapper)
     {
-        if ($this->getSubject()->getId()) {
+        if ($this->isCreation()) {
             $formMapper
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('slug', null, [
@@ -54,7 +47,7 @@ class HeaderBlockAdmin extends AbstractAdmin
                     'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
                     'help' => <<<HELP
 Veuillez restreindre le contenu au format <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Markdown.</a><br/>
-Si une date d'échéance est spécifié, rajoutez la balise <strong>{{ date_echeance }}</strong> dans le texte.<br/>
+Si une date d'échéance est spécifiée, rajoutez la balise <strong>{{ date_echeance }}</strong> dans le texte.<br/>
 Pour indiquer le prénom d'un utilisateur dans le message de bienvenue par exemple, rajouter la balise <strong>{{ prenom }}</strong> dans le texte.
 HELP
 ,

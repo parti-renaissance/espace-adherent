@@ -5,11 +5,16 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20220216202131 extends AbstractMigration
+final class Version20220217124001 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return '';
+    }
+
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE header_block (
+        $this->addSql('CREATE TABLE jemengage_header_blocks (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL,
           name VARCHAR(100) NOT NULL,
           slug VARCHAR(130) NOT NULL,
@@ -20,14 +25,14 @@ final class Version20220216202131 extends AbstractMigration
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
           image_name VARCHAR(255) DEFAULT NULL,
-          UNIQUE INDEX UNIQ_10BFECC55E237E06 (name),
-          UNIQUE INDEX UNIQ_10BFECC5989D9B62 (slug),
+          UNIQUE INDEX UNIQ_682302E75E237E06 (name),
+          UNIQUE INDEX UNIQ_682302E7989D9B62 (slug),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TABLE header_block');
+        $this->addSql('DROP TABLE jemengage_header_blocks');
     }
 }

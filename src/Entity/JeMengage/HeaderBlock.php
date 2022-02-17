@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Table(name="jemengage_header_blocks")
  * @ORM\Entity(repositoryClass="App\Repository\JeMengage\HeaderBlockRepository")
  *
  * @UniqueEntity("name", message="header_block.name.unique")
@@ -90,17 +91,12 @@ class HeaderBlock implements ExposedImageOwnerInterface
 
     public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getName(): ?string
