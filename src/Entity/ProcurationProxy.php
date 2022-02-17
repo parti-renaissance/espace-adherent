@@ -18,12 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="procuration_proxies")
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
- *
- * @Assert\Expression(
- *     expression="this.getVoterNumber() || (this.getGender() && this.getFirstNames() && this.getLastName())",
- *     message="procuration.voter_number_or_names",
- *     groups={"front"}
- * )
  */
 class ProcurationProxy
 {
@@ -90,6 +84,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=6, nullable=true)
      *
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"front"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
@@ -104,6 +99,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=50, nullable=true)
      *
+     * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"front"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
@@ -119,6 +115,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=100, nullable=true)
      *
+     * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(
      *     min=2,
      *     max=100,

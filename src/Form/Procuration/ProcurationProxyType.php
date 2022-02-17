@@ -3,7 +3,6 @@
 namespace App\Form\Procuration;
 
 use App\Entity\ProcurationProxy;
-use App\Form\GenderType;
 use App\Form\UnitedNationsCountryType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -33,18 +32,9 @@ class ProcurationProxyType extends AbstractProcurationType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('gender', GenderType::class, ['required' => false])
-            ->add('lastName', TextType::class, ['required' => false])
-            ->add('firstNames', TextType::class, ['required' => false])
-            ->add('country', UnitedNationsCountryType::class)
             ->add('postalCode', TextType::class)
-            ->add('city', HiddenType::class, [
-                'required' => false,
-                'error_bubbling' => true,
-            ])
             ->add('cityName', TextType::class)
             ->add('otherVoteCities', TextType::class, ['required' => false])
-            ->add('address', TextType::class)
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])

@@ -25,7 +25,7 @@
 
         <div class="text--center b__nudge--bottom-large">
             <strong>{{ request.firstNames }} {{ request.lastName }}</strong> :
-            téléchargez le formulaire <a href="https://www.formulaires.modernisation.gouv.fr/gf/cerfa_14952.do" target="_blank" rel="noopener noreferrer">CERFA de procuration</a>,
+            téléchargez le formulaire <a href="https://www.service-public.fr/particuliers/vosdroits/R12675" target="_blank" rel="noopener noreferrer">CERFA de procuration</a>,
             remplissez-le avec les informations ci-dessous<br />
             et amenez-le au commissariat, à la gendarmerie, au consulat ou à l'ambassade le/la plus proche.<br />
             Une fois cela fait, prévenez <em>{{ proxy.firstNames }} {{ proxy.lastName }}</em> (à l'adresse <a href="mailto:{{ proxy.emailAddress }}">{{ proxy.emailAddress }}</a>) ainsi que la personne vous<br />
@@ -140,6 +140,9 @@
                 <div class="profile-value">
                     {{ proxy.gender == 'male' ? 'Monsieur' : 'Madame' }}
                     {{ proxy.firstNames }} {{ proxy.lastName }}
+                    {% if proxy.voterNumber %}
+                        <br/>Numéro d'électeur : {{ proxy.voterNumber }}
+                    {% endif %}
                 </div>
 
                 <div class="profile-label">

@@ -171,7 +171,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function findForHostEmail(Committee $committee): AdherentCollection
     {
         return $this->createAdherentCollection(
-            $qb = $this->createQueryBuilder('cm')
+            $this->createQueryBuilder('cm')
                 ->select('cm', 'adherent')
                 ->leftJoin('cm.adherent', 'adherent')
                 ->leftJoin('adherent.adherentMandates', 'am')
