@@ -26,7 +26,7 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Campaign $object */
     protected function isLocal(object $object): bool
     {
-        return false;
+        return !$object->isNationalVisibility();
     }
 
     /** @param Campaign $object */
@@ -56,6 +56,6 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Campaign $object */
     protected function isNational(object $object): bool
     {
-        return true;
+        return $object->isNationalVisibility();
     }
 }
