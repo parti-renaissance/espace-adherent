@@ -28,18 +28,13 @@ class GetHeaderBlockContentController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if ($user) {
-            $headerBlock->setContent(str_replace(
-                [
-                    '{{prenom}}',
-                    '{{date_echeance}}',
-                ],
-                [
-                    $user->getFirstName(),
-                    $headerBlock->getDeadlineDate() ? $headerBlock->getDeadlineDate()->diff(new \DateTime())->days : 0,
-                ],
-                $headerBlock->getContent()
-            ));
+        if ($content = $headerBlock->getContent()) {
+            if ($user) {
+                $content = str_replace('{{ prenom }}', $user->getFirstName(), $content);
+            }
+
+            $content = str_replace('{{ date_echeance }}', $headerBlock->getDeadlineDate() ? $headerBlock->getDeadlineDate()->diff(new \DateTime())->days : 0, $content);
+            $headerBlock->setContent($content);
         }
 
         return $this->json(

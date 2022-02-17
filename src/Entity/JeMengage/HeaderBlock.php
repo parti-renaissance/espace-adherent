@@ -47,6 +47,8 @@ class HeaderBlock implements ExposedImageOwnerInterface
     /**
      * @ORM\Column(length=50)
      *
+     * @Assert\NotBlank(message="header_block.prefix.not_blank")
+     *
      * @Groups({"header_block_read"})
      */
     private ?string $prefix;
@@ -75,13 +77,15 @@ class HeaderBlock implements ExposedImageOwnerInterface
     public function __construct(
         string $name = null,
         string $prefix = null,
-        string $slogan = null,
-        string $content = null
+        ?string $slogan = null,
+        ?string $content = null,
+        ?\DateTime $deadlineDate = null
     ) {
         $this->name = $name;
         $this->prefix = $prefix;
         $this->slogan = $slogan;
         $this->content = $content;
+        $this->deadlineDate = $deadlineDate;
     }
 
     public function __toString(): string
