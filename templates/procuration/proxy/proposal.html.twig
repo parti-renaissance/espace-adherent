@@ -42,6 +42,17 @@
                 updateProxiesCount();
             });
 
+            $('input[name="other-vote-cities"]').change(function (element) {
+                var wrapper = dom('#{{ procuration_form.otherVoteCities.vars.id }}_wrapper');
+
+                if (element.currentTarget.value === '1') {
+                    removeClass(wrapper, 'hidden')
+                } else {
+                    addClass(wrapper, 'hidden');
+                    find(wrapper, 'input').value = '';
+                }
+            });
+
             function updateProxiesCount() {
                 var proxiesCountSelected = '#{{ procuration_form.proxiesCount.vars.id }}';
                 var radioButtons = $(proxiesCountSelected+' > div');
@@ -247,6 +258,20 @@
                                 d’autres communes, et si oui, lesquelles ?</p>
 
                             <div class="form__row">
+                                <div class="l__row--h-stretch b__nudge--bottom-medium form__radio-button">
+                                    <div class="form__radio">
+                                        <input type="radio" name="other-vote-cities" id="other-vote-cities--yes" {{ procuration_form.otherVoteCities.vars.data ? 'checked="checked"' }} value="1"/>
+                                        <label class="form form__label" for="other-vote-cities--yes">Oui</label>
+                                    </div>
+
+                                    <div class="form__radio">
+                                        <input type="radio" name="other-vote-cities" id="other-vote-cities--non" value="0"/>
+                                        <label class="form form__label" for="other-vote-cities--non">Non</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form__row {{ not procuration_form.otherVoteCities.vars.data ? 'hidden' }}" id="{{ procuration_form.otherVoteCities.vars.id }}_wrapper">
                                 {{ form_label(procuration_form.otherVoteCities, 'Autre commune (non obligatoire)') }}
                                 {{ form_widget(procuration_form.otherVoteCities, { attr: { class: 'form--full', placeholder: 'Autre commune' } }) }}
                                 {{ form_errors(procuration_form.otherVoteCities) }}
