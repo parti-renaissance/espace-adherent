@@ -80,7 +80,7 @@
         "scheb/2fa-bundle": "^5.13",
         "scheb/2fa-google-authenticator": "^5.13",
         "scienta/doctrine-json-functions": "^4.3",
-        "sensio/framework-extra-bundle": "^4.0",
+        "sensio/framework-extra-bundle": "^6.0",
         "sentry/sentry-symfony": "^4.2",
         "snc/redis-bundle": "^3.2",
         "sonata-project/admin-bundle": "^3.49",

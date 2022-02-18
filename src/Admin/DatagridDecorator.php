@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 abstract class DatagridDecorator implements DatagridInterface
@@ -95,5 +96,15 @@ abstract class DatagridDecorator implements DatagridInterface
     public function hasDisplayableFilters()
     {
         return $this->decorated->hasDisplayableFilters();
+    }
+
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
+    {
+        return $this->decorated->getSortParameters($fieldDescription);
+    }
+
+    public function getPaginationParameters(int $page): array
+    {
+        return $this->decorated->getPaginationParameters($page);
     }
 }
