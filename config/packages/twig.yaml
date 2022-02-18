@@ -35,6 +35,5 @@ twig:
 
     form_themes:
         - 'form_theme.html.twig'
-        - '@SonataCore/Form/datepicker.html.twig'
-        - '@SonataCore/Form/colorpicker.html.twig'
+        - '@SonataForm/Form/datepicker.html.twig'
         - '@TetranzSelect2Entity/Form/fields.html.twig'

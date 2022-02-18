@@ -5,9 +5,9 @@ namespace App\Algolia\Sonata\Model;
 use Algolia\SearchBundle\SearchService;
 use App\Algolia\Query\QueryBuilder;
 use App\Algolia\Sonata\ProxyQuery\ProxyQuery;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelManager implements ModelManagerInterface
@@ -153,10 +153,12 @@ class ModelManager implements ModelManagerInterface
 
     public function modelTransform($class, $instance)
     {
+        return $instance;
     }
 
     public function executeQuery($query)
     {
+        return $query->execute();
     }
 
     public function getDataSourceIterator(

@@ -6,7 +6,7 @@ use App\Entity\RepublicanSilence;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Sonata\Form\Type\DateTimePickerType;
 
 class RepublicanSilenceAdmin extends AbstractAdmin
 {
