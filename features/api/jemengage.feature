@@ -37,3 +37,36 @@ Feature:
   Scenario: As a non logged-in user I cannot get a non-existent mentions text
     Given I send a "GET" request to "/api/je-mengage/je-mengage-mentions"
     Then the response status code should be 404
+
+  Scenario: As a non logged-in user I cannot get a non-existent header block
+    Given I send a "GET" request to "/api/je-mengage/headers/connexion"
+    Then the response status code should be 404
+
+  Scenario: As a non logged-in user I can get the connexion page header block
+    Given I send a "GET" request to "/api/je-mengage/headers/page-connexion"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "name": "page connexion",
+      "prefix": "Je m'engage avec",
+      "slogan": "la majorité présidentielle",
+      "content": null,
+      "image_url": "@string@"
+    }
+    """
+
+  Scenario: As a logged-in user I can get the homepage header block
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/je-mengage/headers/page-accueil"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "name": "page accueil",
+      "prefix": "Je m'engage avec",
+      "slogan": "la majorité présidentielle",
+      "content": "Bienvenue Jacques,\nIl reste 13 jours avant le 1er tour des élections présidentielles !",
+      "image_url": "@string@"
+    }
+    """
