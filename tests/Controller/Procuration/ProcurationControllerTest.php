@@ -410,10 +410,9 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form--warning'));
-        $this->assertCount(3, $errors = $crawler->filter('.form__error'));
-        $this->assertSame('Pour la France, la saisie du code postal est obligatoire.', $errors->eq(0)->text());
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(1)->text());
-        $this->assertSame('Vous devez choisir au moins un tour d\'élection.', $errors->eq(2)->text());
+        $this->assertCount(2, $errors = $crawler->filter('.form__error'));
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(0)->text());
+        $this->assertSame('Vous devez choisir au moins un tour d\'élection.', $errors->eq(1)->text());
 
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',

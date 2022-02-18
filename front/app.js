@@ -241,8 +241,14 @@ class App {
         });
     }
 
-    runUserListDefinitions(memberType, type, wrapperSelector, checkboxSelector, mainCheckboxSelector,
-        postApplyCallback) {
+    runUserListDefinitions(
+        memberType,
+        type,
+        wrapperSelector,
+        checkboxSelector,
+        mainCheckboxSelector,
+        postApplyCallback
+    ) {
         System.import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
             module.default(
                 memberType,
@@ -280,15 +286,15 @@ class App {
         });
     }
 
-    runProcurationProxy(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) {
+    runProcurationProxy(countryFieldSelector, stateFieldSelector) {
         System.import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector);
+            module.default(countryFieldSelector, stateFieldSelector);
         });
     }
 
-    runProcurationRequest(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) {
+    runProcurationRequest(countryFieldSelector, stateFieldSelector) {
         System.import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector);
+            module.default(countryFieldSelector, stateFieldSelector);
         });
     }
 

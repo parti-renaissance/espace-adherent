@@ -22,11 +22,7 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationProxy(
-                '#{{ procuration_form.country.vars.id }}',
-                '#{{ procuration_form.postalCode.vars.id }}',
-                '#{{ procuration_form.state.vars.id }}'
-            );
+            App.runProcurationProxy('#{{ procuration_form.country.vars.id }}', '#{{ procuration_form.state.vars.id }}');
 
             App.createVoteLocationSelector(
                 '{{ procuration_form.voteCountry.vars.id }}',

@@ -58,7 +58,7 @@ export default class AddressObject {
     }
 
     isFilled() {
-        return this._address.value && this._postalCode.value && this._country.value;
+        return this._address.value && this._country.value && ('FR' !== this._country.value || this._postalCode.value);
     }
 
     setRequired(value) {
