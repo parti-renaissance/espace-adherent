@@ -520,7 +520,7 @@
         </service>
 
         <service id="app.admin.je_mengage.header_block" class="App\Admin\JeMengage\HeaderBlockAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Paramètres d'en-tête" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Paramètres d'en-tête" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\JeMengage\HeaderBlock</argument>
