@@ -223,6 +223,20 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         ;
     }
 
+    public function countVoteRemindersToSend(): int
+    {
+        return (int) $this->createQueryBuilder('pr')
+            ->select('COUNT(pr)')
+            ->join('pr.foundProxy', 'pp')
+            ->where('pr.processed = true')
+            ->andWhere('pr.reminded = 0')
+            ->andWhere('pr.processedAt <= :matchDate')
+            ->setParameter('matchDate', new \DateTime('-48 hours'))
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
     private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
     {
         $codesFilter = $qb->expr()->orX();

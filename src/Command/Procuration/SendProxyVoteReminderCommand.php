@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Procuration;
 
 use App\Entity\ProcurationRequest;
 use App\Procuration\ProcurationReminderHandler;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ProcurationSendReminderCommand extends Command
+class SendProxyVoteReminderCommand extends Command
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -23,14 +23,14 @@ class ProcurationSendReminderCommand extends Command
      */
     private $reminder;
 
-    public const COMMAND_NAME = 'app:procuration:send-reminder';
+    public const COMMAND_NAME = 'app:procuration:send-vote-reminder';
     public const PER_PAGE = 200;
 
     protected function configure()
     {
         $this
             ->setName(self::COMMAND_NAME)
-            ->setDescription('Send a reminder to the procuration proxies.')
+            ->setDescription('Send a reminder to the procuration proxies to vote.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without sending any email and without persisting any data.')
         ;
     }
@@ -39,7 +39,7 @@ class ProcurationSendReminderCommand extends Command
     {
         $procurationRequestRepository = $this->manager->getRepository(ProcurationRequest::class);
 
-        $totalCount = ceil($procurationRequestRepository->countRemindersToSend() / self::PER_PAGE);
+        $totalCount = ceil($procurationRequestRepository->countVoteRemindersToSend() / self::PER_PAGE);
         if (!$totalCount) {
             $output->writeln('No reminder to send');
 
