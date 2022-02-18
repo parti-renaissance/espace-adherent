@@ -30,7 +30,13 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Campaign $object */
     protected function isLocal(object $object): bool
     {
-        return false;
+        return !$object->isNationalVisibility();
+    }
+
+    /** @param Campaign $object */
+    protected function isNational(object $object): bool
+    {
+        return $object->isNationalVisibility();
     }
 
     /** @param Campaign $object */
