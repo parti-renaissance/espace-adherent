@@ -12,6 +12,11 @@
 {% block header '' %}
 {% block footer '' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
@@ -20,6 +25,11 @@
     {% endif %}
     <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <script type="text/javascript" src="{{ asset('select2/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('select2/fr.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runProcurationProxy(
@@ -44,12 +54,15 @@
 
             $('input[name="other-vote-cities"]').change(function (element) {
                 var wrapper = dom('#{{ procuration_form.otherVoteCities.vars.id }}_wrapper');
+                var select = find(wrapper, 'select');
 
                 if (element.currentTarget.value === '1') {
-                    removeClass(wrapper, 'hidden')
+                    removeClass(wrapper, 'hidden');
+                    select.required = true;
                 } else {
                     addClass(wrapper, 'hidden');
-                    find(wrapper, 'input').value = '';
+                    select.value = '';
+                    select.required = false;
                 }
             });
 
@@ -68,6 +81,10 @@
                     radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.other'|trans({}, 'validators')|e('js') }}');
                 }
             }
+
+            $('.select2entity[data-autostart="false"]').select2entity({
+                theme: 'default'
+            })
         });
     </script>
 {% endblock %}
@@ -129,6 +146,12 @@
                                 {{ form_widget(procuration_form.voterNumber, { attr: { placeholder: 'Numéro d\'électeur' } }) }}
                             </div>
                             {{ form_errors(procuration_form.voterNumber) }}
+                            <p class="text--smallest text--gray b__nudge--top-0">
+                                Pour trouver votre numéro : Soit sur la carte électorale (champ : n° national d’électeur
+                                ou numéro national d’électeur) ; Soit sur le module « interroger sa situation électorale
+                                » de Service-public.fr, en renseignant votre état civil complet (et notamment tous vos
+                                prénoms dans l’ordre de l’état civil) et votre commune ou consulat de vote.
+                            </p>
                         </div>
 
                         <div>
@@ -255,7 +278,7 @@
                         <div class="b__nudge--top-40">
                             <p>Il est maintenant possible de porter la procuration d’un électeur d’une autre commune. Il
                                 faut toutefois se rendre dans son bureau de vote. Accepteriez-vous de vous déplacer dans
-                                d’autres communes, et si oui, lesquelles ?</p>
+                                d’autres communes, et si oui, lesquelles ?<br/>(non obligatoire)</p>
 
                             <div class="form__row">
                                 <div class="l__row--h-stretch b__nudge--bottom-medium form__radio-button">
@@ -272,8 +295,8 @@
                             </div>
 
                             <div class="form__row {{ not procuration_form.otherVoteCities.vars.data ? 'hidden' }}" id="{{ procuration_form.otherVoteCities.vars.id }}_wrapper">
-                                {{ form_label(procuration_form.otherVoteCities, 'Autre commune (non obligatoire)') }}
-                                {{ form_widget(procuration_form.otherVoteCities, { attr: { class: 'form--full', placeholder: 'Autre commune' } }) }}
+                                {{ form_label(procuration_form.otherVoteCities, 'Autre commune') }}
+                                {{ form_widget(procuration_form.otherVoteCities, { attr: { class: 'form--full', placeholder: 'Autre commune', required: not not procuration_form.otherVoteCities.vars.data } }) }}
                                 {{ form_errors(procuration_form.otherVoteCities) }}
                             </div>
                         </div>

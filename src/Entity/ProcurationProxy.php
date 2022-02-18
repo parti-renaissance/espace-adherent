@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Geo\Zone;
 use App\Intl\FranceCitiesBundle;
 use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Validator\ZoneType as AssertZoneType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -350,13 +352,18 @@ class ProcurationProxy
     public $reachable = false;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255, groups={"front"})
      */
-    private $otherVoteCities;
+    private $backupOtherVoteCities;
+
+    /**
+     * @var Collection|Zone[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
+     *
+     * @AssertZoneType(types={"city", "borough"}, groups={"front"})
+     */
+    private Collection $otherVoteCities;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -364,6 +371,7 @@ class ProcurationProxy
         $this->phone = static::createPhoneNumber();
         $this->electionRounds = new ArrayCollection();
         $this->foundRequests = new ArrayCollection();
+        $this->otherVoteCities = new ArrayCollection();
     }
 
     public function __toString()
@@ -806,13 +814,21 @@ class ProcurationProxy
         $this->voterNumber = $voterNumber;
     }
 
-    public function getOtherVoteCities(): ?string
+    /** @return Zone[] */
+    public function getOtherVoteCities(): array
     {
-        return $this->otherVoteCities;
+        return $this->otherVoteCities->toArray();
     }
 
-    public function setOtherVoteCities(?string $otherCities): void
+    public function addOtherVoteCity(Zone $city): void
     {
-        $this->otherVoteCities = $otherCities;
+        if (!$this->otherVoteCities->contains($city)) {
+            $this->otherVoteCities->add($city);
+        }
+    }
+
+    public function removeOtherVoteCity(Zone $city): void
+    {
+        $this->otherVoteCities->removeElement($city);
     }
 }
