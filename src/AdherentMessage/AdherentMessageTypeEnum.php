@@ -71,6 +71,6 @@ class AdherentMessageTypeEnum extends Enum
 
         CoalitionsMessage::class => 'ROLE_CAUSE_AUTHOR',
 
-        CorrespondentAdherentMessage::class => ['ROLE_CORRESPONDENT'],
+        CorrespondentAdherentMessage::class => ['ROLE_CORRESPONDENT', 'ROLE_DELEGATED_CORRESPONDENT'],
     ];
 }

@@ -190,10 +190,10 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a Correspondent I can create a message
-    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario Outline: As a (delegated) Correspondent I can create a message
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/adherent_messages?scope=correspondent" with body:
+    And I send a "POST" request to "/api/v3/adherent_messages?scope=<scope>" with body:
     """
     {
       "type": "correspondent",
@@ -243,6 +243,10 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                                | scope                                          |
+      | je-mengage-user-1@en-marche-dev.fr  | correspondent                                  |
+      | laura@deloche.com                   | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
 
   Scenario: As a delegated referent I can create a message
     Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
