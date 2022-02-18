@@ -1,22 +1,29 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Procuration;
 
+use App\Entity\ElectionRound;
+use App\Entity\ProcurationRequest;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="procuration_reminder")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "proxy_vote": "App\Entity\Procuration\ProxyVoteReminder",
+ *     "request_administrative": "App\Entity\Procuration\RequestAdministrativeReminder",
+ * })
  */
-class ProcurationVoteReminder
+abstract class AbstractProcurationReminder
 {
-    use EntityTimestampableTrait;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -25,11 +32,13 @@ class ProcurationVoteReminder
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationRequest")
+     * @ORM\JoinColumn(nullable=false)
      */
     private ProcurationRequest $procurationRequest;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectionRound")
+     * @ORM\JoinColumn(nullable=false)
      */
     private ElectionRound $electionRound;
 
@@ -43,6 +52,11 @@ class ProcurationVoteReminder
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getProcessedAt()
+    {
+        return $this->processedAt;
     }
 
     public function getProcurationRequest(): ProcurationRequest

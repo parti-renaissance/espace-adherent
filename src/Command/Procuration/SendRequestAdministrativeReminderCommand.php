@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendProxyVoteReminderCommand extends Command
+class SendRequestAdministrativeReminderCommand extends Command
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -23,14 +23,14 @@ class SendProxyVoteReminderCommand extends Command
      */
     private $reminder;
 
-    public const COMMAND_NAME = 'app:procuration:send-proxy-vote-reminder';
+    public const COMMAND_NAME = 'app:procuration:send-request-administrative-reminder';
     public const PER_PAGE = 200;
 
     protected function configure()
     {
         $this
             ->setName(self::COMMAND_NAME)
-            ->setDescription('Send a reminder to the procuration proxies to vote.')
+            ->setDescription('Send a reminder to the procuration requests.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without sending any email and without persisting any data.')
         ;
     }
