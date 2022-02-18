@@ -404,11 +404,11 @@
 
         <!--
         ######################################################
-        # Je marche app
+        # Application mobile
         ######################################################
         -->
         <service id="app.admin.jecoute.news" class="App\Admin\Jecoute\NewsAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Notifications" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Notifications" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\News</argument>
@@ -416,7 +416,7 @@
         </service>
 
         <service id="app.admin.jecoute.national_region" class="App\Admin\Jecoute\NationalRegionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Campagnes nationale" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Actu principale nationale" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\Region</argument>
@@ -425,7 +425,7 @@
         </service>
 
         <service id="app.admin.jecoute.candidate_region" class="App\Admin\Jecoute\CandidateRegionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Campagnes régionales" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Actu principale régionale" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\Region</argument>
@@ -434,7 +434,7 @@
         </service>
 
         <service id="app.admin.jecoute.referent_region" class="App\Admin\Jecoute\ReferentRegionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Campagnes référents" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Actu principale départementale" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\Region</argument>
@@ -443,7 +443,7 @@
         </service>
 
         <service id="app.admin.jecoute_suggested_question" class="App\Admin\JecouteSuggestedQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Questions paniers" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Questions paniers" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\SuggestedQuestion</argument>
@@ -456,7 +456,7 @@
         </service>
 
         <service id="app.admin.jecoute_local_survey" class="App\Admin\JecouteLocalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Questionnaires locaux" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires locaux" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\LocalSurvey</argument>
@@ -469,7 +469,7 @@
         </service>
 
         <service id="app.admin.jecoute_national_survey" class="App\Admin\JecouteNationalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Questionnaires nationaux" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires nationaux" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\NationalSurvey</argument>
@@ -491,7 +491,7 @@
 
 
         <service id="app.admin.poll.poll" class="App\Admin\Poll\NationalPollAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Sondages" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Sondages" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Poll\NationalPoll</argument>
@@ -504,7 +504,7 @@
         </service>
 
         <service id="app.admin.jecoute.riposte" class="App\Admin\Jecoute\RiposteAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ripostes" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Ripostes" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\Riposte</argument>
@@ -512,7 +512,7 @@
         </service>
 
         <service id="app.admin.jecoute.resource.link" class="App\Admin\Jecoute\ResourceLinkAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ressources" group="Je marche app" />
+            <tag name="sonata.admin" manager-type="orm" label="Ressources" group="Application mobile" />
 
             <argument />
             <argument>App\Entity\Jecoute\ResourceLink</argument>
