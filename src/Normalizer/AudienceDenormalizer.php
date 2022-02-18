@@ -2,10 +2,9 @@
 
 namespace App\Normalizer;
 
-use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Audience\Audience;
 use App\Geo\ManagedZoneProvider;
-use App\Scope\AuthorizationChecker;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -17,16 +16,16 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 
     private const AUDIENCE_DENORMALIZER_ALREADY_CALLED = 'AUDIENCE_DENORMALIZER_ALREADY_CALLED';
 
-    private $authorizationChecker;
-    private $managedZoneProvider;
-    private $security;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
+    private ManagedZoneProvider $managedZoneProvider;
+    private Security $security;
 
     public function __construct(
-        AuthorizationChecker $authorizationChecker,
+        ScopeGeneratorResolver $scopeGeneratorResolver,
         ManagedZoneProvider $managedZoneProvider,
         Security $security
     ) {
-        $this->authorizationChecker = $authorizationChecker;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->managedZoneProvider = $managedZoneProvider;
         $this->security = $security;
     }
@@ -37,13 +36,11 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 
         /** @var Audience $audience */
         $audience = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $scope = $this->scopeGeneratorResolver->generate();
+        $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
 
-        if (
-            !empty($data['scope'])
-            && ($user = $this->security->getUser())
-            && $this->authorizationChecker->isScopeGranted($data['scope'], $user)
-        ) {
-            $audience->setZones($this->managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$data['scope']]));
+        if (!empty($data['scope']) && $scopeCode === $data['scope']) {
+            $audience->setZones($scope->getZones());
         }
 
         return $audience;

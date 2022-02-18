@@ -2,34 +2,35 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Adherent;
-use App\Scope\AuthorizationChecker;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class RequestScopeVoter extends AbstractAdherentVoter
+class RequestScopeVoter extends Voter
 {
     public const PERMISSION = 'REQUEST_SCOPE_GRANTED';
 
-    private $requestStack;
-    private $authorizationChecker;
+    private RequestStack $requestStack;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(RequestStack $requestStack, AuthorizationChecker $authorizationChecker)
+    public function __construct(RequestStack $requestStack, ScopeGeneratorResolver $scopeGeneratorResolver)
     {
         $this->requestStack = $requestStack;
-        $this->authorizationChecker = $authorizationChecker;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
-    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if (!$subject || !\is_string($subject)) {
-            $request = $this->requestStack->getMasterRequest();
+        $scope = $this->scopeGeneratorResolver->generate();
 
-            if (!$subject = $this->authorizationChecker->getScope($request)) {
-                return false;
-            }
+        if (!$scope) {
+            return false;
         }
 
-        return $this->authorizationChecker->isScopeGranted($subject, $adherent);
+        $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
+
+        return null === $subject || $subject === $scopeCode;
     }
 
     protected function supports($attribute, $subject)

@@ -159,7 +159,7 @@ Feature:
   Scenario: As a logged-in user I can edit an audience
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c" with body:
+    And I send a "PUT" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c?scope=deputy" with body:
     """
     {
       "name": "Nouveau nom",
@@ -205,7 +205,7 @@ Feature:
 
   Scenario: As a logged-in user with correct rights I can delete an audience
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "DELETE" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c"
+    When I send a "DELETE" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c?scope=deputy"
     Then the response status code should be 204
 
   Scenario Outline: As a logged-in user with no correct rights I can not manage an audience
@@ -297,7 +297,7 @@ Feature:
 
   Scenario: As a logged-in deputy I can get a candidate audience with all parameters
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c"
+    When I send a "GET" request to "/api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c?scope=deputy"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -326,7 +326,7 @@ Feature:
 
   Scenario: As a logged-in deputy I can get a candidate audience with some parameters
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/audiences/bd298079-f763-4c7a-9a8a-a243d01d0e31"
+    When I send a "GET" request to "/api/v3/audiences/bd298079-f763-4c7a-9a8a-a243d01d0e31?scope=deputy"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

@@ -3,7 +3,6 @@
 namespace App\Validator;
 
 use App\Entity\Adherent;
-use App\Scope\AuthorizationChecker;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
@@ -12,16 +11,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ValidScopeValidator extends ConstraintValidator
 {
-    private AuthorizationChecker $authorizationChecker;
     private Security $security;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(
-        AuthorizationChecker $authorizationChecker,
-        Security $security,
-        ScopeGeneratorResolver $scopeGeneratorResolver
-    ) {
-        $this->authorizationChecker = $authorizationChecker;
+    public function __construct(Security $security, ScopeGeneratorResolver $scopeGeneratorResolver)
+    {
         $this->security = $security;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
@@ -43,11 +37,7 @@ class ValidScopeValidator extends ConstraintValidator
         }
 
         $scope = $this->scopeGeneratorResolver->generate();
-
-        if (
-            ($scope && $scope->getCode() !== $value && $scope->getDelegatorCode() !== $value)
-            || !$this->authorizationChecker->isScopeGranted($value, $user)
-        ) {
+        if (!$scope || ($scope->getCode() !== $value && $scope->getDelegatorCode() !== $value)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('type')
