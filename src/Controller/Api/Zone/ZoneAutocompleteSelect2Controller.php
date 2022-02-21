@@ -7,7 +7,6 @@ use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @Route("/zone/autocompletion", name="api_zone_autocomplete", condition="request.isXmlHttpRequest()", methods={"GET"})
+ * @Route("/zone/autocompletion", name="api_zone_autocomplete", methods={"GET"})
  * @Route("/v3/zone/autocompletion", name="api_v3_zone_autocomplete", methods={"GET"})
- * @Security("is_granted('IS_AUTHENTICATED_REMEMBERED')")
  */
 class ZoneAutocompleteSelect2Controller extends AbstractController
 {
@@ -36,18 +34,28 @@ class ZoneAutocompleteSelect2Controller extends AbstractController
         $term = (string) $request->query->get('q', '');
         $spaceType = (string) $request->query->get('space_type', '');
 
-        $max = $request->query->getInt('page_limit', self::SUGGESTIONS_PER_TYPE);
-        $max = min($max, self::SUGGESTIONS_PER_TYPE);
+        if (($max = $request->query->getInt('page_limit', self::SUGGESTIONS_PER_TYPE)) > 50) {
+            $max = self::SUGGESTIONS_PER_TYPE;
+        }
 
         $activeOnly = $request->query->getBoolean('active_only', self::ACTIVE_ONLY);
 
-        $user = $this->getMainUser($request->getSession());
-        $managedZones = $managedZoneProvider->getManagedZones($user, $spaceType);
+        $zoneTypes = null;
+        $managedZones = [];
+
+        if (($zoneTypesFromRequest = $request->query->get('types')) && \is_array($zoneTypesFromRequest)) {
+            $zoneTypes = $zoneTypesFromRequest;
+        }
+
+        if ($this->getUser()) {
+            $user = $this->getMainUser($request->getSession());
+            $managedZones = $managedZoneProvider->getManagedZones($user, $spaceType);
+        }
 
         $zones = $repository->searchByTermAndManagedZonesGroupedByType(
             $term,
             $managedZones,
-            AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType ? Zone::CANDIDATE_TYPES : Zone::TYPES,
+            AdherentSpaceEnum::CANDIDATE_JECOUTE === $spaceType ? Zone::CANDIDATE_TYPES : ($zoneTypes ?: Zone::TYPES),
             $activeOnly,
             $max
         );
@@ -82,7 +90,7 @@ class ZoneAutocompleteSelect2Controller extends AbstractController
 
             $results[$type]['children'][] = [
                 'id' => $zone->getId(),
-                'text' => $zone->getNameCode(),
+                'text' => $zone->getPostalCodeAsString() ? sprintf('%s (%s)', $zone->getName(), $zone->getPostalCodeAsString()) : $zone->getNameCode(),
             ];
         }
 

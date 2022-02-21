@@ -108,15 +108,15 @@ Feature:
              "children":[
                 {
                    "id":1850,
-                   "text":"Champagne-sur-Seine 77079"
+                   "text":"Champagne-sur-Seine (77430)"
                 },
                 {
                    "id":1881,
-                   "text":"La Grande-Paroisse 77210"
+                   "text":"La Grande-Paroisse (77130)"
                 },
                 {
                    "id":1427,
-                   "text":"Le Puy-Sainte-R\u00e9parade 13080"
+                   "text":"Le Puy-Sainte-R\u00e9parade (13610)"
                 }
              ]
           },
