@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Security\Listener\SecurityListener:
+        decorates: 'sensio_framework_extra.security.listener'
+        arguments:
+            - '@sensio_framework_extra.security.expression_language.default'
+            - '@security.authentication.trust_resolver'
