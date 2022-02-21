@@ -3,6 +3,7 @@
 namespace App\Mailchimp\SignUp;
 
 use App\Entity\Adherent;
+use App\Subscription\SubscriptionTypeEnum;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -74,7 +75,7 @@ class SignUpHandler implements LoggerAwareInterface
         ];
 
         foreach ($this->subscriptionIds as $code => $id) {
-            if ($adherent->hasSubscriptionType($code)) {
+            if (\in_array($code, SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, true)) {
                 $formData[sprintf('group[%d][%d]', $this->subscriptionGroupId, $id)] = $id;
             }
         }
