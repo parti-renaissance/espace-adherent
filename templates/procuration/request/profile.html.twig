@@ -11,11 +11,7 @@
     <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationRequest(
-                '#{{ procuration_form.country.vars.id }}',
-                '#{{ procuration_form.postalCode.vars.id }}',
-                '#{{ procuration_form.state.vars.id }}'
-            );
+            App.runProcurationRequest('#{{ procuration_form.country.vars.id }}', '#{{ procuration_form.state.vars.id }}');
         });
     </script>
 {% endblock %}
@@ -28,12 +24,12 @@
                 <li class="active">Mes coordonnées</li>
                 <li>Ma procuration</li>
             </ul>
-            <form method="post" name="app_procuration_profile">
+            {{ form_start(procuration_form) }}
                 <div class="text--body text--small b__nudge--bottom-small">
                     Sauf mention contraire, toutes les informations demandées sont obligatoires.
                 </div>
                 <div class="text--body text--small b__nudge--bottom-medium">
-                    Renseignez votre lieu de résidence: ce n'est pas forcément
+                    Renseignez votre lieu de résidence : ce n'est pas forcément
                     le même que votre lieu d'inscription sur les listes électorales
                 </div>
 
@@ -131,8 +127,7 @@
                 </div>
 
                 {{ form_rest(procuration_form) }}
-
-            </form>
+            {{ form_end(procuration_form) }}
         </div>
     </section>
 {% endblock %}

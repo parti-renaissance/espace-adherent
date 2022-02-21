@@ -2,7 +2,7 @@ import AutocompletedAddressForm from '../services/address/AutocompletedAddressFo
 import AddressObject from '../services/address/AddressObject';
 import changeFieldsVisibility from '../services/form/changeFieldsVisibility';
 
-export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) => {
+export default (countryFieldSelector, stateFieldSelector) => {
     const countryElement = dom(countryFieldSelector);
     const autocompleteAddressForm = new AutocompletedAddressForm(
         dom('.address-autocomplete'),
@@ -25,5 +25,5 @@ export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelecto
 
     autocompleteAddressForm.buildWidget();
 
-    changeFieldsVisibility(countryElement, postalCodeFieldSelector, stateFieldSelector);
+    changeFieldsVisibility(countryElement, stateFieldSelector);
 };

@@ -32,7 +32,6 @@ class ProcurationProxyType extends AbstractProcurationType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('postalCode', TextType::class)
             ->add('cityName', TextType::class)
             ->add('otherVoteCities', TextType::class, ['required' => false])
             ->add('phone', PhoneNumberType::class, [
