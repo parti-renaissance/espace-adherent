@@ -242,6 +242,16 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     private ?int $misregistrationsPriorityMax = null;
 
     /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private ?int $firstRoundMisregistrationsPriority = null;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private ?int $secondRoundMisregistrationsPriority = null;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private bool $associated = false;
@@ -495,6 +505,26 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     public function setMisregistrationsPriorityMax(?int $misregistrationsPriorityMax): void
     {
         $this->misregistrationsPriorityMax = $misregistrationsPriorityMax;
+    }
+
+    public function getFirstRoundMisregistrationsPriority(): ?int
+    {
+        return $this->firstRoundMisregistrationsPriority;
+    }
+
+    public function setFirstRoundMisregistrationsPriority(?int $firstRoundMisregistrationsPriority): void
+    {
+        $this->firstRoundMisregistrationsPriority = $firstRoundMisregistrationsPriority;
+    }
+
+    public function getSecondRoundMisregistrationsPriority(): ?int
+    {
+        return $this->secondRoundMisregistrationsPriority;
+    }
+
+    public function setSecondRoundMisregistrationsPriority(?int $secondRoundMisregistrationsPriority): void
+    {
+        $this->secondRoundMisregistrationsPriority = $secondRoundMisregistrationsPriority;
     }
 
     public function getIndexOptions(): array

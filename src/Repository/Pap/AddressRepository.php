@@ -158,6 +158,16 @@ SQL;
             $params['misregistrations_priority_max'] = $campaign->getMisregistrationsPriorityMax();
         }
 
+        if (null !== $campaign->getFirstRoundMisregistrationsPriority()) {
+            $conditions[] = 'vote_place.first_round_misregistrations_priority >= :first_round_misregistrations_priority';
+            $params['first_round_misregistrations_priority'] = $campaign->getFirstRoundMisregistrationsPriority();
+        }
+
+        if (null !== $campaign->getSecondRoundMisregistrationsPriority()) {
+            $conditions[] = 'vote_place.second_round_misregistrations_priority >= :second_round_misregistrations_priority';
+            $params['second_round_misregistrations_priority'] = $campaign->getSecondRoundMisregistrationsPriority();
+        }
+
         if ($conditions) {
             $sql .= ' AND '.implode(' AND ', $conditions);
         }
