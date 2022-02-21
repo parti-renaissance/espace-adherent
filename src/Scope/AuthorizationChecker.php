@@ -45,15 +45,6 @@ class AuthorizationChecker
         return $scope->hasFeature($featureCode);
     }
 
-    public function isScopeGranted(string $scope, Adherent $adherent): bool
-    {
-        try {
-            return (bool) $this->scopeGenerator->getGenerator($scope, $adherent);
-        } catch (NotFoundScopeGeneratorException $e) {
-            return false;
-        }
-    }
-
     public function getScope(Request $request): ?string
     {
         $scopePosition = $request->attributes->get(self::SCOPE_POSITION_PARAM, self::SCOPE_POSITION_QUERY);

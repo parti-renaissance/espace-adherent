@@ -84,7 +84,7 @@ Feature:
   Scenario: As a logged-in user I cannot create an audience segment, if filter scope is not authorized
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments" with body:
+    And I send a "POST" request to "/api/v3/audience-segments?scope=referent" with body:
     """
     {
         "filter": {
@@ -146,7 +146,7 @@ Feature:
   Scenario: As a logged-in user I can create an audience segment
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/audience-segments" with body:
+    And I send a "POST" request to "/api/v3/audience-segments?scope=deputy" with body:
     """
     {
         "filter": {
@@ -191,10 +191,54 @@ Feature:
     }
     """
 
+  Scenario Outline: As a (delegated) referent I can create an audience segment
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/audience-segments?scope=<scope>" with body:
+    """
+    {
+        "filter": {
+          "scope": "referent",
+          "zone": "e3efe6fd-906e-11eb-a875-0242ac150002",
+          "is_certified": false
+        }
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "filter": {
+            "is_certified": false,
+            "zone": {
+                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                "code": "92",
+                "name": "Hauts-de-Seine"
+            },
+            "scope": "referent",
+            "gender": null,
+            "age_min": null,
+            "age_max": null,
+            "first_name": null,
+            "last_name": null,
+            "registered_since": null,
+            "registered_until": null,
+            "is_committee_member": true
+        },
+        "uuid": "@uuid@",
+        "recipient_count": null,
+        "synchronized": false
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
   Scenario: As a logged-in user I can edit my segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7" with body:
+    And I send a "PUT" request to "/api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7?scope=referent" with body:
     """
     {
         "filter": {
