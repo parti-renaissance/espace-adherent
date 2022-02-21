@@ -17,7 +17,7 @@ class HeaderBlockAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        if ($this->isCreation()) {
+        if (!$this->isCreation()) {
             $formMapper
                 ->with('Général', ['class' => 'col-md-6'])
                     ->add('slug', null, [
