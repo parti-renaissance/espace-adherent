@@ -202,6 +202,8 @@ survey.unknown_id: Il n'existe aucun sondage correspondant à cet ID.
 survey.question.choice.invalid: Le type de cette question est incorrecte, un champ à choix multiples ou unique doit contenir plusieurs choix.
 survey.question.simple_field.invalid: Le type de cette question est incorrecte, un champ libre ne doit pas contenir de choix.
 
+survey.questions.min_count: Le questionnaire doit contenir au moins une question.
+
 survey.answer.simple_field.invalid: La question {{ surveyQuestionId }} est un champ libre et ne doit pas contenir de choix.
 
 survey.answer.unique_choice.invalid: La question {{ surveyQuestionId }} est une question à choix unique et doit contenir un seul choix sélectionné.

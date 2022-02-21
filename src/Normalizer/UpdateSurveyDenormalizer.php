@@ -27,7 +27,7 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
         /** @var Survey $survey */
         $survey = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        if ($questionData) {
+        if (\is_array($questionData)) {
             foreach ($survey->getQuestions()->toArray() as $surveyQuestion) {
                 if (!\in_array($surveyQuestion->getId(), $this->payloadIds($questionData), true)) {
                     $survey->removeQuestion($surveyQuestion);

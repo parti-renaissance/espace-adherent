@@ -154,6 +154,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"position": "ASC"})
      *
+     * @Assert\Count(min="1", minMessage="survey.questions.min_count")
      * @Assert\Valid
      *
      * @SymfonySerializer\Groups("survey_write_dc")

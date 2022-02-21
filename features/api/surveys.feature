@@ -1871,3 +1871,35 @@ Feature:
     When I send a "GET" request to "/api/v3/surveys?scope=correspondent&page_size=10"
     Then the response status code should be 200
     And the JSON node items should have 4 element
+
+  Scenario Outline: As a user with (delegated) referent role I cannot delete all questions on a survey
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=<scope>" with body:
+    """
+    {
+      "name": "5ans à l'écoute",
+      "zone": "e3efe5c5-906e-11eb-a875-0242ac150002",
+      "published": true,
+      "questions": []
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "questions: Le questionnaire doit contenir au moins une question.",
+      "violations": [
+        {
+          "propertyPath": "questions",
+          "message": "Le questionnaire doit contenir au moins une question."
+        }
+      ]
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
