@@ -48,20 +48,6 @@
                 updateProxiesCount();
             });
 
-            $('input[name="other-vote-cities"]').change(function (element) {
-                var wrapper = dom('#{{ procuration_form.otherVoteCities.vars.id }}_wrapper');
-                var select = find(wrapper, 'select');
-
-                if (element.currentTarget.value === '1') {
-                    removeClass(wrapper, 'hidden');
-                    select.required = true;
-                } else {
-                    addClass(wrapper, 'hidden');
-                    select.value = '';
-                    select.required = false;
-                }
-            });
-
             function updateProxiesCount() {
                 var proxiesCountSelected = '#{{ procuration_form.proxiesCount.vars.id }}';
                 var radioButtons = $(proxiesCountSelected+' > div');
@@ -77,6 +63,32 @@
                     radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.other'|trans({}, 'validators')|e('js') }}');
                 }
             }
+
+            // Other vote cities
+            var otherVoteCitiesWrapper = dom('#other-vote-cities_wrapper');
+            var inputWrapper = dom('#{{ procuration_form.otherVoteCities.vars.id }}_wrapper');
+            var select = find(inputWrapper, 'select');
+
+            on(dom('#{{ procuration_form.country.vars.id }}'), 'change', function (event) {
+                if (event.target.value === 'FR') {
+                    removeClass(otherVoteCitiesWrapper, 'hidden');
+                } else {
+                    addClass(otherVoteCitiesWrapper, 'hidden');
+                    select.value = '';
+                    select.required = false;
+                }
+            });
+
+            $('input[name="other-vote-cities"]').change(function (element) {
+                if (element.currentTarget.value === '1') {
+                    removeClass(inputWrapper, 'hidden');
+                    select.required = true;
+                } else {
+                    addClass(inputWrapper, 'hidden');
+                    select.value = '';
+                    select.required = false;
+                }
+            });
 
             $('.select2entity[data-autostart="false"]').select2entity({
                 theme: 'default'
@@ -271,7 +283,7 @@
                             <div id="app_procuration_proposal_proxiesCount_helper"></div>
                         </div>
 
-                        <div class="b__nudge--top-40">
+                        <div class="b__nudge--top-40" id="other-vote-cities_wrapper">
                             <p>Il est maintenant possible de porter la procuration d’un électeur d’une autre commune. Il
                                 faut toutefois se rendre dans son bureau de vote. Accepteriez-vous de vous déplacer dans
                                 d’autres communes, et si oui, lesquelles ?<br/>(non obligatoire)</p>
