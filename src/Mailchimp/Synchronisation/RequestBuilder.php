@@ -66,6 +66,8 @@ class RequestBuilder implements LoggerAwareInterface
     private $codeDepartment;
     private $codeRegion;
 
+    private ?string $loginGroup = null;
+
     public function __construct(
         MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder
@@ -102,6 +104,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setZones($adherent->getZones())
             ->setTeamCode($adherent)
             ->setIsCertified($adherent->isCertified())
+            ->setLoginGroup($adherent->getLastLoginGroup())
         ;
     }
 
@@ -287,6 +290,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setTakenForCity(?string $takenForCity): self
     {
         $this->takenForCity = $takenForCity;
+
+        return $this;
+    }
+
+    public function setLoginGroup(?string $loginGroup): self
+    {
+        $this->loginGroup = $loginGroup;
 
         return $this;
     }
@@ -492,6 +502,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->teamCode) {
             $mergeFields[MemberRequest::MERGE_FIELD_TEAM_CODE] = (string) $this->teamCode;
+        }
+
+        if ($this->loginGroup) {
+            $mergeFields[MemberRequest::MERGE_FIELD_LAST_LOGIN_GROUP] = $this->loginGroup;
         }
 
         return $mergeFields;
