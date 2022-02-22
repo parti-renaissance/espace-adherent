@@ -232,6 +232,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $lastLoggedAt;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $lastLoginGroup = null;
+
+    /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"adherent_change_diff"})
@@ -1411,6 +1416,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getLastLoggedAt(): ?\DateTime
     {
         return $this->lastLoggedAt;
+    }
+
+    public function getLastLoginGroup(): ?string
+    {
+        return $this->lastLoginGroup;
+    }
+
+    public function setLastLoginGroup(?string $lastLoginGroup): void
+    {
+        $this->lastLoginGroup = $lastLoginGroup;
     }
 
     public function getInterests(): array
