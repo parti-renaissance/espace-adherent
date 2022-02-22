@@ -14,6 +14,7 @@ use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
 use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
@@ -967,6 +968,56 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
+    public function testCorrespondentMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(CorrespondentAdherentMessage::class);
+        $message->setFilter(new AdherentGeoZoneFilter(new Zone(Zone::DEPARTMENT, 'code1', 'Tag1')));
+
+        (new GenericMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'subject_line' => '[Correspondant] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'ne-pas-repondre@je-mengage.fr',
+                        'from_name' => 'First Name | Campagne 2022',
+                        'template_id' => 10,
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'ends',
+                                    'field' => 'ZONE_DPT',
+                                    'value' => '(code1)',
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [1],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+            )
+            ->willReturn(
+                $this->createMockResponse(json_encode(['id' => 'id1'])),
+            )
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -1032,6 +1083,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'candidate' => 7,
                         'candidate_jecoute' => 8,
                         'coalitions' => 9,
+                        'correspondent' => 10,
                     ],
                     [
                         'subscribed_emails_referents' => 1,
