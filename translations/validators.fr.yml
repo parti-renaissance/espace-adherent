@@ -562,6 +562,8 @@ adherent.zone_based_role.duplicate_type: Adhérent ne doit pas avoir plusieurs r
 adherent.zone_based_role.invalid_zone_type: Le type de zone "{{zone_type}}" n'est pas autorisé pour le rôle "{{role_type}}".
 adherent.zone_based_role.empty_zone: Aucune zone n'a été séléctionnée pour le rôle "{{role_type}}".
 
+news.link_label.required: Le label est obligatoire.
+
 #
 # Scope
 #
