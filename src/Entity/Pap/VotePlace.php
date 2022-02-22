@@ -57,6 +57,16 @@ class VotePlace
      */
     public ?int $misregistrationsPriority = null;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    public ?int $firstRoundMisregistrationsPriority = null;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    public ?int $secondRoundMisregistrationsPriority = null;
+
     public function __construct(
         ?float $latitude,
         ?float $longitude,
@@ -64,7 +74,9 @@ class VotePlace
         ?float $deltaPredictionAndResult2017 = null,
         ?float $deltaAveragePredictions = null,
         ?float $abstentions2017 = null,
-        ?int $misregistrationsPriority = null
+        ?int $misregistrationsPriority = null,
+        ?int $firstRoundMisregistrationPriority = null,
+        ?int $secondRoundMisregistrationsPriority = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;
@@ -73,5 +85,7 @@ class VotePlace
         $this->deltaAveragePredictions = $deltaAveragePredictions;
         $this->abstentions2017 = $abstentions2017;
         $this->misregistrationsPriority = $misregistrationsPriority;
+        $this->firstRoundMisregistrationsPriority = $firstRoundMisregistrationPriority;
+        $this->secondRoundMisregistrationsPriority = $secondRoundMisregistrationsPriority;
     }
 }
