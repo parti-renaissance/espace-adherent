@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Adherent\LastLoginGroupEnum;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
@@ -233,6 +234,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_change_diff"})
      */
     private ?string $lastLoginGroup = null;
 
@@ -1408,6 +1411,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function recordLastLoginTime($timestamp = 'now'): void
     {
         $this->lastLoggedAt = new \DateTime($timestamp);
+
+        $this->setLastLoginGroup(LastLoginGroupEnum::LESS_THAN_1_MONTH);
     }
 
     /**

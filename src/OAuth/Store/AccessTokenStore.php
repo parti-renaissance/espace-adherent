@@ -2,6 +2,7 @@
 
 namespace App\OAuth\Store;
 
+use App\Entity\Adherent;
 use App\Entity\OAuth\AccessToken as PersistentAccessToken;
 use App\OAuth\Model\AccessToken as InMemoryAccessToken;
 use App\OAuth\PersistentTokenFactory;
@@ -70,5 +71,11 @@ class AccessTokenStore implements OAuthAccessTokenRepository
     private function store(PersistentAccessToken $token): void
     {
         $this->accessTokenRepository->save($token);
+
+        $user = $token->getUser();
+
+        if ($user instanceof Adherent) {
+            $user->recordLastLoginTime();
+        }
     }
 }

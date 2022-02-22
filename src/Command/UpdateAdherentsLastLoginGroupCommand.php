@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Adherent\LastLoginGroupEnum;
 use App\Entity\Adherent;
-use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -70,10 +69,7 @@ class UpdateAdherentsLastLoginGroupCommand extends Command
                 if ($adherent->getLastLoginGroup() !== $newGroup) {
                     $adherent->setLastLoginGroup($newGroup);
 
-                    $this->bus->dispatch(new AdherentChangeCommand(
-                        $adherent->getUuid(),
-                        $adherent->getEmailAddress()
-                    ));
+                    $this->entityManager->flush();
                 }
 
                 $this->io->progressAdvance();
