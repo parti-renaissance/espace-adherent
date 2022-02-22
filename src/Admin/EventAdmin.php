@@ -4,13 +4,19 @@ namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CauseEvent;
+use App\Entity\Event\CoalitionEvent;
 use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\EventCategory;
+use App\Entity\Event\MunicipalEvent;
 use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Form\EventCategoryType;
 use App\Form\UnitedNationsCountryType;
 use App\Referent\ReferentTagManager;
+use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -243,6 +249,35 @@ class EventAdmin extends AbstractAdmin
         $datagridMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('category', CallbackFilter::class, [
+                'label' => 'Catégorie',
+                'show_filter' => true,
+                'field_type' => EventCategoryType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->leftJoin(CommitteeEvent::class, 'committeeEvent', Join::WITH, 'committeeEvent.id = '.$alias.'.id')
+                        ->leftJoin(DefaultEvent::class, 'defaultEvent', Join::WITH, 'defaultEvent.id = '.$alias.'.id')
+                        ->leftJoin(CauseEvent::class, 'causeEvent', Join::WITH, 'causeEvent.id = '.$alias.'.id')
+                        ->leftJoin(CoalitionEvent::class, 'coalitionEvent', Join::WITH, 'coalitionEvent.id = '.$alias.'.id')
+                        ->leftJoin(MunicipalEvent::class, 'municipalEvent', Join::WITH, 'municipalEvent.id = '.$alias.'.id')
+                        ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category OR eventCategory = municipalEvent.category')
+                        ->andWhere($qb->expr()->orX(
+                            'eventCategory IN (:category) AND committeeEvent.category IN (:category)',
+                            'eventCategory IN (:category) AND defaultEvent.category IN (:category)',
+                            'eventCategory IN (:category) AND causeEvent.category IN (:category)',
+                            'eventCategory IN (:category) AND coalitionEvent.category IN (:category)',
+                            'eventCategory IN (:category) AND municipalEvent.category IN (:category)',
+                        ))
+                        ->setParameter('category', $value['value'])
+                    ;
+
+                    return true;
+                },
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
