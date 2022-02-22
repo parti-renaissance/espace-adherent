@@ -53,12 +53,12 @@ class RequestBuilder implements LoggerAwareInterface
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
-    /** @var Zone|null */
-    private $zoneCity;
-    private $zoneCanton;
-    private $zoneDepartment;
-    private $zoneRegion;
-    private $zoneCountry;
+    private ?Zone $zoneBorough = null;
+    private ?Zone $zoneCity = null;
+    private ?Zone $zoneCanton = null;
+    private ?Zone $zoneDepartment = null;
+    private ?Zone $zoneRegion = null;
+    private ?Zone $zoneCountry = null;
 
     private $teamCode;
 
@@ -456,6 +456,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if (false !== $this->takenForCity) {
             $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
+        }
+
+        if ($this->zoneBorough) {
+            $mergeFields[MemberRequest::getMergeCodeFieldFromZone($this->zoneBorough)] = (string) $this->zoneBorough;
         }
 
         if ($this->zoneCity) {
