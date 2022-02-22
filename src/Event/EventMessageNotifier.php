@@ -141,7 +141,7 @@ class EventMessageNotifier implements EventSubscriberInterface
             return CoalitionsEventCancellationMessage::create($registered, $event);
         }
 
-        if (AppCodeEnum::isJeMengageMobileApp($appCode)) {
+        if (AppCodeEnum::isJeMengage($appCode)) {
             return JeMengageEventCancellationMessage::create(
                 $registered,
                 $host,

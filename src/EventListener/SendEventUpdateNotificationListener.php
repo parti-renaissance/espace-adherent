@@ -130,7 +130,7 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
             );
         }
 
-        if (AppCodeEnum::isJeMengageMobileApp($appCode)) {
+        if (AppCodeEnum::isJeMengage($appCode)) {
             return JeMengageEventUpdateMessage::create(
                 $recipients,
                 $event->getOrganizer(),

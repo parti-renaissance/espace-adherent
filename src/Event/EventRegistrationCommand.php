@@ -133,6 +133,11 @@ class EventRegistrationCommand
         return $this->adherent ? $this->adherent->getUuid() : null;
     }
 
+    public function getAuthAppCode(): ?string
+    {
+        return $this->adherent ? $this->adherent->getAuthAppCode() : null;
+    }
+
     /**
      * @Assert\IsTrue(message="event.full")
      */
