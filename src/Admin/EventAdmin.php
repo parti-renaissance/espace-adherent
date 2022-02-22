@@ -244,6 +244,10 @@ class EventAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+                'show_filter' => true,
+            ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
                 'field_type' => DateRangePickerType::class,

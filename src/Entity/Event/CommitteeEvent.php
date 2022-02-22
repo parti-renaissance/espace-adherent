@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
-class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity, ExposedObjectInterface
+class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, ExposedObjectInterface
 {
     use UserDocumentTrait;
 

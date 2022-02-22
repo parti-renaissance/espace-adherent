@@ -452,6 +452,13 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      */
     protected $postAddress;
 
+    /**
+     * @var EventCategoryInterface|EventCategory|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
+     *
+     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_write"})
+     */
     protected $category;
 
     public function getCategory(): ?EventCategoryInterface
