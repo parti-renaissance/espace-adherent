@@ -458,29 +458,12 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
         }
 
-        if ($this->zoneBorough) {
-            $mergeFields[MemberRequest::getMergeCodeFieldFromZone($this->zoneBorough)] = (string) $this->zoneBorough;
-        }
-
-        if ($this->zoneCity) {
-            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCity)] = (string) $this->zoneCity;
-        }
-
-        if ($this->zoneCanton) {
-            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCanton)] = (string) $this->zoneCanton;
-        }
-
-        if ($this->zoneDepartment) {
-            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneDepartment)] = (string) $this->zoneDepartment;
-        }
-
-        if ($this->zoneRegion) {
-            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneRegion)] = (string) $this->zoneRegion;
-        }
-
-        if ($this->zoneCountry) {
-            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCountry)] = (string) $this->zoneCountry;
-        }
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_BOROUGH] = $this->zoneBorough ? (string) $this->zoneBorough : null;
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CANTON] = $this->zoneCanton ? (string) $this->zoneCanton : null;
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = $this->zoneCity ? (string) $this->zoneCity : null;
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = $this->zoneDepartment ? (string) $this->zoneDepartment : null;
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = $this->zoneRegion ? (string) $this->zoneRegion : null;
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = $this->zoneCountry ? (string) $this->zoneCountry : null;
 
         if ($this->codeCanton) {
             $mergeFields[MemberRequest::MERGE_FIELD_CODE_CANTON] = $this->codeCanton;
