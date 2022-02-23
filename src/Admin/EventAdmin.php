@@ -266,13 +266,7 @@ class EventAdmin extends AbstractAdmin
                         ->leftJoin(CoalitionEvent::class, 'coalitionEvent', Join::WITH, 'coalitionEvent.id = '.$alias.'.id')
                         ->leftJoin(MunicipalEvent::class, 'municipalEvent', Join::WITH, 'municipalEvent.id = '.$alias.'.id')
                         ->leftJoin(EventCategory::class, 'eventCategory', Join::WITH, 'eventCategory = committeeEvent.category OR eventCategory = defaultEvent.category OR eventCategory = causeEvent.category OR eventCategory = coalitionEvent.category OR eventCategory = municipalEvent.category')
-                        ->andWhere($qb->expr()->orX(
-                            'eventCategory IN (:category) AND committeeEvent.category IN (:category)',
-                            'eventCategory IN (:category) AND defaultEvent.category IN (:category)',
-                            'eventCategory IN (:category) AND causeEvent.category IN (:category)',
-                            'eventCategory IN (:category) AND coalitionEvent.category IN (:category)',
-                            'eventCategory IN (:category) AND municipalEvent.category IN (:category)',
-                        ))
+                        ->andWhere('eventCategory IN (:category)')
                         ->setParameter('category', $value['value'])
                     ;
 
