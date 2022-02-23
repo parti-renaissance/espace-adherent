@@ -20,6 +20,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Jecoute\JecouteSpaceEnum;
+use App\Utils\StringCleaner;
 use App\Validator\Jecoute\NewsTarget;
 use App\Validator\Jecoute\NewsText;
 use App\Validator\Jecoute\ReferentNews;
@@ -194,6 +195,8 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      *     message="news.link_label.required",
      *     groups={"Admin"}
      * )
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
     private ?string $linkLabel;
 
@@ -229,11 +232,15 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
     private bool $pinned;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
     private bool $enriched;
 
@@ -292,6 +299,11 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     public function setTitle(?string $title): void
     {
         $this->title = $title;
+    }
+
+    public function getCleanedCroppedText(): ?string
+    {
+        return $this->isEnriched() ? substr(StringCleaner::removeMarkdown($this->text), 0, 512) : $this->text;
     }
 
     public function getText(): ?string
@@ -420,6 +432,16 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
             throw new \InvalidArgumentException('Invalid space');
         }
         $this->space = $space;
+    }
+
+    public function getAuthorFullNameWithRole(): ?string
+    {
+        if ($this->isNationalVisibility()) {
+            return null;
+        }
+
+        return $this->getAuthorFullName()
+            .($this->getSpace() ? ' ('.JecouteSpaceEnum::getLabel($this->getSpace()).')' : '');
     }
 
     public function getIndexOptions(): array

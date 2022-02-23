@@ -10,34 +10,112 @@ Feature:
 
   Scenario: As an authenticated user I can get the news list
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
-    When I send a "GET" request to "/api/jecoute/news"
+    When I send a "GET" request to "/api/jecoute/news?page_size=4"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
       {
         "metadata": {
-          "total_items": 7,
-          "items_per_page": 2,
-          "count": 2,
+          "total_items": 9,
+          "items_per_page": 4,
+          "count": 4,
           "current_page": 1,
-          "last_page": 4
+          "last_page": 3
         },
         "items": [
+          {
+            "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+            "title": "[Référent] Actualité épinglée à 92 du référent",
+            "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+            "external_link": "https://epingle.en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Referent Referent (référent)"
+          },
+          {
+            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+            "title": "Pour toute la France",
+            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "national",
+            "creator": null
+          },
           {
             "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
             "title": "[Régionales] Nouveau sondage disponible",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "creator": "Anonyme (candidat aux départementales)",
             "external_link": null,
+            "link_label": null,
+            "enriched": false,
+            "pinned": false,
+            "visibility": "local",
             "created_at": "@string@.isDateTime()"
           },
           {
             "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
             "title": "[Régionales] Rassemblement",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "creator": "Anonyme (candidat aux départementales)",
             "external_link": "https://en-marche.fr",
+            "link_label": "Voir",
+            "enriched": false,
+            "pinned": false,
+            "visibility": "local",
             "created_at": "@string@.isDateTime()"
           }
+        ]
+      }
+    """
+
+  Scenario: As an authenticated user I can get the news list with enriched news
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+    When I send a "GET" request to "/api/jecoute/news?with_enriched"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "metadata": {
+          "total_items": 8,
+          "items_per_page": 2,
+          "count": 2,
+          "current_page": 1,
+          "last_page": 4
+        },
+        "items": [
+        {
+            "uuid": "82068546-47d1-4f78-a6ba-692812984442",
+            "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+            "text": "Tincidunt Sed vitae erat sagittis, ultricies nulla et, tincidunt eros.  In hac habitasse platea dictumst   Pellentesque imperdiet erat arcu Cras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem.    Eget varius felis sodales sit amet  Nulla at odio non augue congue sollicitudin.  Nulla ac augue sapien. In tincidunt nec massa ac rhoncus.! Cras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat.   Vestibulum facilisis convallis mauris eu eleifend.  ",
+            "external_link": "https://epingle.en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": true,
+            "pinned": true,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Referent Referent (référent)"
+        },
+        {
+            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+            "title": "Pour toute la France",
+            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "national",
+            "creator": null
+        }
         ]
       }
     """
@@ -51,18 +129,24 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 7,
+          "total_items": 9,
           "items_per_page": 1,
           "count": 1,
           "current_page": 1,
-          "last_page": 7
+          "last_page": 9
         },
         "items": [
           {
-            "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-            "title": "[Régionales] Nouveau sondage disponible",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-            "external_link": null,
+            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+            "title": "Pour toute la France",
+            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "creator": "Anonyme (candidat aux départementales)",
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "visibility": "national",
+            "creator": null,
             "created_at": "@string@.isDateTime()"
           }
         ]
@@ -75,18 +159,24 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 7,
+          "total_items": 9,
           "items_per_page": 1,
           "count": 1,
           "current_page": 2,
-          "last_page": 7
+          "last_page": 9
         },
         "items": [
           {
-            "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-            "title": "[Régionales] Rassemblement",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-            "external_link": "https://en-marche.fr",
+            "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+            "title": "[Référent] Actualité épinglée à 92 du référent",
+            "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+            "creator": "Anonyme (candidat aux départementales)",
+            "external_link": "https://epingle.en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "visibility": "local",
+            "creator": "Referent Referent (référent)",
             "created_at": "@string@.isDateTime()"
           }
         ]
@@ -113,7 +203,12 @@ Feature:
             "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
             "title": "[Régionales] Rassemblement",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "creator": "Anonyme (candidat aux départementales)",
             "external_link": "https://en-marche.fr",
+            "link_label": "Voir",
+            "enriched": false,
+            "pinned": false,
+            "visibility": "local",
             "created_at": "@string@.isDateTime()"
           }
         ]
@@ -129,18 +224,35 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 1,
+          "total_items": 2,
           "items_per_page": 2,
-          "count": 1,
+          "count": 2,
           "current_page": 1,
           "last_page": 1
         },
         "items": [
           {
+            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+            "title": "Pour toute la France",
+            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "creator": null,
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "visibility": "national",
+            "created_at": "@string@.isDateTime()"
+          },
+          {
             "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
             "title": "[Régionales] Nouveau sondage disponible",
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "creator": "Anonyme (candidat aux départementales)",
             "external_link": null,
+            "link_label": null,
+            "enriched": false,
+            "pinned": false,
+            "visibility": "local",
             "created_at": "@string@.isDateTime()"
           }
         ]
@@ -153,26 +265,36 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 5,
+          "total_items": 7,
           "items_per_page": 2,
           "count": 2,
           "current_page": 1,
-          "last_page": 3
+          "last_page": 4
         },
         "items": [
           {
-            "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-            "title": "[Régionales] Rassemblement",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-            "external_link": "https://en-marche.fr",
-            "created_at": "@string@.isDateTime()"
+            "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+            "title": "[Référent] Actualité épinglée à 92 du référent",
+            "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+            "external_link": "https://epingle.en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Referent Referent (référent)"
           },
           {
-            "uuid": "b2b8e6a3-f5a9-4b34-a761-37438c3c3602",
-            "title": "[Référent] Nouvelle actualité à 92 du référent",
-            "text": "Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.",
-            "external_link": "https://referent.en-marche.fr",
-            "created_at":  "@string@.isDateTime()"
+            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+            "title": "Pour toute la France",
+            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir le lien",
+            "enriched": false,
+            "pinned": true,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "national",
+            "creator": null
           }
         ]
       }
@@ -193,7 +315,12 @@ Feature:
         "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
         "title": "[Régionales] Rassemblement",
         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+        "creator": "Anonyme (candidat aux départementales)",
         "external_link": "https://en-marche.fr",
+        "link_label": "Voir",
+        "enriched": false,
+        "pinned": false,
+        "visibility": "local",
         "created_at": "@string@.isDateTime()"
       }
     """
@@ -212,9 +339,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 6,
+            "total_items": 8,
             "items_per_page": 10,
-            "count": 6,
+            "count": 8,
             "current_page": 1,
             "last_page": 1
         },
@@ -288,6 +415,40 @@ Feature:
                 "creator": "Anonyme"
             },
             {
+                "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+                "title": "[Référent] Actualité épinglée à 92 du référent",
+                "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+                "external_link": "https://epingle.en-marche.fr",
+                "created_at": "@string@.isDateTime()",
+                "visibility": "local",
+                "zone": {
+                    "code": "92",
+                    "created_at": "2020-12-04T15:24:38+01:00",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
+                "notification": true,
+                "published": true,
+                "creator": "Referent Referent"
+            },
+            {
+                "uuid": "82068546-47d1-4f78-a6ba-692812984442",
+                "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+                "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst  \n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem. \n\n### Eget varius felis sodales sit amet \n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat. \n\n* Vestibulum facilisis convallis mauris eu eleifend. \n* Aenean sit amet elementum ex. \n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc. \n\n1. Praesent scelerisque sagittis orci in sagittis. \n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+                "external_link": "https://epingle.en-marche.fr",
+                "visibility": "local",
+                "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "92",
+                    "created_at": "2020-12-04T15:24:38+01:00",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
+                "notification": true,
+                "published": true,
+                "creator": "Referent Referent"
+            },
+            {
                 "created_at": "@string@.isDateTime()",
                 "creator": "Jules Fullstack",
                 "external_link": "https://92.en-marche.fr",
@@ -338,9 +499,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 1,
+            "total_items": 2,
             "items_per_page": 2,
-            "count": 1,
+            "count": 2,
             "current_page": 1,
             "last_page": 1
         },
@@ -355,6 +516,18 @@ Feature:
                 "zone": null,
                 "notification": true,
                 "published": false,
+                "creator": "Anonyme"
+            },
+            {
+                "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+                "title": "Pour toute la France",
+                "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+                "external_link": "https://en-marche.fr",
+                "created_at": "@string@.isDateTime()",
+                "visibility": "national",
+                "zone": null,
+                "notification": false,
+                "published": true,
                 "creator": "Anonyme"
             }
         ]
