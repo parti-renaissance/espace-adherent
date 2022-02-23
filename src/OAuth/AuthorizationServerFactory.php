@@ -5,7 +5,6 @@ namespace App\OAuth;
 use App\OAuth\Grant\ClientCredentialsGrant;
 use App\OAuth\Grant\PasswordGrant;
 use App\Repository\DeviceRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
@@ -24,7 +23,6 @@ class AuthorizationServerFactory
     private $deviceRepository;
     private $clientRepository;
     private $scopeRepository;
-    private $entityManager;
     private $privateKey;
     private $encryptionKey;
     private $authCodeRepository;
@@ -41,7 +39,6 @@ class AuthorizationServerFactory
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         ScopeRepositoryInterface $scopeRepository,
-        EntityManagerInterface $entityManager,
         string $privateKey,
         string $encryptionKey,
         string $accessTokenTtlInterval,
@@ -53,7 +50,6 @@ class AuthorizationServerFactory
         $this->deviceRepository = $deviceRepository;
         $this->clientRepository = $clientRepository;
         $this->scopeRepository = $scopeRepository;
-        $this->entityManager = $entityManager;
         $this->privateKey = $privateKey;
         $this->encryptionKey = $encryptionKey;
         $this->authCodeRepository = $authCodeRepository;

@@ -70,12 +70,12 @@ class AccessTokenStore implements OAuthAccessTokenRepository
 
     private function store(PersistentAccessToken $token): void
     {
-        $this->accessTokenRepository->save($token);
-
         $user = $token->getUser();
 
         if ($user instanceof Adherent) {
             $user->recordLastLoginTime();
         }
+
+        $this->accessTokenRepository->save($token);
     }
 }

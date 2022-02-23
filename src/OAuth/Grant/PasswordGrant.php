@@ -6,7 +6,6 @@ use App\OAuth\OAuthServerException;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Grant\PasswordGrant as BasePasswordGrant;
-use League\OAuth2\Server\RequestAccessTokenEvent;
 use League\OAuth2\Server\RequestEvent;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,9 +37,6 @@ class PasswordGrant extends BasePasswordGrant
             $finalizedScopes
         );
         $refreshToken = $this->issueRefreshToken($accessToken);
-
-        // Send event to emitter
-        $this->getEmitter()->emit(new RequestAccessTokenEvent(RequestEvent::ACCESS_TOKEN_ISSUED, $request, $accessToken));
 
         // Inject tokens into response
         $responseType->setAccessToken($accessToken);
