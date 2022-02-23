@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\OAuth;
 
+use App\Adherent\LastLoginGroupEnum;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Device;
@@ -229,6 +230,9 @@ class OAuthServerControllerTest extends WebTestCase
 
     public function testOAuthAuthenticationIsSuccessful(): void
     {
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
+        $this->assertNull($adherent->getLastLoginGroup());
+
         // 1. Try to connect User with OAuth
         $this->client->request(Request::METHOD_GET, $this->createAuthorizeUrl());
         $response = $this->client->getResponse();
@@ -271,6 +275,10 @@ class OAuthServerControllerTest extends WebTestCase
         static::assertSame('application/json; charset=UTF-8', $response->headers->get('Content-Type'));
         static::assertMatchesRegularExpression(self::ACCESS_TOKEN_RESPONSE_PAYLOAD_REGEX, $json = $response->getContent());
 
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
+        $this->assertNotNull($adherent->getLastLoginGroup());
+        $this->assertEquals(LastLoginGroupEnum::LESS_THAN_1_MONTH, $adherent->getLastLoginGroup());
+
         // 6. /api/me is not accessible without the access token
         $this->client->request(Request::METHOD_GET, '/api/me');
         static::assertStatusCode(Response::HTTP_UNAUTHORIZED, $this->client);
@@ -279,7 +287,8 @@ class OAuthServerControllerTest extends WebTestCase
         // 7. /api/me access is granted with access token
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
             'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $data['access_token']),
-            'CONTENT_TYPE' => 'application/json',
+            'CO
+        $this->manager->refresh($adherent);NTENT_TYPE' => 'application/json',
         ]);
         $this->isSuccessful($response = $this->client->getResponse());
         static::assertSame('application/json', $response->headers->get('Content-Type'));

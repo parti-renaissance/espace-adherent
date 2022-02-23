@@ -29,6 +29,7 @@ class AdherentTest extends TestCase
         $this->assertFalse($adherent->isEnabled());
         $this->assertNull($adherent->getSalt());
         $this->assertNull($adherent->getLastLoggedAt());
+        $this->assertNull($adherent->getLastLoginGroup());
         $this->assertSame(['ROLE_USER'], $adherent->getRoles());
         $this->assertNull($adherent->eraseCredentials());
         $this->assertSame('john.smith@example.org', $adherent->getUsername());
