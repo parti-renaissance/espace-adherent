@@ -2,12 +2,12 @@
 
 namespace App\Form\Procuration;
 
-use App\Form\DatePickerType;
 use App\Form\GenderType;
 use App\Form\UnitedNationsCountryType;
 use App\Procuration\ElectionContext;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -53,9 +53,12 @@ abstract class AbstractProcurationType extends AbstractType
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
             ->add('emailAddress', EmailType::class)
-            ->add('birthdate', DatePickerType::class, [
-                'max_date' => new \DateTime('-17 years'),
-                'min_date' => new \DateTime('-120 years'),
+            ->add('birthdate', BirthdayType::class, [
+                'placeholder' => [
+                    'year' => 'Année',
+                    'month' => 'Mois',
+                    'day' => 'Jour',
+                ],
             ])
         ;
     }

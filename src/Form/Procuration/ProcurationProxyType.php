@@ -49,7 +49,9 @@ class ProcurationProxyType extends AbstractProcurationType
             ])
             ->add('voterNumber', TextType::class, ['required' => false])
             ->add('voteCountry', UnitedNationsCountryType::class)
-            ->add('votePostalCode', TextType::class)
+            ->add('votePostalCode', TextType::class, [
+                'required' => false,
+            ])
             ->add('voteCity', HiddenType::class, [
                 'required' => false,
                 'error_bubbling' => true,

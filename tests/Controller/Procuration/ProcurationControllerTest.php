@@ -196,15 +196,18 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '',
                 ],
-                'birthdate' => '1950-01-20',
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
             ],
         ]));
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form--warning'));
-        $this->assertCount(2, $errors = $crawler->filter('.form__error'));
-        $this->assertSame('Pour la France, la saisie du code postal est obligatoire.', $errors->eq(0)->text());
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(1)->text());
+        $this->assertCount(1, $errors = $crawler->filter('.form__error'));
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(0)->text());
 
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_request' => [
@@ -221,7 +224,11 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0140998080',
                 ],
-                'birthdate' => '1950-01-20',
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
             ],
         ]));
 
@@ -395,7 +402,11 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '',
                 ],
-                'birthdate' => '1950-01-20',
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
                 'voteCountry' => 'FR',
                 'votePostalCode' => '',
                 'voteCity' => '92110-92024',
@@ -430,7 +441,11 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0140998080',
                 ],
-                'birthdate' => '1950-01-20',
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
                 'voteCountry' => 'FR',
                 'votePostalCode' => '92110',
                 'voteCity' => '92110-92024',
@@ -516,7 +531,11 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0600010203',
                 ],
-                'birthdate' => '1968-10-09',
+                'birthdate' => [
+                    'year' => '1968',
+                    'month' => '10',
+                    'day' => '9',
+                ],
             ],
         ]));
 
@@ -574,7 +593,11 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0140998080',
                 ],
-                'birthdate' => '1989-02-17',
+                'birthdate' => [
+                    'year' => '1989',
+                    'month' => '2',
+                    'day' => '17',
+                ],
                 'voteCountry' => 'FR',
                 'votePostalCode' => '75018',
                 'voteCity' => '75018-75120',

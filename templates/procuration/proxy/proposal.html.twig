@@ -205,7 +205,7 @@
                         </div>
 
                         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                            <div class="register__form--mid">
+                            <div class="l__col--half b__nudge--top-5">
                                 <div class="form__row">
                                     {{ form_label(procuration_form.birthdate, 'Date de naissance') }}
                                     <div class="l__row l__row--h-stretch">
@@ -320,6 +320,9 @@
 
                         {{ form_widget(procuration_form.electionRounds) }}
                         {{ form_errors(procuration_form.electionRounds) }}
+                        <p class="text--smallest text--gray b__nudge--top-0">
+                            Attention, le scrutin aura lieu les samedi 9 avril 2022 et samedi 23 avril 2022 pour les zones ci-après : les Français résidants d'Amérique du nord, Amérique latine et Caraïbes ansi que les Français résidant dans certains territoires d'outre-mer : Guadeloupe, Martinique, Guyane, Saint-Pierre-et-Miquelon, Saint-Barthélemy, Saint-Martin et Polynésie française.
+                        </p>
                     </div>
 
                     <div class="b__nudge--top-40">

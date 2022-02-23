@@ -148,7 +148,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=15, groups={"profile"})
      * @Assert\Expression(
-     *     "(this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "this.getCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') or value != null",
      *     message="procuration.postal_code.not_empty",
      *     groups={"profile"}
      * )
