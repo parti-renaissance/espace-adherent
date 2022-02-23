@@ -144,6 +144,23 @@ trait TestHelperTrait
         $this->assertCount($count, $repository->findMessages($type));
     }
 
+    public function assertMail(string $emailType, string $emailRecipient, array $emailContent)
+    {
+        $emails = $this->getEmailRepository()->findRecipientMessages($emailType, $emailRecipient);
+
+        if (1 !== \count($emails)) {
+            throw new \RuntimeException(sprintf('I found %s email(s) instead of 1', \count($emails)));
+        }
+
+        $emailPayloadJson = $emails[0]->getRequestPayloadJson();
+        $emailPayload = json_decode($emailPayloadJson, true);
+
+        foreach ($emailContent as $key => $value) {
+            self::assertArrayHasKey($key, $emailPayload);
+            self::assertSame($emailPayload[$key], $value);
+        }
+    }
+
     public function getManagerRegistry(): ManagerRegistry
     {
         return $this->get('doctrine');

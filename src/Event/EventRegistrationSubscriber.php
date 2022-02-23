@@ -50,7 +50,7 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
                     ? $this->coalitionUrlGenerator->generateCoalitionEventLink($registrationEvent)
                     : $this->coalitionUrlGenerator->generateCauseEventLink($registrationEvent)
             );
-        } elseif (AppCodeEnum::isJeMengageMobileApp($registration->getSource())) {
+        } elseif (AppCodeEnum::isJeMengage($registration->getSource())) {
             $message = JeMengageEventRegistrationConfirmationMessage::createFromRegistration(
                 $registration,
                 $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])

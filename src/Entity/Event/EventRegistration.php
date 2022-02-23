@@ -66,6 +66,7 @@ class EventRegistration
         string $emailAddress,
         bool $newsletterSubscriber = false,
         UuidInterface $adherentUuid = null,
+        string $source = null,
         string $createdAt = 'now'
     ) {
         $this->uuid = $uuid;
@@ -75,6 +76,7 @@ class EventRegistration
         $this->emailAddress = $emailAddress;
         $this->newsletterSubscriber = $newsletterSubscriber;
         $this->adherentUuid = $adherentUuid;
+        $this->source = $source;
         $this->createdAt = new \DateTime($createdAt);
     }
 
