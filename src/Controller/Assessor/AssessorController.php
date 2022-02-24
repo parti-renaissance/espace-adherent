@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\EnMarche;
+namespace App\Controller\Assessor;
 
 use App\Assessor\AssessorRequestHandler;
 use App\Form\AssessorRequestType;
@@ -11,9 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/assesseur")
- */
 class AssessorController extends AbstractController
 {
     /**

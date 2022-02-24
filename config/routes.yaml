@@ -229,6 +229,11 @@ app_procuration:
     resource: "../src/Controller/Procuration"
     type: "annotation"
 
+app_assessor:
+    host: "%assessor_host%"
+    resource: "../src/Controller/Assessor"
+    type: "annotation"
+
 app_api_intl:
     host: "{app_domain}"
     prefix: "/api/"
