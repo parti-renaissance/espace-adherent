@@ -8,6 +8,10 @@
 {% block header '' %}
 {% block footer '' %}
 
+{% block favicons %}
+    <link rel="icon" type="image/png" href="{{ asset('favicon-avecvous-32x32.png') }}" sizes="32x32" />
+{% endblock %}
+
 {% block content %}
     <main class="assessor">
         <div class="assessor__upper">
