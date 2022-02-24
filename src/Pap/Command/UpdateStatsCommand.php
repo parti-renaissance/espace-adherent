@@ -2,8 +2,6 @@
 
 namespace App\Pap\Command;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
-
 class UpdateStatsCommand implements AsynchronousMessageInterface
 {
     private int $buildingId;

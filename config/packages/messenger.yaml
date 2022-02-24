@@ -30,6 +30,14 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
                         default: { binding_keys: ['async.command'] }
+            pap:
+                dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    service: App\Messenger\AlwaysRetryStrategy
+                options:
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.pap' }
+                    queues:
+                        pap: { binding_keys: ['async.pap'] }
             mailchimp_sync:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
@@ -49,4 +57,5 @@ framework:
         routing:
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
+            App\Pap\Command\AsynchronousMessageInterface: pap
             App\Messenger\Message\AsynchronousMessageInterface: default
