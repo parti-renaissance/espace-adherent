@@ -244,12 +244,12 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private ?int $firstRoundMisregistrationsPriority = null;
+    private ?int $firstRoundPriority = null;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private ?int $secondRoundMisregistrationsPriority = null;
+    private ?int $secondRoundPriority = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -507,24 +507,24 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
         $this->misregistrationsPriorityMax = $misregistrationsPriorityMax;
     }
 
-    public function getFirstRoundMisregistrationsPriority(): ?int
+    public function getFirstRoundPriority(): ?int
     {
-        return $this->firstRoundMisregistrationsPriority;
+        return $this->firstRoundPriority;
     }
 
-    public function setFirstRoundMisregistrationsPriority(?int $firstRoundMisregistrationsPriority): void
+    public function setFirstRoundPriority(?int $firstRoundPriority): void
     {
-        $this->firstRoundMisregistrationsPriority = $firstRoundMisregistrationsPriority;
+        $this->firstRoundPriority = $firstRoundPriority;
     }
 
-    public function getSecondRoundMisregistrationsPriority(): ?int
+    public function getSecondRoundPriority(): ?int
     {
-        return $this->secondRoundMisregistrationsPriority;
+        return $this->secondRoundPriority;
     }
 
-    public function setSecondRoundMisregistrationsPriority(?int $secondRoundMisregistrationsPriority): void
+    public function setSecondRoundPriority(?int $secondRoundPriority): void
     {
-        $this->secondRoundMisregistrationsPriority = $secondRoundMisregistrationsPriority;
+        $this->secondRoundPriority = $secondRoundPriority;
     }
 
     public function getIndexOptions(): array

@@ -107,13 +107,13 @@ class CampaignAdmin extends AbstractAdmin
                     'label' => 'Liste des priorités de mal-inscrits - Max',
                     'required' => false,
                 ])
-                ->add('firstRoundMisregistrationsPriority', IntegerType::class, [
-                    'label' => 'Ciblage mal-inscrits - 1er tour',
+                ->add('firstRoundPriority', IntegerType::class, [
+                    'label' => 'Priorité 1er tour',
                     'required' => false,
                     'help' => 'Indiquer la priorité minimum des bureaux de vote à cibler',
                 ])
-                ->add('secondRoundMisregistrationsPriority', IntegerType::class, [
-                    'label' => 'Ciblage mal-inscrits - 2ème tour',
+                ->add('secondRoundPriority', IntegerType::class, [
+                    'label' => 'Priorité 2ème tour',
                     'required' => false,
                     'help' => 'Indiquer la priorité minimum des bureaux de vote à cibler',
                 ])
