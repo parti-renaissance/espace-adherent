@@ -204,6 +204,10 @@ BRIEF,
         string $finishAt,
         Zone $zone = null
     ): Campaign {
-        return new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, new Chronos($finishAt), $zone);
+        $objet = new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, null, $zone);
+
+        $objet->setFinishAt(new Chronos($finishAt));
+
+        return $objet;
     }
 }

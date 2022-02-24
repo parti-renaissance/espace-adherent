@@ -245,7 +245,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         AudienceSnapshot $audience = null,
         Survey $survey = null,
         int $goal = null,
-        \DateTimeInterface $finishAt = null,
+        \DateTime $finishAt = null,
         Zone $zone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -301,7 +301,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         return $this->finishAt;
     }
 
-    public function setFinishAt(?\DateTime $finishAt): void
+    public function setFinishAt(?\DateTimeInterface $finishAt): void
     {
         $this->finishAt = $finishAt;
     }
