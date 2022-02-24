@@ -222,7 +222,7 @@ Feature:
       "recipient_count": 0,
       "source": "api",
       "synchronized": false,
-      "from_name": "Jules Fullstack | La République En Marche !",
+      "from_name": "Jules | Campagne 2022",
       "statistics": {
         "sent": 0,
         "opens": 0,
