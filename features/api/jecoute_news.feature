@@ -85,37 +85,38 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 8,
+          "total_items": 10,
           "items_per_page": 2,
           "count": 2,
           "current_page": 1,
-          "last_page": 4
+          "last_page": 5
         },
         "items": [
-        {
-            "uuid": "82068546-47d1-4f78-a6ba-692812984442",
-            "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
-            "text": "Tincidunt Sed vitae erat sagittis, ultricies nulla et, tincidunt eros.  In hac habitasse platea dictumst   Pellentesque imperdiet erat arcu Cras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem.    Eget varius felis sodales sit amet  Nulla at odio non augue congue sollicitudin.  Nulla ac augue sapien. In tincidunt nec massa ac rhoncus.! Cras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat.   Vestibulum facilisis convallis mauris eu eleifend.  ",
+          {
+            "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+            "title": "[Référent] Actualité épinglée à 92 du référent",
+            "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+            "creator": "Anonyme (candidat aux départementales)",
             "external_link": "https://epingle.en-marche.fr",
-            "link_label": "Voir le lien",
-            "enriched": true,
-            "pinned": true,
-            "created_at": "@string@.isDateTime()",
-            "visibility": "local",
-            "creator": "Referent Referent (référent)"
-        },
-        {
-            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
-            "title": "Pour toute la France",
-            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
-            "external_link": "https://en-marche.fr",
             "link_label": "Voir le lien",
             "enriched": false,
             "pinned": true,
-            "created_at": "@string@.isDateTime()",
-            "visibility": "national",
-            "creator": null
-        }
+            "visibility": "local",
+            "creator": "Referent Referent (référent)",
+            "created_at": "@string@.isDateTime()"
+          },
+          {
+              "uuid": "82068546-47d1-4f78-a6ba-692812984442",
+              "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+              "text": "Tincidunt Sed vitae erat sagittis, ultricies nulla et, tincidunt eros.  In hac habitasse platea dictumst   Pellentesque imperdiet erat arcu Cras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem.    Eget varius felis sodales sit amet  Nulla at odio non augue congue sollicitudin.  Nulla ac augue sapien. In tincidunt nec massa ac rhoncus.! Cras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat.   Vestibulum facilisis convallis mauris eu eleifend.  ",
+              "external_link": "https://epingle.en-marche.fr",
+              "link_label": "Voir le lien",
+              "enriched": true,
+              "pinned": true,
+              "created_at": "@string@.isDateTime()",
+              "visibility": "local",
+              "creator": "Referent Referent (référent)"
+          }
         ]
       }
     """
@@ -137,16 +138,16 @@ Feature:
         },
         "items": [
           {
-            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
-            "title": "Pour toute la France",
-            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+            "title": "[Référent] Actualité épinglée à 92 du référent",
+            "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
             "creator": "Anonyme (candidat aux départementales)",
-            "external_link": "https://en-marche.fr",
+            "external_link": "https://epingle.en-marche.fr",
             "link_label": "Voir le lien",
             "enriched": false,
             "pinned": true,
-            "visibility": "national",
-            "creator": null,
+            "visibility": "local",
+            "creator": "Referent Referent (référent)",
             "created_at": "@string@.isDateTime()"
           }
         ]
@@ -324,6 +325,24 @@ Feature:
         "created_at": "@string@.isDateTime()"
       }
     """
+    When I send a "GET" request to "/api/jecoute/news/82068546-47d1-4f78-a6ba-692812984442"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "uuid": "82068546-47d1-4f78-a6ba-692812984442",
+        "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+        "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst  \n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem. \n\n### Eget varius felis sodales sit amet \n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat. \n\n* Vestibulum facilisis convallis mauris eu eleifend. \n* Aenean sit amet elementum ex. \n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc. \n\n1. Praesent scelerisque sagittis orci in sagittis. \n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+        "external_link": "https://epingle.en-marche.fr",
+        "link_label": "Voir le lien",
+        "enriched": true,
+        "pinned": true,
+        "visibility": "local",
+        "created_at": "@string@.isDateTime()",
+        "creator": "Referent Referent (référent)"
+      }
+    """
 
   Scenario: As an authenticated user I should get a 404 for an unknown news uuid
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
@@ -415,40 +434,6 @@ Feature:
                 "creator": "Anonyme"
             },
             {
-                "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
-                "title": "[Référent] Actualité épinglée à 92 du référent",
-                "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
-                "external_link": "https://epingle.en-marche.fr",
-                "created_at": "@string@.isDateTime()",
-                "visibility": "local",
-                "zone": {
-                    "code": "92",
-                    "created_at": "2020-12-04T15:24:38+01:00",
-                    "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
-                },
-                "notification": true,
-                "published": true,
-                "creator": "Referent Referent"
-            },
-            {
-                "uuid": "82068546-47d1-4f78-a6ba-692812984442",
-                "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
-                "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst  \n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem. \n\n### Eget varius felis sodales sit amet \n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat. \n\n* Vestibulum facilisis convallis mauris eu eleifend. \n* Aenean sit amet elementum ex. \n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc. \n\n1. Praesent scelerisque sagittis orci in sagittis. \n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
-                "external_link": "https://epingle.en-marche.fr",
-                "visibility": "local",
-                "created_at": "@string@.isDateTime()",
-                "zone": {
-                    "code": "92",
-                    "created_at": "2020-12-04T15:24:38+01:00",
-                    "name": "Hauts-de-Seine",
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
-                },
-                "notification": true,
-                "published": true,
-                "creator": "Referent Referent"
-            },
-            {
                 "created_at": "@string@.isDateTime()",
                 "creator": "Jules Fullstack",
                 "external_link": "https://92.en-marche.fr",
@@ -481,6 +466,40 @@ Feature:
                     "name": "Hauts-de-Seine",
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 }
+            },
+            {
+                "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
+                "title": "[Référent] Actualité épinglée à 92 du référent",
+                "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+                "external_link": "https://epingle.en-marche.fr",
+                "created_at": "@string@.isDateTime()",
+                "visibility": "local",
+                "zone": {
+                    "code": "92",
+                    "created_at": "2020-12-04T15:24:38+01:00",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
+                "notification": true,
+                "published": true,
+                "creator": "Referent Referent"
+            },
+            {
+                "uuid": "82068546-47d1-4f78-a6ba-692812984442",
+                "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+                "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst  \n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem. \n\n### Eget varius felis sodales sit amet \n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat. \n\n* Vestibulum facilisis convallis mauris eu eleifend. \n* Aenean sit amet elementum ex. \n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc. \n\n1. Praesent scelerisque sagittis orci in sagittis. \n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
+                "external_link": "https://epingle.en-marche.fr",
+                "visibility": "local",
+                "created_at": "@string@.isDateTime()",
+                "zone": {
+                    "code": "92",
+                    "created_at": "2020-12-04T15:24:38+01:00",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                },
+                "notification": true,
+                "published": true,
+                "creator": "Referent Referent"
             }
         ]
     }

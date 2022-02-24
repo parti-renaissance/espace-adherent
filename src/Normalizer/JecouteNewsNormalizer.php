@@ -49,7 +49,9 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
             $news['text'] = $object->getText();
         } else {
             $news['creator'] = $object->getAuthorFullNameWithRole();
-            $news['text'] = $object->getCleanedCroppedText();
+            if (isset($context['collection_operation_name']) && 'get_public' === $context['collection_operation_name']) {
+                $news['text'] = $object->getCleanedCroppedText();
+            }
         }
 
         return $news;
