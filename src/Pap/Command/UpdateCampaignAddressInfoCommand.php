@@ -2,7 +2,6 @@
 
 namespace App\Pap\Command;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
 class UpdateCampaignAddressInfoCommand implements AsynchronousMessageInterface
