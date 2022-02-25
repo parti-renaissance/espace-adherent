@@ -3,6 +3,7 @@
 namespace App\Controller\Assessor;
 
 use App\Assessor\AssessorRequestHandler;
+use App\CmsBlock\CmsBlockManager;
 use App\Form\AssessorRequestType;
 use App\VotePlace\VotePlaceManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,8 +17,11 @@ class AssessorController extends AbstractController
     /**
      * @Route(name="app_assessor_request", methods={"GET|POST"})
      */
-    public function assessorRequest(Request $request, AssessorRequestHandler $assessorResquestHandler): Response
-    {
+    public function assessorRequest(
+        Request $request,
+        AssessorRequestHandler $assessorResquestHandler,
+        CmsBlockManager $blockManager
+    ): Response {
         $assessorRequestCommand = $assessorResquestHandler->start(
             (string) $request->request->get('g-recaptcha-response')
         );
