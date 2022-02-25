@@ -2,11 +2,17 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: 'Maax';
 
     &__header {
         &--outer {
+            background-position: center 62%;
+            background-repeat: no-repeat;
+            background-size: cover;
             @include gradient-container;
-            background-color: $blue--extra-light;
+            background-color: $filter--gray;
+            background-blend-mode: multiply;
+            padding-top: 85px;
         }
 
         &--inner {

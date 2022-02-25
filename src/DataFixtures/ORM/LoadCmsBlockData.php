@@ -189,6 +189,35 @@ Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui 
 Effectuez donc votre démarche rapidement !
 TXT
         ));
+
+        $manager->persist($this->createCmsBlock(
+            'assesseur-request-subtitle',
+            'Texte affiché sous le titre de la page de demande des assesseurs',
+            'Élections municipales 2020.'
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'assesseur-request-homepage',
+            'Texte affiché sur la page du formulaire de demande',
+            <<<'TXT'
+<p class="text--gray">
+    Madame, Monsieur,<br/><br/>
+    Merci de vous porter volontaire pour être assesseur(e) lors des élections municipales de 2020.<br/><br/>
+    Ce formulaire vous permettra de renseigner l'ensemble des informations nécessaires.<br/><br/>
+    En raison du nombre limité de places par bureau de vote pour chaque liste (1 assesseur(e) titulaire et 1 assesseur(e) suppléant(e)),
+    nous vous invitons à en sélectionner plusieurs dans l’ordre de vos préférences. Nous en tiendrons compte au maximum lors des attributions.<br/>
+    Vous recevrez prochainement un mail de confirmation et d’explication si votre candidature est retenue.<br/>
+    <br/>
+    Merci encore pour votre engagement !<br/><br/>
+    Conditions préalables pour devenir assesseur :<br/>
+    <ol>
+        <li>Vous pouvez être assesseur dans n’importe quelle commune du département où vous habitez.</li>
+        <li>Vous devez être âgée de 18 ans minimum.</li>
+    </ol>
+</p>
+TXT
+        ));
+
         $manager->flush();
     }
 
