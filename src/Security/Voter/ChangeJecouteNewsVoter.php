@@ -11,6 +11,7 @@ use App\Scope\ScopeGeneratorResolver;
 class ChangeJecouteNewsVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_CHANGE_JECOUTE_NEWS';
+    public const LOCAL_SCOPES = [ScopeEnum::REFERENT, ScopeEnum::CORRESPONDENT];
 
     private ZoneRepository $zoneRepository;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
@@ -34,7 +35,8 @@ class ChangeJecouteNewsVoter extends AbstractAdherentVoter
             return !$subject->getSpace();
         }
 
-        if (ScopeEnum::REFERENT === ($scope->getDelegatorCode() ?? $scope->getCode())) {
+        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
+        if (\in_array($scopeCode, self::LOCAL_SCOPES, true)) {
             if (!$zone = $subject->getZone()) {
                 return false;
             }
