@@ -10,4 +10,5 @@ class JecouteSpaceEnum extends Enum
     public const MANAGER_SPACE = 'manager';
     public const MUNICIPAL_CHIEF_SPACE = 'municipal_chief';
     public const CANDIDATE_SPACE = 'candidate';
+    public const CORRESPONDENT_SPACE = 'correspondent';
 }

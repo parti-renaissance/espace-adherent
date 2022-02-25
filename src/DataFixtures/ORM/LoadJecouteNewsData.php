@@ -20,6 +20,8 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
     public const NEWS_5_UUID = '6c70f8e8-6bce-4376-8b9e-3ce342880673';
     public const NEWS_6_UUID = '560bab7a-d624-47d6-bf5e-3864c2406daf';
     public const NEWS_7_UUID = '25632c43-c224-4745-84d7-09dfa8249367';
+    public const NEWS_8_UUID = 'b09185ba-f271-404b-a73f-76d92ca8c120';
+    public const NEWS_9_UUID = '6101c6a6-f7ef-4952-95db-8553952d656d';
 
     public function load(ObjectManager $manager)
     {
@@ -134,6 +136,40 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             false,
             $this->getReference('adherent-19'),
             new \DateTime('-6 hours')
+        ));
+
+        $manager->persist($this->createNews(
+            self::NEWS_8_UUID,
+            'Une actualité du correspondent à 92',
+            'Cras libero mauris, euismod blandit ornare eu, congue quis nulla. Maecenas sodales diam nec tincidunt pulvinar.',
+            null,
+            'https://92.en-marche.fr',
+            'Voir le lien',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            JecouteSpaceEnum::CORRESPONDENT_SPACE,
+            false,
+            true,
+            false,
+            false,
+            $this->getReference('correspondent-1'),
+            new \DateTime('-7 hours')
+        ));
+
+        $manager->persist($this->createNews(
+            self::NEWS_9_UUID,
+            'Une actualité à 75',
+            'Ut at porttitor ipsum. Sed quis volutpat ipsum.',
+            null,
+            'https://92-delegated.en-marche.fr',
+            'Voir le lien',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
+            JecouteSpaceEnum::CORRESPONDENT_SPACE,
+            false,
+            true,
+            false,
+            false,
+            $this->getReference('adherent-9'),
+            new \DateTime('-8 hours')
         ));
 
         $manager->flush();

@@ -17,11 +17,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 5,
+          "total_items": 7,
           "items_per_page": 2,
           "count": 2,
           "current_page": 1,
-          "last_page": 3
+          "last_page": 4
         },
         "items": [
           {
@@ -51,11 +51,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 5,
+          "total_items": 7,
           "items_per_page": 1,
           "count": 1,
           "current_page": 1,
-          "last_page": 5
+          "last_page": 7
         },
         "items": [
           {
@@ -75,11 +75,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 5,
+          "total_items": 7,
           "items_per_page": 1,
           "count": 1,
           "current_page": 2,
-          "last_page": 5
+          "last_page": 7
         },
         "items": [
           {
@@ -153,11 +153,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 3,
+          "total_items": 5,
           "items_per_page": 2,
           "count": 2,
           "current_page": 1,
-          "last_page": 2
+          "last_page": 3
         },
         "items": [
           {
@@ -212,9 +212,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 4,
+            "total_items": 6,
             "items_per_page": 10,
-            "count": 4,
+            "count": 6,
             "current_page": 1,
             "last_page": 1
         },
@@ -286,6 +286,40 @@ Feature:
                 "notification": true,
                 "published": true,
                 "creator": "Anonyme"
+            },
+            {
+                "created_at": "@string@.isDateTime()",
+                "creator": "Jules Fullstack",
+                "external_link": "https://92.en-marche.fr",
+                "notification": false,
+                "published": true,
+                "text": "Cras libero mauris, euismod blandit ornare eu, congue quis nulla. Maecenas sodales diam nec tincidunt pulvinar.",
+                "title": "Une actualité du correspondent à 92",
+                "uuid": "b09185ba-f271-404b-a73f-76d92ca8c120",
+                "visibility": "local",
+                "zone": {
+                    "code": "92",
+                    "created_at": "2020-12-04T15:24:38+01:00",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                }
+            },
+            {
+                "created_at": "@string@.isDateTime()",
+                "creator": "Laura Deloche",
+                "external_link": "https://92-delegated.en-marche.fr",
+                "notification": false,
+                "published": true,
+                "text": "Ut at porttitor ipsum. Sed quis volutpat ipsum.",
+                "title": "Une actualité à 75",
+                "uuid": "6101c6a6-f7ef-4952-95db-8553952d656d",
+                "visibility": "local",
+                "zone": {
+                    "code": "92",
+                    "created_at": "2020-12-04T15:24:38+01:00",
+                    "name": "Hauts-de-Seine",
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                }
             }
         ]
     }
@@ -486,6 +520,91 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a (delegated) correspondent I can create and update a news
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'aujourd'hui",
+      "text": "Vestibulum et lectus vehicula. Sed eget neque nec dolor gravida luctus.",
+      "external_link": "http://correspondent.en-marche.fr",
+      "notification": true,
+      "published": true,
+      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "title":  "Une nouvelle actualité d'aujourd'hui",
+        "text": "Vestibulum et lectus vehicula. Sed eget neque nec dolor gravida luctus.",
+        "external_link": "http://correspondent.en-marche.fr",
+        "visibility": "local",
+        "zone": {
+            "code": "92",
+            "created_at": "2020-12-04T15:24:38+01:00",
+            "name": "Hauts-de-Seine",
+            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+        },
+        "created_at": "@string@.isDateTime()",
+        "notification": true,
+        "published": true,
+        "creator": "Jules Fullstack"
+    }
+    """
+    And I should have 1 notification "NewsCreatedNotification" with data:
+      | key   | value                                                                   |
+      | topic | staging_jemarche_department_92                                          |
+      | title | Une nouvelle actualité d'aujourd'hui                                    |
+      | body  | Vestibulum et lectus vehicula. Sed eget neque nec dolor gravida luctus. |
+      Examples:
+        | user                                | scope                                          |
+        | je-mengage-user-1@en-marche-dev.fr  | correspondent                                  |
+        | laura@deloche.com                   | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
+
+  Scenario Outline: As a (delegated) correspondent I can create and update a news
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
+    """
+    {
+      "title": "Nouveau titre",
+      "text": "Nouveau text",
+      "external_link": "http://new.correspondent.en-marche.fr",
+      "notification": false,
+      "published": false
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "<news_uuid>",
+        "title":  "Nouveau titre",
+        "text": "Nouveau text",
+        "external_link": "http://new.correspondent.en-marche.fr",
+        "visibility": "local",
+        "zone": {
+            "code": "92",
+            "created_at": "2020-12-04T15:24:38+01:00",
+            "name": "Hauts-de-Seine",
+            "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+        },
+        "created_at": "@string@.isDateTime()",
+        "notification": false,
+        "published": false,
+        "creator": "<user_name>"
+    }
+    """
+    Examples:
+      | user                                | user_name       | news_uuid                             | scope                                          |
+      | je-mengage-user-1@en-marche-dev.fr  | Jules Fullstack | b09185ba-f271-404b-a73f-76d92ca8c120  | correspondent                                  |
+      | laura@deloche.com                   | Laura Deloche   | 6101c6a6-f7ef-4952-95db-8553952d656d  | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
 
   Scenario Outline: As a (delegated) referent I can get a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
