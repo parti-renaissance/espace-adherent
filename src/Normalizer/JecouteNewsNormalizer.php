@@ -5,7 +5,6 @@ namespace App\Normalizer;
 use App\Entity\Jecoute\News;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Jecoute\NewsTitlePrefix;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -47,6 +46,12 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         if (\in_array('jecoute_news_read_dc', $context['groups'] ?? [], true)) {
             $news['creator'] = $object->getAuthorFullName();
+            $news['text'] = $object->getText();
+        } else {
+            $news['creator'] = $object->getAuthorFullNameWithRole();
+            if (isset($context['collection_operation_name']) && 'get_public' === $context['collection_operation_name']) {
+                $news['text'] = $object->getCleanedCroppedText();
+            }
         }
 
         return $news;
@@ -75,9 +80,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         if (!$news->getId()) {
             $scope = $this->scopeGeneratorResolver->generate();
             $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
-            if (ScopeEnum::REFERENT === $scopeCode) {
-                $news->setSpace(JecouteSpaceEnum::REFERENT_SPACE);
-            }
+            $news->setSpace($scopeCode ? JecouteSpaceEnum::getByScope($scopeCode) : null);
         }
 
         $this->newsTitlePrefix->removePrefix($news);

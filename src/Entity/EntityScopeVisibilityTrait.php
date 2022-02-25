@@ -24,6 +24,7 @@ trait EntityScopeVisibilityTrait
      *     "phoning_campaign_read",
      *     "phoning_campaign_list",
      *     "jecoute_news_read_dc",
+     *     "jecoute_news_read",
      * })
      */
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
