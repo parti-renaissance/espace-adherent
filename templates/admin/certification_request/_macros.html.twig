@@ -36,7 +36,7 @@
                 par <b>{{ certification_request.processedBy }}</b>
                 <br>
             {% endif %}
-            le <b>{{ certification_request.processedAt|localizeddate }}</b>
+            le <b>{{ certification_request.processedAt|format_datetime }}</b>
         </i>
     {% endif %}
 {% endmacro %}

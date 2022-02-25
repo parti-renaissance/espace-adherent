@@ -17,7 +17,7 @@
                 {% endblock %}
                 <h3 class="committee-event-date text--body text--normal icon--with-text">
                     <i class="fa fa-clock-o"></i>
-                    {{- event.beginAt|localizeddate('full', 'none')|capitalize }} à {{ event.beginAt|date('G\\hi') -}}.
+                    {{- event.beginAt|format_datetime('full', 'none')|capitalize }} à {{ event.beginAt|date('G\\hi') -}}.
                 </h3>
                 <h3 class="committee-event-address text--body text--normal icon--with-text">
                     <i class="fa fa-map-marker"></i>

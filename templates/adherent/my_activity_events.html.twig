@@ -29,7 +29,7 @@
                         {% set date = event.beginAt|date('Ymd') %}
 
                         <div class="text--normal text--bold text--uppercase b__nudge--bottom-medium b__nudge--top-large">
-                            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
+                            {{ event.beginAt|format_datetime('none', 'none', 'd MMMM yyyy') }}
                         </div>
                     {% endif %}
 
@@ -48,7 +48,7 @@
                                 </h2>
 
                                 <div class="text--body">
-                                    {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }} &mdash; à {{ event.cityName }}<br />
+                                    {{ event.beginAt|format_datetime('none', 'none', 'd MMMM yyyy') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
 
                                 {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}

@@ -10,7 +10,7 @@
                 </a>
             </h4>
             <span class="committee-event-date text--body">
-                {{ item.event.localBeginAt|localizeddate('full', 'none', null, false)|capitalize }},
+                {{ item.event.localBeginAt|format_datetime('full', 'none')|capitalize }},
                 {{ item.event.localBeginAt|date('G\\hi', false) -}}{{ item.event.timeZone|utc_offset }}
             </span>
         </div>

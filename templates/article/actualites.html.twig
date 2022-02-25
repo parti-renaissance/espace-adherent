@@ -71,7 +71,7 @@
                                 </a>
                             </h2>
                             <div>
-                                {{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy") }}
+                                {{ article.publishedAt|format_datetime('none', 'none', "d MMMM yyyy") }}
                             </div>
                             <div class="share">
                                 Partagez

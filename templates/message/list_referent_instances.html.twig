@@ -27,9 +27,9 @@
         <td>{{ message.subject }}</td>
         <td>
             {% if message.isSent %}
-                {{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") : '~' }}
+                {{ message.sentAt ? message.sentAt|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") : '~' }}
             {% else %}
-                {{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") }}
+                {{ message.createdAt|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }}
             {% endif %}
         </td>
         <td>

@@ -36,7 +36,7 @@
                                     {{ ('designation.vote_mode.' ~ election.electionMode)|trans }}
                                 {% endif %}
                             </td>
-                            <td>{{ designation.voteEndDate ? designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}</td>
+                            <td>{{ designation.voteEndDate ? designation.voteEndDate|format_datetime('none', 'none', "d MMM yyyy à HH:mm") : '~' }}</td>
                             <td>
                                 {% if status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::OPENED'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::SCHEDULED')] %}
                                     {% for row in get_territorial_council_candidates_stats(election) %}

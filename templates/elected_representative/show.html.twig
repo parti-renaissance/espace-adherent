@@ -100,8 +100,8 @@
                                 <td>{{ mandate.name }}</td>
                                 <td>{{ mandate.politicalAffiliation }}</td>
                                 <td>{{ mandate.laREMSupport ? "elected_representative.mandate.larem_support.#{mandate.laREMSupport}"|trans }}</td>
-                                <td>{{ mandate.beginAt ? mandate.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}</td>
-                                <td>{{ mandate.finishAt ? mandate.finishAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}</td>
+                                <td>{{ mandate.beginAt ? mandate.beginAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</td>
+                                <td>{{ mandate.finishAt ? mandate.finishAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</td>
                                 <td>
                                     {% for politicalFunction in mandate.politicalFunctions %}
                                         {{ politicalFunction }}
@@ -140,7 +140,7 @@
                                 <td>{{ mandate.name }}</td>
                                 <td>{{ mandate.politicalAffiliation }}</td>
                                 <td>{{ mandate.laREMSupport ? "elected_representative.mandate.larem_support.#{mandate.laREMSupport}"|trans }}</td>
-                                <td>{{ mandate.beginAt ? mandate.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}</td>
+                                <td>{{ mandate.beginAt ? mandate.beginAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</td>
                             </tr>
                         {% else %}
                             <tr>

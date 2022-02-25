@@ -2,9 +2,9 @@
 
 <p>Nous avons l'honneur de vous convoquer à la séance de notre {{instance_type}} qui se tiendra
     {% if is_online_mode %}
-        en ligne le {{ meeting_start_date|localizeddate('none', 'none', 'fr_FR', null, 'EEEE d MMMM y, HH\'h\'mm') }} à <a href="{{ meeting_url }}" target="_blank" rel="nofollow noreferrer">ce lien</a>.
+        en ligne le {{ meeting_start_date|format_datetime('none', 'none', 'EEEE d MMMM y, HH\'h\'mm') }} à <a href="{{ meeting_url }}" target="_blank" rel="nofollow noreferrer">ce lien</a>.
     {% else %}
-        le {{ meeting_start_date|localizeddate('none', 'none', 'fr_FR', null, 'EEEE d MMMM y, HH\'h\'mm') }} au {{ address }}.
+        le {{ meeting_start_date|format_datetime('none', 'none', 'EEEE d MMMM y, HH\'h\'mm') }} au {{ address }}.
     {% endif %}
 </p>
 

@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
 {% block title %}
-     Demande de certification de <b>{{ admin.toString(object)|truncate(25) }}</b>
+     Demande de certification de <b>{{ admin.toString(object)|u.truncate(25, '...') }}</b>
 {% endblock %}
 
 {% block show %}

@@ -128,7 +128,9 @@
         "symfony/yaml": "^4.4",
         "tackk/cartographer": "dev-welcome-php7",
         "tetranz/select2entity-bundle": "^3.1",
-        "twig/extensions": "^1.5",
+        "twig/extra-bundle": "^3.3",
+        "twig/intl-extra": "^3.3",
+        "twig/string-extra": "^3.3",
         "twig/twig": "^2.13",
         "webmozart/assert": "^1.3",
         "willdurand/geocoder-bundle": "^5.12"

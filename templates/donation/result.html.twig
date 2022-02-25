@@ -20,7 +20,7 @@
             <section class="donation__result__intro text--center">
                 <div class="l__wrapper">
                     <div class="donation__result__into--title">
-                        <h1 class="text--larger b__nudge--bottom-larger b__nudge--top-40">Votre don de {{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }} est validé, merci !</h1>
+                        <h1 class="text--larger b__nudge--bottom-larger b__nudge--top-40">Votre don de {{ (donation.amount/100)|format_currency('EUR')|replace({',00' : ''}) }} est validé, merci !</h1>
                     </div>
                 </div>
                 <div class="l__wrapper--narrow">
