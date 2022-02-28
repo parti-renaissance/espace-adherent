@@ -38,7 +38,7 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col vote-place-wishes">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Bureaux de votes disponibles <span class="text--normal">*</span></p>
+                <p class="b__nudge--bottom-tiny text--bold">Sur quels bureaux de votes souhaitez-vous être assesseur ? <span class="text--normal">*</span></p>
                 {{ form_widget(form.votePlaceWishes, { attr: { class: 'select-vote-place-wishes' } }) }}
                 {{ form_errors(form.votePlaceWishes) }}
                 <p class="text--small text--gray">
@@ -64,7 +64,7 @@
         <div class="form__row form__checkbox b__nudge--top-large">
             {{ form_widget(form.reachable) }}
             <label for="{{ form.reachable.vars.id }}">
-                J'accepte d'être recontacté par LaREM pour les prochaines échéances électorales.
+                J’accepte d’être recontacté pour tenir le rôle d’assesseur lors de la prochaine échéance électorale.
             </label>
             {{ form_errors(form.reachable) }}
         </div>

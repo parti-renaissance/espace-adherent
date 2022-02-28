@@ -121,6 +121,11 @@ class AssessorRequestCommand
     private $phone;
 
     /**
+     * @Assert\Length(max=255, groups={"fill_personal_info"})
+     */
+    private $voterNumber;
+
+    /**
      * @Assert\Expression(
      *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
      *     message="assessor.assessor_city.not_blank",
@@ -310,6 +315,16 @@ class AssessorRequestCommand
     public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
+    }
+
+    public function getVoterNumber(): ?string
+    {
+        return $this->voterNumber;
+    }
+
+    public function setVoterNumber(?string $voterNumber): void
+    {
+        $this->voterNumber = $voterNumber;
     }
 
     public function getAssessorCity(): ?string

@@ -16,7 +16,7 @@ class AssessorControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    private const ASSESSOR_REQUEST_PATH = '/demande';
+    private const ASSESSOR_REQUEST_PATH = '/assesseur/';
 
     public function testAssessorRequest()
     {

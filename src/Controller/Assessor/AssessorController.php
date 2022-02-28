@@ -14,11 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssessorController extends AbstractController
 {
     /**
-     * @Route(
-     *     path="/demande",
-     *     name="app_assessor_request",
-     *     methods={"GET|POST"},
-     * )
+     * @Route(name="app_assessor_request", methods={"GET|POST"})
      */
     public function assessorRequest(Request $request, AssessorRequestHandler $assessorResquestHandler): Response
     {

@@ -233,6 +233,7 @@ app_assessor:
     host: "%assessor_host%"
     resource: "../src/Controller/Assessor"
     type: "annotation"
+    prefix: "%assessor_path_prefix%"
 
 app_api_intl:
     host: "{app_domain}"
