@@ -370,6 +370,7 @@ Feature:
                 "title": "[Régionales] Nouveau sondage disponible",
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": null,
+                "link_label": null,
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
@@ -379,6 +380,8 @@ Feature:
                     "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
+                "enriched": false,
+                "pinned": false,
                 "published": true,
                 "creator": "Anonyme"
             },
@@ -387,6 +390,7 @@ Feature:
                 "title": "[Référent] Nouvelle actualité à 92 du référent",
                 "text": "Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.",
                 "external_link": "https://referent.en-marche.fr",
+                "link_label": "Voir",
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
@@ -396,6 +400,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
+                "enriched": false,
+                "pinned": false,
                 "published": true,
                 "creator": "Referent Referent"
             },
@@ -404,6 +410,7 @@ Feature:
                 "title": "[Référent] Nouvelle actualité non publiée à 59 du référent délégué",
                 "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
                 "external_link": "https://referent.en-marche.fr",
+                "link_label": "Voir le lien",
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
@@ -413,6 +420,8 @@ Feature:
                     "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
+                "enriched": false,
+                "pinned": false,
                 "published": false,
                 "creator": "Bob Senateur (59)"
             },
@@ -421,6 +430,7 @@ Feature:
                 "title": "Nouvelle actualité à 92 de l'admin",
                 "text": "Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.",
                 "external_link": "https://referent.en-marche.fr",
+                "link_label": "Voir",
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
@@ -430,6 +440,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
+                "enriched": false,
+                "pinned": false,
                 "published": true,
                 "creator": "Anonyme"
             },
@@ -437,7 +449,10 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "creator": "Jules Fullstack",
                 "external_link": "https://92.en-marche.fr",
+                "link_label": "Voir le lien",
                 "notification": false,
+                "enriched": false,
+                "pinned": false,
                 "published": true,
                 "text": "Cras libero mauris, euismod blandit ornare eu, congue quis nulla. Maecenas sodales diam nec tincidunt pulvinar.",
                 "title": "Une actualité du correspondent à 92",
@@ -454,7 +469,10 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "creator": "Laura Deloche",
                 "external_link": "https://92-delegated.en-marche.fr",
+                "link_label": "Voir le lien",
                 "notification": false,
+                "enriched": false,
+                "pinned": false,
                 "published": true,
                 "text": "Ut at porttitor ipsum. Sed quis volutpat ipsum.",
                 "title": "Une actualité à 75",
@@ -472,6 +490,7 @@ Feature:
                 "title": "[Référent] Actualité épinglée à 92 du référent",
                 "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                 "external_link": "https://epingle.en-marche.fr",
+                "link_label": "Voir le lien",
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
@@ -481,6 +500,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
+                "enriched": false,
+                "pinned": true,
                 "published": true,
                 "creator": "Referent Referent"
             },
@@ -489,6 +510,7 @@ Feature:
                 "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
                 "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst  \n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem. \n\n### Eget varius felis sodales sit amet \n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat. \n\n* Vestibulum facilisis convallis mauris eu eleifend. \n* Aenean sit amet elementum ex. \n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc. \n\n1. Praesent scelerisque sagittis orci in sagittis. \n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                 "external_link": "https://epingle.en-marche.fr",
+                "link_label": "Voir le lien",
                 "visibility": "local",
                 "created_at": "@string@.isDateTime()",
                 "zone": {
@@ -498,6 +520,8 @@ Feature:
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
                 },
                 "notification": true,
+                "enriched": true,
+                "pinned": true,
                 "published": true,
                 "creator": "Referent Referent"
             }
@@ -530,10 +554,13 @@ Feature:
                 "title": "Nouveau assemblement",
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                 "external_link": "https://en-marche.fr",
+                "link_label": "Voir",
                 "created_at": "@string@.isDateTime()",
                 "visibility": "national",
                 "zone": null,
                 "notification": true,
+                "enriched": false,
+                "pinned": false,
                 "published": false,
                 "creator": "Anonyme"
             },
@@ -542,10 +569,13 @@ Feature:
                 "title": "Pour toute la France",
                 "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
                 "external_link": "https://en-marche.fr",
+                "link_label": "Voir le lien",
                 "created_at": "@string@.isDateTime()",
                 "visibility": "national",
                 "zone": null,
                 "notification": false,
+                "enriched": false,
+                "pinned": true,
                 "published": true,
                 "creator": "Anonyme"
             }
@@ -610,8 +640,8 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-         "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
-         "violations": [
+        "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.\nlink_label: Le label est obligatoire.",
+        "violations": [
             {
                 "propertyPath": "text",
                 "message": "Le texte ne doit pas contenir plus de 1000 caractères."
@@ -623,6 +653,10 @@ Feature:
             {
                 "propertyPath": "external_link",
                 "message": "Cette valeur n'est pas une URL valide."
+            },
+            {
+                "message": "Le label est obligatoire.",
+                "propertyPath": "link_label"
             }
         ]
     }
@@ -638,8 +672,11 @@ Feature:
       "title": "Une nouvelle actualité d'aujourd'hui",
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
+      "link_label": "Voir",
       "global": true,
       "notification": true,
+      "enriched": false,
+      "pinned": false,
       "published": true
     }
     """
@@ -651,11 +688,14 @@ Feature:
         "title": "Une nouvelle actualité d'aujourd'hui",
         "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
         "external_link": "http://test.en-marche.fr",
+        "link_label": "Voir",
         "visibility": "national",
         "zone": null,
         "created_at": "@string@.isDateTime()",
         "global": true,
         "notification": true,
+        "enriched": false,
+        "pinned": false,
         "published": true,
         "creator": "Député PARIS I"
     }
@@ -676,9 +716,12 @@ Feature:
       "title": "Une nouvelle actualité d'aujourd'hui",
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
+      "link_label": "Voir",
       "global": true,
       "notification": true,
       "published": true,
+      "enriched": false,
+      "pinned": false,
       "zone": "e3efe5c5-906e-11eb-a875-0242ac150002"
     }
     """
@@ -690,6 +733,7 @@ Feature:
         "title": "[Référent] Une nouvelle actualité d'aujourd'hui",
         "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
         "external_link": "http://test.en-marche.fr",
+        "link_label": "Voir",
         "visibility": "local",
         "zone": {
             "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
@@ -700,6 +744,8 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "notification": true,
         "published": true,
+        "enriched": false,
+        "pinned": false,
         "creator": "Referent Referent"
     }
     """
@@ -721,10 +767,13 @@ Feature:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
-      "text": "Vestibulum et lectus vehicula. Sed eget neque nec dolor gravida luctus.",
+      "text": "**Vestibulum** et lectus vehicula. *Sed* eget neque nec dolor gravida luctus.",
       "external_link": "http://correspondent.en-marche.fr",
+      "link_label": "Voir",
       "notification": true,
       "published": true,
+      "enriched": true,
+      "pinned": true,
       "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
     }
     """
@@ -734,8 +783,9 @@ Feature:
     {
         "uuid": "@uuid@",
         "title":  "Une nouvelle actualité d'aujourd'hui",
-        "text": "Vestibulum et lectus vehicula. Sed eget neque nec dolor gravida luctus.",
+        "text": "**Vestibulum** et lectus vehicula. *Sed* eget neque nec dolor gravida luctus.",
         "external_link": "http://correspondent.en-marche.fr",
+        "link_label": "Voir",
         "visibility": "local",
         "zone": {
             "code": "92",
@@ -746,14 +796,16 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "notification": true,
         "published": true,
+        "enriched": true,
+        "pinned": true,
         "creator": "Jules Fullstack"
     }
     """
     And I should have 1 notification "NewsCreatedNotification" with data:
-      | key   | value                                                                   |
-      | topic | staging_jemarche_department_92                                          |
-      | title | Une nouvelle actualité d'aujourd'hui                                    |
-      | body  | Vestibulum et lectus vehicula. Sed eget neque nec dolor gravida luctus. |
+      | key   | value                                                                         |
+      | topic | staging_jemarche_department_92                                                |
+      | title | Une nouvelle actualité d'aujourd'hui                                          |
+      | body  | **Vestibulum** et lectus vehicula. *Sed* eget neque nec dolor gravida luctus. |
       Examples:
         | user                                | scope                                          |
         | je-mengage-user-1@en-marche-dev.fr  | correspondent                                  |
@@ -768,7 +820,10 @@ Feature:
       "title": "Nouveau titre",
       "text": "Nouveau text",
       "external_link": "http://new.correspondent.en-marche.fr",
+      "link_label": "Voir",
       "notification": false,
+      "enriched": false,
+      "pinned": false,
       "published": false
     }
     """
@@ -780,6 +835,7 @@ Feature:
         "title":  "Nouveau titre",
         "text": "Nouveau text",
         "external_link": "http://new.correspondent.en-marche.fr",
+        "link_label": "Voir",
         "visibility": "local",
         "zone": {
             "code": "92",
@@ -790,6 +846,8 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "notification": false,
         "published": false,
+        "enriched": false,
+        "pinned": false,
         "creator": "<user_name>"
     }
     """
@@ -810,6 +868,7 @@ Feature:
         "title": "[Référent] Nouvelle actualité non publiée à 59 du référent délégué",
         "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
         "external_link": "https://referent.en-marche.fr",
+        "link_label": "Voir le lien",
         "created_at": "@string@.isDateTime()",
         "visibility": "local",
         "zone": {
@@ -819,6 +878,8 @@ Feature:
             "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
         },
         "notification": true,
+        "enriched": false,
+        "pinned": false,
         "published": false,
         "creator": "Bob Senateur (59)"
     }
@@ -837,7 +898,10 @@ Feature:
       "title": "[Référent] Nouveau titre",
       "text": "Nouveau texte",
       "external_link": "https://nouveau.en-marche.fr",
+      "link_label": "Voir le lien (nouveau)",
       "notification": false,
+      "enriched": false,
+      "pinned": false,
       "published": false
     }
     """
@@ -849,6 +913,7 @@ Feature:
       "title": "[Référent] Nouveau titre",
       "text": "Nouveau texte",
       "external_link": "https://nouveau.en-marche.fr",
+      "link_label": "Voir le lien (nouveau)",
       "visibility": "local",
       "zone": {
           "code": "59",
@@ -858,6 +923,8 @@ Feature:
       },
       "created_at": "@string@.isDateTime()",
       "notification": false,
+      "enriched": false,
+      "pinned": false,
       "published": false,
       "creator": "Bob Senateur (59)"
     }
@@ -885,10 +952,12 @@ Feature:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
-      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+      "text": "**Nulla dapibus** ornare elementum. *Curabitur* volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
       "global": true,
       "notification": true,
+      "enriched": true,
+      "pinned": true,
       "published": true
     }
     """
@@ -903,6 +972,7 @@ Feature:
       "title": "Une nouvelle actualité d'aujourd'hui",
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
+      "link_label": "Voir",
       "notification": true,
       "published": true
     }
@@ -932,6 +1002,7 @@ Feature:
       "title": "Une nouvelle actualité d'aujourd'hui",
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
+      "link_label": "Voir",
       "zone": "e3f21338-906e-11eb-a875-0242ac150002",
       "notification": true,
       "published": true
@@ -962,6 +1033,7 @@ Feature:
       "title": "Une nouvelle actualité d'aujourd'hui",
       "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
       "external_link": "http://test.en-marche.fr",
+      "link_label": "Voir",
       "zone": "e3efe7bf-906e-11eb-a875-0242ac150002",
       "notification": true,
       "published": true

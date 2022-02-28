@@ -192,11 +192,10 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      * @Assert\Length(max=255)
      * @Assert\Expression(
      *     "value !== null or null === this.getExternalLink()",
-     *     message="news.link_label.required",
-     *     groups={"Admin"}
+     *     message="news.link_label.required"
      * )
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
     private ?string $linkLabel;
 
@@ -233,14 +232,14 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
     private bool $pinned;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
      *
-     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     * @SymfonySerializer\Groups({"jecoute_news_read", "jecoute_news_read_dc", "jecoute_news_write"})
      */
     private bool $enriched;
 
