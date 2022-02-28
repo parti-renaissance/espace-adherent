@@ -328,6 +328,11 @@ services:
     Symfony\Bridge\Monolog\Processor\SwitchUserTokenProcessor:
         tags: ['monolog.processor']
 
+    App\Normalizer\DateTimeNormalizer:
+        decorates: 'serializer.normalizer.datetime'
+        arguments:
+            - '@App\Normalizer\DateTimeNormalizer.inner'
+
     App\ErrorRenderer\TwigErrorRenderer:
         decorates: 'twig.error_renderer.html'
         arguments:
