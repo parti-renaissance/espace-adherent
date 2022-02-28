@@ -61,6 +61,12 @@
                 <td>Adresse e-mail</td>
                 <td>{{ assessorRequest.emailAddress }}</td>
             </tr>
+            {% if assessorRequest.voterNumber %}
+                <tr class="voter-number">
+                    <td>Numéro d'électeur</td>
+                    <td>{{ assessorRequest.voterNumber }}</td>
+                </tr>
+            {% endif %}
             <tr class="reachable">
                 <td>Accepte d'être recontacté par LaREM</td>
                 <td>{{ assessorRequest.isReachable ? 'Oui' : 'Non'}}</td>

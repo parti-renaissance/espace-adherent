@@ -11,6 +11,7 @@ use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group debug
  */
 class AssessorControllerTest extends WebTestCase
 {
@@ -47,6 +48,7 @@ class AssessorControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0620202020',
                 ],
+                'voterNumber' => '00001',
             ],
         ]));
 
@@ -96,6 +98,7 @@ class AssessorControllerTest extends WebTestCase
         $this->assertStringContainsString('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
         $this->assertStringContainsString('001', $crawler->filter('.summary-bloc tr.office-number td:last-child')->text());
         $this->assertStringContainsString('Lille', $crawler->filter('.summary-bloc tr.birthcity td:last-child')->text());
+        $this->assertStringContainsString('00001', $crawler->filter('.summary-bloc tr.voter-number td:last-child')->text());
         $this->assertStringContainsString('ernestino@bonsoirini.fr', $crawler->filter(
             '.summary-bloc tr.email td:last-child')->text()
         );
