@@ -11,6 +11,7 @@ use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group debug
  */
 class AssessorControllerTest extends WebTestCase
 {
