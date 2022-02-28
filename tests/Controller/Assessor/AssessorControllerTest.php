@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Controller\EnMarche;
+namespace Tests\App\Controller\Assessor;
 
 use App\Entity\AssessorOfficeEnum;
 use App\Mailer\Message\AssessorRequestConfirmationMessage;
@@ -16,7 +16,7 @@ class AssessorControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    private const ASSESSOR_REQUEST_PATH = '/assesseur/demande';
+    private const ASSESSOR_REQUEST_PATH = '/demande';
 
     public function testAssessorRequest()
     {
