@@ -320,7 +320,7 @@ class ProcurationManagerControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => 6]));
 
-        $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(3, $crawler->filter('.datagrid__table-manager tbody tr'));
 
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_LAST_NAME => 'harquin']));
 
