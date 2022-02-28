@@ -218,6 +218,26 @@ TXT
 TXT
         ));
 
+        $manager->persist($this->createCmsBlock(
+            'assesseur-request-mentions-legales',
+            'Mentions légales du formulaires de demande assesseur',
+            <<<'TXT'
+<p class="b__nudge--top-large text--small text--gray text--justify">
+   Les données recueillies dans ce formulaire sont traitées par La République en Marche (LaREM) et ses équipes aux fins
+   de gestion des demandes à tenir le rôle d’assesseur lors de l’élection présidentielle qui se déroulera les 10 et 24 avril 2022.
+   Elles permettront à LaREM de vous contacter dans ce cadre et si vous y consentez, de vous recontacter pour tenir le rôle d’assesseur lors de la prochaine échéance électorale.
+   En envoyant ce formulaire, vous autorisez LaREM à utiliser vos données pour ces finalités. Vos données seront conservées jusqu’à la fin de l’élection présidentielle 2022
+   ou à la fin des élections législatives 2022 lorsque vous avez consenti à être recontacté pour la prochaine échéance électorale.<br/><br/>
+
+   Conformément à la règlementation en vigueur sur la protection des données, vous pouvez retirer votre consentement à tout moment. Vous disposez d’un droit d’opposition
+   et d’un droit de limitation du traitement de vos données, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données.
+   Vous disposez également de la faculté de donner des directives sur le sort de vos données. Vous pouvez exercer vos droits en nous adressant votre demande à l’adresse postale : La République en marche, 68 rue du rocher 75008 Paris
+   ou à l’adresse électronique <a href="mailto:mes-donnees@en-marche.fr" target="_blank" class="link--no-decor">mes-donnees@en-marche.fr</a>. Pour toute information relative au traitement de vos données,
+   consultez notre politique de protection des données [insérer le lien vers la politique de protection des données du site qui porte le formulaire] ou contactez notre délégué à la protection des données à l’adresse <a href="mailto:dpo@en-marche.fr" target="_blank" class="link--no-decor">dpo@en-marche.fr</a>.
+</p>
+TXT
+        ));
+
         $manager->flush();
     }
 
