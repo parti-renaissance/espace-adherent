@@ -33,7 +33,7 @@
                     <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                         <div class="l__row b__nudge--bottom-small">
                             <img src="{{ asset('/images/icons/activity/date.svg') }}" alt="Ville" class="b__nudge--right-nano">
-                            <span>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "E d MMM") }} {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'H'mm") }} </span>
+                            <span>{{ event.beginAt|format_datetime('none', 'none', "E d MMM") }} {{ event.beginAt|format_datetime('none', 'none', "HH'H'mm") }} </span>
                         </div>
                         <div class="l__row b__nudge--bottom-small">
                             <span class="b__nudge--none">&nbsp;- {{ event.categoryName }}</span>
@@ -84,7 +84,7 @@
                     <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                         <div class="l__row b__nudge--bottom-small">
                             <img src="{{ asset('/images/icons/activity/date.svg') }}" alt="Ville" class="b__nudge--right-nano">
-                            <span>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "E d MMM") }} {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'H'mm") }} </span>
+                            <span>{{ event.beginAt|format_datetime('none', 'none', "E d MMM") }} {{ event.beginAt|format_datetime('none', 'none', "HH'H'mm") }} </span>
                         </div>
                         <div class="l__row b__nudge--bottom-small">
                             <span class="b__nudge--none">&nbsp;- {{ event.categoryName }}</span>

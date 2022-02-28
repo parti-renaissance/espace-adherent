@@ -41,7 +41,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Date de création</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ object.createdAt|localizeddate('medium', 'medium') }}
+                                        {{ object.createdAt|format_datetime('medium', 'medium') }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -79,7 +79,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Date de naissance</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ adherent.birthDate|localizeddate('full', 'none') }} ({{ adherent.age }} ans)
+                                        {{ adherent.birthDate|format_datetime('full', 'none') }} ({{ adherent.age }} ans)
                                         <br>
                                         <i>{{ adherent.birthDate|date('d/m/Y') }}</i>
                                     </td>
@@ -310,7 +310,7 @@
                                                 </td>
                                             {% else %}
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                    {{ certification_request.createdAt|localizeddate }}
+                                                    {{ certification_request.createdAt|format_datetime }}
                                                 </td>
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                                     {{ macros.get_certification_request_status_badge(certification_request) }}

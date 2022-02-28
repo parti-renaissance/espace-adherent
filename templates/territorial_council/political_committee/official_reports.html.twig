@@ -11,11 +11,11 @@
                 <div class="l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                     <div>
                         Ajouté par <b>{{ report.author ? report.author.fullName : 'Anonyme' }}</b>
-                        le {{ report.createdAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
+                        le {{ report.createdAt|format_datetime('none', 'none', 'd MMMM yyyy') }}
                     </div>
                     {% if report.createdAt != report.updatedAt %}
                         <div class="l__row b__nudge--top-10">
-                            <span class="official-report__version">version {{ report.lastVersion }}</span>Modifié le {{ report.updatedAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
+                            <span class="official-report__version">version {{ report.lastVersion }}</span>Modifié le {{ report.updatedAt|format_datetime('none', 'none', 'd MMMM yyyy') }}
                         </div>
                     {% endif %}
                 </div>

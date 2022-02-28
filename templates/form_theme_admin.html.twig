@@ -50,13 +50,13 @@
 
 
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            {{ donation.amountInEuros|localizedcurrency('EUR') }}
+                            {{ donation.amountInEuros|format_currency('EUR') }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ macros.get_donation_type_badge(donation.type) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            {{ donation.donatedAt|localizeddate }}
+                            {{ donation.donatedAt|format_datetime }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ macros.get_donation_status_badge(donation.status) }}
@@ -69,7 +69,7 @@
                                             <span class="badge {% if transaction.isSuccessful %}bg-green{% else %}bg-red{% endif %}">
                                                 {{ ('transaction.result_code.' ~ transaction.payboxResultCode)|trans }}
                                             </span>
-                                            le {{ transaction.payboxDateTime|localizeddate }}
+                                            le {{ transaction.payboxDateTime|format_datetime }}
                                         </li>
                                     {% endfor %}
                                 </ol>
@@ -95,7 +95,7 @@
             <tr>
                 <th class="sonata-ba-list-field-header-text">Montant total donné</th>
                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                    {{ donator.getTotalDonated|localizedcurrency('EUR') }}
+                    {{ donator.getTotalDonated|format_currency('EUR') }}
                 </td>
             </tr>
         </tbody>

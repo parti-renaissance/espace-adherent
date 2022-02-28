@@ -4,8 +4,8 @@
 
 {% block field %}
     {% if value %}
-        {{ value.amountInEuros|localizedcurrency('EUR') }}
-        le {{ value.lastSuccessDate|localizeddate }}
+        {{ value.amountInEuros|format_currency('EUR') }}
+        le {{ value.lastSuccessDate|format_datetime }}
         {{ macros.get_donation_type_badge(value.type) }}
     {% else %}
         <span class="label label-danger">Aucun don réussi pour l'instant</span>

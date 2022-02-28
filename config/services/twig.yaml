@@ -6,8 +6,6 @@ services:
         bind:
             $adherentInterests: '%adherent_interests%'
 
-    Twig\Extensions\IntlExtension: ~
-
     App\Twig\:
         resource: ../../src/Twig/
 

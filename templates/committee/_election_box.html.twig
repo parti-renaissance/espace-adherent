@@ -54,10 +54,10 @@
 
     <p class="text--body b__nudge--top b__nudge--bottom-large instance__elections-box--text">
         {% if committee_election.isCandidacyPeriodActive %}
-            Les candidatures seront closes le <span class="text--bold">{{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}</span>.
+            Les candidatures seront closes le <span class="text--bold">{{ committee_election.candidacyPeriodEndDate|format_datetime('none', 'none', "dd MMMM y à HH'h'mm") }}</span>.
         {% endif %}
 
-        Le vote {{ committee_election.isVotePeriodStarted ? 'est' : 'sera' }} ouvert du <span class="text--bold">{{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>.
+        Le vote {{ committee_election.isVotePeriodStarted ? 'est' : 'sera' }} ouvert du <span class="text--bold">{{ committee_election.voteStartDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ committee_election.voteEndDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span>.
     </p>
 
     <hr/>

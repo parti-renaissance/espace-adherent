@@ -27,14 +27,14 @@
             {% if committee_election.isCandidacyPeriodActive %}
                 <h2>Candidatez en binôme</h2>
 
-                <p class="text--body">Vous avez jusqu'au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }} pour candidater à l'élection des binômes paritaires d'animateurs locaux.</p>
+                <p class="text--body">Vous avez jusqu'au {{ committee_election.candidacyPeriodEndDate|format_datetime('none', 'none', "dd MMMM y à HH'h'mm") }} pour candidater à l'élection des binômes paritaires d'animateurs locaux.</p>
 
                 <p class="text--body">Vous pouvez candidater dans ces comités :</p>
                 {% set memberships = memberships|filter(membership => membership.committee.currentElection.isCandidacyPeriodActive) %}
             {% elseif committee_election.isVotePeriodActive %}
                 <h2>Votez pour votre binôme d'animateurs</h2>
 
-                <p class="text--body">Vous avez jusqu'au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }} pour voter à l'élection des binômes paritaires d'animateurs locaux.</p>
+                <p class="text--body">Vous avez jusqu'au {{ committee_election.voteEndDate|format_datetime('none', 'none', "dd MMMM y à HH'h'mm") }} pour voter à l'élection des binômes paritaires d'animateurs locaux.</p>
 
                 <p class="text--body">Vous pouvez voter dans ces comités :</p>
                 {% set memberships = memberships|filter(membership => membership.committee.currentElection.isVotePeriodActive) %}

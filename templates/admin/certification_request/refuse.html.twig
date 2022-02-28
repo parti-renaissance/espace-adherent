@@ -3,7 +3,7 @@
 {% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
 
 {% block title %}
-    Demande de certification de <b>{{ admin.toString(object)|truncate(25) }}</b>
+    Demande de certification de <b>{{ admin.toString(object)|u.truncate(25, '...') }}</b>
 {% endblock %}
 
 {% block show %}

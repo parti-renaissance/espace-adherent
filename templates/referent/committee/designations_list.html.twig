@@ -79,7 +79,7 @@
                                 {{ committee.name }}
                             </a>
                         </td>
-                        <td class="text--center">{{ designation.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}</td>
+                        <td class="text--center">{{ designation.voteStartDate|format_datetime('none', 'none', "dd MMMM y à HH'h'mm") }}</td>
                         <td>
                             {% set status = election.status %}
                             <span class="status {{ status in constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::ACTIVE_STATUSES') ? 'status__1' : 'status__2' }}">

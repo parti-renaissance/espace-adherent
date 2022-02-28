@@ -21,7 +21,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Date de naissance</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ object.adherent.birthDate|localizeddate('medium', 'none') }}
+                                        {{ object.adherent.birthDate|format_datetime('medium', 'none') }}
                                     </td>
                                 </tr>
                             </tbody>

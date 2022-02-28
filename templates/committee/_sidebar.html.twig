@@ -1,6 +1,6 @@
 <aside class="committee__aside l__wrapper--aside">
     {% if membership %}
-        <div class="font-roboto text--silver-gray b__nudge--bottom">Vous êtes membre de ce comité depuis le {{ membership.subscriptionDate|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy à HH:mm') }}</div>
+        <div class="font-roboto text--silver-gray b__nudge--bottom">Vous êtes membre de ce comité depuis le {{ membership.subscriptionDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}</div>
     {% endif %}
 
     {% if has_role_adherent and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}

@@ -15,7 +15,7 @@
         </p>
     {% else %}
         <p class="text--body text--dark b__nudge--bottom-large b__nudge--top-0">
-            L’élection du Bureaux exécutif se tiendra en ligne du <span class="text--bold">{{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}</span>.
+            L’élection du Bureaux exécutif se tiendra en ligne du <span class="text--bold">{{ election.voteStartDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span> au <span class="text--bold">{{ election.voteEndDate|format_datetime('none', 'none', "dd/MM/y à HH'h'mm") }}</span>.
         </p>
     {% endif %}
 

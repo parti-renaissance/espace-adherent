@@ -4,7 +4,7 @@
 {% block canonical_url url('app_committee_event_show', {slug: event.slug}) %}
 
 {%- block meta_description -%}
-    {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.localBeginAt|localizeddate('full', 'none', null, false) }} à {{ event.localBeginAt|date('G\\hi', false) -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
+    {{ event.name }} est un événement local du mouvement La République En Marche ! organisé par {{ event.organizer ? event.organizer.partialName : 'un ancien adhérent' }} le {{ event.localBeginAt|format_datetime('full', 'none') }} à {{ event.localBeginAt|date('G\\hi', false) -}}, dans la ville de {{ event.postAddress.cityName }}. Visitez la page dédiée pour vous inscrire et obtenir toutes les informations concernant cet événement.
 {%- endblock -%}
 
 {% block json_ld %}
@@ -122,7 +122,7 @@
                 <ul>
                     <li class="b__nudge--bottom-tiny">
                         <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        <span class="committee-event-date">{{- event.localBeginAt|localizeddate('full', 'none', null, false)|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) -}}{{ event.timeZone|utc_offset }}</span>
+                        <span class="committee-event-date">{{- event.localBeginAt|format_datetime('full', 'none')|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) -}}{{ event.timeZone|utc_offset }}</span>
                     </li>
                     <li>
                         <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -185,7 +185,7 @@
                             <div class="box-header">
                                 <a href="{{ path('app_committee_event_show', { slug: eventNearby.slug }) }}" class="headline link--no-decor">
                                     <h2 class="text--normal">{{ eventNearby.name }}</h2>
-                                    <h4 class="text--summary text--gray b__nudge--bottom-medium"><i class="fa fa-clock-o" aria-hidden="true"></i> Le {{ eventNearby.localBeginAt|localizeddate('medium', 'none', null, false)|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) }}</h4>
+                                    <h4 class="text--summary text--gray b__nudge--bottom-medium"><i class="fa fa-clock-o" aria-hidden="true"></i> Le {{ eventNearby.localBeginAt|format_datetime('medium', 'none')|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) }}</h4>
                                     <img class="search-map"
                                          src="{{ path('map_url', { latitude: eventNearby.latitude, longitude: eventNearby.longitude }) }}"
                                          title="Carte d'accès à l'événement {{ eventNearby.name }}"
