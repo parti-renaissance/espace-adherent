@@ -85,24 +85,7 @@
             {{ form_errors(form.acceptValuesCharter) }}
         </div>
 
-        <p class="b__nudge--top-large text--small text--gray text--justify">
-            Les informations recueillies via le formulaire ci-dessus et le formulaire précédent sont utilisées par
-            LaREM afin de traiter votre demande de devenir assesseur dans un bureau de vote lors des
-            élections européennes.<br/><br/>
-
-            Les champs marqués d'un astérisque (*) sont obligatoires, tout défaut de réponse ne permettra pas à LaREM
-            de traiter votre demande.<br/><br/>
-
-            Conformément aux dispositions légales et règlementaires relatives à la protection des données personnelles,
-            vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données,
-            ainsi que d'un droit d'opposition et d'un droit à la limitation du traitement des données vous concernant.
-            Vous du droit de donner des directives sur le sort de vos données après votre décès.<br/><br/>
-
-            Pour plus d'informations sur le traitement de vos données personnelles, vous pouvez consulter la
-            Politique de protection des données à l'adresse <a href="https://en-marche.fr/politique-protection-donnees" target="_blank" rel="noopener noreferrer" class="link--no-decor">https://en-marche.fr/politique-protection-donnees</a> et
-            exercer vos droits en nous adressant votre demande accompagnée d'une copie de votre pièce d'identité à
-            l'adresse électronique suivante: <a target="_blank" class="link--no-decor" href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>
-        </p>
+        {{ cms_block('assesseur-request-mentions-legales') }}
 
         <div class="text--center b__nudge--top-large">
             {{ form_widget(form.fill_assessor_info, { attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}

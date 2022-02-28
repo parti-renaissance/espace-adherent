@@ -189,6 +189,55 @@ Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui 
 Effectuez donc votre démarche rapidement !
 TXT
         ));
+
+        $manager->persist($this->createCmsBlock(
+            'assesseur-request-subtitle',
+            'Texte affiché sous le titre de la page de demande des assesseurs',
+            'Élections municipales 2020.'
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'assesseur-request-homepage',
+            'Texte affiché sur la page du formulaire de demande',
+            <<<'TXT'
+<p class="text--gray">
+    Madame, Monsieur,<br/><br/>
+    Merci de vous porter volontaire pour être assesseur(e) lors des élections municipales de 2020.<br/><br/>
+    Ce formulaire vous permettra de renseigner l'ensemble des informations nécessaires.<br/><br/>
+    En raison du nombre limité de places par bureau de vote pour chaque liste (1 assesseur(e) titulaire et 1 assesseur(e) suppléant(e)),
+    nous vous invitons à en sélectionner plusieurs dans l’ordre de vos préférences. Nous en tiendrons compte au maximum lors des attributions.<br/>
+    Vous recevrez prochainement un mail de confirmation et d’explication si votre candidature est retenue.<br/>
+    <br/>
+    Merci encore pour votre engagement !<br/><br/>
+    Conditions préalables pour devenir assesseur :<br/>
+    <ol>
+        <li>Vous pouvez être assesseur dans n’importe quelle commune du département où vous habitez.</li>
+        <li>Vous devez être âgée de 18 ans minimum.</li>
+    </ol>
+</p>
+TXT
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'assesseur-request-mentions-legales',
+            'Mentions légales du formulaires de demande assesseur',
+            <<<'TXT'
+<p class="b__nudge--top-large text--small text--gray text--justify">
+   Les données recueillies dans ce formulaire sont traitées par La République en Marche (LaREM) et ses équipes aux fins
+   de gestion des demandes à tenir le rôle d’assesseur lors de l’élection présidentielle qui se déroulera les 10 et 24 avril 2022.
+   Elles permettront à LaREM de vous contacter dans ce cadre et si vous y consentez, de vous recontacter pour tenir le rôle d’assesseur lors de la prochaine échéance électorale.
+   En envoyant ce formulaire, vous autorisez LaREM à utiliser vos données pour ces finalités. Vos données seront conservées jusqu’à la fin de l’élection présidentielle 2022
+   ou à la fin des élections législatives 2022 lorsque vous avez consenti à être recontacté pour la prochaine échéance électorale.<br/><br/>
+
+   Conformément à la règlementation en vigueur sur la protection des données, vous pouvez retirer votre consentement à tout moment. Vous disposez d’un droit d’opposition
+   et d’un droit de limitation du traitement de vos données, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données.
+   Vous disposez également de la faculté de donner des directives sur le sort de vos données. Vous pouvez exercer vos droits en nous adressant votre demande à l’adresse postale : La République en marche, 68 rue du rocher 75008 Paris
+   ou à l’adresse électronique <a href="mailto:mes-donnees@en-marche.fr" target="_blank" class="link--no-decor">mes-donnees@en-marche.fr</a>. Pour toute information relative au traitement de vos données,
+   consultez notre politique de protection des données [insérer le lien vers la politique de protection des données du site qui porte le formulaire] ou contactez notre délégué à la protection des données à l’adresse <a href="mailto:dpo@en-marche.fr" target="_blank" class="link--no-decor">dpo@en-marche.fr</a>.
+</p>
+TXT
+        ));
+
         $manager->flush();
     }
 
