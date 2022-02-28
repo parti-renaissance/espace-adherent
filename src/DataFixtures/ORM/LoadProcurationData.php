@@ -115,7 +115,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '1962-10-11',
             'FR',
             '75020',
-            '75008-75108',
+            '75020-75120',
             null,
             'Lycée Faubourg',
             $partialLegislativeElections->getRounds(),
@@ -300,7 +300,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'maxime.michaux@example.fr',
             '14 rue Jules Ferry',
             '75018',
-            '75020-75120',
+            '75018-75118',
             null,
             'FR',
             '+33988776655',
@@ -320,7 +320,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'jm.carbonneau@example.fr',
             '14 rue Jules Ferry',
             '75018',
-            '75020-75120',
+            '75018-75118',
             null,
             'FR',
             '+33988776655',
@@ -399,9 +399,15 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75010-75110',
             null,
             'École de la République',
-            [$partialLegislativeElections->getRounds()->first()],
+            $partialLegislativeElections->getRounds(),
             ProcurationProxy::RELIABILITY_ADHERENT,
-            'Responsable procuration'
+            'Responsable procuration',
+            2,
+            [
+                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75110'),
+                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75115'),
+                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75120'),
+            ]
         ));
 
         $manager->persist($this->createProxyProposal(
@@ -447,6 +453,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             ProcurationProxy::RELIABILITY_ADHERENT,
             'Désactivé',
             1,
+            [],
             1
         ));
 
@@ -576,6 +583,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         int $reliability = ProcurationProxy::RELIABILITY_UNKNOWN,
         string $reliabilityDescription = '',
         int $proxiesCount = 1,
+        array $otherVoteCities = [],
         bool $disabled = false
     ): ProcurationProxy {
         if ($phone) {
@@ -604,6 +612,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         $proxy->setReliabilityDescription($reliabilityDescription);
         $proxy->setDisabled($disabled);
         $proxy->setProxiesCount($proxiesCount);
+        array_map([$proxy, 'addOtherVoteCity'], $otherVoteCities);
 
         return $proxy;
     }

@@ -108,6 +108,41 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findMatchingProxiesByOtherCities(ProcurationRequest $procurationRequest): array
+    {
+        if (!$procurationRequest->isRequestFromFrance()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('pp');
+
+        $qb
+            ->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
+            ->innerJoin('pp.otherVoteCities', 'other_city')
+            ->andWhere('pp.disabled = 0')
+            ->andWhere('pp.reliability >= 0')
+            ->andWhere('pp.frenchRequestAvailable = true')
+            ->andWhere(
+                $qb->expr()->andX(
+                    'pp.voteCountry = :voteCountry',
+                    'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                    'pp.voteCityName != :voteCityName',
+                    'other_city.name LIKE :voteCityNamePattern'
+                )
+            )
+            ->setParameter('votePostalCodePrefix', substr($procurationRequest->getVotePostalCode(), 0, 2))
+            ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
+            ->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%')
+            ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
+            ->orderBy('score', 'DESC')
+            ->addOrderBy('pp.lastName', 'ASC')
+        ;
+
+        $this->andWhereMatchingRounds($qb, $procurationRequest);
+
+        return $qb->getQuery()->getResult();
+    }
+
     private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
     {
         $codesFilter = $qb->expr()->orX();

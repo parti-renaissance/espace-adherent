@@ -157,6 +157,7 @@ class ProcurationManagerController extends AbstractController
         return $this->render('procuration_manager/request.html.twig', [
             'request' => $request,
             'matchingProxies' => $procurationManager->getMatchingProcurationProxies($request),
+            'nearMatchingProxies' => $procurationManager->getMatchingProcurationProxiesByOtherCities($request),
         ]);
     }
 

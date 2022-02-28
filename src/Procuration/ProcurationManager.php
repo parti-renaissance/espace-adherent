@@ -88,6 +88,11 @@ class ProcurationManager
         return $this->procurationProxyRepository->findMatchingProxies($request);
     }
 
+    public function getMatchingProcurationProxiesByOtherCities(ProcurationRequest $request): array
+    {
+        return $this->procurationProxyRepository->findMatchingProxiesByOtherCities($request);
+    }
+
     public function getProcurationProxyProposal(int $id, Adherent $manager): ?ProcurationProxy
     {
         $proposal = $this->procurationProxyRepository->find($id);
