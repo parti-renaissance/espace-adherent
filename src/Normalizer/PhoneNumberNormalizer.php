@@ -61,7 +61,11 @@ class PhoneNumberNormalizer implements NormalizerInterface, NormalizerAwareInter
             return $phoneNumber;
         }
 
-        return $this->util->parse($data, Address::FRANCE);
+        try {
+            return $this->util->parse($data, Address::FRANCE);
+        } catch (NumberParseException $e) {
+            return null;
+        }
     }
 
     public function supportsNormalization($data, $format = null, array $context = [])
