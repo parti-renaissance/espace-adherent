@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "put": {
  *             "normalization_context": {"groups": {"contact_read_after_write"}},
- *             "denormalization_context": {"groups": {"contact_put"}},
+ *             "denormalization_context": {"groups": {"contact_update"}},
  *             "path": "/contacts/{id}",
  *             "method": "PUT",
  *             "requirements": {"id": "%pattern_uuid%"},
@@ -87,7 +87,7 @@ class Contact
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      *
-     * @Groups({"contact_read", "contact_write"})
+     * @Groups({"contact_write", "contact_read"})
      */
     private ?string $emailAddress;
 
@@ -103,6 +103,12 @@ class Contact
     /**
      * @ORM\Column(type="date", nullable=true)
      *
+     * @Assert\Date
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="now"
+     * )
+     *
      * @Groups({"contact_update"})
      */
     private ?\DateTimeInterface $birthdate = null;
@@ -110,7 +116,10 @@ class Contact
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Assert\Choice(choices=App\Membership\Contact\InterestEnum::ALL, multiple=true)
+     * @Assert\Choice(
+     *     choices=App\Membership\Contact\InterestEnum::ALL,
+     *     multiple=true
+     *  )
      *
      * @Groups({"contact_update"})
      */
@@ -119,9 +128,43 @@ class Contact
     /**
      * @ORM\Column
      *
+     * @Assert\NotBlank
+     * @Assert\Choice(
+     *     choices=App\Membership\Contact\SourceEnum::ALL,
+     *     message="contact.source.choice"
+     * )
+     *
      * @Groups({"contact_write"})
      */
     private ?string $source;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Assert\Type("bool")
+     *
+     * @Groups({"contact_update"})
+     */
+    private bool $mailContact = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Assert\Type("bool")
+     *
+     * @Groups({"contact_update"})
+     */
+    private bool $phoneContact = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Assert\Type("bool")
+     * @Assert\IsTrue(message="contact.cgu_accepted.is_true")
+     *
+     * @Groups({"contact_write", "contact_update"})
+     */
+    private bool $cguAccepted = false;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -203,5 +246,35 @@ class Contact
     public function setSource(?string $source): void
     {
         $this->source = $source;
+    }
+
+    public function isMailContact(): bool
+    {
+        return $this->mailContact;
+    }
+
+    public function setMailContact(bool $mailContact): void
+    {
+        $this->mailContact = $mailContact;
+    }
+
+    public function isPhoneContact(): bool
+    {
+        return $this->phoneContact;
+    }
+
+    public function setPhoneContact(bool $phoneContact): void
+    {
+        $this->phoneContact = $phoneContact;
+    }
+
+    public function isCguAccepted(): bool
+    {
+        return $this->cguAccepted;
+    }
+
+    public function setCguAccepted(bool $cguAccepted): void
+    {
+        $this->cguAccepted = $cguAccepted;
     }
 }

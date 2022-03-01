@@ -17,7 +17,7 @@ class LoadContactData extends Fixture
             self::CONTACT_1_UUID,
             'Rémi',
             'remi@avecvous.dev',
-            'chezvous'
+            'avecvous'
         ));
 
         $manager->flush();
@@ -25,11 +25,15 @@ class LoadContactData extends Fixture
 
     private function createContact(string $uuid, string $firstName, string $email, string $source): Contact
     {
-        return new Contact(
+        $contact = new Contact(
             Uuid::fromString($uuid),
             $firstName,
             $email,
             $source
         );
+
+        $contact->setCguAccepted(true);
+
+        return $contact;
     }
 }

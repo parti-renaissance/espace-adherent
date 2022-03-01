@@ -13,6 +13,8 @@ trait EntityPostAddressTrait
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
+     *
+     * @SymfonySerializer\Groups({"contact_update"})
      */
     protected $postAddress;
 
@@ -53,7 +55,12 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"adherent_change_diff", "user_profile", "export", "adherent_autocomplete"})
+     * @SymfonySerializer\Groups({
+     *     "adherent_change_diff",
+     *     "user_profile",
+     *     "export",
+     *     "adherent_autocomplete"
+     * })
      */
     public function getPostalCode(): ?string
     {

@@ -71,6 +71,12 @@ common.zone.not_managed_zone: La zone choisie ne fait pas partie des zones gér�
 constraint.unique_in_collection: Un élément avec la valeur "%value%" existe déjà.
 
 #
+# Contact
+#
+contact.source.choice: Cette valeur n'est pas valide.
+contact.cgu_accepted.is_true: Veuillez accepter les CGU.
+
+#
 # Adherent
 #
 adherent.uuid.adherent_not_found: Aucun adhérent trouvé pour l'UUID "{{ value }}".

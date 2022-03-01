@@ -26,7 +26,12 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read", "event_write"})
+     * @SymfonySerializer\Groups({
+     *     "profile_read",
+     *     "event_write",
+     *     "contact_read_after_write",
+     *     "contact_update"
+     * })
      */
     private $address;
 
@@ -37,7 +42,12 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read", "event_write"})
+     * @SymfonySerializer\Groups({
+     *     "profile_read",
+     *     "event_write",
+     *     "contact_read_after_write",
+     *     "contact_update"
+     * })
      */
     private $postalCode;
 
@@ -48,7 +58,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
-     * @SymfonySerializer\Groups({"event_write"})
+     * @SymfonySerializer\Groups({
+     *     "event_write",
+     *     "contact_read_after_write",
+     *     "contact_update"
+     * })
      */
     private $city;
 
@@ -59,7 +73,12 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read", "event_write"})
+     * @SymfonySerializer\Groups({
+     *     "profile_read",
+     *     "event_write",
+     *     "contact_read_after_write",
+     *     "contact_update"
+     * })
      */
     private $cityName;
 
@@ -70,14 +89,24 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read", "event_write"})
+     * @SymfonySerializer\Groups({
+     *     "profile_read",
+     *     "event_write",
+     *     "contact_read_after_write",
+     *     "contact_update"
+     * })
      */
     private $country;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @SymfonySerializer\Groups({"profile_read", "event_write"})
+     * @SymfonySerializer\Groups({
+     *     "profile_read",
+     *     "event_write",
+     *     "contact_read_after_write",
+     *     "contact_update"
+     * })
      */
     private $region;
 
