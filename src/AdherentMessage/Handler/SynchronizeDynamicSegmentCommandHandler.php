@@ -33,11 +33,7 @@ class SynchronizeDynamicSegmentCommandHandler implements MessageHandlerInterface
 
         $this->entityManager->refresh($object);
 
-        if ($segmentId = $object->getMailchimpId()) {
-            $this->mailchimpManager->updateDynamicSegment($object, $segmentId);
-        } else {
-            $this->mailchimpManager->createDynamicSegment($object);
-        }
+        $this->mailchimpManager->editDynamicSegment($object, $object->getMailchimpId());
 
         $this->entityManager->flush();
         $this->entityManager->clear();
