@@ -33,6 +33,7 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
             $queryBuilder
                 ->andWhere(sprintf('%1$s.published = 1 AND %1$s.createdAt >= :date', $alias))
                 ->orderBy("$alias.pinned", 'DESC')
+                ->addOrderBy("$alias.createdAt", 'DESC')
                 ->setParameter('date', (new \DateTime('-60 days'))->setTime(0, 0))
             ;
 
