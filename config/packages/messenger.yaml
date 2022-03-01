@@ -21,11 +21,13 @@ framework:
             symfony_serializer:
                 format: json
                 context: { }
+        failure_transport: failed
         transports:
+            failed: 'doctrine://default?queue_name=failed'
             default:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
-                    service: App\Messenger\AlwaysRetryStrategy
+                    delay: 10000
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
@@ -33,7 +35,7 @@ framework:
             pap:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
-                    service: App\Messenger\AlwaysRetryStrategy
+                    delay: 10000
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.pap' }
                     queues:
@@ -41,7 +43,7 @@ framework:
             mailchimp_sync:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
-                    service: App\Messenger\AlwaysRetryStrategy
+                    delay: 10000
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync' }
                     queues:
@@ -49,7 +51,7 @@ framework:
             mailchimp_campaign:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
-                    service: App\Messenger\AlwaysRetryStrategy
+                    delay: 10000
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign' }
                     queues:
