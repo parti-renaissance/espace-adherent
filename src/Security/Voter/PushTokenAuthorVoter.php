@@ -21,7 +21,7 @@ class PushTokenAuthorVoter extends Voter
     {
         $user = $token->getUser();
 
-        if ($user instanceof Adherent) {
+        if ($user instanceof Adherent && $subject->getAdherent()) {
             return $subject->getAdherent()->equals($user);
         } elseif ($user instanceof DeviceApiUser && $subject->getDevice()) {
             return $subject->getDevice()->equals($user->getDevice());
