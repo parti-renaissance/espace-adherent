@@ -3,8 +3,9 @@
 namespace App\Mailchimp\Exception;
 
 use App\Entity\Geo\Zone;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
-class ZoneNotSynchronizedException extends \Exception implements SkippableMessageExceptionInterface
+class ZoneNotSynchronizedException extends UnrecoverableMessageHandlingException
 {
     private $zone;
 

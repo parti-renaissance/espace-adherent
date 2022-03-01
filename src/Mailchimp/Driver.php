@@ -68,7 +68,7 @@ class Driver implements LoggerAwareInterface
             return $response->toArray()['html'] ?? '';
         }
 
-        $this->logger->error(sprintf('[API] Error: %s', $response->getBody()), ['campaignId' => $campaignId]);
+        $this->logger->error(sprintf('[API] Error: %s', $response->getContent()), ['campaignId' => $campaignId]);
 
         return '';
     }
@@ -87,9 +87,9 @@ class Driver implements LoggerAwareInterface
         return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
 
-    public function editCampaignContent(string $campaignId, EditCampaignContentRequest $request): bool
+    public function editCampaignContent(string $campaignId, EditCampaignContentRequest $request): ResponseInterface
     {
-        return $this->sendRequest('PUT', sprintf('/campaigns/%s/content', $campaignId), $request->toArray());
+        return $this->send('PUT', sprintf('/campaigns/%s/content', $campaignId), $request->toArray());
     }
 
     public function deleteCampaign(string $campaignId): bool
@@ -193,6 +193,11 @@ class Driver implements LoggerAwareInterface
         return null;
     }
 
+    public function isSuccessfulResponse(?ResponseInterface $response): bool
+    {
+        return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+    }
+
     private function sendRequest(string $method, string $uri, array $body = []): bool
     {
         $response = $this->send($method, $uri, $body);
@@ -225,10 +230,5 @@ class Driver implements LoggerAwareInterface
     private function createHash(string $email): string
     {
         return md5(strtolower($email));
-    }
-
-    private function isSuccessfulResponse(?ResponseInterface $response): bool
-    {
-        return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
     }
 }
