@@ -179,6 +179,15 @@ class AssessorRequest
     /**
      * @var string|null
      *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max="255")
+     */
+    private $voterNumber;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(length=50, nullable=true)
      *
      * @Assert\Expression(
@@ -302,6 +311,7 @@ class AssessorRequest
         string $officeNumber,
         string $emailAddress,
         PhoneNumber $phoneNumber,
+        ?string $voterNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
         string $birthName,
@@ -327,6 +337,7 @@ class AssessorRequest
         $assessorRequest->setOfficeNumber($officeNumber);
         $assessorRequest->setEmailAddress($emailAddress);
         $assessorRequest->setPhone($phoneNumber);
+        $assessorRequest->setVoterNumber($voterNumber);
         $assessorRequest->setAssessorCity($assessorCity);
         $assessorRequest->setAssessorPostalCode($assessorPostalCode);
         $assessorRequest->setOffice($office);
@@ -516,6 +527,16 @@ class AssessorRequest
     public function setPhone(PhoneNumber $phone): void
     {
         $this->phone = $phone;
+    }
+
+    public function getVoterNumber(): ?string
+    {
+        return $this->voterNumber;
+    }
+
+    public function setVoterNumber(?string $voterNumber): void
+    {
+        $this->voterNumber = $voterNumber;
     }
 
     public function getAssessorCity(): ?string
