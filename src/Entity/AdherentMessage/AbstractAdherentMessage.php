@@ -59,6 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/adherent_messages",
+ *             "normalization_context": {"groups": {"message_read"}},
  *         },
  *     },
  *     itemOperations={
