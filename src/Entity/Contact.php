@@ -143,16 +143,12 @@ class Contact
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @Assert\Type("bool")
-     *
      * @Groups({"contact_update"})
      */
     private bool $mailContact = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Assert\Type("bool")
      *
      * @Groups({"contact_update"})
      */
@@ -161,7 +157,6 @@ class Contact
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @Assert\Type("bool")
      * @Assert\IsTrue(message="contact.cgu_accepted.is_true")
      *
      * @Groups({"contact_create", "contact_update"})
