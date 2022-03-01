@@ -1,0 +1,207 @@
+<?php
+
+namespace App\Entity;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "post": {
+ *             "denormalization_context": {"groups": {"contact_write"}},
+ *             "normalization_context": {"groups": {"contact_read_after_write"}},
+ *             "path": "/contacts",
+ *             "method": "POST",
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "normalization_context": {"groups": {"contact_read"}},
+ *             "path": "/contacts/{id}",
+ *             "method": "GET",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *         },
+ *         "put": {
+ *             "normalization_context": {"groups": {"contact_read_after_write"}},
+ *             "denormalization_context": {"groups": {"contact_put"}},
+ *             "path": "/contacts/{id}",
+ *             "method": "PUT",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *         }
+ *     }
+ * )
+ *
+ * @ORM\Entity
+ *
+ * @UniqueEntity(fields={"emailAddress"})
+ */
+class Contact
+{
+    use EntityIdentityTrait;
+    use EntityPostAddressTrait;
+    use EntityTimestampableTrait;
+
+    /**
+     * @ORM\Column(length=50)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     allowEmptyString=false,
+     *     minMessage="common.first_name.min_length",
+     *     maxMessage="common.first_name.max_length"
+     * )
+     *
+     * @Groups({"contact_write", "contact_read"})
+     */
+    private ?string $firstName;
+
+    /**
+     * @ORM\Column(length=50, nullable=true)
+     *
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     allowEmptyString=false,
+     *     minMessage="common.last_name.min_length",
+     *     maxMessage="common.last_name.max_length"
+     * )
+     *
+     * @Groups({"contact_update"})
+     */
+    private ?string $lastName;
+
+    /**
+     * @ORM\Column(unique=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Email(message="common.email.invalid")
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *
+     * @Groups({"contact_read", "contact_write"})
+     */
+    private ?string $emailAddress;
+
+    /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     *
+     * @AssertPhoneNumber(defaultRegion="FR")
+     *
+     * @Groups({"contact_update"})
+     */
+    private ?PhoneNumber $phone = null;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({"contact_update"})
+     */
+    private ?\DateTimeInterface $birthdate = null;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Assert\Choice(choices=App\Membership\Contact\InterestEnum::ALL, multiple=true)
+     *
+     * @Groups({"contact_update"})
+     */
+    private array $interests = [];
+
+    /**
+     * @ORM\Column
+     *
+     * @Groups({"contact_write"})
+     */
+    private ?string $source;
+
+    public function __construct(
+        UuidInterface $uuid = null,
+        string $firstName = null,
+        string $emailAddress = null,
+        string $source = null
+    ) {
+        $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->firstName = $firstName;
+        $this->emailAddress = $emailAddress;
+        $this->source = $source;
+    }
+
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function getEmailAddress(): string
+    {
+        return $this->emailAddress;
+    }
+
+    public function setEmailAddress(string $emailAddress): void
+    {
+        $this->emailAddress = $emailAddress;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?PhoneNumber $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(?\DateTimeInterface $birthdate): void
+    {
+        $this->birthdate = $birthdate;
+    }
+
+    public function setInterests(array $interests): void
+    {
+        $this->interests = $interests;
+    }
+
+    public function getInterests(): array
+    {
+        return $this->interests;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(?string $source): void
+    {
+        $this->source = $source;
+    }
+}

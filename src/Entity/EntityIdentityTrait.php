@@ -88,6 +88,8 @@ trait EntityIdentityTrait
      *     "committee_sync",
      *     "adherent_change_diff",
      *     "scope",
+     *     "contact_read_after_write",
+     *     "contact_read",
      * })
      *
      * @ApiProperty(
