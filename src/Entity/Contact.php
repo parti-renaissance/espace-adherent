@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -16,10 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *         "post": {
- *             "denormalization_context": {"groups": {"contact_write"}},
+ *             "denormalization_context": {"groups": {"contact_create"}},
  *             "normalization_context": {"groups": {"contact_read_after_write"}},
  *             "path": "/contacts",
  *             "method": "POST",
+ *             "validation_groups": {"Default", "contact_create"},
  *         }
  *     },
  *     itemOperations={
@@ -61,7 +63,7 @@ class Contact
      *     maxMessage="common.first_name.max_length"
      * )
      *
-     * @Groups({"contact_write", "contact_read"})
+     * @Groups({"contact_create", "contact_read"})
      */
     private ?string $firstName;
 
@@ -87,7 +89,7 @@ class Contact
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      *
-     * @Groups({"contact_write", "contact_read"})
+     * @Groups({"contact_create", "contact_read"})
      */
     private ?string $emailAddress;
 
@@ -134,7 +136,7 @@ class Contact
      *     message="contact.source.choice"
      * )
      *
-     * @Groups({"contact_write"})
+     * @Groups({"contact_create"})
      */
     private ?string $source;
 
@@ -162,9 +164,17 @@ class Contact
      * @Assert\Type("bool")
      * @Assert\IsTrue(message="contact.cgu_accepted.is_true")
      *
-     * @Groups({"contact_write", "contact_update"})
+     * @Groups({"contact_create", "contact_update"})
      */
     private bool $cguAccepted = false;
+
+    /**
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"contact_create"})
+     * @AssertRecaptcha(groups={"contact_create"})
+     *
+     * @Groups({"contact_create"})
+     */
+    public ?string $recaptcha = null;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -276,5 +286,10 @@ class Contact
     public function setCguAccepted(bool $cguAccepted): void
     {
         $this->cguAccepted = $cguAccepted;
+    }
+
+    public function setRecaptcha(?string $recaptcha): void
+    {
+        $this->recaptcha = $recaptcha;
     }
 }

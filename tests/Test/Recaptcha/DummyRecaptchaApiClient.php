@@ -8,6 +8,6 @@ class DummyRecaptchaApiClient implements RecaptchaApiClientInterface
 {
     public function verify(string $answer, string $clientIp = null): bool
     {
-        return true;
+        return 'wrong_answer' !== $answer;
     }
 }

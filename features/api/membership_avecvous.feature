@@ -12,7 +12,8 @@ Feature:
       "first_name": "Rémi",
       "email_address": "new-user@avecvous.dev",
       "source": "avecvous",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 201
@@ -108,6 +109,35 @@ Feature:
     }
     """
 
+  Scenario: As a non logged-in user I can not create a contact with invalid captcha
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/contacts" with body:
+    """
+    {
+      "first_name": "Rémi",
+      "email_address": "new@avecvous.dev",
+      "source": "avecvous",
+      "cgu_accepted": true,
+      "recaptcha": "wrong_answer"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.",
+      "violations": [
+        {
+          "propertyPath": "recaptcha",
+          "message": "Merci de confirmer le captcha avant de continuer."
+        }
+      ]
+    }
+    """
+
   Scenario: As a non logged-in user I can not create a contact with no cgu accepted
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/contacts" with body:
@@ -116,7 +146,8 @@ Feature:
       "first_name": "Rémi",
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
-      "cgu_accepted": false
+      "cgu_accepted": false,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -144,7 +175,8 @@ Feature:
       "first_name": "Rémi",
       "email_address": "invalid_email",
       "source": "avecvous",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -172,7 +204,8 @@ Feature:
       "first_name": "Rémi",
       "email_address": "remi@avecvous.dev",
       "source": "avecvous",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -192,7 +225,7 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can not create a contact with a no first name
+  Scenario: As a non logged-in user I can not create a contact with no first name
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/contacts" with body:
     """
@@ -200,7 +233,8 @@ Feature:
       "first_name": null,
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -228,7 +262,8 @@ Feature:
       "first_name": "R",
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -256,7 +291,8 @@ Feature:
       "first_name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -284,7 +320,8 @@ Feature:
       "first_name": "Rémi",
       "email_address": "new@avecvous.dev",
       "source": null,
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
@@ -312,7 +349,8 @@ Feature:
       "first_name": "Rémi",
       "email_address": "new@avecvous.dev",
       "source": "unknown_source",
-      "cgu_accepted": true
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
     }
     """
     Then the response status code should be 400
