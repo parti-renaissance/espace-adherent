@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache composer
         uses: actions/cache@v2
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache yarn dependencies
         uses: actions/cache@v2
@@ -86,7 +86,7 @@ jobs:
     needs: [ build ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache composer
         uses: actions/cache@v2
@@ -146,7 +146,7 @@ jobs:
     needs: [ build ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache composer
         uses: actions/cache@v2
@@ -180,7 +180,7 @@ jobs:
     needs: [ build ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache composer
         uses: actions/cache@v2
@@ -222,7 +222,7 @@ jobs:
           - '@javascript3'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache composer
         uses: actions/cache@v2
@@ -286,7 +286,7 @@ jobs:
       TAG: ${{ github.ref_name }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache composer
         uses: actions/cache@v2
@@ -350,7 +350,7 @@ jobs:
       GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
