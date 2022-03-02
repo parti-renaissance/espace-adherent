@@ -17,6 +17,7 @@ Feature:
         "zones": [
           {
             "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+            "type": "district",
             "code": "75-1",
             "name": "Paris (1)"
           }
@@ -31,6 +32,7 @@ Feature:
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "type": "country",
             "code": "FR",
             "name": "France"
           }
@@ -45,6 +47,7 @@ Feature:
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "type": "country",
             "code": "FR",
             "name": "France"
           }
@@ -59,6 +62,7 @@ Feature:
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "type": "country",
             "code": "FR",
             "name": "France"
           }
@@ -81,6 +85,7 @@ Feature:
         "zones": [
           {
             "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+            "type": "country",
             "code": "FR",
             "name": "France"
           }
@@ -187,6 +192,7 @@ Feature:
           {
             "uuid": "e3efabd2-906e-11eb-a875-0242ac150002",
             "code": "LI",
+            "type": "country",
             "name": "Liechtenstein"
           }
         ],
@@ -201,6 +207,7 @@ Feature:
         {
           "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
           "code": "59",
+          "type": "department",
           "name": "Nord"
         }
         ],
@@ -215,6 +222,7 @@ Feature:
           {
             "uuid": "e3f0bfff-906e-11eb-a875-0242ac150002",
             "code": "75-2",
+            "type": "district",
             "name": "Paris (2)"
           }
         ],
@@ -229,6 +237,7 @@ Feature:
           {
             "uuid": "e3efe139-906e-11eb-a875-0242ac150002",
             "code": "11",
+            "type": "region",
             "name": "Île-de-France"
           }
         ],
@@ -244,36 +253,43 @@ Feature:
           {
             "code": "13",
             "name": "Bouches-du-Rhône",
+            "type": "department",
             "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
           },
           {
             "code": "59",
             "name": "Nord",
+            "type": "department",
             "uuid": "e3eff020-906e-11eb-a875-0242ac150002"
           },
           {
             "code": "76",
             "name": "Seine-Maritime",
+            "type": "department",
             "uuid": "e3efef5d-906e-11eb-a875-0242ac150002"
           },
           {
             "code": "77",
             "name": "Seine-et-Marne",
+            "type": "department",
             "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002"
           },
           {
             "code": "92",
             "name": "Hauts-de-Seine",
+            "type": "department",
             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
           },
           {
             "code": "ES",
             "name": "Espagne",
+            "type": "country",
             "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002"
           },
           {
             "code": "CH",
             "name": "Suisse",
+            "type": "country",
             "uuid": "e3efcea1-906e-11eb-a875-0242ac150002"
           }
         ]
@@ -288,6 +304,7 @@ Feature:
           {
               "code": "92",
               "name": "Hauts-de-Seine",
+              "type": "department",
               "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
           }
         ]
