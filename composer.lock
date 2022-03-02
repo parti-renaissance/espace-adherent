@@ -8217,16 +8217,16 @@
         },
         {
             "name": "php-amqplib/php-amqplib",
-            "version": "v3.1.0",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "c8812f783fe8714a8a8e387003fb297aded7f974"
+                "reference": "e8aba06c4e1c467612f2d99304f672f2660e8492"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/c8812f783fe8714a8a8e387003fb297aded7f974",
-                "reference": "c8812f783fe8714a8a8e387003fb297aded7f974",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/e8aba06c4e1c467612f2d99304f672f2660e8492",
+                "reference": "e8aba06c4e1c467612f2d99304f672f2660e8492",
                 "shasum": ""
             },
             "require": {
@@ -8292,45 +8292,45 @@
             ],
             "support": {
                 "issues": "https://github.com/php-amqplib/php-amqplib/issues",
-                "source": "https://github.com/php-amqplib/php-amqplib/tree/v3.1.0"
+                "source": "https://github.com/php-amqplib/php-amqplib/tree/v3.1.2"
             },
-            "time": "2021-10-22T16:37:06+00:00"
+            "time": "2022-01-18T17:08:01+00:00"
         },
         {
             "name": "php-amqplib/rabbitmq-bundle",
-            "version": "2.10.2",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/RabbitMqBundle.git",
-                "reference": "9829eb064173cae70c1ed40f907c420498f58e18"
+                "reference": "b2265a87aa35907beb3593c182d340a220b60461"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/RabbitMqBundle/zipball/9829eb064173cae70c1ed40f907c420498f58e18",
-                "reference": "9829eb064173cae70c1ed40f907c420498f58e18",
+                "url": "https://api.github.com/repos/php-amqplib/RabbitMqBundle/zipball/b2265a87aa35907beb3593c182d340a220b60461",
+                "reference": "b2265a87aa35907beb3593c182d340a220b60461",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1|^8.0",
+                "php": "^7.4|^8.0",
                 "php-amqplib/php-amqplib": "^2.12.2|^3.0",
-                "psr/log": "^1.0",
-                "symfony/config": "^4.3|^5.0",
-                "symfony/console": "^4.3|^5.0",
-                "symfony/dependency-injection": "^4.3|^5.0",
-                "symfony/event-dispatcher": "^4.3|^5.0",
-                "symfony/framework-bundle": "^4.4|^5.0",
-                "symfony/http-kernel": "^4.4|^5.0",
-                "symfony/yaml": "^4.3|^5.0"
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/config": "^4.4|^5.3|^6.0",
+                "symfony/console": "^4.4|^5.3|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.3|^6.0",
+                "symfony/event-dispatcher": "^4.4|^5.3|^6.0",
+                "symfony/framework-bundle": "^4.4|^5.3|^6.0",
+                "symfony/http-kernel": "^4.4|^5.3|^6.0",
+                "symfony/yaml": "^4.4|^5.3|^6.0"
             },
             "replace": {
                 "emag-tech-labs/rabbitmq-bundle": "self.version",
                 "oldsound/rabbitmq-bundle": "self.version"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.11",
-                "phpstan/phpstan-phpunit": "^0.12.6",
-                "phpunit/phpunit": "^7.5|^8.5",
-                "symfony/serializer": "^4.3|^5.0"
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "symfony/serializer": "^4.4|^5.3|^6.0"
             },
             "suggest": {
                 "ext-pcntl": "*",
@@ -8371,9 +8371,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-amqplib/RabbitMqBundle/issues",
-                "source": "https://github.com/php-amqplib/RabbitMqBundle/tree/2.10.2"
+                "source": "https://github.com/php-amqplib/RabbitMqBundle/tree/2.11.0"
             },
-            "time": "2021-11-11T13:17:34+00:00"
+            "time": "2021-12-21T13:13:45+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -15689,16 +15689,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v4.4.37",
+            "version": "v4.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "33af4f3206d3f9ef6507650b9c29bc28422bcda9"
+                "reference": "80f7d825a616cc937a6982eff9a8db162e630bbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/33af4f3206d3f9ef6507650b9c29bc28422bcda9",
-                "reference": "33af4f3206d3f9ef6507650b9c29bc28422bcda9",
+                "url": "https://api.github.com/repos/symfony/security/zipball/80f7d825a616cc937a6982eff9a8db162e630bbe",
+                "reference": "80f7d825a616cc937a6982eff9a8db162e630bbe",
                 "shasum": ""
             },
             "require": {
@@ -15769,7 +15769,7 @@
             "description": "Provides a complete security system for your web application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/security/tree/v4.4.37"
+                "source": "https://github.com/symfony/security/tree/v4.4.38"
             },
             "funding": [
                 {
@@ -15785,7 +15785,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:41:36+00:00"
+            "time": "2022-02-13T16:32:52+00:00"
         },
         {
             "name": "symfony/security-acl",
