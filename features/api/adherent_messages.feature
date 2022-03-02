@@ -209,38 +209,12 @@ Feature:
     """
     {
       "uuid": "@uuid@",
-      "created_at": "@string@.isDateTime()",
-      "author": {
-        "uuid": "@uuid@",
-        "first_name": "Jules",
-        "last_name": "Fullstack"
-      },
       "label": "Label du message qui permet de le retrouver dans la liste des messages envoyés",
       "subject": "L'objet du mail",
       "status": "draft",
-      "sent_at": null,
       "recipient_count": 0,
       "source": "api",
-      "synchronized": false,
-      "from_name": "Jules | Campagne 2022",
-      "statistics": {
-        "sent": 0,
-        "opens": 0,
-        "open_rate": 0,
-        "clicks": 0,
-        "click_rate": 0,
-        "unsubscribe": 0,
-        "unsubscribe_rate": 0
-      },
-      "zones": [
-        {
-          "code": "92",
-          "name": "Hauts-de-Seine",
-          "postal_code": [],
-          "type": "department",
-          "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
-        }
-      ]
+      "synchronized": false
     }
     """
     Examples:
@@ -267,80 +241,12 @@ Feature:
     """
     {
         "uuid": "@uuid@",
-        "created_at": "@string@.isDateTime()",
-        "author": {
-            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-            "first_name": "Referent",
-            "last_name": "Referent"
-        },
         "label": "Message d'un référent délégué",
         "subject": "L'objet du mail",
         "status": "draft",
-        "sent_at": null,
         "recipient_count": 0,
         "source": "api",
-        "synchronized": false,
-        "from_name": "Referent Referent | La République En Marche !",
-        "statistics": {
-            "sent": 0,
-            "opens": 0,
-            "open_rate": 0,
-            "clicks": 0,
-            "click_rate": 0,
-            "unsubscribe": 0,
-            "unsubscribe_rate": 0
-        },
-        "zones": [
-            {
-                "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
-                "type": "department",
-                "postal_code": [],
-                "code": "13",
-                "name": "Bouches-du-Rhône"
-            },
-            {
-                "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
-                "type": "department",
-                "postal_code": [],
-                "code": "59",
-                "name": "Nord"
-            },
-            {
-                "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
-                "type": "department",
-                "postal_code": [],
-                "code": "76",
-                "name": "Seine-Maritime"
-            },
-            {
-                "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
-                "type": "department",
-                "postal_code": [],
-                "code": "77",
-                "name": "Seine-et-Marne"
-            },
-            {
-                "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                "type": "department",
-                "postal_code": [],
-                "code": "92",
-                "name": "Hauts-de-Seine"
-            },
-            {
-                "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
-                "type": "country",
-                "postal_code": [],
-                "code": "ES",
-                "name": "Espagne"
-            },
-            {
-                "uuid": "e3efcea1-906e-11eb-a875-0242ac150002",
-                "type": "country",
-                "postal_code": [],
-                "code": "CH",
-                "name": "Suisse"
-            }
-        ]
+        "synchronized": false
     }
     """
 

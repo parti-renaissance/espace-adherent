@@ -19,8 +19,12 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
+        /** @var AdherentMessageInterface|null $oldMessage */
+        $oldMessage = null;
+
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $messageClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
+            $oldMessage = clone $context[AbstractNormalizer::OBJECT_TO_POPULATE];
         } else {
             $messageType = $data['type'] ?? null;
 
@@ -41,6 +45,17 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context);
 
         $message->setSource(AdherentMessageInterface::SOURCE_API);
+
+        if (
+            ($context['item_operation_name'] ?? null) === 'put'
+            && $oldMessage
+            && (
+                $oldMessage->getContent() !== $message->getContent()
+                || $oldMessage->getSubject() !== $message->getSubject()
+            )
+        ) {
+            $message->setSynchronized(false);
+        }
 
         return $message;
     }
