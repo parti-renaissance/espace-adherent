@@ -17,6 +17,8 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'category' => $this->getCategory($object),
             'address' => $this->getAddress($object),
             'image' => $this->getImage($object),
+            'url' => $this->getUrl($object),
+            'media_type' => $this->getMediaType($object),
             'begin_at' => $this->formatDate($this->getBeginAt($object), 'c'),
             'finish_at' => $this->formatDate($this->getFinishAt($object), 'c'),
             'date' => $this->formatDate($this->getDate($object), 'c'),
@@ -85,6 +87,16 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getAdherentIds(object $object): ?array
+    {
+        return null;
+    }
+
+    protected function getUrl(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getMediaType(object $object): ?string
     {
         return null;
     }

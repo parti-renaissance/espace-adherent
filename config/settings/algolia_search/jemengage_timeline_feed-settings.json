@@ -19,9 +19,11 @@
         "finish_at",
         "image",
         "is_local",
+        "media_type",
         "time_zone",
         "title",
-        "type"
+        "type",
+        "url"
     ],
     "unretrievableAttributes": [],
     "optionalWords": null,
