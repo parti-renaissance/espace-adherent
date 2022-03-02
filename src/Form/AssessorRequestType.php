@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Assessor\AssessorRequestCommand;
+use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestEnum;
 use App\Entity\AssessorOfficeEnum;
 use App\Intl\FranceCitiesBundle;
@@ -10,6 +11,7 @@ use App\VotePlace\VotePlaceManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -52,9 +54,12 @@ class AssessorRequestType extends AbstractType
                         'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                     ])
                     ->add('emailAddress', EmailType::class)
-                    ->add('birthdate', DatePickerType::class, [
-                        'max_date' => new \DateTime('-18 years'),
-                        'min_date' => new \DateTime('-120 years'),
+                    ->add('birthdate', BirthdayType::class, [
+                        'placeholder' => [
+                            'year' => 'Année',
+                            'month' => 'Mois',
+                            'day' => 'Jour',
+                        ],
                     ])
                     ->add('birthCity', TextType::class)
                 ;
@@ -76,14 +81,16 @@ class AssessorRequestType extends AbstractType
                     ->add('office', ChoiceType::class, [
                         'choices' => AssessorOfficeEnum::CHOICES,
                     ])
+                    ->add('electionRounds', ChoiceType::class, [
+                        'choices' => AssessorRequestElectionRoundsEnum::CHOICES,
+                        'multiple' => true,
+                        'expanded' => true,
+                    ])
                     ->add('votePlaceWishes', ChoiceType::class, [
                         'multiple' => true,
                     ])
                     ->add('reachable', CheckboxType::class, [
                         'required' => false,
-                    ])
-                    ->add('acceptDataTreatment', CheckboxType::class, [
-                        'mapped' => false,
                     ])
                     ->add('acceptValuesCharter', CheckboxType::class, [
                         'mapped' => false,

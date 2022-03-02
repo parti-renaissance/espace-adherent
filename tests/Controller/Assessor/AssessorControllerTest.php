@@ -42,7 +42,11 @@ class AssessorControllerTest extends WebTestCase
                 'officeNumber' => '001',
                 'birthCity' => 'Lille',
                 'emailAddress' => 'ernestino@bonsoirini.fr',
-                'birthdate' => '1985-10-27',
+                'birthdate' => [
+                    'day' => '27',
+                    'month' => '10',
+                    'year' => '1985',
+                ],
                 'phone' => [
                     'country' => 'FR',
                     'number' => '0620202020',
@@ -71,8 +75,8 @@ class AssessorControllerTest extends WebTestCase
                 'assessorCity' => 'Lille',
                 'votePlaceWishes' => [0 => 1],
                 'office' => AssessorOfficeEnum::HOLDER,
+                'electionRounds' => [0 => 'first_round'],
                 'reachable' => 1,
-                'acceptDataTreatment' => 1,
                 'acceptValuesCharter' => 1,
                 '_token' => $form['assessor_request[_token]']->getValue(),
             ],

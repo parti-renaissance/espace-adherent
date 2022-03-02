@@ -50,6 +50,15 @@
 </div>
 
 <div class="profile-label">
+    Tour(s) d'élection souhaité
+</div>
+<div class="profile-value" id="request-election-rounds">
+    {% for electionRound in request.electionRounds %}
+        <span>{{ ('assessor_request.election_rounds.' ~ electionRound)|trans }}</span>{% if not loop.last %}<br>{% endif %}
+    {% endfor %}
+</div>
+
+<div class="profile-label">
     Lieu de vote
 </div>
 <div class="profile-value" id="request-vote-city">
