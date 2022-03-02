@@ -61,6 +61,14 @@
             </div>
         </div>
 
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="l__row--h-stretch register__form--full">
+                <p class="b__nudge--bottom-tiny text--bold">Sur quel(s) tour(s) souhaitez-vous être assesseur ? <span class="text--normal">*</span></p>
+                {{ form_widget(form.electionRounds) }}
+                {{ form_errors(form.electionRounds) }}
+            </div>
+        </div>
+
         <div class="form__row form__checkbox b__nudge--top-large">
             {{ form_widget(form.reachable) }}
             <label for="{{ form.reachable.vars.id }}">
@@ -70,17 +78,9 @@
         </div>
 
         <div class="form__row form__checkbox b__nudge--top-large">
-            {{ form_widget(form.acceptDataTreatment) }}
-            <label for="{{ form.acceptDataTreatment.vars.id }}">
-                Je consens au traitement de mes données personnelles et à la communication de celles-ci à la mairie/au bureau de vote qui sera attribué(e) à ma candidature.
-            </label>
-            {{ form_errors(form.acceptDataTreatment) }}
-        </div>
-
-        <div class="form__row form__checkbox b__nudge--top-large">
             {{ form_widget(form.acceptValuesCharter) }}
-            <label for="{{ form.acceptValuesCharter.vars.id }}">
-                J'ai pris connaissance et accepte la Charte des valeurs de LaREM et je suis informé que j'engage ma responsabilité pour tout propos injurieux, diffamatoire, illicite ou contraire à l'ordre public et aux bonnes mœurs.
+            <label for="{{ form.acceptValuesCharter.vars.id }}" style="display: inline;">
+                J’ai lu et j’accepte <a href="https://en-marche.fr/politique-protection-donnees" target="_blank" rel="noopener noreferrer">la politique de protection des données</a> et les mentions d’informations relatives au traitement de mes données ci-dessous.
             </label>
             {{ form_errors(form.acceptValuesCharter) }}
         </div>

@@ -386,6 +386,10 @@ assessor.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 
 
 assessor.office.invalid_choice: Vous devez choisir l'une des fonctions proposées.
 
+assessor.election_rounds.invalid_choice: le tour n'est pas valide
+assessor.election_rounds.not_blank: Vous devez cocher un ou plusieurs tour(s)
+
+
 assessor.vote_city.not_blank: Vous devez spécifier votre lieu de vote.
 assessor.office_number.not_blank: Vous devez spécifier votre numéro de bureau de vote.
 

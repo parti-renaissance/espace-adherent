@@ -690,6 +690,8 @@ assessor.enabled.success: L'assesseur a bien été réactivé.
 assessor_request.create.success: Votre demande a bien été prise en compte.
 assessor_request.office.holder.label: Titulaire
 assessor_request.office.substitute.label: Suppléant
+assessor_request.election_rounds.first_round: Le premier tour
+assessor_request.election_rounds.second_round: Le deuxième tour
 
 #
 # Vote Place

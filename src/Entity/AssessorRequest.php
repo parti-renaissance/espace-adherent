@@ -278,6 +278,21 @@ class AssessorRequest
     private $processedAt;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array")
+     *
+     * @Assert\NotBlank(message="assessor.election_rounds.not_blank")
+     * @Assert\Choice(
+     *     callback={"App\Entity\AssessorRequestElectionRoundsEnum", "toArray"},
+     *     message="assessor.election_rounds.invalid_choice",
+     *     strict=true,
+     *     multiple=true
+     * )
+     */
+    private $electionRounds;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -316,6 +331,7 @@ class AssessorRequest
         ?string $assessorPostalCode,
         string $birthName,
         string $office = AssessorOfficeEnum::HOLDER,
+        array $electionRounds = AssessorRequestElectionRoundsEnum::ALL,
         bool $enabled = true,
         bool $reachable = false,
         string $assessorCountry = 'FR',
@@ -344,6 +360,7 @@ class AssessorRequest
         $assessorRequest->setAssessorCountry($assessorCountry);
         $assessorRequest->setVotePlaceWishes(new ArrayCollection($votePlaceWishes));
         $assessorRequest->setReachable($reachable);
+        $assessorRequest->setElectionRounds($electionRounds);
 
         if (!$enabled) {
             $assessorRequest->disable();
@@ -664,6 +681,16 @@ class AssessorRequest
     public function getOfficeName(): ?string
     {
         return array_search($this->office, AssessorOfficeEnum::CHOICES);
+    }
+
+    public function getElectionRounds(): ?array
+    {
+        return $this->electionRounds;
+    }
+
+    public function setElectionRounds(array $electionRounds): void
+    {
+        $this->electionRounds = $electionRounds;
     }
 
     public function setUuid(UuidInterface $uuid): void

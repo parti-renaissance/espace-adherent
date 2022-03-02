@@ -96,6 +96,18 @@
                 <td>Fonction</td>
                 <td>{{ assessorRequest.getOfficeName|trans }}</td>
             </tr>
+            <tr class="assessor-office">
+                <td>Sur quel(s) tour(s) souhaitez-vous être assesseur ?</td>
+                <td>
+                    {% if electionRoundsLabels is not empty %}
+                        <ul>
+                            {% for electionRoundsLabel in electionRoundsLabels %}
+                                <li>{{ electionRoundsLabel|trans }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
             <tr class="assessor-vote-place-wishes">
                 <td>Bureau(x) de votes disponible(s)</td>
                 <td>

@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Assessor\AssessorRequestFactory;
 use App\Entity\AssessorOfficeEnum;
+use App\Entity\AssessorRequestElectionRoundsEnum;
 use App\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -51,6 +52,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => '59350',
             'birthName' => 'Kepoura',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
             'reachable' => true,
         ]);
 
@@ -76,6 +78,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => '93008',
             'birthName' => 'Hytté',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
+            'electionRounds' => [AssessorRequestElectionRoundsEnum::FIRST_ROUND],
         ]);
 
         $matchedRequest1->addVotePlaceWish($votePlaceBobigny);
@@ -100,6 +103,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => '93008',
             'birthName' => 'Luc',
             'office' => AssessorOfficeEnum::HOLDER,
+            'electionRounds' => [AssessorRequestElectionRoundsEnum::SECOND_ROUND],
         ]);
 
         $matchedRequest2->addVotePlaceWish($votePlaceBobigny);
@@ -124,6 +128,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => '59000',
             'birthName' => 'Coptère',
             'office' => AssessorOfficeEnum::HOLDER,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
         ]);
 
         $matchedRequest3->addVotePlaceWish($votePlaceLilleWazemmes);
@@ -148,6 +153,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => '59100',
             'birthName' => 'Sahalor',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
         ]);
 
         $requestOutOfManagedArea = AssessorRequestFactory::createFromArray([
@@ -169,6 +175,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => '49000',
             'birthName' => 'Parbal',
             'office' => AssessorOfficeEnum::HOLDER,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
         ]);
 
         $foreignRequestDisabled = AssessorRequestFactory::createFromArray([
@@ -190,6 +197,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => null,
             'birthName' => 'Cochet',
             'office' => AssessorOfficeEnum::HOLDER,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
             'enabled' => false,
             'assessorCountry' => 'GB',
         ]);
@@ -213,6 +221,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorPostalCode' => null,
             'birthName' => 'Luigi',
             'office' => AssessorOfficeEnum::HOLDER,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
             'enabled' => true,
             'assessorCountry' => 'IT',
         ]);

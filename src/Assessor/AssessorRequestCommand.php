@@ -168,6 +168,18 @@ class AssessorRequestCommand
     private $votePlaceWishes = [];
 
     /**
+     * @Assert\NotBlank(message="assessor.election_rounds.not_blank", groups={"fill_assessor_info"})
+     * @Assert\Choice(
+     *     callback={"App\Entity\AssessorRequestElectionRoundsEnum", "toArray"},
+     *     message="assessor.election_rounds.invalid_choice",
+     *     strict=true,
+     *     multiple=true,
+     *     groups={"fill_assessor_info"}
+     * )
+     */
+    private $electionRounds;
+
+    /**
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"valid_summary"})
      * @AssertRecaptcha(groups={"valid_summary"})
      */
@@ -385,6 +397,16 @@ class AssessorRequestCommand
     public function setVotePlaceWishes(array $votePlaceWishes): void
     {
         $this->votePlaceWishes = $votePlaceWishes;
+    }
+
+    public function getElectionRounds(): ?array
+    {
+        return $this->electionRounds;
+    }
+
+    public function setElectionRounds(array $electionRounds): void
+    {
+        $this->electionRounds = $electionRounds;
     }
 
     private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber

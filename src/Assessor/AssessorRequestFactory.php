@@ -39,6 +39,7 @@ class AssessorRequestFactory
             $data['assessorPostalCode'] ?? null,
             $data['birthName'],
             $data['office'],
+            $data['electionRounds'],
             $data['enabled'] ?? true,
             $data['reachable'] ?? false,
             $data['assessorCountry'] ?? 'FR'
@@ -66,6 +67,7 @@ class AssessorRequestFactory
             $assessorRequestCommand->getAssessorPostalCode(),
             $assessorRequestCommand->getBirthName(),
             $assessorRequestCommand->getOffice(),
+            $assessorRequestCommand->getElectionRounds(),
             true,
             $assessorRequestCommand->isReachable(),
             $assessorRequestCommand->getAssessorCountry(),

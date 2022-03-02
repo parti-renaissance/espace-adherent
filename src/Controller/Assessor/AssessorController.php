@@ -2,7 +2,9 @@
 
 namespace App\Controller\Assessor;
 
+use App\Assessor\AssessorRequestCommand;
 use App\Assessor\AssessorRequestHandler;
+use App\Entity\AssessorRequestElectionRoundsEnum;
 use App\Form\AssessorRequestType;
 use App\VotePlace\VotePlaceManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,6 +41,7 @@ class AssessorController extends AbstractController
         return $this->render('assessor_request/index.html.twig', [
             'assessorRequest' => $assessorRequestCommand,
             'votePlaceWishesLabels' => $assessorResquestHandler->getVotePlaceWishesLabels($assessorRequestCommand),
+            'electionRoundsLabels' => $this->getElectionRoundsLabels($assessorRequestCommand),
             'form' => $form->createView(),
             'transition' => $transition,
         ]);
@@ -71,5 +74,21 @@ class AssessorController extends AbstractController
         return new JsonResponse($votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
             $request->query->get('country'), $request->query->get('postalCode'))
         );
+    }
+
+    private function getElectionRoundsLabels(AssessorRequestCommand $assessorRequestCommand): ?array
+    {
+        if (!$assessorRequestCommand->getElectionRounds()) {
+            return null;
+        }
+
+        $labels = [];
+        foreach ($assessorRequestCommand->getElectionRounds() as $electionRound) {
+            if (AssessorRequestElectionRoundsEnum::isValid($electionRound)) {
+                $labels[] = array_search($electionRound, AssessorRequestElectionRoundsEnum::CHOICES, true);
+            }
+        }
+
+        return $labels;
     }
 }
