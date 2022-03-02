@@ -75,6 +75,7 @@ class AssessorControllerTest extends WebTestCase
                 'assessorCity' => 'Lille',
                 'votePlaceWishes' => [0 => 1],
                 'office' => AssessorOfficeEnum::HOLDER,
+                'electionRounds' => [0 => 'first_round'],
                 'reachable' => 1,
                 'acceptValuesCharter' => 1,
                 '_token' => $form['assessor_request[_token]']->getValue(),
