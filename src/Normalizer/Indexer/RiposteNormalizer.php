@@ -46,4 +46,16 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return true;
     }
+
+    /** @param Riposte $object */
+    protected function getUrl(object $object): ?string
+    {
+        return $object->getSourceUrl();
+    }
+
+    /** @param Riposte $object */
+    protected function getMediaType(object $object): ?string
+    {
+        return $object->getOpenGraph() && isset($object->getOpenGraph()['site_name']) ? $object->getOpenGraph()['site_name'] : null;
+    }
 }
