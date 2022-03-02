@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestFactory;
 use App\Entity\AssessorOfficeEnum;
-use App\Entity\AssessorRequestElectionRoundsEnum;
 use App\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

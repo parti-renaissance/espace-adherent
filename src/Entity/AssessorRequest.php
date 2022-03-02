@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -284,7 +285,7 @@ class AssessorRequest
      *
      * @Assert\NotBlank(message="assessor.election_rounds.not_blank")
      * @Assert\Choice(
-     *     callback={"App\Entity\AssessorRequestElectionRoundsEnum", "toArray"},
+     *     callback={"App\Assessor\AssessorRequestElectionRoundsEnum", "toArray"},
      *     message="assessor.election_rounds.invalid_choice",
      *     strict=true,
      *     multiple=true

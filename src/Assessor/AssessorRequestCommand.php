@@ -170,7 +170,7 @@ class AssessorRequestCommand
     /**
      * @Assert\NotBlank(message="assessor.election_rounds.not_blank", groups={"fill_assessor_info"})
      * @Assert\Choice(
-     *     callback={"App\Entity\AssessorRequestElectionRoundsEnum", "toArray"},
+     *     callback={"App\Assessor\AssessorRequestElectionRoundsEnum", "toArray"},
      *     message="assessor.election_rounds.invalid_choice",
      *     strict=true,
      *     multiple=true,

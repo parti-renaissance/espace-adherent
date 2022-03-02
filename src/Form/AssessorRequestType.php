@@ -3,9 +3,9 @@
 namespace App\Form;
 
 use App\Assessor\AssessorRequestCommand;
+use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestEnum;
 use App\Entity\AssessorOfficeEnum;
-use App\Entity\AssessorRequestElectionRoundsEnum;
 use App\Intl\FranceCitiesBundle;
 use App\VotePlace\VotePlaceManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;

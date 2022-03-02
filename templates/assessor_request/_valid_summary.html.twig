@@ -99,13 +99,11 @@
             <tr class="assessor-office">
                 <td>Sur quel(s) tour(s) souhaitez-vous être assesseur ?</td>
                 <td>
-                    {% if electionRoundsLabels is not empty %}
-                        <ul>
-                            {% for electionRoundsLabel in electionRoundsLabels %}
-                                <li>{{ electionRoundsLabel|trans }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                    <ul>
+                        {% for electionRound in assessorRequest.electionRounds %}
+                            <li>{{ ('assessor_request.election_rounds.' ~ electionRound)|trans }}</li>
+                        {% endfor %}
+                    </ul>
                 </td>
             </tr>
             <tr class="assessor-vote-place-wishes">
