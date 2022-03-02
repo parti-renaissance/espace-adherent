@@ -125,12 +125,10 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->andWhere(
                 $qb->expr()->andX(
                     'pp.voteCountry = :voteCountry',
-                    'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
                     'pp.voteCityName != :voteCityName',
                     'other_city.name LIKE :voteCityNamePattern'
                 )
             )
-            ->setParameter('votePostalCodePrefix', substr($procurationRequest->getVotePostalCode(), 0, 2))
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%')
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
