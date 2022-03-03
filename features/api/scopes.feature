@@ -114,6 +114,7 @@ Feature:
         {
           "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
           "code": "75-1",
+          "type": "district",
           "name": "Paris (1)"
         }
       ],
@@ -147,6 +148,7 @@ Feature:
       "zones": [
         {
           "code": "FR",
+          "type": "country",
           "name": "France",
           "uuid": "e3ef8883-906e-11eb-a875-0242ac150002"
         }
@@ -309,6 +311,7 @@ Feature:
         {
           "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
           "code": "59",
+          "type": "department",
           "name": "Nord"
         }
       ],
@@ -347,36 +350,43 @@ Feature:
             {
                 "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
                 "code": "13",
+                "type": "department",
                 "name": "Bouches-du-Rhône"
             },
             {
                 "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
                 "code": "59",
+                "type": "department",
                 "name": "Nord"
             },
             {
                 "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
                 "code": "76",
+                "type": "department",
                 "name": "Seine-Maritime"
             },
             {
                 "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                 "code": "77",
+                "type": "department",
                 "name": "Seine-et-Marne"
             },
             {
                 "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                 "code": "92",
+                "type": "department",
                 "name": "Hauts-de-Seine"
             },
             {
                 "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
                 "code": "ES",
+                "type": "country",
                 "name": "Espagne"
             },
             {
                 "uuid": "e3efcea1-906e-11eb-a875-0242ac150002",
                 "code": "CH",
+                "type": "country",
                 "name": "Suisse"
             }
         ],
