@@ -391,4 +391,31 @@ class EventAdmin extends AbstractAdmin
             ])
         ;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'Date' => 'beginAt',
+            'Titre' => 'name',
+            'Organisateur' => 'organizer.getFullName',
+            'Type' => 'type',
+            'Catégorie' => 'category',
+            'Ville' => 'cityName',
+            'Code Postal' => 'postalCode',
+            'Nombre d\'inscrits' => 'participantsCount',
+            'Date de création' => 'createdAt',
+            'Date de modification' => 'updatedAt',
+        ];
+    }
+
+    public function getDataSourceIterator()
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $dataSourceIterator = $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        $dataSourceIterator->setDateTimeFormat('d/m/Y');
+
+        return $dataSourceIterator;
+    }
 }
