@@ -639,7 +639,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.\nlink_label: Le label est obligatoire.",
+        "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
         "violations": [
             {
                 "propertyPath": "text",
@@ -652,10 +652,6 @@ Feature:
             {
                 "propertyPath": "external_link",
                 "message": "Cette valeur n'est pas une URL valide."
-            },
-            {
-                "message": "Le label est obligatoire.",
-                "propertyPath": "link_label"
             }
         ]
     }

@@ -191,7 +191,7 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      *
      * @Assert\Length(max=255)
      * @Assert\Expression(
-     *     "value !== null or null === this.getExternalLink()",
+     *     "value !== null or (this.isEnriched() === false or null === this.getExternalLink())",
      *     message="news.link_label.required"
      * )
      *
