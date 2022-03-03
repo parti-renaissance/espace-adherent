@@ -410,10 +410,7 @@ class EventAdmin extends AbstractAdmin
 
     public function getDataSourceIterator()
     {
-        $datagrid = $this->getDatagrid();
-        $datagrid->buildPager();
-
-        $dataSourceIterator = $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        $dataSourceIterator = parent::getDataSourceIterator();
         $dataSourceIterator->setDateTimeFormat('d/m/Y');
 
         return $dataSourceIterator;
