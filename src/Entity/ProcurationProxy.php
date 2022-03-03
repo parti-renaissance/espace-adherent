@@ -43,7 +43,7 @@ class ProcurationProxy
         self::RELIABILITY_REPRESENTATIVE,
     ];
 
-    private const MAX_FRENCH_REQUESTS = 2;
+    private const MAX_FRENCH_REQUESTS = 1;
     private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
 

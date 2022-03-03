@@ -42,20 +42,10 @@ class ProcurationRequestTest extends TestCase
         $requestFromForeignCountry->unprocess();
 
         $this->assertCount(1, $proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
+        $this->assertFalse($proxy->isFrenchRequestAvailable());
         $this->assertTrue($proxy->isForeignRequestAvailable());
 
-        $requestFromFrance2 = new ProcurationRequest();
-        $requestFromFrance2->setRequestFromFrance(true);
-
-        $requestFromFrance2->process($proxy);
-
-        $this->assertCount(2, $proxy->getFoundRequests());
-        $this->assertFalse($proxy->isFrenchRequestAvailable());
-        $this->assertFalse($proxy->isForeignRequestAvailable());
-
         $requestFromFrance->unprocess();
-        $requestFromFrance2->unprocess();
 
         $this->assertEmpty($proxy->getFoundRequests());
         $this->assertTrue($proxy->isFrenchRequestAvailable());
@@ -78,7 +68,7 @@ class ProcurationRequestTest extends TestCase
         $requestFromFrance->process($proxy);
 
         $this->assertCount(1, $proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
+        $this->assertFalse($proxy->isFrenchRequestAvailable());
         $this->assertTrue($proxy->isForeignRequestAvailable());
 
         $requestFromForeignCountry = new ProcurationRequest();
@@ -87,7 +77,7 @@ class ProcurationRequestTest extends TestCase
         $requestFromForeignCountry->process($proxy);
 
         $this->assertCount(2, $proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
+        $this->assertFalse($proxy->isFrenchRequestAvailable());
         $this->assertTrue($proxy->isForeignRequestAvailable());
 
         $requestFromForeignCountry2 = new ProcurationRequest();
@@ -151,8 +141,8 @@ class ProcurationRequestTest extends TestCase
         yield 'Proxy from france, with 1 slot and only one request not from france: should not be available for french nor foreign extra requests' => [
             'FR', 1, [false], false, false,
         ];
-        yield 'Proxy from france, with 2 slots and only one request from france: should be available for french and foreign extra requests' => [
-            'FR', 2, [true], true, true,
+        yield 'Proxy from france, with 2 slots and only one request from france: should not be available for french requests, but available for foreign extra requests' => [
+            'FR', 2, [true], false, true,
         ];
         yield 'Proxy from france, with 2 slots and only one request from a foreign country: should be available for french extra request, but not foreign extra requests' => [
             'FR', 2, [false], true, true,
@@ -175,8 +165,8 @@ class ProcurationRequestTest extends TestCase
         yield 'Proxy from foreign country, with 1 slot and only one request from foreign country: should not be available for french nor foreign extra requests' => [
             'GB', 1, [false], false, false,
         ];
-        yield 'Proxy from foreign country, with 2 slots and only one request from france: should be available for french and foreign extra requests' => [
-            'GB', 2, [true], true, true,
+        yield 'Proxy from foreign country, with 2 slots and only one request from france: should not be available for french requests, but available for foreign extra requests' => [
+            'GB', 2, [true], false, true,
         ];
         yield 'Proxy from foreign country, with 2 slots and only one request from foreign country: should be available for french and foreign extra requests' => [
             'GB', 2, [false], true, true,
@@ -193,17 +183,17 @@ class ProcurationRequestTest extends TestCase
         yield 'Proxy from foreign country, with 2 slots and two requests from foreign country: should not be available for french nor foreign extra requests' => [
             'GB', 2, [false, false], false, false,
         ];
-        yield 'Proxy from foreign country, with 3 slots and only one request from france: should be available for french and foreign extra requests' => [
-            'GB', 3, [true], true, true,
+        yield 'Proxy from foreign country, with 3 slots and only one request from france: should not be available for french requests, but available for foreign extra requests' => [
+            'GB', 3, [true], false, true,
         ];
         yield 'Proxy from foreign country, with 3 slots and only one request from foreign country: should be available for french and foreign extra requests' => [
             'GB', 3, [false], true, true,
         ];
-        yield 'Proxy from foreign country, with 3 slots and two requests (one from france and one from foreign country): should not be available for french and foreign extra request' => [
-            'GB', 3, [true, false], true, true,
+        yield 'Proxy from foreign country, with 3 slots and two requests (one from france and one from foreign country): should not be available for french requets, but available for foreign extra request' => [
+            'GB', 3, [true, false], false, true,
         ];
         yield 'Same scenario as above, but changing requests order: should be the same result as above..' => [
-            'GB', 3, [false, true], true, true,
+            'GB', 3, [false, true], false, true,
         ];
         yield 'Proxy from foreign country, with 3 slots and two requests from foreign country: should be available for french and foreign extra requests' => [
             'GB', 3, [false, false], true, true,
