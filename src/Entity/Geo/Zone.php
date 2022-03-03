@@ -131,7 +131,7 @@ class Zone implements GeoInterface
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"zone_read"})
+     * @SymfonySerializer\Groups({"zone_read", "scope"})
      */
     private $type;
 
