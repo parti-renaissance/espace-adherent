@@ -22,7 +22,7 @@ class CampaignHistoryStatusEnum extends Enum
         self::ANSWERED => 'Accepte de répondre aux questions',
         self::TO_UNSUBSCRIBE => 'Ne souhaite plus être rappelé',
         self::TO_UNJOIN => 'Souhaite désadhérer',
-        self::NOT_RESPOND => 'N\'a pa répondu au téléphone',
+        self::NOT_RESPOND => 'N\'a pas répondu au téléphone',
         self::TO_REMIND => 'Souhaite être rappelé plus tard',
         self::FAILED => 'L\'appel a échoué',
         self::INTERRUPTED_DONT_REMIND => 'Appel interrompu, ne pas rappeler',
