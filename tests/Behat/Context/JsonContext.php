@@ -36,11 +36,6 @@ class JsonContext extends BehatchJsonContext
         }
     }
 
-    /**
-     * Checks, that given JSON node matches given value
-     *
-     * @Then the JSON node :node should match :text
-     */
     public function theJsonNodeShouldMatch($node, $text)
     {
         $actual = $this->inspector->evaluate($this->getJson(), $node);

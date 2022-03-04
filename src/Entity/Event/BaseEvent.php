@@ -138,7 +138,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"}
  *         },
  *         "update_image": {
- *             "method": "POST",
+ *             "method": "POST|DELETE",
  *             "path": "/v3/events/{uuid}/image",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "defaults": {"_api_receive": false},
