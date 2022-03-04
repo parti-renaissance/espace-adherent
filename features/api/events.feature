@@ -219,6 +219,24 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can update the image of my event
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
+    When I send a "POST" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8/image" with body:
+    """
+    {
+        "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+    }
+    """
+    Then the response status code should be 200
+    And the JSON node "image_url" should match "http://test.enmarche.code/assets/images/events/@string@.png"
+    When I send a "DELETE" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8/image"
+    Then the response status code should be 200
+    When I send a "GET" request to "/api/v3/events/ef62870c-6d42-47b6-91ea-f454d473adf8"
+    Then the JSON should be a superset of:
+    """
+    {"image_url": null}
+    """
+
   Scenario: As logged-in user I cannot cancel an already cancelled event
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "Coalition App"
     When I send a "PUT" request to "/api/v3/events/2f36a0b9-ac1d-4bee-b9ef-525bc89a7c8e/cancel"

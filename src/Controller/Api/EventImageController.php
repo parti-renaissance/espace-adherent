@@ -4,8 +4,10 @@ namespace App\Controller\Api;
 
 use App\Api\DTO\ImageContent;
 use App\Entity\Event\BaseEvent;
+use App\Image\ImageManagerInterface;
 use App\Image\ImageUploadHelper;
 use App\Normalizer\ImageOwnerExposedNormalizer;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,22 +22,35 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EventImageController extends AbstractController
 {
-    private $imageUploadHelper;
-    private $serializer;
-    private $validator;
+    private ImageUploadHelper $imageUploadHelper;
+    private SerializerInterface $serializer;
+    private ValidatorInterface $validator;
+    private ImageManagerInterface $imageManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         ImageUploadHelper $imageUploadHelper,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ImageManagerInterface $imageManager,
+        EntityManagerInterface $entityManager
     ) {
         $this->imageUploadHelper = $imageUploadHelper;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->imageManager = $imageManager;
+        $this->entityManager = $entityManager;
     }
 
     public function __invoke(Request $request, BaseEvent $event): JsonResponse
     {
+        if ($request->isMethod(Request::METHOD_DELETE)) {
+            $this->imageManager->removeImage($event);
+            $this->entityManager->flush();
+
+            return $this->json('OK');
+        }
+
         /** @var ImageContent $image */
         $image = $this->serializer->deserialize($request->getContent(), ImageContent::class, JsonEncoder::FORMAT);
 
