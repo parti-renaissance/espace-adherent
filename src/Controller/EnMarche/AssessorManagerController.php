@@ -5,11 +5,13 @@ namespace App\Controller\EnMarche;
 use App\Assessor\AssessorManager;
 use App\Assessor\AssessorRequestExporter;
 use App\Assessor\Filter\AssessorRequestFilters;
+use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\ActionEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
 use App\Exception\AssessorException;
+use App\Exporter\CityAssessorExporter;
 use App\Form\ConfirmActionType;
 use App\Repository\AssessorRequestRepository;
 use App\Repository\VotePlaceRepository;
@@ -28,6 +30,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AssessorManagerController extends AbstractController
 {
+    private const _FORMAT = 'xls';
+
     /**
      * @Route(name="app_assessor_manager_requests", methods={"GET"})
      */
@@ -260,6 +264,61 @@ class AssessorManagerController extends AbstractController
                 'Content-Disposition' => sprintf(
                     'attachment;filename=%s.%s',
                     AssessorRequestExporter::FILE_NAME,
+                    XlsxEncoder::FORMAT
+                ),
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/communes", name="app_assessor_manager_cities", methods={"GET", "POST"})
+     */
+    public function citiesAction(Request $request, AssessorManager $manager): Response
+    {
+        try {
+            $filters = CitiesFilters::fromRequest($request);
+        } catch (AssessorException $e) {
+            throw new BadRequestHttpException('Unexpected cities filters in the query string.', $e);
+        }
+
+        $cities = $manager->getVotePlacesCities($this->getUser(), $filters);
+
+        return $this->render('assessor_manager/cities.html.twig', [
+            'cities' => $cities,
+            'total_count' => \count($cities),
+            'filters' => $filters,
+        ]);
+    }
+
+    /**
+     * @Route("/communes/export", name="app_assessor_manager_city_assessors_export", methods={"GET"})
+     */
+    public function CityAssessorsExporter(
+        Request $request,
+        CityAssessorExporter $exporter,
+        VotePlaceRepository $repository
+    ): Response {
+        if (!$request->query->has('commune')) {
+            throw new BadRequestHttpException('commune parameter is missing');
+        }
+
+        $cityName = $request->query->get('commune');
+        if (!$cityName) {
+            return new Response();
+        }
+
+        return new Response(
+            $exporter->export(
+                $repository->FindForCityAssessors($this->getUser(), $cityName)
+            ),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => sprintf(
+                    'attachment;filename=%s-Assesseurs-%s.%s',
+                    $cityName,
+                    (new \DateTime())->format('d-m-Y'),
                     XlsxEncoder::FORMAT
                 ),
                 'Cache-Control' => 'max-age=0',

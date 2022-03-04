@@ -53,6 +53,11 @@
                                 label: 'Bureaux de vote assignés'
                             },
                             {
+                                route: 'app_assessor_manager_cities',
+                                status: constant('App\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
+                                label: 'Communes assignées'
+                            },
+                            {
                                 route: 'app_assessor_manager_requests',
                                 status: constant('App\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
                                 label: 'Demandes désactivées'

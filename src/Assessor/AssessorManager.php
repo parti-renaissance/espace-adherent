@@ -3,6 +3,7 @@
 namespace App\Assessor;
 
 use App\Assessor\Filter\AssessorRequestFilters;
+use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
@@ -79,5 +80,10 @@ class AssessorManager
     public function countVotePlacesProposals(Adherent $manager, VotePlaceFilters $filters)
     {
         return $this->votePlaceRepository->countMatchingProposals($manager, $filters);
+    }
+
+    public function getVotePlacesCities(Adherent $manager, CitiesFilters $filters): array
+    {
+        return $this->votePlaceRepository->findVotePlacesCities($manager, $filters);
     }
 }
