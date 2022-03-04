@@ -105,11 +105,11 @@ SQL;
     {
         $sql = <<<SQL
 UPDATE pap_address AS address
-INNER JOIN pap_vote_place AS vote_place ON vote_place.id = address.vote_place_id
 INNER JOIN pap_building AS building ON building.address_id = address.id
 LEFT JOIN pap_campaign AS current_campaign ON current_campaign.id = building.current_campaign_id 
 SET building.current_campaign_id = :campaign_id
-WHERE current_campaign.id IS NULL OR current_campaign.finish_at < :start_date
+WHERE (current_campaign.id IS NULL OR current_campaign.finish_at < :start_date)
+__VOTE_PLACE_CONDITION__
 SQL;
         $conditions = [];
 
@@ -168,9 +168,15 @@ SQL;
             $params['second_round_priority'] = $campaign->getSecondRoundPriority();
         }
 
-        if ($conditions) {
-            $sql .= ' AND '.implode(' AND ', $conditions);
-        }
+        $sql = str_replace(
+            '__VOTE_PLACE_CONDITION__',
+            $conditions ?
+                sprintf(
+                    'AND address.vote_place_id IN (SELECT vote_place.id FROM pap_vote_place AS vote_place WHERE %s)',
+                    implode(' AND ', $conditions)
+                ) : '',
+            $sql
+        );
 
         $statement = $this->getEntityManager()->getConnection()->prepare($sql);
 
