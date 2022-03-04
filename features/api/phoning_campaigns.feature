@@ -1055,7 +1055,7 @@ Feature:
                 },
                 {
                     "code": "not-respond",
-                    "label": "N'a pa répondu au téléphone"
+                    "label": "N'a pas répondu au téléphone"
                 },
                 {
                     "code": "to-remind",
