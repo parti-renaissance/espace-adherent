@@ -2,9 +2,11 @@
 
 namespace App\Membership\Contact;
 
+use App\Entity\Adherent;
 use App\Entity\Contact;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequestHandler;
+use App\Repository\AdherentRepository;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -19,16 +21,19 @@ class ContactRegistrationCommandHandler implements MessageHandlerInterface, Logg
     private EntityManagerInterface $em;
     private ContactRepository $contactRepository;
     private MembershipRequestHandler $membershipRequestHandler;
+    private AdherentRepository $adherentRepository;
 
     public function __construct(
         EntityManagerInterface $em,
         ContactRepository $contactRepository,
         MembershipRequestHandler $membershipRequestHandler,
+        AdherentRepository $adherentRepository,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->contactRepository = $contactRepository;
         $this->membershipRequestHandler = $membershipRequestHandler;
+        $this->adherentRepository = $adherentRepository;
         $this->logger = $logger;
     }
 
@@ -51,7 +56,11 @@ class ContactRegistrationCommandHandler implements MessageHandlerInterface, Logg
             SourceEnum::AVECVOUS === $contact->getSource()
             && \in_array(InterestEnum::ACTION_TERRAIN, $contact->getInterests(), true)
         ) {
-            $adherent = $this->membershipRequestHandler->createAdherent(AvecVousMembershipRequest::createFromContact($contact));
+            $adherent = $this->adherentRepository->findOneByEmail($contact->getEmailAddress());
+
+            if (!$adherent instanceof Adherent) {
+                $adherent = $this->membershipRequestHandler->createAdherent(AvecVousMembershipRequest::createFromContact($contact));
+            }
 
             $contact->setAdherent($adherent);
         }
