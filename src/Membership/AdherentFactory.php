@@ -4,6 +4,7 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
+use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
@@ -25,6 +26,10 @@ class AdherentFactory
 
     public function createFromMembershipRequest(MembershipInterface $membershipRequest): Adherent
     {
+        if ($membershipRequest instanceof AvecVousMembershipRequest) {
+            return $this->createFromAvecVousMembershipRequest($membershipRequest);
+        }
+
         if ($membershipRequest instanceof CoalitionMembershipRequest) {
             return $this->createFromCoalitionMembershipRequest($membershipRequest);
         }
@@ -53,6 +58,26 @@ class AdherentFactory
             $request->coalitionSubscription,
             $request->causeSubscription
         );
+    }
+
+    public function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent
+    {
+        $adherent = Adherent::create(
+            Adherent::createUuid($request->getEmailAddress()),
+            $request->getEmailAddress(),
+            $this->encodePassword(Uuid::uuid4()),
+            null,
+            $request->firstName,
+            $request->lastName,
+            $request->birthdate,
+            null,
+            $this->addressFactory->createFromAddress($request->address),
+            $request->phone
+        );
+        $adherent->setSource($request->getSource());
+        $adherent->setPapUserRole(true);
+
+        return $adherent;
     }
 
     public function createFromJeMengageMembershipRequest(JeMengageMembershipRequest $request): Adherent

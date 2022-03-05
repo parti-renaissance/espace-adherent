@@ -4,6 +4,7 @@ namespace App\Membership\EventListener;
 
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
+use App\Mailer\Message\AvecVous\AvecVousUserAccountConfirmationMessage;
 use App\Mailer\Message\Coalition\CoalitionUserAccountConfirmationMessage;
 use App\Mailer\Message\JeMengage\JeMengageUserAccountConfirmationMessage;
 use App\Membership\Event\UserEvent;
@@ -46,6 +47,13 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
         $message = $token = null;
 
         switch ($adherent->getSource()) {
+            case MembershipSourceEnum::AVECVOUS:
+                $token = AdherentResetPasswordToken::generate($adherent);
+                $message = AvecVousUserAccountConfirmationMessage::createFromAdherent(
+                    $adherent,
+                    $this->appUrlManager->getUrlGenerator(MembershipSourceEnum::JEMENGAGE)->generateCreatePasswordLink($adherent, $token, ['is_creation' => true])
+                );
+                break;
             case MembershipSourceEnum::COALITIONS:
                 $token = AdherentResetPasswordToken::generate($adherent, '+30 days');
                 $message = CoalitionUserAccountConfirmationMessage::createFromAdherent(

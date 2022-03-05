@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Contact;
+use App\Membership\Contact\SourceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -17,7 +18,7 @@ class LoadContactData extends Fixture
             self::CONTACT_1_UUID,
             'Rémi',
             'remi@avecvous.dev',
-            'avecvous'
+            SourceEnum::AVECVOUS
         ));
 
         $manager->flush();

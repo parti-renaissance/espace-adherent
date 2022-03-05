@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
  *
  * @UniqueEntity(fields={"emailAddress"})
  */
@@ -161,6 +161,17 @@ class Contact
     private bool $cguAccepted = false;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $processedAt = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Adherent $adherent = null;
+
+    /**
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"contact_create"})
      * @AssertRecaptcha(groups={"contact_create"})
      *
@@ -178,6 +189,8 @@ class Contact
         $this->firstName = $firstName;
         $this->emailAddress = $emailAddress;
         $this->source = $source;
+
+        $this->setPostAddress(PostAddress::createEmptyAddress());
     }
 
     public function setFirstName(?string $firstName): void
@@ -283,5 +296,30 @@ class Contact
     public function setRecaptcha(?string $recaptcha): void
     {
         $this->recaptcha = $recaptcha;
+    }
+
+    public function process(): void
+    {
+        $this->processedAt = new \DateTime();
+    }
+
+    public function getProcessedAt(): ?\DateTimeInterface
+    {
+        return $this->processedAt;
+    }
+
+    public function isProcessed(): bool
+    {
+        return null !== $this->processedAt;
+    }
+
+    public function setAdherent(?Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
     }
 }
