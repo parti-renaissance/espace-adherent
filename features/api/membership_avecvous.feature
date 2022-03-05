@@ -164,6 +164,66 @@ Feature:
     }
     """
 
+  Scenario: As a non logged-in user I can create a contact with the same email address as an existing account
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/contacts" with body:
+    """
+    {
+      "first_name": "Carl",
+      "email_address": "carl999@example.fr",
+      "source": "avecvous",
+      "cgu_accepted": true,
+      "recaptcha": "fake123"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@"
+    }
+    """
+
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "interests": ["campagne_numerique"]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@"
+    }
+    """
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "last_name": "Doe",
+      "birthdate": "1975-01-01",
+      "phone": "+33 0611223344",
+      "post_address": {
+          "postal_code": "69001"
+      },
+      "phone_contact": true,
+      "cgu_accepted": true
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@"
+    }
+    """
+    And I should have 0 email
+
   Scenario: As a non logged-in user I can not create a contact with invalid captcha
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/contacts" with body:
