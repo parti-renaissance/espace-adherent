@@ -189,6 +189,8 @@ class Contact
         $this->firstName = $firstName;
         $this->emailAddress = $emailAddress;
         $this->source = $source;
+
+        $this->setPostAddress(PostAddress::createEmptyAddress());
     }
 
     public function setFirstName(?string $firstName): void

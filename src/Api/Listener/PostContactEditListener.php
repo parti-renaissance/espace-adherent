@@ -3,21 +3,20 @@
 namespace App\Api\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Contact\ContactHandler;
 use App\Entity\Contact;
-use App\Membership\Contact\ContactRegistrationCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class PostContactEditListener implements EventSubscriberInterface
 {
-    private MessageBusInterface $bus;
+    private ContactHandler $contactHandler;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(ContactHandler $contactHandler)
     {
-        $this->bus = $bus;
+        $this->contactHandler = $contactHandler;
     }
 
     public static function getSubscribedEvents()
@@ -36,7 +35,7 @@ class PostContactEditListener implements EventSubscriberInterface
 
         // We assume a contact is complete once the birthdate is known
         if (null !== $contact->getBirthdate()) {
-            $this->bus->dispatch(new ContactRegistrationCommand($contact->getUuid()));
+            $this->contactHandler->dispatchProcess($contact);
         }
     }
 }

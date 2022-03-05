@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Address\AddressInterface;
+use App\Entity\PostAddress;
 use App\Intl\FranceCitiesBundle;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -17,6 +18,7 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
+        $groups = $context['groups'] ?? [];
 
         if (
             !\array_key_exists('city', $data)
@@ -31,6 +33,14 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             if ($inseeCode) {
                 $data['city'] = "$postalCode-$inseeCode";
             }
+        }
+
+        if (
+            \in_array('contact_update', $groups, true)
+            && \array_key_exists('postal_code', $data)
+            && !\array_key_exists('country', $data)
+        ) {
+            $data['country'] = PostAddress::FRANCE;
         }
 
         return $this->denormalizer->denormalize($data, $class, $format, $context);

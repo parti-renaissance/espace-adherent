@@ -2,20 +2,8 @@
 
 namespace App\Membership\Contact;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
-use Ramsey\Uuid\UuidInterface;
+use App\Messenger\Message\AbstractUuidAsynchronousMessage;
 
-class ContactRegistrationCommand implements AsynchronousMessageInterface
+class ContactRegistrationCommand extends AbstractUuidAsynchronousMessage
 {
-    private $uuid;
-
-    public function __construct(UuidInterface $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
-    }
 }

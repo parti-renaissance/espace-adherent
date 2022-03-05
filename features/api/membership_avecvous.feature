@@ -56,8 +56,22 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can update a contact general informations
-    # Example with postal code only and phone_contact checkbox
+  Scenario: As a non logged-in user I can update a contact with postal code only and phone_contact checkbox
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "interests": ["campagne_numerique"]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@"
+    }
+    """
     Given I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
@@ -80,9 +94,25 @@ Feature:
       "uuid": "@uuid@"
     }
     """
+    And I should have 0 email
 
-    # Example with full address and all contact checkboxes
+  Scenario: As a non logged-in user I can update a contact with full address and all contact checkboxes
     Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "interests": ["action_terrain", "campagne_numerique"]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "@uuid@"
+    }
+    """
+    Then I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
     """
     {
@@ -106,6 +136,31 @@ Feature:
     """
     {
       "uuid": "@uuid@"
+    }
+    """
+    And I should have 1 email "AvecVousUserAccountConfirmationMessage" for "remi@avecvous.dev" with payload:
+    """
+    {
+        "template_name": "avec-vous-user-account-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "🚀 Activez votre compte Je m’engage",
+            "from_email": "ne-pas-repondre@je-mengage.fr",
+            "from_name": "Emmanuel Macron avec vous",
+            "global_merge_vars": [
+                {
+                    "name": "create_password_link",
+                    "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
+                }
+            ],
+            "to": [
+                {
+                    "email": "remi@avecvous.dev",
+                    "type": "to",
+                    "name": "Rémi Doe"
+                }
+            ]
+        }
     }
     """
 
