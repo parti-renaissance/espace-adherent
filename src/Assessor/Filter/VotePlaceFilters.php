@@ -47,7 +47,7 @@ class VotePlaceFilters extends AssessorFilters
             ;
         } elseif (self::ASSOCIATED === $status) {
             $qb
-               // ->andWhere($alias.'.substituteOfficeAvailable = false')
+                ->andWhere($alias.'.substituteOfficeAvailable = false')
                 ->andWhere($alias.'.holderOfficeAvailable = false')
             ;
         }
