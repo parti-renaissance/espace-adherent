@@ -288,8 +288,8 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->assertAssessorRequestTotalCount($crawler, self::SUBJECT_VOTE_PLACE, 1, 'complet');
-        $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertAssessorRequestTotalCount($crawler, self::SUBJECT_VOTE_PLACE, 2, 'complet');
+        $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Ecole Maternelle La Source")'));
     }
 
@@ -496,6 +496,9 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 
+    /**
+     * @group debug
+     */
     public function testAssessorManagerAssociatedVotePlaceListsFilters()
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
@@ -526,7 +529,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         // Test reset button
         $crawler = $this->client->click($crawler->selectLink('Réinitialiser le filtre')->link());
-        $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 
     public function testAssessorManagerVotePlaceAssignedCitiesList()
