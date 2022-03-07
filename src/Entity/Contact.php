@@ -167,7 +167,7 @@ class Contact
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private ?Adherent $adherent = null;
 
