@@ -139,7 +139,7 @@ class SurveyExporter
                     }
 
                     $row['Profession'] = $allowPersonalData && $jemarcheDataSurvey->getProfession() ? $jemarcheDataSurvey->getProfession() : null;
-                    $row['Code postal de l\'auteur'] = $jemarcheDataSurvey->getDataSurvey()->getAuthor()->getPostalCode();
+                    $row['Code postal de l\'auteur'] = ($author = $jemarcheDataSurvey->getDataSurvey()->getAuthor()) ? $author->getPostalCode() : null;
                     $row['Longitude'] = $jemarcheDataSurvey->getLongitude();
                     $row['Latitude'] = $jemarcheDataSurvey->getLatitude();
                 } else {
