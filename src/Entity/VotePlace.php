@@ -99,7 +99,7 @@ class VotePlace
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace")
+     * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace", fetch="EAGER")
      *
      * @Assert\Count(
      *     max=VotePlace::MAX_ASSESSOR_REQUESTS,

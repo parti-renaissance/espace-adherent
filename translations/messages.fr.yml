@@ -707,6 +707,11 @@ vote.type.important: 'Essentielle'
 vote.type.innovative: 'Innovante'
 
 #
+# Vote Place Cities
+#
+cities.associated.choices: "{1} Vous avez une commune assignée avec au moins un assesseur.|[2, Inf[ Vous avez %count% communes assignées avec au moins un assesseur."
+
+#
 # Application request
 #
 application_request.tags.edited_successfully: Les tags ont bien été mis à jour

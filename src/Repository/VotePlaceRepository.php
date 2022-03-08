@@ -4,11 +4,13 @@ namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Assessor\Filter\AssociationVotePlaceFilter;
+use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -231,6 +233,61 @@ class VotePlaceRepository extends AbstractAssessorRepository
             ->orderBy('vp.code', 'DESC')
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function findVotePlacesCities(Adherent $manager, CitiesFilters $filters): array
+    {
+        if (!$manager->isAssessorManager()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder(self::ALIAS);
+
+        $filters->apply($qb, self::ALIAS);
+
+        self::addAndWhereManagedBy($qb, $manager);
+
+        $qb
+            ->select(self::ALIAS.'.city, '.self::ALIAS.'.postalCode')
+            ->addSelect('COUNT(DISTINCT '.self::ALIAS.'.id) AS nb_vote_places')
+            ->addSelect('COUNT(DISTINCT assessor) AS nb_assessors')
+            ->leftJoin(AssessorRequest::class, 'assessor', Join::WITH, 'assessor.votePlace ='.self::ALIAS.'.id')
+            ->addGroupBy(self::ALIAS.'.city')
+            ->addOrderBy(self::ALIAS.'.city', 'ASC')
+        ;
+
+        if (CitiesFilters::ASSOCIATED === $filters->getStatus()) {
+            $qb
+                ->having('nb_assessors > 0')
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return VotePlace[]
+     */
+    public function FindForCityAssessors(Adherent $manager, string $cityName): array
+    {
+        if (!$manager->isAssessorManager()) {
+            throw new \InvalidArgumentException('Adherent must be an assessor manager.');
+        }
+
+        $qb = $this->createQueryBuilder(self::ALIAS);
+
+        self::addAndWhereManagedBy($qb, $manager);
+
+        return $qb
+            ->innerJoin(AssessorRequest::class, 'assessor', Join::WITH, 'assessor.votePlace ='.self::ALIAS.'.id')
+            ->andWhere(self::ALIAS.'.city = :city')
+            ->setParameter('city', $cityName)
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

@@ -21,6 +21,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
     private const ASSESSOR_REQUEST_6_UUID = 'd320b698-10b7-4dd7-a70a-cedb95fceeda';
     private const ASSESSOR_REQUEST_7_UUID = 'f9286607-c3b5-4531-be03-81c3fb4fafe8';
     private const ASSESSOR_REQUEST_8_UUID = '64b8b8ca-0708-4fcc-a3ce-844ff2e3852d';
+    private const ASSESSOR_REQUEST_9_UUID = '884d16de-30f7-45c4-bffb-e93df9357279';
 
     public function load(ObjectManager $manager)
     {
@@ -134,7 +135,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
         $matchedRequest3->addVotePlaceWish($votePlaceLilleWazemmes);
         $matchedRequest3->process($votePlaceLilleWazemmes);
 
-        $request4 = AssessorRequestFactory::createFromArray([
+        $request5 = AssessorRequestFactory::createFromArray([
             'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_5_UUID),
             'gender' => 'male',
             'lastName' => 'Sahalor',
@@ -226,11 +227,37 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
             'assessorCountry' => 'IT',
         ]);
 
+        $matchedRequest4 = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_9_UUID),
+            'gender' => 'male',
+            'lastName' => 'Pélisson',
+            'firstName' => 'Philippe',
+            'birthdate' => '29-03-1985',
+            'birthCity' => 'Lille',
+            'address' => 'Pl. du Théâtre',
+            'postalCode' => '59000',
+            'city' => 'Lille',
+            'voteCity' => 'Lille',
+            'officeNumber' => '59350_0108',
+            'emailAddress' => 'philippe.pelisson@example.fr',
+            'phoneNumber' => '+33612345679',
+            'voterNumber' => '00015',
+            'assessorCity' => 'Lille',
+            'assessorPostalCode' => '59000',
+            'birthName' => 'Pélisson',
+            'office' => AssessorOfficeEnum::SUBSTITUTE,
+            'electionRounds' => AssessorRequestElectionRoundsEnum::ALL,
+        ]);
+
+        $matchedRequest4->addVotePlaceWish($votePlaceLilleWazemmes);
+        $matchedRequest4->process($votePlaceLilleWazemmes);
+
         $manager->persist($unmatchedRequest1);
         $manager->persist($matchedRequest1);
         $manager->persist($matchedRequest2);
         $manager->persist($matchedRequest3);
-        $manager->persist($request4);
+        $manager->persist($matchedRequest4);
+        $manager->persist($request5);
         $manager->persist($requestOutOfManagedArea);
         $manager->persist($foreignRequestDisabled);
         $manager->persist($foreignRequestOutOfManagedArea);
