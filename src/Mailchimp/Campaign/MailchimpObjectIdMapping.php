@@ -171,9 +171,8 @@ class MailchimpObjectIdMapping
 
     public function getListIdFromSource(?string $source): string
     {
-        switch ($source) {
-            case MembershipSourceEnum::JEMENGAGE:
-                return $this->getJeMengageListId();
+        if (MembershipSourceEnum::JEMENGAGE === $source) {
+            return $this->getJeMengageListId();
         }
 
         return $this->getMainListId();
