@@ -40,7 +40,7 @@ class AdherentChangeCommandHandler implements MessageHandlerInterface, LoggerAwa
         $this->entityManager->refresh($adherent);
 
         // Avoid sync non-adherent user types
-        if (null !== $adherent->getSource()) {
+        if (null !== $adherent->getSource() && !$adherent->isJemengageUser()) {
             return;
         }
 
