@@ -216,7 +216,7 @@ class Driver implements LoggerAwareInterface
         } catch (HttpExceptionInterface $e) {
             $this->logger->error(sprintf(
                 '[API] Error: %s',
-                ($response = $e->getResponse()) ? $response->getContent() : 'Unknown'
+                ($response = $e->getResponse()) ? $response->getContent(false) : 'Unknown'
             ), ['exception' => $e]);
 
             return $this->lastResponse = $response;

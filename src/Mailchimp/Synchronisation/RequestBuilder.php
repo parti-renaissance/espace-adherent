@@ -87,7 +87,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     public function updateFromAdherent(Adherent $adherent): self
     {
-        return $this
+        $this
             ->setEmail($adherent->getEmailAddress())
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
@@ -97,15 +97,22 @@ class RequestBuilder implements LoggerAwareInterface
             ->setCity($adherent->getCityName())
             ->setCountryName($adherent->getCountryName())
             ->setAdhesionDate($adherent->getRegisteredAt())
-            ->setInterests($this->buildInterestArray($adherent))
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setZones($adherent->getZones())
-            ->setTeamCode($adherent)
-            ->setIsCertified($adherent->isCertified())
-            ->setLoginGroup($adherent->getLastLoginGroup())
         ;
+
+        if (null === $adherent->getSource()) {
+            $this
+                ->setTeamCode($adherent)
+                ->setIsCertified($adherent->isCertified())
+                ->setLoginGroup($adherent->getLastLoginGroup())
+                ->setInterests($this->buildInterestArray($adherent))
+            ;
+        }
+
+        return $this;
     }
 
     public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
@@ -468,12 +475,12 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
         }
 
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_BOROUGH] = $this->zoneBorough ? (string) $this->zoneBorough : null;
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CANTON] = $this->zoneCanton ? (string) $this->zoneCanton : null;
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = $this->zoneCity ? (string) $this->zoneCity : null;
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = $this->zoneDepartment ? (string) $this->zoneDepartment : null;
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = $this->zoneRegion ? (string) $this->zoneRegion : null;
-        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = $this->zoneCountry ? (string) $this->zoneCountry : null;
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_BOROUGH] = $this->zoneBorough ? (string) $this->zoneBorough : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CANTON] = $this->zoneCanton ? (string) $this->zoneCanton : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = $this->zoneCity ? (string) $this->zoneCity : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = $this->zoneDepartment ? (string) $this->zoneDepartment : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = $this->zoneRegion ? (string) $this->zoneRegion : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = $this->zoneCountry ? (string) $this->zoneCountry : '';
 
         if ($this->codeCanton) {
             $mergeFields[MemberRequest::MERGE_FIELD_CODE_CANTON] = $this->codeCanton;

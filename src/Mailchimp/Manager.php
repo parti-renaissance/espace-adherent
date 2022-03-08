@@ -76,10 +76,10 @@ class Manager implements LoggerAwareInterface
 
         $result = $this->driver->editMember(
             $requestBuilder->buildMemberRequest($message->getEmailAddress()),
-            $this->mailchimpObjectIdMapping->getMainListId()
+            $this->mailchimpObjectIdMapping->getListIdFromSource($adherent->getSource())
         );
 
-        if ($result) {
+        if ($result && null === $adherent->getSource()) {
             $this->updateMemberTags(
                 $message->getEmailAddress(),
                 $this->mailchimpObjectIdMapping->getMainListId(),

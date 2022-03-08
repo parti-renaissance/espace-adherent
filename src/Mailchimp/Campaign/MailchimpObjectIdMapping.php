@@ -4,6 +4,7 @@ namespace App\Mailchimp\Campaign;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Membership\MembershipSourceEnum;
 
 class MailchimpObjectIdMapping
 {
@@ -12,6 +13,7 @@ class MailchimpObjectIdMapping
     private $electedRepresentativeListId;
     private $applicationRequestCandidateListId;
     private $jecouteListId;
+    private $jeMengageListId;
     private $coalitionsListId;
     private $folderIds;
     private $templateIds;
@@ -30,6 +32,7 @@ class MailchimpObjectIdMapping
         string $electedRepresentativeListId,
         string $applicationRequestCandidateListId,
         string $jecouteListId,
+        string $jeMengageListId,
         string $coalitionsListId,
         array $folderIds,
         array $templateIds,
@@ -47,6 +50,7 @@ class MailchimpObjectIdMapping
         $this->electedRepresentativeListId = $electedRepresentativeListId;
         $this->applicationRequestCandidateListId = $applicationRequestCandidateListId;
         $this->jecouteListId = $jecouteListId;
+        $this->jeMengageListId = $jeMengageListId;
         $this->coalitionsListId = $coalitionsListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
@@ -158,6 +162,21 @@ class MailchimpObjectIdMapping
     public function getNewsletterTagIds(): array
     {
         return $this->newsletterTagIds;
+    }
+
+    public function getJeMengageListId(): string
+    {
+        return $this->jeMengageListId;
+    }
+
+    public function getListIdFromSource(?string $source): string
+    {
+        switch ($source) {
+            case MembershipSourceEnum::JEMENGAGE:
+                return $this->getJeMengageListId();
+        }
+
+        return $this->getMainListId();
     }
 
     private function findTemplateId(string $key): ?int
