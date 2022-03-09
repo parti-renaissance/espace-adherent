@@ -24,12 +24,12 @@ class ContactManager
     private const FIELD_COUNTRY = 'PAYS';
 
     private Client $client;
-    private string $contactListId;
+    private int $contactListId;
 
     public function __construct(Client $client, string $sendInBlueContactListId)
     {
         $this->client = $client;
-        $this->contactListId = $sendInBlueContactListId;
+        $this->contactListId = (int) $sendInBlueContactListId;
     }
 
     public function synchronize(Contact $contact): void
