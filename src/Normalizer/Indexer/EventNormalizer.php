@@ -4,23 +4,15 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Geo\Zone;
-use App\Storage\UrlAdapterInterface;
-use League\Flysystem\Cached\CachedAdapter;
-use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
-    private UrlAdapterInterface $storageAdapter;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(FilesystemInterface $storage)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $storageAdapter = $storage->getAdapter();
-
-        if ($storageAdapter instanceof CachedAdapter) {
-            $storageAdapter = $storageAdapter->getAdapter();
-        }
-
-        $this->storageAdapter = $storageAdapter;
+        $this->urlGenerator = $urlGenerator;
     }
 
     protected function getClassName(): string
@@ -85,7 +77,11 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getImage(object $object): ?string
     {
-        return $object->hasImageName() ? $this->storageAdapter->getUrl($object->getImagePath()) : null;
+        return $object->hasImageName() ? $this->urlGenerator->generate(
+            'asset_url',
+            ['path' => $object->getImagePath()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        ) : null;
     }
 
     /** @param BaseEvent $object */
