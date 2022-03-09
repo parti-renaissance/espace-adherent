@@ -221,13 +221,10 @@ Feature:
     Examples:
       | method | url                                                    | user                              |
       | GET    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | referent-child@en-marche-dev.fr   |
-      | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | referent-child@en-marche-dev.fr   |
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | referent-child@en-marche-dev.fr   |
       | GET    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | adherent-male-a@en-marche-dev.fr  |
-      | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | adherent-male-a@en-marche-dev.fr  |
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | adherent-male-a@en-marche-dev.fr  |
       | GET    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
-      | PUT    | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
       | DELETE | /api/v3/audiences/f7ac8140-0a5b-4832-a5f4-47e661dc130c | carl999@example.fr                |
 
   Scenario: As a logged-in user with correct rights, but no audience type, I can not get audiences

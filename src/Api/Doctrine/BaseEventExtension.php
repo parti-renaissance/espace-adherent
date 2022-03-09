@@ -5,6 +5,7 @@ namespace App\Api\Doctrine;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Api\Filter\EventsGroupSourceFilter;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
@@ -60,7 +61,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
             return;
         }
 
-        if (BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
+        if (BaseEvent::class === $resourceClass && empty($context['filters'][EventsGroupSourceFilter::PROPERTY_NAME])) {
             $allowedTypes = [
                 EventTypeEnum::TYPE_DEFAULT,
                 EventTypeEnum::TYPE_COMMITTEE,

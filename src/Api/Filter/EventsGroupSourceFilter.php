@@ -10,7 +10,7 @@ use Doctrine\ORM\QueryBuilder;
 
 final class EventsGroupSourceFilter extends AbstractContextAwareFilter
 {
-    private const PROPERTY_NAME = 'groupSource';
+    public const PROPERTY_NAME = 'group_source';
     private const GROUP_SOURCE_EN_MARCHE = 'en_marche';
     private const GROUP_SOURCE_COALITIONS = 'coalitions';
     private const GROUP_SOURCES = [

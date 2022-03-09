@@ -282,7 +282,7 @@ class RestContext extends BehatchRestContext
         if (preg_match('#^/?(api|oauth)/#', $url) && false === strpos($url, 'oauth/v2/auth')) {
             $this->iAddHeaderEqualTo('Accept', 'application/json');
 
-            if (in_array($method, ['PUT', 'POST'], true)) {
+            if (\in_array($method, ['PUT', 'POST'], true)) {
                 $this->iAddHeaderEqualTo('Content-type', 'application/json');
             }
         }

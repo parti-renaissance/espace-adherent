@@ -20,7 +20,6 @@ Feature:
     Examples:
       | method  | url                                                             |
       | GET     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
-      | PUT     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
       | DELETE  | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
 
   Scenario: As a logged-in user I cannot get audience segments
@@ -297,5 +296,4 @@ Feature:
     Examples:
       | method  | url                                                             |
       | GET     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
-      | PUT     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
       | DELETE  | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |

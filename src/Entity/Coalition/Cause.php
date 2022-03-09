@@ -88,6 +88,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "controller": "App\Controller\Api\Coalition\CauseController::updateImage",
  *         },
  *     },
+ *     subresourceOperations={
+ *         "events_get_subresource": {
+ *             "path": "/api/causes/{uuid}/events",
+ *         }
+ *     }
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={"coalition.uuid": "exact"})
