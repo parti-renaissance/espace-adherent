@@ -35,7 +35,7 @@ class AssessorRequestExporter
                     'officeName' => 'Fonction',
                     'gender' => 'Genre',
                     'lastName' => 'Nom',
-                    'firstName' => 'Prénom',
+                    'firstName' => 'Prénoms',
                     'birthdate' => 'Date de naissance',
                     'birthCity' => 'Lieu de naissance',
                     'address' => 'Adresse',

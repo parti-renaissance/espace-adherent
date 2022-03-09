@@ -17,6 +17,7 @@ use Tests\App\Test\Helper\PHPUnitHelper;
 /**
  * @group functional
  * @group assessor
+ * @group debug
  */
 class AssessorManagerControllerTest extends AbstractWebCaseTest
 {
@@ -562,17 +563,19 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         PHPUnitHelper::assertArraySubset(
             [
-                'Numéro du BV',
-                'Nom du BV',
-                'Adresse postale du BV',
+                'Numéro du bureau de vote',
+                'Nom du bureau de vote',
+                'Adresse postale du bureau de vote',
                 'Nom assesseur titulaire',
                 'Prénom assesseur titulaire',
                 'Date de naissance assesseur titulaire',
                 'Adresse postale assesseur titulaire',
+                'Numéro d\'électeur assesseur titulaire',
                 'Nom assesseur suppléant',
                 'Prénom assesseur suppléant',
                 'Date de naissance assesseur suppléant',
                 'Adresse postale assesseur suppléant',
+                'Numéro d\'électeur assesseur suppléant',
             ],
             $lines[0]
         );
@@ -586,10 +589,12 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 'Elise',
                 '14/01/1986',
                 'Pl. du Théâtre, 59000 Lille',
+                '00004',
                 'Pélisson',
                 'Philippe',
                 '29/03/1985',
                 'Pl. du Théâtre, 59000 Lille',
+                '00015',
             ],
             $lines[1]
         );
@@ -671,8 +676,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 'Fonction',
                 'Genre',
                 'Nom',
-                'Nom de naissance',
-                'Prénom',
+                'Prénoms',
                 'Date de naissance',
                 'Lieu de naissance',
                 'Adresse',
@@ -694,7 +698,6 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
                 'France',
                 'Titulaire',
                 'Homme',
-                'Luc',
                 'Luc',
                 'Ratif',
                 '04/02/1992',
