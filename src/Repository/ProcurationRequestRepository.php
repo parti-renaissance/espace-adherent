@@ -144,6 +144,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         $qb
             ->select('COUNT(DISTINCT pp.id)')
             ->from('App:ProcurationProxy', 'pp')
+            ->leftJoin('pp.otherVoteCities', 'other_city')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
         ;
@@ -158,6 +159,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             $proxiesCountQuery->setParameter('votePostalCodePrefix', substr($request->getVotePostalCode(), 0, 2));
             $proxiesCountQuery->setParameter('voteCityName', $request->getVoteCityName());
             $proxiesCountQuery->setParameter('voteCountry', $request->getVoteCountry());
+            $proxiesCountQuery->setParameter('voteCityNamePattern', $request->getVoteCityName().'%');
 
             $requests[$key] = [
                 'data' => $request,

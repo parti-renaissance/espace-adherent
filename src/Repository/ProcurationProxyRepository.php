@@ -93,11 +93,13 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $qb
             ->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
+            ->leftJoin('pp.otherVoteCities', 'other_city')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
             ->setParameter('votePostalCodePrefix', substr($procurationRequest->getVotePostalCode(), 0, 2))
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
+            ->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%')
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC')
         ;
@@ -195,8 +197,13 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 $qb->expr()->orX(
                     $qb->expr()->andX(
                         'pp.voteCountry = \'FR\'',
-                        'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
-                        'pp.voteCityName = :voteCityName',
+                        $qb->expr()->orX(
+                            $qb->expr()->andX(
+                                'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                                'pp.voteCityName = :voteCityName'
+                            ),
+                            'other_city.name LIKE :voteCityNamePattern'
+                        ),
                         'pp.frenchRequestAvailable = true'
                     ),
                     $qb->expr()->andX(
