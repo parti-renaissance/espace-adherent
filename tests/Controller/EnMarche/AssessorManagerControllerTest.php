@@ -496,9 +496,6 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 
-    /**
-     * @group debug
-     */
     public function testAssessorManagerAssociatedVotePlaceListsFilters()
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);

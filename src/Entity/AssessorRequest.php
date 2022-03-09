@@ -312,7 +312,7 @@ class AssessorRequest
         ?string $officeNumber,
         string $emailAddress,
         PhoneNumber $phoneNumber,
-        ?string $voterNumber,
+        string $voterNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
         string $office = AssessorOfficeEnum::HOLDER,
@@ -525,7 +525,7 @@ class AssessorRequest
         return $this->voterNumber;
     }
 
-    public function setVoterNumber(?string $voterNumber): void
+    public function setVoterNumber(string $voterNumber): void
     {
         $this->voterNumber = $voterNumber;
     }

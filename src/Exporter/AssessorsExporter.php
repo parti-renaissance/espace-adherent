@@ -39,7 +39,7 @@ class AssessorsExporter
                     $request = $data[0];
 
                     return [
-                        'Nom de Naissance' => $request->getLastName(),
+                        'Nom de naissance' => $request->getLastName(),
                         'Prénom' => $request->getFirstName(),
                         'Email' => $request->getEmailAddress(),
                         'Bureaux de vote souhaités' => implode(' | ',

@@ -9,6 +9,7 @@ final class Version20220309113539 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
+        $this->addSql('UPDATE assessor_requests SET voter_number = :voter_number WHERE voter_number IS NULL', ['voter_number' => '00000']);
         $this->addSql('ALTER TABLE
           assessor_requests
         DROP
