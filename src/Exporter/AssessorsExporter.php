@@ -39,7 +39,7 @@ class AssessorsExporter
                     $request = $data[0];
 
                     return [
-                        'Nom' => $request->getLastName(),
+                        'Nom de Naissance' => $request->getLastName(),
                         'Prénom' => $request->getFirstName(),
                         'Email' => $request->getEmailAddress(),
                         'Bureaux de vote souhaités' => implode(' | ',
@@ -49,7 +49,6 @@ class AssessorsExporter
                                 })
                                 ->toArray()
                         ),
-                        'Nom de naissance' => $request->getBirthName(),
                         'Genre' => $this->translator->trans($request->getGenderName()),
                         'Téléphone' => $request->getPhone()->getNationalNumber(),
                         'Date de naissance' => $request->getBirthdate()->format('d/m/Y'),

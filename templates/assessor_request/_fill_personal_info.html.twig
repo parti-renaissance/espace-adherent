@@ -18,23 +18,17 @@
                 {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
                 {{ form_errors(form.gender) }}
             </div>
-            <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Prénom <span class="text--normal">*</span></p>
-                {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
-                {{ form_errors(form.firstName) }}
-            </div>
-
         </div>
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Nom d'usage <span class="text--normal">*</span></p>
+                <p class="b__nudge--bottom-tiny text--bold">Nom de naissance <span class="text--normal">*</span></p>
                 {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
                 {{ form_errors(form.lastName) }}
             </div>
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Nom de naissance <span class="text--normal">*</span></p>
-                {{ form_widget(form.birthName, { attr: { placeholder: 'Votre nom de naissance' } }) }}
-                {{ form_errors(form.birthName) }}
+                <p class="b__nudge--bottom-tiny text--bold">Prénoms (tous vos prénoms) <span class="text--normal">*</span></p>
+                {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
+                {{ form_errors(form.firstName) }}
             </div>
         </div>
 
@@ -61,12 +55,12 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Ville d'inscription électorale <span class="text--normal">*</span></p>
+                <p class="b__nudge--bottom-tiny text--bold">La commune où vous êtes inscrit sur les listes électorales <span class="text--normal">*</span></p>
                 {{ form_widget(form.voteCity, { attr: { placeholder: 'Ville où vous votez' } }) }}
                 {{ form_errors(form.voteCity) }}
             </div>
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">N° du bureau de vote <span class="text--normal">*</span></p>
+                <p class="b__nudge--bottom-tiny text--bold">Le nom / n° de votre bureau de vote habituel</p>
                 {{ form_widget(form.officeNumber, { attr: { placeholder: 'N° du bureau de vote' } }) }}
                 {{ form_errors(form.officeNumber) }}
             </div>
@@ -104,7 +98,7 @@
 
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
         <div class="l__row--h-stretch register__form--full">
-            <p class="b__nudge--bottom-tiny text--bold">Numéro d'électeur : </p>
+            <p class="b__nudge--bottom-tiny text--bold">Numéro d'électeur <span class="text--normal">*</span></p>
             {{ form_widget(form.voterNumber, { attr: { placeholder: 'Votre Numéro d\'électeur' } }) }}
             {{ form_errors(form.voterNumber) }}
             <p class="text--small text--gray">

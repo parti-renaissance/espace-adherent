@@ -68,21 +68,6 @@ class AssessorRequest
     private $firstName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
-     *
-     * @Assert\NotBlank(message="common.birth_name.not_blank")
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.birth_name.min_length",
-     *     maxMessage="common.birth_name.max_length"
-     * )
-     */
-    private $birthName;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(type="date")
@@ -147,11 +132,10 @@ class AssessorRequest
     private $voteCity;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=10)
+     * @ORM\Column(length=10, nullable=true)
      *
-     * @Assert\NotBlank(message="assessor.office_number.not_blank")
      * @Assert\Length(max=10)
      */
     private $officeNumber;
@@ -178,10 +162,11 @@ class AssessorRequest
     private $phone;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column
      *
+     * @Assert\NotBlank(message="assessor.voter_number.not_blank")
      * @Assert\Length(max="255")
      */
     private $voterNumber;
@@ -324,13 +309,12 @@ class AssessorRequest
         ?string $postalCode,
         string $city,
         string $voteCity,
-        string $officeNumber,
+        ?string $officeNumber,
         string $emailAddress,
         PhoneNumber $phoneNumber,
         ?string $voterNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
-        string $birthName,
         string $office = AssessorOfficeEnum::HOLDER,
         array $electionRounds = AssessorRequestElectionRoundsEnum::ALL,
         bool $enabled = true,
@@ -344,7 +328,6 @@ class AssessorRequest
         $assessorRequest->setGender($gender);
         $assessorRequest->setLastName($lastName);
         $assessorRequest->setFirstName($firstName);
-        $assessorRequest->setBirthName($birthName);
         $assessorRequest->setBirthdate($birthDate);
         $assessorRequest->setBirthCity($birthCity);
         $assessorRequest->setAddress($address);
@@ -447,16 +430,6 @@ class AssessorRequest
         $this->firstName = $firstName;
     }
 
-    public function getBirthName(): ?string
-    {
-        return $this->birthName;
-    }
-
-    public function setBirthName(string $birthName): void
-    {
-        $this->birthName = $birthName;
-    }
-
     public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
@@ -522,7 +495,7 @@ class AssessorRequest
         return $this->officeNumber;
     }
 
-    public function setOfficeNumber(string $officeNumber): void
+    public function setOfficeNumber(?string $officeNumber): void
     {
         $this->officeNumber = $officeNumber;
     }

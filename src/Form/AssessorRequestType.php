@@ -41,15 +41,14 @@ class AssessorRequestType extends AbstractType
                     ->add('gender', GenderType::class)
                     ->add('lastName', TextType::class)
                     ->add('firstName', TextType::class)
-                    ->add('birthName', TextType::class)
                     ->add('address', TextType::class)
                     ->add('postalCode', TextType::class)
                     ->add('city', TextType::class)
                     ->add('voteCity', TextType::class)
-                    ->add('officeNumber', TextType::class)
-                    ->add('voterNumber', TextType::class, [
+                    ->add('officeNumber', TextType::class, [
                         'required' => false,
                     ])
+                    ->add('voterNumber', TextType::class)
                     ->add('phone', PhoneNumberType::class, [
                         'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                     ])

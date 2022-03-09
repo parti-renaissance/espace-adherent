@@ -24,9 +24,9 @@ class CityAssessorExporter
             XlsxEncoder::FORMAT,
             [
                 XlsxEncoder::HEADERS_KEY => [
-                    'votePlaceId' => 'Numéro du BV',
-                    'votePlaceName' => 'Nom du BV',
-                    'votePlaceAddress' => 'Adresse postale du BV',
+                    'votePlaceId' => 'Numéro du bureau de vote',
+                    'votePlaceName' => 'Nom du bureau de vote',
+                    'votePlaceAddress' => 'Adresse postale du bureau de vote',
                     'holderLastName' => 'Nom assesseur titulaire',
                     'holderFirstName' => 'Prénom assesseur titulaire',
                     'holderBirthdate' => 'Date de naissance assesseur titulaire',
