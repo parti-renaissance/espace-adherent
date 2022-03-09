@@ -26,7 +26,7 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param News $object */
     protected function isLocal(object $object): bool
     {
-        return null !== $object->getSpace();
+        return !$object->isNationalVisibility();
     }
 
     /** @param News $object */
@@ -44,7 +44,7 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param News $object */
     protected function isNational(object $object): bool
     {
-        return !$object->getSpace();
+        return $object->isNationalVisibility();
     }
 
     /** @param News $object */
