@@ -6,7 +6,7 @@ use SendinBlue\Client\Api\ContactsApi;
 use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Model\CreateContact;
 
-class Client
+class Client implements ClientInterface
 {
     private ContactsApi $contactsApi;
 

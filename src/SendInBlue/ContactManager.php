@@ -23,10 +23,10 @@ class ContactManager
     private const FIELD_POSTAL_CODE = 'CODE_POSTAL';
     private const FIELD_COUNTRY = 'PAYS';
 
-    private Client $client;
+    private ClientInterface $client;
     private int $contactListId;
 
-    public function __construct(Client $client, int $sendInBlueContactListId)
+    public function __construct(ClientInterface $client, int $sendInBlueContactListId)
     {
         $this->client = $client;
         $this->contactListId = $sendInBlueContactListId;
