@@ -34,7 +34,6 @@ class AssessorControllerTest extends WebTestCase
                 'gender' => 'male',
                 'firstName' => 'Ernestino',
                 'lastName' => 'Bonsoirini',
-                'birthName' => 'Boujourini',
                 'address' => '39 rue du Welsh',
                 'postalCode' => '59290',
                 'city' => 'Wasquehal',

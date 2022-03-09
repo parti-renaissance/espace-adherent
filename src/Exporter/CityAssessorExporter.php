@@ -24,17 +24,19 @@ class CityAssessorExporter
             XlsxEncoder::FORMAT,
             [
                 XlsxEncoder::HEADERS_KEY => [
-                    'votePlaceId' => 'Numéro du BV',
-                    'votePlaceName' => 'Nom du BV',
-                    'votePlaceAddress' => 'Adresse postale du BV',
+                    'votePlaceId' => 'Numéro du bureau de vote',
+                    'votePlaceName' => 'Nom du bureau de vote',
+                    'votePlaceAddress' => 'Adresse postale du bureau de vote',
                     'holderLastName' => 'Nom assesseur titulaire',
                     'holderFirstName' => 'Prénom assesseur titulaire',
                     'holderBirthdate' => 'Date de naissance assesseur titulaire',
                     'holderAddress' => 'Adresse postale assesseur titulaire',
+                    'holderVoterNumber' => 'Numéro d\'électeur assesseur titulaire',
                     'substituteLastName' => 'Nom assesseur suppléant',
                     'substituteFirstName' => 'Prénom assesseur suppléant',
                     'substituteBirthdate' => 'Date de naissance assesseur suppléant',
                     'substituteAddress' => 'Adresse postale assesseur suppléant',
+                    'substituteVoterNumber' => 'Numéro d\'électeur assesseur suppléant',
                 ],
             ]
         );
@@ -59,6 +61,7 @@ class CityAssessorExporter
                 'holderFirstName' => null,
                 'holderBirthdate' => null,
                 'holderAddress' => null,
+                'holderVoterNumber' => null,
             ];
 
             $substitute = [
@@ -66,6 +69,7 @@ class CityAssessorExporter
                 'substituteFirstName' => null,
                 'substituteBirthdate' => null,
                 'substituteAddress' => null,
+                'substituteVoterNumber' => null,
             ];
 
             /** @var AssessorRequest $assessorRequest */
@@ -76,6 +80,7 @@ class CityAssessorExporter
                         'holderFirstName' => $assessorRequest->getFirstName(),
                         'holderBirthdate' => $assessorRequest->getBirthdate()->format('d/m/Y'),
                         'holderAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity(),
+                        'holderVoterNumber' => $assessorRequest->getVoterNumber(),
                     ];
                 } elseif (AssessorOfficeEnum::SUBSTITUTE === $assessorRequest->getOffice()) {
                     $substitute = [
@@ -83,6 +88,7 @@ class CityAssessorExporter
                         'substituteFirstName' => $assessorRequest->getFirstName(),
                         'substituteBirthdate' => $assessorRequest->getBirthdate()->format('d/m/Y'),
                         'substituteAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity(),
+                        'substituteVoterNumber' => $assessorRequest->getVoterNumber(),
                     ];
                 }
             }

@@ -48,18 +48,6 @@ class AssessorRequestCommand
     private $firstName;
 
     /**
-     * @Assert\NotBlank(message="common.birth_name.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.birth_name.min_length",
-     *     maxMessage="common.birth_name.max_length",
-     *     groups={"fill_personal_info"}
-     * )
-     */
-    private $birthName;
-
-    /**
      * @Assert\NotBlank(message="common.birthdate.not_blank", groups={"fill_personal_info"})
      * @Assert\Range(
      *     min="-120 years",
@@ -102,7 +90,6 @@ class AssessorRequestCommand
     private $voteCity;
 
     /**
-     * @Assert\NotBlank(message="assessor.office_number.not_blank", groups={"fill_personal_info"})
      * @Assert\Length(max=10, groups={"fill_personal_info"})
      */
     private $officeNumber;
@@ -121,6 +108,7 @@ class AssessorRequestCommand
     private $phone;
 
     /**
+     * @Assert\NotBlank(message="assessor.voter_number.not_blank", groups={"fill_personal_info"})
      * @Assert\Length(max=255, groups={"fill_personal_info"})
      */
     private $voterNumber;
@@ -229,16 +217,6 @@ class AssessorRequestCommand
         $this->firstName = $firstName;
     }
 
-    public function getBirthName(): ?string
-    {
-        return $this->birthName;
-    }
-
-    public function setBirthName(string $birthName): void
-    {
-        $this->birthName = $birthName;
-    }
-
     public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
@@ -304,7 +282,7 @@ class AssessorRequestCommand
         return $this->officeNumber;
     }
 
-    public function setOfficeNumber(string $officeNumber): void
+    public function setOfficeNumber(?string $officeNumber): void
     {
         $this->officeNumber = $officeNumber;
     }

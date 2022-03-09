@@ -16,19 +16,13 @@
                 <td>{{ assessorRequest.getGenderName|trans }}</td>
             </tr>
             <tr class="firstname">
-                <td>Prénom</td>
+                <td>Prénoms</td>
                 <td>{{ assessorRequest.firstName }}</td>
             </tr>
             <tr class="lastname">
-                <td>Nom</td>
+                <td>Nom de naissance</td>
                 <td>{{ assessorRequest.lastName }}</td>
             </tr>
-            {% if assessorRequest.birthName %}
-                <tr class="birthname">
-                    <td>Nom de naissance</td>
-                    <td>{{ assessorRequest.birthName }}</td>
-                </tr>
-            {% endif %}
             <tr class="address">
                 <td>Adresse</td>
                 <td>{{ assessorRequest.address }}</td>
