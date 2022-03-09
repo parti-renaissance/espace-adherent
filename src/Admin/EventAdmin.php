@@ -16,6 +16,7 @@ use App\Events;
 use App\Form\EventCategoryType;
 use App\Form\UnitedNationsCountryType;
 use App\Referent\ReferentTagManager;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -410,6 +411,8 @@ class EventAdmin extends AbstractAdmin
 
     public function getDataSourceIterator()
     {
+        PhpConfigurator::disableMemoryLimit();
+
         $dataSourceIterator = parent::getDataSourceIterator();
         $dataSourceIterator->setDateTimeFormat('d/m/Y');
 
