@@ -26,10 +26,10 @@ class ContactManager
     private Client $client;
     private int $contactListId;
 
-    public function __construct(Client $client, string $sendInBlueContactListId)
+    public function __construct(Client $client, int $sendInBlueContactListId)
     {
         $this->client = $client;
-        $this->contactListId = (int) $sendInBlueContactListId;
+        $this->contactListId = $sendInBlueContactListId;
     }
 
     public function synchronize(Contact $contact): void

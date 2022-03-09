@@ -70,7 +70,7 @@ services:
             $jemengageAuthHost: '%jemengage_auth_host%'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
             $sendInBlueApiKey: '%env(SENDINBLUE_API_KEY)%'
-            $sendInBlueContactListId: '%env(SENDINBLUE_CONTACT_LIST_ID)%'
+            $sendInBlueContactListId: '%env(int:SENDINBLUE_CONTACT_LIST_ID)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
