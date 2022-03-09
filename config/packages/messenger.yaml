@@ -48,6 +48,14 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync' }
                     queues:
                         mailchimp_sync: { binding_keys: ['mailchimp.sync'] }
+            sendinblue_sync:
+                dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    delay: 10000
+                options:
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'sendinblue.sync' }
+                    queues:
+                        sendinblue_sync: { binding_keys: ['sendinblue.sync'] }
             mailchimp_campaign:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
@@ -60,4 +68,5 @@ framework:
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
             App\Pap\Command\AsynchronousMessageInterface: pap
+            App\SendInBlue\SynchronizeMessageInterface: sendinblue_sync
             App\Messenger\Message\AsynchronousMessageInterface: default

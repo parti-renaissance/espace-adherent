@@ -125,6 +125,11 @@ class Contact
     private array $interests = [];
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $interestsUpdatedAt = null;
+
+    /**
      * @ORM\Column
      *
      * @Assert\NotBlank
@@ -246,6 +251,13 @@ class Contact
     public function setInterests(array $interests): void
     {
         $this->interests = $interests;
+
+        $this->interestsUpdatedAt = new \DateTime();
+    }
+
+    public function getInterestsUpdatedAt(): ?\DateTime
+    {
+        return $this->interestsUpdatedAt;
     }
 
     public function getInterests(): array

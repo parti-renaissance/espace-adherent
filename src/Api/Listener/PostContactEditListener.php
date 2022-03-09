@@ -29,9 +29,14 @@ class PostContactEditListener implements EventSubscriberInterface
         $contact = $viewEvent->getControllerResult();
         $request = $viewEvent->getRequest();
 
-        if (Request::METHOD_PUT !== $request->getMethod() || !$contact instanceof Contact) {
+        if (
+            !$contact instanceof Contact
+            || !\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
+        ) {
             return;
         }
+
+        $this->contactHandler->dispatchSynchronisation($contact);
 
         // We assume a contact is complete once the birthdate is known
         if (null !== $contact->getBirthdate()) {
