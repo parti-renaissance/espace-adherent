@@ -99,12 +99,16 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->setParameter('votePostalCodePrefix', substr($procurationRequest->getVotePostalCode(), 0, 2))
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
-            ->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%')
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC')
         ;
 
         $this->addAndWhereCountryConditions($qb, $procurationRequest->isRequestFromFrance());
+
+        if ($procurationRequest->isRequestFromFrance()) {
+            $qb->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%');
+        }
+
         $this->andWhereMatchingRounds($qb, $procurationRequest);
 
         return $qb->getQuery()->getResult();
