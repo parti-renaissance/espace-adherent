@@ -36,11 +36,11 @@ class PostContactEditListener implements EventSubscriberInterface
             return;
         }
 
-        $this->contactHandler->dispatchSynchronisation($contact);
-
         // We assume a contact is complete once the birthdate is known
         if (null !== $contact->getBirthdate()) {
             $this->contactHandler->dispatchProcess($contact);
         }
+
+        $this->contactHandler->dispatchSynchronisation($contact);
     }
 }
