@@ -53,7 +53,7 @@ class SegmentConditionsBuilder
         }
 
         return [
-            'list_id' => $this->getListId($message),
+            'list_id' => $this->getListId($message, $campaign),
             'segment_opts' => array_merge($savedSegment, [
                 'match' => 'all',
                 'conditions' => $conditions ?? [],
@@ -88,7 +88,7 @@ class SegmentConditionsBuilder
         ];
     }
 
-    private function getListId(AdherentMessageInterface $message): string
+    private function getListId(AdherentMessageInterface $message, MailchimpCampaign $campaign): string
     {
         if ($filter = $message->getFilter()) {
             if ($filter instanceof MunicipalChiefFilter && ($filter->getContactAdherents() || $filter->getContactNewsletter())) {
@@ -106,6 +106,10 @@ class SegmentConditionsBuilder
             if ($filter instanceof AbstractElectedRepresentativeFilter) {
                 return $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
             }
+        }
+
+        if ($campaign->getMailchimpListType()) {
+            return $this->mailchimpObjectIdMapping->getListIdFromSource($campaign->getMailchimpListType());
         }
 
         return $this->mailchimpObjectIdMapping->getListIdByMessageType($message->getType());

@@ -28,7 +28,7 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             $postalCode = $data['postal_code'];
             $cityName = $data['city_name'];
 
-            $inseeCode = FranceCitiesBundle::getCityInseeCode($postalCode, $cityName);
+            $inseeCode = FranceCitiesBundle::getCityInseeCode($postalCode ?? '', $cityName);
 
             if ($inseeCode) {
                 $data['city'] = "$postalCode-$inseeCode";
