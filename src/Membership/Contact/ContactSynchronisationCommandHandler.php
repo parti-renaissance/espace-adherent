@@ -45,7 +45,7 @@ class ContactSynchronisationCommandHandler implements MessageHandlerInterface, L
         try {
             $this->contactManager->synchronize($contact);
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Failed to synchronize contact UUID: "%s".', $contact->getUuid()));
+            $this->logger->error(sprintf('Failed to synchronize contact UUID: "%s". Error: %s', $contact->getUuid(), $e->getMessage()));
         }
     }
 }
