@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
 use App\Mailer\Message\Procuration\ProcurationProxyCancelledMessage;
-use App\Mailer\Message\Procuration\ProcurationProxyFoundMessage;
+use App\Mailer\Message\Procuration\ProcurationProxyMatchedMessage;
 use App\Mailer\Message\Procuration\ProcurationProxyRegistrationConfirmationMessage;
 use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestRegistrationConfirmationMessage;
@@ -38,14 +38,14 @@ class ProcurationProxyMessageFactory
         return $message;
     }
 
-    public function createProxyFoundMessage(ProcurationRequest $request): ProcurationProxyFoundMessage
+    public function createProxyFoundMessage(ProcurationRequest $request): ProcurationProxyMatchedMessage
     {
         $url = $this->urlGenerator->generate('app_procuration_my_request', [
             'id' => $request->getId(),
             'privateToken' => $request->generatePrivateToken(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $message = ProcurationProxyFoundMessage::create($request, $url);
+        $message = ProcurationProxyMatchedMessage::create($request, $url);
         $message->setReplyTo($this->replyToEmailAddress);
 
         return $message;
