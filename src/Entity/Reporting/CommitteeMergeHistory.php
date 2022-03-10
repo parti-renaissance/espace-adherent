@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="committee_merge_histories",
  *     indexes={
- *         @ORM\Index(name="committee_merge_histories_source_committee_id_idx", columns="source_committee_id"),
- *         @ORM\Index(name="committee_merge_histories_destination_committee_id_idx", columns="destination_committee_id"),
- *         @ORM\Index(name="committee_merge_histories_date_idx", columns="date")
+ *         @ORM\Index(name="committee_merge_histories_source_committee_id_idx", columns={"source_committee_id"}),
+ *         @ORM\Index(name="committee_merge_histories_destination_committee_id_idx", columns={"destination_committee_id"}),
+ *         @ORM\Index(name="committee_merge_histories_date_idx", columns={"date"})
  *     }
  * )
  * @ORM\Entity

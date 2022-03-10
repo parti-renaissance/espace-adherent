@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(columns="value"),
+ *     @ORM\UniqueConstraint(columns={"value"}),
  *     @ORM\UniqueConstraint(columns={"value", "adherent_uuid"})
  * })
  * @ORM\Entity(repositoryClass="App\Repository\AdherentEmailSubscribeTokenRepository")
