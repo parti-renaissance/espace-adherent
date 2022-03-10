@@ -57,6 +57,27 @@ class ManagedUser
     private $status;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $adherentStatus;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $activatedAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $source;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=20)
