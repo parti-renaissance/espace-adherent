@@ -93,7 +93,6 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $qb
             ->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
-            ->leftJoin('pp.otherVoteCities', 'other_city')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
             ->setParameter('votePostalCodePrefix', substr($procurationRequest->getVotePostalCode(), 0, 2))
@@ -104,10 +103,6 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         ;
 
         $this->addAndWhereCountryConditions($qb, $procurationRequest->isRequestFromFrance());
-
-        if ($procurationRequest->isRequestFromFrance()) {
-            $qb->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%');
-        }
 
         $this->andWhereMatchingRounds($qb, $procurationRequest);
 
@@ -194,20 +189,29 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         return implode(' + ', $score ?? []);
     }
 
-    public static function addAndWhereCountryConditions(QueryBuilder $qb, bool $requestFromFrance): QueryBuilder
-    {
+    public static function addAndWhereCountryConditions(
+        QueryBuilder $qb,
+        bool $requestFromFrance,
+        bool $withOtherCities = false
+    ): QueryBuilder {
         if ($requestFromFrance) {
+            $cityCondition = $qb->expr()->andX(
+                'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                'pp.voteCityName = :voteCityName'
+            );
+
+            if ($withOtherCities) {
+                $cityCondition = $qb->expr()->orX(
+                    $cityCondition,
+                    'other_city.name LIKE :voteCityNamePattern'
+                );
+            }
+
             return $qb->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->andX(
                         'pp.voteCountry = \'FR\'',
-                        $qb->expr()->orX(
-                            $qb->expr()->andX(
-                                'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
-                                'pp.voteCityName = :voteCityName'
-                            ),
-                            'other_city.name LIKE :voteCityNamePattern'
-                        ),
+                        $cityCondition,
                         'pp.frenchRequestAvailable = true'
                     ),
                     $qb->expr()->andX(
