@@ -85,7 +85,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         );
     }
 
-    public function testCreateProxyFoundMessage()
+    public function testCreateProxyMatchedMessage()
     {
         $url = 'https://en-marche.fr/procuration/3/2839f66263bca70ff077d8e47fbdf783';
 
@@ -95,11 +95,27 @@ class ProcurationProxyMessageFactoryTest extends TestCase
             ->willReturn($url)
         ;
 
-        $request = $this->createProcurationRequestMock('Marie Bénédicte', 'Dumont', 'marieb.dumont@gmail.tld', '0102030405');
+        $request = $this->createProcurationRequestMock(
+            'Marie Bénédicte',
+            'Dumont',
+            'marieb.dumont@gmail.tld',
+            '0102030405',
+            'Paris 8eme',
+            '75008'
+        );
         $request
             ->expects($this->once())
             ->method('getFoundProxy')
-            ->willReturn($this->createProcurationProxyMock('Monique', 'Clairefontaine', 'monique@en-marche-dev.fr', '0607080910'))
+            ->willReturn($this->createProcurationProxyMock(
+                'Monique',
+                'Clairefontaine',
+                'monique@en-marche-dev.fr',
+                '0607080910',
+                'Paris 8eme',
+                '75008',
+                \DateTime::createFromFormat('Y/m/d', '1988/11/27'),
+                '1234'
+            ))
         ;
         $request
             ->expects($this->once())
@@ -120,9 +136,15 @@ class ProcurationProxyMessageFactoryTest extends TestCase
                 'voter_first_name' => 'Monique',
                 'voter_last_name' => 'Clairefontaine',
                 'voter_phone' => '+33 6 07 08 09 10',
+                'voter_email' => 'monique@en-marche-dev.fr',
+                'voter_birthdate' => '27/11/1988',
+                'voter_vote_place' => 'Paris 8eme (75008)',
+                'voter_number' => '1234',
                 'mandant_first_name' => 'Marie Bénédicte',
                 'mandant_last_name' => 'Dumont',
                 'mandant_phone' => '+33 1 02 03 04 05',
+                'mandant_email' => 'marieb.dumont@gmail.tld',
+                'mandant_vote_place' => 'Paris 8eme (75008)',
             ],
             $message->getVars()
         );
@@ -173,12 +195,16 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         string $firstNames,
         string $lastName,
         string $email,
-        string $phone = ''
+        string $phone = '',
+        string $voteCityName = null,
+        string $votePostalCode = null
     ) {
         $request = $this->createMock(ProcurationRequest::class);
         $request->expects($this->any())->method('getFirstNames')->willReturn($firstNames);
         $request->expects($this->any())->method('getLastName')->willReturn($lastName);
         $request->expects($this->any())->method('getEmailAddress')->willReturn($email);
+        $request->expects($this->any())->method('getVoteCityName')->willReturn($voteCityName);
+        $request->expects($this->any())->method('getVotePostalCode')->willReturn($votePostalCode);
 
         if ($phone) {
             $phoneUtil = PhoneNumberUtil::getInstance();
@@ -188,12 +214,24 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         return $request;
     }
 
-    private function createProcurationProxyMock(string $firstNames, string $lastName, string $email, string $phone = '')
-    {
+    private function createProcurationProxyMock(
+        string $firstNames,
+        string $lastName,
+        string $email,
+        string $phone = '',
+        string $voteCityName = null,
+        string $votePostalCode = null,
+        \DateTimeInterface $birthdate = null,
+        string $voterNumber = null
+    ) {
         $proxy = $this->createMock(ProcurationProxy::class);
         $proxy->expects($this->any())->method('getFirstNames')->willReturn($firstNames);
         $proxy->expects($this->any())->method('getLastName')->willReturn($lastName);
         $proxy->expects($this->any())->method('getEmailAddress')->willReturn($email);
+        $proxy->expects($this->any())->method('getVoteCityName')->willReturn($voteCityName);
+        $proxy->expects($this->any())->method('getVotePostalCode')->willReturn($votePostalCode);
+        $proxy->expects($this->any())->method('getBirthdate')->willReturn($birthdate);
+        $proxy->expects($this->any())->method('getVoterNumber')->willReturn($voterNumber);
 
         if ($phone) {
             $phoneUtil = PhoneNumberUtil::getInstance();

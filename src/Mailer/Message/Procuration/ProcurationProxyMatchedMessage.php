@@ -12,6 +12,7 @@ final class ProcurationProxyMatchedMessage extends AbstractProcurationMessage
     public static function create(ProcurationRequest $request, string $infosUrl): Message
     {
         $proxy = $request->getFoundProxy();
+
         $message = new self(
             Uuid::uuid4(),
             $request->getEmailAddress(),
@@ -24,7 +25,7 @@ final class ProcurationProxyMatchedMessage extends AbstractProcurationMessage
                 'voter_last_name' => self::escape($proxy->getLastName()),
                 'voter_phone' => PhoneNumberUtils::format($proxy->getPhone()),
                 'voter_email' => $proxy->getEmailAddress(),
-                'voter_birthdate' => $proxy->getBirthdate() ? $proxy->getBirthdate()->format('Y/m/d') : null,
+                'voter_birthdate' => $proxy->getBirthdate() ? self::escape($proxy->getBirthdate()->format('d/m/Y')) : null,
                 'voter_vote_place' => self::escape(sprintf('%s (%s)',
                     $proxy->getVoteCityName(),
                     $proxy->getVotePostalCode())
@@ -34,10 +35,10 @@ final class ProcurationProxyMatchedMessage extends AbstractProcurationMessage
                 'mandant_last_name' => self::escape($request->getLastName()),
                 'mandant_phone' => PhoneNumberUtils::format($request->getPhone()),
                 'mandant_email' => self::escape($request->getEmailAddress()),
-                'mandant_vote_place' => sprintf('%s (%s)',
+                'mandant_vote_place' => self::escape(sprintf('%s (%s)',
                     $request->getVoteCityName(),
                     $request->getVotePostalCode()
-                ),
+                )),
             ]
         );
 
