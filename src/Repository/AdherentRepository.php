@@ -1207,9 +1207,10 @@ SQL;
         $qb = $this
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.adherent = true')
-            ->andWhere('adherent.source IS NULL')
+            ->andWhere('(adherent.source IS NULL OR adherent.source = :user_type)')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
+            ->setParameter('user_type', MembershipSourceEnum::JEMENGAGE)
         ;
 
         if ($firstName = $audience->getFirstName()) {
@@ -1279,7 +1280,7 @@ SQL;
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                     $zoneQueryBuilder
                         ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
-                        ->andWhere(sprintf('%s.source IS NULL', $entityClassAlias))
+                        ->andWhere(sprintf('(%1$s.source IS NULL OR %1$s.source = :user_type)', $entityClassAlias))
                         ->andWhere(sprintf('%s.status = :adherent_status', $entityClassAlias))
                     ;
                 }
