@@ -14,9 +14,9 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Table(
  *     name="committees_membership_histories",
  *     indexes={
- *         @ORM\Index(name="committees_membership_histories_adherent_uuid_idx", columns="adherent_uuid"),
- *         @ORM\Index(name="committees_membership_histories_action_idx", columns="action"),
- *         @ORM\Index(name="committees_membership_histories_date_idx", columns="date")
+ *         @ORM\Index(name="committees_membership_histories_adherent_uuid_idx", columns={"adherent_uuid"}),
+ *         @ORM\Index(name="committees_membership_histories_action_idx", columns={"action"}),
+ *         @ORM\Index(name="committees_membership_histories_date_idx", columns={"date"})
  *     }
  * )
  * @ORM\Entity

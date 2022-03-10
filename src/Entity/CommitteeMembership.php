@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         )
  *     },
  *     indexes={
- *         @ORM\Index(name="committees_memberships_role_idx", columns="privilege")
+ *         @ORM\Index(name="committees_memberships_role_idx", columns={"privilege"})
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeMembershipRepository")

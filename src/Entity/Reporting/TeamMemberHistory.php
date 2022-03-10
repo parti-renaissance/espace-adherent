@@ -10,10 +10,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(indexes={
- *     @ORM\Index(name="team_member_history_adherent_id_idx", columns="adherent_id"),
- *     @ORM\Index(name="team_member_history_administrator_id_idx", columns="administrator_id"),
- *     @ORM\Index(name="team_member_history_team_manager_id_idx", columns="team_manager_id"),
- *     @ORM\Index(name="team_member_history_date_idx", columns="date")
+ *     @ORM\Index(name="team_member_history_adherent_id_idx", columns={"adherent_id"}),
+ *     @ORM\Index(name="team_member_history_administrator_id_idx", columns={"administrator_id"}),
+ *     @ORM\Index(name="team_member_history_team_manager_id_idx", columns={"team_manager_id"}),
+ *     @ORM\Index(name="team_member_history_date_idx", columns={"date"})
  * })
  * @ORM\Entity
  */

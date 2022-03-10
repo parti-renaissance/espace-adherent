@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     name="adherent_certification_histories",
  *     indexes={
- *         @ORM\Index(name="adherent_certification_histories_adherent_id_idx", columns="adherent_id"),
- *         @ORM\Index(name="adherent_certification_histories_administrator_id_idx", columns="administrator_id"),
- *         @ORM\Index(name="adherent_certification_histories_date_idx", columns="date")
+ *         @ORM\Index(name="adherent_certification_histories_adherent_id_idx", columns={"adherent_id"}),
+ *         @ORM\Index(name="adherent_certification_histories_administrator_id_idx", columns={"administrator_id"}),
+ *         @ORM\Index(name="adherent_certification_histories_date_idx", columns={"date"})
  *     }
  * )
  * @ORM\Entity

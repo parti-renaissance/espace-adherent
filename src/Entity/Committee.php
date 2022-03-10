@@ -82,11 +82,11 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Table(
  *     name="committees",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="committee_canonical_name_unique", columns="canonical_name"),
- *         @ORM\UniqueConstraint(name="committee_slug_unique", columns="slug"),
+ *         @ORM\UniqueConstraint(name="committee_canonical_name_unique", columns={"canonical_name"}),
+ *         @ORM\UniqueConstraint(name="committee_slug_unique", columns={"slug"}),
  *     },
  *     indexes={
- *         @ORM\Index(name="committee_status_idx", columns="status")
+ *         @ORM\Index(name="committee_status_idx", columns={"status"})
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")

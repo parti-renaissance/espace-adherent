@@ -18,8 +18,8 @@ use Ramsey\Uuid\Uuid;
  * })
  *
  * @ORM\Table(name="reports", indexes={
- *     @ORM\Index(name="report_status_idx", columns="status"),
- *     @ORM\Index(name="report_type_idx", columns="type")
+ *     @ORM\Index(name="report_status_idx", columns={"status"}),
+ *     @ORM\Index(name="report_type_idx", columns={"type"})
  * })
  */
 abstract class Report
