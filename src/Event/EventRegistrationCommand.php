@@ -4,7 +4,6 @@ namespace App\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
-use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\EventRegistration;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -70,7 +69,6 @@ class EventRegistrationCommand
         $this->firstName = $adherent->getFirstName();
         $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
-        $this->newsletterSubscriber = $adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL);
     }
 
     public function getEvent(): BaseEvent
