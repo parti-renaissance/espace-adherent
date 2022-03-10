@@ -103,7 +103,6 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         ;
 
         $this->addAndWhereCountryConditions($qb, $procurationRequest->isRequestFromFrance());
-
         $this->andWhereMatchingRounds($qb, $procurationRequest);
 
         return $qb->getQuery()->getResult();
@@ -189,29 +188,15 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         return implode(' + ', $score ?? []);
     }
 
-    public static function addAndWhereCountryConditions(
-        QueryBuilder $qb,
-        bool $requestFromFrance,
-        bool $withOtherCities = false
-    ): QueryBuilder {
+    public static function addAndWhereCountryConditions(QueryBuilder $qb, bool $requestFromFrance): QueryBuilder
+    {
         if ($requestFromFrance) {
-            $cityCondition = $qb->expr()->andX(
-                'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
-                'pp.voteCityName = :voteCityName'
-            );
-
-            if ($withOtherCities) {
-                $cityCondition = $qb->expr()->orX(
-                    $cityCondition,
-                    'other_city.name LIKE :voteCityNamePattern'
-                );
-            }
-
             return $qb->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->andX(
                         'pp.voteCountry = \'FR\'',
-                        $cityCondition,
+                        'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                        'pp.voteCityName = :voteCityName',
                         'pp.frenchRequestAvailable = true'
                     ),
                     $qb->expr()->andX(
