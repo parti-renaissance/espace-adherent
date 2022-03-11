@@ -124,7 +124,7 @@ class AssessorRequest
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
+     * @ORM\Column(length=2, options={"default": "FR"})
      *
      * @Assert\NotBlank(message="common.country.not_blank")
      * @AssertUnitedNationsCountry(message="common.country.invalid")
