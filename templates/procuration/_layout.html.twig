@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set homepage_url = 'https://avecvous.fr' %}
-{% block open_graph_image 'https://avecvous.fr/wp-content/uploads/2022/01/AV-VIGNETTE-YOUTUBE-TEASER-1.jpg' %}
+{% block open_graph_image static_asset('procuration.jpg', { w: 1600, h: 900, q: 70 }, 0) %}
 {% block open_graph_image_height 900 %}
 
 {% block app_title 'Avec vous' %}
