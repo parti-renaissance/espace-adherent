@@ -24,4 +24,3 @@ export default (countryFieldSelector) => {
 
     autocompleteAddressForm.buildWidget();
 };
-
