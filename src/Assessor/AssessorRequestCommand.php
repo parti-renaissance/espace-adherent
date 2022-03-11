@@ -3,6 +3,7 @@
 namespace App\Assessor;
 
 use App\Entity\AssessorOfficeEnum;
+use App\Validator\Assessor\AssessorDepartment;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -10,6 +11,9 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @AssessorDepartment(groups={"fill_assessor_info"})
+ */
 class AssessorRequestCommand
 {
     /**
@@ -82,6 +86,12 @@ class AssessorRequestCommand
      * @Assert\Length(max=50, groups={"fill_personal_info"})
      */
     private $city;
+
+    /**
+     * @Assert\NotBlank(groups={"fill_personal_info"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"fill_personal_info"})
+     */
+    private $country = 'FR';
 
     /**
      * @Assert\NotBlank(message="assessor.vote_city.not_blank", groups={"fill_personal_info"})
@@ -265,6 +275,16 @@ class AssessorRequestCommand
     public function setCity(?string $city): void
     {
         $this->city = $city;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
     }
 
     public function getVoteCity(): ?string

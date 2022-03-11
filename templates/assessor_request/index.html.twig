@@ -5,15 +5,22 @@
 {% endblock %}
 
 {% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 
-    {% import 'javascript.js.twig' as js %}
-
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            {% if form.country is defined %}
+                App.runAssessorRequest('#{{ form.country.vars.id }}');
+            {% endif %}
             $('.select-vote-place-wishes').select2({
                 placeholder: "Sélectionnez vos bureaux de votes"
             });
