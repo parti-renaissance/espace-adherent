@@ -21,6 +21,10 @@
                 <p class="b__nudge--bottom-tiny text--bold">Code postal <span class="text--normal">*</span></p>
                 {{ form_widget(form.assessorPostalCode, { attr: { placeholder: 'Code postal où vous souhaitez être assesseur(e)' } }) }}
                 {{ form_errors(form.assessorPostalCode) }}
+                <p class="text--small text--gray">
+                    Vous pouvez être assesseur dans n’importe quelle commune du département où vous habitez.<br/>
+                    Vous ne pouvez pas vous portez assesseur en dehors de votre département.
+                </p>
             </div>
         </div>
 
