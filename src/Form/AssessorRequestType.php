@@ -44,6 +44,9 @@ class AssessorRequestType extends AbstractType
                     ->add('address', TextType::class)
                     ->add('postalCode', TextType::class)
                     ->add('city', TextType::class)
+                    ->add('country', UnitedNationsCountryType::class, [
+                        'disabled' => true,
+                    ])
                     ->add('voteCity', TextType::class)
                     ->add('officeNumber', TextType::class, [
                         'required' => false,

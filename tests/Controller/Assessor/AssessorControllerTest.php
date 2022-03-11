@@ -37,6 +37,7 @@ class AssessorControllerTest extends WebTestCase
                 'address' => '39 rue du Welsh',
                 'postalCode' => '59290',
                 'city' => 'Wasquehal',
+                'country' => 'FR',
                 'voteCity' => 'Lille',
                 'officeNumber' => '001',
                 'birthCity' => 'Lille',
@@ -95,8 +96,8 @@ class AssessorControllerTest extends WebTestCase
         $this->assertStringContainsString('Ernestino', $crawler->filter('.summary-bloc tr.firstname td:last-child')->text());
         $this->assertStringContainsString('Bonsoirini', $crawler->filter('.summary-bloc tr.lastname td:last-child')->text());
         $this->assertStringContainsString('39 rue du Welsh', $crawler->filter('.summary-bloc tr.address td:last-child')->text());
+        $this->assertStringContainsString('France', $crawler->filter('.summary-bloc tr.country td:last-child')->text());
         $this->assertStringContainsString('59290', $crawler->filter('.summary-bloc tr.postalcode td:last-child')->text());
-        $this->assertStringContainsString('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
         $this->assertStringContainsString('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
         $this->assertStringContainsString('001', $crawler->filter('.summary-bloc tr.office-number td:last-child')->text());
         $this->assertStringContainsString('Lille', $crawler->filter('.summary-bloc tr.birthcity td:last-child')->text());

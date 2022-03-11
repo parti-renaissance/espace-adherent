@@ -79,7 +79,7 @@ class CityAssessorExporter
                         'holderLastName' => $assessorRequest->getLastName(),
                         'holderFirstName' => $assessorRequest->getFirstName(),
                         'holderBirthdate' => $assessorRequest->getBirthdate()->format('d/m/Y'),
-                        'holderAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity(),
+                        'holderAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity().' '.$assessorRequest->getCountry(),
                         'holderVoterNumber' => $assessorRequest->getVoterNumber(),
                     ];
                 } elseif (AssessorOfficeEnum::SUBSTITUTE === $assessorRequest->getOffice()) {
@@ -87,7 +87,7 @@ class CityAssessorExporter
                         'substituteLastName' => $assessorRequest->getLastName(),
                         'substituteFirstName' => $assessorRequest->getFirstName(),
                         'substituteBirthdate' => $assessorRequest->getBirthdate()->format('d/m/Y'),
-                        'substituteAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity(),
+                        'substituteAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity().' '.$assessorRequest->getCountry(),
                         'substituteVoterNumber' => $assessorRequest->getVoterNumber(),
                     ];
                 }

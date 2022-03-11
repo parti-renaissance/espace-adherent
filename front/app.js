@@ -298,6 +298,12 @@ class App {
         });
     }
 
+    runAssessorRequest(countryFieldSelector) {
+        System.import('pages/assessor_request').catch((error) => { throw error; }).then((module) => {
+            module.default(countryFieldSelector);
+        });
+    }
+
     runAssessorManagerRequests(queryString, totalCount, perPage) {
         System.import('pages/assessor_manager_requests').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));

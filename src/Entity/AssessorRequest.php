@@ -124,6 +124,16 @@ class AssessorRequest
     /**
      * @var string
      *
+     * @ORM\Column(length=2, options={"default": "FR"})
+     *
+     * @Assert\NotBlank(message="common.country.not_blank")
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     */
+    private $country = 'FR';
+
+    /**
+     * @var string
+     *
      * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="assessor.vote_city.not_blank")
@@ -315,6 +325,7 @@ class AssessorRequest
         string $voterNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
+        string $country = 'FR',
         string $office = AssessorOfficeEnum::HOLDER,
         array $electionRounds = AssessorRequestElectionRoundsEnum::ALL,
         bool $enabled = true,
@@ -333,6 +344,7 @@ class AssessorRequest
         $assessorRequest->setAddress($address);
         $assessorRequest->setPostalCode($postalCode);
         $assessorRequest->setCity($city);
+        $assessorRequest->setCountry($country);
         $assessorRequest->setVoteCity($voteCity);
         $assessorRequest->setOfficeNumber($officeNumber);
         $assessorRequest->setEmailAddress($emailAddress);
@@ -478,6 +490,16 @@ class AssessorRequest
     public function setCity(string $city): void
     {
         $this->city = $city;
+    }
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
     }
 
     public function getVoteCity(): ?string
