@@ -24,7 +24,7 @@ class AssessorDepartmentValidator extends ConstraintValidator
             return;
         }
 
-        if (0 !== strpos($value->getAssessorPostalCode(), substr($value->getPostalCode(), 0, 2))) {
+        if (substr($value->getAssessorPostalCode(), 0, 2) !== substr($value->getPostalCode(), 0, 2)) {
             $this->context->buildViolation($constraint->invalidAssessorDepartmentCity)
                 ->atPath('assessorPostalCode')
                 ->addViolation()
