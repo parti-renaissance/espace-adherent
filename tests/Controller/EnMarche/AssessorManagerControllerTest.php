@@ -5,7 +5,7 @@ namespace Tests\App\Controller\EnMarche;
 use App\Assessor\Filter\AssessorRequestFilters;
 use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
-use App\Mailer\Message\AssessorRequestAssociateMessage;
+use App\Mailer\Message\Assessor\AssessorRequestAssociateMessage;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;

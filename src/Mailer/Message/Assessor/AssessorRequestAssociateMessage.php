@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Assessor;
 
 use App\Entity\AssessorRequest;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Intl\Countries;
 
-final class AssessorRequestAssociateMessage extends Message
+final class AssessorRequestAssociateMessage extends AbstractAssessorMessage
 {
-    public static function create(AssessorRequest $assessorRequest, string $officeName): self
+    public static function create(AssessorRequest $assessorRequest, string $officeName): Message
     {
         $message = new self(
             Uuid::uuid4(),
@@ -27,6 +28,6 @@ final class AssessorRequestAssociateMessage extends Message
             ]
         );
 
-        return $message;
+        return self::updateSenderInfo($message);
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Assessor;
 
 use App\Assessor\AssessorRequestCommand;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Intl\Countries;
 
-final class AssessorRequestConfirmationMessage extends Message
+final class AssessorRequestConfirmationMessage extends AbstractAssessorMessage
 {
-    public static function createFromAssessorRequestCommand(AssessorRequestCommand $assessorRequest): self
+    public static function createFromAssessorRequestCommand(AssessorRequestCommand $assessorRequest): Message
     {
         $message = new self(
             Uuid::uuid4(),
@@ -22,6 +23,6 @@ final class AssessorRequestConfirmationMessage extends Message
             ]
         );
 
-        return $message;
+        return self::updateSenderInfo($message);
     }
 }

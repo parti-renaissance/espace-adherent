@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\Assessor;
 
 use App\Entity\AssessorOfficeEnum;
-use App\Mailer\Message\AssessorRequestConfirmationMessage;
+use App\Mailer\Message\Assessor\AssessorRequestConfirmationMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
