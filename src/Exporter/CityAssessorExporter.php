@@ -6,6 +6,7 @@ use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
 use App\Serializer\XlsxEncoder;
+use App\Utils\PhoneNumberUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CityAssessorExporter
@@ -31,11 +32,13 @@ class CityAssessorExporter
                     'holderFirstName' => 'Prénom assesseur titulaire',
                     'holderBirthdate' => 'Date de naissance assesseur titulaire',
                     'holderAddress' => 'Adresse postale assesseur titulaire',
+                    'holderPhoneNumber' => 'Numéro de téléphone assesseur titulaire',
                     'holderVoterNumber' => 'Numéro d\'électeur assesseur titulaire',
                     'substituteLastName' => 'Nom assesseur suppléant',
                     'substituteFirstName' => 'Prénom assesseur suppléant',
                     'substituteBirthdate' => 'Date de naissance assesseur suppléant',
                     'substituteAddress' => 'Adresse postale assesseur suppléant',
+                    'substitutePhoneNumber' => 'Numéro de téléphone assesseur suppléant',
                     'substituteVoterNumber' => 'Numéro d\'électeur assesseur suppléant',
                 ],
             ]
@@ -61,6 +64,7 @@ class CityAssessorExporter
                 'holderFirstName' => null,
                 'holderBirthdate' => null,
                 'holderAddress' => null,
+                'holderPhoneNumber' => null,
                 'holderVoterNumber' => null,
             ];
 
@@ -69,6 +73,7 @@ class CityAssessorExporter
                 'substituteFirstName' => null,
                 'substituteBirthdate' => null,
                 'substituteAddress' => null,
+                'substitutePhoneNumber' => null,
                 'substituteVoterNumber' => null,
             ];
 
@@ -80,6 +85,7 @@ class CityAssessorExporter
                         'holderFirstName' => $assessorRequest->getFirstName(),
                         'holderBirthdate' => $assessorRequest->getBirthdate()->format('d/m/Y'),
                         'holderAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity().' '.$assessorRequest->getCountry(),
+                        'holderPhoneNumber' => PhoneNumberUtils::format($assessorRequest->getPhone()),
                         'holderVoterNumber' => $assessorRequest->getVoterNumber(),
                     ];
                 } elseif (AssessorOfficeEnum::SUBSTITUTE === $assessorRequest->getOffice()) {
@@ -88,6 +94,7 @@ class CityAssessorExporter
                         'substituteFirstName' => $assessorRequest->getFirstName(),
                         'substituteBirthdate' => $assessorRequest->getBirthdate()->format('d/m/Y'),
                         'substituteAddress' => $assessorRequest->getAddress().', '.$assessorRequest->getPostalCode().' '.$assessorRequest->getCity().' '.$assessorRequest->getCountry(),
+                        'substitutePhoneNumber' => PhoneNumberUtils::format($assessorRequest->getPhone()),
                         'substituteVoterNumber' => $assessorRequest->getVoterNumber(),
                     ];
                 }
