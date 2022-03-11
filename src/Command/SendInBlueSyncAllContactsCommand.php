@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
+use App\Contact\ContactHandler;
 use App\Entity\Contact;
 use App\Repository\ContactRepository;
-use App\SendInBlue\ContactManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
@@ -18,18 +18,18 @@ class SendInBlueSyncAllContactsCommand extends Command
     protected static $defaultName = 'sendinblue:sync:all-contacts';
 
     private ContactRepository $contactRepository;
-    private ContactManager $contactManager;
+    private ContactHandler $contactHandler;
     private EntityManagerInterface $entityManager;
     /** @var SymfonyStyle */
     private $io;
 
     public function __construct(
         ContactRepository $contactRepository,
-        ContactManager $contactManager,
+        ContactHandler $contactHandler,
         EntityManagerInterface $entityManager
     ) {
         $this->contactRepository = $contactRepository;
-        $this->contactManager = $contactManager;
+        $this->contactHandler = $contactHandler;
         $this->entityManager = $entityManager;
 
         parent::__construct();
@@ -74,7 +74,7 @@ class SendInBlueSyncAllContactsCommand extends Command
 
         do {
             foreach ($paginator as $contact) {
-                $this->contactManager->synchronize($contact);
+                $this->contactHandler->dispatchSynchronisation($contact);
 
                 $this->io->progressAdvance();
                 ++$offset;
