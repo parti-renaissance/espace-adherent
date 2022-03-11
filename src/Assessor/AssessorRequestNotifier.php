@@ -3,8 +3,8 @@
 namespace App\Assessor;
 
 use App\Mailer\MailerService;
-use App\Mailer\Message\AssessorRequestAssociateMessage;
-use App\Mailer\Message\AssessorRequestConfirmationMessage;
+use App\Mailer\Message\Assessor\AssessorRequestAssociateMessage;
+use App\Mailer\Message\Assessor\AssessorRequestConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Contracts\Translation\TranslatorInterface;
