@@ -3,7 +3,6 @@ import AddressObject from '../services/address/AddressObject';
 
 export default (countryFieldSelector) => {
     const countryElement = dom(countryFieldSelector);
-    console.log(countryElement);
     const autocompleteAddressForm = new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
