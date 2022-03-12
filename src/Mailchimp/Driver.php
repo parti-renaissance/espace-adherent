@@ -181,12 +181,12 @@ class Driver implements LoggerAwareInterface
     {
         $response = $this->send('GET', sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
 
-        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
+        return $this->isSuccessfulResponse($response) ? $response->toArray(false) : [];
     }
 
     public function getLastError(): ?string
     {
-        if ($this->lastResponse && ($data = $this->lastResponse->toArray()) && isset($data['detail'])) {
+        if ($this->lastResponse && ($data = $this->lastResponse->toArray(false)) && isset($data['detail'])) {
             return $data['detail'];
         }
 
