@@ -75,7 +75,7 @@ class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCam
     private function buildCondition(MailchimpSegment $mailchimpSegment): array
     {
         return [
-            'type' => self::MAILCHIMP_SEGMENT,
+            'type' => 'mailchimp_segment',
             'value' => $mailchimpSegment,
             'label' => $mailchimpSegment->getLabel(),
         ];

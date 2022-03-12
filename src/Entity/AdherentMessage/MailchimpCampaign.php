@@ -107,11 +107,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      */
     private $mailchimpSegments;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    private ?string $mailchimpListType = null;
-
     public function __construct(AdherentMessageInterface $message)
     {
         $this->message = $message;
@@ -251,17 +246,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 
     public function resetFilter(): void
     {
-        $this->staticSegmentId = $this->city = $this->mailchimpListType = null;
+        $this->staticSegmentId = $this->city = null;
         $this->mailchimpSegments = new ArrayCollection();
-    }
-
-    public function getMailchimpListType(): ?string
-    {
-        return $this->mailchimpListType;
-    }
-
-    public function setMailchimpListType(?string $mailchimpListType): void
-    {
-        $this->mailchimpListType = $mailchimpListType;
     }
 }

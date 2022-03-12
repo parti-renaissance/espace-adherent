@@ -23,7 +23,7 @@ class ReferentMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 
         foreach ($filter->getReferentTags() as $tag) {
             $staticSegmentCondition = [
-                'type' => self::STATIC_SEGMENT,
+                'type' => 'static_segment',
                 'value' => $tag->getExternalId(),
                 'label' => $tag->getCode(),
             ];
@@ -33,7 +33,7 @@ class ReferentMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
                     $filters[] = [
                         $staticSegmentCondition,
                         [
-                            'type' => self::TEXT_MERGE,
+                            'type' => 'text_merge',
                             'value' => $city,
                             'label' => $tag->getCode().' - '.$city,
                         ],
