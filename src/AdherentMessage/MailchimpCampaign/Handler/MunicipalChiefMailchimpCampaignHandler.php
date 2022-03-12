@@ -27,7 +27,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
         $filters = [
             [
                 [
-                    'type' => self::TEXT_MERGE,
+                    'type' => 'text_merge',
                     'value' => $inseeCode,
                     'label' => $city['name'] ?? $inseeCode,
                 ],
@@ -43,7 +43,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
 
                 $filters[] = [
                     [
-                        'type' => self::TEXT_MERGE,
+                        'type' => 'text_merge',
                         'value' => $inseeCodeAttachedToAnnecy,
                         'label' => $city['name'] ?? $inseeCodeAttachedToAnnecy,
                     ],
