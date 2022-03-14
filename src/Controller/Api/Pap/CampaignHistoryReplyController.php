@@ -11,13 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CampaignHistoryReplyController extends AbstractReplyController
 {
-    /** @var CampaignHistory */
-    private $campaignHistory;
-
     public function __invoke(Request $request, CampaignHistory $campaignHistory): Response
     {
-        $this->campaignHistory = $campaignHistory;
-
         return $this->handleRequest($request, $campaignHistory);
     }
 

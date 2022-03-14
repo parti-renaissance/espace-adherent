@@ -5,6 +5,8 @@ namespace App\Controller\Api\Jecoute;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +14,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class AbstractReplyController extends AbstractController
+abstract class AbstractReplyController extends AbstractController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     protected $entityManager;
     protected $validator;
     protected $serializer;
@@ -45,6 +49,10 @@ abstract class AbstractReplyController extends AbstractController
         $errors = $this->validator->validate($dataSurvey);
 
         if ($errors->count()) {
+            if ($this->logger) {
+                $this->logger->error('PAP replay: Bad request', ['errors' => $errors]);
+            }
+
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
