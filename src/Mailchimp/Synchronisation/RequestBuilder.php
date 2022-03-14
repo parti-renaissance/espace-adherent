@@ -56,6 +56,7 @@ class RequestBuilder implements LoggerAwareInterface
     private ?Zone $zoneBorough = null;
     private ?Zone $zoneCity = null;
     private ?Zone $zoneCanton = null;
+    private ?Zone $zoneDistrict = null;
     private ?Zone $zoneDepartment = null;
     private ?Zone $zoneRegion = null;
     private ?Zone $zoneCountry = null;
@@ -478,6 +479,7 @@ class RequestBuilder implements LoggerAwareInterface
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_BOROUGH] = $this->zoneBorough ? (string) $this->zoneBorough : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CANTON] = $this->zoneCanton ? (string) $this->zoneCanton : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = $this->zoneCity ? (string) $this->zoneCity : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DISTRICT] = $this->zoneDistrict ? (string) $this->zoneDistrict : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = $this->zoneDepartment ? (string) $this->zoneDepartment : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = $this->zoneRegion ? (string) $this->zoneRegion : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = $this->zoneCountry ? (string) $this->zoneCountry : '';

@@ -26,6 +26,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_ADHERENT = 'ISADHERENT';
     public const MERGE_FIELD_ZONE_BOROUGH = 'ZONE_BRGH';
     public const MERGE_FIELD_ZONE_CITY = 'ZONE_CITY';
+    public const MERGE_FIELD_ZONE_DISTRICT = 'ZONE_DIST';
     public const MERGE_FIELD_ZONE_CANTON = 'ZONE_CNTN';
     public const MERGE_FIELD_ZONE_DEPARTMENT = 'ZONE_DPT';
     public const MERGE_FIELD_ZONE_REGION = 'ZONE_REGIO';
