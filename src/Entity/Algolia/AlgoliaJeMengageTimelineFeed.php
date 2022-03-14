@@ -32,13 +32,12 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    protected $id;
+    protected $objectID;
 
     public function __construct($entity, array $entityIdentifierValues)
     {
         parent::__construct($entity, $entityIdentifierValues);
 
-        $this->id = Uuid::uuid4();
         $this->objectID = $entity->getUuid()->toString();
     }
 
