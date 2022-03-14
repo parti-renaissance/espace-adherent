@@ -613,3 +613,54 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a user with correspondent role I can get adherents of my zones
+    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/adherents?scope=correspondent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 2,
+            "items_per_page": 100,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "postal_code": "77000",
+                "city": "Melun",
+                "country": "FR",
+                "first_name": "Jules",
+                "last_name": "Fullstack",
+                "gender": "male",
+                "interests": [],
+                "city_code": null,
+                "department_code": "92",
+                "department": "Hauts-de-Seine",
+                "region_code": "11",
+                "region": "Île-de-France",
+                "sms_subscription": false,
+                "email_subscription": false
+            },
+            {
+                "postal_code": "92110",
+                "city": "Clichy",
+                "country": "FR",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "gender": "female",
+                "interests": [],
+                "city_code": null,
+                "department_code": "92",
+                "department": "Hauts-de-Seine",
+                "region_code": "11",
+                "region": "Île-de-France",
+                "sms_subscription": true,
+                "email_subscription": true
+            }
+        ]
+    }
+    """

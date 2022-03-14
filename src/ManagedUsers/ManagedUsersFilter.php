@@ -180,6 +180,8 @@ class ManagedUsersFilter
      */
     private $isCertified;
 
+    private bool $withJeMengageUsers = false;
+
     public function __construct(
         string $subscriptionType = null,
         array $managedZones = [],
@@ -547,5 +549,15 @@ class ManagedUsersFilter
                 ),
             ],
         );
+    }
+
+    public function getWithJeMengageUsers(): bool
+    {
+        return $this->withJeMengageUsers;
+    }
+
+    public function withJeMengageUsers(): void
+    {
+        $this->withJeMengageUsers = true;
     }
 }

@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
+use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -24,7 +25,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 
         $managedUser1 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
-            'type' => ManagedUser::TYPE_ADHERENT,
+            'source' => null,
             'original_id' => $this->getReference('adherent-1')->getId(),
             'uuid' => $this->getReference('adherent-1')->getUuid(),
             'email' => $this->getReference('adherent-1')->getEmailAddress(),
@@ -53,7 +54,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 
         $managedUser2 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
-            'type' => ManagedUser::TYPE_ADHERENT,
+            'source' => null,
             'original_id' => $this->getReference('adherent-13')->getId(),
             'uuid' => $this->getReference('adherent-13')->getUuid(),
             'email' => $this->getReference('adherent-13')->getEmailAddress(),
@@ -83,7 +84,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 
         $managedUser3 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
-            'type' => ManagedUser::TYPE_ADHERENT,
+            'source' => null,
             'original_id' => $this->getReference('adherent-5')->getId(),
             'uuid' => $this->getReference('adherent-5')->getUuid(),
             'email' => $this->getReference('adherent-5')->getEmailAddress(),
@@ -114,7 +115,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 
         $managedUser4 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
-            'type' => ManagedUser::TYPE_ADHERENT,
+            'source' => null,
             'original_id' => $this->getReference('adherent-7')->getId(),
             'uuid' => $this->getReference('adherent-7')->getUuid(),
             'email' => $this->getReference('adherent-7')->getEmailAddress(),
@@ -145,6 +146,27 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
                 '77',
             ],
         ]);
+
+        $manager->persist($managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'source' => MembershipSourceEnum::JEMENGAGE,
+            'original_id' => ($user = $this->getReference('correspondent-1'))->getId(),
+            'uuid' => $user->getUuid(),
+            'email' => $user->getEmailAddress(),
+            'postal_code' => $user->getPostalCode(),
+            'address' => $user->getAddress(),
+            'city' => $user->getCityName(),
+            'country' => $user->getCountry(),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'gender' => $user->getGender(),
+            'birthday' => $user->getBirthdate(),
+            'zones' => [
+               LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'), // Hauts-de-Seine
+               LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'), // Nord
+            ],
+            'created_at' => '2017-06-02 15:34:12',
+        ]));
 
         $manager->persist($managedUser1);
         $manager->persist($managedUser2);

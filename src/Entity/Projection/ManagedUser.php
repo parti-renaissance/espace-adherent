@@ -35,7 +35,6 @@ class ManagedUser
     use EntityZoneTrait;
 
     public const STATUS_READY = 1;
-    public const TYPE_ADHERENT = 'adherent';
 
     private const STYLE_TYPE_ADHERENT = 'adherent';
     private const STYLE_TYPE_HOST = 'host';
@@ -76,13 +75,6 @@ class ManagedUser
      * @ORM\Column(nullable=true)
      */
     private $source;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(length=20)
-     */
-    private $type;
 
     /**
      * @var int
@@ -280,7 +272,7 @@ class ManagedUser
 
     public function __construct(
         int $status,
-        string $type,
+        ?string $source,
         int $originalId,
         string $email,
         string $address,
@@ -310,7 +302,7 @@ class ManagedUser
         array $interests = []
     ) {
         $this->status = $status;
-        $this->type = $type;
+        $this->source = $source;
         $this->originalId = $originalId;
         $this->adherentUuid = $uuid;
         $this->email = $email;
@@ -348,11 +340,6 @@ class ManagedUser
     public function getStatus(): int
     {
         return $this->status;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     public function getStyleType(): string
