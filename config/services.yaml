@@ -21,6 +21,7 @@ parameters:
     coalitions_auth_host:                 "%env(COALITIONS_AUTH_HOST)%"
     jemengage_host:                       "%env(JEMENGAGE_HOST)%"
     jemengage_auth_host:                  "%env(JEMENGAGE_AUTH_HOST)%"
+    avecvous_host:                        "%env(AVECVOUS_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
     assessor_host:                        "%env(ASSESSOR_HOST)%"
     assessor_path_prefix:                 ""
@@ -68,6 +69,7 @@ services:
             $coalitionsAuthHost: '%coalitions_auth_host%'
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
+            $avecvousHost: '%avecvous_host%'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
             $sendInBlueApiKey: '%env(SENDINBLUE_API_KEY)%'
             $sendInBlueContactListId: '%env(int:SENDINBLUE_CONTACT_LIST_ID)%'
