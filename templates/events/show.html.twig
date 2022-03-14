@@ -22,8 +22,8 @@
             "height": {{ block('open_graph_image_height') }}
         },
         "description": "{{ event.description }}",
-        "startDate": "{{ event.localBeginAt|date(constant('DATE_ATOM'), false) }}",
-        "endDate": "{{ event.finishAt|date(constant('DATE_ATOM')) }}",
+        "startDate": "{{ event.localBeginAt|date(constant('DATE_ISO8601'), false) }}",
+        "endDate": "{{ event.finishAt|date(constant('DATE_ISO8601')) }}",
         "eventStatus": "{{ event.active ? 'http://schema.org/EventScheduled' : 'http://schema.org/EventCancelled' }}",
         {% if event.organizer %}
         "organizer": {
