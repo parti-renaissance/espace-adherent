@@ -527,6 +527,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.je_mengage.deep_link" class="App\Admin\JeMengage\DeepLinkAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Deep link" group="Application mobile" />
+
+            <argument />
+            <argument>App\Entity\JeMengage\DeepLink</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Phoning
@@ -963,6 +971,7 @@
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
+            <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">
