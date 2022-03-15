@@ -21,6 +21,8 @@ use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Team\Team;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Phoning\CampaignHistoryStatusEnum;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +38,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\Phoning\CampaignRepository")
  * @ORM\Table(name="phoning_campaign")
  *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\DynamicLinkListener",
+ * })
  *
  * @ApiResource(
  *     shortName="PhoningCampaign",
@@ -124,13 +129,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ScopeVisibility
  */
-class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityInterface
+class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
     use EntityScopeVisibilityTrait;
+    use DynamicLinkObjectTrait;
 
     /**
      * @var string|null
@@ -467,5 +473,20 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     public function isIndexable(): bool
     {
         return true;
+    }
+
+    public function getDynamicLinkPath(): string
+    {
+        return '/phoning-campaigns/'.$this->uuid;
+    }
+
+    public function withSocialMeta(): bool
+    {
+        return true;
+    }
+
+    public function getSocialTitle(): string
+    {
+        return (string) $this->getTitle();
     }
 }

@@ -7,7 +7,7 @@ use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Kreait\Firebase\Messaging as BaseMessaging;
+use Kreait\Firebase\Contract\Messaging as BaseMessaging;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 

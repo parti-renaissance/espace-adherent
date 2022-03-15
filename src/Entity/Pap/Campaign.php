@@ -15,6 +15,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,7 +32,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(columns={"begin_at", "finish_at"}),
  * })
  *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\DynamicLinkListener",
+ * })
  *
  * @ApiResource(
  *     shortName="PapCampaign",
@@ -100,12 +105,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ScopeVisibility
  */
-class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterface
+class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorTrait;
     use EntityScopeVisibilityTrait;
+    use DynamicLinkObjectTrait;
 
     /**
      * @var string|null
@@ -540,5 +546,20 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     public function setAssociated(bool $value): void
     {
         $this->associated = $value;
+    }
+
+    public function getDynamicLinkPath(): string
+    {
+        return '/pap-campaigns/'.$this->uuid;
+    }
+
+    public function withSocialMeta(): bool
+    {
+        return true;
+    }
+
+    public function getSocialTitle(): string
+    {
+        return (string) $this->getTitle();
     }
 }

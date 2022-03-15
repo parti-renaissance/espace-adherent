@@ -73,6 +73,8 @@ services:
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
             $sendInBlueApiKey: '%env(SENDINBLUE_API_KEY)%'
             $sendInBlueContactListId: '%env(int:SENDINBLUE_CONTACT_LIST_ID)%'
+            $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
+            $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

@@ -15,6 +15,8 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\SurveyTypeEnum;
 use App\Validator\Jecoute\SurveyScopeTarget;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +38,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     SurveyTypeEnum::NATIONAL: "NationalSurvey"
  * })
  *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\DynamicLinkListener",
+ * })
  *
  * @ApiResource(
  *     attributes={
@@ -97,12 +102,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @SurveyScopeTarget
  */
-abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface
+abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
+    use DynamicLinkObjectTrait;
 
     /**
      * @var UuidInterface
@@ -302,5 +308,20 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     public function isIndexable(): bool
     {
         return $this->isPublished();
+    }
+
+    public function getDynamicLinkPath(): string
+    {
+        return '/surveys/'.$this->uuid;
+    }
+
+    public function withSocialMeta(): bool
+    {
+        return true;
+    }
+
+    public function getSocialTitle(): string
+    {
+        return (string) $this->getName();
     }
 }
