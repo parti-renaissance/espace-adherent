@@ -19,6 +19,8 @@ use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\JecouteSpaceEnum;
 use App\Utils\StringCleaner;
 use App\Validator\Jecoute\NewsTarget;
@@ -127,18 +129,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * })
  *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\DynamicLinkListener",
+ * })
  *
  * @ReferentNews
  * @NewsTarget(groups="Admin")
  * @NewsText
  * @ScopeVisibility
  */
-class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface, EntityScopeVisibilityInterface
+class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;
     use EntityScopeVisibilityTrait;
+    use DynamicLinkObjectTrait;
 
     /**
      * @ApiProperty(identifier=false)
@@ -451,5 +457,20 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     public function isIndexable(): bool
     {
         return $this->isPublished();
+    }
+
+    public function getDynamicLinkPath(): string
+    {
+        return '/news/'.$this->uuid;
+    }
+
+    public function withSocialMeta(): bool
+    {
+        return true;
+    }
+
+    public function getSocialTitle(): string
+    {
+        return (string) $this->getTitle();
     }
 }

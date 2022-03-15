@@ -10,6 +10,8 @@ use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Validator\RiposteOpenGraph;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -21,7 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="jecoute_riposte")
  *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\DynamicLinkListener",
+ * })
  *
  * @ApiResource(
  *     attributes={
@@ -69,11 +74,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @RiposteOpenGraph
  */
-class Riposte implements AuthorInterface, IndexableEntityInterface
+class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use AuthoredTrait;
+    use DynamicLinkObjectTrait;
 
     public const ACTION_VIEW = 'view';
     public const ACTION_DETAIL_VIEW = 'detail_view';
@@ -338,5 +344,20 @@ class Riposte implements AuthorInterface, IndexableEntityInterface
     public function isIndexable(): bool
     {
         return $this->isEnabled();
+    }
+
+    public function getDynamicLinkPath(): string
+    {
+        return '/ripostes/'.$this->uuid;
+    }
+
+    public function withSocialMeta(): bool
+    {
+        return true;
+    }
+
+    public function getSocialTitle(): string
+    {
+        return (string) $this->getTitle();
     }
 }

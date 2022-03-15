@@ -34,6 +34,8 @@ use App\Entity\ReferentTaggableEntity;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntity;
 use App\Event\EventTypeEnum;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
 use App\Validator\AddressInScopeZones as AssertAddressInScopeZones;
@@ -191,11 +193,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
  *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\DynamicLinkListener",
+ * })
  *
  * @AssertValidEventCategory
  */
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -204,6 +209,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     use EntityZoneTrait;
     use EntityTimestampableTrait;
     use ImageTrait;
+    use DynamicLinkObjectTrait;
 
     public const STATUS_SCHEDULED = 'SCHEDULED';
     public const STATUS_CANCELLED = 'CANCELLED';
@@ -822,5 +828,25 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function getIndexOptions(): array
     {
         return [];
+    }
+
+    public function getDynamicLinkPath(): string
+    {
+        return sprintf('/events/%s', $this->getUuid());
+    }
+
+    public function withSocialMeta(): bool
+    {
+        return true;
+    }
+
+    public function getSocialTitle(): string
+    {
+        return $this->getName();
+    }
+
+    public function getSocialDescription(): string
+    {
+        return $this->getDescription();
     }
 }
