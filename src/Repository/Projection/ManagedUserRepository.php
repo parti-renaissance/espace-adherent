@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Projection\ManagedUser;
 use App\Intl\FranceCitiesBundle;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;
@@ -264,6 +265,13 @@ class ManagedUserRepository extends ServiceEntityRepository
         if (null !== $filter->getIsCertified()) {
             $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
+
+        $userTypeConditions = ['u.source IS NULL'];
+        if ($filter->getWithJeMengageUsers()) {
+            $userTypeConditions[] = 'u.source = :jme_user_type';
+            $qb->setParameter('jme_user_type', MembershipSourceEnum::JEMENGAGE);
+        }
+        $qb->andWhere($qb->expr()->orX(...$userTypeConditions));
 
         return $qb;
     }

@@ -8,8 +8,14 @@ abstract class AbstractFilterFactory implements ManagedUsersFilterFactoryInterfa
 {
     abstract protected function getSubscriptionType(): string;
 
+    protected function updateFilter(ManagedUsersFilter $filter): void
+    {
+    }
+
     final public function create(array $zones): ManagedUsersFilter
     {
-        return new ManagedUsersFilter($this->getSubscriptionType(), $zones);
+        $this->updateFilter($filter = new ManagedUsersFilter($this->getSubscriptionType(), $zones));
+
+        return $filter;
     }
 }
