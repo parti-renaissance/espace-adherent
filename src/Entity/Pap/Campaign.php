@@ -550,7 +550,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
 
     public function getDynamicLinkPath(): string
     {
-        return '/pap-campagnes/'.$this->uuid;
+        return '/pap-campaigns/'.$this->uuid;
     }
 
     public function withSocialMeta(): bool

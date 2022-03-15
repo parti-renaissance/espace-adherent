@@ -13,10 +13,10 @@ class DynamicLinkFactory
     private string $dynamicLinksHost;
     private string $appPackageId;
 
-    public function __construct(string $dynamicLinksHost, string $appPackageId)
+    public function __construct(string $dynamicLinksHost, string $jemengageAppPackageId)
     {
         $this->dynamicLinksHost = $dynamicLinksHost;
-        $this->appPackageId = $appPackageId;
+        $this->appPackageId = $jemengageAppPackageId;
     }
 
     public function create(DynamicLinkObjectInterface $object): CreateDynamicLink

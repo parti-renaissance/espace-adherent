@@ -72,7 +72,7 @@ services:
             $sendInBlueApiKey: '%env(SENDINBLUE_API_KEY)%'
             $sendInBlueContactListId: '%env(int:SENDINBLUE_CONTACT_LIST_ID)%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
-            $appPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
+            $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
