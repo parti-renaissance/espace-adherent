@@ -27,6 +27,8 @@ class ZoneAutocompleteFilterBuilder implements AdherentFilterBuilderInterface
                     Zone::DEPARTMENT,
                     Zone::REGION,
                     Zone::COUNTRY,
+                    Zone::DISTRICT,
+                    Zone::FOREIGN_DISTRICT,
                 ] : [],
             ])
             ->setMultiple(FeatureEnum::MESSAGES !== $feature)

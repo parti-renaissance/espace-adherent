@@ -113,6 +113,10 @@ class MemberRequest implements MemberRequestInterface
                 return self::MERGE_FIELD_ZONE_REGION;
             case Zone::COUNTRY:
                 return self::MERGE_FIELD_ZONE_COUNTRY;
+            case Zone::DISTRICT:
+                return self::MERGE_FIELD_ZONE_DISTRICT;
+            case Zone::FOREIGN_DISTRICT:
+                return self::MERGE_FIELD_ZONE_FOREIGN_DISTRICT;
             default:
                 throw new ZoneNotSynchronizedException($zone);
         }
