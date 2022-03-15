@@ -335,7 +335,7 @@ class RequestBuilder implements LoggerAwareInterface
             return;
         }
 
-        $fieldName = 'zone'.ucfirst((new ByteString($zone->getType()))->camel());
+        $fieldName = (new ByteString('zone_'.$zone->getType()))->camel();
 
         if (!property_exists($this, $fieldName)) {
             return;
