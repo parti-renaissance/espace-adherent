@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Component\String\ByteString;
 
 class RequestBuilder implements LoggerAwareInterface
 {
@@ -56,6 +57,8 @@ class RequestBuilder implements LoggerAwareInterface
     private ?Zone $zoneBorough = null;
     private ?Zone $zoneCity = null;
     private ?Zone $zoneCanton = null;
+    private ?Zone $zoneDistrict = null;
+    private ?Zone $zoneForeignDistrict = null;
     private ?Zone $zoneDepartment = null;
     private ?Zone $zoneRegion = null;
     private ?Zone $zoneCountry = null;
@@ -332,7 +335,7 @@ class RequestBuilder implements LoggerAwareInterface
             return;
         }
 
-        $fieldName = 'zone'.ucfirst($zone->getType());
+        $fieldName = (new ByteString('zone_'.$zone->getType()))->camel();
 
         if (!property_exists($this, $fieldName)) {
             return;
@@ -478,6 +481,8 @@ class RequestBuilder implements LoggerAwareInterface
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_BOROUGH] = $this->zoneBorough ? (string) $this->zoneBorough : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CANTON] = $this->zoneCanton ? (string) $this->zoneCanton : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = $this->zoneCity ? (string) $this->zoneCity : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DISTRICT] = $this->zoneDistrict ? (string) $this->zoneDistrict : '';
+        $mergeFields[MemberRequest::MERGE_FIELD_ZONE_FOREIGN_DISTRICT] = $this->zoneForeignDistrict ? (string) $this->zoneForeignDistrict : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = $this->zoneDepartment ? (string) $this->zoneDepartment : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = $this->zoneRegion ? (string) $this->zoneRegion : '';
         $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = $this->zoneCountry ? (string) $this->zoneCountry : '';
