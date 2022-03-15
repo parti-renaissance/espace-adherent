@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Component\String\ByteString;
 
 class RequestBuilder implements LoggerAwareInterface
 {
@@ -334,16 +335,7 @@ class RequestBuilder implements LoggerAwareInterface
             return;
         }
 
-        switch ($zone->getType()) {
-            case Zone::FOREIGN_DISTRICT:
-                $fieldName = 'zoneForeignDistrict';
-
-                break;
-            default:
-                $fieldName = 'zone'.ucfirst($zone->getType());
-
-                break;
-        }
+        $fieldName = 'zone'.ucfirst((new ByteString($zone->getType()))->camel());
 
         if (!property_exists($this, $fieldName)) {
             return;
