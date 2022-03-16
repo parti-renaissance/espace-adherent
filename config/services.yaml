@@ -245,7 +245,8 @@ services:
 
     App\Recaptcha\RecaptchaApiClient:
         arguments:
-            $privateKey: '%env(RECAPTCHA_PRIVATE_KEY)%'
+            $projectId: '%env(GCP_PROJECT_ID)%'
+            $siteKey: '%env(RECAPTCHA_PUBLIC_KEY)%'
 
     App\Procuration\ProcurationProxyMessageFactory:
         arguments:

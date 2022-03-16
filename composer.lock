@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f962771b346eac0892f9024ab9070dd",
+    "content-hash": "8cbbb83d531f0292b380ec8a36474469",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -4254,6 +4254,58 @@
                 "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.43.1"
             },
             "time": "2021-10-20T17:52:15+00:00"
+        },
+        {
+            "name": "google/cloud-recaptcha-enterprise",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
+                "reference": "af253a3eaf15a4526f093b41dfe381d66b48368c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/af253a3eaf15a4526f093b41dfe381d66b48368c",
+                "reference": "af253a3eaf15a4526f093b41dfe381d66b48368c",
+                "shasum": ""
+            },
+            "require": {
+                "google/gax": "^1.3.0"
+            },
+            "require-dev": {
+                "google/cloud-core": "^1.39",
+                "phpdocumentor/reflection": "^3.0",
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "suggest": {
+                "ext-grpc": "Enables use of gRPC, a universal high-performance RPC framework created by Google.",
+                "ext-protobuf": "Provides a significant increase in throughput over the pure PHP protobuf implementation. See https://cloud.google.com/php/grpc for installation instructions."
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "id": "cloud-recaptcha-enterprise",
+                    "path": "RecaptchaEnterprise",
+                    "entry": null,
+                    "target": "googleapis/google-cloud-php-recaptcha-enterprise.git"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Google\\Cloud\\RecaptchaEnterprise\\": "src",
+                    "GPBMetadata\\Google\\Cloud\\Recaptchaenterprise\\": "metadata"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Google Cloud Recaptcha Enterprise Client for PHP",
+            "support": {
+                "issues": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/issues",
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.2.0"
+            },
+            "time": "2022-01-31T21:39:13+00:00"
         },
         {
             "name": "google/cloud-storage",

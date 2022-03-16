@@ -48,6 +48,7 @@
         "fusonic/opengraph": "^2.1",
         "geocoder-php/google-maps-provider": "^4.5",
         "geoip2/geoip2": "^2.4",
+        "google/cloud-recaptcha-enterprise": "^1.2",
         "google/cloud-storage": "^1.23",
         "google/cloud-vision": "^1.2",
         "h4cc/wkhtmltoimage-amd64": "^0.12.4",

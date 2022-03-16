@@ -2,74 +2,46 @@
 
 namespace App\Recaptcha;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Google\Cloud\RecaptchaEnterprise\V1\Assessment;
+use Google\Cloud\RecaptchaEnterprise\V1\Event;
+use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
 class RecaptchaApiClient implements RecaptchaApiClientInterface
 {
-    private const BASE_URL = 'https://www.google.com/recaptcha/api/';
+    private RecaptchaEnterpriseServiceClient $client;
+    private string $projectId;
+    private string $siteKey;
 
-    private HttpClientInterface $client;
-    private string $privateKey;
-    private ?RequestStack $requestStack;
-
-    public function __construct(HttpClientInterface $client, string $privateKey, RequestStack $requestStack = null)
+    public function __construct(string $projectId, string $siteKey)
     {
-        $this->client = $client;
+        $this->projectId = $projectId;
+        $this->siteKey = $siteKey;
 
-        $this->privateKey = $privateKey;
-        $this->requestStack = $requestStack;
+        $this->client = new RecaptchaEnterpriseServiceClient();
+
     }
 
     public function verify(string $answer, string $clientIp = null): bool
     {
-        $response = $this->client->request('POST', self::BASE_URL.'siteverify', [
-            'body' => $this->getParameters($answer, $clientIp),
-        ]);
+        $assessment = $this->createAssessment($answer);
 
-        if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new \RuntimeException('Unable to verify captcha answer.');
-        }
+        $response = $this->client->createAssessment('projects/'.$this->projectId, $assessment);
 
-        $data = $response->toArray();
-        if (null === $data || !isset($data['success']) || !\is_bool($data['success'])) {
-            throw new \RuntimeException('Unexpected JSON response.');
-        }
-
-        return $data['success'];
+        return $response->getTokenProperties()->getValid();
     }
 
-    private function getParameters(string $answer, string $clientIp = null): array
+    private function createEvent(string $token): Event
     {
-        $params = [
-            'secret' => $this->privateKey,
-            'response' => $answer,
-        ];
-
-        if (null === $clientIp) {
-            $clientIp = $this->getClientIp();
-        }
-
-        if ($clientIp) {
-            $params['remoteip'] = $clientIp;
-        }
-
-        return $params;
+        return (new Event())
+            ->setSiteKey($this->siteKey)
+            ->setToken($token)
+        ;
     }
 
-    private function getRequest(): ?Request
+    private function createAssessment(string $token): Assessment
     {
-        return $this->requestStack ? $this->requestStack->getMasterRequest() : null;
-    }
-
-    private function getClientIp(): ?string
-    {
-        if ($request = $this->getRequest()) {
-            return $request->getClientIp();
-        }
-
-        return null;
+        return (new Assessment())
+            ->setEvent($this->createEvent($token))
+        ;
     }
 }
