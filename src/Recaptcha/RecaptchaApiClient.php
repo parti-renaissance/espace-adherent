@@ -18,14 +18,14 @@ class RecaptchaApiClient implements RecaptchaApiClientInterface
         $this->siteKey = $siteKey;
 
         $this->client = new RecaptchaEnterpriseServiceClient();
-
     }
 
     public function verify(string $answer, string $clientIp = null): bool
     {
+        $formattedParent = $this->client::projectName($this->projectId);
         $assessment = $this->createAssessment($answer);
 
-        $response = $this->client->createAssessment('projects/'.$this->projectId, $assessment);
+        $response = $this->client->createAssessment($formattedParent, $assessment);
 
         return $response->getTokenProperties()->getValid();
     }
