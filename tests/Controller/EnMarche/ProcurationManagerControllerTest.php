@@ -13,7 +13,6 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group procuration
- * @group debug
  */
 class ProcurationManagerControllerTest extends WebTestCase
 {

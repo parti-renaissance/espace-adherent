@@ -17,7 +17,6 @@ use Tests\App\Test\Helper\PHPUnitHelper;
 /**
  * @group functional
  * @group assessor
- * @group debug
  */
 class AssessorManagerControllerTest extends AbstractWebCaseTest
 {
