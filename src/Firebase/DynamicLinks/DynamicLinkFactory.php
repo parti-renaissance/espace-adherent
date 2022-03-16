@@ -21,7 +21,11 @@ class DynamicLinkFactory
 
     public function create(DynamicLinkObjectInterface $object): CreateDynamicLink
     {
-        $link = CreateDynamicLink::forUrl(sprintf('%s/%s', rtrim($this->dynamicLinksHost, '/'), ltrim($object->getDynamicLinkPath(), '/')))
+        if (!str_starts_with($url = $object->getDynamicLinkPath(), 'http')) {
+            $url = sprintf('%s/%s', rtrim($this->dynamicLinksHost, '/'), ltrim($url, '/'));
+        }
+
+        $link = CreateDynamicLink::forUrl($url)
             ->withNavigationInfo(NavigationInfo::new()->withForcedRedirect())
             ->withAndroidInfo(AndroidInfo::new()->withPackageName($this->appPackageId))
             ->withIOSInfo(IOSInfo::new()->withBundleId($this->appPackageId))
