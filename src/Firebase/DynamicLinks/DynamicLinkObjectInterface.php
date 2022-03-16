@@ -13,4 +13,6 @@ interface DynamicLinkObjectInterface
     public function getSocialDescription(): string;
 
     public function setDynamicLink(string $link): void;
+
+    public function getDynamicLink(): ?string;
 }

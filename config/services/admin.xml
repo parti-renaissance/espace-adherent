@@ -966,11 +966,23 @@
             <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>
 
+        <service id="app.admin.deep_link_extension" class="App\Admin\Extension\DeepLinkExtension">
+            <tag name="sonata.admin.extension" target="app.admin.event" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute.riposte" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute.news" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute_local_survey" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
+            <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
+            <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
+            <tag name="sonata.admin.extension" target="app.admin.pap.campaign" />
+        </service>
+
         <service id="app.admin.entity_administrator_blameable_extension" class="App\Admin\Extension\EntityAdministratorBlameableAdminExtension">
             <tag name="sonata.admin.extension" target="app.admin.cms_block" />
             <tag name="sonata.admin.extension" target="app.admin.team.team" />
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute_local_survey" />
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
         </service>
 

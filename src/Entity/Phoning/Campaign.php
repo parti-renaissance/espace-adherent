@@ -39,8 +39,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="phoning_campaign")
  *
  * @ORM\EntityListeners({
- *     "App\EntityListener\AlgoliaIndexListener",
  *     "App\EntityListener\DynamicLinkListener",
+ *     "App\EntityListener\AlgoliaIndexListener",
  * })
  *
  * @ApiResource(

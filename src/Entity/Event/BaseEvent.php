@@ -194,8 +194,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
  *
  * @ORM\EntityListeners({
- *     "App\EntityListener\AlgoliaIndexListener",
  *     "App\EntityListener\DynamicLinkListener",
+ *     "App\EntityListener\AlgoliaIndexListener",
  * })
  *
  * @AssertValidEventCategory

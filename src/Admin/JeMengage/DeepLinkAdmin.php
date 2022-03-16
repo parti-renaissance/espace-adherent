@@ -44,7 +44,8 @@ class DeepLinkAdmin extends AbstractAdmin
             ->addIdentifier('id', null, ['label' => '#'])
             ->add('label', null, ['label' => 'Lien'])
             ->add('link', null, ['label' => 'Lien'])
-            ->add('dynamicLink', null, ['label' => 'Lien de partage'])
+            ->add('socialTitle', null, ['label' => 'Metadata: titre'])
+            ->add('socialDescription', null, ['label' => 'Metadata: description'])
             ->add('createdAt', null, ['label' => 'Créé le'])
         ;
     }
