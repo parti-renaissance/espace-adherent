@@ -36,7 +36,13 @@
             {{ js.toggleMandatesSelect('#'~form.elected.vars.id, '#'~form.mandates.vars.id, '#elected--help-text') }}
         });
     </script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+    <script>
+       function onSubmit(token) {
+         document.getElementById("adherent_registration").submit();
+       }
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -63,7 +69,7 @@
         <section class="join__form">
             <article class="l__wrapper--500 l__col l__col--center">
                 <div class="register__form">
-                    {{ form_start(form) }}
+                    {{ form_start(form, { attr: { id: 'adherent_registration' } }) }}
                     {{ form_errors(form) }}
                     <div id="membership-address">
 
@@ -234,7 +240,6 @@
                                 {% for flashMessage in app.flashes("error_recaptcha") %}
                                     <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
                                 {% endfor %}
-                                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
                             {% elseif app.debug %}
                                 <input type="hidden" name="g-recaptcha-response" value="fake" />
                             {% endif %}
@@ -245,7 +250,12 @@
                         {% if not form.vars.valid %}
                             <p class="text--error text--small">L'un des champs du formulaire est mal renseigné.</p>
                         {% endif %}
-                        {{ form_widget(form.submit, { attr: { class: 'btn btn--green--apple btn--large-and-medium b__nudge--top' }}) }}
+                        {{ form_widget(form.submit, { attr: {
+                            class: 'btn btn--green--apple btn--large-and-medium b__nudge--top g-recaptcha',
+                            'data-sitekey': {{ recaptcha_public_key }},
+                            'data-callback': 'onSubmit',
+                            'data-action': 'submit'
+                        }}) }}
                     </div>
                     {{ form_end(form) }}
                 </div>
