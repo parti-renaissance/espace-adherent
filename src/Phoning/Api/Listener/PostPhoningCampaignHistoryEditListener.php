@@ -25,10 +25,10 @@ class PostPhoningCampaignHistoryEditListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [KernelEvents::VIEW => ['dispatchPreCreateEvent', EventPriorities::POST_WRITE]];
+        return [KernelEvents::VIEW => ['dispatchPostWrite', EventPriorities::POST_WRITE]];
     }
 
-    public function dispatchPreCreateEvent(ViewEvent $event): void
+    public function dispatchPostWrite(ViewEvent $event): void
     {
         $campaignHistory = $event->getControllerResult();
 
