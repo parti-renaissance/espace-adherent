@@ -150,7 +150,7 @@ Feature:
         "is_committee_member": false,
         "is_certified": true,
         "has_email_subscription": null,
-        "has_sms_subscription": false
+        "has_sms_subscription": true
       },
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
@@ -212,7 +212,7 @@ Feature:
         "is_committee_member": null,
         "is_certified": null,
         "has_email_subscription": null,
-        "has_sms_subscription": null
+        "has_sms_subscription": true
       },
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
@@ -470,7 +470,7 @@ Feature:
         "first_name": "john",
         "gender": "male",
         "has_email_subscription": null,
-        "has_sms_subscription": false,
+        "has_sms_subscription": true,
         "is_certified": true,
         "is_committee_member": false,
         "last_name": "Doe",
@@ -550,7 +550,7 @@ Feature:
         "first_name": null,
         "gender": null,
         "has_email_subscription": null,
-        "has_sms_subscription": null,
+        "has_sms_subscription": true,
         "is_certified": null,
         "is_committee_member": null,
         "last_name": null,
@@ -1572,7 +1572,7 @@ Feature:
         "is_committee_member": false,
         "is_certified": true,
         "has_email_subscription": null,
-        "has_sms_subscription": false
+        "has_sms_subscription": true
       },
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
@@ -1709,7 +1709,7 @@ Feature:
         "is_committee_member": false,
         "is_certified": true,
         "has_email_subscription": null,
-        "has_sms_subscription": false
+        "has_sms_subscription": true
       },
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",

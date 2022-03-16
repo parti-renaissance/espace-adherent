@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -105,12 +106,18 @@ class CampaignAdmin extends AbstractAdmin
             ->end()
             ;
 
-            $formMapper->get('audience')->add('zones', AdminZoneAutocompleteType::class, [
-                'required' => false,
-                'multiple' => true,
-                'model_manager' => $this->getModelManager(),
-                'admin_code' => AudienceAdmin::SERVICE_CODE,
-            ]);
+            $formMapper->get('audience')
+                ->add('zones', AdminZoneAutocompleteType::class, [
+                    'required' => false,
+                    'multiple' => true,
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => AudienceAdmin::SERVICE_CODE,
+                ])
+                ->add('hasSmsSubscription', BooleanType::class, [
+                    'label' => 'Abonné aux SMS',
+                    'required' => true,
+                ])
+            ;
         }
     }
 
