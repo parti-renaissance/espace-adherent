@@ -452,12 +452,20 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('procurationManagedAreaCodesAsString', TextType::class, [
                         'label' => 'coordinator.label.codes',
                         'required' => false,
-                        'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                        'help' => <<<HELP
+Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+HELP
+                        ,
                     ])
                     ->add('assessorManagedAreaCodesAsString', TextType::class, [
                         'label' => 'assessors_manager',
                         'required' => false,
-                        'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                        'help' => <<<HELP
+Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+HELP
+,
                     ])
                     ->add('electionResultsReporter', null, [
                         'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',

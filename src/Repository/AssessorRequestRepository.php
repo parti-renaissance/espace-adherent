@@ -145,7 +145,7 @@ class AssessorRequestRepository extends AbstractAssessorRepository
                     $qb->expr()->like(self::ALIAS.'.assessorPostalCode', ':code'.$key)
                 );
                 $qb->setParameter('code'.$key, $code.'%');
-            } else {
+            } elseif ('all' !== strtolower($code)) {
                 // Country
                 $codesFilter->add($qb->expr()->eq(self::ALIAS.'.assessorCountry', ':code'.$key));
                 $qb->setParameter('code'.$key, $code);

@@ -45,6 +45,7 @@ common.yellow: Jaune
 common.pink: Rose
 common.mode.online: 100% en ligne
 common.mode.meeting: En présentiel
+common.zone.all: Toutes les zones géographiques
 
 pending: En attente
 approved: Approuvé

@@ -157,7 +157,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 );
 
                 $qb->setParameter('code'.$key, $code.'%');
-            } else {
+            } elseif ('all' !== strtolower($code)) {
                 // Country
                 $codesFilter->add($qb->expr()->eq('pp.voteCountry', ':code'.$key));
                 $qb->setParameter('code'.$key, $code);

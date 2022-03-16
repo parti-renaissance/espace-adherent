@@ -242,7 +242,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
                     )
                 );
                 $qb->setParameter('code'.$key, $code.'%');
-            } else {
+            } elseif ('all' !== strtolower($code)) {
                 // Country
                 $codesFilter->add($qb->expr()->eq('pr.voteCountry', ':code'.$key));
                 $qb->setParameter('code'.$key, $code);

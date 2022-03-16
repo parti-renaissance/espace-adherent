@@ -10,7 +10,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ app.user.procurationManagedAreaCodesAsString }}</span></p>
+                            <p>Vous gérez : <span>{% if 'all' == app.user.procurationManagedAreaCodesAsString|lower %} {{ 'common.zone.all'|trans }} {% else %} {{ app.user.procurationManagedAreaCodesAsString }} {% endif %}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
