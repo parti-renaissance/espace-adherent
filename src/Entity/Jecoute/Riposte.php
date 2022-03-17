@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="jecoute_riposte")
  *
  * @ORM\EntityListeners({
- *     "App\EntityListener\AlgoliaIndexListener",
  *     "App\EntityListener\DynamicLinkListener",
+ *     "App\EntityListener\AlgoliaIndexListener",
  * })
  *
  * @ApiResource(

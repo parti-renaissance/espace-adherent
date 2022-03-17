@@ -25,11 +25,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Security\Core\Security;
 
 class CampaignAdmin extends AbstractAdmin
 {
-    private Security $security;
     private AdherentRepository $adherentRepository;
 
     public function getFormBuilder()
@@ -201,12 +199,6 @@ class CampaignAdmin extends AbstractAdmin
     }
 
     /** @param Campaign $object */
-    public function prePersist($object)
-    {
-        $object->setCreatedByAdministrator($this->security->getUser());
-    }
-
-    /** @param Campaign $object */
     public function postPersist($object)
     {
         $this->updateParticipantsCount($object);
@@ -216,20 +208,12 @@ class CampaignAdmin extends AbstractAdmin
     /** @param Campaign $object */
     public function preUpdate($object)
     {
-        $object->setUpdatedByAdministrator($this->security->getUser());
-
         $this->updateParticipantsCount($object);
     }
 
     private function updateParticipantsCount(Campaign $object): void
     {
         $object->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($object)->getTotalItems());
-    }
-
-    /** @required */
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
     }
 
     /** @required */

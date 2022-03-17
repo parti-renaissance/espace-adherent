@@ -15,6 +15,7 @@
         "begin_at",
         "category",
         "date",
+        "deeplink",
         "description",
         "finish_at",
         "image",

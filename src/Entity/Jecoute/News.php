@@ -130,8 +130,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @ORM\EntityListeners({
- *     "App\EntityListener\AlgoliaIndexListener",
  *     "App\EntityListener\DynamicLinkListener",
+ *     "App\EntityListener\AlgoliaIndexListener",
  * })
  *
  * @ReferentNews

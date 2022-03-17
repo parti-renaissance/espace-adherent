@@ -3,6 +3,7 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Geo\Zone;
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 
 abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNormalizer
@@ -27,6 +28,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'is_national' => $this->isNational($object),
             'zone_codes' => $this->getZoneCodes($object),
             'adherent_ids' => $this->getAdherentIds($object),
+            'deeplink' => $this->getDeepLink($object),
             '_tags' => [$this->getType()],
         ];
     }
@@ -89,6 +91,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     protected function getAdherentIds(object $object): ?array
     {
         return null;
+    }
+
+    protected function getDeepLink(object $object): ?string
+    {
+        return $object instanceof DynamicLinkObjectInterface ? $object->getDynamicLink() : null;
     }
 
     protected function getUrl(object $object): ?string
