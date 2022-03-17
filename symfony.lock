@@ -326,6 +326,9 @@
     "google/cloud-core": {
         "version": "v1.39.0"
     },
+    "google/cloud-recaptcha-enterprise": {
+        "version": "v1.2.0"
+    },
     "google/cloud-storage": {
         "version": "v1.23.0"
     },
