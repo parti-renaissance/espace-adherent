@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -176,6 +177,9 @@ class Contact
     private ?Adherent $adherent = null;
 
     /**
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"contact_create"})
+     * @AssertRecaptcha(groups={"contact_create"})
+     *
      * @Groups({"contact_create"})
      */
     public ?string $recaptcha = null;
