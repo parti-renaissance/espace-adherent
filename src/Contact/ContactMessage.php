@@ -3,11 +3,18 @@
 namespace App\Contact;
 
 use App\Entity\Adherent;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ContactMessage
+/**
+ * @AssertRecaptcha
+ */
+class ContactMessage implements RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     /**
      * @Assert\NotBlank
      * @Assert\Length(
@@ -21,14 +28,6 @@ class ContactMessage
 
     private $from;
     private $to;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
-     */
-    public $recaptcha = '';
 
     public function __construct(Adherent $from, Adherent $to, string $content = null)
     {
@@ -44,7 +43,7 @@ class ContactMessage
         string $content = null
     ): self {
         $message = new self($from, $to, $content);
-        $message->recaptcha = $recaptcha;
+        $message->setRecaptcha($recaptcha);
 
         return $message;
     }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Geo\Zone;
 use App\Intl\FranceCitiesBundle;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -20,12 +22,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="procuration_proxies")
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
+ *
+ * @AssertRecaptcha(groups={"front"})
  */
-class ProcurationProxy
+class ProcurationProxy implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use ElectionRoundsCollectionTrait;
+    use RecaptchaChallengeTrait;
 
     public const ACTION_ENABLE = 'activer';
     public const ACTION_DISABLE = 'desactiver';
@@ -299,14 +304,6 @@ class ProcurationProxy
      * @ORM\Column(type="boolean")
      */
     private $disabled = false;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"front"})
-     * @AssertRecaptcha(groups={"front"})
-     */
-    public $recaptcha = '';
 
     /**
      * @var int

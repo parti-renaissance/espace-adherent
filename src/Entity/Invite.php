@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,10 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     since="24 hours",
  *     message="invitation.email.was_invited_recently"
  * )
+ * @AssertRecaptcha
  */
-class Invite
+class Invite implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
+    use RecaptchaChallengeTrait;
 
     /**
      * @var string
@@ -87,19 +91,10 @@ class Invite
      */
     private $createdAt;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
-     */
-    public $recaptcha;
-
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->createdAt = new \DateTime();
-        $this->recaptcha = '';
     }
 
     public function __toString()
@@ -110,7 +105,7 @@ class Invite
     public static function createWithCaptcha(string $recaptcha): self
     {
         $invite = new self();
-        $invite->recaptcha = $recaptcha;
+        $invite->setRecaptcha($recaptcha);
 
         return $invite;
     }

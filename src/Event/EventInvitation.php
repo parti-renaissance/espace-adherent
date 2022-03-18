@@ -3,11 +3,18 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EventInvitation
+/**
+ * @AssertRecaptcha
+ */
+class EventInvitation implements RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     /**
      * @Assert\Email(message="common.email.invalid")
      * @Assert\NotBlank
@@ -35,12 +42,6 @@ class EventInvitation
     public $message = '';
 
     /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
-     */
-    public $recaptcha;
-
-    /**
      * @Assert\Type("array")
      * @Assert\Count(min=1, minMessage="event.invitation.guests.min")
      * @Assert\All({
@@ -61,7 +62,7 @@ class EventInvitation
             $dto->email = $adherent->getEmailAddress();
         }
 
-        $dto->recaptcha = $recaptchaAnswer;
+        $dto->setRecaptcha($recaptchaAnswer);
 
         return $dto;
     }

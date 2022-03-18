@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Intl\FranceCitiesBundle;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -17,11 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="procuration_requests")
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationRequestRepository")
+ *
+ * @AssertRecaptcha(groups={"elections"})
  */
-class ProcurationRequest
+class ProcurationRequest implements RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
     use ElectionRoundsCollectionTrait;
+    use RecaptchaChallengeTrait;
 
     public const REASON_PROFESSIONAL = 'professional';
     public const REASON_HANDICAP = 'handicap';
@@ -331,14 +336,6 @@ class ProcurationRequest
      * @ORM\Column(type="integer")
      */
     private $reminded = 0;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"elections"})
-     * @AssertRecaptcha(groups={"elections"})
-     */
-    public $recaptcha = '';
 
     /**
      * @var bool

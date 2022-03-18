@@ -10,38 +10,38 @@ class RecaptchaApiClient implements RecaptchaApiClientInterface
 {
     private RecaptchaEnterpriseServiceClient $client;
     private string $projectId;
-    private string $siteKey;
+    private string $defaultSiteKey;
 
-    public function __construct(string $projectId, string $siteKey)
+    public function __construct(string $projectId, string $defaultSiteKey)
     {
         $this->projectId = $projectId;
-        $this->siteKey = $siteKey;
+        $this->defaultSiteKey = $defaultSiteKey;
 
         $this->client = new RecaptchaEnterpriseServiceClient();
     }
 
-    public function verify(string $answer, string $clientIp = null): bool
+    public function verify(string $token, ?string $siteKey): bool
     {
         $formattedParent = $this->client::projectName($this->projectId);
-        $assessment = $this->createAssessment($answer);
+        $assessment = $this->createAssessment($token, $siteKey);
 
         $response = $this->client->createAssessment($formattedParent, $assessment);
 
         return $response->getTokenProperties()->getValid();
     }
 
-    private function createEvent(string $token): Event
+    private function createEvent(string $token, ?string $siteKey): Event
     {
         return (new Event())
-            ->setSiteKey($this->siteKey)
+            ->setSiteKey($siteKey ?? $this->defaultSiteKey)
             ->setToken($token)
         ;
     }
 
-    private function createAssessment(string $token): Assessment
+    private function createAssessment(string $token, ?string $siteKey): Assessment
     {
         return (new Assessment())
-            ->setEvent($this->createEvent($token))
+            ->setEvent($this->createEvent($token, $siteKey))
         ;
     }
 }

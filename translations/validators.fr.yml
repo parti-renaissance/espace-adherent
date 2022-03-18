@@ -46,7 +46,8 @@ common.phone_number.invalid: Ce numéro de téléphone est invalide.
 
 common.conditions.not_accepted: Vous devez accepter la charte.
 
-common.recaptcha.invalid_message: Merci de confirmer le captcha avant de continuer.
+common.recaptcha.empty_message: Merci de confirmer le captcha avant de continuer.
+common.recaptcha.invalid_message: Le captcha soumis est invalide.
 
 common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
 

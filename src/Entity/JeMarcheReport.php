@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,10 +12,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @ORM\Table(name="je_marche_reports")
  * @ORM\Entity(repositoryClass="App\Repository\JeMarcheReportRepository")
+ *
+ * @AssertRecaptcha
  */
-class JeMarcheReport
+class JeMarcheReport implements RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
+    use RecaptchaChallengeTrait;
 
     public const TYPE_KIOSQUE = 'kiosque';
     public const TYPE_WALK = 'la-marche';
@@ -109,18 +114,10 @@ class JeMarcheReport
      */
     private $reaction = '';
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
-     */
-    public $recaptcha = '';
-
     public static function createWithCaptcha(string $recaptcha): self
     {
         $report = new self();
-        $report->recaptcha = $recaptcha;
+        $report->setRecaptcha($recaptcha);
 
         return $report;
     }

@@ -4,6 +4,8 @@ namespace App\Membership\MembershipRequest;
 
 use App\Address\Address;
 use App\Entity\Adherent;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\BannedAdherent;
 use App\Validator\CustomGender as AssertCustomGender;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -15,9 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @AssertUniqueMembership(groups={"Registration", "Update"})
  * @AssertCustomGender(groups={"Registration", "Update"})
+ * @AssertRecaptcha(groups={"Registration"})
  */
-class PlatformMembershipRequest extends AbstractMembershipRequest
+class PlatformMembershipRequest extends AbstractMembershipRequest implements RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     /**
      * @var string|null
      *
@@ -107,14 +112,6 @@ class PlatformMembershipRequest extends AbstractMembershipRequest
     public $nationality;
 
     /**
-     * @var string|null
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Registration"})
-     * @AssertRecaptcha(groups={"Registration"})
-     */
-    public $recaptcha;
-
-    /**
      * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
@@ -168,7 +165,7 @@ class PlatformMembershipRequest extends AbstractMembershipRequest
         bool $asUser = false
     ): self {
         $dto = new self($asUser);
-        $dto->recaptcha = $recaptchaAnswer;
+        $dto->setRecaptcha($recaptchaAnswer);
 
         if ($countryIso) {
             $dto->address->setCountry($countryIso);

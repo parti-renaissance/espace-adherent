@@ -6,8 +6,8 @@ use App\Recaptcha\RecaptchaApiClientInterface;
 
 class DummyRecaptchaApiClient implements RecaptchaApiClientInterface
 {
-    public function verify(string $answer, string $clientIp = null): bool
+    public function verify(string $token, ?string $siteKey): bool
     {
-        return 'wrong_answer' !== $answer;
+        return 'wrong_answer' !== $token;
     }
 }
