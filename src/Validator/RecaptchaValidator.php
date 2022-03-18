@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 use App\Recaptcha\RecaptchaApiClientInterface;
+use App\Recaptcha\RecaptchaChallengeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -10,11 +11,11 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class RecaptchaValidator extends ConstraintValidator
 {
-    private $httpClient;
+    private RecaptchaApiClientInterface $recaptchaApiClient;
 
-    public function __construct(RecaptchaApiClientInterface $httpClient)
+    public function __construct(RecaptchaApiClientInterface $recaptchaApiClient)
     {
-        $this->httpClient = $httpClient;
+        $this->recaptchaApiClient = $recaptchaApiClient;
     }
 
     public function validate($value, Constraint $constraint)
@@ -23,19 +24,28 @@ class RecaptchaValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Recaptcha::class);
         }
 
-        if (null === $value || '' === $value) {
+        if (!$value instanceof RecaptchaChallengeInterface) {
+            throw new UnexpectedValueException($value, RecaptchaChallengeInterface::class);
+        }
+
+        $recaptchaAnswer = $value->getRecaptcha();
+
+        if (empty($recaptchaAnswer)) {
+            $this
+                ->context
+                ->buildViolation($constraint->emptyMessage)
+                ->atPath('recaptcha')
+                ->addViolation()
+            ;
+
             return;
         }
 
-        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
-            throw new UnexpectedValueException($value, 'string');
-        }
-
-        $reCaptchaAnswer = (string) $value;
-        if (!$this->httpClient->verify($reCaptchaAnswer)) {
+        if (!$this->recaptchaApiClient->verify($recaptchaAnswer, $value->getRecaptchaSiteKey())) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
+                ->atPath('recaptcha')
                 ->addViolation()
             ;
         }

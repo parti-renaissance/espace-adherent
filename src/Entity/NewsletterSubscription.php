@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -18,11 +20,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\NewsletterSubscriptionRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ *
+ * @AssertRecaptcha(groups={"Subscription"})
  */
-class NewsletterSubscription implements EntitySoftDeletedInterface
+class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
+    use RecaptchaChallengeTrait;
 
     /**
      * @var int
@@ -94,14 +99,6 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
      * @ORM\Column(type="uuid", unique=true, nullable=true)
      */
     private $token;
-
-    /**
-     * @var string|null
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"Subscription"})
-     * @AssertRecaptcha(groups={"Subscription"})
-     */
-    private $recaptcha;
 
     /**
      * @var bool
@@ -215,16 +212,6 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
     public function setToken(?UuidInterface $token = null): void
     {
         $this->token = $token;
-    }
-
-    public function getRecaptcha(): ?string
-    {
-        return $this->recaptcha;
-    }
-
-    public function setRecaptcha(?string $recaptcha): void
-    {
-        $this->recaptcha = $recaptcha;
     }
 
     public function isPersonalDataCollection(): bool

@@ -98,7 +98,7 @@ class ProcurationController extends AbstractController
         }
 
         if ($finalStep = ProcurationRequest::isFinalStepUri($step)) {
-            $procurationRequest->recaptcha = $request->request->get('g-recaptcha-response');
+            $procurationRequest->setRecaptcha($request->request->get('g-recaptcha-response'));
         }
 
         $form = $this->createForm(ProcurationRequestType::class, $procurationRequest, [
@@ -147,7 +147,7 @@ class ProcurationController extends AbstractController
         }
 
         $proposal = new ProcurationProxy();
-        $proposal->recaptcha = $request->request->get('g-recaptcha-response');
+        $proposal->setRecaptcha($request->request->get('g-recaptcha-response'));
 
         $user = $this->getUser();
 

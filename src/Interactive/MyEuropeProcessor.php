@@ -3,13 +3,20 @@
 namespace App\Interactive;
 
 use App\Entity\MyEuropeChoice;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class MyEuropeProcessor
+/**
+ * @AssertRecaptcha(groups={"send"})
+ */
+final class MyEuropeProcessor implements RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     public const STATE_NEEDS_FRIEND_INFO = 'needs_friend_info';
     public const STATE_NEEDS_FRIEND_CASES = 'needs_friend_cases';
     public const STATE_NEEDS_FRIEND_APPRECIATIONS = 'needs_friend_appreciations';
@@ -125,17 +132,6 @@ final class MyEuropeProcessor
      * @var string
      */
     public $marking;
-
-    /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"send"})
-     * @AssertRecaptcha(groups={"send"})
-     */
-    public $recaptcha = '';
-
-    public function setRecaptcha(string $recaptcha): void
-    {
-        $this->recaptcha = $recaptcha;
-    }
 
     /**
      * @return string[]

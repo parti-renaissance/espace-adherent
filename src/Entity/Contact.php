@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -40,12 +43,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
  *
  * @UniqueEntity(fields={"emailAddress"})
+ *
+ * @AssertRecaptcha(groups={"contact_create"})
  */
-class Contact
+class Contact implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;
     use EntityTimestampableTrait;
+    use RecaptchaChallengeTrait;
 
     /**
      * @ORM\Column(length=50)
@@ -178,7 +184,12 @@ class Contact
     /**
      * @Groups({"contact_create"})
      */
-    public ?string $recaptcha = null;
+    protected ?string $recaptcha = null;
+
+    /**
+     * @Groups({"contact_create"})
+     */
+    protected ?string $recaptchaSiteKey = null;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -299,11 +310,6 @@ class Contact
     public function setCguAccepted(bool $cguAccepted): void
     {
         $this->cguAccepted = $cguAccepted;
-    }
-
-    public function setRecaptcha(?string $recaptcha): void
-    {
-        $this->recaptcha = $recaptcha;
     }
 
     public function process(): void

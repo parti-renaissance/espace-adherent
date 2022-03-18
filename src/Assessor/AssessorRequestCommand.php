@@ -3,6 +3,8 @@
 namespace App\Assessor;
 
 use App\Entity\AssessorOfficeEnum;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Assessor\AssessorDepartment;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
@@ -13,9 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssessorDepartment(groups={"fill_assessor_info"})
+ * @AssertRecaptcha(groups={"valid_summary"})
  */
-class AssessorRequestCommand
+class AssessorRequestCommand implements RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     /**
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"fill_personal_info"})
      * @Assert\Choice(
@@ -176,12 +181,6 @@ class AssessorRequestCommand
      * )
      */
     private $electionRounds;
-
-    /**
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"valid_summary"})
-     * @AssertRecaptcha(groups={"valid_summary"})
-     */
-    public $recaptcha = '';
 
     public $reachable = false;
 
@@ -375,16 +374,6 @@ class AssessorRequestCommand
     public function setOffice(?string $office): void
     {
         $this->office = $office;
-    }
-
-    public function getRecaptcha(): string
-    {
-        return $this->recaptcha;
-    }
-
-    public function setRecaptcha(string $recaptcha): void
-    {
-        $this->recaptcha = $recaptcha;
     }
 
     public function getVotePlaceWishes(): array

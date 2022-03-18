@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Assessor\AssessorRequestElectionRoundsEnum;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -17,11 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="assessor_requests")
  * @ORM\Entity(repositoryClass="App\Repository\AssessorRequestRepository")
+ *
+ * @AssertRecaptcha
  */
-class AssessorRequest
+class AssessorRequest implements RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
     use EntityIdentityTrait;
+    use RecaptchaChallengeTrait;
 
     /**
      * @var string
@@ -233,14 +238,6 @@ class AssessorRequest
      * )
      */
     private $office = AssessorOfficeEnum::HOLDER;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="common.recaptcha.invalid_message")
-     * @AssertRecaptcha
-     */
-    public $recaptcha = '';
 
     /**
      * @var VotePlace|null
@@ -570,16 +567,6 @@ class AssessorRequest
     public function setOffice(string $office): void
     {
         $this->office = $office;
-    }
-
-    public function getRecaptcha(): string
-    {
-        return $this->recaptcha;
-    }
-
-    public function setRecaptcha(string $recaptcha): void
-    {
-        $this->recaptcha = $recaptcha;
     }
 
     public function getVotePlace(): ?VotePlace
