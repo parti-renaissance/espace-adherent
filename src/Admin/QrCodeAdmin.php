@@ -4,13 +4,16 @@ namespace App\Admin;
 
 use App\Entity\Administrator;
 use App\Entity\QrCode;
+use App\QrCode\QrCodeHostEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Security\Core\Security;
@@ -36,6 +39,17 @@ class QrCodeAdmin extends AbstractAdmin
         $datagridMapper
             ->add('name', null, [
                 'label' => 'Nom',
+                'show_filter' => true,
+            ])
+            ->add('host', ChoiceFilter::class, [
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => QrCodeHostEnum::ALL,
+                    'choice_label' => function (string $choice) {
+                        return $choice;
+                    },
+                ],
+                'label' => 'Domaine',
                 'show_filter' => true,
             ])
             ->add('redirectUrl', null, [
@@ -66,6 +80,10 @@ class QrCodeAdmin extends AbstractAdmin
             ])
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('host', null, [
+                'label' => 'Domaine',
+                'template' => 'admin/qr_code/list_host.html.twig',
             ])
             ->add('redirectUrl', null, [
                 'label' => 'URL de redirection',
@@ -102,6 +120,15 @@ class QrCodeAdmin extends AbstractAdmin
             ])
             ->add('redirectUrl', UrlType::class, [
                 'label' => 'URL de redirection',
+                'help' => 'L\'url sur laquelle redirigera le QR Code',
+            ])
+            ->add('host', ChoiceType::class, [
+                'label' => 'Domaine',
+                'help' => 'Domaine utilisé pour générer l\'url du QR Code',
+                'choices' => QrCodeHostEnum::ALL,
+                'choice_label' => function (string $choice) {
+                    return $choice;
+                },
             ])
         ;
     }

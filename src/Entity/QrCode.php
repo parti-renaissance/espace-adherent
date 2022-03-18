@@ -19,49 +19,51 @@ class QrCode
     use EntityTimestampableTrait;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
      * @Assert\Url
      */
-    private $redirectUrl;
+    private ?string $redirectUrl;
 
     /**
-     * @var int
+     * @ORM\Column
      *
+     * @Assert\NotBlank
+     * @Assert\Choice(choices="App\QrCode\QrCodeHostEnum::ALL", strict=true)
+     */
+    private ?string $host;
+
+    /**
      * @ORM\Column(type="integer")
      */
-    private $count;
+    private int $count;
 
     /**
-     * @var Administrator|null
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $createdBy;
+    private ?Administrator $createdBy = null;
 
     public function __construct(
         UuidInterface $uuid = null,
         string $name = null,
         string $redirectUrl = null,
+        string $host = null,
         int $count = 0
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
         $this->redirectUrl = $redirectUrl;
+        $this->host = $host;
         $this->count = $count;
     }
 
@@ -88,6 +90,16 @@ class QrCode
     public function setRedirectUrl(?string $redirectUrl): void
     {
         $this->redirectUrl = $redirectUrl;
+    }
+
+    public function getHost(): ?string
+    {
+        return $this->host;
+    }
+
+    public function setHost(?string $host): void
+    {
+        $this->host = $host;
     }
 
     public function getCount(): int

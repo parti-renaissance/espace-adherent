@@ -1,4 +1,13 @@
 #
+# AvecVous
+#
+avecvous_qr_code:
+    host: "%avecvous_qrcode_host%"
+    path: "/{uuid}"
+    methods: "GET"
+    controller: App\Controller\EnMarche\QrCodeController
+
+#
 # Coalition
 #
 app_coalitions_login:
