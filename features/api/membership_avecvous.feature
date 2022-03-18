@@ -224,7 +224,34 @@ Feature:
     """
     And I should have 0 email
 
-  @skip
+  Scenario: As a non logged-in user I can not create a contact with no captcha
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/contacts" with body:
+    """
+    {
+      "first_name": "Rémi",
+      "email_address": "new@avecvous.dev",
+      "source": "avecvous",
+      "cgu_accepted": true
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.",
+      "violations": [
+        {
+          "propertyPath": "recaptcha",
+          "message": "Merci de confirmer le captcha avant de continuer."
+        }
+      ]
+    }
+    """
+
   Scenario: As a non logged-in user I can not create a contact with invalid captcha
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/contacts" with body:
@@ -244,11 +271,11 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.",
+      "detail": "recaptcha: Le captcha soumis est invalide.",
       "violations": [
         {
           "propertyPath": "recaptcha",
-          "message": "Merci de confirmer le captcha avant de continuer."
+          "message": "Le captcha soumis est invalide."
         }
       ]
     }

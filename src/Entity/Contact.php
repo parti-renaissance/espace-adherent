@@ -181,16 +181,6 @@ class Contact implements RecaptchaChallengeInterface
      */
     private ?Adherent $adherent = null;
 
-    /**
-     * @Groups({"contact_create"})
-     */
-    protected ?string $recaptcha = null;
-
-    /**
-     * @Groups({"contact_create"})
-     */
-    protected ?string $recaptchaSiteKey = null;
-
     public function __construct(
         UuidInterface $uuid = null,
         string $firstName = null,

@@ -18,4 +18,9 @@ class Recaptcha extends Constraint
     {
         return $this->service;
     }
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }
