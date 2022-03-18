@@ -106,6 +106,10 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     private static function addAndWhereManagedBy(QueryBuilder $qb, Adherent $assessorManager): QueryBuilder
     {
+        if ($assessorManager->getAssessorManagedArea()->getCodes() === ['ALL']) {
+            return $qb;
+        }
+
         $codesFilter = $qb->expr()->orX();
 
         foreach ($assessorManager->getAssessorManagedArea()->getCodes() as $key => $code) {

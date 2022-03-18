@@ -18,7 +18,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ app.user.assessorManagedAreaCodesAsString }}</span></p>
+                            <p>Vous gérez : <span>{% if 'all' == app.user.assessorManagedAreaCodesAsString|lower %} {{ 'common.zone.all'|trans }} {% else %} {{ app.user.assessorManagedAreaCodesAsString }} {% endif %}</span></p>
                         </div>
                     </div>
                     <div class="second-section">

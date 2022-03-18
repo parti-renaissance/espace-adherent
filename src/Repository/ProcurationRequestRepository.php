@@ -230,6 +230,10 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
     private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
     {
+        if ($procurationManager->getProcurationManagedArea()->getCodes() === ['ALL']) {
+            return $qb;
+        }
+
         $codesFilter = $qb->expr()->orX();
 
         foreach ($procurationManager->getProcurationManagedArea()->getCodes() as $key => $code) {

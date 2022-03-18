@@ -71,6 +71,7 @@ use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -452,12 +453,20 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('procurationManagedAreaCodesAsString', TextType::class, [
                         'label' => 'coordinator.label.codes',
                         'required' => false,
-                        'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                        'help' => <<<HELP
+Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+HELP
+                        ,
                     ])
                     ->add('assessorManagedAreaCodesAsString', TextType::class, [
                         'label' => 'assessors_manager',
                         'required' => false,
-                        'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                        'help' => <<<HELP
+Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
+Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
+HELP
+,
                     ])
                     ->add('electionResultsReporter', null, [
                         'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
@@ -578,6 +587,30 @@ class AdherentAdmin extends AbstractAdmin
             ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new CoalitionModeratorRoleListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
+        ;
+
+        $formMapper
+            ->get('procurationManagedAreaCodesAsString')
+            ->addModelTransformer(new CallbackTransformer(
+            function ($data) {
+                return $data;
+            },
+            function ($value) {
+                return strtoupper($value);
+            }
+        ))
+        ;
+
+        $formMapper
+            ->get('assessorManagedAreaCodesAsString')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($data) {
+                    return $data;
+                },
+                function ($value) {
+                    return strtoupper($value);
+                }
+            ))
         ;
     }
 

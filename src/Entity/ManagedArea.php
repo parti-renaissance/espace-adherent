@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\TagAllInManagedAreaCodes;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +23,8 @@ abstract class ManagedArea
      * @var array
      *
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @TagAllInManagedAreaCodes
      */
     private $codes;
 

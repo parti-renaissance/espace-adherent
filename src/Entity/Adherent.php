@@ -296,6 +296,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var ProcurationManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\ProcurationManagedArea", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
      */
     private $procurationManagedArea;
 
@@ -303,6 +305,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var AssessorManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\AssessorManagedArea", cascade={"all"}, orphanRemoval=true)
+     *
+     * @Assert\Valid
      */
     private $assessorManagedArea;
 
