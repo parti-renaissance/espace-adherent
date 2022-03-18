@@ -77,9 +77,9 @@ class SurveyExporter
                     $adherent = $phoningCampaignHistory->getAdherent();
                     $row['Nom'] = $adherent->getLastName();
                     $row['Prénom'] = $adherent->getFirstName();
+                    $row['Email'] = $adherent->getEmailAddress();
 
                     if ($fromAdmin) {
-                        $row['Email'] = $adherent->getEmailAddress();
                         $row['Accepte d\'être contacté'] = null;
                         $row['Accepte d\'être invité à adhérer'] = null;
                     }
@@ -100,9 +100,9 @@ class SurveyExporter
                 } elseif ($papCampaignHistory) {
                     $row['Nom'] = $papCampaignHistory->getLastName();
                     $row['Prénom'] = $papCampaignHistory->getFirstName();
+                    $row['Email'] = $papCampaignHistory->getEmailAddress();
 
                     if ($fromAdmin) {
-                        $row['Email'] = $papCampaignHistory->getEmailAddress();
                         $row['Accepte d\'être contacté'] = $papCampaignHistory->isToContact();
                         $row['Accepte d\'être invité à adhérer'] = null;
                     }
@@ -123,9 +123,9 @@ class SurveyExporter
                     $allowPersonalData = $fromAdmin || $jemarcheDataSurvey->getAgreedToTreatPersonalData();
                     $row['Nom'] = $allowPersonalData ? $jemarcheDataSurvey->getFirstName() : null;
                     $row['Prénom'] = $allowPersonalData ? $jemarcheDataSurvey->getLastName() : null;
+                    $row['Email'] = $allowPersonalData ? $jemarcheDataSurvey->getEmailAddress() : null;
 
                     if ($fromAdmin) {
-                        $row['Email'] = $jemarcheDataSurvey->getEmailAddress();
                         $row['Accepte d\'être contacté'] = (int) $jemarcheDataSurvey->getAgreedToStayInContact();
                         $row['Accepte d\'être invité à adhérer'] = (int) $jemarcheDataSurvey->getAgreedToContactForJoin();
                     }
@@ -145,8 +145,9 @@ class SurveyExporter
                 } else {
                     $row['Nom'] = $row['Prénom'] = $row['Code postal'] = '';
                     $row['Tranche d\'age'] = $row['Genre'] = $row['Profession'] = '';
+                    $row['Email'] = $row['Accepte d\'être contacté'] = '';
+
                     if ($fromAdmin) {
-                        $row['Email'] = $row['Accepte d\'être contacté'] = '';
                         $row['Accepte d\'être invité à adhérer'] = $row['Accepte que ses données soient traitées'] = '';
                     }
                 }
