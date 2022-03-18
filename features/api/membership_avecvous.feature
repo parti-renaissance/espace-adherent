@@ -13,7 +13,8 @@ Feature:
       "email_address": "new-user@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 201
@@ -173,7 +174,8 @@ Feature:
       "email_address": "carl999@example.fr",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 201
@@ -261,7 +263,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "wrong_answer"
+      "recaptcha": "wrong_answer",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -290,7 +293,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": false,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -319,7 +323,8 @@ Feature:
       "email_address": "invalid_email",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -348,7 +353,8 @@ Feature:
       "email_address": "remi@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -377,7 +383,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -406,7 +413,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -435,7 +443,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": "avecvous",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -464,7 +473,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": null,
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -493,7 +503,8 @@ Feature:
       "email_address": "new@avecvous.dev",
       "source": "unknown_source",
       "cgu_accepted": true,
-      "recaptcha": "fake123"
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
