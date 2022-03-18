@@ -71,6 +71,7 @@ use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -586,6 +587,30 @@ HELP
             ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new CoalitionModeratorRoleListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
+        ;
+
+        $formMapper
+            ->get('procurationManagedAreaCodesAsString')
+            ->addModelTransformer(new CallbackTransformer(
+            function ($data) {
+                return $data;
+            },
+            function ($value) {
+                return strtoupper($value);
+            }
+        ))
+        ;
+
+        $formMapper
+            ->get('assessorManagedAreaCodesAsString')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($data) {
+                    return $data;
+                },
+                function ($value) {
+                    return strtoupper($value);
+                }
+            ))
         ;
     }
 

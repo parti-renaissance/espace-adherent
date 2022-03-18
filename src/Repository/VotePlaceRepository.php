@@ -106,6 +106,10 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     private static function addAndWhereManagedBy(QueryBuilder $qb, Adherent $assessorManager): QueryBuilder
     {
+        if ($assessorManager->getAssessorManagedArea()->getCodes() === ['ALL']) {
+            return $qb;
+        }
+
         $codesFilter = $qb->expr()->orX();
 
         foreach ($assessorManager->getAssessorManagedArea()->getCodes() as $key => $code) {
@@ -115,8 +119,6 @@ class VotePlaceRepository extends AbstractAssessorRepository
                     $qb->expr()->like(self::ALIAS.'.postalCode', ':code'.$key)
                 );
                 $qb->setParameter('code'.$key, $code.'%');
-            } elseif ('all' === strtolower($code)) {
-                $codesFilter->add($qb->expr()->isNotNull(self::ALIAS.'.country'));
             } else {
                 // Country
                 $codesFilter->add($qb->expr()->eq(self::ALIAS.'.country', ':code'.$key));
