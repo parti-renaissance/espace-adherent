@@ -349,7 +349,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="RESTRICT")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\NotBlank
      *
