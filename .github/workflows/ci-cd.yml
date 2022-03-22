@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -60,7 +60,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache yarn dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules/
           key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -72,7 +72,7 @@ jobs:
         run: yarn build-prod
 
       - name: Cache static assets
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             public/built/
@@ -89,25 +89,25 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Cache yarn dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules/
           key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Cache PHP CS Fixer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .php-cs-fixer.dist.php
           key: cache-${{ env.CACHE_KEY }}-phpcsfixer
 
       - name: Cache PHPStan
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: var/phpstan-tmp/
           key: cache-${{ env.CACHE_KEY }}-phpstan
@@ -149,7 +149,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -183,7 +183,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -225,19 +225,19 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Cache yarn dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules/
           key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Cache static assets
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             public/built/
@@ -289,19 +289,19 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Cache yarn dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules/
           key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Cache static assets
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             public/built/
