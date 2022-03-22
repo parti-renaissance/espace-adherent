@@ -15,7 +15,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AdherentMessageChangeSubscriber implements EventSubscriber
 {
-    private $bus;
+    private MessageBusInterface $bus;
+    private array $objects = [];
 
     public function __construct(MessageBusInterface $bus)
     {
@@ -27,6 +28,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         return [
             Events::postPersist,
             Events::onFlush,
+            Events::postFlush,
             Events::postUpdate,
             Events::postRemove,
         ];
@@ -46,7 +48,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $object = $args->getObject();
 
         if ($object instanceof CampaignAdherentMessageInterface) {
-            $this->dispatchMessage($object);
+            $this->objects[] = $object;
         }
     }
 
@@ -55,9 +57,9 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $object = $args->getObject();
 
         if ($object instanceof CampaignAdherentMessageInterface && false === $object->isSynchronized()) {
-            $this->dispatchMessage($object);
+            $this->objects[] = $object;
         } elseif ($object instanceof CampaignAdherentMessageFilterInterface && false === $object->isSynchronized()) {
-            $this->dispatchMessage($object->getMessage());
+            $this->objects[] = $object->getMessage();
         }
     }
 
@@ -76,6 +78,13 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
             if ($changeSet !== ['synchronized']) {
                 $object->setSynchronized(false);
             }
+        }
+    }
+
+    public function postFlush(): void
+    {
+        foreach ($this->objects as $object) {
+            $this->dispatchMessage($object);
         }
     }
 

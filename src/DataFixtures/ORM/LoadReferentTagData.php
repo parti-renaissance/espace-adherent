@@ -61,6 +61,7 @@ class LoadReferentTagData extends Fixture
     {
         $referentTag = new ReferentTag($name, $code);
         $referentTag->setType($type);
+        $referentTag->setExternalId(rand(1000, 1000000));
 
         $manager->persist($referentTag);
 

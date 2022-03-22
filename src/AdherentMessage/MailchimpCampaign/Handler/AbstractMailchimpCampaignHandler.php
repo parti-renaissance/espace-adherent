@@ -8,7 +8,18 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 
 abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {
-    public function handle(AdherentMessageInterface $message): void
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    final public function supports(AdherentMessageInterface $message): bool
+    {
+        return AdherentMessageInterface::SOURCE_API !== $message->getSource()
+            && $this->_supports($message);
+    }
+
+    final public function handle(AdherentMessageInterface $message): void
     {
         if (!$filter = $message->getFilter()) {
             if (empty($message->getMailchimpCampaigns())) {
@@ -59,4 +70,6 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
     }
 
     abstract protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array;
+
+    abstract protected function _supports(AdherentMessageInterface $message): bool;
 }

@@ -9,4 +9,6 @@ interface MailchimpCampaignHandlerInterface
     public function handle(AdherentMessageInterface $message): void;
 
     public function supports(AdherentMessageInterface $message): bool;
+
+    public function getPriority(): int;
 }

@@ -33,12 +33,26 @@ class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInte
             return;
         }
 
-        foreach ($this->handlers as $handler) {
+        foreach ($this->getHandlers() as $handler) {
             if ($handler->supports($message)) {
                 $handler->handle($message);
 
                 return;
             }
         }
+    }
+
+    /**
+     * @return MailchimpCampaignHandlerInterface[]
+     */
+    private function getHandlers(): array
+    {
+        $handlers = iterator_to_array($this->handlers);
+
+        usort($handlers, function (MailchimpCampaignHandlerInterface $handlerA, MailchimpCampaignHandlerInterface $handlerB) {
+            return $handlerA->getPriority() <=> $handlerB->getPriority();
+        });
+
+        return $handlers;
     }
 }

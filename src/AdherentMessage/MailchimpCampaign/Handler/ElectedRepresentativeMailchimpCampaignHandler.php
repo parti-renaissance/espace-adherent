@@ -23,7 +23,7 @@ class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCam
         $this->translator = $translator;
     }
 
-    public function supports(AdherentMessageInterface $message): bool
+    protected function _supports(AdherentMessageInterface $message): bool
     {
         return \in_array(\get_class($message), [ReferentElectedRepresentativeMessage::class, LreManagerElectedRepresentativeMessage::class], true);
     }

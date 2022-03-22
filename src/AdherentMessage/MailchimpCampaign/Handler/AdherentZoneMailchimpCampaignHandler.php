@@ -11,7 +11,7 @@ use App\Entity\AdherentMessage\SenatorAdherentMessage;
 
 class AdherentZoneMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
-    public function supports(AdherentMessageInterface $message): bool
+    protected function _supports(AdherentMessageInterface $message): bool
     {
         return $message instanceof DeputyAdherentMessage
             || $message instanceof SenatorAdherentMessage
