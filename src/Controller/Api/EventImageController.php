@@ -45,8 +45,10 @@ class EventImageController extends AbstractController
     public function __invoke(Request $request, BaseEvent $event): JsonResponse
     {
         if ($request->isMethod(Request::METHOD_DELETE)) {
-            $this->imageManager->removeImage($event);
-            $this->entityManager->flush();
+            if ($event->hasImageName()) {
+                $this->imageManager->removeImage($event);
+                $this->entityManager->flush();
+            }
 
             return $this->json('OK');
         }

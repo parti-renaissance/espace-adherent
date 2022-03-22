@@ -25,7 +25,7 @@ class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
         $filters = [];
 
         $staticSegmentCondition = [
-            'type' => 'static_segment',
+            'type' => self::STATIC_SEGMENT,
             'value' => $committee->getMailchimpId(),
             'label' => $committeeLabel,
         ];
@@ -35,7 +35,7 @@ class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
                 $filters[] = [
                     $staticSegmentCondition,
                     [
-                        'type' => 'text_merge',
+                        'type' => self::TEXT_MERGE,
                         'value' => $city,
                         'label' => $committeeLabel.' - '.$city,
                     ],

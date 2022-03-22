@@ -73,6 +73,10 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             case CorrespondentAdherentMessage::class:
+                if ($campaign->getMailchimpListType()) {
+                    return [];
+                }
+
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
 

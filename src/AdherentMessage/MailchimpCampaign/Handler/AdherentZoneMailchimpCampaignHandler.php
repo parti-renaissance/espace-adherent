@@ -27,7 +27,7 @@ class AdherentZoneMailchimpCampaignHandler extends AbstractMailchimpCampaignHand
         $tag = $filter->getReferentTag();
 
         $staticSegmentCondition = [
-            'type' => 'static_segment',
+            'type' => self::STATIC_SEGMENT,
             'value' => $tag->getExternalId(),
             'label' => $tagLabel = $tag->getCode(),
         ];
@@ -39,7 +39,7 @@ class AdherentZoneMailchimpCampaignHandler extends AbstractMailchimpCampaignHand
                 $filters[] = [
                     $staticSegmentCondition,
                     [
-                        'type' => 'text_merge',
+                        'type' => self::TEXT_MERGE,
                         'value' => $city,
                         'label' => $tagLabel.' - '.$city,
                     ],
