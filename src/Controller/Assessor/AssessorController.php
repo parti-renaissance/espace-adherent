@@ -69,7 +69,7 @@ class AssessorController extends AbstractController
     public function assessorRequestFindVotePlaces(Request $request, VotePlaceManager $votePlaceManager): JsonResponse
     {
         return new JsonResponse($votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
-            $request->query->get('country'), $request->query->get('postalCode'))
+            $request->query->get('country'), $request->query->get('postalCode'), $request->query->get('city'))
         );
     }
 }
