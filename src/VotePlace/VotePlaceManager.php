@@ -17,22 +17,23 @@ class VotePlaceManager
 
     public function getVotePlaceWishesByCountryOrPostalCode(
         ?string $assessorCountry,
-        ?string $assessorPostalCode
+        ?string $assessorPostalCode,
+        ?string $assessorCity
     ): array {
         if (null !== $assessorCountry && 'FR' !== $assessorCountry) {
             return $this->getVotePlaceWishesByCountry($assessorCountry);
         }
 
-        if (!empty($assessorPostalCode)) {
-            return $this->getVotePlaceWishesByPostalCode($assessorPostalCode);
+        if (!empty($assessorPostalCode) && !empty($assessorCity)) {
+            return $this->getVotePlaceWishesByPostalCode($assessorPostalCode, $assessorCity);
         }
 
         return [];
     }
 
-    public function getVotePlaceWishesByPostalCode(string $postalCode): array
+    public function getVotePlaceWishesByPostalCode(string $postalCode, string $city): array
     {
-        return $this->formatVotePlaceWishes($this->repository->findByPostalCode($postalCode));
+        return $this->formatVotePlaceWishes($this->repository->findByPostalCode($postalCode, $city));
     }
 
     public function getVotePlaceWishesByCountry(string $country): array

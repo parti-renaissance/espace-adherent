@@ -48,6 +48,7 @@
                 .then(function (data) {
                     const assessorCitySelect = $('.select-assessor-city');
                     assessorCitySelect.empty();
+                    assessorCitySelect.append($('<option disabled></option>').attr('selected', 'selected').text('Sélectionnez votre ville'));
 
                     $.each(data, function (key, value) {
                         assessorCitySelect.append($('<option></option>').attr('value', value).text(value));
@@ -93,10 +94,12 @@
 
                     let apiPostalCodeUrl = "{{ path('api_postal_code', { postalCode: 'postalCodeVal' }) }}";
                     refreshAssessorCity(apiPostalCodeUrl.replace('postalCodeVal', $(this).val()));
-
-                    let apiVotePlacesUrl = "{{ path('app_assessor_request_find_vote_places', { postalCode: 'postalCodeVal' }) }}";
-                    refreshVotePlaceWishes(apiVotePlacesUrl.replace('postalCodeVal', $(this).val()));
                 }
+            });
+
+            assessorCityInput.on('change', function () {
+                let apiVotePlacesUrl = "{{ path('app_assessor_request_find_vote_places', { postalCode: 'postalCodeVal', city: 'cityVal' })|raw }}";
+                refreshVotePlaceWishes(apiVotePlacesUrl.replace('postalCodeVal', assessorPostalCodeInput.val()).replace('cityVal', $(this).val()));
             });
         });
     </script>

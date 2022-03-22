@@ -142,17 +142,19 @@ class AssessorRequestType extends AbstractType
         if ($command instanceof AssessorRequestCommand) {
             $assessorCountry = $command->getAssessorCountry();
             $assessorPostalCode = $command->getAssessorPostalCode();
+            $assessorCity = $command->getAssessorCity();
         } else {
             $assessorCountry = $command['assessorCountry'];
             $assessorPostalCode = $command['assessorPostalCode'];
+            $assessorCity = $command['assessorCity'];
         }
 
-        if ((!empty($assessorPostalCode) && 'FR' === $assessorCountry) || 'FR' !== $assessorCountry) {
+        if ((!empty($assessorPostalCode) && !empty($assessorCity) && 'FR' === $assessorCountry) || 'FR' !== $assessorCountry) {
             $formEvent->getForm()
                 ->add('votePlaceWishes', ChoiceType::class, [
-                    'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode) {
+                    'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode, $assessorCity) {
                         return array_flip($this->votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
-                            $assessorCountry, $assessorPostalCode
+                            $assessorCountry, $assessorPostalCode, $assessorCity
                         ));
                     }),
                     'multiple' => true,

@@ -144,15 +144,17 @@ class VotePlaceRepository extends AbstractAssessorRepository
         ;
     }
 
-    public function findByPostalCode(string $postalCode): array
+    public function findByPostalCode(string $postalCode, string $city): array
     {
         return $this
             ->createQueryBuilder('votePlace')
             ->andWhere('FIND_IN_SET(:postalCode, votePlace.postalCode) > 0')
+            ->andWhere('votePlace.city = :city')
             ->andWhere('votePlace.enabled = :true')
             ->setParameters([
                 'postalCode' => $postalCode,
                 'true' => true,
+                'city' => $city,
             ])
             ->getQuery()
             ->getResult()
