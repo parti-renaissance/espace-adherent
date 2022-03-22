@@ -9,9 +9,9 @@ use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 
 class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
-    protected function _supports(AdherentMessageInterface $message): bool
+    public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof CommitteeAdherentMessage;
+        return $message instanceof CommitteeAdherentMessage && $message->getFilter() instanceof CommitteeFilter;
     }
 
     /**

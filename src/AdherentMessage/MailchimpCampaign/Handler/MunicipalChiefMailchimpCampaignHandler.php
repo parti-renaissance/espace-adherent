@@ -11,9 +11,9 @@ use App\Utils\AreaUtils;
 
 class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
-    protected function _supports(AdherentMessageInterface $message): bool
+    public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof MunicipalChiefAdherentMessage;
+        return $message instanceof MunicipalChiefAdherentMessage && $message->getFilter() instanceof MunicipalChiefFilter;
     }
 
     /**

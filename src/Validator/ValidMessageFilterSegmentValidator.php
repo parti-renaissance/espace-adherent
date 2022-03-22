@@ -24,7 +24,7 @@ class ValidMessageFilterSegmentValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, AdherentMessageFilterInterface::class);
         }
 
-        if (!($segment = $value->getSegment()) || !($filter = $segment->getFilter())) {
+        if (!($segment = $value->getSegment()) || !($filter = $segment->getFilter()) || !$value->getMessage()) {
             return;
         }
 

@@ -57,7 +57,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      *
-     * @Assert\NotBlank
+     * @Assert\Expression("this.getSegment() or this.getZone()", message="Cette valeur ne doit pas être vide.")
      */
     private $zone;
 
@@ -73,7 +73,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @ORM\Column(length=20)
      *
-     * @Assert\NotNull
+     * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
      * @Assert\Choice(
      *     choices=App\Scope\ScopeEnum::FOR_AUDIENCE_SEGMENT,
      *     message="audience_segment.scope.invalid_choice",

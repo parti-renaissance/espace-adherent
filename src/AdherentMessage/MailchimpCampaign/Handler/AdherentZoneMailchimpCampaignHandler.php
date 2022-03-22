@@ -11,11 +11,14 @@ use App\Entity\AdherentMessage\SenatorAdherentMessage;
 
 class AdherentZoneMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
-    protected function _supports(AdherentMessageInterface $message): bool
+    public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof DeputyAdherentMessage
-            || $message instanceof SenatorAdherentMessage
-            || $message instanceof LegislativeCandidateAdherentMessage
+        return $message->getFilter() instanceof AdherentZoneFilter
+            && (
+                $message instanceof DeputyAdherentMessage
+                || $message instanceof SenatorAdherentMessage
+                || $message instanceof LegislativeCandidateAdherentMessage
+            )
         ;
     }
 

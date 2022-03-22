@@ -4,7 +4,9 @@ namespace App\Controller\Api\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageManager;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\CoalitionsMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,9 +49,15 @@ class UpdateAdherentMessageFilterController extends AbstractController
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
         }
 
-        $filter = new AudienceFilter();
+        if ($data instanceof CoalitionsMessage) {
+            $filter = new CoalitionsFilter();
+        } else {
+            $filter = new AudienceFilter();
+        }
 
-        $this->serializer->deserialize($request->getContent(), AudienceFilter::class, JsonEncoder::FORMAT, [
+        $data->setFilter($filter);
+
+        $this->serializer->deserialize($request->getContent(), \get_class($filter), JsonEncoder::FORMAT, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,
             AbstractNormalizer::GROUPS => ['adherent_message_update_filter'],
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,

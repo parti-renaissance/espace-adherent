@@ -9,9 +9,9 @@ use App\Entity\AdherentMessage\ReferentAdherentMessage;
 
 class ReferentMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
-    protected function _supports(AdherentMessageInterface $message): bool
+    public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof ReferentAdherentMessage;
+        return $message instanceof ReferentAdherentMessage && $message->getFilter() instanceof ReferentUserFilter;
     }
 
     /**

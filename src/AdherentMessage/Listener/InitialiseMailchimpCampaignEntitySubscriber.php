@@ -50,7 +50,7 @@ class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInte
         $handlers = iterator_to_array($this->handlers);
 
         usort($handlers, function (MailchimpCampaignHandlerInterface $handlerA, MailchimpCampaignHandlerInterface $handlerB) {
-            return $handlerA->getPriority() <=> $handlerB->getPriority();
+            return $handlerB->getPriority() <=> $handlerA->getPriority();
         });
 
         return $handlers;
