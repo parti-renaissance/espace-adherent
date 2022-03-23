@@ -2,22 +2,21 @@
 
 namespace App\Firebase\Notification;
 
+use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
+
 abstract class AbstractNotification implements NotificationInterface
 {
-    /**
-     * @var string
-     */
-    protected $title;
+    private string $title;
 
-    /**
-     * @var string
-     */
-    protected $body;
+    private string $body;
 
-    public function __construct(string $title, string $body)
+    protected array $data;
+
+    public function __construct(string $title, string $body, array $data = [])
     {
         $this->title = $title;
         $this->body = $body;
+        $this->data = $data;
     }
 
     public function getTitle(): string
@@ -30,6 +29,16 @@ abstract class AbstractNotification implements NotificationInterface
         return $this->body;
     }
 
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function addData(string $key, string $value): void
+    {
+        $this->data[$key] = $value;
+    }
+
     protected static function formatDate(\DateTimeInterface $date, string $format): string
     {
         return (new \IntlDateFormatter(
@@ -40,5 +49,12 @@ abstract class AbstractNotification implements NotificationInterface
             \IntlDateFormatter::GREGORIAN,
             $format
         ))->format($date);
+    }
+
+    public function setDeepLink(DynamicLinkObjectInterface $object): void
+    {
+        if ($object->getDynamicLink()) {
+            $this->addData('deeplink', $object->getDynamicLink());
+        }
     }
 }

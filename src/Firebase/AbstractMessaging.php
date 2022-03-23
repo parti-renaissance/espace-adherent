@@ -54,8 +54,10 @@ abstract class AbstractMessaging
 
     private function sendToTopic(TopicNotificationInterface $notification): void
     {
-        $message = $this->createTopicMessage($notification)
+        $message = $this
+            ->createTopicMessage($notification)
             ->withNotification($this->createNotification($notification))
+            ->withData($notification->getData())
         ;
 
         $this->messaging->send($message);
@@ -63,8 +65,10 @@ abstract class AbstractMessaging
 
     private function sendToDevices(MulticastNotificationInterface $notification): void
     {
-        $message = $this->createMessage()
+        $message = $this
+            ->createMessage()
             ->withNotification($this->createNotification($notification))
+            ->withData($notification->getData())
         ;
 
         foreach (array_chunk($notification->getTokens(), self::MULTICAST_MAX_TOKENS) as $chunk) {

@@ -61,20 +61,27 @@ class Notification
     /**
      * @var string|null
      *
-     * @ORM\Column(type="simple_array", nullable=true))
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     private $tokens;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private ?array $data;
 
     public function __construct(
         string $notificationClass,
         string $title,
         string $body,
+        array $data = null,
         string $topic = null,
         array $tokens = null
     ) {
         $this->notificationClass = $notificationClass;
         $this->title = $title;
         $this->body = $body;
+        $this->data = $data;
         $this->topic = $topic;
         $this->tokens = $tokens;
     }
@@ -87,6 +94,7 @@ class Notification
             end($parts),
             $notification->getTitle(),
             $notification->getBody(),
+            $notification->getData(),
             $notification instanceof TopicNotificationInterface
                 ? $notification->getTopic()
                 : null,

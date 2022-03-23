@@ -18,10 +18,14 @@ class EventReminderNotification extends AbstractMulticastNotification
             $body .= sprintf(' • %s', $event->getInlineFormattedAddress());
         }
 
-        return new self(
+        $notification = new self(
             'Votre événement commence bientôt',
             $body,
             $tokens
         );
+
+        $notification->setDeepLink($event);
+
+        return $notification;
     }
 }

@@ -9,10 +9,14 @@ class RiposteCreatedNotification extends AbstractTopicNotification
 {
     public static function create(Riposte $riposte, string $topic): self
     {
-        return new self(
+        $notification = new self(
             $riposte->getTitle(),
             $riposte->getBody(),
             $topic
         );
+
+        $notification->setDeepLink($riposte);
+
+        return $notification;
     }
 }
