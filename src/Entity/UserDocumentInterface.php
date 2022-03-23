@@ -13,4 +13,8 @@ interface UserDocumentInterface
     public function getDocuments(): Collection;
 
     public function setDocuments(Collection $documents): void;
+
+    public function getContentContainingDocuments(): string;
+
+    public function getFieldContainingDocuments(): string;
 }

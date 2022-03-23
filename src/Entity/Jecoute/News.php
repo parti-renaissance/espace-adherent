@@ -19,6 +19,9 @@ use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
+use App\Entity\UserDocument;
+use App\Entity\UserDocumentInterface;
+use App\Entity\UserDocumentTrait;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\JecouteSpaceEnum;
@@ -27,6 +30,8 @@ use App\Validator\Jecoute\NewsTarget;
 use App\Validator\Jecoute\NewsText;
 use App\Validator\Jecoute\ReferentNews;
 use App\Validator\Scope\ScopeVisibility;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -139,12 +144,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @NewsText
  * @ScopeVisibility
  */
-class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
+class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;
     use EntityScopeVisibilityTrait;
     use DynamicLinkObjectTrait;
+    use UserDocumentTrait;
 
     /**
      * @ApiProperty(identifier=false)
@@ -254,6 +260,22 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
      */
     private ?string $space = null;
 
+    /**
+     * @var UserDocument[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinTable(
+     *     name="jecoute_news_user_documents",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="jecoute_news_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="user_document_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    protected Collection $documents;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -279,6 +301,7 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
         $this->enriched = $enriched;
 
         $this->setZone($zone);
+        $this->documents = new ArrayCollection();
     }
 
     public function __toString()
@@ -472,5 +495,15 @@ class News implements AuthoredInterface, AuthorInterface, IndexableEntityInterfa
     public function getSocialTitle(): string
     {
         return (string) $this->getTitle();
+    }
+
+    public function getContentContainingDocuments(): string
+    {
+        return (string) $this->text;
+    }
+
+    public function getFieldContainingDocuments(): string
+    {
+        return 'text';
     }
 }

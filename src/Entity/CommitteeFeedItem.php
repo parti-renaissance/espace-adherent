@@ -77,7 +77,7 @@ class CommitteeFeedItem implements UserDocumentInterface
      *     }
      * )
      */
-    protected $documents;
+    protected Collection $documents;
 
     private function __construct(
         UuidInterface $uuid,
@@ -195,5 +195,15 @@ class CommitteeFeedItem implements UserDocumentInterface
         }
 
         return null;
+    }
+
+    public function getContentContainingDocuments(): string
+    {
+        return (string) $this->content;
+    }
+
+    public function getFieldContainingDocuments(): string
+    {
+        return 'content';
     }
 }

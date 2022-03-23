@@ -53,7 +53,7 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
      *     }
      * )
      */
-    protected $documents;
+    protected Collection $documents;
 
     public function __construct(
         UuidInterface $uuid,
@@ -172,5 +172,15 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
     public function needNotifyForCancellation(): bool
     {
         return true;
+    }
+
+    public function getContentContainingDocuments(): string
+    {
+        return (string) $this->description;
+    }
+
+    public function getFieldContainingDocuments(): string
+    {
+        return 'description';
     }
 }

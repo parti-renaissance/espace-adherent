@@ -3,6 +3,7 @@ default:
         FriendsOfBehat\SymfonyExtension: ~
         Behat\MinkExtension:
             base_url: "http://test.enmarche.code"
+            files_path: 'tests/Fixtures'
             sessions:
                 default:
                     symfony: ~

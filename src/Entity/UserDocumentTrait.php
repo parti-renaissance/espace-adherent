@@ -6,10 +6,7 @@ use Doctrine\Common\Collections\Collection;
 
 trait UserDocumentTrait
 {
-    /**
-     * @var Collection
-     */
-    protected $documents;
+    protected Collection $documents;
 
     public function addDocument(UserDocument $document): void
     {
