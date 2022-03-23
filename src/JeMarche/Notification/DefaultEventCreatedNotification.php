@@ -10,7 +10,7 @@ class DefaultEventCreatedNotification extends AbstractTopicNotification
 {
     public static function create(string $topic, DefaultEvent $event, Zone $zone): self
     {
-        return new self(
+        $notification = new self(
             sprintf('%s, nouvel événement', $zone->getName()),
             sprintf('%s • %s • %s',
                 $event->getName(),
@@ -19,5 +19,9 @@ class DefaultEventCreatedNotification extends AbstractTopicNotification
             ),
             $topic
         );
+
+        $notification->setDeepLink($event);
+
+        return $notification;
     }
 }

@@ -9,10 +9,14 @@ class NewsCreatedNotification extends AbstractTopicNotification
 {
     public static function create(News $news, string $title): self
     {
-        return new self(
+        $notification = new self(
             $title,
             $news->getText(),
             $news->getTopic()
         );
+
+        $notification->setDeepLink($news);
+
+        return $notification;
     }
 }
