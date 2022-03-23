@@ -127,11 +127,10 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 $qb->expr()->andX(
                     'pp.voteCountry = :voteCountry',
                     'pp.voteCityName != :voteCityName',
-                    'other_city.name LIKE :voteCityNamePattern'
+                    'other_city.name = :voteCityName'
                 )
             )
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
-            ->setParameter('voteCityNamePattern', $procurationRequest->getVoteCityName().'%')
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC')
