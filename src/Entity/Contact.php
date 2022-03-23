@@ -215,7 +215,7 @@ class Contact implements RecaptchaChallengeInterface
         return $this->lastName;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }

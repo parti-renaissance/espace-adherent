@@ -10,6 +10,8 @@ class FriendlyCaptchaApiClient implements RecaptchaApiClientInterface
 {
     public const NAME = 'friendly_captcha';
 
+    private const VERIFY_URL = '/api/v1/siteverify';
+
     private HttpClientInterface $client;
     private string $privateKey;
     private string $defaultSiteKey;
@@ -28,10 +30,12 @@ class FriendlyCaptchaApiClient implements RecaptchaApiClientInterface
 
     public function verify(string $token, ?string $siteKey): bool
     {
-        $response = $this->client->request(Request::METHOD_POST, '/verify', [
-            'solution' => $token,
-            'secret' => $this->privateKey,
-            'siteKey' => $siteKey ?? $this->defaultSiteKey,
+        $response = $this->client->request(Request::METHOD_POST, self::VERIFY_URL, [
+            'json' => [
+                'solution' => $token,
+                'secret' => $this->privateKey,
+                'siteKey' => $siteKey ?? $this->defaultSiteKey,
+            ],
         ]);
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
