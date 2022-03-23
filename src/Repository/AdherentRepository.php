@@ -1206,8 +1206,7 @@ SQL;
     {
         $qb = $this
             ->createQueryBuilder('adherent')
-            ->andWhere('adherent.adherent = true')
-            ->andWhere('(adherent.source IS NULL OR adherent.source = :user_type)')
+            ->andWhere('(adherent.source IS NULL AND adherent.adherent = true) OR adherent.source = :user_type')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
             ->setParameter('user_type', MembershipSourceEnum::JEMENGAGE)

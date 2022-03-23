@@ -2,9 +2,7 @@
 
 namespace App\SmsCampaign\Command;
 
-use App\Messenger\Message\AsynchronousMessageInterface;
-
-class SendSmsCampaignCommand implements AsynchronousMessageInterface
+class SendSmsCampaignCommand
 {
     private $smsCampaignId;
 
