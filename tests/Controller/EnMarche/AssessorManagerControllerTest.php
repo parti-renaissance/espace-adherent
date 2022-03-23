@@ -119,7 +119,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         // I see request potential vote places
         $votePlaces = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
 
-        self::assertSame('Restaurant Scolaire - Rue H. Lefebvre', trim($votePlaces->first()->text()));
+        self::assertSame('Restaurant Scolaire - Rue H. Lefebvre, 0407', trim($votePlaces->first()->text()));
 
         // Associate the request with the vote place
         $linkNode = $crawler->filter('#associate-link-2');
@@ -221,7 +221,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         $proxies = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
 
-        self::assertSame('Restaurant Scolaire - Rue H. Lefebvre', trim($proxies->first()->text()));
+        self::assertSame('Restaurant Scolaire - Rue H. Lefebvre, 0407', trim($proxies->first()->text()));
     }
 
     public function testAssessorManagerRequestsUnprocessedList()
