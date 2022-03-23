@@ -61,3 +61,9 @@ services:
                 auth_bearer: '%env(MAILCHIMP_API_KEY)%',
                 headers: {'User-Agent': 'En-Marche!'}
             }
+
+    app.http_client.friendly_captcha_api:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - {base_uri: 'https://api.friendlycaptcha.com/api/v1', timeout: 10}

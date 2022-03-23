@@ -11,11 +11,12 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class RecaptchaValidator extends ConstraintValidator
 {
-    private RecaptchaApiClientInterface $recaptchaApiClient;
+    /** @var RecaptchaApiClientInterface[]|iterable */
+    private iterable $apiClients;
 
-    public function __construct(RecaptchaApiClientInterface $recaptchaApiClient)
+    public function __construct(iterable $apiClients)
     {
-        $this->recaptchaApiClient = $recaptchaApiClient;
+        $this->apiClients = $apiClients;
     }
 
     public function validate($value, Constraint $constraint)
@@ -41,7 +42,7 @@ class RecaptchaValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->recaptchaApiClient->verify($recaptchaAnswer, $value->getRecaptchaSiteKey())) {
+        if (!$this->getClient($constraint->api)->verify($recaptchaAnswer, $value->getRecaptchaSiteKey())) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
@@ -49,5 +50,16 @@ class RecaptchaValidator extends ConstraintValidator
                 ->addViolation()
             ;
         }
+    }
+
+    private function getClient(string $name): RecaptchaApiClientInterface
+    {
+        foreach ($this->apiClients as $apiClient) {
+            if ($apiClient->supports($name)) {
+                return $apiClient;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('No captcha client found with name "%s".', $name));
     }
 }

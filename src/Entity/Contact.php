@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"emailAddress"})
  *
- * @AssertRecaptcha(groups={"contact_create"})
+ * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
  */
 class Contact implements RecaptchaChallengeInterface
 {

@@ -106,6 +106,8 @@ services:
             tags: [ 'app.adherent_filter.builder' ]
         App\OAuth\App\AuthAppUrlGeneratorInterface:
             tags: [ 'app.auth_app.url_generator' ]
+        App\Recaptcha\RecaptchaApiClientInterface:
+            tags: ['app.recaptcha_api_client']
 
     # Imports
     App\:
@@ -248,6 +250,16 @@ services:
         arguments:
             $projectId: '%env(GCP_PROJECT_ID)%'
             $defaultSiteKey: '%env(RECAPTCHA_PUBLIC_KEY)%'
+
+    App\Recaptcha\FriendlyCaptchaApiClient:
+        arguments:
+            $client: '@app.http_client.friendly_captcha_api'
+            $privateKey: '%env(FRIENDLY_CAPTCHA_PRIVATE_KEY)%'
+            $defaultSiteKey: '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%'
+
+    App\Validator\RecaptchaValidator:
+        arguments:
+            $apiClients: !tagged_iterator 'app.recaptcha_api_client'
 
     App\Procuration\ProcurationProxyMessageFactory:
         arguments:

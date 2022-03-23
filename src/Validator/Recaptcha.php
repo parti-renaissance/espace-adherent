@@ -2,6 +2,7 @@
 
 namespace App\Validator;
 
+use App\Recaptcha\RecaptchaApiClient;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -10,14 +11,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class Recaptcha extends Constraint
 {
-    public $emptyMessage = 'common.recaptcha.empty_message';
-    public $message = 'common.recaptcha.invalid_message';
-    public $service = RecaptchaValidator::class;
-
-    public function validatedBy()
-    {
-        return $this->service;
-    }
+    public string $emptyMessage = 'common.recaptcha.empty_message';
+    public string $message = 'common.recaptcha.invalid_message';
+    public string $api = RecaptchaApiClient::NAME;
 
     public function getTargets()
     {
