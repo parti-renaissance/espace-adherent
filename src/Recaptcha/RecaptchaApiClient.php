@@ -8,6 +8,8 @@ use Google\Cloud\RecaptchaEnterprise\V1\RecaptchaEnterpriseServiceClient;
 
 class RecaptchaApiClient implements RecaptchaApiClientInterface
 {
+    public const NAME = 'google_enterprise';
+
     private RecaptchaEnterpriseServiceClient $client;
     private string $projectId;
     private string $defaultSiteKey;
@@ -18,6 +20,11 @@ class RecaptchaApiClient implements RecaptchaApiClientInterface
         $this->defaultSiteKey = $defaultSiteKey;
 
         $this->client = new RecaptchaEnterpriseServiceClient();
+    }
+
+    public function supports(string $name): bool
+    {
+        return self::NAME === $name;
     }
 
     public function verify(string $token, ?string $siteKey): bool
