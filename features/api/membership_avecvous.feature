@@ -625,3 +625,111 @@ Feature:
       ]
     }
     """
+
+  Scenario: As a non logged-in user I can not update a contact with a too long address
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "post_address": {
+          "address": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis massa ut odio feugiat, et tincidunt elit tempor. Nulla elementum turpis id eros volutpat egestas."
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "post_address.address: Vous devez saisir au maximum @string@ caractères.",
+      "violations": [
+        {
+          "propertyPath": "post_address.address",
+          "message": "Vous devez saisir au maximum @string@ caractères."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can not update a contact with a too long postal code
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "post_address": {
+          "postal_code": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "post_address.postal_code: Vous devez saisir au maximum @string@ caractères.",
+      "violations": [
+        {
+          "propertyPath": "post_address.postal_code",
+          "message": "Vous devez saisir au maximum @string@ caractères."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can not update a contact with a too long city name
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "post_address": {
+          "city_name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis massa ut odio feugiat, et tincidunt elit tempor. Nulla elementum turpis id eros volutpat egestas. Morbi fringilla, nibh sagittis luctus mattis, eros nisi sollicitudin velit, eget gravida nisl orci elementum orci."
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "post_address.city_name: Vous devez saisir au maximum @string@ caractères.",
+      "violations": [
+        {
+          "propertyPath": "post_address.city_name",
+          "message": "Vous devez saisir au maximum @string@ caractères."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can not update a contact with an invalid country code
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/contacts/fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f" with body:
+    """
+    {
+      "post_address": {
+          "country": "invalid"
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "post_address.country: Cette valeur n'est pas un pays valide.",
+      "violations": [
+        {
+          "propertyPath": "post_address.country",
+          "message": "Cette valeur n'est pas un pays valide."
+        }
+      ]
+    }
+    """
