@@ -4,9 +4,9 @@ namespace App\Normalizer;
 
 use App\Entity\Jecoute\Choice;
 use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Repository\Jecoute\SurveyQuestionRepository;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,6 +18,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
     private const DATA_SURVEY_ALREADY_CALLED = 'DATA_SURVEY_NORMALIZER_ALREADY_CALLED';
 
     private SurveyQuestionRepository $surveyQuestionRepository;
+    private array $questionsCache = [];
 
     public function __construct(SurveyQuestionRepository $surveyQuestionRepository)
     {
@@ -34,7 +35,17 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
         $dataSurvey = $this->normalizer->normalize($object, $format, $context);
 
         if (\in_array('survey_replies_list', $context['groups'] ?? [], true)) {
-            if ($object->isOfPhoningCampaignHistory()) {
+            if ($object->isOfPapCampaignHistory()) {
+                $dataSurvey['type'] = 'PAP';
+                $dataSurvey['interviewed'] = [
+                    'first_name' => $object->getPapCampaignHistory()->getFirstName(),
+                    'last_name' => $object->getPapCampaignHistory()->getLastName(),
+                    'gender' => $object->getPapCampaignHistory()->getGender(),
+                    'age_range' => $object->getPapCampaignHistory()->getAgeRange(),
+                ];
+                $dataSurvey['begin_at'] = $dataSurvey['pap_campaign_history']['begin_at'] ?? null;
+                $dataSurvey['finish_at'] = $dataSurvey['pap_campaign_history']['finish_at'] ?? null;
+            } elseif ($object->isOfPhoningCampaignHistory()) {
                 $dataSurvey['type'] = 'Phoning';
                 $dataSurvey['interviewed'] = $object->getPhoningCampaignHistory()->getAdherent()
                     ? [
@@ -46,16 +57,6 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
                     : null;
                 $dataSurvey['begin_at'] = $dataSurvey['phoning_campaign_history']['begin_at'] ?? null;
                 $dataSurvey['finish_at'] = $dataSurvey['phoning_campaign_history']['finish_at'] ?? null;
-            } elseif ($object->isOfPapCampaignHistory()) {
-                $dataSurvey['type'] = 'PAP';
-                $dataSurvey['interviewed'] = [
-                    'first_name' => $object->getPapCampaignHistory()->getFirstName(),
-                    'last_name' => $object->getPapCampaignHistory()->getLastName(),
-                    'gender' => $object->getPapCampaignHistory()->getGender(),
-                    'age_range' => $object->getPapCampaignHistory()->getAgeRange(),
-                ];
-                $dataSurvey['begin_at'] = $dataSurvey['pap_campaign_history']['begin_at'] ?? null;
-                $dataSurvey['finish_at'] = $dataSurvey['pap_campaign_history']['finish_at'] ?? null;
             } elseif ($object->isOfJemarcheDataSurvey()) {
                 $dataSurvey['type'] = 'Libre';
                 $dataSurvey['interviewed'] = [
@@ -69,12 +70,11 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
             }
             unset($dataSurvey['pap_campaign_history'], $dataSurvey['phoning_campaign_history']);
         }
-        $questions = $this->surveyQuestionRepository->findForSurvey($object->getSurvey());
 
         $answers = [];
 
         /** @var SurveyQuestion $surveyQuestion */
-        foreach ($questions as $surveyQuestion) {
+        foreach ($this->getQuestions($object->getSurvey()) as $surveyQuestion) {
             $questionName = $surveyQuestion->getQuestion()->getContent();
             $type = $surveyQuestion->getQuestion()->getType();
 
@@ -124,15 +124,12 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
         ;
     }
 
-    private function transformSelectedChoicesCollection(Collection $selectedChoices): array
+    private function getQuestions(?Survey $survey): array
     {
-        $choiceValues = [];
-
-        /** @var Choice $choice */
-        foreach ($selectedChoices as $choice) {
-            $choiceValues[] = $choice->getContent();
+        if (!$survey) {
+            return [];
         }
 
-        return $choiceValues;
+        return $this->questionsCache[$survey->getId()] ?? $this->questionsCache[$survey->getId()] = $this->surveyQuestionRepository->findForSurvey($survey);
     }
 }

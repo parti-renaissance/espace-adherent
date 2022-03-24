@@ -85,23 +85,22 @@ class DataSurveyRepository extends ServiceEntityRepository
         ?int $limit = 30
     ): iterable {
         $qb = $this
-            ->createQueryBuilder('ds')
-            ->leftJoin('ds.survey', 'survey')
-            ->leftJoin('survey.questions', 'surveyQuestion')
-            ->leftJoin('surveyQuestion.question', 'question')
-            ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer', Join::WITH, 'dataAnswer.dataSurvey = ds')
-            ->leftJoin('dataAnswer.selectedChoices', 'selectedChoice')
-            ->leftJoin('ds.papCampaignHistory', 'campaignHistory')
-            ->leftJoin('campaignHistory.campaign', 'campaign')
-            ->addSelect('survey', 'surveyQuestion', 'question', 'dataAnswer', 'selectedChoice', 'campaignHistory', 'campaign')
-            ->where('campaign = :campaign')
-            ->orderBy('campaignHistory.createdAt', 'DESC')
+            ->createQueryBuilder('data_survey')
+            ->select(
+                'campaign_history',
+                'PARTIAL data_survey.{id, uuid}',
+                'PARTIAL survey.{id, uuid, name}',
+            )
+            ->leftJoin('data_survey.survey', 'survey')
+            ->leftJoin('data_survey.papCampaignHistory', 'campaign_history')
+            ->where('campaign_history.campaign = :campaign')
+            ->orderBy('campaign_history.createdAt', 'DESC')
             ->setParameter('campaign', $campaign)
         ;
 
         if ($zones) {
             $qb
-                ->innerJoin('campaignHistory.building', 'building')
+                ->innerJoin('campaign_history.building', 'building')
                 ->innerJoin('building.address', 'address')
             ;
             $this->withGeoZones(
