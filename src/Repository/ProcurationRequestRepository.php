@@ -160,10 +160,6 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             $proxiesCountQuery->setParameter('voteCityName', $request->getVoteCityName());
             $proxiesCountQuery->setParameter('voteCountry', $request->getVoteCountry());
 
-            if ($request->isRequestFromFrance()) {
-                $proxiesCountQuery->setParameter('voteCityNamePattern', $request->getVoteCityName().'%');
-            }
-
             $requests[$key] = [
                 'data' => $request,
                 'matchingProxiesCount' => (int) $proxiesCountQuery->getQuery()->getSingleScalarResult(),
