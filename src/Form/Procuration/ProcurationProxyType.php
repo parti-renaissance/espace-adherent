@@ -35,10 +35,9 @@ class ProcurationProxyType extends AbstractProcurationType
 
         $builder
             ->add('cityName', TextType::class)
-            ->add('otherVoteCities', TextType::class, ['required' => false])
             ->add('otherVoteCities', ZoneAutoCompleteType::class, [
                 'placeholder' => false,
-                'page_limit' => 10,
+                'page_limit' => 30,
                 'remote_params' => [
                     'active_only' => true,
                     'types' => [Zone::CITY, Zone::BOROUGH],
