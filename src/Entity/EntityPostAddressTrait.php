@@ -6,6 +6,7 @@ use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityPostAddressTrait
 {
@@ -13,6 +14,8 @@ trait EntityPostAddressTrait
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
+     *
+     * @Assert\Valid(groups={"contact_update"})
      *
      * @SymfonySerializer\Groups({"contact_update"})
      */

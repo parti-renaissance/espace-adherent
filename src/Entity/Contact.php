@@ -35,6 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "denormalization_context": {"groups": {"contact_update"}},
  *             "path": "/contacts/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "validation_groups": {"Default", "contact_update"},
  *         }
  *     }
  * )

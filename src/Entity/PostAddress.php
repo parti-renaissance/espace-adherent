@@ -8,9 +8,11 @@ use App\Geocoder\Coordinates;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
 use App\Intl\FranceCitiesBundle;
+use App\Validator\UnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Embeddable
@@ -25,6 +27,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
+     *
+     * @Assert\Length(max=150, groups={"contact_update"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -42,6 +46,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true)
      *
+     * @Assert\Length(max=15, groups={"contact_update"})
+     *
      * @SymfonySerializer\Groups({
      *     "profile_read",
      *     "event_write",
@@ -58,6 +64,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
+     * @Assert\Length(max=15, groups={"contact_update"})
+     *
      * @SymfonySerializer\Groups({
      *     "event_write",
      *     "contact_read_after_write",
@@ -72,6 +80,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255, groups={"contact_update"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -88,6 +98,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string
      *
      * @ORM\Column(length=2, nullable=true)
+     *
+     * @UnitedNationsCountry(groups={"contact_update"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
