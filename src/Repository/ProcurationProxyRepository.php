@@ -202,7 +202,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             if ($withOtherCities) {
                 $cityCondition = $qb->expr()->orX(
                     $cityCondition,
-                    '(pp.voteCityName != :voteCityName AND other_city.name LIKE :voteCityNamePattern)'
+                    '(pp.voteCityName != :voteCityName AND other_city.name = :voteCityName)'
                 );
             }
 
