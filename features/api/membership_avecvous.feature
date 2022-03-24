@@ -226,7 +226,6 @@ Feature:
     """
     And I should have 0 email
 
-  @skip
   Scenario: As a non logged-in user I can not create a contact with no captcha
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/contacts" with body:
@@ -255,7 +254,6 @@ Feature:
     }
     """
 
-  @skip
   Scenario: As a non logged-in user I can not create a contact with invalid captcha
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/contacts" with body:
