@@ -88,11 +88,11 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->createQueryBuilder('data_survey')
             ->select(
                 'campaign_history',
-                'PARTIAL data_survey.{id, uuid}',
-                'PARTIAL survey.{id, uuid, name}',
+                'data_survey',
+                'survey',
             )
-            ->leftJoin('data_survey.survey', 'survey')
-            ->leftJoin('data_survey.papCampaignHistory', 'campaign_history')
+            ->innerJoin('data_survey.survey', 'survey')
+            ->innerJoin('data_survey.papCampaignHistory', 'campaign_history')
             ->where('campaign_history.campaign = :campaign')
             ->orderBy('campaign_history.createdAt', 'DESC')
             ->setParameter('campaign', $campaign)
