@@ -13,7 +13,8 @@ security:
             iterations:       1
 
     role_hierarchy:
-        ROLE_ADMIN_DASHBOARD: ~
+        ROLE_ADMIN_DASHBOARD:
+            - ROLE_APP_ADMIN_GEO_ZONE_ALL
 
         ROLE_ADMIN_MEDIAS:
             - ROLE_APP_ADMIN_MEDIA_ALL
@@ -315,6 +316,7 @@ security:
 
         ROLE_ADMIN_SMS_CAMPAIGNS:
             - ROLE_APP_ADMIN_SMS_CAMPAIGN_ALL
+            - ROLE_APP_ADMIN_AUDIENCE_ALL
 
         ROLE_ADMIN_QR_CODES:
             - ROLE_APP_ADMIN_QR_CODE_ALL
