@@ -4,7 +4,7 @@ namespace App\Admin\Phoning;
 
 use App\Admin\AbstractAdmin;
 use App\Admin\Audience\AudienceAdmin;
-use App\Entity\Jecoute\NationalSurvey;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
@@ -59,7 +59,7 @@ class CampaignAdmin extends AbstractAdmin
                 ->add('survey', EntityType::class, [
                     'label' => 'Questionnaire national',
                     'placeholder' => '--',
-                    'class' => NationalSurvey::class,
+                    'class' => Survey::class,
                     'choice_label' => 'name',
                 ])
         ;
