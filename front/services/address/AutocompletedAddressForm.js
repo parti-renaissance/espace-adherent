@@ -30,7 +30,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
                     && 'disabled' === this._address._address.attributes.disabled.value
             );
 
-            const addressField = document.getElementById('assessor_request_address');
+            const addressField = document.getElementsByClassName('address-block')[0].getElementsByTagName('input')[0];
             const addressFieldAutoComplete = document.getElementsByClassName('pac-target-input');
 
             const onValueUpdate = (e) => {
