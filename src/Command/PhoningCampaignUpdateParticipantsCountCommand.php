@@ -68,9 +68,18 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
         do {
             foreach ($paginator as $campaign) {
                 if ($campaign->getAudience()) {
-                    $campaign->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($campaign)->getTotalItems());
+                    try {
+                        $campaign->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($campaign)->getTotalItems());
+
+                        $this->entityManager->flush();
+                    } catch (\Exception $e) {
+                        $this->io->comment(sprintf(
+                            'Error while updating campaign "%s". Message: "%s".',
+                            $campaign->getId(),
+                            $e->getMessage()
+                        ));
+                    }
                 }
-                $this->entityManager->flush();
 
                 $this->io->progressAdvance();
                 ++$offset;
