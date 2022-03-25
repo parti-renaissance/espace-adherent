@@ -4,7 +4,7 @@ namespace App\Admin\Phoning;
 
 use App\Admin\AbstractAdmin;
 use App\Admin\Audience\AudienceAdmin;
-use App\Entity\Jecoute\NationalSurvey;
+use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\Form\Admin\AdminZoneAutocompleteType;
@@ -57,9 +57,9 @@ class CampaignAdmin extends AbstractAdmin
                     'help' => 'Cet objectif sera affiché de manière identique à chaque appelant. L’objectif de la campagne sera calculé en multipliant l’objectif individuel par le nombre d’appelants.',
                 ])
                 ->add('survey', EntityType::class, [
-                    'label' => 'Questionnaire national',
+                    'label' => 'Questionnaire',
                     'placeholder' => '--',
-                    'class' => NationalSurvey::class,
+                    'class' => Survey::class,
                     'choice_label' => 'name',
                 ])
         ;
