@@ -52,7 +52,8 @@ class PhoningCampaignParticipantsCountUpdateListener implements EventSubscriberI
                 $this->logger->error(
                     sprintf('Error while updating campaign "%s". Message: "%s".',
                     $campaign->getId(),
-                    $e->getMessage()));
+                    $e->getMessage())
+                );
             }
         }
     }
