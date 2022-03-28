@@ -32,6 +32,8 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
 
         switch ($scopeGenerator->getCode()) {
             case ScopeEnum::NATIONAL:
+            case ScopeEnum::PHONING_NATIONAL_MANAGER:
+            case ScopeEnum::PAP_NATIONAL_MANAGER:
                 $queryBuilder
                     ->andWhere(sprintf('%s INSTANCE OF :national', $alias))
                     ->setParameter('national', SurveyTypeEnum::NATIONAL)
