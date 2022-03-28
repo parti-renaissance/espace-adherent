@@ -510,9 +510,9 @@ Feature:
     }
     """
     Examples:
-      | email                       |
-      | michelle.dufour@example.ch  |
-      | simple-user@example.ch      |
+      | email                      |
+      | michelle.dufour@example.ch |
+      | simple-user@example.ch     |
 
   Scenario: As a logged-in user I can reply to a national survey without agreeing to join
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
@@ -879,9 +879,9 @@ Feature:
     }
     """
 
-  Scenario: As a user with national role I can access only national surveys
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys?scope=national&page_size=10"
+  Scenario Outline: As a user with national scope I can access only national surveys
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys?scope=<scope>&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -927,6 +927,10 @@ Feature:
       ]
     }
     """
+    Examples:
+      | user                      | scope                    |
+      | deputy@en-marche-dev.fr   | national                 |
+      | referent@en-marche-dev.fr | phoning_national_manager |
 
   Scenario Outline: As a user with (delegated) referent role I can access to national and my local managed zones surveys
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -1840,9 +1844,9 @@ Feature:
     Then the response status code should be 200
     And the JSON node items should have 6 element
     Examples:
-      | user                            | scope                                           |
-      | referent-75-77@en-marche-dev.fr | referent                                        |
-      | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
+      | user                            | scope                                          |
+      | referent-75-77@en-marche-dev.fr | referent                                       |
+      | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77 |
 
   Scenario Outline: As a user with (delegated) referent role I get an empty list, if no national survey replies in my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
