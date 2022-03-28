@@ -22,6 +22,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const ADDRESS_07_UUID = '6bb9c99f-48cb-44a8-9a94-10258020ebc6';
     private const ADDRESS_08_UUID = 'a10477b9-4a17-4ace-b0c8-22fbdccf154d';
     private const ADDRESS_09_UUID = '967614e4-0783-47d6-96f7-edec7ec390d1';
+    private const ADDRESS_10_UUID = '0bd60032-2242-4eb2-bb43-be7efaf8833f';
 
     private const VOTER_01_UUID = 'bdb9d49c-20f5-44c0-bc4a-d8b75f85ee95';
     private const VOTER_02_UUID = '0cf560f0-c5ec-43ef-9ea1-b6fd2a2dc339';
@@ -59,7 +60,8 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $vpSartrouvilec = $this->getReference('pap-vote-place--sartrouville-c');
         /** @var VotePlace $vpAchereLAForeta */
         $vpAchereLAForeta = $this->getReference('pap-vote-place--achere-la-forêt-a');
-        /** @var VotePlace $vpParis3b */
+        /** @var VotePlace $vpNicea */
+        $vpNicea = $this->getReference('pap-vote-place--nice-a');
         $address = $this->createAddress(
             self::ADDRESS_01_UUID,
             '55',
@@ -224,6 +226,23 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->addVoter($this->createVoter(self::VOTER_13_UUID, 'Kevin', 'HEDIEUX', Genders::MALE, '-60 years', '92002_0002'));
         $address->votePlace = $vpAnthonyb;
         $this->addReference('address-92-4', $address);
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_10_UUID,
+            '57',
+            'Boulevard de la Madeleine',
+            '06088',
+            ['06000'],
+            'Nice',
+            68172,
+            47813,
+            43.69751,
+            7.240651
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'));
+        $address->votePlace = $vpNicea;
+        $this->addReference('address-06-1', $address);
         $manager->persist($address);
 
         $manager->flush();

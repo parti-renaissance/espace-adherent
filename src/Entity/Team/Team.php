@@ -12,8 +12,8 @@ use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityTrait;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Validator\Scope\ScopeVisibility;
@@ -83,7 +83,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ScopeVisibility
  */
-class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityInterface
+class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityWithZoneInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

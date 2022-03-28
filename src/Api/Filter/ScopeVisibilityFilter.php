@@ -37,7 +37,7 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
 
         if (Campaign::class === $queryBuilder->getRootEntities()[0]) {
             $queryBuilder
-                ->leftJoin("$alias.zone", 'zone')
+                ->leftJoin("$alias.zones", 'zone')
                 ->leftJoin('zone.parents', 'parent_zone')
                 ->andWhere(
                     $queryBuilder->expr()->orX(

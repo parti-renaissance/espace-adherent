@@ -65,7 +65,7 @@ class CampaignRepository extends ServiceEntityRepository
             );
 
             $queryBuilder
-                ->leftJoin('campaign.zone', 'zone')
+                ->leftJoin('campaign.zones', 'zone')
                 ->leftJoin('zone.parents', 'zone_parent')
                 ->setParameter('visibility_local', ScopeVisibilityEnum::LOCAL)
                 ->setParameter('zones', $zones)
@@ -101,5 +101,25 @@ class CampaignRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /** @return Campaign[] */
+    public function findCampaignsForVotePlaces(array $votePlaces, Campaign $excludedCampaign = null): array
+    {
+        $qb = $this->createQueryBuilder('campaign')
+            ->innerJoin('campaign.votePlaces', 'votePlace', Join::WITH, 'votePlace IN (:vote_places)')
+            ->andWhere('campaign.finishAt > :now')
+            ->setParameter('vote_places', $votePlaces)
+            ->setParameter('now', new \DateTime())
+        ;
+
+        if ($excludedCampaign) {
+            $qb
+                ->andWhere('campaign != :excluded_campaign')
+                ->setParameter('excluded_campaign', $excludedCampaign)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

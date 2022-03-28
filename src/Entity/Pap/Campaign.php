@@ -7,16 +7,22 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
+use App\Entity\Adherent;
+use App\Entity\EntityAdherentBlameableInterface;
+use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityScopeVisibilityInterface;
-use App\Entity\EntityScopeVisibilityTrait;
+use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
+use App\Scope\ScopeVisibilityEnum;
+use App\Validator\PapCampaignBeginAt as AssertBeginAtValid;
+use App\Validator\PapCampaignVotePlaces as AssertVotePlacesValid;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -81,6 +87,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/pap_campaigns",
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
+ *             "validation_groups": {"Default", "pap_campaign_creation"},
  *         },
  *         "get_kpi": {
  *             "method": "GET",
@@ -104,13 +111,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @ScopeVisibility
+ * @AssertBeginAtValid
+ * @AssertVotePlacesValid
  */
-class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
+class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorTrait;
-    use EntityScopeVisibilityTrait;
+    use EntityAdherentBlameableTrait;
+    use EntityZoneTrait;
     use DynamicLinkObjectTrait;
 
     /**
@@ -153,6 +163,11 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
+     * @Assert\GreaterThanOrEqual(
+     *     value="now",
+     *     message="pap.campaign.invalid_start_date",
+     *     groups={"pap_campaign_creation"}
+     * )
      *
      * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
      */
@@ -204,6 +219,12 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace")
      * @ORM\JoinTable(name="pap_campaign_vote_place")
+     *
+     * @Groups({
+     *     "pap_campaign_write",
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $votePlaces;
 
@@ -262,6 +283,27 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
      */
     private bool $associated = false;
 
+    /**
+     * @ORM\Column(length=30)
+     *
+     * @Assert\NotBlank(message="scope.visibility.not_blank")
+     * @Assert\Choice(choices=App\Scope\ScopeVisibilityEnum::ALL, message="scope.visibility.choice")
+     *
+     * @Groups({
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
+     * })
+     */
+    protected string $visibility = ScopeVisibilityEnum::NATIONAL;
+
+    /**
+     * @var Collection|Zone[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     * @ORM\JoinTable(name="pap_campaign_zone")
+     */
+    protected $zones;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -272,7 +314,8 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
         \DateTimeInterface $finishAt = null,
         int $nbAddresses = 0,
         int $nbVoters = 0,
-        Zone $zone = null
+        array $zones = [],
+        Adherent $createdByAdherent = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;
@@ -283,11 +326,16 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
         $this->finishAt = $finishAt;
         $this->nbAddresses = $nbAddresses;
         $this->nbVoters = $nbVoters;
+        $this->createdByAdherent = $createdByAdherent;
 
         $this->campaignHistories = new ArrayCollection();
         $this->votePlaces = new ArrayCollection();
 
-        $this->setZone($zone);
+        $this->zones = new ArrayCollection();
+        if ($zones) {
+            $this->visibility = ScopeVisibilityEnum::LOCAL;
+            $this->setZones($zones);
+        }
     }
 
     public function __toString(): string
@@ -561,5 +609,20 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityInterfa
     public function getSocialTitle(): string
     {
         return (string) $this->getTitle();
+    }
+
+    public function setVisibility(string $visibility): void
+    {
+        $this->visibility = $visibility;
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
+    }
+
+    public function isNationalVisibility(): bool
+    {
+        return ScopeVisibilityEnum::NATIONAL === $this->visibility;
     }
 }

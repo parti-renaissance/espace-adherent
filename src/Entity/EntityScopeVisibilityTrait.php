@@ -27,7 +27,7 @@ trait EntityScopeVisibilityTrait
      *     "jecoute_news_read",
      * })
      */
-    private string $visibility = ScopeVisibilityEnum::NATIONAL;
+    protected string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
