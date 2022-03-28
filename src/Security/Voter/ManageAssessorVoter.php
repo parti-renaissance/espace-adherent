@@ -25,15 +25,15 @@ class ManageAssessorVoter extends AbstractAdherentVoter
 
     private function isManageable(ManagedArea $managedArea, AssessorRequest $assessorRequest): bool
     {
-        if (1 === $managedArea->getCodes() && $managedArea->getCodes() === ['ALL']) {
+        if ($managedArea->getCodes() === ['ALL']) {
+            return true;
+        }
+
+        if (\in_array($assessorRequest->getAssessorCountry(), $managedArea->getCodes())) {
             return true;
         }
 
         if ('FR' === $assessorRequest->getAssessorCountry()) {
-            if (\in_array($assessorRequest->getAssessorCountry(), $managedArea->getCodes())) {
-                return true;
-            }
-
             $dpt = substr($assessorRequest->getAssessorPostalCode(), 0, 2);
             if (\in_array($dpt, [97, 98])) {
                 $dpt = substr($assessorRequest->getAssessorPostalCode(), 0, 3);
@@ -42,8 +42,6 @@ class ManageAssessorVoter extends AbstractAdherentVoter
             if (\in_array($dpt, $managedArea->getCodes())) {
                 return true;
             }
-        } elseif ('FR' !== $assessorRequest->getAssessorCountry() && \in_array($assessorRequest->getAssessorCountry(), $managedArea->getCodes())) {
-            return true;
         }
 
         return false;
