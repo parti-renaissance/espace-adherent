@@ -23,13 +23,29 @@ class ManageAssessorVoter extends AbstractAdherentVoter
         return $adherent->isAssessorManager() && $this->isManageable($adherent->getAssessorManagedArea(), $subject);
     }
 
-    private function isManageable(ManagedArea $managedArea, AssessorRequest $assessorRequest)
+    private function isManageable(ManagedArea $managedArea, AssessorRequest $assessorRequest): bool
     {
-        return \in_array(
-            'FR' === $assessorRequest->getAssessorCountry()
-                ? substr($assessorRequest->getAssessorPostalCode(), 0, 2)
-                : $assessorRequest->getAssessorCountry(),
-            $managedArea->getCodes()
-        );
+        if (1 === $managedArea->getCodes() && $managedArea->getCodes() === ['ALL']) {
+            return true;
+        }
+
+        if ('FR' === $assessorRequest->getAssessorCountry()) {
+            if (\in_array($assessorRequest->getAssessorCountry(), $managedArea->getCodes())) {
+                return true;
+            }
+
+            $dpt = substr($assessorRequest->getAssessorPostalCode(), 0, 2);
+            if (\in_array($dpt, [97, 98])) {
+                $dpt = substr($assessorRequest->getAssessorPostalCode(), 0, 3);
+            }
+
+            if (\in_array($dpt, $managedArea->getCodes())) {
+                return true;
+            }
+        } elseif ('FR' !== $assessorRequest->getAssessorCountry() && \in_array($assessorRequest->getAssessorCountry(), $managedArea->getCodes())) {
+            return true;
+        }
+
+        return false;
     }
 }
