@@ -1403,7 +1403,8 @@ Feature:
         },
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
-        "image_url": null
+        "image_url": null,
+        "link": "http://test.enmarche.code/evenements/2023-01-29-nouveau-evenement"
     }
     """
 
@@ -1467,7 +1468,8 @@ Feature:
         },
         "visio_url": "http://visio.fr",
         "mode": "online",
-        "image_url": null
+        "image_url": null,
+        "link": "http://test.enmarche.code/evenements/2022-05-12-nouvel-evenement-online"
     }
     """
     And I should have 1 email

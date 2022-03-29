@@ -5,7 +5,6 @@ namespace App\Entity\Event;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\ExposedObjectInterface;
 use App\Entity\PostAddress;
 use App\Entity\SynchronizedEntity;
 use App\Entity\UserDocument;
@@ -21,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
-class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity, ExposedObjectInterface
+class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterface, SynchronizedEntity
 {
     use UserDocumentTrait;
 
@@ -157,11 +156,6 @@ class CommitteeEvent extends BaseEventWithCategory implements UserDocumentInterf
         }
 
         return $organizer->getUuidAsString();
-    }
-
-    public function getExposedRouteName(): string
-    {
-        return 'app_committee_event_show';
     }
 
     public function needNotifyForRegistration(): bool
