@@ -13,7 +13,11 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $gender;
 
@@ -22,7 +26,11 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $ageMin;
 
@@ -31,7 +39,11 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $ageMax;
 
@@ -42,7 +54,11 @@ trait GeneralFilterTrait
      *
      * @Assert\Length(max=255)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $firstName;
 
@@ -53,7 +69,11 @@ trait GeneralFilterTrait
      *
      * @Assert\Length(max=255)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $lastName;
 
@@ -78,7 +98,11 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $registeredSince;
 
@@ -87,7 +111,11 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({
+     *     "audience_segment_read",
+     *     "audience_segment_write",
+     *     "adherent_message_update_filter",
+     * })
      */
     private $registeredUntil;
 

@@ -443,13 +443,13 @@ Feature:
         },
         {
             "code": "registered",
-            "label": "Adhésion",
+            "label": "Inscrit",
             "options": null,
             "type": "date_interval"
         },
         {
-            "code": "isCommitteeMember",
-            "label": "Membre d'un comité",
+            "code": "isCertified",
+            "label": "Certifié",
             "options": {
                 "choices": [
                     "Non",
@@ -459,8 +459,8 @@ Feature:
             "type": "select"
         },
         {
-            "code": "isCertified",
-            "label": "Certifié",
+            "code": "isCommitteeMember",
+            "label": "Membre d'un comité",
             "options": {
                 "choices": [
                     "Non",

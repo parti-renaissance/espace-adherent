@@ -159,7 +159,6 @@ Feature:
       "features": [
         "dashboard",
         "contacts",
-        "messages",
         "events",
         "my_team",
         "mobile_app",

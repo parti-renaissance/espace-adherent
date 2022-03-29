@@ -45,6 +45,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
+            ->addOption('source', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
@@ -61,7 +62,8 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('ref-tags'),
             $input->getOption('disabled-only'),
             $input->getOption('certified-only'),
-            $input->getOption('committee-voter-only')
+            $input->getOption('committee-voter-only'),
+            $input->getOption('source')
         );
 
         $count = $paginator->count();
@@ -106,14 +108,26 @@ class MailchimpSyncAllAdherentsCommand extends Command
         array $refTags,
         bool $disabledOnly,
         bool $certifiedOnly,
-        bool $committeeVoterOnly
+        bool $committeeVoterOnly,
+        ?string $source
     ): Paginator {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->where('adherent.status = :status')
-            ->andWhere('adherent.adherent = true')
             ->setParameter('status', $disabledOnly ? Adherent::DISABLED : Adherent::ENABLED)
         ;
+
+        if ($source) {
+            $queryBuilder
+                ->andWhere('adherent.source = :source')
+                ->setParameter('source', $source)
+            ;
+        } else {
+            $queryBuilder
+                ->andWhere('adherent.adherent = true')
+                ->andWhere('adherent.source IS NULL')
+            ;
+        }
 
         if ($refTags) {
             $queryBuilder

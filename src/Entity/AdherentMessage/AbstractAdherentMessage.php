@@ -9,6 +9,7 @@ use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
+use App\Api\Filter\OrderFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -112,6 +113,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(AdherentMessageScopeFilter::class)
+ * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  *
  * @ValidAuthorRoleMessageType
  */

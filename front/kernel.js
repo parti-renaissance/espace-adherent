@@ -23,7 +23,7 @@ window.Kernel = class {
                         release,
                         environment,
                         integrations: [new Integrations.BrowserTracing()],
-                        tracesSampleRate: 0.33,
+                        tracesSampleRate: 0.05,
                     });
 
                     if (user) {
