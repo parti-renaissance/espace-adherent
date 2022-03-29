@@ -76,6 +76,16 @@
             }
         }
 
+        &__cover2022 {
+            img {
+                width: 261px;
+            }
+
+            @media (max-width: $tablet - 200px) {
+                display: none;
+            }
+        }
+
         &__proposals {
             display: flex;
             flex-direction: row;
