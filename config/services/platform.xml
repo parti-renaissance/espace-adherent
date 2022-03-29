@@ -15,7 +15,7 @@
             <argument type="service" id="app.http_client.google_maps_static_api" />
             <argument type="service" id="cache.app" />
             <argument type="service" id="monolog.logger" />
-            <argument>%env(GMAPS_API_KEY)%</argument>
+            <argument>%env(GMAPS_PRIVATE_API_KEY)%</argument>
         </service>
 
         <!-- Adherents -->
