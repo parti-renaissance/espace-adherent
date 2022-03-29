@@ -62,7 +62,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1"
         },
         {
           "coalition": {
@@ -103,7 +104,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2"
         },
         {
           "coalition": {
@@ -144,7 +146,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-5"
         },
         {
           "coalition": {
@@ -185,7 +188,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-3"
         },
         {
           "coalition": {
@@ -226,7 +230,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-4"
         },
         {
           "coalition": {
@@ -267,7 +272,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-6"
         },
         {
           "cause": {
@@ -313,7 +319,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1"
         },
         {
           "cause": {
@@ -359,7 +366,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1"
         },
         {
           "cause": {
@@ -405,7 +413,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-3-de-la-cause-culturelle-1"
         },
         {
           "coalition": {
@@ -446,7 +455,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-passe"
         },
         {
           "cause": {
@@ -492,7 +502,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-passe-de-la-cause"
         }
       ]
     }
@@ -572,7 +583,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-6"
         },
         {
           "cause": {
@@ -618,7 +630,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1"
         },
         {
           "cause": {
@@ -664,7 +677,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1"
         },
         {
           "cause": {
@@ -710,7 +724,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-3-de-la-cause-culturelle-1"
         },
         {
           "coalition": {
@@ -751,7 +766,8 @@ Feature:
           },
           "visio_url": null,
           "mode": null,
-          "image_url": null
+          "image_url": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-passe"
         }
       ]
     }
@@ -871,7 +887,8 @@ Feature:
       },
       "visio_url": "https://visio.fr",
       "mode": "online",
-      "image_url": null
+      "image_url": null,
+      "link": "http://test.enmarche.code/evenements/@string@-my-coalition-event"
     }
     """
     And I should have 0 email
@@ -969,7 +986,8 @@ Feature:
       },
       "visio_url": "http://visio.fr",
       "mode": "online",
-      "image_url": null
+      "image_url": null,
+      "link": "http://test.enmarche.code/evenements/2022-05-15-nouvel-objectif"
     }
     """
 
@@ -1091,7 +1109,8 @@ Feature:
       },
       "visio_url": "https://visio.fr",
       "mode": "online",
-      "image_url": null
+      "image_url": null,
+      "link": "http://test.enmarche.code/evenements/@string@-my-cause-event"
     }
     """
     And I should have 1 email
@@ -1321,7 +1340,8 @@ Feature:
       },
       "visio_url": "http://visio.fr",
       "mode": "online",
-      "image_url": null
+      "image_url": null,
+      "link": "http://test.enmarche.code/evenements/2022-05-12-nouvel-objectif"
     }
     """
     And I should have 1 email
@@ -1546,7 +1566,8 @@ Feature:
           },
           "visio_url": null,
           "image_url": null,
-          "mode": null
+          "mode": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-1-de-la-cause-culturelle-1"
         },
         {
           "cause": {
@@ -1592,7 +1613,8 @@ Feature:
           },
           "visio_url": null,
           "image_url": null,
-          "mode": null
+          "mode": null,
+          "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-2-de-la-cause-culturelle-1"
         }
       ]
     }
@@ -1644,6 +1666,7 @@ Feature:
       },
       "visio_url": null,
       "mode": null,
-      "image_url": null
+      "image_url": null,
+      "link": "http://test.enmarche.code/evenements/@string@-evenement-culturel-annule"
     }
     """

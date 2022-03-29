@@ -26,6 +26,7 @@ use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
+use App\Entity\ExposedObjectInterface;
 use App\Entity\ImageTrait;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\PostAddress;
@@ -200,7 +201,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssertValidEventCategory
  */
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
@@ -736,6 +737,11 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function getNormalizationGroups(): array
     {
         return ['event_read'];
+    }
+
+    public function getExposedRouteName(): string
+    {
+        return 'app_committee_event_show';
     }
 
     public function getExposedRouteParams(): array
