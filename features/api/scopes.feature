@@ -167,6 +167,7 @@ Feature:
         "elections",
         "ripostes",
         "pap",
+        "pap_v2",
         "team",
         "phoning_campaign",
         "survey"

@@ -1221,6 +1221,7 @@ scope.feature.elections: Élections
 scope.feature.ripostes: Ripostes
 scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
+scope.feature.pap_v2: Porte-à-porte V2
 scope.feature.news: Actualités
 scope.feature.phoning_campaign: Phoning
 scope.feature.survey: Questionnaires
