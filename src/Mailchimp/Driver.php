@@ -68,7 +68,7 @@ class Driver implements LoggerAwareInterface
             return $response->toArray()['html'] ?? '';
         }
 
-        $this->logger->error(sprintf('[API] Error: %s', $response->getContent()), ['campaignId' => $campaignId]);
+        $this->logger->error(sprintf('[API] Error: %s', $response->getContent(false)), ['campaignId' => $campaignId]);
 
         return '';
     }
@@ -181,7 +181,7 @@ class Driver implements LoggerAwareInterface
     {
         $response = $this->send('GET', sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
 
-        return $this->isSuccessfulResponse($response) ? $response->toArray(false) : [];
+        return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
 
     public function getLastError(): ?string
