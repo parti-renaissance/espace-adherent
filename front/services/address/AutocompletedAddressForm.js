@@ -30,6 +30,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
                     && 'disabled' === this._address._address.attributes.disabled.value
             );
 
+            const postCodeField = this._address._postalCode;
             const addressField = this._address._address;
             const addressFieldAutoComplete = this._autocompleteWrapper.children;
 
@@ -59,6 +60,9 @@ export default class AutocompletedAddressForm extends EventEmitter {
                 if (false === this._showWhenFilled && !this._showOnlyAutocomplete) {
                     this.showAddress();
                     hide(this._autocompleteWrapper);
+
+                    const inputEvent = new Event('input');
+                    postCodeField.dispatchEvent(inputEvent);
                 }
 
                 if (this._helpMessageBlock) {
