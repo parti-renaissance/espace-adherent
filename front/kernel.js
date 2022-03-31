@@ -23,6 +23,7 @@ window.Kernel = class {
                         release,
                         environment,
                         integrations: [new Integrations.BrowserTracing()],
+                        ignoreErrors: ['Non-Error promise rejection captured'],
                         tracesSampleRate: 0.05,
                     });
 
