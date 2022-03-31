@@ -20,8 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UploadDocumentController extends AbstractController
 {
     /**
-     * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"}, defaults={"ckeditor": true})
-     * @Route("/api/v3/upload/{type}", name="api_filebrowser_upload_v3", methods={"POST"})
+     * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"})
      *
      * @Security("is_granted('FILE_UPLOAD', type)")
      */
@@ -29,14 +28,17 @@ class UploadDocumentController extends AbstractController
         string $type,
         Request $request,
         UserDocumentManager $manager,
-        TranslatorInterface $translator,
-        bool $ckeditor = false
+        TranslatorInterface $translator
     ): Response {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
         }
 
-        if (0 === $request->files->count() || ($ckeditor && !$request->query->has('CKEditorFuncNum'))) {
+        if (0 === $request->files->count()) {
+            throw new BadRequestHttpException('Uploaded file not provided.');
+        }
+
+        if (!$request->query->has('CKEditorFuncNum')) {
             throw new BadRequestHttpException("Request parameter 'CKEditorFuncNum' needed.");
         }
 
@@ -49,15 +51,44 @@ class UploadDocumentController extends AbstractController
             $message = $e->getMessage();
         }
 
-        if (!$ckeditor) {
-            return $this->json(['url' => $url, 'message' => $message], Response::HTTP_OK);
-        }
-
         return $this->render('for_filebrowser_ckeditor.html.twig', [
             'funcNum' => $request->query->get('CKEditorFuncNum'),
             'url' => $url,
             'message' => $message,
         ]);
+    }
+
+    /**
+     * @Route("/api/v3/upload/{type}", name="api_filebrowser_upload_v3", methods={"POST"})
+     *
+     * @Security("is_granted('FILE_UPLOAD', type)")
+     */
+    public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager): Response
+    {
+        if (!\in_array($type, UserDocument::ALL_TYPES)) {
+            return $this->json(
+                ['message' => "Téléchargement de fichier n'est pas autorisé pour le type '$type'."],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        if (0 === $request->files->count()) {
+            return $this->json(
+                ['message' => 'Aucun document uploadé.'],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $message = 'Le document a été uploadé avec succès.';
+        try {
+            $document = $manager->createAndSave($request->files->get('upload'), $type);
+            $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toString(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);
+        } catch (\Exception $e) {
+            $url = '';
+            $message = $e->getMessage();
+        }
+
+        return $this->json(['url' => $url, 'message' => $message], Response::HTTP_OK);
     }
 
     /**

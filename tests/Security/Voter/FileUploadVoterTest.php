@@ -5,6 +5,7 @@ namespace Tests\App\Security\Voter;
 use App\Documents\DocumentPermissions;
 use App\Entity\Adherent;
 use App\Entity\UserDocument;
+use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\FileUploadVoter;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -43,7 +44,10 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new FileUploadVoter($this->createConfiguredMock(AuthorizationCheckerInterface::class, ['isGranted' => false]));
+        return new FileUploadVoter(
+            $this->createConfiguredMock(AuthorizationCheckerInterface::class, ['isGranted' => false]),
+            $this->createMock(ScopeGeneratorResolver::class)
+        );
     }
 
     /**

@@ -5,15 +5,21 @@ namespace App\Security\Voter;
 use App\Documents\DocumentPermissions;
 use App\Entity\Adherent;
 use App\Entity\UserDocument;
+use App\Scope\FeatureEnum;
+use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class FileUploadVoter extends AbstractAdherentVoter
 {
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private ScopeGeneratorResolver $scopeGeneratorResolver;
 
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        ScopeGeneratorResolver $scopeGeneratorResolver
+    ) {
         $this->authorizationChecker = $authorizationChecker;
+        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     protected function supports($attribute, $subject)
@@ -38,6 +44,12 @@ class FileUploadVoter extends AbstractAdherentVoter
                 return $this->authorizationChecker->isGranted('ROLE_MESSAGE_REDACTOR');
             case UserDocument::TYPE_TERRITORIAL_COUNCIL_FEED:
                 return $adherent->isTerritorialCouncilPresident();
+            case UserDocument::TYPE_NEWS:
+                if (!$scope = $this->scopeGeneratorResolver->generate()) {
+                    return false;
+                }
+
+                return $scope->hasFeature(FeatureEnum::NEWS);
             default:
                 return false;
         }
