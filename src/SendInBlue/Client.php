@@ -28,4 +28,9 @@ class Client implements ClientInterface
 
         $this->contactsApi->createContact($createContact);
     }
+
+    public function delete(string $email): void
+    {
+        $this->contactsApi->deleteContact($email);
+    }
 }
