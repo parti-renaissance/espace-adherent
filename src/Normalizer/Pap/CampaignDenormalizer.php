@@ -28,16 +28,13 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 
         /** @var Campaign $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
-        $scope = $this->scopeGeneratorResolver->generate();
-        $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
-        if ('post' === ($context['collection_operation_name'] ?? null) && $scopeCode) {
+        if ('post' === ($context['collection_operation_name'] ?? null)
+            && ($scope = $this->scopeGeneratorResolver->generate())) {
             if ($scope->isNational()) {
                 $data->setVisibility(ScopeVisibilityEnum::NATIONAL);
             } else {
                 $data->setVisibility(ScopeVisibilityEnum::LOCAL);
-                if (\count($scope->getZones()) > 0) {
-                    $data->setZones($scope->getZones());
-                }
+                $data->setZones($scope->getZones());
             }
         }
 
