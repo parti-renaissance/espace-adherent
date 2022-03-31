@@ -6,6 +6,7 @@ use App\Entity\Geo\City;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
+use App\Entity\Pap\Address;
 use App\Entity\ReferentTag;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -265,6 +266,23 @@ class ZoneRepository extends ServiceEntityRepository
         ;
 
         return \count($zones) > 0;
+    }
+
+    /** @return Zone[] */
+    public function findForPapVotePlaces(array $votePlaces): array
+    {
+        return $this->createQueryBuilder('zone')
+            ->innerJoin(
+                Address::class,
+                'address',
+                Join::WITH,
+                'zone MEMBER OF address.zones'
+            )
+            ->andWhere('address.votePlace IN (:vote_places)')
+            ->setParameter('vote_places', $votePlaces)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function isInZones(array $zones, array $parents): bool

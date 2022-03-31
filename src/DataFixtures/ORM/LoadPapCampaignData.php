@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Geo\Zone;
+use App\Entity\Adherent;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign;
 use Cake\Chronos\Chronos;
@@ -114,8 +114,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             '+20 days',
             1,
             0,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')],
         );
+        $campaign92->addVotePlace($this->getReference('pap-vote-place--anthony-c'));
         $this->addReference('pap-campaign-92', $campaign92);
 
         $campaign59350 = $this->createCampaign(
@@ -128,7 +129,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             '+20 days',
             0,
             0,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')]
         );
 
         $campaign06088 = $this->createCampaign(
@@ -141,8 +142,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             '+20 days',
             0,
             0,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088')
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088')]
         );
+        $campaign06088->addVotePlace($this->getReference('pap-vote-place--nice-a'));
 
         $manager->persist($campaign1);
         $manager->persist($campaign2);
@@ -176,7 +178,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         string $finishAt,
         int $nbAddresses = 0,
         int $nbVoters = 0,
-        Zone $zone = null
+        array $zones = [],
+        Adherent $createdBy = null
     ): Campaign {
         return new Campaign(
             Uuid::fromString($uuid),
@@ -188,7 +191,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             new Chronos($finishAt),
             $nbAddresses,
             $nbVoters,
-            $zone
+            $zones,
+            $createdBy
         );
     }
 }

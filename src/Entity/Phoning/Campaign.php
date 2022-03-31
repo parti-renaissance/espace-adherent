@@ -14,8 +14,8 @@ use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityTrait;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
@@ -129,7 +129,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ScopeVisibility
  */
-class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
+class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

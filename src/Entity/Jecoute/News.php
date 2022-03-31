@@ -14,8 +14,8 @@ use App\Entity\Administrator;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
-use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityTrait;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
@@ -144,7 +144,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @NewsText
  * @ScopeVisibility
  */
-class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityInterface, DynamicLinkObjectInterface
+class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
     use AuthoredTrait;

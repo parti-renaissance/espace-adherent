@@ -92,7 +92,29 @@ Feature:
           "title": "Campagne de 10 jours suivants",
           "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
           "visibility": "national",
-          "zone": null
+          "vote_places": [
+            {
+              "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+            },
+            {
+              "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+            },
+            {
+              "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+            },
+            {
+              "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+            },
+            {
+              "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+            },
+            {
+              "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+            },
+            {
+              "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+            }
+          ]
         },
         {
           "begin_at": "@string@.isDateTime()",
@@ -106,7 +128,7 @@ Feature:
           "title": "Campagne de 5 jours suivants",
           "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
           "visibility": "national",
-          "zone": null
+          "vote_places": []
         }
       ]
     }
@@ -141,7 +163,7 @@ Feature:
       },
       "uuid": "@uuid@",
       "visibility": "national",
-      "zone": null
+      "vote_places": []
     }
     """
 
@@ -154,7 +176,6 @@ Feature:
       "title": "NOUVEAU Campagne de 10 jours suivants",
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
-      "begin_at": "2022-04-01 00:00:00",
       "finish_at": "2022-04-30 00:00:00",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
@@ -167,30 +188,51 @@ Feature:
       "title": "NOUVEAU Campagne de 10 jours suivants",
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
-      "begin_at": "2022-04-01T00:00:00+02:00",
+      "begin_at": "@string@.isDateTime()",
       "finish_at": "2022-04-30T00:00:00+02:00",
       "survey": {
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
       "visibility": "national",
-      "zone": null
+      "vote_places": [
+        {
+          "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+        },
+        {
+          "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+        },
+        {
+          "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+        },
+        {
+          "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+        },
+        {
+          "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+        },
+        {
+          "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+        },
+        {
+          "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+        }
+      ]
     }
     """
 
-  Scenario: As a user granted with national scope, I can not create a local campaign
+  Scenario: As a user granted with national scope, I cannot update a national campaign with invalid data
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=pap_national_manager" with body:
+    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
     """
     {
-      "title": "Nouvelle campagne PAP",
-      "brief": "**NOUVEAU**",
-      "goal": 200,
-      "begin_at": "2022-05-01 00:00:00",
-      "finish_at": "2022-05-31 00:00:00",
-      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-      "zone": "e3f21338-906e-11eb-a875-0242ac150002"
+      "title": "NOUVEAU Campagne de 10 jours suivants",
+      "brief": "NOUVEAU **Campagne** de 10 jours suivants",
+      "goal": 1000,
+      "begin_at": "2022-12-01 00:00:00",
+      "finish_at": "2022-12-30 00:00:00",
+      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
     Then the response status code should be 400
@@ -198,15 +240,15 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "type": "https://tools.ietf.org/html/rfc2616#section-10",
-      "title": "An error occurred",
-      "detail": "zone: Un rôle national ne peut pas définir de zone.",
-      "violations": [
-        {
-          "propertyPath": "zone",
-          "message": "Un rôle national ne peut pas définir de zone."
-        }
-      ]
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "La date de début est déjà dépassée, vous ne pouvez pas la changer.",
+        "violations": [
+            {
+                "propertyPath": "",
+                "message": "La date de début est déjà dépassée, vous ne pouvez pas la changer."
+            }
+        ]
     }
     """
 
@@ -245,7 +287,29 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [
+                  {
+                    "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+                  },
+                  {
+                    "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+                  },
+                  {
+                    "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+                  },
+                  {
+                    "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+                  },
+                  {
+                    "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+                  },
+                  {
+                    "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+                  },
+                  {
+                    "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+                  }
+                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -259,7 +323,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -273,7 +337,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -287,7 +351,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -301,7 +365,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -315,11 +379,11 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
                 "visibility": "local",
-                "zone": {
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                    "code": "92",
-                    "name": "Hauts-de-Seine"
-                },
+                "vote_places": [
+                  {
+                    "uuid": "33106ef9-ba14-4281-8032-e186735df717"
+                  }
+                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 1,
@@ -333,11 +397,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
                 "visibility": "local",
-                "zone": {
-                    "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
-                    "code": "59350",
-                    "name": "Lille"
-                },
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
@@ -375,11 +435,11 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
                 "visibility": "local",
-                "zone": {
-                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-                    "code": "92",
-                    "name": "Hauts-de-Seine"
-                },
+                "vote_places": [
+                  {
+                    "uuid": "33106ef9-ba14-4281-8032-e186735df717"
+                  }
+                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 1,
@@ -393,11 +453,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
                 "visibility": "local",
-                "zone": {
-                    "uuid": "e3f21338-906e-11eb-a875-0242ac150002",
-                    "code": "59350",
-                    "name": "Lille"
-                },
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
@@ -429,7 +485,29 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [
+                  {
+                    "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+                  },
+                  {
+                    "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+                  },
+                  {
+                    "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+                  },
+                  {
+                    "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+                  },
+                  {
+                    "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+                  },
+                  {
+                    "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+                  },
+                  {
+                    "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+                  }
+                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -443,7 +521,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -457,7 +535,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -471,7 +549,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -485,7 +563,7 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
                 "visibility": "national",
-                "zone": null,
+                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -514,11 +592,11 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
-      "zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-        "code": "92",
-        "name": "Hauts-de-Seine"
-      },
+      "vote_places": [
+        {
+          "uuid": "33106ef9-ba14-4281-8032-e186735df717"
+        }
+      ],
       "nb_surveys": 0,
       "nb_visited_doors": 1,
       "nb_addresses": 1,
@@ -566,11 +644,7 @@ Feature:
       },
       "uuid": "@uuid@",
       "visibility": "local",
-      "zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-        "code": "92",
-        "name": "Hauts-de-Seine"
-      }
+      "vote_places": []
     }
     """
     Examples:
@@ -599,50 +673,14 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
-      "zone": {
-        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
-        "code": "92",
-        "name": "Hauts-de-Seine"
-      },
+      "vote_places": [
+        {
+          "uuid": "33106ef9-ba14-4281-8032-e186735df717"
+        }
+      ],
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       }
-    }
-    """
-    Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
-
-  Scenario Outline: As a user granted with local scope, I can not create a local campaign in a zone I am not manager of
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=<scope>" with body:
-      """
-      {
-        "title": "Nouvelle campagne PAP",
-        "brief": "**NOUVEAU**",
-        "goal": 200,
-        "begin_at": "2022-05-01 00:00:00",
-        "finish_at": "2022-05-31 00:00:00",
-        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-        "zone": "e3f1a8e8-906e-11eb-a875-0242ac150002"
-      }
-      """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "type": "https://tools.ietf.org/html/rfc2616#section-10",
-      "title": "An error occurred",
-      "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
-      "violations": [
-        {
-          "propertyPath": "zone",
-          "message": "La zone spécifiée n'est pas gérée par votre rôle."
-        }
-      ]
     }
     """
     Examples:
@@ -665,34 +703,83 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a user granted with local scope, I can not create a national campaign
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+  Scenario: As a candidate granted with local scope, I cannot create a local campaign with not valid vote places
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=referent" with body:
-      """
-      {
-          "title": "Nouvelle campagne PAP",
-          "brief": "**NOUVEAU**",
-          "goal": 200,
-          "begin_at": "2022-05-01 00:00:00",
-          "finish_at": "2022-05-31 00:00:00",
-          "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-      }
-      """
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=candidate" with body:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 10,
+        "begin_at": "2022-12-01 00:00:00",
+        "finish_at": "2022-12-20 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "vote_places": [
+            "dcaec65c-0856-4c27-adf5-6d51593601e3",
+            "8788d1df-9807-45db-a79a-3e1c03df141b",
+            "e4eaed49-5cd1-4e0a-986a-d981433a50a4"
+        ]
+    }
+    """
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
-      "type": "https://tools.ietf.org/html/rfc2616#section-10",
-      "title": "An error occurred",
-      "detail": "zone: Veuillez spécifier une zone.",
-      "violations": [
-        {
-          "propertyPath": "zone",
-          "message": "Veuillez spécifier une zone."
-        }
-      ]
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "vote_places: Un ou plusieurs bureaux de votes que vous avez choisi sont déjà dans une autre campagne.\nvote_places: Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée",
+        "violations": [
+            {
+                "propertyPath": "vote_places",
+                "message": "Un ou plusieurs bureaux de votes que vous avez choisi sont déjà dans une autre campagne."
+            },
+            {
+                "propertyPath": "vote_places",
+                "message": "Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée"
+            }
+        ]
+    }
+    """
+
+  Scenario: As a candidate granted with local scope, I can create a local campaign
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=candidate" with body:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 10,
+        "begin_at": "2022-12-01 00:00:00",
+        "finish_at": "2022-12-20 00:00:00",
+        "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+        "vote_places": [
+            "de7ed0bd-acec-4744-b94d-30b98d895adc"
+        ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "title": "Nouvelle campagne PAP",
+        "brief": "**NOUVEAU**",
+        "goal": 10,
+        "begin_at": "2022-12-01T00:00:00+01:00",
+        "finish_at": "2022-12-20T00:00:00+01:00",
+        "survey": {
+            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+        },
+        "uuid": "@uuid@",
+        "visibility": "local",
+        "vote_places": [
+            {
+                "uuid": "de7ed0bd-acec-4744-b94d-30b98d895adc"
+            }
+        ]
     }
     """
 
@@ -761,7 +848,7 @@ Feature:
             "finish_at": "@string@.isDateTime()",
             "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
             "visibility": "national",
-            "zone": null
+            "vote_places": []
         },
         {
             "title": "Campagne de 10 jours suivants",
@@ -771,7 +858,29 @@ Feature:
             "finish_at": "@string@.isDateTime()",
             "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
             "visibility": "national",
-            "zone": null
+            "vote_places": [
+              {
+                "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+              },
+              {
+                "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+              },
+              {
+                "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+              },
+              {
+                "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+              },
+              {
+                "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+              },
+              {
+                "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+              },
+              {
+                "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+              }
+            ]
         }
     ]
     """
@@ -803,7 +912,29 @@ Feature:
                 "nb_addresses": 4,
                 "nb_voters": 7,
                 "visibility": "national",
-                "zone": null
+                "vote_places": [
+                  {
+                    "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+                  },
+                  {
+                    "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+                  },
+                  {
+                    "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+                  },
+                  {
+                    "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+                  },
+                  {
+                    "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+                  },
+                  {
+                    "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+                  },
+                  {
+                    "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+                  }
+                ]
             },
             {
                 "title": "Campagne de 5 jours suivants",
@@ -817,7 +948,7 @@ Feature:
                 "nb_addresses": 4,
                 "nb_voters": 7,
                 "visibility": "national",
-                "zone": null
+                "vote_places": []
             },
             {
                 "title": "Campagne dans 10 jours",
@@ -831,7 +962,7 @@ Feature:
                 "nb_addresses": 4,
                 "nb_voters": 7,
                 "visibility": "national",
-                "zone": null
+                "vote_places": []
             },
             {
                 "title": "Campagne dans 20 jours",
@@ -845,7 +976,7 @@ Feature:
                 "nb_addresses": 4,
                 "nb_voters": 7,
                 "visibility": "national",
-                "zone": null
+                "vote_places": []
             },
             {
                 "title": "Campagne terminée",
@@ -859,7 +990,7 @@ Feature:
                 "nb_addresses": 4,
                 "nb_voters": 7,
                 "visibility": "national",
-                "zone": null
+                "vote_places": []
             }
         ]
     }
@@ -879,7 +1010,29 @@ Feature:
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
         "visibility": "national",
-        "zone": null
+        "vote_places": [
+          {
+            "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+          },
+          {
+            "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+          },
+          {
+            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+          },
+          {
+            "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+          },
+          {
+            "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+          },
+          {
+            "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+          },
+          {
+            "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+          }
+        ]
     }
     """
 
@@ -907,7 +1060,7 @@ Feature:
         "nb_open_doors": 1,
         "average_visit_time": 140,
         "visibility": "national",
-        "zone": null
+        "vote_places": []
     }
     """
 
@@ -925,7 +1078,29 @@ Feature:
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
         "visibility": "national",
-        "zone": null,
+        "vote_places": [
+          {
+            "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+          },
+          {
+            "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+          },
+          {
+            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+          },
+          {
+            "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+          },
+          {
+            "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+          },
+          {
+            "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+          },
+          {
+            "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+          }
+        ],
         "nb_surveys": 3,
         "nb_visited_doors": 5,
         "nb_addresses": 4,
@@ -1367,8 +1542,8 @@ Feature:
         "title": "Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP Nouvelle campagne PAP",
         "brief": "**NOUVEAU**",
         "goal": 0,
-        "begin_at": "2022-05-01 00:00:00",
-        "finish_at": "2022-05-31 00:00:00",
+        "begin_at": "2022-03-01 00:00:00",
+        "finish_at": "2022-03-31 00:00:00",
         "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
@@ -1378,11 +1553,15 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "goal: Cette valeur doit être supérieure à \"0\".",
+        "detail": "goal: Cette valeur doit être supérieure à \"0\".\nbegin_at: La date de début doit être dans le future.",
         "violations": [
             {
                 "propertyPath": "goal",
                 "message": "Cette valeur doit être supérieure à \"0\"."
+            },
+            {
+                "propertyPath": "begin_at",
+                "message": "La date de début doit être dans le future."
             }
         ]
     }

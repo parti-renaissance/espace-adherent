@@ -4,7 +4,10 @@ namespace App\Validator\Scope;
 
 use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
+use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Geo\ManagedZoneProvider;
+use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
@@ -16,15 +19,18 @@ class ScopeVisibilityValidator extends ConstraintValidator
 {
     private Security $security;
     private ManagedZoneProvider $managedZoneProvider;
+    private ZoneRepository $zoneRepository;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     public function __construct(
         Security $security,
         ManagedZoneProvider $managedZoneProvider,
+        ZoneRepository $zoneRepository,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ) {
         $this->security = $security;
         $this->managedZoneProvider = $managedZoneProvider;
+        $this->zoneRepository = $zoneRepository;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
@@ -76,7 +82,18 @@ class ScopeVisibilityValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())) {
+        if ($value instanceof EntityScopeVisibilityWithZoneInterface
+            && !$this->managedZoneProvider->zoneBelongsToSomeZones($value->getZone(), $scope->getZones())) {
+            $this
+                ->context
+                ->buildViolation($constraint->localScopeWithUnmanagedZoneMessage)
+                ->atPath('zone')
+                ->addViolation()
+            ;
+        }
+
+        if ($value instanceof EntityScopeVisibilityWithZonesInterface
+            && !$this->zoneRepository->isInZones($value->getZones()->toArray(), $scope->getZones())) {
             $this
                 ->context
                 ->buildViolation($constraint->localScopeWithUnmanagedZoneMessage)
