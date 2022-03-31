@@ -108,15 +108,21 @@ class CampaignRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('campaign')
             ->innerJoin('campaign.votePlaces', 'votePlace', Join::WITH, 'votePlace IN (:vote_places)')
-            ->andWhere('campaign.finishAt > :now')
             ->setParameter('vote_places', $votePlaces)
-            ->setParameter('now', new \DateTime())
         ;
 
         if ($excludedCampaign) {
+            if ($excludedCampaign->getId()) {
+                $qb
+                    ->andWhere('campaign != :excluded_campaign')
+                    ->setParameter('excluded_campaign', $excludedCampaign)
+                ;
+            }
+
             $qb
-                ->andWhere('campaign != :excluded_campaign')
-                ->setParameter('excluded_campaign', $excludedCampaign)
+                ->andWhere('(campaign.beginAt < :finish_at AND campaign.finishAt > :begin_at)')
+                ->setParameter('begin_at', $excludedCampaign->getBeginAt())
+                ->setParameter('finish_at', $excludedCampaign->getFinishAt())
             ;
         }
 

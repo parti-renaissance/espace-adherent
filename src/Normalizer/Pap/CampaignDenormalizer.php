@@ -3,7 +3,6 @@
 namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Campaign;
-use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 use App\Scope\ScopeVisibilityEnum;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -32,13 +31,13 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
         $scope = $this->scopeGeneratorResolver->generate();
         $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
         if ('post' === ($context['collection_operation_name'] ?? null) && $scopeCode) {
-            if (ScopeEnum::PAP_NATIONAL_MANAGER !== $scopeCode) {
+            if ($scope->isNational()) {
+                $data->setVisibility(ScopeVisibilityEnum::NATIONAL);
+            } else {
                 $data->setVisibility(ScopeVisibilityEnum::LOCAL);
                 if (\count($scope->getZones()) > 0) {
                     $data->setZones($scope->getZones());
                 }
-            } else {
-                $data->setVisibility(ScopeVisibilityEnum::NATIONAL);
             }
         }
 
