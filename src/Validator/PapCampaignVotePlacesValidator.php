@@ -78,7 +78,7 @@ class PapCampaignVotePlacesValidator extends ConstraintValidator
                     ->addViolation()
                 ;
 
-                break;
+                return;
             }
         }
     }
