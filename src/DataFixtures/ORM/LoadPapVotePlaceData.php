@@ -27,6 +27,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.8589506,
             2.2773447,
+            '75108_0001',
+            2,
+            3,
             Uuid::fromString(self::UUID_1),
         ));
         $this->setReference('pap-vote-place--paris-8-a', $object);
@@ -34,6 +37,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.8780275,
             2.3178072,
+            '75108_0002',
+            2,
+            4,
             Uuid::fromString(self::UUID_2),
             0.03448712620899716,
             -0.04701780333257613,
@@ -45,6 +51,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.862725,
             2.287592,
+            '75108_0003',
+            0,
+            0,
             Uuid::fromString(self::UUID_3)
         ));
         $this->setReference('pap-vote-place--paris-8-c', $object);
@@ -52,6 +61,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.822865,
             2.362221,
+            '75103_0001',
+            1,
+            1,
             Uuid::fromString(self::UUID_4),
             -0.11020033706766413,
             0.09149141048645792,
@@ -63,6 +75,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.75202,
             2.293244,
+            '92002_0001',
+            2,
+            4,
             Uuid::fromString(self::UUID_5),
             -0.01368787135603089,
             0.08377306353576569,
@@ -74,6 +89,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.760128,
             2.297235,
+            '92002_0002',
+            1,
+            1,
             Uuid::fromString(self::UUID_6),
             -0.02095552502504222,
             0.08456851575224938,
@@ -85,6 +103,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.75752,
             2.304083,
+            '92002_0003',
+            0,
+            0,
             Uuid::fromString(self::UUID_7),
             -0.06196240784844481,
             0.09086137737347927,
@@ -96,6 +117,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.94159,
             2.157997,
+            '78586_0001',
+            0,
+            0,
             Uuid::fromString(self::UUID_8),
             -0.050389164528078456,
             0.07462764506078307,
@@ -107,6 +131,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.93528,
             2.151656,
+            '78586_0002',
+            0,
+            0,
             Uuid::fromString(self::UUID_9)
         ));
         $this->setReference('pap-vote-place--sartrouville-b', $object);
@@ -114,6 +141,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.934376,
             2.155423,
+            '78586_0003',
+            0,
+            0,
             Uuid::fromString(self::UUID_10)
         ));
         $this->setReference('pap-vote-place--sartrouville-c', $object);
@@ -121,6 +151,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             48.348328,
             2.561779,
+            '77001_0001',
+            0,
+            0,
             Uuid::fromString(self::UUID_11),
             0.027060904596480972,
             0.01574765192935429,
@@ -132,6 +165,9 @@ class LoadPapVotePlaceData extends Fixture
         $manager->persist($object = new VotePlace(
             43.696266,
             7.241974,
+            '06088_0001',
+            1,
+            0,
             Uuid::fromString(self::UUID_12),
             0.03922582276744235,
             -0.021542342902355627,

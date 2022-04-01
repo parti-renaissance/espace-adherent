@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "order": {"createdAt": "DESC"},
  *         "pagination_client_enabled": true,
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
+ *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"pap_campaign_read"},
@@ -66,14 +66,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/pap_campaigns/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap') and is_granted('SCOPE_CAN_MANAGE', object)",
+ *             "access_control": "(is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')) and is_granted('SCOPE_CAN_MANAGE', object)",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *         },
  *         "get_questioners_with_scores": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/{uuid}/questioners",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController",
  *             "defaults": {"_api_receive": false},
  *         }
@@ -85,7 +85,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/pap_campaigns",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
  *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
  *             "validation_groups": {"Default", "pap_campaign_creation"},
  *         },
@@ -93,7 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/kpi",
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignsKpiController",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
  *         },
  *     },
  *     subresourceOperations={

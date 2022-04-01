@@ -1954,7 +1954,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -1986,7 +1986,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2018,7 +2018,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2050,7 +2050,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2082,7 +2082,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2131,7 +2131,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2163,7 +2163,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2195,7 +2195,7 @@ Feature:
                     "uuid": "25e75e2f-2f73-4f51-8542-bd511ba6a945",
                     "first_name": "Patrick",
                     "last_name": "Bialès",
-                    "age": 71
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2227,7 +2227,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2259,7 +2259,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -3265,3 +3265,36 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a candidate granted with local scope, I can get vote places
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/pap_vote_places?scope=candidate"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 5,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 3
+        },
+        "items": [
+            {
+                "code": "75108_0001",
+                "nb_addresses": 2,
+                "nb_voters": 3,
+                "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+            },
+            {
+                "code": "75108_0002",
+                "nb_addresses": 2,
+                "nb_voters": 4,
+                "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+            }
+        ]
+    }
+    """
