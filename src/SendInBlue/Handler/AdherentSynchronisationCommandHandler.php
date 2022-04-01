@@ -44,7 +44,7 @@ class AdherentSynchronisationCommandHandler implements MessageHandlerInterface, 
         $this->em->refresh($adherent);
 
         try {
-            $this->adherentManager->synchronize($adherent);
+            $this->adherentManager->synchronize($adherent, $command->getIdentifier());
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Failed to synchronize adherent UUID: "%s". Error: %s', $adherent->getUuid(), $e->getMessage()));
         }

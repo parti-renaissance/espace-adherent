@@ -52,7 +52,10 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $changeTo = ArrayUtils::arrayDiffRecursive($after, $this->before);
 
         if ($changeFrom || $changeTo) {
-            $this->dispatchAdherentChangeCommand($adherent->getUuid());
+            $this->dispatchAdherentChangeCommand(
+                $adherent->getUuid(),
+                $changeFrom['emailAddress'] ?? $adherent->getEmailAddress()
+            );
         }
     }
 
@@ -65,7 +68,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getUser();
 
-        $this->dispatchAdherentChangeCommand($adherent->getUuid());
+        $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
     }
 
     private function transformToArray(Adherent $adherent): array
@@ -73,9 +76,9 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         return $this->normalizer->normalize($adherent, null, ['groups' => ['adherent_change_diff']]);
     }
 
-    private function dispatchAdherentChangeCommand(UuidInterface $uuid): void
+    private function dispatchAdherentChangeCommand(UuidInterface $uuid, string $identifier): void
     {
-        $this->dispatch(new AdherentSynchronisationCommand($uuid));
+        $this->dispatch(new AdherentSynchronisationCommand($uuid, $identifier));
     }
 
     private function dispatch($command): void

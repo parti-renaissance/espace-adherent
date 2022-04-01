@@ -7,6 +7,7 @@ use App\Utils\PhoneNumberUtils;
 
 class AdherentManager
 {
+    private const FIELD_EMAIL = 'EMAIL';
     private const FIELD_SOURCE = 'SOURCE';
     private const FIELD_FIRST_NAME = 'PRENOM';
     private const FIELD_LAST_NAME = 'NOM';
@@ -25,12 +26,12 @@ class AdherentManager
         $this->adherentListId = $sendInBlueAdherentListId;
     }
 
-    public function synchronize(Adherent $adherent): void
+    public function synchronize(Adherent $adherent, string $identifier): void
     {
         $this->client->synchronize(
             $adherent->getEmailAddress(),
             $this->adherentListId,
-            $this->createAttributes($adherent)
+            $this->createAttributes($adherent, $identifier)
         );
     }
 
@@ -39,9 +40,11 @@ class AdherentManager
         $this->client->delete($adherent->getEmailAddress());
     }
 
-    private function createAttributes(Adherent $adherent): array
+    private function createAttributes(Adherent $adherent, string $identifier): array
     {
         return [
+            self::FIELD_EMAIL => $identifier,
+
             self::FIELD_SOURCE => $adherent->getSource(),
             self::FIELD_FIRST_NAME => $adherent->getFirstName(),
             self::FIELD_LAST_NAME => $adherent->getLastName(),
