@@ -2,19 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"home_block_list_read"},
+ *         },
+ *         "pagination_enabled": false,
+ *         "order": {"position": "ASC"}
+ *     },
+ *     collectionOperations={
+ *         "get_public": {
+ *             "method": "GET",
+ *             "path": "/homeblock",
+ *         },
+ *     }
+ * )
+ *
  * @ORM\Table(name="home_blocks")
  * @ORM\Entity(repositoryClass="App\Repository\HomeBlockRepository")
  *
  * @UniqueEntity(fields={"position"})
  */
-class HomeBlock
+class HomeBlock implements EntityAdministratorBlameableInterface
 {
+    use EntityTimestampableTrait;
+    use EntityAdministratorBlameableTrait;
+
     public const TYPE_ARTICLE = 'article';
     public const TYPE_VIDEO = 'video';
     public const TYPE_BANNER = 'banner';
@@ -54,6 +74,8 @@ class HomeBlock
      *
      * @Assert\NotBlank
      * @Assert\Length(max=70)
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $title;
 
@@ -63,6 +85,8 @@ class HomeBlock
      * @ORM\Column(length=100, nullable=true)
      *
      * @Assert\Length(max=100)
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $subtitle;
 
@@ -73,6 +97,8 @@ class HomeBlock
      *
      * @Assert\NotBlank
      * @Assert\Choice({"video", "article", "banner"})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $type = self::TYPE_ARTICLE;
 
@@ -91,6 +117,8 @@ class HomeBlock
      * @ORM\Column
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $link;
 
@@ -98,6 +126,8 @@ class HomeBlock
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $displayFilter = true;
 
@@ -105,6 +135,8 @@ class HomeBlock
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $displayTitles = false;
 
@@ -112,6 +144,8 @@ class HomeBlock
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $displayBlock = true;
 
@@ -119,6 +153,8 @@ class HomeBlock
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $videoControls = false;
 
@@ -126,6 +162,8 @@ class HomeBlock
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $videoAutoplayLoop = true;
 
@@ -135,6 +173,8 @@ class HomeBlock
      * @ORM\Column(length=70, nullable=true)
      *
      * @Assert\Length(max=70)
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $titleCta;
 
@@ -144,6 +184,8 @@ class HomeBlock
      * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\Choice(strict=true, callback={"\App\Admin\Color", "all"})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $colorCta;
 
@@ -153,17 +195,10 @@ class HomeBlock
      * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\Choice(strict=true, callback={"\App\Admin\Color", "all"})
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $bgColor;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedAt;
 
     public function __toString()
     {
@@ -323,15 +358,5 @@ class HomeBlock
     public function setBgColor(?string $bgColor): void
     {
         $this->bgColor = $bgColor;
-    }
-
-    public function getUpdatedAt(): \DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTime $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
     }
 }
