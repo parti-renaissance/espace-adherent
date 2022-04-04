@@ -234,7 +234,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list", "survey_replies_list"})
      */
-    private ?\DateTime $beginAt = null;
+    private ?\DateTimeInterface $beginAt = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -243,7 +243,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Groups({"pap_campaign_replies_list", "survey_replies_list"})
      */
-    private ?\DateTime $finishAt = null;
+    private ?\DateTimeInterface $finishAt = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="papCampaignHistory")

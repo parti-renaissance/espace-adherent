@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     @ORM\Index(columns={"latitude", "longitude"}),
  * })
  *
- *  * @ApiResource(
+ * @ApiResource(
  *     shortName="PapVotePlace",
  *     attributes={
  *         "pagination_client_enabled": true,
@@ -33,6 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "path": "/v3/pap_vote_places",
  *         },
  *     },
+ *     itemOperations={"get"},
  * )
  */
 class VotePlace
