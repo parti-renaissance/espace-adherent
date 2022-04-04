@@ -2,6 +2,7 @@
 
 namespace App\Procuration;
 
+use App\Entity\ProcurationRequest;
 use App\Mailer\MailerService;
 
 class ProcurationReminderHandler
@@ -15,7 +16,10 @@ class ProcurationReminderHandler
         $this->factory = $factory;
     }
 
-    public function remind(array $requests)
+    /**
+     * @param ProcurationRequest[] $requests
+     */
+    public function remind(array $requests): void
     {
         $this->mailer->sendMessage($this->factory->createProxyReminderMessage($requests));
 

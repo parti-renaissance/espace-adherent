@@ -62,24 +62,14 @@ class ProcurationProxyMessageFactory
 
         $request = array_shift($requests);
 
-        $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
-            'id' => $request->getId(),
-            'privateToken' => $request->generatePrivateToken(),
-        ]);
-
-        $message = ProcurationProxyReminderMessage::create($request, $url);
+        $message = ProcurationProxyReminderMessage::create($request);
         $message->setReplyTo($this->replyToEmailAddress);
 
         foreach ($requests as $request) {
-            $url = $this->urlGenerator->generateRemoteUrl('app_procuration_my_request', [
-                'id' => $request->getId(),
-                'privateToken' => $request->generatePrivateToken(),
-            ]);
-
             $message->addRecipient(
                 $request->getEmailAddress(),
                 null,
-                ProcurationProxyReminderMessage::createRecipientVariables($request, $url)
+                ProcurationProxyReminderMessage::createRecipientVariables($request)
             );
         }
 

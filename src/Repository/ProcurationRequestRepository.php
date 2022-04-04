@@ -187,38 +187,31 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findRemindersBatchToSend($offset = 0, $limit = 25): array
+    public function findRemindersBatchToSend(\DateTime $processedAfter, int $limit = 25): array
     {
         return $this->createQueryBuilder('pr')
-            ->select('pr', 'pp', 'a')
+            ->select('pr', 'pp')
             ->join('pr.foundProxy', 'pp')
-            ->leftJoin('pr.foundBy', 'a')
-            ->leftJoin('pr.electionRounds', 'er')
-            ->where('er.date < :next_round')
-            ->setParameter('next_round', new \DateTime('+3 days'))
-            ->andWhere('er.date > :now')
-            ->setParameter('now', new \DateTime())
             ->andWhere('pr.processed = true')
             ->andWhere('pr.reminded = 0')
-            ->andWhere('pr.processedAt <= :matchDate')
-            ->setParameter('matchDate', new \DateTime('-48 hours'))
+            ->andWhere('pr.processedAt > :processed_after')
+            ->setParameter('processed_after', $processedAfter)
             ->orderBy('pr.processedAt', 'ASC')
-            ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function countRemindersToSend(): int
+    public function countRemindersToSend(\DateTime $processedAfter): int
     {
         return (int) $this->createQueryBuilder('pr')
             ->select('COUNT(pr)')
             ->join('pr.foundProxy', 'pp')
             ->where('pr.processed = true')
             ->andWhere('pr.reminded = 0')
-            ->andWhere('pr.processedAt <= :matchDate')
-            ->setParameter('matchDate', new \DateTime('-48 hours'))
+            ->andWhere('pr.processedAt > :processed_after')
+            ->setParameter('processed_after', $processedAfter)
             ->getQuery()
             ->getSingleScalarResult()
         ;
