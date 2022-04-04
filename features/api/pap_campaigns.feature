@@ -230,8 +230,8 @@ Feature:
       "title": "NOUVEAU Campagne de 10 jours suivants",
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
-      "begin_at": "2022-12-01 00:00:00",
-      "finish_at": "2022-12-30 00:00:00",
+      "begin_at": "+30 days",
+      "finish_at": "+40 days",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
@@ -623,8 +623,8 @@ Feature:
       "title": "Nouvelle campagne PAP",
       "brief": "**NOUVEAU**",
       "goal": 200,
-      "begin_at": "2022-05-01 00:00:00",
-      "finish_at": "2022-05-31 00:00:00",
+      "begin_at": "+30 days",
+      "finish_at": "+50 days",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
       "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
     }
@@ -637,8 +637,8 @@ Feature:
       "title": "Nouvelle campagne PAP",
       "brief": "**NOUVEAU**",
       "goal": 200,
-      "begin_at": "2022-05-01T00:00:00+02:00",
-      "finish_at": "2022-05-31T00:00:00+02:00",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
       "survey": {
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
@@ -729,12 +729,8 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "vote_places: Un ou plusieurs bureaux de votes que vous avez choisi sont déjà dans une autre campagne.\nvote_places: Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée",
+        "detail": "vote_places: Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée",
         "violations": [
-            {
-                "propertyPath": "vote_places",
-                "message": "Un ou plusieurs bureaux de votes que vous avez choisi sont déjà dans une autre campagne."
-            },
             {
                 "propertyPath": "vote_places",
                 "message": "Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée"

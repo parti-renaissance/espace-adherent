@@ -3,6 +3,7 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\Campaign;
+use App\Repository\GeoZoneTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\Scope\ScopeVisibilityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -13,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CampaignRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -104,7 +106,7 @@ class CampaignRepository extends ServiceEntityRepository
     }
 
     /** @return Campaign[] */
-    public function findCampaignsForVotePlaces(array $votePlaces, Campaign $excludedCampaign = null): array
+    public function findCampaignsByVotePlaces(array $votePlaces, Campaign $excludedCampaign = null): array
     {
         $qb = $this->createQueryBuilder('campaign')
             ->innerJoin('campaign.votePlaces', 'votePlace', Join::WITH, 'votePlace IN (:vote_places)')
@@ -112,20 +114,49 @@ class CampaignRepository extends ServiceEntityRepository
         ;
 
         if ($excludedCampaign) {
-            if ($excludedCampaign->getId()) {
-                $qb
-                    ->andWhere('campaign != :excluded_campaign')
-                    ->setParameter('excluded_campaign', $excludedCampaign)
-                ;
-            }
-
-            $qb
-                ->andWhere('(campaign.beginAt < :finish_at AND campaign.finishAt > :begin_at)')
-                ->setParameter('begin_at', $excludedCampaign->getBeginAt())
-                ->setParameter('finish_at', $excludedCampaign->getFinishAt())
-            ;
+            $this->withExcludedCampaign($qb, $excludedCampaign);
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /** @return Campaign[] */
+    public function findCampaignsByZones(array $zones, Campaign $excludedCampaign = null): array
+    {
+        $qb = $this->createQueryBuilder('campaign');
+        $this->withGeoZones(
+                $zones,
+                $qb,
+                'campaign',
+                Campaign::class,
+                'c2',
+                'zones',
+                'z2'
+            )
+        ;
+
+        if ($excludedCampaign) {
+            $this->withExcludedCampaign($qb, $excludedCampaign);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    private function withExcludedCampaign(QueryBuilder $qb, Campaign $excludedCampaign): QueryBuilder
+    {
+        if ($excludedCampaign->getId()) {
+            $qb
+                ->andWhere('campaign != :excluded_campaign')
+                ->setParameter('excluded_campaign', $excludedCampaign)
+            ;
+        }
+
+        $qb
+            ->andWhere('(campaign.beginAt < :finish_at AND campaign.finishAt > :begin_at)')
+            ->setParameter('begin_at', $excludedCampaign->getBeginAt())
+            ->setParameter('finish_at', $excludedCampaign->getFinishAt())
+        ;
+
+        return $qb;
     }
 }

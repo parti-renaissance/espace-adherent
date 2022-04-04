@@ -373,7 +373,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
         $this->goal = $goal;
     }
 
-    public function getBeginAt(): ?\DateTime
+    public function getBeginAt(): ?\DateTimeInterface
     {
         return $this->beginAt;
     }
