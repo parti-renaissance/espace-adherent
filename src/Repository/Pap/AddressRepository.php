@@ -5,6 +5,7 @@ namespace App\Repository\Pap;
 use App\Entity\Pap\Address;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\VotePlace;
+use App\Pap\Exception\LocalCampaignException;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -195,9 +196,12 @@ SQL;
                         ->getArrayResult(), 'id'
                 ));
             }
-            if (isset($votePlaceIds)) {
-                $conditions[] = "vote_place.id IN ($votePlaceIds)";
+
+            if (!isset($votePlaceIds)) {
+                throw new LocalCampaignException(sprintf('Local campaign with id "%s" has no associated vote places, neither zones.', $campaign->getId()));
             }
+
+            $conditions[] = "vote_place.id IN ($votePlaceIds)";
         }
 
         $sql = str_replace(
