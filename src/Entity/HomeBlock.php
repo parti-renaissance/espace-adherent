@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get_public": {
  *             "method": "GET",
- *             "path": "/homeblock",
+ *             "path": "/homeblocks",
  *         },
  *     }
  * )
@@ -108,6 +108,8 @@ class HomeBlock implements EntityAdministratorBlameableInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Media")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"home_block_list_read"})
      */
     private $media;
 

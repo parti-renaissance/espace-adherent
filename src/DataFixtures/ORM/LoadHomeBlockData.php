@@ -104,7 +104,7 @@ class LoadHomeBlockData extends Fixture
         [
             'positionName' => 'Bannière - Gauche',
             'type' => 'article',
-            'title' => '',
+            'title' => 'Bandeau PR Ensemble nous réussirons',
             'path' => 'bandeau-PR-Ensemble-nous-reussirons.jpeg',
             'pathTitle' => 'Guadeloupe',
             'link' => 'http://enmarche.code',
