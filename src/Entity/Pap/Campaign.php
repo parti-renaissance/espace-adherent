@@ -220,11 +220,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace")
      * @ORM\JoinTable(name="pap_campaign_vote_place")
      *
-     * @Groups({
-     *     "pap_campaign_write",
-     *     "pap_campaign_read",
-     *     "pap_campaign_read_after_write",
-     * })
+     * @Groups({"pap_campaign_write"})
      */
     private $votePlaces;
 

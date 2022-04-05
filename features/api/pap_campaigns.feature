@@ -91,30 +91,7 @@ Feature:
           "nb_voters": 7,
           "title": "Campagne de 10 jours suivants",
           "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-          "visibility": "national",
-          "vote_places": [
-            {
-              "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-            },
-            {
-              "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-            },
-            {
-              "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-            },
-            {
-              "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-            },
-            {
-              "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-            },
-            {
-              "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-            },
-            {
-              "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-            }
-          ]
+          "visibility": "national"
         },
         {
           "begin_at": "@string@.isDateTime()",
@@ -127,8 +104,7 @@ Feature:
           "nb_voters": 7,
           "title": "Campagne de 5 jours suivants",
           "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
-          "visibility": "national",
-          "vote_places": []
+          "visibility": "national"
         }
       ]
     }
@@ -162,8 +138,7 @@ Feature:
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "@uuid@",
-      "visibility": "national",
-      "vote_places": []
+      "visibility": "national"
     }
     """
 
@@ -194,30 +169,7 @@ Feature:
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-      "visibility": "national",
-      "vote_places": [
-        {
-          "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-        },
-        {
-          "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-        },
-        {
-          "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-        },
-        {
-          "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-        },
-        {
-          "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-        },
-        {
-          "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-        },
-        {
-          "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-        }
-      ]
+      "visibility": "national"
     }
     """
 
@@ -287,29 +239,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
-                "vote_places": [
-                  {
-                    "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-                  },
-                  {
-                    "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-                  },
-                  {
-                    "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-                  },
-                  {
-                    "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-                  },
-                  {
-                    "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-                  },
-                  {
-                    "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-                  },
-                  {
-                    "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-                  }
-                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -323,7 +252,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -337,7 +265,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -351,7 +278,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -365,7 +291,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -379,11 +304,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
                 "visibility": "local",
-                "vote_places": [
-                  {
-                    "uuid": "33106ef9-ba14-4281-8032-e186735df717"
-                  }
-                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 1,
@@ -397,7 +317,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
                 "visibility": "local",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
@@ -435,11 +354,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
                 "visibility": "local",
-                "vote_places": [
-                  {
-                    "uuid": "33106ef9-ba14-4281-8032-e186735df717"
-                  }
-                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 1,
@@ -453,7 +367,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "31f24b6c-0884-461a-af34-dbbb7b1276ab",
                 "visibility": "local",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
@@ -485,29 +398,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
                 "visibility": "national",
-                "vote_places": [
-                  {
-                    "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-                  },
-                  {
-                    "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-                  },
-                  {
-                    "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-                  },
-                  {
-                    "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-                  },
-                  {
-                    "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-                  },
-                  {
-                    "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-                  },
-                  {
-                    "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-                  }
-                ],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -521,7 +411,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -535,7 +424,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -549,7 +437,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "932d67d1-2da6-4695-82f6-42afc20f2e41",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -563,7 +450,6 @@ Feature:
                 "finish_at": "@string@.isDateTime()",
                 "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
                 "visibility": "national",
-                "vote_places": [],
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
@@ -592,11 +478,6 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
-      "vote_places": [
-        {
-          "uuid": "33106ef9-ba14-4281-8032-e186735df717"
-        }
-      ],
       "nb_surveys": 0,
       "nb_visited_doors": 1,
       "nb_addresses": 1,
@@ -643,8 +524,7 @@ Feature:
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "@uuid@",
-      "visibility": "local",
-      "vote_places": []
+      "visibility": "local"
     }
     """
     Examples:
@@ -673,11 +553,6 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
-      "vote_places": [
-        {
-          "uuid": "33106ef9-ba14-4281-8032-e186735df717"
-        }
-      ],
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       }
@@ -770,12 +645,7 @@ Feature:
             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
         },
         "uuid": "@uuid@",
-        "visibility": "local",
-        "vote_places": [
-            {
-                "uuid": "de7ed0bd-acec-4744-b94d-30b98d895adc"
-            }
-        ]
+        "visibility": "local"
     }
     """
 
@@ -843,8 +713,7 @@ Feature:
             "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
             "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
-            "visibility": "national",
-            "vote_places": []
+            "visibility": "national"
         },
         {
             "title": "Campagne de 10 jours suivants",
@@ -853,30 +722,7 @@ Feature:
             "begin_at": "@string@.isDateTime()",
             "finish_at": "@string@.isDateTime()",
             "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-            "visibility": "national",
-            "vote_places": [
-              {
-                "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-              },
-              {
-                "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-              },
-              {
-                "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-              },
-              {
-                "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-              },
-              {
-                "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-              },
-              {
-                "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-              },
-              {
-                "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-              }
-            ]
+            "visibility": "national"
         }
     ]
     """
@@ -907,30 +753,7 @@ Feature:
                 "nb_visited_doors": 5,
                 "nb_addresses": 4,
                 "nb_voters": 7,
-                "visibility": "national",
-                "vote_places": [
-                  {
-                    "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-                  },
-                  {
-                    "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-                  },
-                  {
-                    "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-                  },
-                  {
-                    "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-                  },
-                  {
-                    "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-                  },
-                  {
-                    "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-                  },
-                  {
-                    "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-                  }
-                ]
+                "visibility": "national"
             },
             {
                 "title": "Campagne de 5 jours suivants",
@@ -943,8 +766,7 @@ Feature:
                 "nb_visited_doors": 1,
                 "nb_addresses": 4,
                 "nb_voters": 7,
-                "visibility": "national",
-                "vote_places": []
+                "visibility": "national"
             },
             {
                 "title": "Campagne dans 10 jours",
@@ -957,8 +779,7 @@ Feature:
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7,
-                "visibility": "national",
-                "vote_places": []
+                "visibility": "national"
             },
             {
                 "title": "Campagne dans 20 jours",
@@ -971,8 +792,7 @@ Feature:
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7,
-                "visibility": "national",
-                "vote_places": []
+                "visibility": "national"
             },
             {
                 "title": "Campagne terminée",
@@ -985,8 +805,7 @@ Feature:
                 "nb_visited_doors": 1,
                 "nb_addresses": 4,
                 "nb_voters": 7,
-                "visibility": "national",
-                "vote_places": []
+                "visibility": "national"
             }
         ]
     }
@@ -1005,30 +824,7 @@ Feature:
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-        "visibility": "national",
-        "vote_places": [
-          {
-            "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-          },
-          {
-            "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-          },
-          {
-            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-          },
-          {
-            "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-          },
-          {
-            "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-          },
-          {
-            "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-          },
-          {
-            "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-          }
-        ]
+        "visibility": "national"
     }
     """
 
@@ -1055,8 +851,7 @@ Feature:
         "nb_to_join": 0,
         "nb_open_doors": 1,
         "average_visit_time": 140,
-        "visibility": "national",
-        "vote_places": []
+        "visibility": "national"
     }
     """
 
@@ -1074,29 +869,6 @@ Feature:
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
         "visibility": "national",
-        "vote_places": [
-          {
-            "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
-          },
-          {
-            "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
-          },
-          {
-            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
-          },
-          {
-            "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
-          },
-          {
-            "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
-          },
-          {
-            "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
-          },
-          {
-            "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
-          }
-        ],
         "nb_surveys": 3,
         "nb_visited_doors": 5,
         "nb_addresses": 4,
@@ -2046,7 +1818,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2078,7 +1850,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2223,7 +1995,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -2255,7 +2027,7 @@ Feature:
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
                     "last_name": "Picard",
-                    "age": 68
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
