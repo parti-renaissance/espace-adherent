@@ -2,7 +2,6 @@
 
 namespace Tests\App\Command;
 
-use App\Command\ProcurationSendReminderCommand;
 use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
 use Tests\App\AbstractCommandCaseTest;
 use Tests\App\Controller\ControllerTestTrait;
@@ -16,10 +15,10 @@ class ProcurationSendReminderCommandTest extends AbstractCommandCaseTest
 
     public function testCommand()
     {
-        $output = $this->runCommand(ProcurationSendReminderCommand::COMMAND_NAME);
+        $output = $this->runCommand('app:procuration:send-reminder', ['processed-after' => (new \DateTime('-3 months'))->format('Y-m-d')]);
         $output = $output->getDisplay();
-        $this->assertStringContainsString('1 reminders sent', $output);
-        $this->assertCountMails(1, ProcurationProxyReminderMessage::class);
-        $this->assertCount(1, $this->getProcurationRequestRepository()->findBy(['reminded' => 1]), 'The command should add a reminder.');
+        $this->assertStringContainsString('3 reminders sent', $output);
+        $this->assertCountMails(3, ProcurationProxyReminderMessage::class);
+        $this->assertCount(3, $this->getProcurationRequestRepository()->findBy(['reminded' => 1]), 'The command should add a reminder.');
     }
 }
