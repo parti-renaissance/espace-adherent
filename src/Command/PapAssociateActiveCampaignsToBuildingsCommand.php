@@ -2,17 +2,22 @@
 
 namespace App\Command;
 
+use App\Pap\Exception\LocalCampaignException;
 use App\Repository\Pap\AddressRepository;
 use App\Repository\Pap\CampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class PapAssociateActiveCampaignsToBuildingsCommand extends Command
+class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     protected static $defaultName = 'app:pap:associate-campaigns';
 
     private ?SymfonyStyle $io = null;
@@ -44,7 +49,14 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command
         $this->io->progressStart(\count($campaigns));
 
         foreach ($campaigns as $campaign) {
-            $this->addressRepository->associatedCampaign($campaign);
+            try {
+                $this->addressRepository->associatedCampaign($campaign);
+            } catch (LocalCampaignException $e) {
+                $this->logger->error($e->getMessage(), ['exception' => $e]);
+                $this->io->progressAdvance();
+
+                continue;
+            }
 
             $campaign->setAssociated(true);
             $this->entityManager->flush();
