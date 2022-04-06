@@ -189,6 +189,12 @@
         <service id="App\Api\Doctrine\PapCampaignExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
+        <service id="App\Api\Doctrine\ArticleCategoryExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
+        <service id="App\Api\Doctrine\ArticleExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
 
         <!-- Mailchimp -->
         <service id="App\Mailchimp\Driver">

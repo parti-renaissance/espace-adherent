@@ -2,10 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "pagination_enabled": false,
+ *         "order": {"position": "ASC"},
+ *         "normalization_context": {"groups": {"article_category_read"}},
+ *     },
+ *     itemOperations={"get"},
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/article_categories",
+ *         },
+ *     }
+ * )
+ *
  * @ORM\Table(name="articles_categories")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleCategoryRepository")
  */
@@ -38,6 +54,8 @@ class ArticleCategory
      *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
+     *
+     * @Groups({"article_category_read", "article_list_read", "article_read"})
      */
     private $name;
 
@@ -47,6 +65,8 @@ class ArticleCategory
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"article_category_read", "article_list_read", "article_read"})
      */
     private $slug;
 

@@ -2,14 +2,43 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "order": {"createdAt": "DESC"},
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"article_read"}
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/articles",
+ *             "normalization_context": {
+ *                 "groups": {"article_list_read"},
+ *             },
+ *         },
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/articles/{id}",
+ *             "requirements": {"id": "[\w-]+"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Article\RetrieveArticleController",
+ *         },
+ *     },
+ * )
+ *
  * @ORM\Table(name="articles")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  * @ORM\EntityListeners({"App\EntityListener\ArticleListener"})
@@ -41,6 +70,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"article_list_read", "article_read"})
      */
     private $category;
 
@@ -50,6 +81,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
+     *
+     * @Groups({"article_list_read", "article_read"})
      */
     private $publishedAt;
 
@@ -67,8 +100,24 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      *
      * @Assert\NotBlank
      * @Assert\Valid
+     *
+     * @Groups({"article_list_read", "article_read"})
      */
     private $media;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=100, unique=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=100)
+     *
+     * @ApiProperty(identifier=true)
+     *
+     * @Groups({"article_list_read", "article_read"})
+     */
+    private $slug;
 
     public function __construct()
     {
