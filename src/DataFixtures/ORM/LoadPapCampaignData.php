@@ -115,6 +115,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             1,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')],
+            $this->getReference('adherent-3'),
         );
         $campaign92->addVotePlace($this->getReference('pap-vote-place--anthony-c'));
         $this->addReference('pap-campaign-92', $campaign92);

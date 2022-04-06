@@ -89,6 +89,9 @@ Feature:
           "nb_surveys": 3,
           "nb_visited_doors": 5,
           "nb_voters": 7,
+          "nb_vote_places": 7,
+          "nb_collected_contacts": 3,
+          "creator": "Admin",
           "title": "Campagne de 10 jours suivants",
           "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
           "visibility": "national"
@@ -102,6 +105,9 @@ Feature:
           "nb_surveys": 0,
           "nb_visited_doors": 1,
           "nb_voters": 7,
+          "nb_vote_places": 0,
+          "nb_collected_contacts": 0,
+          "creator": "Admin",
           "title": "Campagne de 5 jours suivants",
           "uuid": "1c67b6bd-6da9-4a72-a266-813c419e7024",
           "visibility": "national"
@@ -242,7 +248,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 7,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne de 5 jours suivants",
@@ -255,7 +264,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne dans 10 jours",
@@ -268,7 +280,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne dans 20 jours",
@@ -281,7 +296,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne terminée",
@@ -294,7 +312,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne locale du département 92",
@@ -307,7 +328,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 1,
-                "nb_voters": 0
+                "nb_voters": 0,
+                "nb_vote_places": 1,
+                "nb_collected_contacts": 0,
+                "creator": "Jacques Picard"
             },
             {
                 "title": "Campagne locale de la ville de Lille (59350)",
@@ -320,7 +344,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
-                "nb_voters": 0
+                "nb_voters": 0,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             }
         ]
     }
@@ -357,7 +384,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 1,
                 "nb_addresses": 1,
-                "nb_voters": 0
+                "nb_voters": 0,
+                "nb_vote_places": 1,
+                "nb_collected_contacts": 0,
+                "creator": "Jacques Picard"
             },
             {
                 "title": "Campagne locale de la ville de Lille (59350)",
@@ -370,7 +400,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 0,
-                "nb_voters": 0
+                "nb_voters": 0,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             }
         ]
     }
@@ -401,7 +434,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 7,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne de 5 jours suivants",
@@ -414,7 +450,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne dans 10 jours",
@@ -427,7 +466,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne dans 20 jours",
@@ -440,7 +482,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             },
             {
                 "title": "Campagne terminée",
@@ -453,7 +498,10 @@ Feature:
                 "nb_surveys": 0,
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
-                "nb_voters": 7
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             }
         ]
     }
@@ -478,10 +526,12 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
+      "creator": "Jacques Picard",
       "nb_surveys": 0,
       "nb_visited_doors": 1,
       "nb_addresses": 1,
       "nb_voters": 0,
+      "nb_vote_places": 1,
       "nb_collected_contacts": 0,
       "nb_contact_later": 0,
       "nb_door_open": 0,
@@ -753,6 +803,9 @@ Feature:
                 "nb_visited_doors": 5,
                 "nb_addresses": 4,
                 "nb_voters": 7,
+                "nb_vote_places": 7,
+                "nb_collected_contacts": 3,
+                "creator": "Admin",
                 "visibility": "national"
             },
             {
@@ -766,6 +819,9 @@ Feature:
                 "nb_visited_doors": 1,
                 "nb_addresses": 4,
                 "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin",
                 "visibility": "national"
             },
             {
@@ -779,6 +835,9 @@ Feature:
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin",
                 "visibility": "national"
             },
             {
@@ -792,6 +851,9 @@ Feature:
                 "nb_visited_doors": 0,
                 "nb_addresses": 4,
                 "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin",
                 "visibility": "national"
             },
             {
@@ -805,6 +867,9 @@ Feature:
                 "nb_visited_doors": 1,
                 "nb_addresses": 4,
                 "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin",
                 "visibility": "national"
             }
         ]
@@ -841,10 +906,12 @@ Feature:
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "uuid": "9ba6b743-5018-4358-bdc0-eb2094010beb",
+        "creator": "Admin",
         "nb_surveys": 0,
         "nb_visited_doors": 1,
         "nb_addresses": 4,
         "nb_voters": 7,
+        "nb_vote_places": 0,
         "nb_collected_contacts": 0,
         "nb_contact_later": 1,
         "nb_door_open": 0,
@@ -869,10 +936,12 @@ Feature:
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
         "visibility": "national",
+        "creator": "Admin",
         "nb_surveys": 3,
         "nb_visited_doors": 5,
         "nb_addresses": 4,
         "nb_voters": 7,
+        "nb_vote_places": 7,
         "nb_collected_contacts": 3,
         "average_visit_time": 336,
         "nb_open_doors": 4,

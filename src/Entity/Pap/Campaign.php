@@ -621,4 +621,9 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     {
         return ScopeVisibilityEnum::NATIONAL === $this->visibility;
     }
+
+    public function getCreator(): string
+    {
+        return null !== $this->createdByAdherent ? $this->createdByAdherent->getFullName() : 'Admin';
+    }
 }
