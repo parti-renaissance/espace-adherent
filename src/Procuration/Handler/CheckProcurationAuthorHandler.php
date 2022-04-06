@@ -6,8 +6,10 @@ use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
 use App\Procuration\Command\NewProcurationObjectCommand;
 use App\Validator\InvalidEmailAddress;
+use App\Validator\StrictEmail;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CheckProcurationAuthorHandler implements MessageHandlerInterface
@@ -26,11 +28,23 @@ class CheckProcurationAuthorHandler implements MessageHandlerInterface
         /** @var ProcurationProxy|ProcurationRequest $object */
         $object = $this->entityManager->find($command->getClass(), $command->getId());
 
-        $errors = $this->validator->validate($object->getEmailAddress(), [new InvalidEmailAddress()]);
+        $errors = $this->validator->validate($object->getEmailAddress(), [
+            new InvalidEmailAddress(),
+            new StrictEmail(),
+        ]);
+
+        /** @var ConstraintViolation $error */
+        foreach ($errors as $error) {
+            if ($error->getConstraint() instanceof InvalidEmailAddress) {
+                $object->disable('banned_email');
+                break;
+            } elseif ($error->getConstraint() instanceof StrictEmail) {
+                $object->disable('invalid_email');
+                break;
+            }
+        }
 
         if ($errors->count()) {
-            $object->disable('banned_email');
-
             $this->entityManager->flush();
         }
     }
