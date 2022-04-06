@@ -2,6 +2,7 @@
 
 namespace App\Normalizer\Pap;
 
+use App\Address\GeoCoder;
 use App\Entity\Pap\CampaignHistory;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -21,6 +22,8 @@ class CampaignHistoryDenormalizer implements DenormalizerInterface, Denormalizer
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
         if (!$data->getBeginAt()) {
             $data->setBeginAt(new \DateTime());
+        } elseif (GeoCoder::DEFAULT_TIME_ZONE !== $data->getBeginAt()->getTimezone()->getName()) {
+            $data->setBeginAt((clone $data->getBeginAt())->setTimezone(new \DateTimeZone(GeoCoder::DEFAULT_TIME_ZONE)));
         }
 
         return $data;
