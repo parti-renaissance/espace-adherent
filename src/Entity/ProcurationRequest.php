@@ -356,6 +356,11 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      */
     private bool $enabled = false;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $disabledReason = null;
+
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
@@ -524,7 +529,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
 
     public function setEmailAddress(?string $emailAddress): void
     {
-        $this->emailAddress = $emailAddress;
+        $this->emailAddress = mb_strtolower($emailAddress);
     }
 
     public function getBirthdate(): ?\DateTime
@@ -758,5 +763,16 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getDisabledReason(): ?string
+    {
+        return $this->disabledReason;
+    }
+
+    public function disable(?string $reason): void
+    {
+        $this->setEnabled(false);
+        $this->disabledReason = $reason;
     }
 }

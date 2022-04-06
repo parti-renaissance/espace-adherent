@@ -306,6 +306,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     private $disabled = false;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $disabledReason = null;
+
+    /**
      * @var int
      *
      * @Assert\Range(
@@ -532,7 +537,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
     public function setEmailAddress(?string $emailAddress): void
     {
-        $this->emailAddress = $emailAddress;
+        $this->emailAddress = mb_strtolower($emailAddress);
     }
 
     public function getBirthdate(): ?\DateTimeInterface
@@ -655,9 +660,10 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->disabled = false;
     }
 
-    public function disable(): void
+    public function disable(?string $reason = null): void
     {
         $this->disabled = true;
+        $this->disabledReason = $reason;
     }
 
     public function matchesRequest(ProcurationRequest $request): bool

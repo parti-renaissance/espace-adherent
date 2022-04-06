@@ -308,6 +308,85 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame(ProcurationRequest::REASON_HEALTH, $request->getReason());
     }
 
+    public function testProcurationRequestWithInvalidEmailAddress(): void
+    {
+        $this->setElectionContext();
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/je-demande/'.ProcurationRequest::STEP_URI_VOTE);
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Je continue')->form([
+            'app_procuration_request' => [
+                'voteCountry' => 'FR',
+                'votePostalCode' => '92110',
+                'voteCity' => '92110-92024',
+                'voteCityName' => '',
+                'voteOffice' => 'TestOfficeName',
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_PROFILE, $this->client);
+
+        // Profile
+        $crawler = $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Je continue')->form([
+            'app_procuration_request' => [
+                'gender' => 'male',
+                'firstNames' => 'Paul, Jean, Martin',
+                'lastName' => 'Dupont',
+                'emailAddress' => 'invalid-email@en-marche-dev.code',
+                'address' => '6 rue Neyret',
+                'country' => 'ES',
+                'postalCode' => '69001',
+                'city' => '69001-69381',
+                'cityName' => '',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0140998080',
+                ],
+                'birthdate' => [
+                    'year' => '1950',
+                    'month' => '1',
+                    'day' => '20',
+                ],
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_ELECTION_ROUNDS, $this->client);
+
+        // Elections
+        $crawler = $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Je continue')->form([
+            'g-recaptcha-response' => 'dummy',
+            'app_procuration_request' => [
+                'electionRounds' => ['10'],
+                'reason' => ProcurationRequest::REASON_HEALTH,
+                'authorization' => true,
+                'reachable' => true,
+            ],
+        ]));
+
+        $this->assertClientIsRedirectedTo('/je-demande/'.ProcurationRequest::STEP_URI_THANKS, $this->client);
+        $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+
+        /* @var ProcurationRequest $request */
+        $this->assertCount(1, $requests = $this->procurationRequestRepostitory->findByEmailAddress('invalid-email@en-marche-dev.code'));
+        $this->assertInstanceOf(ProcurationRequest::class, $request = end($requests));
+
+        $this->assertFalse($request->isEnabled());
+        $this->assertSame('banned_email', $request->getDisabledReason());
+    }
+
     public function testProcurationRequestAsAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
