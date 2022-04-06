@@ -76,6 +76,7 @@ services:
             $sendInBlueContactListId: '%env(int:SENDINBLUE_CONTACT_LIST_ID)%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
+            $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
