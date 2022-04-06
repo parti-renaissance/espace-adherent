@@ -52,12 +52,14 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
             $zones = $scope->getZones();
         }
 
+        $campaign['creator'] = $object->getCreator();
         $campaign['nb_surveys'] = $zones ? $this->campaignHistoryRepository->countCampaignHistoriesWithDataSurvey($object, $zones) : $object->getCampaignHistoriesWithDataSurvey()->count();
         $campaign['nb_visited_doors'] = $this->campaignHistoryRepository->countVisitedDoors($object, $zones);
         $campaign['nb_addresses'] = $object->getNbAddresses();
         $campaign['nb_voters'] = $object->getNbVoters();
+        $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object, $zones);
+        $campaign['nb_vote_places'] = $object->getVotePlaces()->count();
         if (($context['item_operation_name'] ?? null) === 'get') {
-            $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object, $zones);
             $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object, $zones);
             $campaign['nb_open_doors'] = $this->campaignHistoryRepository->countOpenDoors($object, $zones);
             $campaign['nb_to_join'] = $zones ? $this->campaignHistoryRepository->countToJoinByCampaign($object, $zones) : $object->getCampaignHistoriesToJoin()->count();
