@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set zones = object.zones %}
+
+    {{ zones|length > 0 ? zones|join(', ') : 'Toute la France' }}
+{% endblock %}
