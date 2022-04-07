@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  *
- * @ApiFilter(SearchFilter::class, properties={"title": "partial", "category.name": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"title": "partial", "category.slug": "exact"})
  *
  * @ORM\Table(name="articles")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
