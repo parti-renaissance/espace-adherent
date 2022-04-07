@@ -531,7 +531,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         iterable $electionRounds,
         string $reason = ProcurationRequest::REASON_HOLIDAYS,
         bool $requestFromFrance = true,
-        bool $enabled = false
+        bool $enabled = true
     ): ProcurationRequest {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);

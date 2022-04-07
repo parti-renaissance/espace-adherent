@@ -20,20 +20,6 @@ class ProcurationProxyRepository extends ServiceEntityRepository
     /**
      * @return ProcurationProxy[]
      */
-    public function findByEmailAddress(string $emailAddress): array
-    {
-        return $this
-            ->createQueryBuilder('pp')
-            ->where('LOWER(pp.emailAddress) = :emailAddress')
-            ->setParameter('emailAddress', mb_strtolower($emailAddress))
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @return ProcurationProxy[]
-     */
     public function findMatchingProposals(Adherent $manager, ProcurationProxyProposalFilters $filters): array
     {
         if (!$manager->isProcurationManager()) {

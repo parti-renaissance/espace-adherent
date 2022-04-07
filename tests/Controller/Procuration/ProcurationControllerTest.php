@@ -380,7 +380,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         /* @var ProcurationRequest $request */
-        $this->assertCount(1, $requests = $this->procurationRequestRepostitory->findByEmailAddress('invalid-email@en-marche-dev.code'));
+        $this->assertCount(1, $requests = $this->procurationRequestRepostitory->findBy(['emailAddress' => 'invalid-email@en-marche-dev.code']));
         $this->assertInstanceOf(ProcurationRequest::class, $request = end($requests));
 
         $this->assertFalse($request->isEnabled());
