@@ -35,8 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/articles/{id}",
  *             "requirements": {"id": "[\w-]+"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Article\RetrieveArticleController",
  *         },
  *     },
  * )
@@ -64,6 +62,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
+     *
+     * @ApiProperty(identifier=false)
      */
     private $id;
 
