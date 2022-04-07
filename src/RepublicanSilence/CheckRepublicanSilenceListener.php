@@ -47,7 +47,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_jecoute_news_candidate_*' => ReferentTagExtractorInterface::NONE,
 
         // Procuration Space
-        'app_procuration_manager_*' => ReferentTagExtractorInterface::NONE,
+        'app_procuration_manager_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_PROCURATION_MANAGER,
 
         // LRE Space
         'app_lre_*' => ReferentTagExtractorInterface::NONE,
