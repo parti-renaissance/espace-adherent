@@ -3,10 +3,8 @@
 namespace App\Api\Filter;
 
 use App\Entity\Adherent;
-use App\Entity\Pap\Address;
 use App\Entity\Pap\VotePlace;
 use App\Scope\Generator\ScopeGeneratorInterface;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 final class PapVotePlaceScopeFilter extends AbstractScopeFilter
@@ -25,8 +23,7 @@ final class PapVotePlaceScopeFilter extends AbstractScopeFilter
         $scope = $scopeGenerator->generate($currentUser);
         if (!$scope->isNational()) {
             $queryBuilder
-                ->innerJoin(Address::class, 'address', Join::WITH, "address.votePlace = $alias")
-                ->innerJoin('address.zones', 'zone')
+                ->innerJoin($alias.'.zone', 'zone')
                 ->leftJoin('zone.parents', 'parent_zone')
                 ->andWhere('zone IN (:zones) OR parent_zone IN (:zones)')
                 ->setParameter('zones', $scope->getZones())
