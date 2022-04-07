@@ -107,7 +107,7 @@ Feature:
   Scenario: As a non logged-in user I cannot get a non-existent article
     When I send a "GET" request to "/api/articles/in-qui-aliquam-aperiam-provident-necessitatibus"
     Then the response status code should be 404
-    And the JSON node "detail" should be equal to "Article with slug in-qui-aliquam-aperiam-provident-necessitatibus not found."
+    And the JSON node "detail" should be equal to "Not Found"
 
 
 
