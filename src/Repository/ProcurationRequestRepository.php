@@ -19,20 +19,6 @@ class ProcurationRequestRepository extends ServiceEntityRepository
     /**
      * @return ProcurationRequest[]
      */
-    public function findByEmailAddress(string $emailAddress): array
-    {
-        return $this
-            ->createQueryBuilder('pr')
-            ->where('LOWER(pr.emailAddress) = :emailAddress')
-            ->setParameter('emailAddress', mb_strtolower($emailAddress))
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @return ProcurationRequest[]
-     */
     public function findAllForExport(): array
     {
         return $this->createQueryBuilder('pr')
@@ -89,7 +75,11 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             return [];
         }
 
-        $qb = $this->createQueryBuilder($alias = 'pr');
+        $qb = $this
+            ->createQueryBuilder($alias = 'pr')
+            ->where('pr.enabled = :enabled')
+            ->setParameter('enabled', true)
+        ;
 
         $filters->apply($qb, $alias);
 
@@ -119,7 +109,11 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             return 0;
         }
 
-        $qb = $this->createQueryBuilder('pr');
+        $qb = $this
+            ->createQueryBuilder('pr')
+            ->where('pr.enabled = :enabled')
+            ->setParameter('enabled', true)
+        ;
 
         $filters->apply($qb, 'pr');
 
@@ -195,7 +189,10 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->andWhere('pr.processed = true')
             ->andWhere('pr.reminded = 0')
             ->andWhere('pr.processedAt > :processed_after')
+            ->andWhere('pr.enabled = :enabled')
+            ->andWhere('pp.disabled != :enabled')
             ->setParameter('processed_after', $processedAfter)
+            ->setParameter('enabled', true)
             ->orderBy('pr.processedAt', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -211,7 +208,10 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->where('pr.processed = true')
             ->andWhere('pr.reminded = 0')
             ->andWhere('pr.processedAt > :processed_after')
+            ->andWhere('pr.enabled = :enabled')
+            ->andWhere('pp.disabled != :enabled')
             ->setParameter('processed_after', $processedAfter)
+            ->setParameter('enabled', true)
             ->getQuery()
             ->getSingleScalarResult()
         ;
