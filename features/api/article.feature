@@ -38,67 +38,67 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can get the list of published articles
-    When I send a "GET" request to "/api/articles"
+    When I send a "GET" request to "/api/articles?title=Les outre-me"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
       "metadata": {
-        "total_items": 153,
+        "total_items": 2,
         "items_per_page": 2,
         "count": 2,
         "current_page": 1,
-        "last_page": 77
+        "last_page": 1
       },
       "items": [
         {
           "category": {
-            "name": "Médias",
-            "slug": "medias"
+            "name": "Actualités",
+            "slug": "actualites"
           },
           "published_at": "@string@.isDateTime()",
           "media": {
             "type": "image",
             "path": "http://test.enmarche.code/assets/images/article.jpg"
           },
-          "slug": "in-qui-aliquam-aperiam-provident-necessitatibus-quo",
-          "title": "In qui aliquam aperiam provident necessitatibus quo."
+          "slug": "outre-mer",
+          "title": "« Les outre-mer sont l’un des piliers de notre richesse culturelle. »"
         },
         {
           "category": {
-            "name": "Communiqués",
-            "slug": "communiques"
+            "name": "Actualités",
+            "slug": "actualites"
           },
           "published_at": "@string@.isDateTime()",
           "media": {
             "type": "image",
             "path": "http://test.enmarche.code/assets/images/article.jpg"
           },
-          "slug": "aut-facilis-quis-ex-voluptates-corporis-odit-aliquam",
-          "title": "Aut facilis quis ex voluptates corporis odit aliquam."
+          "slug": "outre-mer-2",
+          "title": "« Deuxième actualité: Les outre-mer sont l’un des piliers de notre richesse culturelle. »"
         }
       ]
     }
     """
 
   Scenario: As a non logged-in user I cat display an article
-    When I send a "GET" request to "/api/articles/in-qui-aliquam-aperiam-provident-necessitatibus-quo"
+    When I send a "GET" request to "/api/articles/outre-mer"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
       "category": {
-        "name": "Médias",
-        "slug": "medias"
+        "name": "Actualités",
+        "slug": "actualites"
       },
       "published_at": "@string@.isDateTime()",
       "media": {
         "type": "image",
         "path": "http://test.enmarche.code/assets/images/article.jpg"
       },
-      "slug": "in-qui-aliquam-aperiam-provident-necessitatibus-quo",
-      "title": "In qui aliquam aperiam provident necessitatibus quo.",
-      "description": "Iste labore quas sit corrupti. Repudiandae facere numquam molestiae repellat. Accusantium necessitatibus asperiores laborum repellendus et ullam. Laudantium corrupti nostrum hic ea nihil qui velit.",
+      "slug": "outre-mer",
+      "title": "« Les outre-mer sont l’un des piliers de notre richesse culturelle. »",
+      "description": "outre-mer",
       "twitter_description": null,
       "content": "@*@"
     }

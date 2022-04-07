@@ -41,11 +41,9 @@ class ArticleExtension implements QueryItemExtensionInterface, QueryCollectionEx
         $queryBuilder
             ->join("$alias.category", 'category')
             ->andWhere("$alias.published = :published")
+            ->setParameter('published', true)
             ->andWhere('category.display = :displayed')
-            ->setParameters([
-                'published' => true,
-                'displayed' => true,
-            ])
+            ->setParameter('displayed', true)
         ;
     }
 }

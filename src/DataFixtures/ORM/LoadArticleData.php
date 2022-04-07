@@ -65,6 +65,18 @@ class LoadArticleData extends Fixture
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
+            'title' => '« Deuxième actualité: Les outre-mer sont l’un des piliers de notre richesse culturelle. »',
+            'slug' => 'outre-mer-2',
+            'description' => 'outre-mer 2',
+            'media' => $media,
+            'displayMedia' => true,
+            'published' => true,
+            'publishedAt' => $faker->dateTimeThisDecade(),
+            'category' => $newsCategory,
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+        ]));
+
+        $manager->persist($this->articleFactory->createFromArray([
             'title' => '« Mes opinions »',
             'slug' => 'mes-opinions',
             'description' => 'mes-opinions',

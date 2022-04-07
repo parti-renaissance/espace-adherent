@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,6 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     },
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={"title": "partial", "category.name": "exact"})
  *
  * @ORM\Table(name="articles")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
