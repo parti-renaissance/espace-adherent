@@ -3113,11 +3113,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 5,
+            "total_items": 7,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 3
+            "last_page": 4
         },
         "items": [
             {

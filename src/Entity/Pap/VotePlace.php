@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\PapVotePlaceScopeFilter;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -105,6 +106,11 @@ class VotePlace
      */
     public int $nbVoters;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    public ?Zone $zone = null;
+
     public function __construct(
         ?float $latitude,
         ?float $longitude,
@@ -112,6 +118,7 @@ class VotePlace
         int $nbAddresses = 0,
         int $nbVoters = 0,
         UuidInterface $uuid = null,
+        ?Zone $zone = null,
         ?float $deltaPredictionAndResult2017 = null,
         ?float $deltaAveragePredictions = null,
         ?float $abstentions2017 = null,
@@ -125,6 +132,7 @@ class VotePlace
         $this->code = $code;
         $this->nbAddresses = $nbAddresses;
         $this->nbVoters = $nbVoters;
+        $this->zone = $zone;
         $this->deltaPredictionAndResult2017 = $deltaPredictionAndResult2017;
         $this->deltaAveragePredictions = $deltaAveragePredictions;
         $this->abstentions2017 = $abstentions2017;
