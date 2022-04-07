@@ -6,6 +6,7 @@ use App\Exception\InvalidAdherentTypeException;
 use App\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
 use App\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
 use App\RepublicanSilence\TagExtractor\MunicipalChefReferentTagExtractor;
+use App\RepublicanSilence\TagExtractor\ProcurationManagerTagExtractor;
 use App\RepublicanSilence\TagExtractor\ReferentTagExtractor;
 use App\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
 use App\RepublicanSilence\TagExtractor\SenatorReferentTagExtractor;
@@ -29,6 +30,9 @@ abstract class ReferentTagExtractorFactory
 
             case ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR:
                 return new SenatorReferentTagExtractor();
+
+            case ReferentTagExtractorInterface::ADHERENT_TYPE_PROCURATION_MANAGER:
+                return new ProcurationManagerTagExtractor();
         }
 
         throw new InvalidAdherentTypeException(sprintf('Adherent type [%d] is invalid', $type));
