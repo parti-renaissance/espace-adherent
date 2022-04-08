@@ -654,21 +654,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         $this->foundBy = $foundBy;
     }
 
-    public function getReminded(): int
-    {
-        return $this->reminded;
-    }
-
-    public function isReminded(): bool
-    {
-        return $this->reminded > 0;
-    }
-
-    public function setReminded(int $reminder): void
-    {
-        $this->reminded = $reminder;
-    }
-
     public function remind(): void
     {
         $this->remindedAt = new \DateTime();
