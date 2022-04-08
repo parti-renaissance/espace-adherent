@@ -78,3 +78,5 @@ services:
             $authCodeTtlInterval: 'PT60M'
             $accessTokenTtlInterval: '%env(ACCESS_TOKEN_TTL_INTERVAL)%'
             $refreshTokenTtlInterval: '%env(REFRESH_TOKEN_TTL_INTERVAL)%'
+
+    App\SendInBlue\Client: '@Tests\App\Test\SendInBlue\DummyClient'

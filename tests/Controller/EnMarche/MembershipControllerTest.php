@@ -10,11 +10,13 @@ use App\Mailer\Message\AdherentAccountActivationMessage;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\EmailRepository;
+use App\SendInBlue\Client;
 use App\Subscription\SubscriptionTypeEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\SendInBlue\DummyClient;
 
 /**
  * @group functional
@@ -87,7 +89,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/presque-fini', $this->client);
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('jean-paul@dupont.tld');
+        $adherent = $this->adherentRepository->findOneByEmail('jean-paul@dupont.tld');
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertNull($adherent->getGender());
         $this->assertSame('Jean-Paul', $adherent->getFirstName());
@@ -107,16 +109,23 @@ class MembershipControllerTest extends WebTestCase
         /** @var Adherent $adherent */
         $this->assertInstanceOf(
             Adherent::class,
-            $adherent = $this->client->getContainer()->get('doctrine')->getRepository(Adherent::class)->findOneByEmail('jean-paul@dupont.tld')
+            $adherent = $this->adherentRepository->findOneByEmail('jean-paul@dupont.tld')
         );
         $this->assertSame('Jean-Paul', $adherent->getFirstName());
         $this->assertSame('Dupont', $adherent->getLastName());
         $this->assertInstanceOf(AdherentActivationToken::class, $activationToken = $this->activationTokenRepository->findAdherentMostRecentKey((string) $adherent->getUuid()));
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentAccountActivationMessage::class, 'paul@dupont.tld'));
 
+        // User should not be synced with SendInBlue if not activated yet
+        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
+
         // Activate the user account
         $activateAccountUrl = sprintf('/inscription/finaliser/%s/%s', $adherent->getUuid(), $activationToken->getValue());
         $this->client->request(Request::METHOD_GET, $activateAccountUrl);
+
+        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
+        self::assertCount(1, $sendInBlueUpdates);
+        self::assertSame('jean-paul@dupont.tld', $sendInBlueUpdates[0]['email']);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/adhesion', $this->client);
@@ -199,14 +208,14 @@ class MembershipControllerTest extends WebTestCase
         );
 
         $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
-        $adherent = $this->getAdherentRepository()->findOneByEmail('test@test.com');
+        $adherent = $this->adherentRepository->findOneByEmail('test@test.com');
 
         self::assertCount(8, $adherent->getSubscriptionTypes());
     }
 
     public function testAdherentSubscriptionTypesArePersistedCorrectlyWhenAdhesionFromUser(): void
     {
-        $adherent = $this->getAdherentRepository()->findOneByEmail('simple-user@example.ch');
+        $adherent = $this->adherentRepository->findOneByEmail('simple-user@example.ch');
 
         self::assertCount(0, $adherent->getSubscriptionTypes());
 
@@ -249,7 +258,7 @@ class MembershipControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
         self::assertSame('Votre compte adhérent est maintenant actif.', $crawler->filter('.flash__inner')->text());
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('simple-user@example.ch');
+        $adherent = $this->adherentRepository->findOneByEmail('simple-user@example.ch');
 
         self::assertCount(7, $adherent->getSubscriptionTypes());
     }
@@ -337,7 +346,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
 
-        $adherent = $this->getAdherentRepository()->findOneByEmail('custom.gender@example.fr');
+        $adherent = $this->adherentRepository->findOneByEmail('custom.gender@example.fr');
 
         self::assertSame('other', $adherent->getGender());
         self::assertSame('my custom gender', $adherent->getCustomGender());
@@ -382,5 +391,10 @@ class MembershipControllerTest extends WebTestCase
         $this->adherentRepository = null;
 
         parent::tearDown();
+    }
+
+    private function getSendInBlueClient(): DummyClient
+    {
+        return $this->client->getContainer()->get(Client::class);
     }
 }
