@@ -89,37 +89,14 @@ class ProcurationProxyTest extends TestCase
             ->method('getVoteCountry')
             ->willReturn($voteCountry)
         ;
+
         $request
-            ->expects($this->once())
-            ->method('getVotePostalCode')
-            ->willReturn(null)
-        ;
-        $request
-            ->expects($this->never())
+            ->expects($this->any())
             ->method('getElectionRounds')
+            ->willReturn(new ArrayCollection([$round1]))
         ;
 
         $this->assertFalse($proxy->matchesRequest($request));
-
-        /* Same vote country and same vote postal code, no rounds */
-        $request = $this->createMock(ProcurationRequest::class);
-        $request
-            ->expects($this->once())
-            ->method('getVoteCountry')
-            ->willReturn($voteCountry)
-        ;
-        $request
-            ->expects($this->once())
-            ->method('getVotePostalCode')
-            ->willReturn(substr($votePostalCode, 0, 2))
-        ;
-        $request
-            ->expects($this->once())
-            ->method('getElectionRounds')
-            ->willReturn(new ArrayCollection())
-        ;
-
-        $this->assertTrue($proxy->matchesRequest($request));
 
         /* Same vote country and same vote postal code, different rounds */
         $request = $this->createMock(ProcurationRequest::class);
@@ -128,11 +105,7 @@ class ProcurationProxyTest extends TestCase
             ->method('getVoteCountry')
             ->willReturn($voteCountry)
         ;
-        $request
-            ->expects($this->once())
-            ->method('getVotePostalCode')
-            ->willReturn(substr($votePostalCode, 0, 2))
-        ;
+
         $request
             ->expects($this->once())
             ->method('getElectionRounds')
@@ -150,15 +123,11 @@ class ProcurationProxyTest extends TestCase
             ->method('getVoteCountry')
             ->willReturn($voteCountry)
         ;
-        $request
-            ->expects($this->once())
-            ->method('getVotePostalCode')
-            ->willReturn(substr($votePostalCode, 0, 2))
-        ;
+
         $request
             ->expects($this->once())
             ->method('getElectionRounds')
-            ->willReturn(new ArrayCollection([$round1]))
+            ->willReturn(new ArrayCollection([$round1, $round2]))
         ;
 
         $proxy->setElectionRounds([$round1, $round2]);
