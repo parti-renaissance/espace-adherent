@@ -672,10 +672,6 @@ class ProcurationProxy implements RecaptchaChallengeInterface
             return false;
         }
 
-        if (AreaUtils::CODE_FRANCE === $this->voteCountry) {
-            return false;
-        }
-
         foreach ($request->getElectionRounds() as $round) {
             if (!$this->electionRounds->contains($round)) {
                 return false;
