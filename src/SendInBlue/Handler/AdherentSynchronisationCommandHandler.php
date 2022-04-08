@@ -37,7 +37,7 @@ class AdherentSynchronisationCommandHandler implements MessageHandlerInterface, 
         /** @var Adherent|null $adherent */
         $adherent = $this->adherentRepository->findOneByUuid($command->getUuid());
 
-        if (!$adherent) {
+        if (!$adherent || !$adherent->isEnabled()) {
             return;
         }
 

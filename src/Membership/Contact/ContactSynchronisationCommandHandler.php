@@ -3,6 +3,7 @@
 namespace App\Membership\Contact;
 
 use App\Entity\Contact;
+use App\Repository\AdherentRepository;
 use App\Repository\ContactRepository;
 use App\SendInBlue\ContactManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,16 +18,19 @@ class ContactSynchronisationCommandHandler implements MessageHandlerInterface, L
 
     private EntityManagerInterface $em;
     private ContactRepository $contactRepository;
+    private AdherentRepository $adherentRepository;
     private ContactManager $contactManager;
 
     public function __construct(
         EntityManagerInterface $em,
+        AdherentRepository $adherentRepository,
         ContactRepository $contactRepository,
         ContactManager $contactManager,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->contactRepository = $contactRepository;
+        $this->adherentRepository = $adherentRepository;
         $this->contactManager = $contactManager;
         $this->logger = $logger;
     }
@@ -41,6 +45,11 @@ class ContactSynchronisationCommandHandler implements MessageHandlerInterface, L
         }
 
         $this->em->refresh($contact);
+
+        // Do not synchronize on sendinblue if an adherent already exists with the same email
+        if ($this->adherentRepository->findOneByEmail($contact->getEmailAddress())) {
+            return;
+        }
 
         try {
             $this->contactManager->synchronize($contact);

@@ -4,7 +4,6 @@ namespace App\SendInBlue;
 
 use App\Entity\Contact;
 use App\Membership\Contact\InterestEnum;
-use App\Repository\AdherentRepository;
 use App\Utils\PhoneNumberUtils;
 
 class ContactManager
@@ -26,34 +25,20 @@ class ContactManager
 
     private ClientInterface $client;
     private int $contactListId;
-    private AdherentRepository $adherentRepository;
 
-    public function __construct(
-        ClientInterface $client,
-        int $sendInBlueContactListId,
-        AdherentRepository $adherentRepository
-    ) {
+    public function __construct(ClientInterface $client, int $sendInBlueContactListId)
+    {
         $this->client = $client;
         $this->contactListId = $sendInBlueContactListId;
-        $this->adherentRepository = $adherentRepository;
     }
 
     public function synchronize(Contact $contact): void
     {
-        if ($this->adherentExists($contact->getEmailAddress())) {
-            return;
-        }
-
         $this->client->synchronize(
             $contact->getEmailAddress(),
             $this->contactListId,
             $this->createAttributes($contact)
         );
-    }
-
-    private function adherentExists(string $email): bool
-    {
-        return null !== $this->adherentRepository->findOneByEmail($email);
     }
 
     private function createAttributes(Contact $contact): array
