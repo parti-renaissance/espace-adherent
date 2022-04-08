@@ -7,6 +7,7 @@ use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
 use App\Procuration\Filter\ProcurationProxyProposalFilters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -223,5 +224,20 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 )
             )
         );
+    }
+
+    public function createQueryBuilderForReminders(\DateTime $processedAfter, int $limit): QueryBuilder
+    {
+        return $this->createQueryBuilder('pp')
+            ->select('pp')
+            ->innerJoin(ProcurationRequest::class, 'pr', Join::WITH, 'pr.foundProxy = pp')
+            ->andWhere('pr.processed = true')
+            ->andWhere('pr.processedAt > :processed_after')
+            ->andWhere('pr.enabled = :enabled')
+            ->andWhere('pp.disabled != :enabled')
+            ->setParameter('processed_after', $processedAfter)
+            ->setParameter('enabled', true)
+            ->setMaxResults($limit)
+        ;
     }
 }

@@ -10,7 +10,7 @@ abstract class AbstractCommandCaseTest extends AbstractKernelTestCase
     /**
      * @var Application
      */
-    private $application;
+    protected $application;
 
     protected function setUp(): void
     {

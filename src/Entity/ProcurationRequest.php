@@ -331,11 +331,9 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     private $processedAt;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $reminded = 0;
+    private ?\DateTime $remindedAt = null;
 
     /**
      * @var bool
@@ -673,7 +671,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
 
     public function remind(): void
     {
-        ++$this->reminded;
+        $this->remindedAt = new \DateTime();
     }
 
     public static function getStepForUri(string $stepUri): string
