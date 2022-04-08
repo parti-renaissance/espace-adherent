@@ -16,6 +16,7 @@ use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
+use App\SendInBlue\Client;
 use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Ramsey\Uuid\Uuid;
@@ -23,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\SendInBlue\DummyClient;
 
 /**
  * @group functional
@@ -205,9 +207,11 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]));
 
-        $errors = $crawler->filter('.em-form--error');
-
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
+
+        $errors = $crawler->filter('.em-form--error');
         self::assertSame(7, $errors->count());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
@@ -241,9 +245,11 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]));
 
-        $errors = $crawler->filter('.em-form--error');
-
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
+
+        $errors = $crawler->filter('.em-form--error');
         self::assertSame(5, $errors->count());
         self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
         self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
@@ -274,6 +280,10 @@ class AdherentControllerTest extends WebTestCase
         ]));
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
+
+        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
+        self::assertCount(1, $sendInBlueUpdates);
+        self::assertSame('carl999@example.fr', $sendInBlueUpdates[0]['email']);
 
         $crawler = $this->client->followRedirect();
 
@@ -331,6 +341,8 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
+
         $checkBoxPattern = 'form[name="app_adherent_pin_interests"] .checkb-cols input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
         $this->assertCount(23, $checkboxes = $crawler->filter($checkBoxPattern));
@@ -359,6 +371,10 @@ class AdherentControllerTest extends WebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/centres-d-interet', $this->client);
+
+        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
+        self::assertCount(1, $sendInBlueUpdates);
+        self::assertSame('carl999@example.fr', $sendInBlueUpdates[0]['email']);
 
         /* @var Adherent $adherent */
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
@@ -430,6 +446,9 @@ class AdherentControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
+
+        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
+
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[subscriptionTypes][]"]');
 
         $this->assertCount(8, $subscriptions);
@@ -444,9 +463,11 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]);
 
-        $errors = $crawler->filter('.form__errors > li');
-
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        self::assertEmpty($this->getSendInBlueClient()->getUpdateSchedule());
+
+        $errors = $crawler->filter('.form__errors > li');
         self::assertSame(1, $errors->count());
         self::assertSame('Cette valeur n\'est pas valide.', $errors->eq(0)->text());
 
@@ -465,6 +486,10 @@ class AdherentControllerTest extends WebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/preferences-des-emails', $this->client);
+
+        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
+        self::assertCount(1, $sendInBlueUpdates);
+        self::assertSame('carl999@example.fr', $sendInBlueUpdates[0]['email']);
 
         $this->manager->clear();
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
@@ -496,6 +521,10 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/preferences-des-emails', $this->client);
 
+        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
+        self::assertCount(1, $sendInBlueUpdates);
+        self::assertSame('carl999@example.fr', $sendInBlueUpdates[0]['email']);
+
         $this->manager->clear();
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
         $histories = $this->findEmailSubscriptionHistoryByAdherent($adherent);
@@ -523,6 +552,10 @@ class AdherentControllerTest extends WebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/preferences-des-emails', $this->client);
+
+        $sendInBlueUpdates = $this->getSendInBlueClient()->getUpdateSchedule();
+        self::assertCount(1, $sendInBlueUpdates);
+        self::assertSame('carl999@example.fr', $sendInBlueUpdates[0]['email']);
 
         $this->manager->clear();
 
@@ -946,5 +979,10 @@ class AdherentControllerTest extends WebTestCase
         return array_map(static function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
         }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
+    }
+
+    private function getSendInBlueClient(): DummyClient
+    {
+        return $this->client->getContainer()->get(Client::class);
     }
 }
