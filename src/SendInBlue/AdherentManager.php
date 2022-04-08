@@ -7,6 +7,10 @@ use App\Utils\PhoneNumberUtils;
 
 class AdherentManager
 {
+    private const FIELD_STATUS = 'STATUS';
+    private const FIELD_CREATED_AT = 'CREATED_AT';
+    private const FIELD_UPDATED_AT = 'UPDATED_AT';
+    private const FIELD_ACTIVATED_AT = 'ACTIVATED_AT';
     private const FIELD_EMAIL = 'EMAIL';
     private const FIELD_SOURCE = 'SOURCE';
     private const FIELD_FIRST_NAME = 'PRENOM';
@@ -16,6 +20,7 @@ class AdherentManager
     private const FIELD_CITY = 'VILLE';
     private const FIELD_POSTAL_CODE = 'CODE_POSTAL';
     private const FIELD_COUNTRY = 'PAYS';
+    private const FIELD_SUBSCRIPTION_TYPES = 'SUBSCRIPTION_TYPES';
 
     private ClientInterface $client;
     private int $adherentListId;
@@ -55,6 +60,13 @@ class AdherentManager
             self::FIELD_CITY => $adherent->getCityName(),
             self::FIELD_POSTAL_CODE => $adherent->getPostalCode(),
             self::FIELD_COUNTRY => $adherent->getCountry(),
+
+            self::FIELD_STATUS => $adherent->getStatus(),
+            self::FIELD_CREATED_AT => $adherent->getRegisteredAt() ? $adherent->getRegisteredAt()->format('Y-m-d') : null,
+            self::FIELD_UPDATED_AT => $adherent->getUpdatedAt() ? $adherent->getUpdatedAt()->format('Y-m-d') : null,
+            self::FIELD_ACTIVATED_AT => $adherent->getActivatedAt() ? $adherent->getActivatedAt()->format('Y-m-d') : null,
+
+            self::FIELD_SUBSCRIPTION_TYPES => implode(',', $adherent->getSubscriptionTypeCodes()),
         ];
     }
 }

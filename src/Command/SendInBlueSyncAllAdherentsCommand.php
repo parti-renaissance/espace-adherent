@@ -14,9 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class SendInBlueSyncAllContactsCommand extends Command
+class SendInBlueSyncAllAdherentsCommand extends Command
 {
-    protected static $defaultName = 'sendinblue:sync:all-contacts';
+    protected static $defaultName = 'sendinblue:sync:all-adherents';
 
     private AdherentRepository $adherentRepository;
     private EntityManagerInterface $entityManager;
@@ -101,6 +101,8 @@ class SendInBlueSyncAllContactsCommand extends Command
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
+            ->andWhere('adherent.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
         ;
 
         return new Paginator($queryBuilder->getQuery());

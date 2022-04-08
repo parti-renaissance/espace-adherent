@@ -8,6 +8,8 @@ use App\Utils\PhoneNumberUtils;
 
 class ContactManager
 {
+    private const FIELD_CREATED_AT = 'CREATED_AT';
+    private const FIELD_UPDATED_AT = 'UPDATED_AT';
     private const FIELD_SOURCE = 'SOURCE';
     private const FIELD_FIRST_NAME = 'PRENOM';
     private const FIELD_LAST_NAME = 'NOM';
@@ -58,6 +60,8 @@ class ContactManager
             self::FIELD_CITY => $contact->getCityName(),
             self::FIELD_POSTAL_CODE => $contact->getPostalCode(),
             self::FIELD_COUNTRY => $contact->getCountry(),
+            self::FIELD_CREATED_AT => $contact->getCreatedAt() ? $contact->getCreatedAt()->format('Y-m-d') : null,
+            self::FIELD_UPDATED_AT => $contact->getUpdatedAt() ? $contact->getUpdatedAt()->format('Y-m-d') : null,
         ];
     }
 }
