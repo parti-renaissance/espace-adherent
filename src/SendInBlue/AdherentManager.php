@@ -29,9 +29,9 @@ class AdherentManager
     public function synchronize(Adherent $adherent, string $identifier): void
     {
         $this->client->synchronize(
-            $adherent->getEmailAddress(),
+            $identifier,
             $this->adherentListId,
-            $this->createAttributes($adherent, $identifier)
+            $this->createAttributes($adherent)
         );
     }
 
@@ -40,10 +40,10 @@ class AdherentManager
         $this->client->delete($adherent->getEmailAddress());
     }
 
-    private function createAttributes(Adherent $adherent, string $identifier): array
+    private function createAttributes(Adherent $adherent): array
     {
         return [
-            self::FIELD_EMAIL => $identifier,
+            self::FIELD_EMAIL => $adherent->getEmailAddress(),
 
             self::FIELD_SOURCE => $adherent->getSource(),
             self::FIELD_FIRST_NAME => $adherent->getFirstName(),
