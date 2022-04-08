@@ -557,6 +557,11 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         return $this->voteCity;
     }
 
+    public function getVoteCityInsee(): ?string
+    {
+        return mb_substr($this->voteCity, -5);
+    }
+
     public function setVoteCity(?string $cityCode): void
     {
         $this->voteCity = $cityCode;
