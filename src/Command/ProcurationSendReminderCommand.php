@@ -2,11 +2,15 @@
 
 namespace App\Command;
 
+use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
-use App\Procuration\ProcurationReminderHandler;
+use App\Mailer\MailerService;
+use App\Procuration\ProcurationProxyMessageFactory;
+use App\Repository\ProcurationProxyRepository;
+use App\Repository\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,23 +21,17 @@ class ProcurationSendReminderCommand extends Command
 {
     protected static $defaultName = 'app:procuration:send-reminder';
 
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $manager;
-
-    /**
-     * @var \App\Procuration\ProcurationReminderHandler
-     */
-    private $reminder;
-
-    private $io;
+    private EntityManagerInterface $manager;
+    private ProcurationProxyMessageFactory $factory;
+    private MailerService $mailer;
+    private SymfonyStyle $io;
 
     protected function configure()
     {
         $this
             ->setDescription('Send a reminder to the procuration proxies.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without sending any email and without persisting any data.')
+            ->addArgument('procuration-mode', InputArgument::REQUIRED, 'Mode : procuration request : 1 or procuration proxy : 2')
             ->addArgument('processed-after', InputArgument::REQUIRED, 'Date - Processed after')
         ;
     }
@@ -45,46 +43,63 @@ class ProcurationSendReminderCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $procurationRequestRepository = $this->manager->getRepository(ProcurationRequest::class);
-
+        $mode = (int) $input->getArgument('procuration-mode');
         $processedAfter = new \DateTime($input->getArgument('processed-after'));
 
-        if (!$totalCount = $procurationRequestRepository->countRemindersToSend($processedAfter)) {
+        $paginator = $this->getQueryBuilder($mode, $processedAfter, 200);
+
+        if (!$count = $paginator->count()) {
             $output->writeln('No reminder to send');
 
             return 0;
         }
 
         if ($input->getOption('dry-run')) {
-            $output->writeln($totalCount.' reminders would be sent');
+            $this->io->note($count.' reminders would be sent');
 
             return 0;
         }
 
-        $progress = new ProgressBar($output, $totalCount);
-        $progress->setFormat('debug');
+        if (false === $this->io->confirm(sprintf('Are you sure to send the reminder to %d %s?', $count, 1 === $mode ? 'requests' : 'proxies'), false)) {
+            return 0;
+        }
 
-        for ($i = 0;; ++$i) {
-            $requests = $procurationRequestRepository->findRemindersBatchToSend($processedAfter, 1);
+        $this->io->progressStart($count);
+        $offset = 0;
 
-            if (empty($requests)) {
-                break;
-            }
+        do {
+            /** @var ProcurationRequest[]|ProcurationProxy[] $objects */
+            $objects = iterator_to_array($paginator);
 
             try {
-                $this->reminder->remind($requests);
+                if (1 === $mode) {
+                    $message = $this->factory->createRequestReminderMessage($objects);
+                } else {
+                    $message = $this->factory->createProxyReminderMessage($objects);
+                }
+
+                $this->mailer->sendMessage($message);
+
+                foreach ($objects as $request) {
+                    $request->remind();
+                }
+
+                $this->manager->flush();
             } catch (\Throwable $e) {
                 $this->io->error($e->getMessage());
             }
 
-            $progress->advance();
+            $this->io->progressAdvance($currentCount = \count($objects));
+            $offset += $currentCount;
 
-            $this->manager->flush();
+            $paginator->getQuery()->setFirstResult($offset);
+
             $this->manager->clear();
-        }
+        } while ($offset < $count);
 
-        $progress->finish();
-        $output->writeln("\n".$totalCount.' reminders sent');
+        $this->io->progressFinish();
+
+        $this->io->note($offset.' reminders sent');
 
         return 0;
     }
@@ -96,8 +111,27 @@ class ProcurationSendReminderCommand extends Command
     }
 
     /** @required */
-    public function setReminder(ProcurationReminderHandler $reminder): void
+    public function setFactory(ProcurationProxyMessageFactory $factory): void
     {
-        $this->reminder = $reminder;
+        $this->factory = $factory;
+    }
+
+    /** @required */
+    public function setMailer(MailerService $transactionalMailer): void
+    {
+        $this->mailer = $transactionalMailer;
+    }
+
+    private function getQueryBuilder(int $mode, \DateTime $processedAfter, int $limit): Paginator
+    {
+        if (1 === $mode) {
+            /** @var ProcurationRequestRepository $repository */
+            $repository = $this->manager->getRepository(ProcurationRequest::class);
+        } else {
+            /** @var ProcurationProxyRepository $repository */
+            $repository = $this->manager->getRepository(ProcurationProxy::class);
+        }
+
+        return new Paginator($repository->createQueryBuilderForReminders($processedAfter, $limit)->getQuery());
     }
 }

@@ -367,6 +367,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      */
     private Collection $otherVoteCities;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTime $remindedAt = null;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -829,5 +834,10 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     public function removeOtherVoteCity(Zone $city): void
     {
         $this->otherVoteCities->removeElement($city);
+    }
+
+    public function remind(): void
+    {
+        $this->remindedAt = new \DateTime();
     }
 }

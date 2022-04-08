@@ -2,30 +2,31 @@
 
 namespace App\Mailer\Message\Procuration;
 
-use App\Entity\ProcurationRequest;
+use App\Entity\ProcurationProxy;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyReminderMessage extends AbstractProcurationMessage
 {
-    public static function create(ProcurationRequest $request): Message
+    public static function create(ProcurationProxy $proxy): Message
     {
         $message = new self(
             Uuid::uuid4(),
-            $request->getEmailAddress(),
+            $proxy->getEmailAddress(),
             null,
-            'Avez-vous validé votre demande de procuration ?',
-            self::createRecipientVariables($request)
+            'Mandataire, le 19 avril, n\'oubliez pas de voter !',
+            [],
+            self::createRecipientVariables($proxy)
         );
 
         return self::updateSenderInfo($message);
     }
 
-    public static function createRecipientVariables(ProcurationRequest $request): array
+    public static function createRecipientVariables(ProcurationProxy $proxy): array
     {
         return [
-            'mandant_first_name' => self::escape($request->getFirstNames()),
-            'mandant_last_name' => self::escape($request->getLastName()),
+            'first_name' => $proxy->getFirstNames(),
+            'last_name' => $proxy->getLastName(),
         ];
     }
 }

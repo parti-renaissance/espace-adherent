@@ -10,6 +10,7 @@ use App\Mailer\Message\Procuration\ProcurationProxyMatchedMessage;
 use App\Mailer\Message\Procuration\ProcurationProxyRegistrationConfirmationMessage;
 use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestRegistrationConfirmationMessage;
+use App\Mailer\Message\Procuration\ProcurationRequestReminderMessage;
 use App\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -54,7 +55,7 @@ class ProcurationProxyMessageFactory
     /**
      * @param ProcurationRequest[] $requests
      */
-    public function createProxyReminderMessage(array $requests): ?ProcurationProxyReminderMessage
+    public function createRequestReminderMessage(array $requests): ?ProcurationRequestReminderMessage
     {
         if (!$requests) {
             return null;
@@ -62,14 +63,39 @@ class ProcurationProxyMessageFactory
 
         $request = array_shift($requests);
 
-        $message = ProcurationProxyReminderMessage::create($request);
+        $message = ProcurationRequestReminderMessage::create($request);
         $message->setReplyTo($this->replyToEmailAddress);
 
         foreach ($requests as $request) {
             $message->addRecipient(
                 $request->getEmailAddress(),
                 null,
-                ProcurationProxyReminderMessage::createRecipientVariables($request)
+                ProcurationRequestReminderMessage::createRecipientVariables($request)
+            );
+        }
+
+        return $message;
+    }
+
+    /**
+     * @param ProcurationProxy[] $proxies
+     */
+    public function createProxyReminderMessage(array $proxies): ?ProcurationProxyReminderMessage
+    {
+        if (!$proxies) {
+            return null;
+        }
+
+        $proxy = array_shift($proxies);
+
+        $message = ProcurationProxyReminderMessage::create($proxy);
+        $message->setReplyTo($this->replyToEmailAddress);
+
+        foreach ($proxies as $proxy) {
+            $message->addRecipient(
+                $proxy->getEmailAddress(),
+                null,
+                ProcurationProxyReminderMessage::createRecipientVariables($proxy)
             );
         }
 

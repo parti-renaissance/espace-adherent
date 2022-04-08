@@ -184,13 +184,12 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findRemindersBatchToSend(\DateTime $processedAfter, int $limit = 25): array
+    public function createQueryBuilderForReminders(\DateTime $processedAfter, int $limit): QueryBuilder
     {
         return $this->createQueryBuilder('pr')
             ->select('pr', 'pp')
-            ->join('pr.foundProxy', 'pp')
+            ->innerJoin('pr.foundProxy', 'pp')
             ->andWhere('pr.processed = true')
-            ->andWhere('pr.reminded = 0')
             ->andWhere('pr.processedAt > :processed_after')
             ->andWhere('pr.enabled = :enabled')
             ->andWhere('pp.disabled != :enabled')
@@ -198,25 +197,6 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->setParameter('enabled', true)
             ->orderBy('pr.processedAt', 'ASC')
             ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function countRemindersToSend(\DateTime $processedAfter): int
-    {
-        return (int) $this->createQueryBuilder('pr')
-            ->select('COUNT(pr)')
-            ->join('pr.foundProxy', 'pp')
-            ->where('pr.processed = true')
-            ->andWhere('pr.reminded = 0')
-            ->andWhere('pr.processedAt > :processed_after')
-            ->andWhere('pr.enabled = :enabled')
-            ->andWhere('pp.disabled != :enabled')
-            ->setParameter('processed_after', $processedAfter)
-            ->setParameter('enabled', true)
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
     }
 
