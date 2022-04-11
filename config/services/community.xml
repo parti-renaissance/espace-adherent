@@ -9,17 +9,6 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <!-- Procuration -->
-        <service id="app.procuration.proxy_message_factory" class="App\Procuration\ProcurationProxyMessageFactory" public="false">
-            <argument type="service" id="app.routing.remote_url_generator" />
-            <argument>%procurations_reply_to_email%</argument>
-        </service>
-
-        <service id="app.procuration.reminder_handler" class="App\Procuration\ProcurationReminderHandler">
-            <argument type="service" id="app.mailer.transactional" />
-            <argument type="service" id="app.procuration.proxy_message_factory"/>
-        </service>
-
         <!-- Interactives -->
         <service id="App\Interactive\MyEuropeProcessorHandler">
             <argument type="service" id="app.my_europe.message_body_builder"/>
