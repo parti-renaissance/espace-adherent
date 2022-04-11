@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class VotingPlatformElectionAdmin extends AbstractAdmin
 {
+    protected $maxPerPage = 40;
+    protected $perPageOptions = [];
+
     public function createQuery($context = 'list')
     {
         $queryBuilder = parent::createQuery($context);
@@ -28,11 +31,22 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                 ->leftJoin('o.electionPools', 'pool')
                 ->leftJoin('o.electionRounds', 'election_round')
                 ->leftJoin('o.electionEntity', 'election_entity')
+                ->leftJoin('o.votersList', 'voters_list')
                 ->leftJoin('election_entity.committee', 'committee')
                 ->leftJoin('election_entity.territorialCouncil', 'territorial_council')
                 ->leftJoin('o.designation', 'designation')
                 ->leftJoin('pool.candidateGroups', 'candidate_group')
-                ->addSelect('pool', 'candidate_group', 'election_round', 'election_entity', 'designation', 'committee', 'territorial_council', 'election_result')
+                ->addSelect(
+                    'pool',
+                    'candidate_group',
+                    'election_round',
+                    'election_entity',
+                    'designation',
+                    'committee',
+                    'territorial_council',
+                    'election_result',
+                    'voters_list',
+                )
             ;
         }
 
