@@ -4,8 +4,8 @@ namespace App\SendInBlue\Handler;
 
 use App\Entity\Adherent;
 use App\Repository\AdherentRepository;
-use App\SendInBlue\AdherentManager;
 use App\SendInBlue\Command\AdherentDeleteCommand;
+use App\SendInBlue\ContactManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -18,17 +18,17 @@ class AdherentDeleteCommandHandler implements MessageHandlerInterface, LoggerAwa
 
     private EntityManagerInterface $em;
     private AdherentRepository $adherentRepository;
-    private AdherentManager $adherentManager;
+    private ContactManager $contactManager;
 
     public function __construct(
         EntityManagerInterface $em,
         AdherentRepository $adherentRepository,
-        AdherentManager $adherentManager,
+        ContactManager $contactManager,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->adherentRepository = $adherentRepository;
-        $this->adherentManager = $adherentManager;
+        $this->contactManager = $contactManager;
         $this->logger = $logger;
     }
 
@@ -44,7 +44,7 @@ class AdherentDeleteCommandHandler implements MessageHandlerInterface, LoggerAwa
         $this->em->refresh($adherent);
 
         try {
-            $this->adherentManager->delete($adherent);
+            $this->contactManager->delete($adherent);
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Failed to delete adherent UUID: "%s". Error: %s', $adherent->getUuid(), $e->getMessage()));
         }
