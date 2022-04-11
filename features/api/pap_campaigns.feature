@@ -3135,3 +3135,56 @@ Feature:
         ]
     }
     """
+
+  Scenario: As a referent I can get campaign's vote places
+    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/vote_places?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "code": "75108_0001",
+            "nb_addresses": 2,
+            "nb_voters": 3,
+            "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+        },
+        {
+            "code": "75108_0002",
+            "nb_addresses": 2,
+            "nb_voters": 4,
+            "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+        },
+        {
+            "code": "75103_0001",
+            "nb_addresses": 1,
+            "nb_voters": 1,
+            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+        },
+        {
+            "code": "92002_0001",
+            "nb_addresses": 2,
+            "nb_voters": 4,
+            "uuid": "1c74d299-0f95-4d14-8990-713b57713ebd"
+        },
+        {
+            "code": "92002_0002",
+            "nb_addresses": 1,
+            "nb_voters": 1,
+            "uuid": "8daa4d93-4881-42b3-9e0b-5e6324828a62"
+        },
+        {
+            "code": "78586_0001",
+            "nb_addresses": 0,
+            "nb_voters": 0,
+            "uuid": "9ece4e07-0c46-4e94-a0d0-087efbe30fff"
+        },
+        {
+            "code": "78586_0002",
+            "nb_addresses": 0,
+            "nb_voters": 0,
+            "uuid": "3e254a91-9779-4ccd-96a5-bc19f8b9579d"
+        }
+    ]
+    """
+

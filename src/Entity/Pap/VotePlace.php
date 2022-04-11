@@ -33,8 +33,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "method": "GET",
  *             "path": "/v3/pap_vote_places",
  *         },
+ *         "api_pap_campaigns_vote_places_get_subresource": {
+ *             "method": "GET",
+ *             "pagination_enabled": false,
+ *         },
  *     },
- *     itemOperations={"get"},
+ *     itemOperations={},
  * )
  */
 class VotePlace
