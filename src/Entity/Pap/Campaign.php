@@ -102,6 +102,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/pap_campaigns/{id}/survey",
  *             "requirements": {"id": "%pattern_uuid%"},
  *         },
+ *         "vote_places_get_subresource": {
+ *             "path": "/v3/pap_campaigns/{id}/vote_places",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *         },
  *     },
  * )
  *
@@ -221,6 +225,8 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @ORM\JoinTable(name="pap_campaign_vote_place")
      *
      * @Groups({"pap_campaign_write"})
+     *
+     * @ApiSubresource
      */
     private $votePlaces;
 
