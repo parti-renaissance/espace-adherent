@@ -17,6 +17,7 @@ class ScopeEnum extends Enum
     public const PAP_NATIONAL_MANAGER = 'pap_national_manager';
     public const CORRESPONDENT = 'correspondent';
     public const PAP = 'pap';
+    public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
 
     public const ALL = [
         self::REFERENT,

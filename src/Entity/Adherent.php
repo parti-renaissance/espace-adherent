@@ -256,13 +256,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $subscriptionTypes;
 
     /**
-     * @var District|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
-     */
-    private $legislativeCandidateManagedDistrict;
-
-    /**
      * @var ReferentManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
@@ -1155,6 +1148,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isLre()
             || $this->isLegislativeCandidate()
             || $this->isThematicCommunityChief()
+            || $this->isCorrespondent()
         ;
     }
 
@@ -2053,21 +2047,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->count() > 0;
     }
 
-    public function isLegislativeCandidate(): bool
-    {
-        return $this->legislativeCandidateManagedDistrict instanceof District;
-    }
-
-    public function getLegislativeCandidateManagedDistrict(): ?District
-    {
-        return $this->legislativeCandidateManagedDistrict;
-    }
-
-    public function setLegislativeCandidateManagedDistrict(?District $legislativeCandidateManagedDistrict): void
-    {
-        $this->legislativeCandidateManagedDistrict = $legislativeCandidateManagedDistrict;
-    }
-
     public function isNicknameUsed(): bool
     {
         return $this->nicknameUsed;
@@ -2723,9 +2702,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::CORRESPONDENT);
     }
 
+    public function isLegislativeCandidate(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE);
+    }
+
     public function getCorrespondentZone(): Zone
     {
         return $this->findZoneBasedRole(ScopeEnum::CORRESPONDENT)->getZones()->first();
+    }
+
+    public function getLegislativeCandidateZone(): Zone
+    {
+        return $this->findZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE)->getZones()->first();
     }
 
     public function getLreArea(): ?LreArea

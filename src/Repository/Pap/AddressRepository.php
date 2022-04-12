@@ -235,7 +235,7 @@ SQL;
 
         $qb = $this->createQueryBuilder('address');
         $qb = $this->withGeoZones(
-            [$campaign->getZone()],
+            $campaign->getZones()->toArray(),
             $qb,
             'address',
             Address::class,
@@ -263,7 +263,7 @@ SQL;
 
         $qb = $this->createQueryBuilder('address');
         $qb = $this->withGeoZones(
-            [$campaign->getZone()],
+            $campaign->getZones()->toArray(),
             $qb,
             'address',
             Address::class,

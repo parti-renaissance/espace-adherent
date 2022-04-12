@@ -440,13 +440,6 @@ class AdherentAdmin extends AbstractAdmin
                     ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
                         'label' => 'Candidat Sénatoriales 2020',
                     ])
-                    ->add('legislativeCandidateManagedDistrict', AvailableDistrictAutocompleteType::class, [
-                        'label' => 'Candidat aux législatives',
-                        'by_reference' => false,
-                        'required' => false,
-                        'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
-                        'callback' => [DistrictAdmin::class, 'prepareLegislativeCandidateAutocompleteFilterCallback'],
-                    ])
                     ->add('candidateManagedArea', CandidateManagedAreaType::class, [
                         'label' => 'Candidat',
                     ])
@@ -569,6 +562,7 @@ HELP
             ->tab('Rôles locaux')
                 ->with(false)
                     ->add('zoneBasedRoles', CollectionType::class, [
+                        'error_bubbling' => false,
                         'required' => false,
                         'label' => false,
                         'entry_type' => AdherentZoneBasedRoleType::class,

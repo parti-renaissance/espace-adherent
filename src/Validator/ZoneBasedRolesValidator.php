@@ -4,6 +4,7 @@ namespace App\Validator;
 
 use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Entity\AdherentZoneBasedRole;
+use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -12,6 +13,10 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ZoneBasedRolesValidator extends ConstraintValidator
 {
+    private const LIMITS = [
+        ScopeEnum::LEGISLATIVE_CANDIDATE => 1,
+    ];
+
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof ZoneBasedRoles) {
@@ -44,7 +49,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
         }
 
         /** @var AdherentZoneBasedRole[] $roles */
-        foreach ($roles as $role) {
+        foreach ($roles as $key => $role) {
             if (!$role->getType()) {
                 continue;
             }
@@ -56,7 +61,22 @@ class ZoneBasedRolesValidator extends ConstraintValidator
             if ($role->getZones()->isEmpty()) {
                 $this->context
                     ->buildViolation($constraint->emptyZoneMessage)
+                    ->atPath('['.$key.'].zones')
                     ->setParameter('{{role_type}}', $role->getType())
+                    ->addViolation()
+                ;
+
+                continue;
+            }
+
+            if (
+                isset(self::LIMITS[$role->getType()])
+                && $role->getZones()->count() > self::LIMITS[$role->getType()]
+            ) {
+                $this->context
+                    ->buildViolation($constraint->limitZoneMessage)
+                    ->atPath('['.$key.'].zones')
+                    ->setParameter('{{limit}}', self::LIMITS[$role->getType()])
                     ->addViolation()
                 ;
 
@@ -67,6 +87,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
                 if (!\in_array($zone->getType(), $allowedTypes, true)) {
                     $this->context
                         ->buildViolation($constraint->invalidZoneTypeMessage)
+                        ->atPath('['.$key.'].zones')
                         ->setParameter('{{zone_type}}', $zone->getType())
                         ->setParameter('{{role_type}}', $role->getType())
                         ->addViolation()

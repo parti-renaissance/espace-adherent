@@ -122,6 +122,7 @@ delegated_candidate_regional_leader: Chef de file aux régionales délégué
 delegated_candidate_departmental: Candidat aux départementales délégué
 lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
+correspondent: Correspondant
 thematic_community_chief: Responsable Thématique
 coalition_moderator: Responsables des coalitions
 role_phoning_manager: Responsable phoning
@@ -1265,6 +1266,7 @@ mailchimp_contact.status.unsubscribed: Désabonné
 mailchimp_contact.status.cleaned: Cleaned
 
 adherent.zone_based_role_type.correspondent: Correspondant
+adherent.zone_based_role_type.legislative_candidate: Candidat aux législatives
 
 #
 # Scope
