@@ -5,7 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -188,8 +187,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $brief,
             $survey,
             $goal,
-            new Chronos($beginAt),
-            new Chronos($finishAt),
+            new \DateTime($beginAt),
+            new \DateTime($finishAt),
             $nbAddresses,
             $nbVoters,
             $zones,
