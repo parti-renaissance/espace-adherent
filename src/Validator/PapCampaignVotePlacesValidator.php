@@ -39,22 +39,9 @@ class PapCampaignVotePlacesValidator extends ConstraintValidator
             return;
         }
 
-        $votePlaces = $value->getVotePlaces();
-        if (0 === $votePlaces->count()) {
-            if ($value->getZones()->count() > 0
-                && $this->campaignRepository->findCampaignsByZones($value->getZones()->toArray(), $value)) {
-                $this
-                    ->context
-                    ->buildViolation($constraint->messageAnotherCampaignByZone)
-                    ->atPath('votePlaces')
-                    ->addViolation()
-                ;
-            }
+        $votePlaces = $value->getVotePlaces()->toArray();
 
-            return;
-        }
-
-        if ($this->campaignRepository->findCampaignsByVotePlaces($votePlaces->toArray(), $value)) {
+        if ($this->campaignRepository->findCampaignsByVotePlaces($votePlaces, $value)) {
             $this
                 ->context
                 ->buildViolation($constraint->messageAnotherCampaign)
@@ -68,7 +55,7 @@ class PapCampaignVotePlacesValidator extends ConstraintValidator
             return;
         }
 
-        $vpZones = $this->zoneRepository->findForPapVotePlaces($votePlaces->toArray());
+        $vpZones = $this->zoneRepository->findForPapVotePlaces($votePlaces);
         foreach ($vpZones as $vpZone) {
             if (!$this->zoneRepository->isInZones([$vpZone], $zones)) {
                 $this
