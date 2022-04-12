@@ -3,11 +3,15 @@
 namespace App\Repository\Pap;
 
 use App\Entity\Pap\VotePlace;
+use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class VotePlaceRepository extends ServiceEntityRepository
 {
+    use GeoZoneTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, VotePlace::class);
@@ -50,5 +54,18 @@ SQL;
         $result = $stmt->executeQuery();
 
         return $result->fetchAllAssociative();
+    }
+
+    public function withZones(QueryBuilder $queryBuilder, array $zones, string $alias): void
+    {
+        $this->withGeoZones(
+            $zones,
+            $queryBuilder,
+            $alias,
+            VotePlace::class,
+            'vp2',
+            'zone',
+            'vpz2'
+        );
     }
 }
