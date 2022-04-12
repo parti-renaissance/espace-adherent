@@ -42,7 +42,15 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
-    use EntityPersonNameTrait;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     *
+     * @Groups({"legislative_newsletter_subscriptions_write"})
+     */
+    private ?string $firstName;
 
     /**
      * @ORM\Column(length=100)
@@ -53,10 +61,10 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
      */
-    private string $emailAddress = '';
+    private string $emailAddress;
 
     /**
-     * @ORM\Column(type="string", length=11, nullable=true)
+     * @ORM\Column(type="string", length=11)
      *
      * @Assert\NotBlank
      * @Assert\Length(
@@ -68,7 +76,7 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
      */
-    private ?string $postalCode = null;
+    private string $postalCode;
 
     /**
      * @ORM\Column(length=2, nullable=true)
@@ -84,21 +92,15 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
      */
     private Zone $fromZone;
 
+    /**
+     * @Assert\IsTrue(message="common.personal_data_collection.required")
+     *
+     * @Groups({"legislative_newsletter_subscriptions_write"})
+     */
     private bool $personalDataCollection = false;
 
-    public function __construct(
-        string $emailAddress = null,
-        string $firstName = null,
-        string $lastName = null,
-        string $postalCode = null,
-        string $country = null,
-        UuidInterface $uuid = null
-    ) {
-        $this->emailAddress = $emailAddress;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->postalCode = $postalCode;
-        $this->country = $country;
+    public function __construct(UuidInterface $uuid = null)
+    {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
@@ -107,14 +109,14 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
         return $this->emailAddress ?: '';
     }
 
-    public function setFirstName(string $firstName): void
+    public function getFirstName(): ?string
     {
-        $this->firstName = $firstName;
+        return $this->firstName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setFirstName(?string $firstName): void
     {
-        $this->lastName = $lastName;
+        $this->firstName = $firstName;
     }
 
     public function getEmailAddress(): ?string
@@ -122,7 +124,7 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -142,7 +144,7 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
         return $this->country ? Countries::getName($this->country) : null;
     }
 
-    public function setCountry(string $country): void
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }
