@@ -37,6 +37,7 @@ class DataCornerVoter extends AbstractAdherentVoter
             || (\in_array(ScopeEnum::PHONING_NATIONAL_MANAGER, $codes) && $adherent->hasPhoningManagerRole())
             || (\in_array(ScopeEnum::PAP_NATIONAL_MANAGER, $codes) && $adherent->hasPapNationalManagerRole())
             || (\in_array(ScopeEnum::CORRESPONDENT, $codes) && $adherent->isCorrespondent())
+            || (\in_array(ScopeEnum::LEGISLATIVE_CANDIDATE, $codes) && $adherent->isLegislativeCandidate())
             || \count($this->delegatedAccessRepository->hasDelegatedAccessWithScopeFeatures($adherent, $codes)) > 0
         ;
     }

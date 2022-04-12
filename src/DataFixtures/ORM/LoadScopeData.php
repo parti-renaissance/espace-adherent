@@ -35,6 +35,7 @@ class LoadScopeData extends Fixture
         $manager->persist($this->createScope(ScopeEnum::PAP_NATIONAL_MANAGER, 'Responsable National PAP', [FeatureEnum::PAP]));
         $manager->persist($this->createScope(ScopeEnum::PAP, 'Porte-à-porteur', [], [AppEnum::JEMARCHE]));
         $manager->persist($this->createScope(ScopeEnum::CORRESPONDENT, 'Correspondant', array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::MY_TEAM])));
+        $manager->persist($this->createScope(ScopeEnum::LEGISLATIVE_CANDIDATE, 'Candidat aux législatives', array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::PAP, FeatureEnum::MY_TEAM, FeatureEnum::PAP_V2])));
 
         $manager->flush();
     }
