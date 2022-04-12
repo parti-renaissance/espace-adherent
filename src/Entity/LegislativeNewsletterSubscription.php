@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Geo\Zone;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -25,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"legislative_newsletter_subscriptions_read"},
  *                 "iri": true,
  *             },
+ *             "validation_groups": {"Default", "legislative_newsletter_subscriptions_write"},
  *         }
  *     },
  *     itemOperations={},
@@ -34,11 +38,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
+ *
+ * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
-class LegislativeNewsletterSubscription
+class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+    use RecaptchaChallengeTrait;
 
     /**
      * @ORM\Column(nullable=true)
@@ -89,7 +96,7 @@ class LegislativeNewsletterSubscription
      *
      * @Assert\NotBlank
      */
-    private Zone $fromZone;
+    private ?Zone $fromZone = null;
 
     /**
      * @Assert\IsTrue(message="common.personal_data_collection.required")

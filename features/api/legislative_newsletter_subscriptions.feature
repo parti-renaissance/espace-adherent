@@ -14,7 +14,9 @@ Feature:
       "postal_code": "75001",
       "country": "FR",
       "from_zone": "75-1",
-      "personal_data_collection": true
+      "personal_data_collection": true,
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 201
@@ -29,7 +31,9 @@ Feature:
       "postal_code": "75008",
       "country": "FR",
       "from_zone": "75-8",
-      "personal_data_collection": true
+      "personal_data_collection": true,
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
     }
     """
     Then the response status code should be 400
@@ -43,6 +47,37 @@ Feature:
         {
           "propertyPath": "email_address",
           "message": "Vous êtes déjà inscrit à la newsletter de cette circonscription."
+        }
+      ]
+    }
+    """
+
+  Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with wrong captcha
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    """
+    {
+      "email_address": "lucile@example.org",
+      "first_name": "lucile",
+      "postal_code": "75001",
+      "country": "FR",
+      "from_zone": "75-1",
+      "personal_data_collection": true,
+      "recaptcha": "wrong_answer",
+      "recaptcha_site_key": "fake_key"
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "recaptcha: Le captcha soumis est invalide.",
+      "violations": [
+        {
+          "propertyPath": "recaptcha",
+          "message": "Le captcha soumis est invalide."
         }
       ]
     }
