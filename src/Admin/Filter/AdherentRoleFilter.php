@@ -3,6 +3,7 @@
 namespace App\Admin\Filter;
 
 use App\Adherent\AdherentRoleEnum;
+use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Coalition\Cause;
 use App\Entity\CommitteeMembership;
@@ -199,16 +200,19 @@ class AdherentRoleFilter extends CallbackFilter
                     }, $delegatedTypes));
                 }
 
+                // Legislative candidate | Correspondent
+                if ($zoneBasedRoles = array_intersect(ZoneBasedRoleTypeEnum::ALL, $value['value'])) {
+                    $qb
+                        ->leftJoin(sprintf('%s.zoneBasedRoles', $alias), 'zone_based_role')
+                        ->setParameter('zone_based_roles', $zoneBasedRoles)
+                    ;
+                    $where->add('zone_based_role.type IN (:zone_based_roles)');
+                }
+
                 // LRE
                 if (\in_array(AdherentRoleEnum::LRE, $value['value'], true)) {
                     $qb->leftJoin(sprintf('%s.lreArea', $alias), 'lre');
                     $where->add('lre IS NOT NULL');
-                }
-
-                // Legislative candidate
-                if (\in_array(AdherentRoleEnum::LEGISLATIVE_CANDIDATE, $value['value'], true)) {
-                    $qb->leftJoin(sprintf('%s.legislativeCandidateManagedDistrict', $alias), 'lcmd');
-                    $where->add('lcmd IS NOT NULL');
                 }
 
                 if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {
@@ -291,7 +295,7 @@ class AdherentRoleFilter extends CallbackFilter
     public function getFieldOptions()
     {
         return array_merge(parent::getFieldOptions(), [
-            'choices' => AdherentRoleEnum::toArray(),
+            'choices' => array_merge(AdherentRoleEnum::toArray(), ZoneBasedRoleTypeEnum::ALL),
             'choice_label' => function (string $value) {
                 return $value;
             },

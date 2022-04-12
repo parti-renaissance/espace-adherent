@@ -49,6 +49,14 @@ class AdherentZoneBasedRole
         return $role;
     }
 
+    public static function createLegislativeCandidate(Zone $zone): self
+    {
+        $role = new self(ScopeEnum::LEGISLATIVE_CANDIDATE);
+        $role->addZone($zone);
+
+        return $role;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

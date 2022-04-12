@@ -820,6 +820,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $senatorialCandidateManagedArea = new SenatorialCandidateManagedArea();
         $senatorialCandidateManagedArea->addDepartmentTag($this->getReference('referent_tag_59'));
         $senatorialCandidate->setSenatorialCandidateManagedArea($senatorialCandidateManagedArea);
+        $senatorialCandidate->addZoneBasedRole(AdherentZoneBasedRole::createLegislativeCandidate(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-17')));
         $senatorialCandidate->certify();
         $this->addReference('senatorial-candidate', $senatorialCandidate);
 

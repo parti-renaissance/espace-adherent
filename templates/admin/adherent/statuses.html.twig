@@ -107,6 +107,10 @@
         <span class="label label-primary" style="padding: 2px;">Candidat aux législatives</span><br/>
     {% endif %}
 
+    {% if object.isCorrespondent %}
+        <span class="label label-primary" style="padding: 2px;">Correspondant</span><br/>
+    {% endif %}
+
     {% if object.isMunicipalChief %}
         <span class="label label-primary" style="padding: 2px;">
                 Candidat Municipales 2020 🇫🇷

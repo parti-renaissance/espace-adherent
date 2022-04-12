@@ -32,14 +32,6 @@ class DistrictAdmin extends AbstractAdmin
         self::autocompleteFilterCallback('managedDistrict', $admin, $property, $name);
     }
 
-    public static function prepareLegislativeCandidateAutocompleteFilterCallback(
-        self $admin,
-        string $property,
-        string $name
-    ): void {
-        self::autocompleteFilterCallback('legislativeCandidateManagedDistrict', $admin, $property, $name);
-    }
-
     protected static function autocompleteFilterCallback(
         string $field,
         self $admin,

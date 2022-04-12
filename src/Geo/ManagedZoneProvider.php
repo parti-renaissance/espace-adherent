@@ -63,7 +63,7 @@ class ManagedZoneProvider
         }
 
         if (AdherentSpaceEnum::LEGISLATIVE_CANDIDATE === $spaceType) {
-            return $adherent->getLegislativeCandidateManagedDistrict() ? [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()->getZone()] : [];
+            return [$adherent->getLegislativeCandidateZone()];
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid "%s" space type', $spaceType));
