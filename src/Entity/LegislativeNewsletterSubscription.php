@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Geo\Zone;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
@@ -32,16 +32,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssertUniqueEntity(fields={"emailAddress", "fromZone"}, message="legislative_neswletter.already_registered")
  *
- * @ORM\Table(name="legislative_newsletter_subscriptions")
+ * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
+class LegislativeNewsletterSubscription
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use EntitySoftDeletableTrait;
 
     /**
      * @ORM\Column(nullable=true)
@@ -50,10 +47,10 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
      */
-    private ?string $firstName;
+    private ?string $firstName = null;
 
     /**
-     * @ORM\Column(length=100)
+     * @ORM\Column
      *
      * @Assert\NotBlank(message="neswletter.email.not_blank")
      * @Assert\Email(message="neswletter.email.invalid")
@@ -61,7 +58,7 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
      */
-    private string $emailAddress;
+    private ?string $emailAddress = null;
 
     /**
      * @ORM\Column(type="string", length=11)
@@ -76,12 +73,14 @@ class LegislativeNewsletterSubscription implements EntitySoftDeletedInterface
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
      */
-    private string $postalCode;
+    private ?string $postalCode = null;
 
     /**
      * @ORM\Column(length=2, nullable=true)
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
+     *
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private string $country = 'FR';
 

@@ -44,6 +44,6 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
         return !isset($context[self::ALREADY_CALLED])
-            && is_a($type, LegislativeNewsletterSubscription::class, true);
+            && LegislativeNewsletterSubscription::class === $type;
     }
 }
