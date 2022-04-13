@@ -43,17 +43,12 @@ class FeatureEnum extends Enum
         self::MOBILE_APP,
     ];
 
-    public const AVAILABLE_FOR_DELEGATED_ACCESSES = [
-        self::DASHBOARD,
-        self::MOBILE_APP,
-        self::CONTACTS,
-        self::MESSAGES,
-        self::EVENTS,
-        self::NEWS,
-        self::ELECTIONS,
-        self::PAP,
-        self::TEAM,
-        self::PHONING_CAMPAIGN,
-        self::SURVEY,
+    public const FORBIDDEN_FOR_DELEGATED_ACCESSES = [
+        self::MY_TEAM,
     ];
+
+    public static function getAvailableForDelegatedAccess(): array
+    {
+        return array_diff(self::ALL, self::FORBIDDEN_FOR_DELEGATED_ACCESSES);
+    }
 }

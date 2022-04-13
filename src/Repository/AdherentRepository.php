@@ -166,60 +166,20 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->findOneBy(['uuid' => $uuid]);
     }
 
-    public function findByEmails(array $emails): array
+    public function loadUserByUuid(UuidInterface $uuid): ?Adherent
     {
-        return $this->createQueryBuilder('a')
-            ->where('a.emailAddress IN (:emails)')
-            ->setParameter('emails', $emails)
-            ->orderBy('a.firstName', 'ASC')
+        return $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
+            ->where($alias.'.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 
     public function loadUserByUsername($username)
     {
-        return $this
-            ->createQueryBuilder('a')
-            ->addSelect('pma')
-            ->addSelect('cca')
-            ->addSelect('cm')
-            ->addSelect('c')
-            ->addSelect('bm')
-            ->addSelect('ama')
-            ->addSelect('jma')
-            ->addSelect('mca')
-            ->addSelect('rtm')
-            ->addSelect('ma')
-            ->addSelect('rda')
-            ->addSelect('scma')
-            ->addSelect('ref_tags')
-            ->addSelect('lre')
-            ->addSelect('tcm', 'tc')
-            ->addSelect('pcm', 'pc')
-            ->addSelect('commitment')
-            ->addSelect('mandates')
-            ->leftJoin('a.procurationManagedArea', 'pma')
-            ->leftJoin('a.assessorManagedArea', 'ama')
-            ->leftJoin('a.jecouteManagedArea', 'jma')
-            ->leftJoin('a.coordinatorCommitteeArea', 'cca')
-            ->leftJoin('a.municipalChiefManagedArea', 'mca')
-            ->leftJoin('a.referentTeamMember', 'rtm')
-            ->leftJoin('a.managedArea', 'ma')
-            ->leftJoin('ma.tags', 'ref_tags')
-            ->leftJoin('a.memberships', 'cm')
-            ->leftJoin('cm.committee', 'c')
-            ->leftJoin('a.boardMember', 'bm')
-            ->leftJoin('a.receivedDelegatedAccesses', 'rda')
-            ->leftJoin('a.senatorialCandidateManagedArea', 'scma')
-            ->leftJoin('a.lreArea', 'lre')
-            ->leftJoin('a.territorialCouncilMembership', 'tcm')
-            ->leftJoin('tcm.territorialCouncil', 'tc')
-            ->leftJoin('tc.politicalCommittee', 'pc')
-            ->leftJoin('a.politicalCommitteeMembership', 'pcm')
-            ->leftJoin('a.commitment', 'commitment')
-            ->leftJoin('a.adherentMandates', 'mandates')
-            ->where('a.emailAddress = :username')
+        return $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
+            ->where($alias.'.emailAddress = :username')
             ->setParameter('username', $username)
             ->getQuery()
             ->getOneOrNullResult()
@@ -1544,5 +1504,52 @@ SQL;
         }
 
         $qb->andWhere($where);
+    }
+
+    private function createQueryBuilderForAdherentWithRoles(string $alias): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder($alias)
+            ->addSelect('pma')
+            ->addSelect('cca')
+            ->addSelect('cm')
+            ->addSelect('c')
+            ->addSelect('bm')
+            ->addSelect('ama')
+            ->addSelect('jma')
+            ->addSelect('mca')
+            ->addSelect('rtm')
+            ->addSelect('ma')
+            ->addSelect('rda')
+            ->addSelect('scma')
+            ->addSelect('ref_tags')
+            ->addSelect('lre')
+            ->addSelect('tcm', 'tc')
+            ->addSelect('pcm', 'pc')
+            ->addSelect('commitment')
+            ->addSelect('mandates')
+            ->addSelect('zone_based_role')
+            ->leftJoin($alias.'.procurationManagedArea', 'pma')
+            ->leftJoin($alias.'.assessorManagedArea', 'ama')
+            ->leftJoin($alias.'.jecouteManagedArea', 'jma')
+            ->leftJoin($alias.'.coordinatorCommitteeArea', 'cca')
+            ->leftJoin($alias.'.municipalChiefManagedArea', 'mca')
+            ->leftJoin($alias.'.referentTeamMember', 'rtm')
+            ->leftJoin($alias.'.managedArea', 'ma')
+            ->leftJoin('ma.tags', 'ref_tags')
+            ->leftJoin($alias.'.memberships', 'cm')
+            ->leftJoin('cm.committee', 'c')
+            ->leftJoin($alias.'.boardMember', 'bm')
+            ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
+            ->leftJoin($alias.'.senatorialCandidateManagedArea', 'scma')
+            ->leftJoin($alias.'.lreArea', 'lre')
+            ->leftJoin($alias.'.territorialCouncilMembership', 'tcm')
+            ->leftJoin('tcm.territorialCouncil', 'tc')
+            ->leftJoin('tc.politicalCommittee', 'pc')
+            ->leftJoin($alias.'.politicalCommitteeMembership', 'pcm')
+            ->leftJoin($alias.'.commitment', 'commitment')
+            ->leftJoin($alias.'.adherentMandates', 'mandates')
+            ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
+        ;
     }
 }

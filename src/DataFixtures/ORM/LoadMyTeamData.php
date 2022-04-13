@@ -49,7 +49,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $member1_3 = $this->createMember(
             $this->getReference('senator-59'),
             RoleEnum::MOBILIZATION_MANAGER,
-            FeatureEnum::AVAILABLE_FOR_DELEGATED_ACCESSES,
+            FeatureEnum::getAvailableForDelegatedAccess(),
             self::MEMBER_3_UUID
         );
         $this->setReference('my_team_member_1_3', $member1_3);

@@ -80,7 +80,7 @@ class Member
      *
      * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
-    private ?Adherent $adherent = null;
+    private ?Adherent $adherent;
 
     /**
      * @ORM\Column
@@ -90,13 +90,13 @@ class Member
      *
      * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
-    private ?string $role = null;
+    private ?string $role;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Assert\Choice(
-     *     choices=App\Scope\FeatureEnum::AVAILABLE_FOR_DELEGATED_ACCESSES,
+     *     callback={"App\Scope\FeatureEnum", "getAvailableForDelegatedAccess"},
      *     multiple=true,
      *     multipleMessage="my_team.member.scope_features.invalid_choice"
      * )
@@ -104,7 +104,7 @@ class Member
      *
      * @Groups({"my_team_member_read", "my_team_member_write", "my_team_read_list"})
      */
-    private array $scopeFeatures = [];
+    private array $scopeFeatures;
 
     public function __construct(
         Adherent $adherent = null,

@@ -104,7 +104,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             DelegatedAccess::ACCESS_ADHERENTS,
             DelegatedAccess::ACCESS_MESSAGES,
         ]);
-        $delegatedAccess7->setScopeFeatures(FeatureEnum::AVAILABLE_FOR_DELEGATED_ACCESSES);
+        $delegatedAccess7->setScopeFeatures(FeatureEnum::getAvailableForDelegatedAccess());
 
         $manager->persist($delegatedAccess7);
 

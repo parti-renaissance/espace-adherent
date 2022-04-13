@@ -94,7 +94,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
             return new ClientApiUser($credentials['oauth_client_id'], $roles);
         }
 
-        if (!$user = $this->adherentRepository->findByUuid(Uuid::fromString($credentials['oauth_user_id']))) {
+        if (!$user = $this->adherentRepository->loadUserByUuid(Uuid::fromString($credentials['oauth_user_id']))) {
             $e = new UsernameNotFoundException(sprintf('Unable to find User by UUID "%s".', $credentials['oauth_user_id']));
 
             throw new BadCredentialsException('Invalid credentials.', 0, $e);
