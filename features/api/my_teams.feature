@@ -363,13 +363,15 @@ Feature:
                         "role": "mobilization_manager",
                         "scope_features": [
                             "dashboard",
-                            "mobile_app",
                             "contacts",
                             "messages",
                             "events",
+                            "mobile_app",
                             "news",
                             "elections",
+                            "ripostes",
                             "pap",
+                            "pap_v2",
                             "team",
                             "phoning_campaign",
                             "survey"
