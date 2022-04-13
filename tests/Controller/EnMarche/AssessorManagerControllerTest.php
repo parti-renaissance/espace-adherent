@@ -32,7 +32,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
     private const SUBJECTS = [
         self::SUBJECT_REQUEST,
         self::SUBJECT_VOTE_PLACE,
-        SUBJECT_VOTE_PLACE_CITIES,
+        self::SUBJECT_VOTE_PLACE_CITIES,
     ];
 
     /**

@@ -32,7 +32,7 @@ class AdherentAutocompleteController extends AbstractController
         $maxResult = $request->query->getInt('max_result', 10);
 
         return $this->json(
-            $repository->findAdherentByAutocompletion($query, $zones, $maxResult > 100 ? 100 : $maxResult),
+            $repository->findAdherentByAutocompletion($query, $zones, min($maxResult, 100)),
             Response::HTTP_OK,
             [],
             ['groups' => ['adherent_autocomplete']]
