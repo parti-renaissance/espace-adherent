@@ -531,6 +531,9 @@ Feature:
       "nb_visited_doors": 1,
       "nb_addresses": 1,
       "nb_voters": 0,
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      },
       "nb_vote_places": 1,
       "nb_collected_contacts": 0,
       "nb_contact_later": 0,
@@ -886,6 +889,9 @@ Feature:
         "title": "Campagne de 10 jours suivants",
         "brief": "**Campagne** de 10 jours suivants",
         "goal": 600,
+        "survey": {
+            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47"
+        },
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
@@ -911,6 +917,9 @@ Feature:
         "nb_visited_doors": 1,
         "nb_addresses": 4,
         "nb_voters": 7,
+        "survey": {
+            "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+        },
         "nb_vote_places": 0,
         "nb_collected_contacts": 0,
         "nb_contact_later": 1,
@@ -941,6 +950,9 @@ Feature:
         "nb_visited_doors": 5,
         "nb_addresses": 4,
         "nb_voters": 7,
+        "survey": {
+            "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47"
+        },
         "nb_vote_places": 7,
         "nb_collected_contacts": 3,
         "average_visit_time": 336,

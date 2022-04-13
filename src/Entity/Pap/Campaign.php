@@ -50,7 +50,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "pagination_client_enabled": true,
  *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
  *         "normalization_context": {
- *             "iri": true,
  *             "groups": {"pap_campaign_read"},
  *         },
  *         "denormalization_context": {
@@ -82,6 +81,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns",
+ *             "normalization_context": {
+ *                 "groups": {"pap_campaign_read_list"},
+ *             },
  *         },
  *         "post": {
  *             "path": "/v3/pap_campaigns",
@@ -101,6 +103,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/{id}/survey",
  *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {
+ *                 "groups": {"pap_campaign_survey_read"},
+ *             },
  *         },
  *         "vote_places_get_subresource": {
  *             "path": "/v3/pap_campaigns/{id}/vote_places",
@@ -135,7 +140,12 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
+     *     "pap_campaign_write",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $title;
 
@@ -144,7 +154,12 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
+     *     "pap_campaign_write",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $brief;
 
@@ -156,7 +171,12 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
      *
-     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
+     *     "pap_campaign_write",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $goal;
 
@@ -173,7 +193,12 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *     groups={"pap_campaign_creation"}
      * )
      *
-     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
+     *     "pap_campaign_write",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $beginAt;
 
@@ -185,11 +210,18 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
      *
-     * @Groups({"pap_campaign_read", "pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
+     *     "pap_campaign_write",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $finishAt;
 
     /**
+     * @var Survey|null
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
      * @ORM\JoinColumn(nullable=false)
      *
@@ -197,7 +229,11 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *
      * @ApiSubresource
      *
-     * @Groups({"pap_campaign_write", "pap_campaign_read_after_write"})
+     * @Groups({
+     *     "pap_campaign_write",
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
+     * })
      */
     private $survey;
 
@@ -293,6 +329,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *
      * @Groups({
      *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
      *     "pap_campaign_read_after_write",
      * })
      */
