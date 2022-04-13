@@ -72,6 +72,7 @@ trait EntityIdentityTrait
      *     "my_team_member_read",
      *     "my_team_member_post",
      *     "pap_campaign_read",
+     *     "pap_campaign_read_list",
      *     "adherent_autocomplete",
      *     "pap_campaign_history_read",
      *     "pap_campaign_history_read_list",

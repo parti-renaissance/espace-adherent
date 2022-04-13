@@ -125,6 +125,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      *     "phoning_campaign_read",
      *     "phoning_campaign_history_read_list",
      *     "pap_campaign_read_after_write",
+     *     "pap_campaign_read",
      *     "pap_campaign_history_read_list",
      *     "phoning_campaign_replies_list",
      *     "pap_campaign_replies_list",
