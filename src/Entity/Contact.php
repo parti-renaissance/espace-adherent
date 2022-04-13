@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\SendInBlue\ContactInterface;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -47,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
  */
-class Contact implements RecaptchaChallengeInterface
+class Contact implements RecaptchaChallengeInterface, ContactInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;

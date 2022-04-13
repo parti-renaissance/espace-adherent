@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Membership\Contact;
+namespace App\SendInBlue\Handler;
 
 use App\Entity\Contact;
 use App\Repository\AdherentRepository;
 use App\Repository\ContactRepository;
+use App\SendInBlue\Command\ContactSynchronisationCommand;
 use App\SendInBlue\ContactManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -52,7 +53,7 @@ class ContactSynchronisationCommandHandler implements MessageHandlerInterface, L
         }
 
         try {
-            $this->contactManager->synchronize($contact);
+            $this->contactManager->synchronize($contact, $contact->getEmailAddress());
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Failed to synchronize contact UUID: "%s". Error: %s', $contact->getUuid(), $e->getMessage()));
         }

@@ -110,6 +110,8 @@ services:
             tags: [ 'app.auth_app.url_generator' ]
         App\Recaptcha\RecaptchaApiClientInterface:
             tags: ['app.recaptcha_api_client']
+        App\SendInBlue\Manager\ManagerInterface:
+            tags: ['app.sendinblue.manager']
 
     # Imports
     App\:
@@ -366,3 +368,15 @@ services:
                 arguments:
                     - '@request_stack'
                     - '%kernel.debug%'
+
+    App\SendInBlue\ContactManager:
+        arguments:
+            $managers: !tagged_iterator 'app.sendinblue.manager'
+
+    App\SendInBlue\Manager\AdherentManager:
+        arguments:
+            $listId: '%env(int:SENDINBLUE_ADHERENT_LIST_ID)%'
+
+    App\SendInBlue\Manager\ContactManager:
+        arguments:
+            $listId: '%env(int:SENDINBLUE_CONTACT_LIST_ID)%'

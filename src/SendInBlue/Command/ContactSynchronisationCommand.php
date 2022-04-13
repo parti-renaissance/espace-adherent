@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Membership\Contact;
+namespace App\SendInBlue\Command;
 
 use App\Messenger\Message\AbstractUuidAsynchronousMessage;
 use App\SendInBlue\SynchronizeMessageInterface;

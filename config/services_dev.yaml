@@ -32,8 +32,8 @@ services:
     App\OpenGraph\OpenGraphFetcher:
         class: 'Tests\App\Test\OpenGraph\DummyOpenGraphFetcher'
 
-    Tests\App\Test\SendInBlue\DummyClient:
-        decorates: 'App\SendInBlue\Client'
+    Tests\App\Test\SendInBlue\Client\DummyClient:
+        decorates: 'App\SendInBlue\Client\Client'
 
     data_collector.messenger:
         class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector

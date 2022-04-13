@@ -42,6 +42,7 @@ use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
+use App\SendInBlue\ContactInterface;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
@@ -98,7 +99,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, ContactInterface
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;

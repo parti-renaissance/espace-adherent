@@ -4,7 +4,7 @@ namespace App\Contact;
 
 use App\Entity\Contact;
 use App\Membership\Contact\ContactRegistrationCommand;
-use App\Membership\Contact\ContactSynchronisationCommand;
+use App\SendInBlue\Command\ContactSynchronisationCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class ContactHandler

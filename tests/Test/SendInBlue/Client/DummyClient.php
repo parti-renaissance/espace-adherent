@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\App\Test\SendInBlue;
+namespace Tests\App\Test\SendInBlue\Client;
 
-use App\SendInBlue\ClientInterface;
+use App\SendInBlue\Client\ClientInterface;
 
 class DummyClient implements ClientInterface
 {

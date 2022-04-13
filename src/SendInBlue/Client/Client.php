@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SendInBlue;
+namespace App\SendInBlue\Client;
 
 use SendinBlue\Client\Api\ContactsApi;
 use SendinBlue\Client\Configuration;
