@@ -113,7 +113,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?\DateTimeInterface $confirmedAt;
+    private ?\DateTimeInterface $confirmedAt = null;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -186,12 +186,12 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         $this->personalDataCollection = $personalDataCollection;
     }
 
-    public function getToken(): ?UuidInterface
+    public function getToken(): UuidInterface
     {
         return $this->token;
     }
 
-    public function setToken(?UuidInterface $token = null): void
+    public function setToken(UuidInterface $token = null): void
     {
         $this->token = $token;
     }

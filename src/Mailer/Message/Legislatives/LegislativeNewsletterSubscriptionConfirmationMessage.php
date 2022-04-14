@@ -15,7 +15,6 @@ final class LegislativeNewsletterSubscriptionConfirmationMessage extends Abstrac
             $subscription->getEmailAddress(),
             $subscription->getFirstName(),
             'Confirmez votre adresse email',
-            [],
             [
                 'confirmation_link' => $confirmationLink,
             ]

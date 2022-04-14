@@ -6,7 +6,6 @@ use App\Legislative\Newsletter\Events;
 use App\Legislative\Newsletter\LegislativeNewsletterEvent;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Legislatives\LegislativeNewsletterSubscriptionConfirmationMessage;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -14,16 +13,11 @@ class SendValidationMailSubscriber implements EventSubscriberInterface
 {
     private MailerService $mailer;
     private UrlGeneratorInterface $urlGenerator;
-    private LoggerInterface $logger;
 
-    public function __construct(
-        MailerService $transactionalMailer,
-        UrlGeneratorInterface $urlGenerator,
-        LoggerInterface $logger
-    ) {
+    public function __construct(MailerService $transactionalMailer, UrlGeneratorInterface $urlGenerator)
+    {
         $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
-        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents()
@@ -34,14 +28,6 @@ class SendValidationMailSubscriber implements EventSubscriberInterface
     public function sendValidationEmail(LegislativeNewsletterEvent $event): void
     {
         $subscription = $event->getNewsletter();
-        if (null === $subscription->getUuid() || null === $subscription->getToken()) {
-            $this->logger->error(sprintf(
-                'LegislativeNewsletterSubscription with id "%d" has no UUID or token to create a confirmation link.',
-                $subscription->getId()
-            ));
-
-            return;
-        }
 
         $confirmationLink = $this->urlGenerator->generate(
             'app_legislatives_newsletter_confirmation',

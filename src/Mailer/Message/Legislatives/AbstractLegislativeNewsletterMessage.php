@@ -8,7 +8,7 @@ abstract class AbstractLegislativeNewsletterMessage extends Message
 {
     protected static function updateSenderInfo(Message $message): Message
     {
-        $message->setSenderEmail('contact@avecvous.fr');
+        $message->setSenderEmail('ne-pas-repondre@avecvous.fr');
 
         return $message;
     }
