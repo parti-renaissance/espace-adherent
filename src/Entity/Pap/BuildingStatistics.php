@@ -25,13 +25,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "groups": {"pap_building_statistics_read"},
  *         },
  *     },
- *     collectionOperations={
- *         "api_pap_campaigns_building_statistics_get_subresource": {
- *             "method": "GET",
- *             "pagination_enabled": true,
- *         },
+ *     collectionOperations={},
+ *     itemOperations={
+ *         "get"
  *     },
- *     itemOperations={},
  * )
  */
 class BuildingStatistics implements CampaignStatisticsInterface
