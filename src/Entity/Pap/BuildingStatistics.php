@@ -13,22 +13,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingStatisticsRepository")
- * @ORM\Table(name="pap_building_statistics")
+ * @ORM\Table(name="pap_building_statistics", uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"building_id", "campaign_id"}),
+ * })
  *
  * @ApiResource(
- *     shortName="PapBuildingStatistics",
  *     attributes={
- *         "pagination_client_enabled": true,
  *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
  *         "normalization_context": {
- *             "iri": true,
  *             "groups": {"pap_building_statistics_read"},
  *         },
  *     },
  *     collectionOperations={},
- *     itemOperations={
- *         "get"
- *     },
+ *     itemOperations={},
  * )
  */
 class BuildingStatistics implements CampaignStatisticsInterface
