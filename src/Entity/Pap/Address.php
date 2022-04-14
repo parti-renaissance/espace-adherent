@@ -22,13 +22,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * })
  *
  * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"pap_address_read"}
+ *         },
+ *     },
  *     collectionOperations={},
  *     itemOperations={
  *         "get": {
  *             "method": "GET",
  *             "path": "/v3/pap/address/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"pap_address_read"}},
  *         },
  *     },
  *     subresourceOperations={

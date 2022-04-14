@@ -10,7 +10,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -29,7 +28,6 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
     {
         $this
             ->setDescription('PAP: associate active campaign to building')
-            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in minutes for campaign selection (1 min by default)', 1)
         ;
     }
 
@@ -42,9 +40,7 @@ class PapAssociateActiveCampaignsToBuildingsCommand extends Command implements L
     {
         $date = new \DateTime();
 
-        $campaigns = $this->campaignRepository->findUnassociatedCampaigns(
-            $date->modify(sprintf('+%d minutes', (int) $input->getOption('interval')))
-        );
+        $campaigns = $this->campaignRepository->findUnassociatedCampaigns($date);
 
         $this->io->progressStart(\count($campaigns));
 

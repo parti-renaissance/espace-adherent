@@ -5,7 +5,7 @@ namespace App\Repository\Pap;
 use App\Entity\Pap\Address;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\VotePlace;
-use App\Pap\Exception\LocalCampaignException;
+use App\Pap\BuildingStatusEnum;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -171,34 +171,12 @@ SQL;
         }
 
         if (!$campaign->isNationalVisibility()) {
-            if ($campaign->getVotePlaces()->count() > 0) {
-                $votePlaceIds = implode(',', array_map(function (VotePlace $votePlace) {
-                    return $votePlace->getId();
-                }, $campaign->getVotePlaces()->toArray()));
-            } elseif ($campaign->getZones()->count() > 0) {
-                $qb = $this->createQueryBuilder('address')
-                    ->innerJoin('address.votePlace', 'votePlace')
-                    ->select('DISTINCT votePlace.id')
-                ;
-                $this->withGeoZones(
-                    $campaign->getZones()->toArray(),
-                    $qb,
-                    'address',
-                    Address::class,
-                    'a2',
-                    'zones',
-                    'z2'
-                );
+            $votePlaceIds = implode(',', array_map(function (VotePlace $votePlace) {
+                return $votePlace->getId();
+            }, $campaign->getVotePlaces()->toArray()));
 
-                $votePlaceIds = implode(',', array_column(
-                    $qb
-                        ->getQuery()
-                        ->getArrayResult(), 'id'
-                ));
-            }
-
-            if (!isset($votePlaceIds)) {
-                throw new LocalCampaignException(sprintf('Local campaign with id "%s" has no associated vote places, neither zones.', $campaign->getId()));
+            if (!$votePlaceIds) {
+                return;
             }
 
             $conditions[] = "vote_place.id IN ($votePlaceIds)";
@@ -214,13 +192,27 @@ SQL;
             $sql
         );
 
-        $statement = $this->getEntityManager()->getConnection()->prepare($sql);
+        $connection = $this->getEntityManager()->getConnection();
+        $connection->prepare($sql)->executeStatement($params);
 
-        foreach ($params as $key => $value) {
-            $statement->bindValue($key, $value);
-        }
+        // insert building statistics for new campaign
+        $sql = <<<SQL
+INSERT IGNORE INTO pap_building_statistics (building_id, campaign_id, status, uuid, created_at, updated_at)
+SELECT
+    building.id,
+    building.current_campaign_id,
+    :todo_status,
+    UUID(),
+    NOW(),
+    NOW()
+FROM pap_building AS building 
+WHERE building.current_campaign_id = :campaign_id
+SQL;
 
-        $statement->executeStatement();
+        $connection->prepare($sql)->executeStatement([
+            'campaign_id' => $campaign->getId(),
+            'todo_status' => BuildingStatusEnum::TODO,
+        ]);
     }
 
     public function countByPapCampaign(Campaign $campaign): int
