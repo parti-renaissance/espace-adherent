@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingStatisticsRepository")
  * @ORM\Table(name="pap_building_statistics")
  *
  * @ApiResource(

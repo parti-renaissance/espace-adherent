@@ -4,6 +4,7 @@ namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Campaign;
 use App\Pap\CampaignHistoryStatusEnum;
+use App\Repository\Pap\BuildingStatisticsRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeGeneratorResolver;
@@ -21,14 +22,17 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
     private AuthorizationCheckerInterface $authorizationChecker;
     private CampaignHistoryRepository $campaignHistoryRepository;
+    private BuildingStatisticsRepository $buildingStatisticsRepository;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     public function __construct(
         CampaignHistoryRepository $campaignHistoryRepository,
+        BuildingStatisticsRepository $buildingStatisticsRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ) {
         $this->campaignHistoryRepository = $campaignHistoryRepository;
+        $this->buildingStatisticsRepository = $buildingStatisticsRepository;
         $this->authorizationChecker = $authorizationChecker;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
@@ -42,7 +46,10 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
-        if (!$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::PAP)) {
+        if (
+            !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::PAP)
+            && !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::PAP_V2)
+        ) {
             return $campaign;
         }
 
@@ -65,6 +72,8 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
             $campaign['nb_to_join'] = $zones ? $this->campaignHistoryRepository->countToJoinByCampaign($object, $zones) : $object->getCampaignHistoriesToJoin()->count();
             $campaign['nb_door_open'] = $zones ? $this->campaignHistoryRepository->countByCampaignAndStatus($object, CampaignHistoryStatusEnum::DOOR_OPEN, $zones) : $object->getCampaignHistoriesDoorOpen()->count();
             $campaign['nb_contact_later'] = $zones ? $this->campaignHistoryRepository->countByCampaignAndStatus($object, CampaignHistoryStatusEnum::CONTACT_LATER, $zones) : $object->getCampaignHistoriesContactLater()->count();
+
+            $campaign = array_merge($campaign, $this->buildingStatisticsRepository->countByStatus($object));
         }
 
         return $campaign;
