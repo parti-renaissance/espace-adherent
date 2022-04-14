@@ -62,6 +62,10 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Campaign $object */
     protected function getZoneCodes(object $object): ?array
     {
-        return $this->buildZoneCodes(!$object->isNationalVisibility() ? $object->getZones()->first() : null);
+        if (!$object->isNationalVisibility() && ($zone = $object->getZones()->first())) {
+            return $this->buildZoneCodes($zone);
+        }
+
+        return null;
     }
 }
