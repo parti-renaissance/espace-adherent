@@ -53,30 +53,6 @@
         h1 {
           float: left;
         }
-
-        .step {
-          float: right;
-        }
-      }
-    }
-
-    .summary-bloc {
-      table {
-        margin-top: 10px;
-        width: 100%;
-
-        tr {
-          text-align: left;
-
-          td:first-child {
-            width: 45%;
-            color: $gray--dark;
-          }
-
-          td:last-child {
-            font-weight: bold;
-          }
-        }
       }
     }
   }
