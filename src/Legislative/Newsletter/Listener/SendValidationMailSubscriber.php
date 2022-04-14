@@ -5,7 +5,7 @@ namespace App\Legislative\Newsletter\Listener;
 use App\Legislative\Newsletter\Events;
 use App\Legislative\Newsletter\LegislativeNewsletterEvent;
 use App\Mailer\MailerService;
-use App\Mailer\Message\LegislativeNewsletterSubscriptionConfirmationMessage;
+use App\Mailer\Message\Legislatives\LegislativeNewsletterSubscriptionConfirmationMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
