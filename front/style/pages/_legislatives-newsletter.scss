@@ -1,0 +1,83 @@
+.legislatives_newsletter {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Maax';
+
+  &__header {
+    &--outer {
+      background-position: center 62%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      @include gradient-container;
+      background-color: $filter--gray;
+      background-blend-mode: multiply;
+      padding-top: 85px;
+    }
+
+    &--inner {
+      padding: 20px 0 80px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+
+    @media (max-width: $tablet) {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .header-bloc {
+      width: 100%;
+
+      a.back {
+        color: $blue--nation;
+        text-decoration: none;
+        border-bottom: none;
+        transition: none;
+      }
+
+      a.back:hover {
+        border-bottom: 1px solid $blue--nation;
+      }
+
+      .title {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        margin: 20px 0 10px 0;
+
+        h1 {
+          float: left;
+        }
+
+        .step {
+          float: right;
+        }
+      }
+    }
+
+    .summary-bloc {
+      table {
+        margin-top: 10px;
+        width: 100%;
+
+        tr {
+          text-align: left;
+
+          td:first-child {
+            width: 45%;
+            color: $gray--dark;
+          }
+
+          td:last-child {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}

@@ -25,6 +25,7 @@ parameters:
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
     assessor_host:                        "%env(ASSESSOR_HOST)%"
+    legislatives_avecvous_host:           "%env(LEGISLATIVES_AVECVOUS_HOST)%"
     assessor_path_prefix:                 ""
     nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"

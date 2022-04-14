@@ -244,6 +244,11 @@ app_assessor:
     type: "annotation"
     prefix: "%assessor_path_prefix%"
 
+app_legislative_avecvous:
+    host: "%legislatives_avecvous_host%"
+    resource: "../src/Controller/Legislatives/Newsletter"
+    type: "annotation"
+
 app_api_intl:
     host: "{app_domain}"
     prefix: "/api/"
