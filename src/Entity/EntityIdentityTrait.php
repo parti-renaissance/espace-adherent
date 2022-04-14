@@ -85,6 +85,7 @@ trait EntityIdentityTrait
      *     "phoning_campaign_replies_list",
      *     "pap_campaign_replies_list",
      *     "pap_vote_place_read",
+     *     "pap_building_statistics_read",
      *     "survey_replies_list",
      *     "jecoute_resource_links_read",
      *     "committee_sync",

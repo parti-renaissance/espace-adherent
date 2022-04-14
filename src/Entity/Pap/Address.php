@@ -56,35 +56,59 @@ class Address
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_campaign_history_read_list",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?string $number;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_campaign_history_read_list",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?string $address;
 
     /**
      * @ORM\Column(length=5, nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?string $inseeCode;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_campaign_history_read_list",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?array $postalCodes;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read", "pap_campaign_history_read_list"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_campaign_history_read_list",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?string $cityName;
 

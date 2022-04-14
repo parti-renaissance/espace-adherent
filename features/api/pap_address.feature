@@ -69,14 +69,14 @@ Feature:
                     "campaign": {
                         "uuid": "@uuid@"
                     },
-                    "status": "todo",
+                    "status": "ongoing",
                     "last_passage": "@string@.isDateTime()",
                     "last_passage_done_by": {
                         "uuid": "@uuid@",
                         "first_name": "Adherent 33",
                         "last_name": "Fa33ke"
                     },
-                    "nb_visited_doors": 0,
+                    "nb_visited_doors": 1,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }

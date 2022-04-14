@@ -63,7 +63,13 @@ class Building implements CampaignStatisticsOwnerInterface
      *     strict=true
      * )
      *
-     * @Groups({"pap_address_list", "pap_building_read", "pap_building_write", "pap_address_read"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_building_read",
+     *     "pap_building_write",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?string $type = null;
 
@@ -71,7 +77,10 @@ class Building implements CampaignStatisticsOwnerInterface
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
-     * @Groups({"pap_campaign_history_read_list"})
+     * @Groups({
+     *     "pap_campaign_history_read_list",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?Address $address = null;
 
