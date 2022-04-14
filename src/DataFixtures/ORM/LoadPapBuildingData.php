@@ -54,7 +54,8 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         $building->setAddress($this->getReference('address-1'));
         $building->setCurrentCampaign($campaign1);
         $building->addStatistic(new BuildingStatistics($building, $this->getReference('pap-campaign-2')));
-        $building->addStatistic($stats = new BuildingStatistics($building, $campaign1));
+        $building->addStatistic($stats = new BuildingStatistics($building, $campaign1, BuildingStatusEnum::ONGOING));
+        $stats->setNbVisitedDoors(1);
         $stats->setLastPassage(new \DateTime('- 10 days'));
         $stats->setLastPassageDoneBy($this->getReference('adherent-33'));
         $this->createBuildingBlock(

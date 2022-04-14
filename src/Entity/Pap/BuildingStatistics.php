@@ -2,6 +2,7 @@
 
 namespace App\Entity\Pap;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -13,6 +14,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @ORM\Table(name="pap_building_statistics")
+ *
+ * @ApiResource(
+ *     shortName="PapBuildingStatistics",
+ *     attributes={
+ *         "pagination_client_enabled": true,
+ *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *         "normalization_context": {
+ *             "iri": true,
+ *             "groups": {"pap_building_statistics_read"},
+ *         },
+ *     },
+ *     collectionOperations={},
+ *     itemOperations={
+ *         "get"
+ *     },
+ * )
  */
 class BuildingStatistics implements CampaignStatisticsInterface
 {
@@ -23,11 +40,15 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="statistics")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     *
+     * @Groups({
+     *     "pap_building_statistics_read",
+     * })
      */
     private Building $building;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="buildingStatistics")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Groups({"pap_address_list", "pap_address_read"})
@@ -37,14 +58,22 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\Column(length=25)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     private string $status;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     private ?\DateTime $lastPassage = null;
 
@@ -52,7 +81,11 @@ class BuildingStatistics implements CampaignStatisticsInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     protected ?Adherent $lastPassageDoneBy;
 
@@ -64,7 +97,11 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      *
-     * @Groups({"pap_address_list", "pap_address_read"})
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     private int $nbVisitedDoors = 0;
 

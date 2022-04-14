@@ -111,6 +111,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/pap_campaigns/{id}/vote_places",
  *             "requirements": {"id": "%pattern_uuid%"},
  *         },
+ *         "building_statistics_get_subresource": {
+ *             "path": "/v3/pap_campaigns/{id}/building_statistics",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {
+ *                 "groups": {"pap_building_statistics_read"},
+ *             },
+ *         },
  *     },
  * )
  *
@@ -267,6 +274,15 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     private $votePlaces;
 
     /**
+     * @var Collection|BuildingStatistics[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Pap\BuildingStatistics", mappedBy="campaign", fetch="EXTRA_LAZY")
+     *
+     * @ApiSubresource
+     */
+    private Collection $buildingStatistics;
+
+    /**
      * @ORM\Column(name="delta_prediction_and_result_min_2017", type="float", nullable=true)
      */
     private ?float $deltaPredictionAndResultMin2017 = null;
@@ -369,6 +385,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
 
         $this->campaignHistories = new ArrayCollection();
         $this->votePlaces = new ArrayCollection();
+        $this->buildingStatistics = new ArrayCollection();
 
         $this->zones = new ArrayCollection();
         if ($zones) {
@@ -518,6 +535,11 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     public function setVotePlaces(array $votePlaces): void
     {
         $this->votePlaces = $votePlaces;
+    }
+
+    public function getBuildingStatistics(): Collection
+    {
+        return $this->buildingStatistics;
     }
 
     public function getDeltaPredictionAndResultMin2017(): ?float
