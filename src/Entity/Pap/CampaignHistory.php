@@ -163,7 +163,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $emailAddress = null;
 
@@ -185,7 +185,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $ageRange = null;
 
@@ -194,7 +194,7 @@ class CampaignHistory implements DataSurveyAwareInterface
      *
      * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $profession = null;
 
@@ -215,7 +215,7 @@ class CampaignHistory implements DataSurveyAwareInterface
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"pap_campaign_history_write"})
+     * @Groups({"pap_campaign_history_write", "pap_campaign_replies_list"})
      */
     private ?string $voterPostalCode = null;
 

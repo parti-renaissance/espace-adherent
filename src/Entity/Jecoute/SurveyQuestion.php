@@ -142,6 +142,9 @@ class SurveyQuestion implements AuthoredInterface
         return $this->dataAnswers;
     }
 
+    /**
+     * @return false|Collection|DataAnswer[]
+     */
     public function getDataAnswersFor(SurveyQuestion $surveyQuestion, DataSurvey $dataSurvey)
     {
         $criteria = Criteria::create()

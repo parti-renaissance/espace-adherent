@@ -8,6 +8,9 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\CampaignHistory;
+use App\Jecoute\AgeRangeEnum;
+use App\Jecoute\GenderEnum;
+use App\Jecoute\ProfessionEnum;
 use App\Pap\CampaignHistoryStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -79,6 +82,12 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             new \DateTime('-35 minutes'),
             new \DateTime('-30 minutes')
         ));
+        $papCampaignHistory->setFirstName('Javier');
+        $papCampaignHistory->setLastName('Latombe');
+        $papCampaignHistory->setProfession(ProfessionEnum::FARMERS);
+        $papCampaignHistory->setAgeRange(AgeRangeEnum::BETWEEN_25_39);
+        $papCampaignHistory->setVoterPostalCode('94081');
+        $papCampaignHistory->setGender(GenderEnum::OTHER);
         $this->addReference('pap-data-survey-1', $papCampaignHistory->getDataSurvey());
 
         $manager->persist($papCampaignHistory = $this->createPapCampaignHistory(

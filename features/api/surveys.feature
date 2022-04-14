@@ -1636,10 +1636,10 @@ Feature:
           "uuid": "@uuid@",
           "type": "PAP",
           "interviewed": {
-            "first_name": null,
-            "last_name": null,
-            "gender": null,
-            "age_range": null
+            "first_name": "Javier",
+            "last_name": "Latombe",
+            "gender": "other",
+            "age_range": "between_25_39"
           },
           "begin_at": "@string@.isDateTime()",
           "finish_at": "@string@.isDateTime()",
