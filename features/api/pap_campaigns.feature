@@ -540,7 +540,10 @@ Feature:
       "nb_door_open": 0,
       "nb_to_join": 0,
       "nb_open_doors": 0,
-      "average_visit_time": 0
+      "average_visit_time": 0,
+      "nb_addresses_todo": 1,
+      "nb_addresses_ongoing": 0,
+      "nb_addresses_completed": 0
     }
     """
     Examples:
@@ -927,7 +930,10 @@ Feature:
         "nb_to_join": 0,
         "nb_open_doors": 1,
         "average_visit_time": 140,
-        "visibility": "national"
+        "visibility": "national",
+        "nb_addresses_todo": 0,
+        "nb_addresses_ongoing": 0,
+        "nb_addresses_completed": 0
     }
     """
 
@@ -959,7 +965,10 @@ Feature:
         "nb_open_doors": 4,
         "nb_to_join": 0,
         "nb_door_open": 1,
-        "nb_contact_later": 0
+        "nb_contact_later": 0,
+        "nb_addresses_todo": 4,
+        "nb_addresses_ongoing": 0,
+        "nb_addresses_completed": 0
     }
     """
     Examples:
