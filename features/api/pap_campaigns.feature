@@ -966,8 +966,8 @@ Feature:
         "nb_to_join": 0,
         "nb_door_open": 1,
         "nb_contact_later": 0,
-        "nb_addresses_todo": 4,
-        "nb_addresses_ongoing": 0,
+        "nb_addresses_todo": 3,
+        "nb_addresses_ongoing": 1,
         "nb_addresses_completed": 0
     }
     """

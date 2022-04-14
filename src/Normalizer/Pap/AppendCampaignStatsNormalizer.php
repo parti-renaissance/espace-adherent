@@ -3,7 +3,6 @@
 namespace App\Normalizer\Pap;
 
 use App\Entity\Pap\Campaign;
-use App\Pap\BuildingStatusEnum;
 use App\Pap\CampaignHistoryStatusEnum;
 use App\Repository\Pap\BuildingStatisticsRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
@@ -73,9 +72,8 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
             $campaign['nb_to_join'] = $zones ? $this->campaignHistoryRepository->countToJoinByCampaign($object, $zones) : $object->getCampaignHistoriesToJoin()->count();
             $campaign['nb_door_open'] = $zones ? $this->campaignHistoryRepository->countByCampaignAndStatus($object, CampaignHistoryStatusEnum::DOOR_OPEN, $zones) : $object->getCampaignHistoriesDoorOpen()->count();
             $campaign['nb_contact_later'] = $zones ? $this->campaignHistoryRepository->countByCampaignAndStatus($object, CampaignHistoryStatusEnum::CONTACT_LATER, $zones) : $object->getCampaignHistoriesContactLater()->count();
-            $campaign['nb_addresses_todo'] = $this->buildingStatisticsRepository->countByStatus($object, BuildingStatusEnum::TODO);
-            $campaign['nb_addresses_ongoing'] = $this->buildingStatisticsRepository->countByStatus($object, BuildingStatusEnum::ONGOING);
-            $campaign['nb_addresses_completed'] = $this->buildingStatisticsRepository->countByStatus($object, BuildingStatusEnum::COMPLETED);
+
+            $campaign = array_merge($campaign, $this->buildingStatisticsRepository->countByStatus($object));
         }
 
         return $campaign;
