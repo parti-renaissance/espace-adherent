@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\PapVotePlaceScopeFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -115,6 +117,11 @@ class VotePlace
      */
     public ?Zone $zone = null;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pap\Campaign", mappedBy="votePlaces", fetch="EXTRA_LAZY")
+     */
+    public Collection $campaigns;
+
     public function __construct(
         ?float $latitude,
         ?float $longitude,
@@ -143,5 +150,6 @@ class VotePlace
         $this->misregistrationsPriority = $misregistrationsPriority;
         $this->firstRoundPriority = $firstRoundPriority;
         $this->secondRoundPriority = $secondRoundPriority;
+        $this->campaigns = new ArrayCollection();
     }
 }

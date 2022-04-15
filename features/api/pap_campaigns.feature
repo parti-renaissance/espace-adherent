@@ -635,9 +635,9 @@ Feature:
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a candidate granted with local scope, I cannot create a local campaign with not valid vote places
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=candidate" with body:
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
     """
     {
         "title": "Nouvelle campagne PAP",
@@ -671,9 +671,9 @@ Feature:
     """
 
   Scenario: As a candidate granted with local scope, I can create a local campaign
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/pap_campaigns?scope=candidate" with body:
+    And I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
     """
     {
         "title": "Nouvelle campagne PAP",
@@ -3150,20 +3150,20 @@ Feature:
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a candidate granted with local scope, I can get vote places
-    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Web"
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "GET" request to "/api/v3/pap_vote_places?scope=candidate"
+    And I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 4,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 4
+            "last_page": 2
         },
         "items": [
             {
@@ -3181,6 +3181,76 @@ Feature:
         ]
     }
     """
+
+  Scenario: As a candidate granted with local scope, I can get vote places
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 4,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 2
+        },
+        "items": [
+            {
+                "code": "75108_0001",
+                "nb_addresses": 2,
+                "nb_voters": 3,
+                "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+            },
+            {
+                "code": "75108_0002",
+                "nb_addresses": 2,
+                "nb_voters": 4,
+                "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+            }
+        ]
+    }
+    """
+
+  Scenario: As a legislative candidate granted with local scope, I can get available vote places
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/pap_campaigns/74a0d169-1e10-4159-a399-bf499706a2c6/available_vote_places?scope=legislative_candidate"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "code": "75108_0001",
+            "nb_addresses": 2,
+            "nb_voters": 3,
+            "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3"
+        },
+        {
+            "code": "75108_0002",
+            "nb_addresses": 2,
+            "nb_voters": 4,
+            "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b"
+        },
+        {
+            "code": "75108_0003",
+            "nb_addresses": 0,
+            "nb_voters": 0,
+            "uuid": "de7ed0bd-acec-4744-b94d-30b98d895adc"
+        },
+        {
+            "code": "75103_0001",
+            "nb_addresses": 1,
+            "nb_voters": 1,
+            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
+        }
+    ]
+    """
+
 
   Scenario: As a referent I can get campaign's vote places
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"

@@ -2,9 +2,11 @@
 
 namespace App\Repository\Pap;
 
+use App\Entity\Pap\Campaign;
 use App\Entity\Pap\VotePlace;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -67,5 +69,42 @@ SQL;
             'zone',
             'vpz2'
         );
+    }
+
+    /**
+     * @return VotePlace[]
+     */
+    public function findAvailableForCampaign(Campaign $campaign, array $zones): array
+    {
+        $this->withZones(
+            $queryBuilder = $this->createQueryBuilder($alias = 'vp'),
+            $zones,
+            $alias
+        );
+
+        $campaignConditions = [
+            'campaign.beginAt < :finish_at',
+            'campaign.finishAt > :begin_at',
+        ];
+        $params = [
+            'begin_at' => $campaign->getBeginAt(),
+            'finish_at' => $campaign->getFinishAt(),
+        ];
+
+        if ($campaign->getId()) {
+            $campaignConditions[] = 'campaign.id != :campaign_id';
+            $params['campaign_id'] = $campaign->getId();
+        }
+
+        $queryBuilder
+            ->leftJoin($alias.'.campaigns', 'campaign', Join::WITH, implode(' AND ', $campaignConditions))
+//            ->andWhere('campaign.id IS NULL')
+        ;
+
+        foreach ($params as $key => $value) {
+            $queryBuilder->setParameter($key, $value);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }
