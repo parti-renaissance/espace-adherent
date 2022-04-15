@@ -7,6 +7,11 @@ use App\Statistics\Acquisition\StatisticsRequest;
 
 class ApprovedCommitteeCalculator extends AbstractCommitteeCalculator
 {
+    public static function getPriority(): int
+    {
+        return 18;
+    }
+
     public function getLabel(): string
     {
         return 'Comités (nouveaux)';

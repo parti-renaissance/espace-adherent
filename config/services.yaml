@@ -111,6 +111,8 @@ services:
             tags: [ 'app.auth_app.url_generator' ]
         App\Recaptcha\RecaptchaApiClientInterface:
             tags: ['app.recaptcha_api_client']
+        App\Statistics\Acquisition\Calculator\CalculatorInterface:
+            tags: ['app.acquisition_statistics.calculator']
 
     # Imports
     App\:
@@ -154,7 +156,11 @@ services:
 
     App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
         arguments:
-            $handlers: !tagged_iterator 'app.adherent.territorial_council_membership.handler'
+            $handlers: !tagged_iterator {tag: 'app.adherent.territorial_council_membership.handler', default_priority_method: 'getPriority'}
+
+    App\Statistics\Acquisition\Aggregator:
+        arguments:
+            - !tagged_iterator {tag: 'app.acquisition_statistics.calculator', default_priority_method: getPriority}
 
     App\Redirection\Dynamic\RedirectionsSubscriber:
         arguments: [!tagged_iterator 'app.redirection.handler']

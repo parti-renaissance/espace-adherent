@@ -20,6 +20,11 @@ class RatioCommitteeMemberAdherentCalculator extends AbstractCalculator
         $this->committeeMemberCalculator = $committeeMemberCalculator;
     }
 
+    public static function getPriority(): int
+    {
+        return 15;
+    }
+
     public function getLabel(): string
     {
         return 'Ratio membre de comité par nbr adhérents (total)';

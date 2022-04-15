@@ -6,6 +6,11 @@ use App\Subscription\SubscriptionTypeEnum;
 
 class NewsletterReferentSubscriptionCalculator extends AbstractNewsletterSubscriptionCalculator
 {
+    public static function getPriority(): int
+    {
+        return 7;
+    }
+
     public function getLabel(): string
     {
         return 'Adhérents inscrits aux mails de leur référent (total)';

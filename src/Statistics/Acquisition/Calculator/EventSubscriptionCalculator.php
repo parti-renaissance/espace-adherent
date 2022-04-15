@@ -20,6 +20,11 @@ class EventSubscriptionCalculator extends AbstractCalculator
         $this->userSubscriptionCalculator = $userSubscriptionCalculator;
     }
 
+    public static function getPriority(): int
+    {
+        return 13;
+    }
+
     public function getLabel(): string
     {
         return 'Inscrits à des événements (total)';

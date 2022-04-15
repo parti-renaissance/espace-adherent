@@ -11,4 +11,6 @@ interface CalculatorInterface
     public function getCategory(): string;
 
     public function calculate(StatisticsRequest $request, array $keys): array;
+
+    public static function getPriority(): int;
 }

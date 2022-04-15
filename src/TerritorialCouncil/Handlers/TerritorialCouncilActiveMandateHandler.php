@@ -56,9 +56,9 @@ class TerritorialCouncilActiveMandateHandler extends AbstractTerritorialCouncilH
         }
     }
 
-    public function getPriority(): int
+    public static function getPriority(): int
     {
-        return -1;
+        return 100;
     }
 
     protected function findTerritorialCouncils(Adherent $adherent): array
@@ -66,7 +66,7 @@ class TerritorialCouncilActiveMandateHandler extends AbstractTerritorialCouncilH
         return [];
     }
 
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return '';
     }

@@ -7,6 +7,11 @@ use App\Entity\Donation;
 
 class AmountPunctualDonationCalculator extends AbstractAmountDonationCalculator
 {
+    public static function getPriority(): int
+    {
+        return 4;
+    }
+
     public function getLabel(): string
     {
         return 'Montant dons ponctuels (total)';

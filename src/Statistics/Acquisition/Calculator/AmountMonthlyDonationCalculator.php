@@ -7,6 +7,11 @@ use App\Entity\Donation;
 
 class AmountMonthlyDonationCalculator extends AbstractAmountDonationCalculator
 {
+    public static function getPriority(): int
+    {
+        return 1;
+    }
+
     public function getLabel(): string
     {
         return 'Montant dons mensuels (total)';

@@ -7,6 +7,11 @@ use App\Statistics\Acquisition\StatisticsRequest;
 
 class PendingCommitteeCalculator extends AbstractCommitteeCalculator
 {
+    public static function getPriority(): int
+    {
+        return 17;
+    }
+
     public function getLabel(): string
     {
         return 'Comités en attente (nouveaux)';

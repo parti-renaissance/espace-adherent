@@ -21,6 +21,11 @@ class NewsletterSubscriptionFridayListCalculator extends AbstractCalculator
         $this->newsletterSubscriptionRepository = $newsletterSubscriptionRepository;
     }
 
+    public static function getPriority(): int
+    {
+        return 9;
+    }
+
     public function getLabel(): string
     {
         return 'Inscrits à la lettre du vendredi (total)';

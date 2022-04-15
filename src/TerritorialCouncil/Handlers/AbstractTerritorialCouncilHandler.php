@@ -60,15 +60,15 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $this->eventDispatchingEnabled = false;
     }
 
-    public function getPriority(): int
+    public static function getPriority(): int
     {
-        return TerritorialCouncilQualityEnum::QUALITY_PRIORITIES[$this->getQualityName()];
+        return max(TerritorialCouncilQualityEnum::QUALITY_PRIORITIES) - TerritorialCouncilQualityEnum::QUALITY_PRIORITIES[static::getQualityName()];
     }
 
     public function handle(Adherent $adherent): void
     {
         $territorialCouncils = $this->findTerritorialCouncils($adherent);
-        $qualityName = $this->getQualityName();
+        $qualityName = static::getQualityName();
 
         // if multiple territorial councils
         $count = \count($territorialCouncils);
@@ -198,7 +198,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
     abstract protected function findTerritorialCouncils(Adherent $adherent): array;
 
-    abstract protected function getQualityName(): string;
+    abstract protected static function getQualityName(): string;
 
     abstract protected function getQualityZone(Adherent $adherent): string;
 
@@ -303,7 +303,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             $level,
             $message,
             $adherent,
-            $this->getQualityName(),
+            static::getQualityName(),
             $membership ? $membership->getTerritorialCouncil() : null,
             $membership ? array_map(function (TerritorialCouncilQuality $quality) {
                 return $quality->getName();

@@ -18,6 +18,11 @@ class EventCalculator extends AbstractCalculator
         $this->repository = $repository;
     }
 
+    public static function getPriority(): int
+    {
+        return 14;
+    }
+
     public function getLabel(): string
     {
         return 'Événements (nouveaux)';
