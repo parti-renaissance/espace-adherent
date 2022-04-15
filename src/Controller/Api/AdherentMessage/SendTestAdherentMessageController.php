@@ -7,7 +7,6 @@ use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -24,10 +23,6 @@ class SendTestAdherentMessageController extends AbstractController
 
     public function __invoke(UserInterface $user, AbstractAdherentMessage $message)
     {
-        if (!$message->isSynchronized()) {
-            throw new BadRequestHttpException('The message is not yet ready to send.');
-        }
-
         if ($this->manager->sendTest($message, $user)) {
             return $this->json('OK');
         }

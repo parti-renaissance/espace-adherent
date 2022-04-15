@@ -281,14 +281,10 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario Outline: As a delegated referent I can access to sending a referent message
+  Scenario: As a delegated referent I can access to sending a referent message
     Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/<action>?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
+    And I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/send?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON node "detail" should be equal to "The message is not yet ready to send."
-    Examples:
-      | action    |
-      | send-test |
-      | send      |
