@@ -242,11 +242,11 @@ class AreaUtils
     {
         $relatedCodes = [];
 
-        if (static::isParisCode($code)) {
+        if (self::isParisCode($code)) {
             $relatedCodes[] = self::PREFIX_POSTALCODE_PARIS_DISTRICTS;
         }
 
-        if (static::isCorsicaCode($code)) {
+        if (self::isCorsicaCode($code)) {
             $relatedCodes[] = self::PREFIX_POSTALCODE_CORSICA;
         }
 

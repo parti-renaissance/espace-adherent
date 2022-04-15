@@ -632,11 +632,20 @@
     "phpspec/prophecy": {
         "version": "v1.10.3"
     },
+    "phpstan/extension-installer": {
+        "version": "1.1.0"
+    },
     "phpstan/phpdoc-parser": {
         "version": "1.2.0"
     },
     "phpstan/phpstan": {
         "version": "0.12.66"
+    },
+    "phpstan/phpstan-doctrine": {
+        "version": "1.3.2"
+    },
+    "phpstan/phpstan-symfony": {
+        "version": "1.1.8"
     },
     "phpunit/php-code-coverage": {
         "version": "7.0.10"

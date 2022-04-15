@@ -44,10 +44,11 @@ class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInter
         $membership = $invitation->getMembership();
         $election = $event->getCandidacy()->getElection();
 
-        /** @var CommitteeCandidacyManager|CoTerrCandidacyManager $manager */
         if ($election->getDesignation()->isCopolType()) {
+            /** @var CoTerrCandidacyManager $manager */
             $manager = $this->coTerrCandidacyManager;
         } else {
+            /** @var CommitteeCandidacyManager $manager */
             $manager = $this->committeeCandidacyManager;
         }
 

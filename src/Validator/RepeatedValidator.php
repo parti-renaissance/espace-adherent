@@ -4,6 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class RepeatedValidator extends ConstraintValidator
 {
@@ -11,6 +12,10 @@ class RepeatedValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof Repeated) {
+            throw new UnexpectedTypeException($constraint, Repeated::class);
+        }
+
         if (null === self::$value) {
             if (null === $value) {
                 self::$value = '';

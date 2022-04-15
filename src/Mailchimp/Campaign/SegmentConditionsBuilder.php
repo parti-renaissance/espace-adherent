@@ -56,7 +56,7 @@ class SegmentConditionsBuilder
             'list_id' => $this->getListId($message),
             'segment_opts' => array_merge($savedSegment, [
                 'match' => 'all',
-                'conditions' => $conditions ?? [],
+                'conditions' => $conditions,
             ]),
         ];
     }
@@ -84,7 +84,7 @@ class SegmentConditionsBuilder
 
         return [
             'match' => 'all',
-            'conditions' => $conditions ?? [],
+            'conditions' => $conditions,
         ];
     }
 

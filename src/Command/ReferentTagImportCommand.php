@@ -171,7 +171,7 @@ SQL;
                 throw new \RuntimeException(sprintf('No Adherent found with uuid "%s". (line %d)', $uuid, $index + 2));
             }
 
-            if (empty($tags)) {
+            if (!\count($tags)) {
                 throw new \RuntimeException(sprintf('No tag found for Adherent "%s %s". (line %d)', $firstName, $lastName, $index + 2));
             }
 

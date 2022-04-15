@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 
+/** @phpstan-ignore-next-line */
 class ZoneAutocompleteFilter extends CallbackFilter
 {
     public function getDefaultOptions(): array

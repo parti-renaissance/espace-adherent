@@ -28,7 +28,6 @@ class MaxFiscalYearDonationValidator extends ConstraintValidator
             return;
         }
 
-        /** @var DonationRequest $donationRequest */
         if (!($donationRequest = $this->context->getObject()) instanceof DonationRequest) {
             throw new UnexpectedValueException($value, DonationRequest::class);
         }

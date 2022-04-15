@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AuthorInterface;
 use App\Entity\DynamicSegmentTrait;
 use App\Entity\EntityIdentityTrait;
@@ -90,7 +89,7 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public function getFilter(): ?SegmentFilterInterface
+    public function getFilter(): ?AudienceFilter
     {
         return $this->filter;
     }

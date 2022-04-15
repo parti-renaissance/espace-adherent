@@ -322,7 +322,6 @@ class CandidatureController extends AbstractController
         return $this->render('committee/candidacy/candidacy_list.html.twig', [
             'candidacies' => $repository->findAllConfirmedForElection($election),
             'election' => $election,
-            'membership' => $membership ?? null,
             'committee' => $committee,
             'designation' => $election->getDesignation(),
         ]);

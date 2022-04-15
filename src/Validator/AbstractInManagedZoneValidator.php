@@ -7,27 +7,15 @@ use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Geo\ManagedZoneProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 abstract class AbstractInManagedZoneValidator extends ConstraintValidator
 {
-    /**
-     * @var ManagedZoneProvider
-     */
-    protected $managedZoneProvider;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $security;
-
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    private ManagedZoneProvider $managedZoneProvider;
+    private Security $security;
+    private SessionInterface $session;
 
     public function __construct(ManagedZoneProvider $managedZoneProvider, Security $security, SessionInterface $session)
     {
@@ -36,6 +24,9 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
         $this->session = $session;
     }
 
+    /**
+     * @param ManagedZone|AddressInManagedZones $constraint
+     */
     protected function validateZones(array $zones, Constraint $constraint, array $managedZones = null): void
     {
         if (!$user = $this->getAuthenticatedUser()) {
@@ -81,7 +72,7 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
         return $zones;
     }
 
-    protected function getAuthenticatedUser(): ?Adherent
+    private function getAuthenticatedUser(): ?Adherent
     {
         $user = $this->security->getUser();
 
