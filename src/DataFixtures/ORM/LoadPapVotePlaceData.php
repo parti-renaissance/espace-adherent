@@ -32,7 +32,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             2,
             3,
             Uuid::fromString(self::UUID_1),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108')
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')
         ));
         $this->setReference('pap-vote-place--paris-8-a', $object);
 
@@ -43,7 +43,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             2,
             4,
             Uuid::fromString(self::UUID_2),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
             0.03448712620899716,
             -0.04701780333257613,
             0.1924375422012154,
@@ -58,7 +58,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             0,
             0,
             Uuid::fromString(self::UUID_3),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108')
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')
         ));
         $this->setReference('pap-vote-place--paris-8-c', $object);
 
@@ -69,7 +69,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             1,
             1,
             Uuid::fromString(self::UUID_4),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75103'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
             -0.11020033706766413,
             0.09149141048645792,
             0.1564625850340136,
@@ -84,7 +84,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             2,
             4,
             Uuid::fromString(self::UUID_5),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-2'),
             -0.01368787135603089,
             0.08377306353576569,
             0.1395582329317269,
@@ -99,7 +99,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             1,
             1,
             Uuid::fromString(self::UUID_6),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-2'),
             -0.02095552502504222,
             0.08456851575224938,
             0.14551804423748546,
@@ -114,7 +114,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             0,
             0,
             Uuid::fromString(self::UUID_7),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-2'),
             -0.06196240784844481,
             0.09086137737347927,
             0.14814814814814814,
@@ -129,7 +129,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             0,
             0,
             Uuid::fromString(self::UUID_8),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_78586'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_78-6'),
             -0.050389164528078456,
             0.07462764506078307,
             0.1825876662636034,
@@ -144,7 +144,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             0,
             0,
             Uuid::fromString(self::UUID_9),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_78586')
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_78-6')
         ));
         $this->setReference('pap-vote-place--sartrouville-b', $object);
 
@@ -155,7 +155,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             0,
             0,
             Uuid::fromString(self::UUID_10),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_78586')
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_78-6')
         ));
         $this->setReference('pap-vote-place--sartrouville-c', $object);
 
@@ -166,7 +166,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             0,
             0,
             Uuid::fromString(self::UUID_11),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_77001'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_77-1'),
             0.027060904596480972,
             0.01574765192935429,
             0.17720090293453725,
@@ -181,7 +181,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             1,
             0,
             Uuid::fromString(self::UUID_12),
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_06-8'),
             0.03922582276744235,
             -0.021542342902355627,
             0.2491767288693743

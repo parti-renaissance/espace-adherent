@@ -50,6 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "pagination_client_enabled": true,
  *         "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
  *         "normalization_context": {
+ *             "iri": true,
  *             "groups": {"pap_campaign_read"},
  *         },
  *         "denormalization_context": {
@@ -75,7 +76,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController",
  *             "defaults": {"_api_receive": false},
- *         }
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
@@ -95,6 +96,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/kpi",
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignsKpiController",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *         },
+ *         "get_available_vote_places": {
+ *             "method": "GET",
+ *             "path": "/v3/pap_campaigns/{uuid}/available_vote_places",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Pap\GetAvailableVotePlaceForCampaignController",
+ *             "normalization_context": {
+ *                 "iri": true,
+ *                 "groups": {"pap_vote_place_read"},
+ *             },
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap_v2') or is_granted('IS_FEATURE_GRANTED', 'pap')",
  *         },
  *     },
@@ -264,7 +276,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     /**
      * @var VotePlace[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace", inversedBy="campaigns")
      * @ORM\JoinTable(name="pap_campaign_vote_place")
      *
      * @Groups({"pap_campaign_write"})
