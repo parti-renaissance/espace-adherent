@@ -25,7 +25,7 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
         $form->add('zones', ModelAutocompleteType::class, [
             'callback' => [$this, 'prepareAutocompleteFilterCallback'],
             'to_string_callback' => [$this, 'toStringCallback'],
-            'property' => 'name',
+            'property' => ['name', 'code'],
         ]);
     }
 
@@ -41,21 +41,24 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
 
     public static function prepareAutocompleteFilterCallback(
         AbstractAdmin $admin,
-        string $property,
+        array $properties,
         string $value
     ): void {
-        $admin->getDatagrid()->setValue($property, null, $value);
         /** @var QueryBuilder $qb */
-        $qb = $admin
-            ->getDatagrid()
-            ->getQuery()
-        ;
+        $qb = $admin->getDatagrid()->getQuery();
+        $alias = $qb->getRootAliases()[0];
+
+        $orx = $qb->expr()->orX();
+        foreach ($properties as $property) {
+            $orx->add($alias.'.'.$property.' LIKE :property_'.$property);
+            $qb->setParameter('property_'.$property, '%'.$value.'%');
+        }
+        $qb->orWhere($orx);
 
         $request = $admin->getRequest();
         $roleType = $request->query->get('role_type');
 
         if ($roleType && $zoneTypes = (ZoneBasedRoleTypeEnum::ZONE_TYPES[$roleType] ?? [])) {
-            $alias = $qb->getRootAliases()[0];
             $qb
                 ->andWhere($alias.'.type IN(:types)')
                 ->setParameter('types', $zoneTypes)

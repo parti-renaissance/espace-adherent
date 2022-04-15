@@ -105,10 +105,10 @@ class CampaignRepository extends ServiceEntityRepository
         ;
     }
 
-    /** @return Campaign[] */
-    public function findCampaignsByVotePlaces(array $votePlaces, Campaign $excludedCampaign = null): array
+    public function countCampaignsByVotePlaces(array $votePlaces, Campaign $excludedCampaign = null): int
     {
         $qb = $this->createQueryBuilder('campaign')
+            ->select('COUNT(1)')
             ->innerJoin('campaign.votePlaces', 'votePlace', Join::WITH, 'votePlace IN (:vote_places)')
             ->setParameter('vote_places', $votePlaces)
         ;
@@ -117,29 +117,7 @@ class CampaignRepository extends ServiceEntityRepository
             $this->withExcludedCampaign($qb, $excludedCampaign);
         }
 
-        return $qb->getQuery()->getResult();
-    }
-
-    /** @return Campaign[] */
-    public function findCampaignsByZones(array $zones, Campaign $excludedCampaign = null): array
-    {
-        $qb = $this->createQueryBuilder('campaign');
-        $this->withGeoZones(
-                $zones,
-                $qb,
-                'campaign',
-                Campaign::class,
-                'c2',
-                'zones',
-                'z2'
-            )
-        ;
-
-        if ($excludedCampaign) {
-            $this->withExcludedCampaign($qb, $excludedCampaign);
-        }
-
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     private function withExcludedCampaign(QueryBuilder $qb, Campaign $excludedCampaign): QueryBuilder
