@@ -18,9 +18,9 @@ class TerritorialCouncilEmptyMembershipHandler extends AbstractTerritorialCounci
         $this->removeMembership($adherent, $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil());
     }
 
-    public function getPriority(): int
+    public static function getPriority(): int
     {
-        return 100;
+        return -1;
     }
 
     protected function findTerritorialCouncils(Adherent $adherent): array
@@ -28,7 +28,7 @@ class TerritorialCouncilEmptyMembershipHandler extends AbstractTerritorialCounci
         return [];
     }
 
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return '';
     }

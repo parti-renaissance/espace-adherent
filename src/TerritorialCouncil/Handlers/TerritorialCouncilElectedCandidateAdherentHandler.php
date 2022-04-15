@@ -53,7 +53,7 @@ class TerritorialCouncilElectedCandidateAdherentHandler extends AbstractTerritor
         return \count($this->committees) > 0 ? $this->repository->findByCommittees($this->committees) : [];
     }
 
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT;
     }

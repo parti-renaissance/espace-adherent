@@ -17,6 +17,11 @@ class UnsubscribeAdherentsCalculator extends AbstractCalculator
         $this->repository = $repository;
     }
 
+    public static function getPriority(): int
+    {
+        return 19;
+    }
+
     public function getLabel(): string
     {
         return 'Desadhésions (nouveaux)';

@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 
 class TerritorialCouncilEuropeanDeputyHandler extends AbstractTerritorialCouncilElectedRepresentativeHandler
 {
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return TerritorialCouncilQualityEnum::EUROPEAN_DEPUTY;
     }

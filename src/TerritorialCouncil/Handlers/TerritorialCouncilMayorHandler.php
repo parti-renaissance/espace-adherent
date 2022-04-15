@@ -20,7 +20,7 @@ class TerritorialCouncilMayorHandler extends AbstractTerritorialCouncilElectedRe
         return true;
     }
 
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return TerritorialCouncilQualityEnum::MAYOR;
     }

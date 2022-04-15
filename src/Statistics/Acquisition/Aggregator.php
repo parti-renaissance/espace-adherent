@@ -6,27 +6,28 @@ use App\Statistics\Acquisition\Calculator\CalculatorInterface;
 
 class Aggregator
 {
-    private $calculators = [];
+    /**
+     * @var iterable|CalculatorInterface[]
+     */
+    private iterable $calculators;
 
-    public function addCalculator(CalculatorInterface $calculator, int $priority = 0): void
+    public function __construct(iterable $calculators)
     {
-        $this->calculators[$priority][] = $calculator;
+        $this->calculators = $calculators;
     }
 
     public function calculate(StatisticsRequest $request): array
     {
         $result = [];
-        foreach ($this->getCalculators() as $calculators) {
-            foreach ($calculators as $calculator) {
-                $result[] = [
-                    'title' => $calculator->getLabel(),
-                    'category' => $calculator->getCategory(),
-                    'items' => $calculator->calculate(
-                        $request,
-                        $this->generateDateKeys($request->getStartDate(), $request->getEndDate())
-                    ),
-                ];
-            }
+        foreach ($this->calculators as $calculator) {
+            $result[] = [
+                'title' => $calculator->getLabel(),
+                'category' => $calculator->getCategory(),
+                'items' => $calculator->calculate(
+                    $request,
+                    $this->generateDateKeys($request->getStartDate(), $request->getEndDate())
+                ),
+            ];
         }
 
         return $result;
@@ -38,15 +39,5 @@ class Aggregator
             function (\DateTime $date) { return $date->format('Ym'); },
             iterator_to_array(new \DatePeriod($startDate, new \DateInterval('P1M'), $endDate))
         );
-    }
-
-    /**
-     * @return CalculatorInterface[][]
-     */
-    private function getCalculators(): array
-    {
-        ksort($this->calculators);
-
-        return $this->calculators;
     }
 }

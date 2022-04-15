@@ -6,6 +6,11 @@ use App\Subscription\SubscriptionTypeEnum;
 
 class NewsletterAdherentSubscriptionFridayListCalculator extends AbstractNewsletterSubscriptionCalculator
 {
+    public static function getPriority(): int
+    {
+        return 8;
+    }
+
     public function getLabel(): string
     {
         return 'Adhérents inscrits à la lettre du vendredi (total)';

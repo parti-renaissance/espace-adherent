@@ -7,6 +7,11 @@ use App\Entity\Donation;
 
 class PunctualAdherentDonationCalculator extends AbstractDonationCountCalculator
 {
+    public static function getPriority(): int
+    {
+        return 5;
+    }
+
     public function getLabel(): string
     {
         return 'Dons ponctuels par des adhérents (total)';

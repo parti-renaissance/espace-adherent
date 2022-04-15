@@ -8,6 +8,11 @@ abstract class AbstractCalculator implements CalculatorInterface
 {
     private $calculatedData;
 
+    public static function getPriority(): int
+    {
+        return 0;
+    }
+
     final public function calculate(StatisticsRequest $request, array $keys): array
     {
         if (\is_array($this->calculatedData)) {

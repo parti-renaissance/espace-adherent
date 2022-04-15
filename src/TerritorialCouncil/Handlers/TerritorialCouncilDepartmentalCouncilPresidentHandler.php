@@ -20,7 +20,7 @@ class TerritorialCouncilDepartmentalCouncilPresidentHandler extends AbstractTerr
         return true;
     }
 
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return TerritorialCouncilQualityEnum::DEPARTMENTAL_COUNCIL_PRESIDENT;
     }

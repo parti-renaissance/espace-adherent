@@ -18,6 +18,11 @@ class CommitteeMemberCalculator extends AbstractCalculator
         $this->repository = $repository;
     }
 
+    public static function getPriority(): int
+    {
+        return 16;
+    }
+
     public function getLabel(): string
     {
         return 'Adhérents membres de comités (total)';

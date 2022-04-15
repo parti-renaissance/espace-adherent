@@ -12,5 +12,5 @@ interface TerritorialCouncilMembershipHandlerInterface
 
     public function disableEventDispatching(): void;
 
-    public function getPriority(): int;
+    public static function getPriority(): int;
 }

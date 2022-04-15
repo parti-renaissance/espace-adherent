@@ -12,7 +12,7 @@ class TerritorialCouncilCommitteeSupervisorHandler extends AbstractTerritorialCo
         return $this->repository->findForSupervisor($adherent);
     }
 
-    protected function getQualityName(): string
+    protected static function getQualityName(): string
     {
         return TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR;
     }

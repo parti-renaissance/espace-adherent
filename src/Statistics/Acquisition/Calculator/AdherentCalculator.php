@@ -19,6 +19,11 @@ class AdherentCalculator extends AbstractCalculator
         $this->repository = $repository;
     }
 
+    public static function getPriority(): int
+    {
+        return 21;
+    }
+
     public function getLabel(): string
     {
         return 'Adhérents (total)';
