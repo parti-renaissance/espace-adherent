@@ -5,3 +5,5 @@ parameters:
         - src
         - config
         - migrations
+    symfony:
+        containerXmlPath: var/cache/dev/srcApp_KernelDevDebugContainer.xml

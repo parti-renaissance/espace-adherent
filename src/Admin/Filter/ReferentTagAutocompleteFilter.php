@@ -6,6 +6,7 @@ use App\Entity\ReferentTag;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 
+/** @phpstan-ignore-next-line */
 class ReferentTagAutocompleteFilter extends CallbackFilter
 {
     public function getDefaultOptions()

@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
@@ -33,19 +34,16 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
 
     public function getCurrentUser(): UserInterface
     {
-        $user = $this->security->getUser();
-
-        $delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));
-
-        if ($delegatedAccess) {
+        if ($delegatedAccess = $this->getDelegatedAccess()) {
             return $delegatedAccess->getDelegator();
         }
 
-        return $user;
+        return $this->security->getUser();
     }
 
     public function getDelegatedAccess(): ?DelegatedAccess
     {
+        /** @var Adherent $user */
         $user = $this->security->getUser();
 
         return $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));

@@ -5,6 +5,7 @@ namespace App\Validator;
 use App\Committee\CommitteeMergeCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class MergeableCommitteesValidator extends ConstraintValidator
 {
@@ -12,6 +13,10 @@ class MergeableCommitteesValidator extends ConstraintValidator
     {
         if (!$committeeMergeCommand instanceof CommitteeMergeCommand) {
             return;
+        }
+
+        if (!$constraint instanceof MergeableCommittees) {
+            throw new UnexpectedTypeException($constraint, MergeableCommittees::class);
         }
 
         $sourceCommittee = $committeeMergeCommand->getSourceCommittee();

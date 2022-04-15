@@ -143,7 +143,7 @@ class SurveyQuestion implements AuthoredInterface
     }
 
     /**
-     * @return false|Collection|DataAnswer[]
+     * @return false|DataAnswer
      */
     public function getDataAnswersFor(SurveyQuestion $surveyQuestion, DataSurvey $dataSurvey)
     {

@@ -15,6 +15,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+/** @phpstan-ignore-next-line */
 class AdherentRoleFilter extends CallbackFilter
 {
     public function getDefaultOptions()

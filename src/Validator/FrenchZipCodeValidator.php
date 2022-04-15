@@ -20,7 +20,6 @@ class FrenchZipCodeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FrenchZipCode::class);
         }
 
-        /** @var Address $address */
         if (!($address = $this->context->getObject()) instanceof Address) {
             throw new UnexpectedValueException($address, Address::class);
         }

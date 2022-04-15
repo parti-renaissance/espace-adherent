@@ -119,11 +119,12 @@ class TimelineImageFactory
 
     private function getMeasureCounts(): array
     {
+        $counts = [];
         foreach (array_keys(self::TEXTS_COORDINATES) as $measureStatus) {
             $counts[$measureStatus] = $this->measureRepository->countMeasuresByStatus($measureStatus);
         }
 
-        return $counts ?? [];
+        return $counts;
     }
 
     private function translate(string $id, string $locale): string

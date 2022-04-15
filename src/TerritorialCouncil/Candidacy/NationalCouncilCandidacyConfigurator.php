@@ -3,7 +3,7 @@
 namespace App\TerritorialCouncil\Candidacy;
 
 use App\Entity\TerritorialCouncil\Candidacy;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\ValueObject\Genders;
 
@@ -11,8 +11,9 @@ class NationalCouncilCandidacyConfigurator
 {
     public static function getAvailableGenders(Candidacy $candidacy): array
     {
-        /** @var TerritorialCouncil $coTerr */
-        $coTerr = $candidacy->getElection()->getTerritorialCouncil();
+        /** @var Election $election */
+        $election = $candidacy->getElection();
+        $coTerr = $election->getTerritorialCouncil();
 
         $members = [$candidacy];
 

@@ -11,4 +11,6 @@ interface CandidacyInvitationInterface
     public function setCandidacy(CandidacyInterface $candidacy): void;
 
     public function isPending(): bool;
+
+    public function getMembership(): ?object;
 }

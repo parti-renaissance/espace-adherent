@@ -6,6 +6,7 @@ use App\Admin\DistrictAdmin;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/** @phpstan-ignore-next-line */
 class AvailableDistrictAutocompleteType extends ModelAutocompleteType
 {
     public function configureOptions(OptionsResolver $resolver)

@@ -76,9 +76,6 @@ class CommitteeCandidacySendEmailsListener implements EventSubscriberInterface
         $this->notifySupervisor($event, CommitteeRemovedCandidacyNotificationMessage::class);
     }
 
-    /**
-     * @param CommitteeRemovedCandidacyNotificationMessage|CommitteeNewCandidacyNotificationMessage $messageClass
-     */
     private function notifySupervisor(CommitteeCandidacyEvent $event, string $messageClass): void
     {
         foreach ($event->getSupervisors() as $supervisor) {
