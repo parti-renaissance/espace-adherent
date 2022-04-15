@@ -85,3 +85,28 @@ Feature:
     Then the response status code should be 201
     And the response should be in JSON
     And I should have 1 email
+    And I should have 1 email "LegislativeNewsletterSubscriptionConfirmationMessage" for "lucile@example.org" with payload:
+    """
+    {
+        "template_name": "legislative-newsletter-subscription-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "Confirmez votre adresse email",
+            "from_email": "ne-pas-repondre@avecvous.fr",
+            "from_name": "La majorité présidentielle avec vous",
+            "global_merge_vars": [
+                {
+                    "name": "confirmation_link",
+                    "content": "http://test.enmarche.code/newsletter/confirmation/@string@/@string@"
+                }
+            ],
+            "to": [
+                {
+                    "email": "lucile@example.org",
+                    "type": "to",
+                    "name": "lucile"
+                }
+            ]
+        }
+    }
+    """

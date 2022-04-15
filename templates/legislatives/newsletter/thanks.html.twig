@@ -1,22 +1,9 @@
 {% extends 'legislatives/newsletter/_layout.html.twig' %}
 
-{% block page_title 'Vous êtes désormais inscrit à la newsletter ! - Legislatives' %}
+{% block page_title 'Vous êtes désormais inscrit à la newsletter - Legislatives' %}
 
 {% block legislatives_content %}
-    <main class="legislatives_newsletter__content">
-        <section class="legislatives_newsletter__content__form l__wrapper l__row l__row--top l__row--h-stretch-around l__tablet--col space--40-0">
-            <div class="l__wrapper">
-                <h2 class="text--large b__nudge--bottom-larger">
-                    Vous venez de vous inscrire à la newsletter d'un candidat aux élections législatives. Merci !
-                </h2>
-
-                <p class="text--body text--dark font-roboto b__nudge--bottom-larger">
-                    Vous recevrez désormais régulièrement des informations sur la campagne du candidat (événements, projets…).<br /><br />
-
-                    À bientôt,<br />
-                    L'équipe de La République En Marche !
-                </p>
-            </div>
-        </section>
-    </main>
+    <section class="legislatives_newsletter__thanks  l__wrapper--slim text--center space--100-0">
+        {{ cms_block('legislative-newsletter-thanks-content') }}
+    </section>
 {% endblock %}
