@@ -98,7 +98,7 @@ SQL;
 
         $queryBuilder
             ->leftJoin($alias.'.campaigns', 'campaign', Join::WITH, implode(' AND ', $campaignConditions))
-//            ->andWhere('campaign.id IS NULL')
+            ->andWhere('campaign.id IS NULL')
         ;
 
         foreach ($params as $key => $value) {
