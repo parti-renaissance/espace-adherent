@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JeMengageSurveyScopeFilter;
+use App\Api\Filter\SurveyTypeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -99,6 +100,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  * })
+ * @ApiFilter(SurveyTypeFilter::class)
  *
  * @SurveyScopeTarget
  */

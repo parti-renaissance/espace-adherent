@@ -1042,6 +1042,101 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+
+  Scenario: As a user with local role I can filter surveys by type
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=2&type=national"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 3,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 2
+      },
+      "items": [
+        {
+          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+          "type": "national",
+          "name": "Questionnaire national numéro 1",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 2,
+          "nb_answers": 14
+        },
+        {
+          "uuid": "@uuid@",
+          "type": "national",
+          "name": "Le deuxième questionnaire national",
+          "created_at": "@string@.isDateTime()",
+          "published": true,
+          "creator": null,
+          "nb_questions": 1,
+          "nb_answers": 0
+        }
+      ]
+    }
+    """
+
+    When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=2&type=local"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+      """
+      {
+        "metadata": {
+          "total_items": 3,
+          "items_per_page": 2,
+          "count": 2,
+          "current_page": 1,
+          "last_page": 2
+        },
+        "items": [
+          {
+            "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+            "type": "local",
+            "name": "Questionnaire numéro 1",
+            "created_at": "@string@.isDateTime()",
+            "zone": {
+              "uuid": "@uuid@",
+              "code": "77",
+              "name": "Seine-et-Marne",
+              "created_at": "@string@.isDateTime()"
+            },
+            "published": true,
+            "creator": {
+              "first_name": "Referent",
+              "last_name": "Referent"
+            },
+            "nb_questions": 4,
+            "nb_answers": 3
+          },
+          {
+            "uuid": "dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea",
+            "type": "local",
+            "name": "Un deuxième questionnaire",
+            "created_at": "@string@.isDateTime()",
+            "zone": {
+              "uuid": "@uuid@",
+              "code": "59",
+              "name": "Nord",
+              "created_at": "@string@.isDateTime()"
+            },
+            "published": true,
+            "creator": {
+              "first_name": "Referent75and77",
+              "last_name": "Referent75and77"
+            },
+            "nb_questions": 1,
+            "nb_answers": 0
+          }
+        ]
+      }
+      """
+
   Scenario: As a user with national role I cannot read a local survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/surveys/138140e9-1dd2-11b2-a08e-41ae5b09da7d?scope=national"
