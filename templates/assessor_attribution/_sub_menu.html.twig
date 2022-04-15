@@ -2,10 +2,10 @@
     <div class="datagrid__table__tabs__items">
         <h3>
             {% if is_active_route(app.request, "app_assessors_#{space_type}_attribution_form") %}
-                Bureaux de votes
+                Bureaux de vote
             {% else %}
                 <a href="{{ path("app_assessors_#{space_type}_attribution_form") }}">
-                    Bureaux de votes
+                    Bureaux de vote
                 </a>
             {% endif %}
         </h3>

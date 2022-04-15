@@ -660,11 +660,11 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "vote_places: Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée",
+        "detail": "vote_places: Un ou plusieurs bureaux de vote ne sont pas dans la zone gérée",
         "violations": [
             {
                 "propertyPath": "vote_places",
-                "message": "Un ou plusieurs bureaux de votes ne sont pas dans la zone gérée"
+                "message": "Un ou plusieurs bureaux de vote ne sont pas dans la zone gérée"
             }
         ]
     }
