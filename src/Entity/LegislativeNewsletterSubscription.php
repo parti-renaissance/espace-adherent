@@ -105,9 +105,20 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      */
     private bool $personalDataCollection = false;
 
+    /**
+     * @ORM\Column(type="uuid", unique=true, nullable=true)
+     */
+    private UuidInterface $token;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $confirmedAt = null;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->token = Uuid::uuid4();
     }
 
     public function __toString()
@@ -173,5 +184,25 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     public function setPersonalDataCollection(bool $personalDataCollection): void
     {
         $this->personalDataCollection = $personalDataCollection;
+    }
+
+    public function getToken(): UuidInterface
+    {
+        return $this->token;
+    }
+
+    public function setToken(UuidInterface $token = null): void
+    {
+        $this->token = $token;
+    }
+
+    public function getConfirmedAt(): ?\DateTimeInterface
+    {
+        return $this->confirmedAt;
+    }
+
+    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
+    {
+        $this->confirmedAt = $confirmedAt;
     }
 }

@@ -238,6 +238,16 @@ TXT
 TXT
         ));
 
+        $manager->persist($this->createCmsBlock(
+            'legislative-newsletter-thanks-content',
+            'Texte affiché pour la page de confirmation de souscription à la newsletter d\'un candidat aux législatives',
+            <<<'TXT'
+<h1 class="text--large">
+    Votre inscription à notre newsletter est validée. Merci.
+</h1>
+TXT
+        ));
+
         $manager->flush();
     }
 

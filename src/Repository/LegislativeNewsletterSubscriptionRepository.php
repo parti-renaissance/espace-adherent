@@ -12,4 +12,18 @@ class LegislativeNewsletterSubscriptionRepository extends ServiceEntityRepositor
     {
         parent::__construct($registry, LegislativeNewsletterSubscription::class);
     }
+
+    public function findOneNotConfirmedByUuidAndToken(string $uuid, string $token): ?LegislativeNewsletterSubscription
+    {
+        return $this
+            ->createQueryBuilder('newsletter')
+            ->where('newsletter.uuid = :uuid')
+            ->andWhere('newsletter.token = :token')
+            ->andWhere('newsletter.confirmedAt IS NULL')
+            ->setParameter('uuid', $uuid)
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }
