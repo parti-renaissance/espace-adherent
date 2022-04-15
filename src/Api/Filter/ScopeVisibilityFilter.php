@@ -9,7 +9,6 @@ use App\Entity\Pap\Campaign;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
 use App\Scope\ScopeVisibilityEnum;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 final class ScopeVisibilityFilter extends AbstractScopeFilter
