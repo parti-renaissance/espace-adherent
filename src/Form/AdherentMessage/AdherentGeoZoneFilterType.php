@@ -22,8 +22,8 @@ class AdherentGeoZoneFilterType extends AbstractType
                 'expanded' => true,
                 'required' => false,
             ])
-            ->add('ageMin', IntegerType::class, ['required' => false])
-            ->add('ageMax', IntegerType::class, ['required' => false])
+            ->add('ageMin', IntegerType::class, ['required' => false, 'attr' => ['min' => 1]])
+            ->add('ageMax', IntegerType::class, ['required' => false, 'attr' => ['min' => 1]])
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('zone', ZoneAutoCompleteType::class, [

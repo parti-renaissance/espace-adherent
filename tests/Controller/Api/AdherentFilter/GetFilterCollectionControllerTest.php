@@ -60,7 +60,14 @@ class GetFilterCollectionControllerTest extends AbstractWebCaseTest
                     { 
                         "code": "age",
                         "label": "Âge",
-                        "options": null,
+                        "options": {
+                            "first": {
+                                "min": 1
+                            },
+                            "second": {
+                                "min": 1
+                            }
+                        },
                         "type": "integer_interval"
                     },
                     {

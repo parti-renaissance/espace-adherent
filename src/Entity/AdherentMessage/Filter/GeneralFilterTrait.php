@@ -22,6 +22,8 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
+     * @Assert\GreaterThan(0)
+     *
      * @Groups({"audience_segment_read", "audience_segment_write"})
      */
     private $ageMin;
@@ -30,6 +32,8 @@ trait GeneralFilterTrait
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Assert\GreaterThan(0)
      *
      * @Groups({"audience_segment_read", "audience_segment_write"})
      */
