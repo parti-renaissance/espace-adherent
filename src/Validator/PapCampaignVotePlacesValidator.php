@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 use App\Entity\Pap\Campaign;
+use App\Entity\Pap\VotePlace;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Pap\CampaignRepository;
 use App\Scope\ScopeGeneratorResolver;
@@ -41,13 +42,15 @@ class PapCampaignVotePlacesValidator extends ConstraintValidator
 
         $votePlaces = $value->getVotePlaces()->toArray();
 
-        if ($this->campaignRepository->findCampaignsByVotePlaces($votePlaces, $value)) {
+        if ($this->campaignRepository->countCampaignsByVotePlaces($votePlaces, $value)) {
             $this
                 ->context
                 ->buildViolation($constraint->messageAnotherCampaign)
                 ->atPath('votePlaces')
                 ->addViolation()
             ;
+
+            return;
         }
 
         if (!($scope = $this->scopeGeneratorResolver->generate())
@@ -55,7 +58,10 @@ class PapCampaignVotePlacesValidator extends ConstraintValidator
             return;
         }
 
-        $vpZones = $this->zoneRepository->findForPapVotePlaces($votePlaces);
+        $vpZones = array_filter(array_map(function (VotePlace $votePlace) {
+            return $votePlace->zone;
+        }, $votePlaces));
+
         foreach ($vpZones as $vpZone) {
             if (!$this->zoneRepository->isInZones([$vpZone], $zones)) {
                 $this
