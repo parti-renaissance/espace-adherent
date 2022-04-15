@@ -228,6 +228,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
+     * @Assert\Expression("value > this.getBeginAt()", message="pap.campaign.invalid_end_date")
      *
      * @Groups({
      *     "pap_campaign_read",
