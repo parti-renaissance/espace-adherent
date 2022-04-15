@@ -1,6 +1,6 @@
 @api
 Feature:
-  In order to get adherents' information
+  In order to get adherents information
   As a referent
   I should be able to acces adherents API data
 
@@ -438,7 +438,14 @@ Feature:
         {
             "code": "age",
             "label": "Âge",
-            "options": null,
+            "options": {
+                "first": {
+                    "min": 1
+                },
+                "second": {
+                    "min": 1
+                }
+            },
             "type": "integer_interval"
         },
         {
