@@ -1411,7 +1411,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "goal: Cette valeur doit être supérieure à \"0\".\nbegin_at: La date de début doit être dans le future.",
+        "detail": "goal: Cette valeur doit être supérieure à \"0\".\nbegin_at: La date de début doit être dans le futur.",
         "violations": [
             {
                 "propertyPath": "goal",
@@ -1419,7 +1419,7 @@ Feature:
             },
             {
                 "propertyPath": "begin_at",
-                "message": "La date de début doit être dans le future."
+                "message": "La date de début doit être dans le futur."
             }
         ]
     }
