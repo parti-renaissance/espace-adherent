@@ -1303,7 +1303,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le future.\npost_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
+      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le futur.\npost_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
@@ -1328,7 +1328,7 @@ Feature:
               "propertyPath": "description"
           },
           {
-              "message": "La date de début doit être dans le future.",
+              "message": "La date de début doit être dans le futur.",
               "propertyPath": "begin_at"
           },
           {
