@@ -22,7 +22,8 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\LessThanOrEqual(200)
      *
      * @Groups({"audience_segment_read", "audience_segment_write"})
      */
@@ -33,7 +34,8 @@ trait GeneralFilterTrait
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\LessThanOrEqual(200)
      *
      * @Groups({"audience_segment_read", "audience_segment_write"})
      */
