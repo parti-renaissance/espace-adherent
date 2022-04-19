@@ -29,8 +29,9 @@ class PostWritePapCampaignListener implements EventSubscriberInterface
     {
         $campaign = $event->getControllerResult();
 
-        if (!($campaign instanceof Campaign)
-            || !\in_array($event->getRequest()->getMethod(), [Request::METHOD_POST])
+        if (
+            !$campaign instanceof Campaign
+            || !\in_array($event->getRequest()->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
         ) {
             return;
         }
