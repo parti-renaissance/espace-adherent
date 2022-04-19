@@ -1373,7 +1373,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nsurvey: Cette valeur ne doit pas être vide.",
+        "detail": "title: Cette valeur ne doit pas être vide.\ngoal: Cette valeur ne doit pas être vide.\nfinish_at: La date de fin doit être postérieure à la date de début.\nsurvey: Cette valeur ne doit pas être vide.",
         "violations": [
             {
                 "propertyPath": "title",
@@ -1382,6 +1382,10 @@ Feature:
             {
                 "propertyPath": "goal",
                 "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "finish_at",
+                "message": "La date de fin doit être postérieure à la date de début."
             },
             {
                 "propertyPath": "survey",
@@ -1401,7 +1405,7 @@ Feature:
         "brief": "**NOUVEAU**",
         "goal": 0,
         "begin_at": "2022-03-01 00:00:00",
-        "finish_at": "2022-03-31 00:00:00",
+        "finish_at": "2022-02-20 00:00:00",
         "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
@@ -1411,7 +1415,7 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "goal: Cette valeur doit être supérieure à \"0\".\nbegin_at: La date de début doit être dans le futur.",
+        "detail": "goal: Cette valeur doit être supérieure à \"0\".\nbegin_at: La date de début doit être dans le futur.\nfinish_at: La date de fin doit être postérieure à la date de début.",
         "violations": [
             {
                 "propertyPath": "goal",
@@ -1420,6 +1424,10 @@ Feature:
             {
                 "propertyPath": "begin_at",
                 "message": "La date de début doit être dans le futur."
+            },
+            {
+                "propertyPath": "finish_at",
+                "message": "La date de fin doit être postérieure à la date de début."
             }
         ]
     }
