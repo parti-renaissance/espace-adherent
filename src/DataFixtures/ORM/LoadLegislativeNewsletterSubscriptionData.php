@@ -55,7 +55,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         $subscription->setEmailAddress($emailAddress);
         $subscription->setPostalCode($postalCode);
         $subscription->setCountry($country);
-        $subscription->setFromZone($zone);
+        $subscription->addFromZone($zone);
         $subscription->setFirstName($firstName);
         $subscription->setPersonalDataCollection($personalDataCollection);
 

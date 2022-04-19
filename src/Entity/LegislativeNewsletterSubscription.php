@@ -8,10 +8,12 @@ use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Validator\ZoneType as AssertZoneType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,8 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  * )
  *
- * @AssertUniqueEntity(fields={"emailAddress", "fromZone"}, message="legislative_neswletter.already_registered")
- *
  * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
  *
@@ -57,7 +57,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private ?string $firstName = null;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank(message="neswletter.email.not_blank")
      * @Assert\Email(message="neswletter.email.invalid")
@@ -92,11 +92,13 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private string $country = 'FR';
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     * @var Collection|Zone[]
      *
-     * @Assert\NotBlank
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
+     *
+     * @AssertZoneType(types={"district"})
      */
-    private ?Zone $fromZone = null;
+    private Collection $fromZones;
 
     /**
      * @Assert\IsTrue(message="common.personal_data_collection.required")
@@ -119,6 +121,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->token = Uuid::uuid4();
+        $this->fromZones = new ArrayCollection();
     }
 
     public function __toString()
@@ -166,14 +169,29 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         $this->country = $country;
     }
 
-    public function getFromZone(): ?Zone
+    /**
+     * @return Collection|Zone[]
+     */
+    public function getFromZones(): Collection
     {
-        return $this->fromZone;
+        return $this->fromZones;
     }
 
-    public function setFromZone(Zone $fromZone): void
+    public function setFromZones(array $fromZones): void
     {
-        $this->fromZone = $fromZone;
+        array_walk($fromZones, [$this, 'addFromZone']);
+    }
+
+    public function addFromZone(Zone $fromZone): void
+    {
+        if (!$this->fromZones->contains($fromZone)) {
+            $this->fromZones->add($fromZone);
+        }
+    }
+
+    public function removeFromZone(Zone $fromZone): void
+    {
+        $this->fromZones->removeElement($fromZone);
     }
 
     public function isPersonalDataCollection(): bool
