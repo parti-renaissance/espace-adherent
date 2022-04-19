@@ -440,10 +440,12 @@ Feature:
             "label": "Âge",
             "options": {
                 "first": {
-                    "min": 1
+                    "min": 1,
+                    "max": 200
                 },
                 "second": {
-                    "min": 1
+                    "min": 1,
+                    "max": 200
                 }
             },
             "type": "integer_interval"

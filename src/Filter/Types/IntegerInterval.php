@@ -15,6 +15,13 @@ class IntegerInterval extends AbstractFilter
         $this->addOption('first', $options);
     }
 
+    public function addFirstOptions(array $options): void
+    {
+        foreach ($options as $option => $value) {
+            $this->addFirstOption($option, $value);
+        }
+    }
+
     public function addSecondOption(string $option, $value): void
     {
         $options = $this->getOptions()['second'] ?? [];
@@ -22,6 +29,13 @@ class IntegerInterval extends AbstractFilter
         $options[$option] = $value;
 
         $this->addOption('second', $options);
+    }
+
+    public function addSecondOptions(array $options): void
+    {
+        foreach ($options as $option => $value) {
+            $this->addSecondOption($option, $value);
+        }
     }
 
     protected function _getType(): string
