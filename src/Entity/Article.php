@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "path": "/articles/{id}",
- *             "requirements": {"id": "[\w-]+"},
+ *             "requirements": {"id": ".+"},
  *         },
  *     },
  * )
