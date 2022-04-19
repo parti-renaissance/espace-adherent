@@ -7,6 +7,7 @@ use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\Jecoute\News;
 use App\Entity\Pap\Campaign;
 use App\Scope\Generator\ScopeGeneratorInterface;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
 
@@ -36,6 +37,17 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
         }
 
         if (Campaign::class === $queryBuilder->getRootEntities()[0]) {
+            if (ScopeEnum::LEGISLATIVE_CANDIDATE === $scope->getCode()) {
+                $queryBuilder
+                    ->leftJoin("$alias.zones", 'zone')
+                    ->andWhere("$alias.visibility = :local AND zone IN (:zones)")
+                    ->setParameter('local', ScopeVisibilityEnum::LOCAL)
+                    ->setParameter('zones', $scope->getZones())
+                ;
+
+                return;
+            }
+
             $queryBuilder
                 ->leftJoin("$alias.zones", 'zone')
                 ->leftJoin('zone.parents', 'parent_zone')
