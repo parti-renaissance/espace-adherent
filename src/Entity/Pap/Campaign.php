@@ -21,7 +21,7 @@ use App\Entity\Jecoute\Survey;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Scope\ScopeVisibilityEnum;
-use App\Validator\PapCampaignBeginAt as AssertBeginAtValid;
+use App\Validator\PapCampaignStarted as AssertStartedPapCampaignValid;
 use App\Validator\PapCampaignVotePlaces as AssertVotePlacesValid;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -139,7 +139,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @ScopeVisibility
- * @AssertBeginAtValid
+ * @AssertStartedPapCampaignValid
  * @AssertVotePlacesValid
  */
 class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
@@ -207,7 +207,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\DateTime
      * @Assert\GreaterThanOrEqual(
-     *     value="now",
+     *     value="today",
      *     message="pap.campaign.invalid_start_date",
      *     groups={"pap_campaign_creation"}
      * )

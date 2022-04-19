@@ -151,13 +151,13 @@ Feature:
   Scenario: As a user granted with national scope, I can update a national campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
+    And I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
     """
     {
       "title": "NOUVEAU Campagne de 10 jours suivants",
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
-      "finish_at": "2022-04-30 00:00:00",
+      "finish_at": "2022-12-30 00:00:00",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
@@ -170,43 +170,12 @@ Feature:
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
       "begin_at": "@string@.isDateTime()",
-      "finish_at": "2022-04-30T00:00:00+02:00",
+      "finish_at": "2022-12-30T00:00:00+01:00",
       "survey": {
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
-      "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
+      "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
       "visibility": "national"
-    }
-    """
-
-  Scenario: As a user granted with national scope, I cannot update a national campaign with invalid data
-    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I add "Content-Type" header equal to "application/json"
-    And I send a "PUT" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager" with body:
-    """
-    {
-      "title": "NOUVEAU Campagne de 10 jours suivants",
-      "brief": "NOUVEAU **Campagne** de 10 jours suivants",
-      "goal": 1000,
-      "begin_at": "+30 days",
-      "finish_at": "+40 days",
-      "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
-    }
-    """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "type": "https://tools.ietf.org/html/rfc2616#section-10",
-        "title": "An error occurred",
-        "detail": "La date de début est déjà dépassée, vous ne pouvez pas la changer.",
-        "violations": [
-            {
-                "propertyPath": "",
-                "message": "La date de début est déjà dépassée, vous ne pouvez pas la changer."
-            }
-        ]
     }
     """
 
@@ -634,7 +603,7 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a candidate granted with local scope, I cannot create a local campaign with not valid vote places
+  Scenario: As a legislative candidate granted with local scope, I cannot create a local campaign with not valid vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
@@ -670,7 +639,7 @@ Feature:
     }
     """
 
-  Scenario: As a candidate granted with local scope, I can create a local campaign
+  Scenario: As a legislative candidate granted with local scope, I can create a local campaign
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/pap_campaigns?scope=legislative_candidate" with body:
@@ -702,6 +671,107 @@ Feature:
         },
         "uuid": "@uuid@",
         "visibility": "local"
+    }
+    """
+
+  Scenario: As a legislative candidate granted with local scope, I can update a local campaign with no visited doors
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf/vote_places?scope=legislative_candidate"
+    Then the response status code should be 200
+    And print last JSON response
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "code": "75108_0004",
+            "nb_addresses": 0,
+            "nb_voters": 0,
+            "uuid": "b467e84c-74dc-453f-8ee7-7adf338a481f"
+        }
+    ]
+    """
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf?scope=legislative_candidate" with body:
+    """
+    {
+        "title": "Campagne locale de Paris 8ème (modifié)",
+        "brief": "**NOUVEAU**",
+        "goal": 10,
+        "begin_at": "2022-12-01 09:00:00",
+        "finish_at": "2022-12-21 20:00:00",
+        "survey": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
+        "vote_places": [
+            "de7ed0bd-acec-4744-b94d-30b98d895adc"
+        ]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "begin_at": "2022-12-01T09:00:00+01:00",
+        "finish_at": "2022-12-21T20:00:00+01:00",
+        "brief": "**NOUVEAU**",
+        "goal": 10,
+        "survey": {
+            "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f"
+        },
+        "title": "Campagne locale de Paris 8ème (modifié)",
+        "uuid": "8fbee663-4f18-49d4-9c2d-4553bcc859cf",
+        "visibility": "local"
+    }
+    """
+    When I send a "GET" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf/vote_places?scope=legislative_candidate"
+    Then the response status code should be 200
+    And print last JSON response
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "code": "75108_0003",
+            "nb_addresses": 0,
+            "nb_voters": 0,
+            "uuid": "de7ed0bd-acec-4744-b94d-30b98d895adc"
+        }
+    ]
+    """
+
+  Scenario: As a legislative candidate granted with local scope, I cannot update some fields of a local campaign with visited doors
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/08463014-bbfe-421c-b8fb-5e456414b088?scope=legislative_candidate" with body:
+    """
+    {
+        "title": "Campagne locale de Paris 8ème (modifié)",
+        "brief": "**NOUVEAU**",
+        "goal": 10,
+        "begin_at": "2022-12-01 09:00:00",
+        "finish_at": "2022-12-21 20:00:00",
+        "survey": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
+        "vote_places": [
+            "de7ed0bd-acec-4744-b94d-30b98d895adc"
+        ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "detail": "survey: La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.\nvote_places: La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de votes déjà utilisés.",
+        "title": "An error occurred",
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "violations": [
+            {
+                "message": "La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.",
+                "propertyPath": "survey"
+            },
+            {
+                "message": "La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de votes déjà utilisés.",
+                "propertyPath": "vote_places"
+            }
+        ]
     }
     """
 
@@ -762,6 +832,24 @@ Feature:
     And the JSON should be equal to:
     """
     [
+        {
+            "begin_at": "@string@.isDateTime()",
+            "brief": null,
+            "finish_at": "@string@.isDateTime()",
+            "goal": 100,
+            "title": "Campagne locale de Paris 8ème",
+            "uuid": "8fbee663-4f18-49d4-9c2d-4553bcc859cf",
+            "visibility": "local"
+        },
+        {
+            "begin_at": "@string@.isDateTime()",
+            "brief": null,
+            "finish_at": "@string@.isDateTime()",
+            "goal": 100,
+            "title": "Campagne locale de Paris 8ème avec des portes frappées",
+            "uuid": "08463014-bbfe-421c-b8fb-5e456414b088",
+            "visibility": "local"
+        },
         {
             "title": "Campagne de 5 jours suivants",
             "brief": "**Campagne** de 5 jours suivants",
@@ -2218,9 +2306,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 8,
             "items_per_page": 10,
-            "count": 7,
+            "count": 8,
             "current_page": 1,
             "last_page": 1
         },
@@ -2448,6 +2536,38 @@ Feature:
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "duration": 140
+            },
+            {
+                "questioner": {
+                    "gender": "male",
+                    "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
+                    "first_name": "Pierre",
+                    "last_name": "Kiroule",
+                    "age": 57
+                },
+                "campaign": {
+                    "uuid": "08463014-bbfe-421c-b8fb-5e456414b088",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "building": {
+                    "address": {
+                        "number": "62",
+                        "address": "Rue de Rome",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "f93d880e-5d8c-4e6f-bfc8-3b93d8131437"
+                    },
+                    "uuid": "88285b14-038c-4305-8e0c-3fa66d330169"
+                },
+                "status": "door_closed",
+                "building_block": "A",
+                "floor": 0,
+                "door": "01",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
+                "duration": 0
             }
         ]
     }
@@ -3157,7 +3277,7 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario: As a candidate granted with local scope, I can get vote places
+  Scenario: As a legislative candidate granted with local scope, I can get vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
@@ -3167,11 +3287,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 4,
+            "total_items": 6,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 2
+            "last_page": 3
         },
         "items": [
             {
@@ -3190,7 +3310,7 @@ Feature:
     }
     """
 
-  Scenario: As a candidate granted with local scope, I can get vote places
+  Scenario: As a legislative candidate granted with local scope, I can get vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/v3/pap_vote_places?scope=legislative_candidate"
@@ -3200,11 +3320,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 4,
+            "total_items": 6,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 2
+            "last_page": 3
         },
         "items": [
             {

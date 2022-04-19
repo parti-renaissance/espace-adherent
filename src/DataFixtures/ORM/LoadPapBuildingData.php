@@ -28,6 +28,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
     public const BUILDING_03_UUID = '2bffd913-34fe-48ad-95f4-7381812b93dd';
     public const BUILDING_04_UUID = '0b81ff3d-f895-4e3f-bf6d-ff2a659c1c6f';
     public const BUILDING_05_UUID = '22f94373-6186-4c6a-a3d5-fd0b8b3d92cf';
+    public const BUILDING_06_UUID = '88285b14-038c-4305-8e0c-3fa66d330169';
 
     public const BUILDING_BLOCK_01_UUID = '40c972e7-3ae9-45d7-8d18-4df636382a01';
     public const BUILDING_BLOCK_02_UUID = '55fc7719-d1a8-47c5-a08a-812e7ce1d6dc';
@@ -35,6 +36,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
     public const BUILDING_BLOCK_04_UUID = '734d965b-0b3a-4258-a32e-0fca71a451e7';
     public const BUILDING_BLOCK_05_UUID = '19e469ea-f56d-4f1d-a942-b4cc368aed8b';
     public const BUILDING_BLOCK_06_UUID = '817722ed-0396-444f-987a-d4d336242e41';
+    public const BUILDING_BLOCK_07_UUID = '2f368b3b-7db7-4d20-bd1c-c172facaf9d5';
 
     public const FLOOR_01_UUID = 'bc407152-703a-4a08-ba70-27fcb87329c8';
     public const FLOOR_02_UUID = '7fb64baa-48be-4e55-8955-f9100f79143f';
@@ -43,11 +45,13 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
     public const FLOOR_05_UUID = '7422bbe5-1522-42c4-8908-11658027f070';
     public const FLOOR_06_UUID = '2f974e1a-595a-4972-9e15-147d759a2f60';
     public const FLOOR_07_UUID = '2fda7bc4-d21d-482c-80a8-48c5d83fcc34';
+    public const FLOOR_08_UUID = '16b459d0-097f-4d3f-b34f-8de25c3dbae7';
 
     public function load(ObjectManager $manager)
     {
         $events = [];
         $campaign1 = $this->getReference('pap-campaign-1');
+        $campaign75_08_r = $this->getReference('pap-campaign-75-08-r');
         $campaign92 = $this->getReference('pap-campaign-92');
         $building = new Building(Uuid::fromString(self::BUILDING_01_UUID));
         $building->setType(BuildingTypeEnum::BUILDING);
@@ -153,6 +157,23 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
             $events
         );
         $this->addReference('building-92-1', $building);
+        $manager->persist($building);
+
+        $building = new Building(Uuid::fromString(self::BUILDING_06_UUID));
+        $building->setType(BuildingTypeEnum::BUILDING);
+        $building->setAddress($this->getReference('address-paris-5'));
+        $building->setCurrentCampaign($campaign75_08_r);
+        $building->addStatistic(new BuildingStatistics($building, $campaign75_08_r));
+        $this->createBuildingBlock(
+            self::BUILDING_BLOCK_07_UUID,
+            'A',
+            $building,
+            [$this->getReference('pap-campaign-75-08-r')],
+            $events,
+            1,
+            [self::FLOOR_08_UUID]
+        );
+        $this->addReference('building-75-08-1', $building);
         $manager->persist($building);
 
         foreach ($events as $event) {

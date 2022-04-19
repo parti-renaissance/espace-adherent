@@ -152,4 +152,9 @@ class VotePlace
         $this->secondRoundPriority = $secondRoundPriority;
         $this->campaigns = new ArrayCollection();
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->code;
+    }
 }

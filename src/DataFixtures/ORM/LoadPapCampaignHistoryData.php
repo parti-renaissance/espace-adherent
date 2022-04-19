@@ -27,6 +27,8 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $campaign1 = $this->getReference('pap-campaign-1');
         /** @var Campaign $campaign2 */
         $campaign2 = $this->getReference('pap-campaign-2');
+        /** @var Campaign $campaign75_08_r */
+        $campaign75_08_r = $this->getReference('pap-campaign-75-08-r');
         /** @var Campaign $campaignFinished */
         $campaignFinished = $this->getReference('pap-campaign-finished');
         /** @var Campaign $campaign92 */
@@ -36,12 +38,15 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         $adherent12 = $this->getReference('adherent-12');
         $adherent16 = $this->getReference('adherent-16');
 
+        $nationalSurvey1 = $this->getReference('national-survey-1');
         $nationalSurvey3 = $this->getReference('national-survey-3');
 
         /** @var Building $building3 */
         $building3 = $this->getReference('building-3');
-        /** @var Building $building4 */
+        /** @var Building $building92_1 */
         $building92_1 = $this->getReference('building-92-1');
+        /** @var Building $building_75_08_1 */
+        $building_75_08_1 = $this->getReference('building-75-08-1');
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign1,
@@ -161,6 +166,21 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             new \DateTime('-2 hours')
         ));
         $stats = $building92_1->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign92);
+        $stats->setVisitedDoors(['01']);
+
+        $manager->persist($this->createPapCampaignHistory(
+            $campaign75_08_r,
+            $building_75_08_1,
+            CampaignHistoryStatusEnum::DOOR_CLOSED,
+            'A',
+            0,
+            '01',
+            $adherent12,
+            null,
+            new \DateTime('-1 hour'),
+            new \DateTime('-1 hour')
+        ));
+        $stats = $building_75_08_1->getBuildingBlockByName('A')->getFloorByNumber(0)->findStatisticsForCampaign($campaign75_08_r);
         $stats->setVisitedDoors(['01']);
 
         $manager->flush();
