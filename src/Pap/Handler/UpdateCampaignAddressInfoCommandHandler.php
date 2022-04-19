@@ -32,8 +32,10 @@ class UpdateCampaignAddressInfoCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        $campaign->setNbAddresses($this->addressRepository->countByPapCampaign($campaign));
-        $campaign->setNbVoters($this->addressRepository->countVotersByPapCampaign($campaign));
+        $stats = $this->addressRepository->countByPapCampaign($campaign);
+
+        $campaign->setNbAddresses($stats['total_addresses'] ?? 0);
+        $campaign->setNbVoters($stats['total_voters'] ?? 0);
 
         $this->entityManager->flush();
     }

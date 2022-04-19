@@ -215,59 +215,30 @@ SQL;
         ]);
     }
 
-    public function countByPapCampaign(Campaign $campaign): int
+    public function countByPapCampaign(Campaign $campaign): ?array
     {
-        if ($campaign->isNationalVisibility()) {
-            return (int) $this->createQueryBuilder('address')
-                ->select('COUNT(1)')
-                ->getQuery()
-                ->getSingleScalarResult()
-            ;
-        }
-
-        $qb = $this->createQueryBuilder('address');
-        $qb = $this->withGeoZones(
-            $campaign->getZones()->toArray(),
-            $qb,
-            'address',
-            Address::class,
-            'a2',
-            'zones',
-            'z2'
-        );
-
-        return (int) $qb
-            ->select('COUNT(DISTINCT address.id)')
-            ->getQuery()
-            ->getSingleScalarResult()
+        $qb = $this
+            ->createQueryBuilder('address')
+            ->select(
+                'COUNT(1) AS total_addresses',
+                'SUM(address.votersCount) AS total_voters',
+            )
         ;
-    }
 
-    public function countVotersByPapCampaign(Campaign $campaign): int
-    {
         if ($campaign->isNationalVisibility()) {
-            return (int) $this->createQueryBuilder('address')
-                ->select('SUM(address.votersCount)')
-                ->getQuery()
-                ->getSingleScalarResult()
-            ;
+            return $qb->getQuery()->getSingleResult();
         }
 
-        $qb = $this->createQueryBuilder('address');
-        $qb = $this->withGeoZones(
-            $campaign->getZones()->toArray(),
-            $qb,
-            'address',
-            Address::class,
-            'a2',
-            'zones',
-            'z2'
-        );
+        if ($campaign->getVotePlaces()->isEmpty()) {
+            return null;
+        }
 
-        return (int) $qb
-            ->select('SUM(address.votersCount)')
+        return $qb
+            ->leftJoin('address.votePlace', 'vote_place')
+            ->where('vote_place IN (:vote_places)')
+            ->setParameter('vote_places', $campaign->getVotePlaces()->toArray())
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getSingleResult()
         ;
     }
 }
