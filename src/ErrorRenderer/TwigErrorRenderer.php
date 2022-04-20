@@ -39,16 +39,16 @@ class TwigErrorRenderer implements ErrorRendererInterface
     {
         $exception = $this->fallbackErrorRenderer->render($exception);
 
-        if (\is_bool($this->debug) ? $this->debug : ($this->debug)($exception)) {
-            return $exception;
-        }
+//        if (\is_bool($this->debug) ? $this->debug : ($this->debug)($exception)) {
+//            return $exception;
+//        }
 
         $request = $this->requestStack->getCurrentRequest();
 
         $appCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
         if (!$appCode && str_ends_with($request->getHost(), $this->avecvousHost)) {
-            $appCode = MembershipSourceEnum::JEMENGAGE;
+            $appCode = MembershipSourceEnum::AVECVOUS;
         }
 
         if (!$appCode || !$template = $this->findTemplate($exception->getStatusCode(), $appCode)) {
