@@ -23,6 +23,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             'FR',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
             'John',
+            new \DateTime('-3 hours'),
             true
         );
 
@@ -32,6 +33,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             '75008',
             'FR',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-9'),
+            null,
             null,
             true
         );
@@ -49,6 +51,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         string $country,
         Zone $zone,
         ?string $firstName,
+        ?\DateTimeInterface $dateTime = null,
         bool $personalDataCollection = false
     ): LegislativeNewsletterSubscription {
         $subscription = new LegislativeNewsletterSubscription(Uuid::fromString($uuid));
@@ -57,6 +60,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         $subscription->setCountry($country);
         $subscription->addFromZone($zone);
         $subscription->setFirstName($firstName);
+        $subscription->setConfirmedAt($dateTime);
         $subscription->setPersonalDataCollection($personalDataCollection);
 
         return $subscription;
