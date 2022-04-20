@@ -568,7 +568,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
             list($postalCode, $inseeCode) = explode('-', $cityCode);
             $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
-            $this->city = "$postalCode-$inseeCode";
+            $this->voteCity = "$postalCode-$inseeCode";
             $this->voteCityName = (string) FranceCitiesBundle::getCity($postalCode, $inseeCode);
         }
     }
