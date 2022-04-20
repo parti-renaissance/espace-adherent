@@ -41,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({
  *     "App\EntityListener\DynamicLinkListener",
  *     "App\EntityListener\AlgoliaIndexListener",
+ *     "App\EntityListener\PapCampaignListener",
  * })
  *
  * @ApiResource(

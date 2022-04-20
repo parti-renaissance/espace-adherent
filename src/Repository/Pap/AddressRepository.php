@@ -105,17 +105,6 @@ SQL;
 
     public function associatedCampaign(Campaign $campaign): void
     {
-        // unlink campaign from buildings
-        $connection = $this->getEntityManager()->getConnection();
-        $connection->prepare(<<<SQL
-UPDATE pap_building AS building
-SET building.current_campaign_id = NULL
-WHERE building.current_campaign_id = :campaign_id
-SQL)->executeStatement([
-            'campaign_id' => $campaign->getId(),
-        ]);
-
-        // associate campaign to buildings
         $sql = <<<SQL
 UPDATE pap_address AS address
 INNER JOIN pap_building AS building ON building.address_id = address.id
@@ -203,6 +192,7 @@ SQL;
             $sql
         );
 
+        $connection = $this->getEntityManager()->getConnection();
         $connection->prepare($sql)->executeStatement($params);
 
         // insert building statistics for new campaign
@@ -223,6 +213,19 @@ SQL;
             'campaign_id' => $campaign->getId(),
             'todo_status' => BuildingStatusEnum::TODO,
         ]);
+
+        // unlink campaign from buildings that not in campaign's vote places
+        if (isset($votePlaceIds)) {
+            $connection->prepare(<<<SQL
+UPDATE pap_address AS address
+INNER JOIN pap_building AS building ON building.address_id = address.id
+SET building.current_campaign_id = NULL
+WHERE building.current_campaign_id = :campaign_id 
+  AND address.vote_place_id NOT IN ($votePlaceIds)
+SQL)->executeStatement([
+                'campaign_id' => $campaign->getId(),
+            ]);
+        }
     }
 
     public function countByPapCampaign(Campaign $campaign): int

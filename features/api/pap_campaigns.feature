@@ -759,7 +759,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "detail": "survey: La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.\nvote_places: La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de votes déjà utilisés.",
+        "detail": "survey: La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.\nvote_places: La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de vote déjà utilisés.",
         "title": "An error occurred",
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "violations": [
@@ -768,7 +768,7 @@ Feature:
                 "propertyPath": "survey"
             },
             {
-                "message": "La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de votes déjà utilisés.",
+                "message": "La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de vote déjà utilisés.",
                 "propertyPath": "vote_places"
             }
         ]

@@ -561,7 +561,7 @@ pap.building.type.invalid_choice: Le type n'est pas valide.
 pap.campaign.invalid_start_date: La date de début doit être dans le futur.
 pap.campaign.invalid_end_date: La date de fin doit être postérieure à la date de début.
 pap.campaign.not_changeable_survey: La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.
-pap.campaign.not_changeable_vote_places: La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de votes déjà utilisés.
+pap.campaign.not_changeable_vote_places: La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de vote déjà utilisés.
 
 #
 # Riposte
