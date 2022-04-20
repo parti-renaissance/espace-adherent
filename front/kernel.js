@@ -24,7 +24,7 @@ window.Kernel = class {
                         environment,
                         integrations: [new Integrations.BrowserTracing()],
                         ignoreErrors: ['Non-Error promise rejection captured'],
-                        tracesSampleRate: 0.05,
+                        tracesSampleRate: 0.025,
                     });
 
                     if (user) {
