@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
  *
+ * @AssertUniqueEntity(fields={"emailAddress"}, message="legislative_neswletter.already_registered")
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
 class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface

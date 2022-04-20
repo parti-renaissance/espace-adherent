@@ -32,13 +32,14 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
     public function denormalize($data, $type, $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
+        $context[AbstractNormalizer::OBJECT_TO_POPULATE] = isset($data['email_address']) ? $this->subscriptionRepository->findOneBy(['emailAddress' => $data['email_address']]) : null;
+
+        if (isset($context['api_allow_update']) && true !== $context['api_allow_update']) {
+            $context['api_allow_update'] = true;
+        }
 
         /** @var LegislativeNewsletterSubscription $subscription */
-        $subscription = $this->denormalizer->denormalize($data, $type, $format, [
-            AbstractNormalizer::GROUPS => ['legislative_newsletter_subscriptions_write'],
-            AbstractNormalizer::OBJECT_TO_POPULATE => isset($data['email_address']) ? $this->subscriptionRepository->findOneBy(['emailAddress' => $data['email_address']]) : null,
-            self::ALREADY_CALLED => true,
-        ]);
+        $subscription = $this->denormalizer->denormalize($data, $type, $format, $context);
 
         if (isset($data['from_zone'])) {
             if (!$zone = $this->zoneRepository->findOneBy(['type' => Zone::DISTRICT, 'code' => $data['from_zone']])) {
