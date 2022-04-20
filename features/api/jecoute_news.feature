@@ -17,7 +17,7 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 9,
+          "total_items": 11,
           "items_per_page": 4,
           "count": 4,
           "current_page": 1,
@@ -85,11 +85,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 10,
+          "total_items": 12,
           "items_per_page": 2,
           "count": 2,
           "current_page": 1,
-          "last_page": 5
+          "last_page": 6
         },
         "items": [
           {
@@ -130,11 +130,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 9,
+          "total_items": 11,
           "items_per_page": 1,
           "count": 1,
           "current_page": 1,
-          "last_page": 9
+          "last_page": 11
         },
         "items": [
           {
@@ -159,11 +159,11 @@ Feature:
     """
       {
         "metadata": {
-          "total_items": 9,
+          "total_items": 11,
           "items_per_page": 1,
           "count": 1,
           "current_page": 2,
-          "last_page": 9
+          "last_page": 11
         },
         "items": [
           {
@@ -532,6 +532,70 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
+  Scenario Outline: As a (delegated) legislative candidate I can get the news list
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/jecoute/news?scope=<scope>&page_size=10"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "metadata": {
+            "total_items": 2,
+            "items_per_page": 10,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 1
+        },
+        "items": [
+            {
+                "uuid": "4f5db386-1819-4055-abbd-fb5d840cd6c0",
+                "title": "Une actualité d'un candidat aux législatives délégué à 75-8",
+                "text": "Aenean varius condimentum diam in rutrum.",
+                "external_link": "https://un-candidat-aux-legislatives-delegue.en-marche.fr",
+                "link_label": "Voir le lien",
+                "notification": false,
+                "published": true,
+                "pinned": false,
+                "enriched": false,
+                "created_at": "@string@.isDateTime()",
+                "visibility": "local",
+                "zone": {
+                    "uuid": "e3f0c246-906e-11eb-a875-0242ac150002",
+                    "code": "75-8",
+                    "name": "Paris (8)",
+                    "created_at": "2020-12-04T15:24:38+01:00"
+                },
+                "creator": "Gisele Berthoux"
+            },
+            {
+                "uuid": "2c28b246-b17e-409d-992a-b8a57481fb7a",
+                "title": "Une actualité d'un candidat aux législatives à 75-8",
+                "text": "Donec viverra odio.",
+                "external_link": "https://un-candidat-aux-legislatives.en-marche.fr",
+                "link_label": "Voir le lien",
+                "notification": false,
+                "published": true,
+                "pinned": false,
+                "enriched": false,
+                "created_at": "@string@.isDateTime()",
+                "visibility": "local",
+                "zone": {
+                    "uuid": "e3f0c246-906e-11eb-a875-0242ac150002",
+                    "code": "75-8",
+                    "name": "Paris (8)",
+                    "created_at": "2020-12-04T15:24:38+01:00"
+                },
+                "creator": "Jean-Baptiste Fortin"
+            }
+        ]
+    }
+    """
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
   Scenario: As a user with national role I can get the news list
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/jecoute/news?scope=national"
@@ -754,7 +818,7 @@ Feature:
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
-  Scenario Outline: As a (delegated) correspondent I can create and update a news
+  Scenario Outline: As a (delegated) correspondent I can create a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     Then I should have 0 notification
     When I add "Content-Type" header equal to "application/json"
@@ -806,14 +870,14 @@ Feature:
         | je-mengage-user-1@en-marche-dev.fr  | correspondent                                  |
         | laura@deloche.com                   | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
 
-  Scenario Outline: As a (delegated) correspondent I can create and update a news
+  Scenario Outline: As a (delegated) correspondent I can update a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I add "Content-Type" header equal to "application/json"
     And I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
     """
     {
       "title": "Nouveau titre",
-      "text": "Nouveau text",
+      "text": "Nouveau texte",
       "external_link": "http://new.correspondent.en-marche.fr",
       "link_label": "Voir",
       "notification": false,
@@ -828,7 +892,7 @@ Feature:
     {
         "uuid": "<news_uuid>",
         "title":  "Nouveau titre",
-        "text": "Nouveau text",
+        "text": "Nouveau texte",
         "external_link": "http://new.correspondent.en-marche.fr",
         "link_label": "Voir",
         "visibility": "local",
@@ -850,6 +914,103 @@ Feature:
       | user                                | user_name       | news_uuid                             | scope                                          |
       | je-mengage-user-1@en-marche-dev.fr  | Jules Fullstack | b09185ba-f271-404b-a73f-76d92ca8c120  | correspondent                                  |
       | laura@deloche.com                   | Laura Deloche   | 6101c6a6-f7ef-4952-95db-8553952d656d  | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
+
+  Scenario Outline: As a (delegated) legislative candidate I can create a news
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Then I should have 0 notification
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/jecoute/news?scope=<scope>" with body:
+    """
+    {
+      "title": "Une nouvelle actualité d'un candidat aux législatives",
+      "text": "**Duis ut elit** vel felis mattis pretium. Curabitur ut dui elementum, mollis ante non, dictum magna.",
+      "external_link": "https://candidat-aux-legislatives.en-marche.fr",
+      "link_label": "Voir",
+      "notification": true,
+      "published": true,
+      "enriched": true,
+      "pinned": true,
+      "zone": "e3f0c246-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 201
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@uuid@",
+        "title":  "Une nouvelle actualité d'un candidat aux législatives",
+        "text": "**Duis ut elit** vel felis mattis pretium. Curabitur ut dui elementum, mollis ante non, dictum magna.",
+        "external_link": "https://candidat-aux-legislatives.en-marche.fr",
+        "link_label": "Voir",
+        "visibility": "local",
+        "zone": {
+            "code": "75-8",
+            "created_at": "2020-12-04T15:24:38+01:00",
+            "name": "Paris (8)",
+            "uuid": "e3f0c246-906e-11eb-a875-0242ac150002"
+        },
+        "created_at": "@string@.isDateTime()",
+        "notification": true,
+        "published": true,
+        "enriched": true,
+        "pinned": true,
+        "creator": "Jean-Baptiste Fortin"
+    }
+    """
+    And I should have 1 notification "NewsCreatedNotification" with data:
+      | key   | value                                                                                                 |
+      | topic | staging_jemarche_department_75                                                                        |
+      | title | Une nouvelle actualité d'un candidat aux législatives                                                 |
+      | body  | **Duis ut elit** vel felis mattis pretium. Curabitur ut dui elementum, mollis ante non, dictum magna. |
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline: As a (delegated) legislative candidate I can update a news
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/jecoute/news/<news_uuid>?scope=<scope>" with body:
+    """
+    {
+      "title": "Nouveau titre",
+      "text": "Nouveau texte",
+      "external_link": "http://new.en-marche.fr",
+      "link_label": "Voir",
+      "notification": false,
+      "enriched": false,
+      "pinned": true,
+      "published": false
+    }
+    """
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "<news_uuid>",
+        "title":  "Nouveau titre",
+        "text": "Nouveau texte",
+        "external_link": "http://new.en-marche.fr",
+        "link_label": "Voir",
+        "visibility": "local",
+        "zone": {
+            "code": "75-8",
+            "created_at": "2020-12-04T15:24:38+01:00",
+            "name": "Paris (8)",
+            "uuid": "e3f0c246-906e-11eb-a875-0242ac150002"
+        },
+        "created_at": "@string@.isDateTime()",
+        "notification": false,
+        "published": false,
+        "enriched": false,
+        "pinned": true,
+        "creator": "<user_name>"
+    }
+    """
+    Examples:
+      | user                                  | user_name             | news_uuid                             | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr | Jean-Baptiste Fortin  | 2c28b246-b17e-409d-992a-b8a57481fb7a  | legislative_candidate                           |
+      | gisele-berthoux@caramail.com          | Gisele Berthoux       | 4f5db386-1819-4055-abbd-fb5d840cd6c0  | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
 
   Scenario Outline: As a (delegated) referent I can get a news
     Given I am logged with "<user>" via OAuth client "JeMengage Web"

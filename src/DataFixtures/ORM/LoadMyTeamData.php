@@ -18,6 +18,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
     public const TEAM_1_UUID = '7fab9d6c-71a1-4257-b42b-c6b9b2350a26';
     public const TEAM_2_UUID = '17921a6c-cf1c-4b49-9aac-06bd3913c3f7';
     public const TEAM_3_UUID = '9ea7ea50-146b-4022-87bc-b687b17e69ed';
+    public const TEAM_4_UUID = 'f3d9cc9e-a1a1-49ad-8d6c-73d37cd2eb21';
 
     public const MEMBER_1_UUID = 'd11d6ddd-dfba-4972-97b2-4c0bdf289559';
     public const MEMBER_2_UUID = '7e82bb82-4b1e-4244-b484-7a51301df420';
@@ -28,6 +29,8 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
 
     public const MEMBER_6_UUID = '5fb67010-aa4d-47e9-8183-d36e8fc6526d';
     public const MEMBER_7_UUID = '8671bb26-c88e-48ca-9858-fb53c495be01';
+
+    public const MEMBER_8_UUID = '18753e30-9c37-4a0e-b498-fd1bafee4c46';
 
     public function load(ObjectManager $manager)
     {
@@ -96,9 +99,21 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team3->addMember($member3_2);
         $this->setReference('my-team-referent-2', $team3);
 
+        $team_lc_1 = $this->createMyTeam(self::TEAM_4_UUID, $this->getReference('senatorial-candidate'), ScopeEnum::LEGISLATIVE_CANDIDATE);
+        $member_lc_1 = $this->createMember(
+            $this->getReference('adherent-5'),
+            RoleEnum::COMMUNICATION_MANAGER,
+            [FeatureEnum::NEWS],
+            self::MEMBER_8_UUID
+        );
+        $this->setReference('my_team_lc_member_1', $member_lc_1);
+        $team_lc_1->addMember($member_lc_1);
+        $this->setReference('my-team-legislative-candidate-1', $team_lc_1);
+
         $manager->persist($team1);
         $manager->persist($team2);
         $manager->persist($team3);
+        $manager->persist($team_lc_1);
 
         $manager->flush();
     }

@@ -25,6 +25,8 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
     public const NEWS_10_UUID = 'dd938794-2b00-400c-a817-9e04b5d20bc0';
     public const NEWS_11_UUID = 'b09185ba-f271-404b-a73f-76d92ca8c120';
     public const NEWS_12_UUID = '6101c6a6-f7ef-4952-95db-8553952d656d';
+    public const NEWS_13_UUID = '2c28b246-b17e-409d-992a-b8a57481fb7a';
+    public const NEWS_14_UUID = '4f5db386-1819-4055-abbd-fb5d840cd6c0';
 
     public function load(ObjectManager $manager)
     {
@@ -245,6 +247,40 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             false,
             $this->getReference('adherent-9'),
             new \DateTime('-8 hours')
+        ));
+
+        $manager->persist($this->createNews(
+            self::NEWS_13_UUID,
+            'Une actualité d\'un candidat aux législatives à 75-8',
+            'Donec viverra odio.',
+            null,
+            'https://un-candidat-aux-legislatives.en-marche.fr',
+            'Voir le lien',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
+            JecouteSpaceEnum::LEGISLATIVE_CANDIDATE_SPACE,
+            false,
+            true,
+            false,
+            false,
+            $this->getReference('senatorial-candidate'),
+            new \DateTime('-10 hours')
+        ));
+
+        $manager->persist($this->createNews(
+            self::NEWS_14_UUID,
+            'Une actualité d\'un candidat aux législatives délégué à 75-8',
+            'Aenean varius condimentum diam in rutrum.',
+            null,
+            'https://un-candidat-aux-legislatives-delegue.en-marche.fr',
+            'Voir le lien',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
+            JecouteSpaceEnum::LEGISLATIVE_CANDIDATE_SPACE,
+            false,
+            true,
+            false,
+            false,
+            $this->getReference('adherent-5'),
+            new \DateTime('-9 hours')
         ));
 
         $manager->flush();
