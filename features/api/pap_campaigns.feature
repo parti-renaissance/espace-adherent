@@ -15,7 +15,7 @@ Feature:
       | PUT     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb  |
 
   Scenario Outline: As a JeMarche App user I can not get not active PAP campaigns
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 404
     Examples:
@@ -24,7 +24,7 @@ Feature:
       | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb    |
 
   Scenario Outline: As a user with no correct rights I can not create or edit PAP campaign
-    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile"
+    Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:

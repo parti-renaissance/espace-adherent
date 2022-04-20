@@ -5,7 +5,7 @@ Feature:
   I should be able to post and delete push tokens
 
   Scenario: As a logged-in adherent I can add and remove a push token
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/v3/push-token" with body:
@@ -21,7 +21,7 @@ Feature:
     Then the response status code should be 204
 
   Scenario: As a logged-in adherent I can not remove a token i am not author of
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "DELETE" request to "/api/v3/push-token/token-francis-jemarche-2"
     Then the response status code should be 403
 
