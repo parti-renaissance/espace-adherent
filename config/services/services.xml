@@ -118,7 +118,7 @@
         <service id="App\Api\Doctrine\AuthoredItemsCollectionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\PapCampaignExtension">
+        <service id="App\Api\Doctrine\LoadActivePapCampaignExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\ArticleCategoryExtension">

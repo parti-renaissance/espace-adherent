@@ -96,10 +96,12 @@ SQL;
             $params['campaign_id'] = $campaign->getId();
         }
 
-        $queryBuilder
-            ->leftJoin($alias.'.campaigns', 'campaign', Join::WITH, implode(' AND ', $campaignConditions))
-            ->andWhere('campaign.id IS NULL')
+        $subQuery = $this->createQueryBuilder('vp_sub')
+            ->select('DISTINCT vp_sub.id')
+            ->innerJoin('vp_sub.campaigns', 'campaign', Join::WITH, implode(' AND ', $campaignConditions))
         ;
+
+        $queryBuilder->andWhere($alias.'.id NOT IN('.$subQuery->getDQL().')');
 
         foreach ($params as $key => $value) {
             $queryBuilder->setParameter($key, $value);
