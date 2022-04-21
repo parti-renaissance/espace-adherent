@@ -48,7 +48,7 @@ class TwigErrorRenderer implements ErrorRendererInterface
         $appCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
         if (!$appCode && str_ends_with($request->getHost(), $this->avecvousHost)) {
-            $appCode = MembershipSourceEnum::JEMENGAGE;
+            $appCode = MembershipSourceEnum::AVECVOUS;
         }
 
         if (!$appCode || !$template = $this->findTemplate($exception->getStatusCode(), $appCode)) {
