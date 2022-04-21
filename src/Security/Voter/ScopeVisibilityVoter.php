@@ -6,6 +6,8 @@ use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
+use App\Entity\Phoning\Campaign;
+use App\Entity\Team\Team;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeEnum;
@@ -44,6 +46,10 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
 
         // Local scope & National subject
         if ($subject->isNationalVisibility()) {
+            if (\in_array(\get_class($subject), [Team::class, Campaign::class], true)) {
+                return false;
+            }
+
             return ScopeEnum::LEGISLATIVE_CANDIDATE !== $scope->getMainCode();
         }
 
