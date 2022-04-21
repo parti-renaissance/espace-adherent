@@ -12,6 +12,7 @@ class JecouteSpaceEnum extends Enum
     public const MUNICIPAL_CHIEF_SPACE = 'municipal_chief';
     public const CANDIDATE_SPACE = 'candidate';
     public const CORRESPONDENT_SPACE = 'correspondent';
+    public const LEGISLATIVE_CANDIDATE_SPACE = 'legislative_candidate';
 
     public static function getLabels(): array
     {
@@ -21,6 +22,7 @@ class JecouteSpaceEnum extends Enum
             self::MUNICIPAL_CHIEF_SPACE => 'candidat Municipales',
             self::CANDIDATE_SPACE => 'candidat aux départementales',
             self::CORRESPONDENT_SPACE => 'correspondant',
+            self::LEGISLATIVE_CANDIDATE_SPACE => 'candidat aux législatives',
         ];
     }
 
@@ -31,6 +33,8 @@ class JecouteSpaceEnum extends Enum
                 return self::REFERENT_SPACE;
             case ScopeEnum::CORRESPONDENT:
                 return self::CORRESPONDENT_SPACE;
+            case ScopeEnum::LEGISLATIVE_CANDIDATE:
+                return self::LEGISLATIVE_CANDIDATE_SPACE;
             default:
                 return null;
         }

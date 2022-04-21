@@ -294,6 +294,20 @@ Feature:
               "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
           }
         ]
+      },
+      {
+          "apps": [
+              "data_corner"
+          ],
+          "code": "delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c",
+          "name": "Candidat aux législatives délégué",
+          "zones": [
+              {
+                  "code": "75-8",
+                  "name": "Paris (8)",
+                  "uuid": "e3f0c246-906e-11eb-a875-0242ac150002"
+              }
+          ]
       }
     ]
     """

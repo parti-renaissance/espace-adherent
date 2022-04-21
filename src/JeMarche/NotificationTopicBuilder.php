@@ -55,7 +55,7 @@ class NotificationTopicBuilder
             return self::TARGET_GLOBAL;
         }
 
-        if ($zone->isCity()) {
+        if ($zone->isCity() || $zone->isDistrict()) {
             $zone = current($zone->getParentsOfType(Zone::DEPARTMENT));
         }
 
