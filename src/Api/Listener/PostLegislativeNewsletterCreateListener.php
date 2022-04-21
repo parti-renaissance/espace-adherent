@@ -33,6 +33,7 @@ class PostLegislativeNewsletterCreateListener implements EventSubscriberInterfac
 
         if (
             !$subscription instanceof LegislativeNewsletterSubscription
+            || $subscription->getConfirmedAt()
             || Request::METHOD_POST !== $request->getMethod()
         ) {
             return;
