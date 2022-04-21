@@ -14,11 +14,13 @@ use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableInterface;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\SurveyTypeEnum;
+use App\Scope\ScopeVisibilityEnum;
 use App\Validator\Jecoute\SurveyScopeTarget;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -54,7 +56,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/surveys/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_READ_SURVEY', object)",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)",
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
  *             }
@@ -70,7 +72,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/surveys",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign'])",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])",
  *             "normalization_context": {
  *                 "groups": {"survey_list_dc"}
  *             },
@@ -104,7 +106,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @SurveyScopeTarget
  */
-abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
+abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -326,5 +328,15 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     public function getSocialTitle(): string
     {
         return (string) $this->getName();
+    }
+
+    public function getVisibility(): string
+    {
+        return SurveyTypeEnum::LOCAL === $this->getType() ? ScopeVisibilityEnum::LOCAL : ScopeVisibilityEnum::NATIONAL;
+    }
+
+    public function isNationalVisibility(): bool
+    {
+        return ScopeVisibilityEnum::NATIONAL === $this->getVisibility();
     }
 }

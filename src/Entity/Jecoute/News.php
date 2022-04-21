@@ -113,7 +113,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/jecoute/news/{id}",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('CAN_CHANGE_JECOUTE_NEWS', object)",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('SCOPE_CAN_MANAGE', object)",
  *         },
  *     },
  * )

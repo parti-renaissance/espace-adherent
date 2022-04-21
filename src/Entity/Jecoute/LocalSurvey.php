@@ -3,6 +3,7 @@
 namespace App\Entity\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\Geo\Zone;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\LocalSurveyRepository")
  */
-class LocalSurvey extends Survey
+class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterface
 {
     /**
      * @ORM\Column(nullable=true)
