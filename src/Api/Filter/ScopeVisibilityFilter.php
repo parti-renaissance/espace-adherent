@@ -37,7 +37,7 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
         }
 
         if (Campaign::class === $queryBuilder->getRootEntities()[0]) {
-            if (ScopeEnum::LEGISLATIVE_CANDIDATE === $scope->getCode()) {
+            if (ScopeEnum::LEGISLATIVE_CANDIDATE === $scope->getMainCode()) {
                 $queryBuilder
                     ->leftJoin("$alias.zones", 'zone')
                     ->andWhere("$alias.visibility = :local AND zone IN (:zones)")

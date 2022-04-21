@@ -9,7 +9,6 @@ use App\Exporter\SurveyExporter;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Scope\ScopeGeneratorResolver;
-use App\Security\Voter\Survey\CanReadSurveyVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     defaults={"_format": "json"}
  * )
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('CAN_READ_SURVEY', survey)")
+ * @Security("is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', survey)")
  */
 class GetSurveyRepliesController extends AbstractController
 {
@@ -55,7 +54,7 @@ class GetSurveyRepliesController extends AbstractController
         $zoneCodes = [];
         $user = $scope->getDelegator() ?? $this->getUser();
 
-        if (\in_array($scope->getMainCode(), CanReadSurveyVoter::LOCAL_SCOPES, true) && $survey->isNational()) {
+        if ($survey->isNational() && !$scope->isNational()) {
             /** @var Zone $zone */
             foreach ($this->getZones($user) as $zone) {
                 switch ($zone->getType()) {

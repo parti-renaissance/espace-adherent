@@ -22,7 +22,7 @@ return (new PhpCsFixer\Config())
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
-        'PedroTroller/line_break_between_method_arguments' => [ 'max-args' => 20 ],
+        'PedroTroller/line_break_between_method_arguments' => ['max-args' => 20],
         'PedroTroller/line_break_between_statements' => true,
         'App/doctrine_migration_clean' => true,
         'App/sensio_to_symfony_route' => true,
@@ -32,10 +32,9 @@ return (new PhpCsFixer\Config())
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php_cs.cache')
     ->registerCustomFixers([
-        new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer,
-        new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenStatementsFixer,
-        new App\Fixer\DoctrineMigrationCleanFixer,
-        new App\Fixer\SensioToSymfonyRouteFixer,
-        new App\Fixer\MethodToRouteAnnotationFixer,
+        new App\Fixer\DoctrineMigrationCleanFixer(),
+        new App\Fixer\SensioToSymfonyRouteFixer(),
+        new App\Fixer\MethodToRouteAnnotationFixer(),
     ])
+    ->registerCustomFixers(new PedroTroller\CS\Fixer\Fixers())
 ;

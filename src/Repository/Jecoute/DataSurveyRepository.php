@@ -10,6 +10,7 @@ use App\Entity\Pap\Address;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory;
+use App\Entity\Pap\VotePlace;
 use App\Entity\Phoning\Campaign as PhoningCampaign;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
@@ -102,14 +103,15 @@ class DataSurveyRepository extends ServiceEntityRepository
             $qb
                 ->innerJoin('campaign_history.building', 'building')
                 ->innerJoin('building.address', 'address')
+                ->innerJoin('address.votePlace', 'vote_place')
             ;
             $this->withGeoZones(
                 $zones,
                 $qb,
-                'address',
-                Address::class,
-                'a2',
-                'zones',
+                'vote_place',
+                VotePlace::class,
+                'vp2',
+                'zone',
                 'z2'
             );
         }

@@ -5,6 +5,7 @@ namespace App\Entity\MyTeam;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DelegatedAccess
 {
     use EntityIdentityTrait;
+    use EntityTimestampableTrait;
 
     public const ATTRIBUTE_KEY = 'delegated_access_uuid';
 
