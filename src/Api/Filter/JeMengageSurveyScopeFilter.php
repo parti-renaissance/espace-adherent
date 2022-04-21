@@ -30,6 +30,8 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
         $alias = $queryBuilder->getRootAliases()[0];
         $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
 
+        $queryBuilder->andWhere(sprintf('%s.published = 1', $alias));
+
         switch ($scopeGenerator->getCode()) {
             case ScopeEnum::NATIONAL:
             case ScopeEnum::PHONING_NATIONAL_MANAGER:
@@ -42,7 +44,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
             case ScopeEnum::REFERENT:
                 $queryBuilder
                     ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
-                    ->orWhere((new Orx())
+                    ->andWhere((new Orx())
                         ->add(sprintf('%s INSTANCE OF :national', $alias))
                         ->add(sprintf('%s INSTANCE OF :local AND ls.zone IN (:zones)', $alias))
                     )
@@ -56,13 +58,21 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
                     ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
                     ->leftJoin('ls.zone', 'zone')
                     ->leftJoin('zone.parents', 'parent')
-                    ->orWhere((new Orx())
+                    ->andWhere((new Orx())
                         ->add(sprintf('%s INSTANCE OF :national', $alias))
                         ->add(sprintf('%s INSTANCE OF :local AND (zone = :zone OR parent IN (:zone))', $alias))
                     )
                     ->setParameter('national', SurveyTypeEnum::NATIONAL)
                     ->setParameter('local', SurveyTypeEnum::LOCAL)
                     ->setParameter('zone', $user->getCorrespondentZone())
+                ;
+                break;
+            case ScopeEnum::LEGISLATIVE_CANDIDATE:
+                $queryBuilder
+                    ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
+                    ->andWhere(sprintf('%s INSTANCE OF :local AND ls.zone = :zone', $alias))
+                    ->setParameter('local', SurveyTypeEnum::LOCAL)
+                    ->setParameter('zone', $user->getLegislativeCandidateZone())
                 ;
                 break;
         }
