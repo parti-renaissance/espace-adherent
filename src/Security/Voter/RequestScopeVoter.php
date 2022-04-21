@@ -28,7 +28,7 @@ class RequestScopeVoter extends Voter
             return false;
         }
 
-        $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
+        $scopeCode = $scope ? $scope->getMainCode() : null;
 
         return null === $subject || $subject === $scopeCode;
     }

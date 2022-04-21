@@ -25,7 +25,7 @@ class AuthorizationChecker
         $this->scopeGenerator = $scopeGenerator;
     }
 
-    public function isFeatureGranted(Request $request, Adherent $adherent, string $featureCode): bool
+    public function isFeatureGranted(Request $request, Adherent $adherent, array $featureCodes): bool
     {
         if (!$scope = $this->getScope($request)) {
             throw new ScopeQueryParamMissingException();
@@ -36,13 +36,13 @@ class AuthorizationChecker
             throw new InvalidScopeException();
         }
 
-        if (!FeatureEnum::isValid($featureCode)) {
+        if (\count($featureCodes) !== \count(array_filter($featureCodes, [FeatureEnum::class, 'isValid']))) {
             throw new InvalidFeatureCodeException();
         }
 
         $scope = $this->scopeGenerator->getGenerator($scope, $adherent)->generate($adherent);
 
-        return $scope->hasFeature($featureCode);
+        return $scope->containsFeatures($featureCodes);
     }
 
     public function getScope(Request $request): ?string

@@ -6,8 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
+use App\Entity\Phoning\Campaign;
+use App\Entity\Team\Team;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
 
 class ScopeVisibilityVoter extends AbstractAdherentVoter
@@ -32,23 +35,25 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
     {
         $scope = $this->scopeGeneratorResolver->generate();
 
-        if (!$scope) {
+        if (!$scope || !$subject instanceof EntityScopeVisibilityInterface) {
             return false;
         }
 
+        // National scope
         if ($scope->isNational()) {
-            if ($subject instanceof EntityScopeVisibilityWithZoneInterface) {
-                return null === $subject->getZone();
-            }
-
-            if ($subject instanceof EntityScopeVisibilityWithZonesInterface) {
-                return 0 === $subject->getZones()->count();
-            }
-
-            return false;
+            return $subject->isNationalVisibility();
         }
 
-        // scope local
+        // Local scope & National subject
+        if ($subject->isNationalVisibility()) {
+            if (\in_array(\get_class($subject), [Team::class, Campaign::class], true)) {
+                return false;
+            }
+
+            return ScopeEnum::LEGISLATIVE_CANDIDATE !== $scope->getMainCode();
+        }
+
+        // Local scope & Local subject
         if ($subject instanceof EntityScopeVisibilityWithZoneInterface) {
             if (null === $subject->getZone()) {
                 return false;

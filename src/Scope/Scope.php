@@ -92,9 +92,19 @@ class Scope
         return \in_array($featureCode, $this->features, true);
     }
 
+    public function containsFeatures(array $featureCodes): bool
+    {
+        return 0 < \count(array_intersect($featureCodes, $this->features));
+    }
+
     public function isNational(): bool
     {
-        return \in_array($this->code, ScopeEnum::NATIONAL_SCOPES, true);
+        return \in_array($this->getMainCode(), ScopeEnum::NATIONAL_SCOPES, true);
+    }
+
+    public function getMainCode(): ?string
+    {
+        return $this->getDelegatorCode() ?? $this->getCode();
     }
 
     public function getDelegatorCode(): ?string

@@ -3225,21 +3225,32 @@ Feature:
     }
     """
 
-  Scenario: As a referent I can get a PAP questioners with their stats
-    Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=referent"
+  Scenario Outline: As a referent I can get a PAP questioners with their stats
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 1,
+            "total_items": 2,
             "items_per_page": 100,
-            "count": 1,
+            "count": 2,
             "current_page": 1,
             "last_page": 1
         },
         "items": [
+            {
+                "door_closed": "0",
+                "first_name": "Patrick",
+                "last_name": "Bialès",
+                "nb_accept_to_answer": "3",
+                "nb_contact_later": "0",
+                "nb_dont_accept_to_answer": "0",
+                "nb_door_open": "0",
+                "nb_surveys": "3",
+                "nb_visited_doors": "3"
+            },
             {
                 "first_name": "Jacques",
                 "last_name": "Picard",
@@ -3254,28 +3265,16 @@ Feature:
         ]
     }
     """
-
-  Scenario Outline: As a (delegated) referent I get an empty list of PAP questioners, if no replies in my managed zones
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=<scope>"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-        "metadata": {
-            "total_items": 0,
-            "items_per_page": 100,
-            "count": 0,
-            "current_page": 1,
-            "last_page": 1
-        },
-        "items": []
-    }
-    """
     Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+      | user                            | scope                                          |
+      | referent@en-marche-dev.fr       | referent                                       |
+      | referent-75-77@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a legislative candidate I cannot get PAP questioners of national campaign
+    Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=legislative_candidate"
+    Then the response status code should be 403
 
   Scenario: As a legislative candidate granted with local scope, I can get vote places
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -3378,7 +3377,6 @@ Feature:
         }
     ]
     """
-
 
   Scenario: As a referent I can get campaign's vote places
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"

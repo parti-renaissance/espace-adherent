@@ -35,7 +35,7 @@ class GetFilterCollectionController extends AbstractController
     public function __invoke(Request $request, UserInterface $user): Response
     {
         try {
-            $this->authorizationChecker->isFeatureGranted($request, $user, FeatureEnum::CONTACTS);
+            $this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS]);
         } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {
             throw new BadRequestHttpException();
         } catch (ScopeExceptionInterface $e) {

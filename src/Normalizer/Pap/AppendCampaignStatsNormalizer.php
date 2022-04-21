@@ -8,8 +8,6 @@ use App\Repository\Pap\BuildingStatisticsRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeGeneratorResolver;
-use App\Security\Voter\FeatureVoter;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,7 +18,6 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
     private const CAMPAIGN_ALREADY_CALLED = 'PAP_CAMPAIGN_NORMALIZER_ALREADY_CALLED';
 
-    private AuthorizationCheckerInterface $authorizationChecker;
     private CampaignHistoryRepository $campaignHistoryRepository;
     private BuildingStatisticsRepository $buildingStatisticsRepository;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
@@ -28,12 +25,10 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
     public function __construct(
         CampaignHistoryRepository $campaignHistoryRepository,
         BuildingStatisticsRepository $buildingStatisticsRepository,
-        AuthorizationCheckerInterface $authorizationChecker,
         ScopeGeneratorResolver $scopeGeneratorResolver
     ) {
         $this->campaignHistoryRepository = $campaignHistoryRepository;
         $this->buildingStatisticsRepository = $buildingStatisticsRepository;
-        $this->authorizationChecker = $authorizationChecker;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
@@ -46,14 +41,12 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $campaign = $this->normalizer->normalize($object, $format, $context);
 
-        if (
-            !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::PAP)
-            && !$this->authorizationChecker->isGranted(FeatureVoter::PERMISSION, FeatureEnum::PAP_V2)
-        ) {
+        $scope = $this->scopeGeneratorResolver->generate();
+
+        if (!$scope || !$scope->containsFeatures([FeatureEnum::PAP, FeatureEnum::PAP_V2])) {
             return $campaign;
         }
 
-        $scope = $this->scopeGeneratorResolver->generate();
         $zones = [];
         if (!$scope->isNational() && $object->isNationalVisibility()) {
             $zones = $scope->getZones();

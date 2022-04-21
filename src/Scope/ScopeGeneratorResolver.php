@@ -14,6 +14,8 @@ class ScopeGeneratorResolver
     private Security $security;
     private AuthorizationChecker $authorizationChecker;
 
+    private ?Scope $currentScope = null;
+
     public function __construct(
         RequestStack $requestStack,
         Security $security,
@@ -40,9 +42,13 @@ class ScopeGeneratorResolver
 
     public function generate(): ?Scope
     {
+        if ($this->currentScope) {
+            return $this->currentScope;
+        }
+
         $scopeGenerator = $this->resolve();
 
-        return $scopeGenerator ? $scopeGenerator->generate($this->getCurrentUser()) : null;
+        return $this->currentScope = $scopeGenerator ? $scopeGenerator->generate($this->getCurrentUser()) : null;
     }
 
     private function getCurrentUser(): ?Adherent

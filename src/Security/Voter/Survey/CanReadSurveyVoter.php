@@ -39,8 +39,7 @@ class CanReadSurveyVoter extends AbstractAdherentVoter
             return $subject->isNational();
         }
 
-        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
-        if (\in_array($scopeCode, self::LOCAL_SCOPES, true)) {
+        if (\in_array($scope->getMainCode(), self::LOCAL_SCOPES, true)) {
             if ($subject instanceof NationalSurvey) {
                 return true;
             }

@@ -5,7 +5,6 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Scope\AuthorizationChecker;
 use App\Scope\Exception\ScopeExceptionInterface;
-use App\Scope\FeatureEnum;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class FeatureVoter extends AbstractAdherentVoter
@@ -28,15 +27,13 @@ class FeatureVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if (!FeatureEnum::isValid($subject)) {
-            throw new \InvalidArgumentException('Invalid feature: '.$subject);
-        }
+        $features = \is_array($subject) ? $subject : [$subject];
 
         try {
             return $this->authorizationChecker->isFeatureGranted(
                 $this->requestStack->getMasterRequest(),
                 $adherent,
-                $subject
+                $features
             );
         } catch (ScopeExceptionInterface $exception) {
             return false;

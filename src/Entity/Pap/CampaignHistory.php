@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/pap_campaign_histories",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'pap')",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *             "normalization_context": {
  *                 "groups": {"pap_campaign_history_read_list"}
  *             },
