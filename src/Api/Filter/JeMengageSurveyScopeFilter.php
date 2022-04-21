@@ -70,7 +70,8 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
             case ScopeEnum::LEGISLATIVE_CANDIDATE:
                 $queryBuilder
                     ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
-                    ->andWhere('ls.zone = :zone')
+                    ->andWhere(sprintf('%s INSTANCE OF :local AND ls.zone = :zone', $alias))
+                    ->setParameter('local', SurveyTypeEnum::LOCAL)
                     ->setParameter('zone', $user->getLegislativeCandidateZone())
                 ;
                 break;
