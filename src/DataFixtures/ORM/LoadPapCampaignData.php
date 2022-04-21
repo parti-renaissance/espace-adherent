@@ -20,6 +20,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
     public const CAMPAIGN_6_UUID = 'e3c6e83f-7471-4e8f-b348-6c2eb26723ce';
     public const CAMPAIGN_7_UUID = '31f24b6c-0884-461a-af34-dbbb7b1276ab';
     public const CAMPAIGN_8_UUID = '74a0d169-1e10-4159-a399-bf499706a2c6';
+    public const CAMPAIGN_9_UUID = '8fbee663-4f18-49d4-9c2d-4553bcc859cf';
+    public const CAMPAIGN_10_UUID = '08463014-bbfe-421c-b8fb-5e456414b088';
 
     public function load(ObjectManager $manager)
     {
@@ -146,6 +148,38 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         );
         $campaign06088->addVotePlace($this->getReference('pap-vote-place--nice-a'));
 
+        $campaign75_08 = $this->createCampaign(
+            self::CAMPAIGN_9_UUID,
+            'Campagne locale de Paris 8ème',
+            null,
+            $nationalSurvey1,
+            100,
+            '-1 day',
+            '+30 days',
+            1,
+            0,
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')],
+            $this->getReference('senatorial-candidate'),
+        );
+        $campaign75_08->addVotePlace($this->getReference('pap-vote-place--paris-8-d'));
+        $this->addReference('pap-campaign-75-08', $campaign75_08);
+
+        $campaign75_08_r = $this->createCampaign(
+            self::CAMPAIGN_10_UUID,
+            'Campagne locale de Paris 8ème avec des portes frappées',
+            null,
+            $nationalSurvey1,
+            100,
+            '-1 day',
+            '+30 days',
+            1,
+            0,
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')],
+            $this->getReference('senatorial-candidate'),
+        );
+        $campaign75_08_r->addVotePlace($this->getReference('pap-vote-place--paris-8-e'));
+        $this->addReference('pap-campaign-75-08-r', $campaign75_08_r);
+
         $manager->persist($campaign1);
         $manager->persist($campaign2);
         $manager->persist($campaign3);
@@ -154,6 +188,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         $manager->persist($campaign92);
         $manager->persist($campaign59350);
         $manager->persist($campaign06088);
+        $manager->persist($campaign75_08);
+        $manager->persist($campaign75_08_r);
 
         $manager->flush();
     }

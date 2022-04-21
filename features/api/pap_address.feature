@@ -50,7 +50,7 @@ Feature:
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
-    # 55, 65, 70, 67 rue du rocher, Paris 8ème
+    # 55, 65, 70, 67 rue du rocher, 62 Rue de Rome, Paris 8ème
     """
     [
         {
@@ -160,6 +160,34 @@ Feature:
                 }
             },
             "uuid": "@uuid@"
+        },
+        {
+            "address": "Rue de Rome",
+            "building": {
+                "campaign_statistics": {
+                    "campaign": {
+                        "uuid": "08463014-bbfe-421c-b8fb-5e456414b088"
+                    },
+                    "last_passage": null,
+                    "last_passage_done_by": null,
+                    "nb_surveys": 0,
+                    "nb_visited_doors": 0,
+                    "status": "todo",
+                    "uuid": "@uuid@"
+                },
+                "type": "building",
+                "uuid": "88285b14-038c-4305-8e0c-3fa66d330169"
+            },
+            "city_name": "Paris 8ème",
+            "insee_code": "75108",
+            "latitude": 48.880085,
+            "longitude": 2.321696,
+            "number": "62",
+            "postal_codes": [
+                "75008"
+            ],
+            "uuid": "f93d880e-5d8c-4e6f-bfc8-3b93d8131437",
+            "voters_count": 1
         }
     ]
     """

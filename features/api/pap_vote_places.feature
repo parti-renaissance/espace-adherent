@@ -8,9 +8,17 @@ Feature:
     When I send a "GET" request to "/api/v3/pap/vote-places/near?latitude=48.879001640&longitude=2.3187434"
     Then the response status code should be 200
     And the response should be in JSON
+    And print last JSON response
     And the JSON should be a superset of:
     """
     [
+        {
+            "uuid": "1cc8f1bf-533d-4c3a-a02b-00ba651e056a",
+            "latitude": "48.879414",
+            "longitude": "2.319874",
+            "addresses": "1",
+            "distance": "0.09452285753944736"
+        },
         {
             "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b",
             "latitude": "48.878029",

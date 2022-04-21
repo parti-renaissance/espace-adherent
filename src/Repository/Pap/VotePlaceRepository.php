@@ -109,4 +109,17 @@ SQL;
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    /**
+     * @return VotePlace[]
+     */
+    public function findByCampaign(Campaign $campaign): array
+    {
+        return $this->createQueryBuilder('vote_place')
+            ->where(':campaign MEMBER OF vote_place.campaigns')
+            ->setParameter('campaign', $campaign)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -22,6 +22,8 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
     private const UUID_10 = 'aac8bf0d-aa66-4860-a7ed-dbfe85ed544f';
     private const UUID_11 = '3db888e3-147f-4334-b2b3-16eff68a23c9';
     private const UUID_12 = 'e4eaed49-5cd1-4e0a-986a-d981433a50a4';
+    private const UUID_13 = 'b467e84c-74dc-453f-8ee7-7adf338a481f';
+    private const UUID_14 = '1cc8f1bf-533d-4c3a-a02b-00ba651e056a';
 
     public function load(ObjectManager $manager)
     {
@@ -61,6 +63,28 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')
         ));
         $this->setReference('pap-vote-place--paris-8-c', $object);
+
+        $manager->persist($object = new VotePlace(
+            48.87887,
+            2.30979,
+            '75108_0004',
+            0,
+            0,
+            Uuid::fromString(self::UUID_13),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')
+        ));
+        $this->setReference('pap-vote-place--paris-8-d', $object);
+
+        $manager->persist($object = new VotePlace(
+            48.879414,
+            2.319874,
+            '75108_0005',
+            0,
+            0,
+            Uuid::fromString(self::UUID_14),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')
+        ));
+        $this->setReference('pap-vote-place--paris-8-e', $object);
 
         $manager->persist($object = new VotePlace(
             48.822865,

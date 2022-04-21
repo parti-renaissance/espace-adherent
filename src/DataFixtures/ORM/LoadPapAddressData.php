@@ -23,6 +23,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const ADDRESS_08_UUID = 'a10477b9-4a17-4ace-b0c8-22fbdccf154d';
     private const ADDRESS_09_UUID = '967614e4-0783-47d6-96f7-edec7ec390d1';
     private const ADDRESS_10_UUID = '0bd60032-2242-4eb2-bb43-be7efaf8833f';
+    private const ADDRESS_11_UUID = 'f93d880e-5d8c-4e6f-bfc8-3b93d8131437';
 
     private const VOTER_01_UUID = 'bdb9d49c-20f5-44c0-bc4a-d8b75f85ee95';
     private const VOTER_02_UUID = '0cf560f0-c5ec-43ef-9ea1-b6fd2a2dc339';
@@ -37,6 +38,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const VOTER_11_UUID = 'c35e572a-c362-414d-aee5-8fe514f2bf6b';
     private const VOTER_12_UUID = '416b6055-f339-48b7-910a-482cad149cec';
     private const VOTER_13_UUID = '4cac97a2-b501-49d6-908a-26d5d314bfc4';
+    private const VOTER_14_UUID = 'd3df07e7-71e2-47f8-9e53-d962c35e655e';
 
     public function load(ObjectManager $manager)
     {
@@ -44,6 +46,8 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $vpParis8a = $this->getReference('pap-vote-place--paris-8-a');
         /** @var VotePlace $vpParis8b */
         $vpParis8b = $this->getReference('pap-vote-place--paris-8-b');
+        /** @var VotePlace $vpParis8e */
+        $vpParis8e = $this->getReference('pap-vote-place--paris-8-e');
         /** @var VotePlace $vpParis3b */
         $vpParis3b = $this->getReference('pap-vote-place--paris-3-b');
         /** @var VotePlace $vpAnthonya */
@@ -135,6 +139,24 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $address->addVoter($this->createVoter(self::VOTER_07_UUID, 'Patrick', 'Simpson Jones', Genders::MALE, '-70 years', '75108_0001'));
         $this->addReference('address-4', $address);
         $address->votePlace = $vpParis8b;
+        $manager->persist($address);
+
+        $address = $this->createAddress(
+            self::ADDRESS_11_UUID,
+            '62',
+            'Rue de Rome',
+            '75108',
+            ['75008'],
+            'Paris 8ème',
+            66381,
+            45079,
+            48.880085,
+            2.321696
+        );
+        $address->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+        $address->addVoter($this->createVoter(self::VOTER_14_UUID, 'Jack', 'Dawson', Genders::MALE, '-21 years', '75108_0001'));
+        $address->votePlace = $vpParis8e;
+        $this->addReference('address-paris-5', $address);
         $manager->persist($address);
 
         $address = $this->createAddress(

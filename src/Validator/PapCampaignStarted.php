@@ -7,9 +7,10 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class PapCampaignBeginAt extends Constraint
+class PapCampaignStarted extends Constraint
 {
-    public $message = 'pap.campaign.noteditable_start_date';
+    public $messageSurvey = 'pap.campaign.not_changeable_survey';
+    public $messageVotePlaces = 'pap.campaign.not_changeable_vote_places';
 
     public function getTargets()
     {
