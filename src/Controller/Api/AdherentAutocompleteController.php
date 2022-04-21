@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  *@Route("/v3/adherents/autocomplete", name="api_adherent_autocomplete", methods={"GET"})
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'team') or is_granted('IS_FEATURE_GRANTED', 'my_team')")
+ * @Security("is_granted('IS_FEATURE_GRANTED', ['team', 'my_team'])")
  */
 class AdherentAutocompleteController extends AbstractController
 {

@@ -35,8 +35,7 @@ class ChangeJecouteNewsVoter extends AbstractAdherentVoter
             return !$subject->getSpace();
         }
 
-        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
-        if (\in_array($scopeCode, self::LOCAL_SCOPES, true)) {
+        if (\in_array($scope->getMainCode(), self::LOCAL_SCOPES, true)) {
             if (!$zone = $subject->getZone()) {
                 return false;
             }

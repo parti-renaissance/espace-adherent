@@ -37,7 +37,7 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
         /** @var Audience $audience */
         $audience = $this->denormalizer->denormalize($data, $type, $format, $context);
         $scope = $this->scopeGeneratorResolver->generate();
-        $scopeCode = $scope ? ($scope->getDelegatorCode() ?? $scope->getCode()) : null;
+        $scopeCode = $scope ? $scope->getMainCode() : null;
 
         if (!empty($data['scope']) && $scopeCode === $data['scope']) {
             $audience->setZones($scope->getZones());

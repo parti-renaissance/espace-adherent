@@ -56,7 +56,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
             return;
         }
 
-        $scopeCode = $scope->getDelegatorCode() ?? $scope->getCode();
+        $scopeCode = $scope->getMainCode();
         if ($scope->isNational() && $value instanceof LocalSurvey) {
             $this->context->buildViolation($constraint->message)
                 ->setParameters([

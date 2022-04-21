@@ -70,7 +70,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/surveys",
- *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey') or is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign'])",
  *             "normalization_context": {
  *                 "groups": {"survey_list_dc"}
  *             },

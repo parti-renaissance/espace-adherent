@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *     defaults={"_format": "json"}
  * )
  *
- * @Security("is_granted('IS_FEATURE_GRANTED', 'pap')")
+ * @Security("is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', campaign)")
  */
 class GetPapCampaignSurveyRepliesController extends AbstractController
 {
