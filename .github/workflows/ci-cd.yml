@@ -280,7 +280,7 @@ jobs:
     name: Build prod & push on registry
     runs-on: ubuntu-20.04
     needs: [ lint, phpunit, behat, behat-selenium ]
-    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release'
+    if: github.event.ref == 'refs/heads/master' || github.event_name == 'release' || github.event.ref == 'refs/heads/feat/LPN-679'
     env:
       HASH: ${{ github.sha }}
       TAG: ${{ github.ref_name }}
