@@ -24,18 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "groups": {"pap_building_statistics_read"},
  *         },
  *     },
- *     collectionOperations={
- *         "api_pap_campaigns_building_statistics_get_subresource": {
- *             "path": "/v3/pap_campaigns/{id}/building_statistics",
- *             "method": "GET",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "groups": {"pap_building_statistics_read"},
- *             },
- *             "pagination_client_items_per_page": true,
- *             "maximum_items_per_page": 1000,
- *         },
- *     },
+ *     collectionOperations={},
  *     itemOperations={},
  * )
  */
