@@ -3437,60 +3437,102 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "metadata": {
-        "count": 2,
-        "current_page": 1,
-        "items_per_page": 2,
-        "last_page": 2,
-        "total_items": 4
-      },
-      "items": [
-        {
-          "uuid": "@uuid@",
-          "status": "ongoing",
-          "nb_visited_doors": 1,
-          "building": {
-            "uuid": "2fbe7b02-944d-4abd-be3d-f9b2944917a9",
-            "type": "building",
-            "address": {
-              "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
-              "address": "Rue du Rocher",
-              "city_name": "Paris 8ème",
-              "insee_code": "75108",
-              "number": "55",
-              "postal_codes": [
-                "75008"
-              ]
-            }
-          },
-          "last_passage": "@string@.isDateTime()",
-          "last_passage_done_by": {
-            "uuid": "@uuid@",
-            "first_name": "Adherent 33",
-            "last_name": "Fa33ke"
-          }
+        "metadata": {
+            "total_items": 4,
+            "items_per_page": 30,
+            "count": 4,
+            "current_page": 1,
+            "last_page": 1
         },
-        {
-          "uuid": "@uuid@",
-          "status": "todo",
-          "nb_visited_doors": 0,
-          "building": {
-            "uuid": "faf30370-80c5-4a46-8c31-f6a361bfa23b",
-            "type": "building",
-            "address": {
-              "uuid": "ccfd846a-5439-42ad-85ce-286baf4e7269",
-              "address": "Rue du Rocher",
-              "city_name": "Paris 8ème",
-              "insee_code": "75108",
-              "number": "65",
-              "postal_codes": [
-                "75008"
-              ]
+        "items": [
+            {
+                "building": {
+                    "type": "building",
+                    "address": {
+                        "number": "55",
+                        "address": "Rue du Rocher",
+                        "insee_code": "75108",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "@uuid@"
+                    },
+                    "uuid": "@uuid@"
+                },
+                "status": "ongoing",
+                "last_passage": "@string@.isDateTime()",
+                "last_passage_done_by": {
+                    "uuid": "@uuid@",
+                    "first_name": "Adherent 33",
+                    "last_name": "Fa33ke"
+                },
+                "nb_visited_doors": 1,
+                "uuid": "@uuid@"
+            },
+            {
+                "building": {
+                    "type": "building",
+                    "address": {
+                        "number": "65",
+                        "address": "Rue du Rocher",
+                        "insee_code": "75108",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "@uuid@"
+                    },
+                    "uuid": "@uuid@"
+                },
+                "status": "todo",
+                "last_passage": null,
+                "last_passage_done_by": null,
+                "nb_visited_doors": 0,
+                "uuid": "@uuid@"
+            },
+            {
+                "building": {
+                    "type": "building",
+                    "address": {
+                        "number": "67",
+                        "address": "Rue du Rocher",
+                        "insee_code": "75108",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "@uuid@"
+                    },
+                    "uuid": "@uuid@"
+                },
+                "status": "todo",
+                "last_passage": null,
+                "last_passage_done_by": null,
+                "nb_visited_doors": 0,
+                "uuid": "@uuid@"
+            },
+            {
+                "building": {
+                    "type": "building",
+                    "address": {
+                        "number": "70",
+                        "address": "Rue du Rocher",
+                        "insee_code": "75108",
+                        "postal_codes": [
+                            "75008"
+                        ],
+                        "city_name": "Paris 8ème",
+                        "uuid": "@uuid@"
+                    },
+                    "uuid": "@uuid@"
+                },
+                "status": "todo",
+                "last_passage": null,
+                "last_passage_done_by": null,
+                "nb_visited_doors": 0,
+                "uuid": "@uuid@"
             }
-          },
-          "last_passage": null,
-          "last_passage_done_by": null
-        }
-      ]
+        ]
     }
     """
