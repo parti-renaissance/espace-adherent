@@ -5,6 +5,7 @@ namespace App\Entity\Jecoute;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JeMengageSurveyScopeFilter;
 use App\Api\Filter\SurveyTypeFilter;
@@ -102,6 +103,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={
  *     "name": "partial",
  * })
+ * @ApiFilter(BooleanFilter::class, properties={"published"})
  * @ApiFilter(SurveyTypeFilter::class)
  *
  * @SurveyScopeTarget
