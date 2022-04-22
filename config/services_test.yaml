@@ -8,6 +8,7 @@ parameters:
     assessor_path_prefix: "/assesseur"
     ssl_encryption_key: "%env(SSL_ENCRYPTION_KEY)%"
     ssl_private_key: "%env(SSL_PRIVATE_KEY)%"
+    api_platform.metadata_cache: true
 
 services:
     _defaults:
