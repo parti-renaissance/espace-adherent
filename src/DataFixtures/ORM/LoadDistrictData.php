@@ -64,6 +64,7 @@ SQL;
     {
         return [
             LoadAdherentData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

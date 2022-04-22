@@ -56,7 +56,7 @@ Feature:
     And I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 22 |
+      | metadata.total_items  | 23 |
 
   Scenario: As a logged-in user I can get coalitions events
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App" with scope "write:event"
@@ -82,14 +82,14 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 20 |
+      | metadata.total_items  | 21 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
     And I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 22 |
+      | metadata.total_items  | 23 |
 
   Scenario: As a non logged-in user I cannot check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
@@ -137,7 +137,7 @@ Feature:
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | metadata.total_items  | 20 |
+      | metadata.total_items  | 21 |
 
     When I send a "GET" request to "/api/events?group_source=coalitions"
     Then the response status code should be 200
@@ -1416,8 +1416,8 @@ Feature:
     {
       "description": "Nouvelle description",
       "category": "kiosque",
-      "begin_at": "2022-05-12 10:30:00",
-      "finish_at": "2022-05-12 16:30:00",
+      "begin_at": "2022-12-12 10:30:00",
+      "finish_at": "2022-12-12 16:30:00",
       "mode": "online",
       "visio_url": "http://visio.fr",
       "post_address": {
@@ -1436,11 +1436,11 @@ Feature:
     {
         "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
         "name": "Nouvel événement online",
-        "slug": "2022-05-12-nouvel-evenement-online",
+        "slug": "2022-12-12-nouvel-evenement-online",
         "description": "Nouvelle description",
         "time_zone": "Europe/Paris",
-        "begin_at": "2022-05-12T10:30:00+02:00",
-        "finish_at": "2022-05-12T16:30:00+02:00",
+        "begin_at": "2022-12-12T10:30:00+01:00",
+        "finish_at": "2022-12-12T16:30:00+01:00",
         "organizer": {
             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
             "first_name": "Referent",
@@ -1469,7 +1469,7 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.enmarche.code/evenements/2022-05-12-nouvel-evenement-online"
+        "link": "http://test.enmarche.code/evenements/2022-12-12-nouvel-evenement-online"
     }
     """
     And I should have 1 email
@@ -1490,11 +1490,11 @@ Feature:
              },
              {
                 "name": "event_url",
-                "content": "http://test.enmarche.code/evenements/2022-05-12-nouvel-evenement-online"
+                "content": "http://test.enmarche.code/evenements/2022-12-12-nouvel-evenement-online"
              },
              {
                 "name": "event_date",
-                "content": "jeudi 12 mai 2022"
+                "content": "lundi 12 décembre 2022"
              },
              {
                 "name": "event_hour",
@@ -1506,7 +1506,7 @@ Feature:
              },
              {
                 "name": "calendar_url",
-                "content": "http://test.enmarche.code/evenements/2022-05-12-nouvel-evenement-online/ical"
+                "content": "http://test.enmarche.code/evenements/2022-12-12-nouvel-evenement-online/ical"
              }
           ],
           "merge_vars": [
@@ -1740,3 +1740,248 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline:  As a (delegated) legislative candidate I can create an event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
+    """
+    {
+        "name": "Nouveau événement",
+        "category": "kiosque",
+        "description": "Une description de l'événement",
+        "begin_at": "2023-01-29 16:30:30",
+        "finish_at": "2023-01-30 16:30:30",
+        "capacity": 100,
+        "mode": "online",
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "post_address": {
+          "address": "15 Rue de la Nouvelle-Calédonie",
+          "postal_code": "75012",
+          "city_name": "Paris 12e",
+          "country": "FR"
+        },
+        "time_zone": "Europe/Paris",
+        "electoral": false,
+        "private": false
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Kiosque",
+            "slug": "kiosque"
+        },
+        "uuid": "@uuid@",
+        "name": "Nouveau événement",
+        "slug": "2023-01-29-nouveau-evenement",
+        "description": "Une description de l'événement",
+        "time_zone": "Europe/Paris",
+        "begin_at": "2023-01-29T16:30:30+01:00",
+        "finish_at": "2023-01-30T16:30:30+01:00",
+        "organizer": {
+            "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
+            "first_name": "Jean-Baptiste",
+            "last_name": "Fortin"
+        },
+        "participants_count": 1,
+        "status": "SCHEDULED",
+        "capacity": 100,
+        "post_address": {
+            "address": "15 Rue de la Nouvelle-Calédonie",
+            "postal_code": "75012",
+            "city": "75012-75112",
+            "city_name": "Paris 12e",
+            "country": "FR",
+            "latitude": 48.83799,
+            "longitude": 2.409861
+        },
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "mode": "online",
+        "image_url": null,
+        "link": "http://test.enmarche.code/evenements/2023-01-29-nouveau-evenement"
+    }
+    """
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline:  As a (delegated) legislative candidate I cannot create an event in not my managed zone
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
+    """
+    {
+        "name": "Nouveau événement",
+        "category": "kiosque",
+        "description": "Une description de l'événement",
+        "begin_at": "2023-01-29 16:30:30",
+        "finish_at": "2023-01-30 16:30:30",
+        "capacity": 100,
+        "mode": "online",
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "post_address": {
+          "address": "dammarie-les-lys",
+          "postal_code": "77190",
+          "city": "77190-77152",
+          "city_name": "dammarie-les-lys",
+          "country": "FR"
+        },
+        "time_zone": "Europe/Paris",
+        "electoral": false,
+        "private": false
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "post_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
+        "violations": [
+            {
+                "propertyPath": "post_address",
+                "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
+            }
+        ]
+    }
+    """
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline: As a (delegated) legislative candidate I can edit my (delegator's) event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>" with body:
+    """
+    {
+      "description": "Nouvelle description",
+      "category": "kiosque",
+      "begin_at": "2022-12-12 10:30:00",
+      "finish_at": "2022-12-12 16:30:00",
+      "mode": "online",
+      "visio_url": "http://visio.fr",
+      "post_address": {
+        "address": "15 Rue de la Nouvelle-Calédonie",
+        "postal_code": "75012",
+        "city_name": "Paris 12e",
+        "country": "FR"
+      }
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "594e7ad0-c289-49ae-8c23-0129275d128b",
+        "name": "Un événement du candidat aux législatives",
+        "slug": "2022-12-12-un-evenement-du-candidat-aux-legislatives",
+        "description": "Nouvelle description",
+        "time_zone": "Europe/Paris",
+        "begin_at": "2022-12-12T10:30:00+01:00",
+        "finish_at": "2022-12-12T16:30:00+01:00",
+        "organizer": {
+            "first_name": "Jean-Baptiste",
+            "last_name": "Fortin",
+            "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e"
+        },
+        "participants_count": 0,
+        "status": "SCHEDULED",
+        "capacity": 50,
+        "post_address": {
+            "address": "15 Rue de la Nouvelle-Calédonie",
+            "city": "75012-75112",
+            "city_name": "Paris 12e",
+            "country": "FR",
+            "latitude": 48.837989,
+            "longitude": 2.4098613,
+            "postal_code": "75012"
+        },
+        "category": {
+            "event_group_category": {
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "name": "Kiosque",
+            "slug": "kiosque"
+        },
+        "visio_url": "http://visio.fr",
+        "mode": "online",
+        "image_url": null,
+        "link": "http://test.enmarche.code/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives"
+    }
+    """
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline: As a (delegated) legislative candidate I can cancel my (delegator's) event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "PUT" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b/cancel?scope=<scope>"
+    Then the response status code should be 200
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline: As a (delegated) legislative candidate I can delete my event with no participants
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "DELETE" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>"
+    Then the response status code should be 204
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline: As a (delegated) legislative candidate I can update the image of my event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "POST" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b/image?scope=<scope>" with body:
+    """
+    {
+        "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+    }
+    """
+    Then the response status code should be 200
+    And the JSON node "image_url" should match "http://test.enmarche.code/assets/images/events/@string@.png"
+    When I send a "DELETE" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b/image?scope=<scope>"
+    Then the response status code should be 200
+    When I send a "GET" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>"
+    Then the JSON should be a superset of:
+    """
+    {"image_url": null}
+    """
+    Examples:
+      | user                                    | scope                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
+
+  Scenario Outline: As a (delegated) legislative candidate I can manage not my event
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "<method>" request to "/api/v3/events<url>?scope=<scope>"
+    Then the response status code should be 403
+    Examples:
+      | user                                    | scope                                           | method  | url                                           |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | PUT     | /462d7faf-09d2-4679-989e-287929f50be8         |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | PUT     | /462d7faf-09d2-4679-989e-287929f50be8/cancel  |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8         |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | POST    | /462d7faf-09d2-4679-989e-287929f50be8/image   |
+      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8/image   |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | PUT     | /462d7faf-09d2-4679-989e-287929f50be8         |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | PUT     | /462d7faf-09d2-4679-989e-287929f50be8/cancel  |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8         |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | POST    | /462d7faf-09d2-4679-989e-287929f50be8/image   |
+      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /462d7faf-09d2-4679-989e-287929f50be8/image   |
