@@ -99,6 +99,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignsKpiController",
  *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *         },
+ *         "get_campaign_building_statistics": {
+ *             "method": "GET",
+ *             "path": "/v3/pap_campaigns/{uuid}/building_statistics",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Pap\GetCampaignBuildingStatisticsController",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "normalization_context": {
+ *                 "groups": {"pap_building_statistics_read"},
+ *             },
+ *         },
  *         "get_available_vote_places": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/{uuid}/available_vote_places",
@@ -123,13 +133,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "vote_places_get_subresource": {
  *             "path": "/v3/pap_campaigns/{id}/vote_places",
  *             "requirements": {"id": "%pattern_uuid%"},
- *         },
- *         "building_statistics_get_subresource": {
- *             "path": "/v3/pap_campaigns/{id}/building_statistics",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "groups": {"pap_building_statistics_read"},
- *             },
  *         },
  *     },
  * )
