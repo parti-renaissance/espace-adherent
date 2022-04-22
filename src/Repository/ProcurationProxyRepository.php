@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
+use App\Intl\FranceCitiesBundle;
 use App\Procuration\Filter\ProcurationProxyProposalFilters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -104,6 +105,14 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('pp');
 
+        $voteCityInsee = $procurationRequest->getVoteCityInsee();
+        $conditions = ['other_city.code = :voteCityInsee'];
+        $isSpecialCity = \array_key_exists($voteCityInsee, FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE);
+
+        if ($isSpecialCity) {
+            $conditions[] = sprintf('other_city.code = %s', FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE[$voteCityInsee]);
+        }
+
         $qb
             ->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
             ->innerJoin('pp.otherVoteCities', 'other_city')
@@ -114,7 +123,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 $qb->expr()->andX(
                     'pp.voteCountry = :voteCountry',
                     'pp.voteCityName != :voteCityName',
-                    'other_city.code = :voteCityInsee'
+                    '('.implode(' OR ', $conditions).')'
                 )
             )
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
