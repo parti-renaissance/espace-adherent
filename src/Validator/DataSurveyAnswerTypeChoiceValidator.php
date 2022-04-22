@@ -33,10 +33,6 @@ class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
 
                 break;
             case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
-                if (1 !== $answer->getSelectedChoices()->count()) {
-                    $this->processViolation($constraint->uniqueChoiceAnswerMessage, $surveyQuestion->getId());
-                }
-
                 if ($answer->getTextField()) {
                     $this->processViolation(
                         $constraint->uniqueChoiceAnswerWithTextFieldMessage,
@@ -46,10 +42,6 @@ class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
 
                 break;
             case SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE:
-                if ($answer->getSelectedChoices()->isEmpty()) {
-                    $this->processViolation($constraint->multipleChoiceAnswerMessage, $surveyQuestion->getId());
-                }
-
                 if ($answer->getTextField()) {
                     $this->processViolation(
                         $constraint->multipleChoiceAnswerWithTextFieldMessage,

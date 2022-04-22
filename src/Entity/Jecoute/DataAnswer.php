@@ -32,6 +32,8 @@ class DataAnswer
     private $surveyQuestion;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"data_survey_write"})
@@ -90,7 +92,7 @@ class DataAnswer
         return $this->textField;
     }
 
-    public function setTextField(string $textField): void
+    public function setTextField(?string $textField): void
     {
         $this->textField = $textField;
     }
