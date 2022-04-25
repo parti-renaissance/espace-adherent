@@ -85,7 +85,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"survey_read_dc"}
  *             }
- *         }
+ *         },
+ *         "get_kpi": {
+ *             "method": "GET",
+ *             "path": "/v3/surveys/kpi",
+ *             "controller": "App\Controller\Api\Jecoute\GetSurveysKpiController",
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', 'survey')",
+ *         },
  *     },
  *     subresourceOperations={
  *         "api_phoning_campaigns_survey_get_subresource": {
