@@ -882,8 +882,8 @@ Feature:
         "city": "69003-69383",
         "city_name": "Lyon 3e",
         "country": "FR",
-        "latitude": 45.7596356,
-        "longitude": 4.8614359
+        "latitude": 45.759636,
+        "longitude": 4.861436
       },
       "visio_url": "https://visio.fr",
       "mode": "online",
@@ -981,8 +981,8 @@ Feature:
         "city": "69003-69383",
         "city_name": "Lyon 3e",
         "country": "FR",
-        "latitude": 45.7596356,
-        "longitude": 4.8614359
+        "latitude": 45.759636,
+        "longitude": 4.861436
       },
       "visio_url": "http://visio.fr",
       "mode": "online",
@@ -1104,8 +1104,8 @@ Feature:
         "city": "69003-69383",
         "city_name": "Lyon 3e",
         "country": "FR",
-        "latitude": 45.7596356,
-        "longitude": 4.8614359
+        "latitude": 45.759636,
+        "longitude": 4.861436
       },
       "visio_url": "https://visio.fr",
       "mode": "online",
@@ -1335,8 +1335,8 @@ Feature:
         "city": "69003-69383",
         "city_name": "Lyon 3e",
         "country": "FR",
-        "latitude": 45.7596356,
-        "longitude": 4.8614359
+        "latitude": 45.759636,
+        "longitude": 4.861436
       },
       "visio_url": "http://visio.fr",
       "mode": "online",
