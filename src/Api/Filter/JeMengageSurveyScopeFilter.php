@@ -30,8 +30,6 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
         $alias = $queryBuilder->getRootAliases()[0];
         $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
 
-        $queryBuilder->andWhere(sprintf('%s.published = 1', $alias));
-
         switch ($scopeGenerator->getCode()) {
             case ScopeEnum::NATIONAL:
             case ScopeEnum::PHONING_NATIONAL_MANAGER:
