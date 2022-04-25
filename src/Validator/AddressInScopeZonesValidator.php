@@ -4,8 +4,6 @@ namespace App\Validator;
 
 use App\Address\AddressInterface;
 use App\Geo\ZoneMatcher;
-use App\Geocoder\Exception\GeocodingException;
-use App\Geocoder\Geocoder;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Validator\Constraint;
@@ -15,13 +13,11 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class AddressInScopeZonesValidator extends ConstraintValidator
 {
-    private Geocoder $geocoder;
     private ZoneMatcher $zoneMatcher;
     private ZoneRepository $zoneRepository;
     private ScopeGeneratorResolver $scopeGeneratorResolver;
 
     public function __construct(
-        Geocoder $geocoder,
         ZoneMatcher $zoneMatcher,
         ZoneRepository $zoneRepository,
         ScopeGeneratorResolver $scopeGeneratorResolver
@@ -29,7 +25,6 @@ class AddressInScopeZonesValidator extends ConstraintValidator
         $this->zoneMatcher = $zoneMatcher;
         $this->zoneRepository = $zoneRepository;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
-        $this->geocoder = $geocoder;
     }
 
     public function validate($value, Constraint $constraint)
@@ -50,12 +45,6 @@ class AddressInScopeZonesValidator extends ConstraintValidator
 
         if (!$scope || $scope->isNational() || !($managedZones = $scope->getZones())) {
             return;
-        }
-
-        try {
-            $value->updateCoordinates($this->geocoder->geocode($value->getGeocodableAddress()));
-        } catch (GeocodingException $e) {
-            // do nothing when an exception arises
         }
 
         $zones = $this->zoneMatcher->match($value);
