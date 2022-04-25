@@ -28,6 +28,7 @@ default:
                 - Tests\App\Behat\Context\DIContext
                 - Tests\App\Behat\Context\TransactionalDatabaseContext
                 - Tests\App\Behat\Context\RestContext
+                - Tests\App\Behat\Context\MessengerBusContext
                 - Tests\App\Behat\Context\SecurityContext
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\ChronosContext

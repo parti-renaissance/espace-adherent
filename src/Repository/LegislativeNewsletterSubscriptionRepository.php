@@ -24,6 +24,6 @@ class LegislativeNewsletterSubscriptionRepository extends ServiceEntityRepositor
             ->setParameter('token', $token)
             ->getQuery()
             ->getOneOrNullResult()
-            ;
+        ;
     }
 }

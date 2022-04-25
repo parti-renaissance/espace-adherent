@@ -1,7 +1,6 @@
 @api
 Feature:
   In order to subscribe to legislative candidate newsletter
-  As software developer
   I should be able to access legislative newsletter subscription API
 
   Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with wrong captcha
@@ -85,7 +84,7 @@ Feature:
             "global_merge_vars": [
                 {
                     "name": "confirmation_link",
-                    "content": "http://test.enmarche.code/newsletter/confirmation/@string@/@string@"
+                    "content": "http://test.enmarche.code/newsletters/confirmation/@string@/@string@"
                 }
             ],
             "to": [
@@ -98,3 +97,25 @@ Feature:
         }
     }
     """
+
+  Scenario: I can confirme my newsletter subscription once
+    Given I stop following redirections
+    When I am on "/newsletters/confirmation/9e0e1a9e-2c5d-4d3a-a6c8-4a582ff78e22/bd879a23-43bf-47d2-b67b-9c7cbb085547"
+    Then the response status code should be 302
+    And the message "MailchimpSyncLegislativeNewsletterCommand" should be dispatched
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    """
+    {
+      "email_address": "jane@example.org",
+      "first_name": "Jane",
+      "postal_code": "75001",
+      "country": "FR",
+      "from_zone": "75-1",
+      "personal_data_collection": true,
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
+    }
+    """
+    Then the response status code should be 201
+    And the message "MailchimpSyncLegislativeNewsletterCommand" should be dispatched

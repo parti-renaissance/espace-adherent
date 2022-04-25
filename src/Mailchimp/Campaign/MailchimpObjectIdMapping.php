@@ -15,6 +15,7 @@ class MailchimpObjectIdMapping
     private $jecouteListId;
     private $jeMengageListId;
     private $coalitionsListId;
+    private $newsletterLegislativeCandidateListId;
     private $folderIds;
     private $templateIds;
     private $interestIds;
@@ -34,6 +35,7 @@ class MailchimpObjectIdMapping
         string $jecouteListId,
         string $jeMengageListId,
         string $coalitionsListId,
+        string $newsletterLegislativeCandidateListId,
         array $folderIds,
         array $templateIds,
         array $interestIds,
@@ -52,6 +54,7 @@ class MailchimpObjectIdMapping
         $this->jecouteListId = $jecouteListId;
         $this->jeMengageListId = $jeMengageListId;
         $this->coalitionsListId = $coalitionsListId;
+        $this->newsletterLegislativeCandidateListId = $newsletterLegislativeCandidateListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
@@ -118,6 +121,11 @@ class MailchimpObjectIdMapping
     public function getNewsletterListId(): string
     {
         return $this->newsletterListId;
+    }
+
+    public function getNewsletterLegislativeCandidateListId(): string
+    {
+        return $this->newsletterLegislativeCandidateListId;
     }
 
     public function getElectedRepresentativeListId(): string
