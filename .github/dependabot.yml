@@ -16,8 +16,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "06:00"
-    #versioning-strategy: increase-if-necessary
+      #time: "06:00"
+    versioning-strategy: increase-if-necessary
     ignore:
       - dependency-name: "symfony/*"
         update-types: ["version-update:semver-major"]
