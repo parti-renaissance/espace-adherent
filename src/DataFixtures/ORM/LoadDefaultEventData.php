@@ -17,6 +17,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
     private const EVENT_1_UUID = '5cab27a7-dbb3-4347-9781-566dad1b9eb5';
     private const EVENT_2_UUID = '2b7238f9-10ca-4a39-b8a4-ad7f438aa95f';
     private const EVENT_3_UUID = '4d962b05-68fe-4888-ab6b-53b96bdbe797';
+    private const EVENT_4_UUID = '594e7ad0-c289-49ae-8c23-0129275d128b';
 
     private $eventRegistrationFactory;
 
@@ -28,6 +29,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $referent = $this->getReference('adherent-8');
+        $senatorialCandidate = $this->getReference('senatorial-candidate');
 
         $event1 = new DefaultEvent(Uuid::fromString(self::EVENT_1_UUID));
         $event1->setName('Nouvel événement online');
@@ -74,9 +76,25 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $event3->cancel();
 
+        $event4 = new DefaultEvent(Uuid::fromString(self::EVENT_4_UUID));
+        $event4->setName('Un événement du candidat aux législatives');
+        $event4->setDescription('Description de l\'événement du candidat aux législatives');
+        $event4->setPublished(true);
+        $event4->setBeginAt((new \DateTime('now'))->modify('+2 hours'));
+        $event4->setFinishAt((new \DateTime('now'))->modify('+4 hours'));
+        $event4->setCapacity(50);
+        $event4->setStatus(BaseEvent::STATUS_SCHEDULED);
+        $event4->setMode(BaseEvent::MODE_MEETING);
+        $event4->setTimeZone('Europe/Paris');
+        $event4->setOrganizer($senatorialCandidate);
+        $event4->setPostAddress(PostAddress::createFrenchAddress('25 Avenue du Bel air, 75012 Paris', '75012-75112', null, 48.846949, 2.396802));
+        $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'));
+        $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75112'));
+
         $manager->persist($event1);
         $manager->persist($event2);
         $manager->persist($event3);
+        $manager->persist($event4);
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $referent)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-7'))));

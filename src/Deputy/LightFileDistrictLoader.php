@@ -3,8 +3,10 @@
 namespace App\Deputy;
 
 use App\Entity\District;
+use App\Entity\Geo\Zone;
 use App\Entity\GeoData;
 use App\Geo\GeometryFactory;
+use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -25,12 +27,14 @@ class LightFileDistrictLoader
     private $geoCountries;
     private $geoDistricts;
     private $geometryFactory;
+    private ZoneRepository $zoneRepository;
 
     public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
     {
         $this->logger = $logger;
         $this->geometryFactory = new GeometryFactory();
         $this->em = $em;
+        $this->zoneRepository = $em->getRepository(Zone::class);
         $this->decoder = new Serializer([new ObjectNormalizer()], [new JsonEncoder(), new CsvEncoder()]);
     }
 
@@ -51,8 +55,14 @@ class LightFileDistrictLoader
 
         foreach ($districts as $district) {
             $this->createOrUpdateDistrict($district);
-            $this->em->persist($this->createOrUpdateDistrict($district));
+            $this->em->persist($districtEntity = $this->createOrUpdateDistrict($district));
             $this->em->flush();
+
+            if (str_starts_with($district['circo_ID'], '750')
+                && $zone = $this->zoneRepository->findOneBy(['code' => sprintf('%d-%d', $district['code_dpt'], $district['num_circo'])])) {
+                $zone->setGeoData($districtEntity->getGeoData());
+                $this->em->flush();
+            }
 
             if (0 === ++$i % 1000 || $i === \count($districts)) {
                 $this->em->clear();
