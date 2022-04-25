@@ -103,10 +103,7 @@ Feature:
         },
         {
           "surveyQuestion":7,
-          "selectedChoices":[
-            6,
-            4
-          ]
+          "selectedChoices":[]
         }
       ]
     }
