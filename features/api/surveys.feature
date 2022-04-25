@@ -2002,3 +2002,17 @@ Feature:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario: As a user with a (delegated) local role I can get surveys KPI
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/surveys/kpi?scope=referent"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+      "local_surveys_count": 4,
+      "local_surveys_published_count": 4,
+      "national_surveys_count": 3
+    }
+    """

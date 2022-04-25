@@ -20,6 +20,32 @@ class LocalSurveyRepository extends ServiceEntityRepository
         parent::__construct($registry, LocalSurvey::class);
     }
 
+    public function countForZones(array $zones, bool $publishedOnly = false): int
+    {
+        $qb = $this
+            ->createQueryBuilder('survey')
+            ->select('COUNT(DISTINCT(survey.id))')
+        ;
+
+        if (!empty($zones)) {
+            $qb
+                ->innerJoin('survey.zone', 'zone')
+                ->leftJoin('zone.children', 'child')
+                ->where('(zone IN (:zones) OR child IN (:zones))')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        if ($publishedOnly) {
+            $qb->andWhere('survey.published = TRUE');
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     /**
      * @return LocalSurvey[]
      */
