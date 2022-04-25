@@ -212,10 +212,8 @@ survey.questions.min_count: Le questionnaire doit contenir au moins une question
 
 survey.answer.simple_field.invalid: La question {{ surveyQuestionId }} est un champ libre et ne doit pas contenir de choix.
 
-survey.answer.unique_choice.invalid: La question {{ surveyQuestionId }} est une question à choix unique et doit contenir un seul choix sélectionné.
 survey.answer.unique_choice.with_text_field.invalid: La question {{ surveyQuestionId }} est une question à choix unique et ne doit pas contenir de champ texte.
 
-survey.answer.multiple_choice.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et doit contenir un ou plusieurs choix sélectionnés.
 survey.answer.multiple_choice.with_text_field.invalid: La question {{ surveyQuestionId }} est une question à choix multiples et ne doit pas contenir de champ texte.
 
 survey.with_wrong_scope: Vous ne pouvez pas créer ou modifier un questionnaire de type {{ type }} avec le scope {{ scope }}.

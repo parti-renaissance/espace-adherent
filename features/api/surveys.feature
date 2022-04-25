@@ -691,7 +691,6 @@ Feature:
           "answers":{
             "2":{
               "surveyQuestion":[
-                "La question 3 est une question à choix unique et doit contenir un seul choix sélectionné.",
                 "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
               ]
             }
@@ -771,7 +770,6 @@ Feature:
           "answers":{
             "2":{
               "surveyQuestion":[
-                "La question 3 est une question à choix unique et doit contenir un seul choix sélectionné.",
                 "La question 3 est une question à choix unique et ne doit pas contenir de champ texte."
               ]
             }
