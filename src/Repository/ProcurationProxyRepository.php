@@ -90,7 +90,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->addOrderBy('pp.lastName', 'ASC')
         ;
 
-        $this->addAndWhereCountryConditions($qb, $procurationRequest->isRequestFromFrance());
+        $this->addAndWhereCountryConditions($qb, $procurationRequest);
 
         $this->andWhereMatchingRounds($qb, $procurationRequest);
 
@@ -187,19 +187,27 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
     public static function addAndWhereCountryConditions(
         QueryBuilder $qb,
-        bool $requestFromFrance,
+        ProcurationRequest $request,
         bool $withOtherCities = false
     ): QueryBuilder {
-        if ($requestFromFrance) {
+        if ($request->isRequestFromFrance()) {
             $cityCondition = $qb->expr()->andX(
                 'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
                 'pp.voteCityName = :voteCityName'
             );
 
             if ($withOtherCities) {
+                $voteCityInsee = $request->getVoteCityInsee();
+                $conditions = ['other_city.code = :voteCityInsee'];
+                $isSpecialCity = \array_key_exists($voteCityInsee, FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE);
+
+                if ($isSpecialCity) {
+                    $conditions[] = sprintf('other_city.code = %s', FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE[$voteCityInsee]);
+                }
+
                 $cityCondition = $qb->expr()->orX(
                     $cityCondition,
-                    '(pp.voteCityName != :voteCityName AND other_city.code = :voteCityInsee)'
+                    '(pp.voteCityName != :voteCityName AND ('.implode(' OR ', $conditions).'))'
                 );
             }
 
