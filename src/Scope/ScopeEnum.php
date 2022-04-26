@@ -31,6 +31,7 @@ class ScopeEnum extends Enum
         self::PAP_NATIONAL_MANAGER,
         self::PAP,
         self::CORRESPONDENT,
+        self::LEGISLATIVE_CANDIDATE,
     ];
 
     public const NATIONAL_SCOPES = [
