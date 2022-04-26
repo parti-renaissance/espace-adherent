@@ -27,14 +27,12 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
         $context[self::ALREADY_CALLED] = true;
         $entity = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        try {
-            if ($entity->getGeocodableHash() !== ($hash = md5($address = $entity->getGeocodableAddress()))
-                && $coordinates = $this->geocoder->geocode($address)) {
-                $entity->updateCoordinates($coordinates);
-                $entity->setGeocodableHash($hash);
+        if ($entity->getGeocodableHash() !== md5($address = $entity->getGeocodableAddress())) {
+            try {
+                $entity->updateCoordinates($this->geocoder->geocode($address));
+            } catch (GeocodingException $e) {
+                // do nothing when an exception arises
             }
-        } catch (GeocodingException $e) {
-            // do nothing when an exception arises
         }
 
         return $entity;
