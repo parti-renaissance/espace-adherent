@@ -1906,8 +1906,8 @@ Feature:
             "city": "75012-75112",
             "city_name": "Paris 12e",
             "country": "FR",
-            "latitude": 48.83799,
-            "longitude": 2.409861,
+            "latitude": 48.837989,
+            "longitude": 2.4098613,
             "postal_code": "75012"
         },
         "category": {
