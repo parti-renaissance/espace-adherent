@@ -21,7 +21,6 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             self::LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_1_UUID,
             'john@example.org',
             '75008',
-            'FR',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
             'John',
             new \DateTime('-3 hours'),
@@ -32,7 +31,6 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             self::LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_2_UUID,
             'jane@example.org',
             '75008',
-            'FR',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-9'),
             null,
             null,
@@ -50,7 +48,6 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         string $uuid,
         string $emailAddress,
         string $postalCode,
-        string $country,
         Zone $zone,
         ?string $firstName,
         ?\DateTimeInterface $dateTime = null,
@@ -59,7 +56,6 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         $subscription = new LegislativeNewsletterSubscription(Uuid::fromString($uuid));
         $subscription->setEmailAddress($emailAddress);
         $subscription->setPostalCode($postalCode);
-        $subscription->setCountry($country);
         $subscription->addFromZone($zone);
         $subscription->setFirstName($firstName);
         $subscription->setConfirmedAt($dateTime);
