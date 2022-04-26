@@ -2,6 +2,8 @@
 
 namespace App\Newsletter;
 
+use App\Entity\Geo\Zone;
+use App\Entity\LegislativeNewsletterSubscription;
 use App\Entity\NewsletterSubscription;
 use App\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
 
@@ -13,6 +15,7 @@ class NewsletterValueObject
     private $siteCode;
     private $type;
     private $subscribed = true;
+    private $zones = [];
 
     public function getEmail(): ?string
     {
@@ -64,6 +67,12 @@ class NewsletterValueObject
         $this->siteCode = $siteCode;
     }
 
+    /** @return Zone[] */
+    public function getZones(): array
+    {
+        return $this->zones;
+    }
+
     public function getType(): ?string
     {
         return $this->type;
@@ -102,6 +111,17 @@ class NewsletterValueObject
         $object->email = $command->getEmail();
         $object->siteCode = $command->getSiteCode();
         $object->type = $command->getType();
+
+        return $object;
+    }
+
+    public static function createFromLegislativeNewsletterCommand(LegislativeNewsletterSubscription $subscription): self
+    {
+        $object = new self();
+
+        $object->email = $subscription->getEmailAddress();
+        $object->zones = $subscription->getFromZones()->toArray();
+        $object->type = NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE;
 
         return $object;
     }

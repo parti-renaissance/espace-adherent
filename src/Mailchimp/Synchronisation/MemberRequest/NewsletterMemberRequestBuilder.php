@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp\Synchronisation\MemberRequest;
 
+use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Newsletter\NewsletterTypeEnum;
@@ -13,10 +14,18 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
     private $countryName;
     private $type;
     private $siteCode;
+    private array $zones = [];
 
     public function setZipCode(?string $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function setZones(?array $zones): self
+    {
+        $this->zones = $zones;
 
         return $this;
     }
@@ -49,7 +58,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             ->setZipCode($newsletter->getZipCode())
             ->setCountryName($newsletter->getCountryName())
             ->setType($newsletter->getType())
-            ->setSiteCode($newsletter->getSiteCode())
+            ->setZones($newsletter->getZones())
             ->setIsSubscribeRequest($newsletter->isSubscribed())
         ;
     }
@@ -74,6 +83,12 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             case NewsletterTypeEnum::SITE_MUNICIPAL:
                 $mergeFields[MemberRequest::MERGE_FIELD_INSEE_CODE] = $this->siteCode;
                 break;
+        }
+
+        if ($this->zones) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CODES] = implode(',', array_map(function (Zone $zone) {
+                return $zone->getTypeCode();
+            }, $this->zones));
         }
 
         return $mergeFields;

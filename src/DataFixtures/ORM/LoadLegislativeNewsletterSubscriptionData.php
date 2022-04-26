@@ -13,6 +13,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
 {
     public const LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_1_UUID = 'b9189770-42d5-439a-bd26-52a9cf9ffd1f';
     public const LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_2_UUID = '9e0e1a9e-2c5d-4d3a-a6c8-4a582ff78e22';
+    public const LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_2_TOKEN = 'bd879a23-43bf-47d2-b67b-9c7cbb085547';
 
     public function load(ObjectManager $manager)
     {
@@ -37,6 +38,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             null,
             true
         );
+        $newsletterSubscription759->setToken(Uuid::fromString(self::LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_2_TOKEN));
 
         $manager->persist($newsletterSubscription758);
         $manager->persist($newsletterSubscription759);

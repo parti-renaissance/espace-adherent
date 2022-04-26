@@ -8,18 +8,25 @@ trait MessengerTestTrait
 {
     abstract protected function getMessageRecorder(): MessageRecorderInterface;
 
-    public function assertMessageIsDispatched(string $expectedMessageClass, string $help = ''): void
-    {
+    public function assertMessageIsDispatched(
+        string $expectedMessageClass,
+        bool $assert = true,
+        string $help = ''
+    ): bool {
         $found = false;
 
         foreach ($this->getMessageRecorder()->getMessages() as $envelope) {
-            if (is_a($envelope->getMessage(), $expectedMessageClass)) {
+            if (str_ends_with(\get_class($envelope->getMessage()), $expectedMessageClass)) {
                 $found = true;
                 break;
             }
         }
 
-        self::assertTrue($found, $help);
+        if ($assert) {
+            self::assertTrue($found, $help);
+        }
+
+        return $found;
     }
 
     public function assertMessageIsNotDispatched(string $unexpectedMessageClass): void

@@ -24,6 +24,7 @@ use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInte
 use App\Mailchimp\Synchronisation\MemberRequest\CoalitionMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
+use App\Newsletter\NewsletterTypeEnum;
 use App\Newsletter\NewsletterValueObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -90,7 +91,10 @@ class Manager implements LoggerAwareInterface
 
     public function editNewsletterMember(NewsletterValueObject $newsletter): void
     {
-        $listId = $this->mailchimpObjectIdMapping->getNewsletterListId();
+        $listId = NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE === $newsletter->getType() ?
+            $this->mailchimpObjectIdMapping->getNewsletterLegislativeCandidateListId() :
+            $this->mailchimpObjectIdMapping->getNewsletterListId();
+
         $requestBuilder = $this->requestBuildersLocator->get(NewsletterMemberRequestBuilder::class);
 
         $result = $this->driver->editMember(

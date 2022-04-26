@@ -1068,6 +1068,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'jecoute_list_id',
                     'jemengage_list_id',
                     'coalitions_list_id',
+                    'newsletter_legislative_candidate_list_id',
                     [
                         'referent' => 1,
                         'deputy' => 2,

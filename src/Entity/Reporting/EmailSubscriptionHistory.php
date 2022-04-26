@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Table(
@@ -88,8 +87,6 @@ class EmailSubscriptionHistory
 
         $this->referentTags = new ArrayCollection();
         foreach ($referentTags as $tag) {
-            Assert::isInstanceOf($tag, ReferentTag::class);
-
             $this->referentTags->add($tag);
         }
     }

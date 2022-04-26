@@ -205,6 +205,11 @@ class Zone implements GeoInterface
         $this->teamCode = $teamCode;
     }
 
+    public function getTypeCode(): string
+    {
+        return sprintf('%s_%s', $this->type, $this->code);
+    }
+
     public function isCountry(): bool
     {
         return Zone::COUNTRY === $this->type;

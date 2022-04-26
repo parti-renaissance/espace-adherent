@@ -9,13 +9,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/newsletters")
+ */
 class NewsletterController extends AbstractController
 {
     /**
      * @Route(
-     *     "/newsletter/confirmation/{uuid}/{validation_token}",
+     *     "/confirmation/{uuid}/{validation_token}",
      *     name="app_legislatives_newsletter_confirmation",
-     *     methods={"GET"}
+     *     methods={"GET"},
+     *     requirements={"uuid": "%pattern_uuid%", "validation_token": "%pattern_uuid%"}
      * )
      * @Entity("subscription", expr="repository.findOneNotConfirmedByUuidAndToken(uuid, validation_token)")
      */
@@ -29,7 +33,7 @@ class NewsletterController extends AbstractController
     }
 
     /**
-     * @Route("/newsletter/merci", name="app_legislatives_newsletter_thank", methods={"GET"})
+     * @Route("/merci", name="app_legislatives_newsletter_thank", methods={"GET"})
      */
     public function subscribedThanks(): Response
     {
