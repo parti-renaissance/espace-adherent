@@ -57,10 +57,11 @@ Feature:
   Scenario: As deputy of 1st Paris district I can see events.
     Given I am logged as "deputy@en-marche-dev.fr"
     When I am on "/espace-depute/evenements"
-    Then I should see 9 "table.datagrid__table-manager tbody tr" elements
+    Then I should see 10 "table.datagrid__table-manager tbody tr" elements
     And I should see "Événement de la catégorie masquée"
     And I should see "Réunion de réflexion parisienne annulé"
     And I should see "Réunion de réflexion parisienne"
+    And I should see "Un événement du candidat aux législatives"
     And I should see "Référent event"
     And I should see "Grand débat parisien"
     And I should see "Événement à Paris 1"

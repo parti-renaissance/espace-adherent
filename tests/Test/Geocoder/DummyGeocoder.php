@@ -133,9 +133,9 @@ class DummyGeocoder implements Geocoder
             'latitude' => 43.325900,
             'longitude' => 5.374680,
         ],
-        '15 rue de la nouvelle-calédonie, 75012 paris 12e, fr' => [
-            'latitude' => 48.837989,
-            'longitude' => 2.4098613,
+        '226 rue de rivoli, 75001 paris 1er, fr' => [
+            'latitude' => 48.859599,
+            'longitude' => 2.344967,
         ],
     ];
 

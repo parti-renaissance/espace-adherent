@@ -21,7 +21,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
             self::LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_1_UUID,
             'john@example.org',
             '75008',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'),
+            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
             'John',
             new \DateTime('-3 hours'),
             true

@@ -147,6 +147,65 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             ],
         ]);
 
+        $managedUser5 = $managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'source' => null,
+            'original_id' => $this->getReference('adherent-3')->getId(),
+            'uuid' => $this->getReference('adherent-3')->getUuid(),
+            'email' => $this->getReference('adherent-3')->getEmailAddress(),
+            'postal_code' => $this->getReference('adherent-3')->getPostalCode(),
+            'address' => $this->getReference('adherent-3')->getAddress(),
+            'city' => $this->getReference('adherent-3')->getCityName(),
+            'country' => $this->getReference('adherent-3')->getCountry(),
+            'first_name' => $this->getReference('adherent-3')->getFirstName(),
+            'last_name' => $this->getReference('adherent-3')->getLastName(),
+            'birthday' => $this->getReference('adherent-3')->getBirthdate(),
+            'phone' => PhoneNumberUtils::create('+33187264236'),
+            'is_committee_member' => 1,
+            'is_committee_host' => 1,
+            'is_committee_provisional_supervisor' => 0,
+            'is_committee_supervisor' => 1,
+            'subscription_types' => array_merge(SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, [SubscriptionTypeEnum::MILITANT_ACTION_SMS]),
+            'subscribedTags' => '75,75008,CIRCO_75001',
+            'zones' => [
+                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
+                LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
+            ],
+            'created_at' => '2017-01-03 08:47:54',
+            'gender' => 'male',
+            'certified_at' => '2017-02-01 10:20:45',
+            'interests' => ['europe', 'numerique', 'sante'],
+        ]);
+
+        $managedUser6 = $managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'source' => null,
+            'original_id' => $this->getReference('deputy-75-1')->getId(),
+            'uuid' => $this->getReference('deputy-75-1')->getUuid(),
+            'email' => $this->getReference('deputy-75-1')->getEmailAddress(),
+            'postal_code' => $this->getReference('deputy-75-1')->getPostalCode(),
+            'address' => $this->getReference('deputy-75-1')->getAddress(),
+            'city' => $this->getReference('deputy-75-1')->getCityName(),
+            'country' => $this->getReference('deputy-75-1')->getCountry(),
+            'first_name' => $this->getReference('deputy-75-1')->getFirstName(),
+            'last_name' => $this->getReference('deputy-75-1')->getLastName(),
+            'birthday' => $this->getReference('deputy-75-1')->getBirthdate(),
+            'is_committee_member' => 0,
+            'is_committee_host' => 0,
+            'is_committee_provisional_supervisor' => 0,
+            'is_committee_supervisor' => 0,
+            'subscription_types' => array_merge(SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, [SubscriptionTypeEnum::MILITANT_ACTION_SMS]),
+            'subscribedTags' => '75,75008,CIRCO_75001',
+            'zones' => [
+                LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'),
+                LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
+            ],
+            'created_at' => '2017-06-01 09:26:31',
+            'gender' => 'male',
+            'certified_at' => '2017-06-01 17:55:45',
+            'interests' => ['europe', 'numerique'],
+        ]);
+
         $manager->persist($managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => MembershipSourceEnum::JEMENGAGE,
@@ -172,6 +231,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $manager->persist($managedUser2);
         $manager->persist($managedUser3);
         $manager->persist($managedUser4);
+        $manager->persist($managedUser5);
+        $manager->persist($managedUser6);
 
         $manager->flush();
     }

@@ -158,7 +158,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             '+30 days',
             1,
             0,
-            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')],
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
             $this->getReference('senatorial-candidate'),
         );
         $campaign75_08->addVotePlace($this->getReference('pap-vote-place--paris-8-d'));
@@ -174,7 +174,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             '+30 days',
             1,
             0,
-            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')],
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
             $this->getReference('senatorial-candidate'),
         );
         $campaign75_08_r->addVotePlace($this->getReference('pap-vote-place--paris-8-e'));

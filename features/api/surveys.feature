@@ -1729,7 +1729,7 @@ Feature:
             "last_name": "Bialès",
             "age": @integer@
           },
-          "author_postal_code": "75000",
+          "author_postal_code": "75010",
           "uuid": "@uuid@",
           "type": "PAP",
           "interviewed": {
@@ -1764,7 +1764,7 @@ Feature:
             "last_name": "Bialès",
             "age": @integer@
           },
-          "author_postal_code": "75000",
+          "author_postal_code": "75010",
           "uuid": "@uuid@",
           "type": "PAP",
           "interviewed": {
@@ -1799,7 +1799,7 @@ Feature:
             "last_name": "Bialès",
             "age": @integer@
           },
-          "author_postal_code": "75000",
+          "author_postal_code": "75010",
           "uuid": "@uuid@",
           "type": "PAP",
           "interviewed": {

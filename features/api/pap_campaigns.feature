@@ -678,7 +678,6 @@ Feature:
     Given I am logged with "senatorial-candidate@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf/vote_places?scope=legislative_candidate"
     Then the response status code should be 200
-    And print last JSON response
     And the JSON should be equal to:
     """
     [
@@ -724,7 +723,6 @@ Feature:
     """
     When I send a "GET" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf/vote_places?scope=legislative_candidate"
     Then the response status code should be 200
-    And print last JSON response
     And the JSON should be equal to:
     """
     [
@@ -3286,7 +3284,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 6,
+            "total_items": 5,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
@@ -3319,7 +3317,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 6,
+            "total_items": 5,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
@@ -3368,12 +3366,6 @@ Feature:
             "nb_addresses": 0,
             "nb_voters": 0,
             "uuid": "de7ed0bd-acec-4744-b94d-30b98d895adc"
-        },
-        {
-            "code": "75103_0001",
-            "nb_addresses": 1,
-            "nb_voters": 1,
-            "uuid": "7157a379-e66d-4afd-b1a3-412fbf9ce0e5"
         }
     ]
     """

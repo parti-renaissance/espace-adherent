@@ -151,7 +151,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
-        $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'));
+        $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
         $adherent3->setCandidateManagedArea($candidateManagedAreaRegion = new CandidateManagedArea());
         $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
@@ -433,7 +433,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Patrick',
             'last_name' => 'Bialès',
-            'address' => PostAddress::createFrenchAddress('26 Rue Louis Blanc', '75000-75010', null, 50.649561, 3.0644126),
+            'address' => PostAddress::createFrenchAddress('26 Rue Louis Blanc', '75010-75110', null, 50.649561, 3.0644126),
             'birthdate' => '1950-07-25',
             'position' => 'commissioner',
             'phone' => '+33712345678',
@@ -650,6 +650,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
+        $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+        $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $deputy_75_1->certify();
         $deputy_75_1->setPapUserRole(true);
         $this->addReference('deputy-75-1', $deputy_75_1);
@@ -821,7 +823,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $senatorialCandidateManagedArea = new SenatorialCandidateManagedArea();
         $senatorialCandidateManagedArea->addDepartmentTag($this->getReference('referent_tag_59'));
         $senatorialCandidate->setSenatorialCandidateManagedArea($senatorialCandidateManagedArea);
-        $senatorialCandidate->addZoneBasedRole(AdherentZoneBasedRole::createLegislativeCandidate(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8')));
+        $senatorialCandidate->addZoneBasedRole(AdherentZoneBasedRole::createLegislativeCandidate(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')));
         $senatorialCandidate->certify();
         $this->addReference('senatorial-candidate', $senatorialCandidate);
 
