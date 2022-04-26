@@ -98,7 +98,7 @@ Feature:
     }
     """
 
-  Scenario: I can confirme my newsletter subscription once
+  Scenario: I can confirm my newsletter subscription
     Given I stop following redirections
     When I am on "/newsletters/confirmation/9e0e1a9e-2c5d-4d3a-a6c8-4a582ff78e22/bd879a23-43bf-47d2-b67b-9c7cbb085547"
     Then the response status code should be 302
