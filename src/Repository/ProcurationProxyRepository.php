@@ -107,10 +107,11 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $voteCityInsee = $procurationRequest->getVoteCityInsee();
         $conditions = ['other_city.code = :voteCityInsee'];
-        $isSpecialCity = \array_key_exists($voteCityInsee, FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE);
+        $specialCityCode = FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE[$voteCityInsee] ?? null;
 
-        if ($isSpecialCity) {
-            $conditions[] = sprintf('other_city.code = %s', FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE[$voteCityInsee]);
+        if ($specialCityCode) {
+            $conditions[] = sprintf('other_city.code = :special_city_code');
+            $qb->setParameter('special_city_code', $specialCityCode);
         }
 
         $qb
@@ -199,10 +200,11 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             if ($withOtherCities) {
                 $voteCityInsee = $request->getVoteCityInsee();
                 $conditions = ['other_city.code = :voteCityInsee'];
-                $isSpecialCity = \array_key_exists($voteCityInsee, FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE);
+                $specialCityCode = FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE[$voteCityInsee] ?? null;
 
-                if ($isSpecialCity) {
-                    $conditions[] = sprintf('other_city.code = %s', FranceCitiesBundle::SPECIAL_CITY_INSEE_CODE[$voteCityInsee]);
+                if ($specialCityCode) {
+                    $conditions[] = sprintf('other_city.code = :special_city_code');
+                    $qb->setParameter('special_city_code', $specialCityCode);
                 }
 
                 $cityCondition = $qb->expr()->orX(
