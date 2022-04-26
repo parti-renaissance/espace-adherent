@@ -7,7 +7,6 @@ use App\Entity\Geo\Zone;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\Validator\ZoneType as AssertZoneType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
-use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -85,15 +83,6 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private ?string $postalCode = null;
 
     /**
-     * @ORM\Column(length=2, nullable=true)
-     *
-     * @Groups({"legislative_newsletter_subscriptions_write"})
-     *
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
-     */
-    private string $country = 'FR';
-
-    /**
      * @var Collection|Zone[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
@@ -110,7 +99,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private bool $personalDataCollection = false;
 
     /**
-     * @ORM\Column(type="uuid", unique=true, nullable=true)
+     * @ORM\Column(type="uuid", unique=true)
      */
     private UuidInterface $token;
 
@@ -159,16 +148,6 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country ? Countries::getName($this->country) : null;
-    }
-
-    public function setCountry(?string $country): void
-    {
-        $this->country = $country;
     }
 
     /**
