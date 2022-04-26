@@ -273,7 +273,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     }
 
     /**
-     * @SymfonySerializer\Groups("survey_list", "survey_list_dc")
+     * @SymfonySerializer\Groups("survey_list", "survey_list_dc", "survey_read_dc")
      */
     abstract public function getType(): string;
 
