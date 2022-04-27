@@ -125,7 +125,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->firstName;
     }
 
-    public function setFirstName(?string $firstName): void
+    public function setFirstName(?string $firstName = null): void
     {
         $this->firstName = $firstName;
     }
@@ -135,7 +135,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(?string $emailAddress): void
+    public function setEmailAddress(?string $emailAddress = null): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -145,7 +145,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->postalCode;
     }
 
-    public function setPostalCode(?string $postalCode): void
+    public function setPostalCode(?string $postalCode = null): void
     {
         $this->postalCode = $postalCode;
     }
@@ -180,7 +180,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->personalDataCollection;
     }
 
-    public function setPersonalDataCollection(bool $personalDataCollection): void
+    public function setPersonalDataCollection(bool $personalDataCollection = null): void
     {
         $this->personalDataCollection = $personalDataCollection;
     }
