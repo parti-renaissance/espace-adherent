@@ -3,6 +3,37 @@ Feature:
   In order to subscribe to legislative candidate newsletter
   I should be able to access legislative newsletter subscription API
 
+  Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with no email address
+    Given I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
+    """
+    {
+      "email_address": null,
+      "first_name": "John",
+      "postal_code": "75009",
+      "from_zone": "75-9",
+      "personal_data_collection": true,
+      "recaptcha": "fake123",
+      "recaptcha_site_key": "fake_key"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "email_address: Cette valeur est requise.",
+      "violations": [
+        {
+          "propertyPath": "email_address",
+          "message": "Cette valeur est requise."
+        }
+      ]
+    }
+    """
+
   Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with wrong captcha
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
