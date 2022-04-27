@@ -3,18 +3,18 @@ Feature:
   In order to subscribe to legislative candidate newsletter
   I should be able to access legislative newsletter subscription API
 
-  Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with no email address
+  Scenario: As a non logged-in user I cannot subscribe to a candidate newsletter with nul values
     Given I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/legislative_newsletter_subscriptions" with body:
     """
     {
       "email_address": null,
-      "first_name": "John",
-      "postal_code": "75009",
+      "first_name": null,
+      "postal_code": null,
       "from_zone": "75-9",
-      "personal_data_collection": true,
-      "recaptcha": "fake123",
-      "recaptcha_site_key": "fake_key"
+      "personal_data_collection": null,
+      "recaptcha": null,
+      "recaptcha_site_key": null
     }
     """
     Then the response status code should be 400
@@ -24,11 +24,23 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "email_address: Cette valeur est requise.",
+      "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.\nemail_address: Cette valeur est requise.\npostal_code: Cette valeur ne doit pas être vide.\npersonal_data_collection: Cette valeur ne doit pas être nulle.",
       "violations": [
+        {
+          "propertyPath": "recaptcha",
+          "message": "Merci de confirmer le captcha avant de continuer."
+        },
         {
           "propertyPath": "email_address",
           "message": "Cette valeur est requise."
+        },
+        {
+          "propertyPath": "postal_code",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "personal_data_collection",
+          "message": "Cette valeur ne doit pas être nulle."
         }
       ]
     }
