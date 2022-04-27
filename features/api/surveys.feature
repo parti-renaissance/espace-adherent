@@ -1147,6 +1147,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "type": "local",
       "city": null,
       "zone": {
         "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
@@ -1381,6 +1382,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "type": "national",
       "uuid": "@uuid@",
       "name": "test questionnaire national 2202",
       "published": true,
@@ -1495,6 +1497,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "type": "local",
       "city": null,
       "zone": {
           "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
@@ -1640,6 +1643,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "type": "local",
       "city": null,
       "zone": {
         "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
