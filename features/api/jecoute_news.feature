@@ -299,6 +299,83 @@ Feature:
         ]
       }
     """
+    When I send a "GET" request to "/api/jecoute/news?zipCode=75008&page_size=5"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 5,
+        "items_per_page": 5,
+        "count": 5,
+        "current_page": 1,
+        "last_page": 1
+        },
+        "items": [
+          {
+            "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
+            "title": "Pour toute la France",
+            "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir le lien",
+            "pinned": true,
+            "enriched": false,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "national",
+            "creator": null
+          },
+          {
+            "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
+            "title": "[Régionales] Rassemblement",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "external_link": "https://en-marche.fr",
+            "link_label": "Voir",
+            "pinned": false,
+            "enriched": false,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Anonyme (candidat aux départementales)"
+          },
+          {
+            "uuid": "25632c43-c224-4745-84d7-09dfa8249367",
+            "title": "[Référent] Une actualité à 75",
+            "text": "Quisque interdum lectus et ultrices rhoncus. Cras nunc diam, rutrum eget velit vel, cursus varius justo.",
+            "external_link": "https://75.en-marche.fr",
+            "link_label": "Voir le lien",
+            "pinned": false,
+            "enriched": false,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Referent75and77 Referent75and77 (référent)"
+          },
+          {
+            "uuid": "4f5db386-1819-4055-abbd-fb5d840cd6c0",
+            "title": "Une actualité d'un candidat aux législatives délégué à 75-8",
+            "text": "Aenean varius condimentum diam in rutrum.",
+            "external_link": "https://un-candidat-aux-legislatives-delegue.en-marche.fr",
+            "link_label": "Voir le lien",
+            "pinned": false,
+            "enriched": false,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Gisele Berthoux (candidat aux législatives)"
+          },
+          {
+            "uuid": "2c28b246-b17e-409d-992a-b8a57481fb7a",
+            "title": "Une actualité d'un candidat aux législatives à 75-8",
+            "text": "Donec viverra odio.",
+            "external_link": "https://un-candidat-aux-legislatives.en-marche.fr",
+            "link_label": "Voir le lien",
+            "pinned": false,
+            "enriched": false,
+            "created_at": "@string@.isDateTime()",
+            "visibility": "local",
+            "creator": "Jean-Baptiste Fortin (candidat aux législatives)"
+          }
+        ]
+    }
+    """
 
   Scenario: As a non authenticated user I cannot get a single news for a given uuid
     When I send a "GET" request to "/api/jecoute/news/0bc3f920-da90-4773-80e1-a388005926fc"

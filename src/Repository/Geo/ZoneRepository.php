@@ -10,6 +10,7 @@ use App\Entity\ReferentTag;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -303,6 +304,26 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameter('postal_code_2', '%,'.$postalCode.'%')
             ->setParameter('dpt_code', $dpt)
             ->setParameter('dpt_type', Zone::DEPARTMENT)
+            ->setParameter('city', Zone::CITY)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findDistrictsByPostalCode(string $postalCode): array
+    {
+        $postalCode = str_pad($postalCode, 5, '0', \STR_PAD_LEFT);
+
+        return $this->createQueryBuilder('zone')
+            ->leftJoin('zone.children', 'child', Join::WITH, 'child.type = :city')
+            ->leftJoin('zone.parents', 'parent', Join::WITH, 'parent.type = :city')
+            ->where((new Orx())
+                ->add('parent.postalCode LIKE :postal_code_1 OR parent.postalCode LIKE :postal_code_2')
+                ->add('child.postalCode LIKE :postal_code_1 OR child.postalCode LIKE :postal_code_2'))
+            ->andWhere('zone.type = :district')
+            ->setParameter('postal_code_1', $postalCode.'%')
+            ->setParameter('postal_code_2', '%,'.$postalCode.'%')
+            ->setParameter('district', Zone::DISTRICT)
             ->setParameter('city', Zone::CITY)
             ->getQuery()
             ->getResult()
