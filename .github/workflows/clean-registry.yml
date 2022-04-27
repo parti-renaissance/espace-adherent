@@ -4,16 +4,14 @@ on:
     - cron: "0 6 * * *"
 env:
   INTERVAL_OLD_IMAGES: ${{ secrets.CLEANUP_OLD_IMAGES_TIME_DIFF }}
-  IMAGE: ${{ secrets.REGISTRY_HOST }}/${{ secrets.REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
+  IMAGE: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
 
 jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: google-github-actions/auth@v0.7.1
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
+      - uses: ./.github/actions/docker-login
 
       - run: |
           limitDate=$(date "+%Y-%m-%d %H:%M:%S" -d "$INTERVAL_OLD_IMAGES")

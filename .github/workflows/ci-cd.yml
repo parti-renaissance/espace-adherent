@@ -15,10 +15,9 @@ env:
   PHP_VERSION: 7.4
   PHP_SECURITY_CHECKER_VERSION: 1.2.0
 
-  REGISTRY: ${{ secrets.REGISTRY_HOST }}/${{ secrets.REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
-  REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
-  REGISTRY_SERVICE_ACCOUNT_EMAIL: ${{ secrets.REGISTRY_SERVICE_ACCOUNT_EMAIL }}
-  REGISTRY_SERVICE_ACCOUNT_KEY: ${{ secrets.REGISTRY_SERVICE_ACCOUNT_KEY }}
+  REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
+  REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
+  GCP_SA_KEY_GCR_PUSHER: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -155,6 +154,7 @@ jobs:
           key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
 
       - uses: ./.github/actions/docker-login
+
       - uses: ./.github/actions/docker-pull
         with:
           hash: ${{ hashFiles('docker/dev/*') }}
@@ -325,7 +325,7 @@ jobs:
       - run: perl -pi -e "s/default/${{ github.sha }}/g" ./config/packages/app_version.yaml
 
       - run: |-
-          docker build --cache-from=$REGISTRY:master --tag $REGISTRY:$TAG-$HASH .
+          docker build --cache-from=${{ env.REGISTRY }}:master --tag ${{ env.REGISTRY }}:$TAG-$HASH .
 
       - uses: ./.github/actions/docker-push
         with:
@@ -342,15 +342,9 @@ jobs:
       HASH: ${{ github.sha }}
       TAG: ${{ github.ref_name }}
 
-      GKE_SERVICE_ACCOUNT_KEY: ${{ secrets.GKE_SERVICE_ACCOUNT_KEY }}
-      GKE_PROJECT_ID: ${{ secrets.GKE_PROJECT_ID }}
-      GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-      GKE_REGION: ${{ secrets.GKE_REGION }}
-      GKE_CONTAINER: ${{ secrets.GKE_CONTAINER }}
-      GKE_DEPLOYMENTS: ${{ secrets.GKE_DEPLOYMENTS }}
-
     steps:
       - uses: actions/checkout@v3
+
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
@@ -359,14 +353,15 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
             environment: staging
+
       - uses: google-github-actions/auth@v0.7.1
         with:
-          credentials_json: ${{ env.GKE_SERVICE_ACCOUNT_KEY }}
+          credentials_json: ${{ secrets.GCP_SA_KEY_GKE_DEPLOYER }}
 
       - run: |-
-          gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} --region ${{ secrets.GKE_REGION }}
 
       - run: |-
-          for GKE_DEPLOYMENT in $(echo $GKE_DEPLOYMENTS); do
-            kubectl set image deployment/$GKE_DEPLOYMENT $GKE_CONTAINER=$REGISTRY:$TAG-$HASH
+          for GKE_DEPLOYMENT in $(echo ${{ secrets.GKE_DEPLOYMENTS }}); do
+            kubectl set image deployment/$GKE_DEPLOYMENT ${{ secrets.GKE_CONTAINER }}=${{ env.REGISTRY }}:$TAG-$HASH
           done
