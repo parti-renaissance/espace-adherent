@@ -59,6 +59,10 @@ class ProcurationRequestType extends AbstractProcurationType
 
             case ProcurationRequest::STEP_URI_PROFILE:
                 parent::buildForm($builder, $options);
+                $builder
+                    ->add('voterNumber', TextType::class)
+                ;
+
                 break;
 
             case ProcurationRequest::STEP_URI_ELECTION_ROUNDS:

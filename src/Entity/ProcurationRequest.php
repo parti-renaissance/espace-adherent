@@ -240,6 +240,16 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     private $birthdate;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\NotBlank(groups={"profile"}, message="procuration.voter_number.not_blank")
+     * @Assert\Length(max=255, groups={"profile"})
+     */
+    private $voterNumber;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=15, nullable=true)
@@ -538,6 +548,16 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     public function setBirthdate(?\DateTime $birthdate): void
     {
         $this->birthdate = $birthdate;
+    }
+
+    public function getVoterNumber(): ?string
+    {
+        return $this->voterNumber;
+    }
+
+    public function setVoterNumber(?string $voterNumber): void
+    {
+        $this->voterNumber = $voterNumber;
     }
 
     public function getVotePostalCode(): ?string
