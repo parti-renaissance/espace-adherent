@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Geo\Zone;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -28,7 +29,7 @@ trait EntityZoneTrait
 
     public function setZones(array $zones): void
     {
-        array_walk($zones, [$this, 'addZone']);
+        $this->zones = new ArrayCollection($zones);
     }
 
     public function addZone(Zone $Zone): void
