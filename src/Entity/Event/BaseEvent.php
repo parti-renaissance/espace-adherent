@@ -107,6 +107,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/events/{id}",
  *             "access_control": "is_granted('CAN_MANAGE_EVENT', object)",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "denormalization_context": {"groups": {"event_write"}},
  *         },
  *         "delete": {
  *             "path": "/v3/events/{id}",
