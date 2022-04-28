@@ -206,8 +206,9 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form--warning'));
-        $this->assertCount(1, $errors = $crawler->filter('.form__error'));
+        $this->assertCount(2, $errors = $crawler->filter('.form__error'));
         $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(0)->text());
+        $this->assertSame('Le numéro d\'électeur est requis.', $errors->eq(1)->text());
 
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_request' => [
@@ -229,6 +230,7 @@ class ProcurationControllerTest extends WebTestCase
                     'month' => '1',
                     'day' => '20',
                 ],
+                'voterNumber' => '123456789',
             ],
         ]));
 
@@ -245,6 +247,7 @@ class ProcurationControllerTest extends WebTestCase
         $procurationRequest->setCityName('');
         $procurationRequest->setPhone($this->createPhoneNumber('33', '140998080'));
         $procurationRequest->setBirthdate(date_create_from_format('Y m d His', '1950 1 20 000000'));
+        $procurationRequest->setVoterNumber('123456789');
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
 
@@ -354,6 +357,7 @@ class ProcurationControllerTest extends WebTestCase
                     'month' => '1',
                     'day' => '20',
                 ],
+                'voterNumber' => '123456789',
             ],
         ]));
 
@@ -615,6 +619,7 @@ class ProcurationControllerTest extends WebTestCase
                     'month' => '10',
                     'day' => '9',
                 ],
+                'voterNumber' => '123456789',
             ],
         ]));
 
