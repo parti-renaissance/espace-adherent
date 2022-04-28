@@ -30,10 +30,7 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
             return;
         }
 
-        $zones = array_merge(
-            $this->zoneRepository->findByPostalCode($value),
-            $this->zoneRepository->findDistrictsByPostalCode($value)
-        );
+        $zones = $this->zoneRepository->findByPostalCode($value);
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
 

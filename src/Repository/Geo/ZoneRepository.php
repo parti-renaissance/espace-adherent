@@ -9,6 +9,7 @@ use App\Entity\Geo\ZoneableInterface;
 use App\Entity\ReferentTag;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -296,35 +297,20 @@ class ZoneRepository extends ServiceEntityRepository
         }
 
         return $this->createQueryBuilder('zone')
-            ->innerJoin(City::class, 'city', Join::WITH, 'zone.code = city.code')
-            ->leftJoin('zone.parents', 'parent')
-            ->where('(city.postalCode LIKE :postal_code_1 OR city.postalCode LIKE :postal_code_2)')
-            ->andWhere('parent.type = :dpt_type AND parent.code = :dpt_code AND zone.type = :city')
-            ->setParameter('postal_code_1', $postalCode.'%')
-            ->setParameter('postal_code_2', '%,'.$postalCode.'%')
+            ->leftJoin('zone.parents', 'parent', Join::WITH, 'parent.type IN (:dpt_type, :city_type)')
+            ->leftJoin('zone.children', 'child', Join::WITH, 'child.type = :city_type')
+            ->where('zone.type IN (:city_type, :district_type)')
+            ->andWhere(
+                (new Orx())
+                    ->add('parent.type = :dpt_type AND zone.type = :city_type AND parent.code = :dpt_code AND zone.postalCode LIKE :postal_code')
+                    ->add((new Andx())
+                        ->add('zone.type = :district_type')
+                        ->add('(parent.type = :city_type AND parent.postalCode LIKE :postal_code) OR (child.postalCode LIKE :postal_code)')))
+            ->setParameter('postal_code', '%'.$postalCode.'%')
             ->setParameter('dpt_code', $dpt)
             ->setParameter('dpt_type', Zone::DEPARTMENT)
-            ->setParameter('city', Zone::CITY)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findDistrictsByPostalCode(string $postalCode): array
-    {
-        $postalCode = str_pad($postalCode, 5, '0', \STR_PAD_LEFT);
-
-        return $this->createQueryBuilder('zone')
-            ->leftJoin('zone.children', 'child', Join::WITH, 'child.type = :city')
-            ->leftJoin('zone.parents', 'parent', Join::WITH, 'parent.type = :city')
-            ->where((new Orx())
-                ->add('parent.postalCode LIKE :postal_code_1 OR parent.postalCode LIKE :postal_code_2')
-                ->add('child.postalCode LIKE :postal_code_1 OR child.postalCode LIKE :postal_code_2'))
-            ->andWhere('zone.type = :district')
-            ->setParameter('postal_code_1', $postalCode.'%')
-            ->setParameter('postal_code_2', '%,'.$postalCode.'%')
-            ->setParameter('district', Zone::DISTRICT)
-            ->setParameter('city', Zone::CITY)
+            ->setParameter('city_type', Zone::CITY)
+            ->setParameter('district_type', Zone::DISTRICT)
             ->getQuery()
             ->getResult()
         ;
