@@ -270,6 +270,8 @@ procuration.proposal_conditions.required: Vous devez vous engager à voter selon
 
 procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.
 
+procuration.voter_number.not_blank: Le numéro d'électeur est requis.
+
 procuration.vote_country.conditions.fr: "Attention : vous ne pouvez pas avoir plus de 2 procurations, et 1 seule d'entre elles peut être faite en France. Vous pouvez donc avoir : Soit 1 procuration établie en France Soit 1 procuration établie à l'étranger Soit 1 procuration établie en France et 1 procuration établie à l'étranger Soit 2 procurations établies à l'étranger."
 procuration.vote_country.conditions.other: "Attention : vous ne pouvez pas avoir plus de 3 procurations, et 1 seule d'entre elles peut être faite en France. Vous pouvez donc avoir : Soit 1 ou 2 ou 3 procurations établies à l'étranger Soit 1 procuration établie en France Soit 1 procuration établie en France et 1 procuration établie à l'étranger Soit 1 procuration établie en France et 2 procurations établies à l'étranger."
 procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
