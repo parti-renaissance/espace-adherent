@@ -2313,6 +2313,8 @@ INSERT INTO geo_zone_parent (child_id,parent_id) VALUES (2229,152), (2229,169), 
 
 INSERT INTO geo_zone_parent (child_id,parent_id) VALUES (2072,2249), (2073,2249), (2074,2249), (2075,2249), (2249,81), (2249,276), (2249,287), (2249,1257), (2249,1761);
 
+INSERT INTO geo_zone_parent (child_id,parent_id) VALUES (776,1761), (785,1761), (786,1761), (787,1761), (788,1761), (789,1761), (790,1761), (791,1761), (792,1761), (793,1761), (777,1761), (778,1761), (779,1761), (780,1761), (781,1761), (782,1761), (783,1761), (784,1761);
+
 -- Add new zone 'Nouveau Rhône'
 -- Insert a new department
 INSERT INTO geo_department (id, region_id, code, name, active, created_at, updated_at, geo_data_id)
