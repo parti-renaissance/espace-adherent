@@ -57,7 +57,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private ?string $firstName = null;
 
     /**
-     * @ORM\Column(unique=true, nullable=true)
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank(message="neswletter.email.not_blank")
      * @Assert\Email(message="neswletter.email.invalid")
@@ -68,7 +68,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private ?string $emailAddress = null;
 
     /**
-     * @ORM\Column(type="string", length=11, nullable=true)
+     * @ORM\Column(type="string", length=11)
      *
      * @Assert\NotBlank
      * @Assert\Length(
@@ -109,9 +109,16 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      */
     private ?\DateTimeInterface $confirmedAt = null;
 
-    public function __construct(UuidInterface $uuid = null)
-    {
+    public function __construct(
+        UuidInterface $uuid = null,
+        string $emailAddress = null,
+        string $postalCode = null,
+        ?bool $personalDataCollection = false
+    ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->emailAddress = $emailAddress;
+        $this->postalCode = $postalCode;
+        $this->personalDataCollection = $personalDataCollection;
         $this->token = Uuid::uuid4();
         $this->fromZones = new ArrayCollection();
     }
@@ -181,7 +188,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->personalDataCollection;
     }
 
-    public function setPersonalDataCollection(?bool $personalDataCollection = null): void
+    public function setPersonalDataCollection(?bool $personalDataCollection = false): void
     {
         $this->personalDataCollection = $personalDataCollection;
     }

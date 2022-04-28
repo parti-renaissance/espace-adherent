@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to subscribe to legislative candidate newsletter
   I should be able to access legislative newsletter subscription API
