@@ -2010,11 +2010,13 @@ Feature:
     When I add "Content-Type" header equal to "application/json"
     And I send a "GET" request to "/api/v3/surveys/kpi?scope=referent"
     Then the response status code should be 200
+    And the response should be in JSON
     And the JSON should be equal to:
     """
     {
       "local_surveys_count": 4,
       "local_surveys_published_count": 4,
-      "national_surveys_count": 3
+      "national_surveys_count": 3,
+      "national_surveys_published_count": 3
     }
     """

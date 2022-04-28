@@ -24,6 +24,7 @@ class GetSurveysKpiController
 
         return [
             'national_surveys_count' => $nationalSurveyRepository->count([]),
+            'national_surveys_published_count' => $nationalSurveyRepository->count(['published' => true]),
             'local_surveys_count' => $localSurveyRepository->countForZones($zones),
             'local_surveys_published_count' => $localSurveyRepository->countForZones($zones, true),
         ];
