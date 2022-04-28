@@ -1,4 +1,4 @@
-@api @debug
+@api
 Feature:
   In order to subscribe to legislative candidate newsletter
   I should be able to access legislative newsletter subscription API
@@ -24,7 +24,7 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.\nemail_address: Cette valeur est requise.\npostal_code: Cette valeur ne doit pas être vide.\npersonal_data_collection: Cette valeur ne doit pas être nulle.",
+      "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.\nemail_address: Cette valeur est requise.\npostal_code: Cette valeur ne doit pas être vide.\npersonal_data_collection: L'acceptation des mentions d'information est obligatoire pour donner suite à votre demande.",
       "violations": [
         {
           "propertyPath": "recaptcha",
@@ -40,7 +40,7 @@ Feature:
         },
         {
           "propertyPath": "personal_data_collection",
-          "message": "Cette valeur ne doit pas être nulle."
+          "message": "L'acceptation des mentions d'information est obligatoire pour donner suite à votre demande."
         }
       ]
     }

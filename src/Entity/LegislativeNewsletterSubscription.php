@@ -92,12 +92,11 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     private Collection $fromZones;
 
     /**
-     * @Assert\NotNull
      * @Assert\IsTrue(message="common.personal_data_collection.required")
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
      */
-    private ?bool $personalDataCollection = false;
+    private bool $personalDataCollection = false;
 
     /**
      * @ORM\Column(type="uuid", unique=true)
@@ -113,12 +112,12 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         UuidInterface $uuid = null,
         string $emailAddress = null,
         string $postalCode = null,
-        ?bool $personalDataCollection = false
+        bool $personalDataCollection = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->emailAddress = $emailAddress;
         $this->postalCode = $postalCode;
-        $this->personalDataCollection = $personalDataCollection;
+        $this->personalDataCollection = (bool) $personalDataCollection;
         $this->token = Uuid::uuid4();
         $this->fromZones = new ArrayCollection();
     }
@@ -133,7 +132,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->firstName;
     }
 
-    public function setFirstName(?string $firstName = null): void
+    public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -143,7 +142,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(?string $emailAddress = null): void
+    public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -153,7 +152,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->postalCode;
     }
 
-    public function setPostalCode(?string $postalCode = null): void
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
@@ -188,7 +187,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         return $this->personalDataCollection;
     }
 
-    public function setPersonalDataCollection(?bool $personalDataCollection = false): void
+    public function setPersonalDataCollection(bool $personalDataCollection): void
     {
         $this->personalDataCollection = $personalDataCollection;
     }
