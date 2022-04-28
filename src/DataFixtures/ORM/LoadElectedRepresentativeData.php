@@ -433,7 +433,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             true,
             new \DateTime('2019-01-11')
         );
-        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'));
+        $mandate->setGeoZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $erParis2->addMandate($mandate);
 
         $manager->persist($erParis2);

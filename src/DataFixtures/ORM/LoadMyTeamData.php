@@ -103,7 +103,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $member_lc_1 = $this->createMember(
             $this->getReference('adherent-5'),
             RoleEnum::COMMUNICATION_MANAGER,
-            [FeatureEnum::NEWS, FeatureEnum::EVENTS],
+            [FeatureEnum::NEWS, FeatureEnum::EVENTS, FeatureEnum::CONTACTS],
             self::MEMBER_8_UUID
         );
         $this->setReference('my_team_lc_member_1', $member_lc_1);

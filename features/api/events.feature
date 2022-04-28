@@ -21,14 +21,14 @@ Feature:
     And I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 8 |
+      | metadata.total_items  | 9 |
 
   Scenario: As a logged-in Jemarche App user I can get events of my borough (with zipCode filter)
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/events?zipCode=75008"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 8 |
+      | metadata.total_items  | 9 |
 
   Scenario: As a logged-in Jemarche App user I can get events of my department
     When I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
@@ -1756,9 +1756,9 @@ Feature:
         "mode": "online",
         "visio_url": "https://en-marche.fr/reunions/123",
         "post_address": {
-          "address": "15 Rue de la Nouvelle-Calédonie",
-          "postal_code": "75012",
-          "city_name": "Paris 12e",
+          "address": "226 Rue de Rivoli",
+          "postal_code": "75001",
+          "city_name": "Paris 1er",
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
@@ -1795,13 +1795,13 @@ Feature:
         "status": "SCHEDULED",
         "capacity": 100,
         "post_address": {
-            "address": "15 Rue de la Nouvelle-Calédonie",
-            "postal_code": "75012",
-            "city": "75012-75112",
-            "city_name": "Paris 12e",
+            "address": "226 Rue de Rivoli",
+            "postal_code": "75001",
+            "city": "75001-75101",
+            "city_name": "Paris 1er",
             "country": "FR",
-            "latitude": 48.83799,
-            "longitude": 2.409861
+            "latitude": 48.8596,
+            "longitude": 2.344967
         },
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
@@ -1874,9 +1874,9 @@ Feature:
       "mode": "online",
       "visio_url": "http://visio.fr",
       "post_address": {
-        "address": "15 Rue de la Nouvelle-Calédonie",
-        "postal_code": "75012",
-        "city_name": "Paris 12e",
+        "address": "226 Rue de Rivoli",
+        "postal_code": "75001",
+        "city_name": "Paris 1er",
         "country": "FR"
       }
     }
@@ -1902,13 +1902,13 @@ Feature:
         "status": "SCHEDULED",
         "capacity": 50,
         "post_address": {
-            "address": "15 Rue de la Nouvelle-Calédonie",
-            "city": "75012-75112",
-            "city_name": "Paris 12e",
+            "address": "226 Rue de Rivoli",
+            "postal_code": "75001",
+            "city": "75001-75101",
+            "city_name": "Paris 1er",
             "country": "FR",
-            "latitude": 48.837989,
-            "longitude": 2.4098613,
-            "postal_code": "75012"
+            "latitude": 48.859599,
+            "longitude": 2.344967
         },
         "category": {
             "event_group_category": {

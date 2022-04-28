@@ -351,7 +351,7 @@ Feature:
           },
           {
             "uuid": "4f5db386-1819-4055-abbd-fb5d840cd6c0",
-            "title": "Une actualité d'un candidat aux législatives délégué à 75-8",
+            "title": "Une actualité d'un candidat aux législatives délégué à 75-1",
             "text": "Aenean varius condimentum diam in rutrum.",
             "external_link": "https://un-candidat-aux-legislatives-delegue.en-marche.fr",
             "link_label": "Voir le lien",
@@ -363,7 +363,7 @@ Feature:
           },
           {
             "uuid": "2c28b246-b17e-409d-992a-b8a57481fb7a",
-            "title": "Une actualité d'un candidat aux législatives à 75-8",
+            "title": "Une actualité d'un candidat aux législatives à 75-1",
             "text": "Donec viverra odio.",
             "external_link": "https://un-candidat-aux-legislatives.en-marche.fr",
             "link_label": "Voir le lien",
@@ -627,7 +627,7 @@ Feature:
         "items": [
             {
                 "uuid": "4f5db386-1819-4055-abbd-fb5d840cd6c0",
-                "title": "Une actualité d'un candidat aux législatives délégué à 75-8",
+                "title": "Une actualité d'un candidat aux législatives délégué à 75-1",
                 "text": "Aenean varius condimentum diam in rutrum.",
                 "external_link": "https://un-candidat-aux-legislatives-delegue.en-marche.fr",
                 "link_label": "Voir le lien",
@@ -638,16 +638,16 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3f0c246-906e-11eb-a875-0242ac150002",
-                    "code": "75-8",
-                    "name": "Paris (8)",
+                    "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+                    "code": "75-1",
+                    "name": "Paris (1)",
                     "created_at": "2020-12-04T15:24:38+01:00"
                 },
                 "creator": "Gisele Berthoux"
             },
             {
                 "uuid": "2c28b246-b17e-409d-992a-b8a57481fb7a",
-                "title": "Une actualité d'un candidat aux législatives à 75-8",
+                "title": "Une actualité d'un candidat aux législatives à 75-1",
                 "text": "Donec viverra odio.",
                 "external_link": "https://un-candidat-aux-legislatives.en-marche.fr",
                 "link_label": "Voir le lien",
@@ -658,9 +658,9 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "visibility": "local",
                 "zone": {
-                    "uuid": "e3f0c246-906e-11eb-a875-0242ac150002",
-                    "code": "75-8",
-                    "name": "Paris (8)",
+                    "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
+                    "code": "75-1",
+                    "name": "Paris (1)",
                     "created_at": "2020-12-04T15:24:38+01:00"
                 },
                 "creator": "Jean-Baptiste Fortin"
@@ -1007,7 +1007,7 @@ Feature:
       "published": true,
       "enriched": true,
       "pinned": true,
-      "zone": "e3f0c246-906e-11eb-a875-0242ac150002"
+      "zone": "e3f0bf9d-906e-11eb-a875-0242ac150002"
     }
     """
     Then the response status code should be 201
@@ -1021,10 +1021,10 @@ Feature:
         "link_label": "Voir",
         "visibility": "local",
         "zone": {
-            "code": "75-8",
+            "code": "75-1",
             "created_at": "2020-12-04T15:24:38+01:00",
-            "name": "Paris (8)",
-            "uuid": "e3f0c246-906e-11eb-a875-0242ac150002"
+            "name": "Paris (1)",
+            "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
         },
         "created_at": "@string@.isDateTime()",
         "notification": true,
@@ -1071,10 +1071,10 @@ Feature:
         "link_label": "Voir",
         "visibility": "local",
         "zone": {
-            "code": "75-8",
+            "code": "75-1",
             "created_at": "2020-12-04T15:24:38+01:00",
-            "name": "Paris (8)",
-            "uuid": "e3f0c246-906e-11eb-a875-0242ac150002"
+            "name": "Paris (1)",
+            "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
         },
         "created_at": "@string@.isDateTime()",
         "notification": false,

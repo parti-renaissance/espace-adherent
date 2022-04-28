@@ -87,9 +87,9 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event4->setMode(BaseEvent::MODE_MEETING);
         $event4->setTimeZone('Europe/Paris');
         $event4->setOrganizer($senatorialCandidate);
-        $event4->setPostAddress(PostAddress::createFrenchAddress('25 Avenue du Bel air, 75012 Paris', '75012-75112', null, 48.846949, 2.396802));
-        $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-8'));
-        $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75112'));
+        $event4->setPostAddress(PostAddress::createFrenchAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
+        $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
+        $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
 
         $manager->persist($event1);
         $manager->persist($event2);

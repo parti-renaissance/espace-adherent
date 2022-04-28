@@ -303,9 +303,9 @@ Feature:
           "name": "Candidat aux législatives délégué",
           "zones": [
               {
-                  "code": "75-8",
-                  "name": "Paris (8)",
-                  "uuid": "e3f0c246-906e-11eb-a875-0242ac150002"
+                  "code": "75-1",
+                  "name": "Paris (1)",
+                  "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
               }
           ]
       }
