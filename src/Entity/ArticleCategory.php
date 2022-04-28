@@ -75,7 +75,7 @@ class ArticleCategory
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Url(checkDNS="ANY")
+     * @Assert\Url
      */
     private $ctaLink;
 
