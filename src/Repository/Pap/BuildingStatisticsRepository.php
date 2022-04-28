@@ -10,6 +10,7 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\String\UnicodeString;
 
 class BuildingStatisticsRepository extends ServiceEntityRepository
 {
@@ -46,18 +47,25 @@ class BuildingStatisticsRepository extends ServiceEntityRepository
         return $kpis;
     }
 
-    public function findByCampaign(Campaign $campaign, int $page, int $limit): PaginatorInterface
+    public function findByCampaign(Campaign $campaign, int $page, int $limit, array $order = []): PaginatorInterface
     {
-        return $this->configurePaginator(
-            $this->createQueryBuilder('stats')
-                ->addSelect('building', 'campaign', 'address')
-                ->innerJoin('stats.building', 'building')
-                ->innerJoin('stats.campaign', 'campaign')
-                ->innerJoin('building.address', 'address')
-                ->where('stats.campaign = :campaign')
-                ->setParameter('campaign', $campaign),
-            $page,
-            $limit
-        );
+        $queryBuilder = $this->createQueryBuilder('stats')
+            ->addSelect('building', 'campaign', 'address')
+            ->innerJoin('stats.building', 'building')
+            ->innerJoin('stats.campaign', 'campaign')
+            ->innerJoin('building.address', 'address')
+            ->where('stats.campaign = :campaign')
+            ->setParameter('campaign', $campaign)
+        ;
+
+        foreach ($order as $key => $value) {
+            $key = implode('.', array_map(function (string $part) {
+                return (new UnicodeString($part))->camel();
+            }, explode('.', $key)));
+
+            $queryBuilder->addOrderBy(false === strpos($key, '.') ? 'stats.'.$key : $key, $value);
+        }
+
+        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 }

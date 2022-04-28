@@ -11,6 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GetCampaignBuildingStatisticsController extends AbstractController
 {
+    private const ALLOWED_SORT_BY = [
+        'building.type',
+        'status',
+        'nb_visited_doors',
+    ];
+
     private BuildingStatisticsRepository $buildingStatisticsRepository;
 
     public function __construct(BuildingStatisticsRepository $buildingStatisticsRepository)
@@ -22,10 +28,25 @@ class GetCampaignBuildingStatisticsController extends AbstractController
     {
         $this->denyAccessUnlessGranted(ScopeVisibilityVoter::PERMISSION, $campaign);
 
+        if (!\is_array($order = $request->query->get('order'))) {
+            $order = [];
+        }
+
+        foreach (array_diff(array_keys($order), self::ALLOWED_SORT_BY) as $key) {
+            unset($order[$key]);
+        }
+
+        foreach ($order as &$value) {
+            if (!\in_array($value, ['asc', 'desc'])) {
+                $value = 'asc';
+            }
+        }
+
         return $this->buildingStatisticsRepository->findByCampaign(
             $campaign,
             $request->query->getInt('page', 1),
-            min($request->query->getInt('page_size', 30), 100)
+            min($request->query->getInt('page_size', 30), 100),
+            $order
         );
     }
 }
