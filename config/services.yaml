@@ -159,14 +159,13 @@ services:
             $handlers: !tagged_iterator {tag: 'app.adherent.territorial_council_membership.handler', default_priority_method: 'getPriority'}
 
     App\Statistics\Acquisition\Aggregator:
-        arguments:
-            - !tagged_iterator {tag: 'app.acquisition_statistics.calculator', default_priority_method: getPriority}
+        arguments: [!tagged_iterator {tag: 'app.acquisition_statistics.calculator', default_priority_method: getPriority}]
 
     App\Redirection\Dynamic\RedirectionsSubscriber:
         arguments: [!tagged_iterator 'app.redirection.handler']
 
     App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
-        arguments: [!tagged_iterator 'app.adherent_message.mailchimp.campaign.handler']
+        arguments: [!tagged_iterator {tag: 'app.adherent_message.mailchimp.campaign.handler', default_priority_method: getPriority}]
 
     App\AdherentMessage\Listener\UpdateTransactionalAdherentMessageDataListener:
         arguments: [!tagged_iterator 'app.adherent_message.transaction.message_modifier']

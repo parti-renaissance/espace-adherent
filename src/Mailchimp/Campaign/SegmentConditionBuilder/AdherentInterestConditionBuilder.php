@@ -25,7 +25,11 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
-        return $this->buildFromFilter($campaign->getMessage()->getFilter());
+        if (null === $campaign->getMailchimpListType()) {
+            return $this->buildFromFilter($campaign->getMessage()->getFilter());
+        }
+
+        return [];
     }
 
     /**

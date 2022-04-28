@@ -8,7 +8,17 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 
 abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {
-    public function handle(AdherentMessageInterface $message): void
+    protected const TEXT_MERGE = 'text_merge';
+    protected const STATIC_SEGMENT = 'static_segment';
+    protected const MAILCHIMP_SEGMENT = 'mailchimp_segment';
+    protected const MAILCHIMP_LIST_TYPE = 'mailchimp_list_type';
+
+    public static function getPriority(): int
+    {
+        return 0;
+    }
+
+    final public function handle(AdherentMessageInterface $message): void
     {
         if (!$filter = $message->getFilter()) {
             if (empty($message->getMailchimpCampaigns())) {
@@ -38,16 +48,23 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
                 $labels = [];
 
                 foreach ($campaignFilters[$i] as $campaignFilter) {
-                    if ('static_segment' === $campaignFilter['type']) {
-                        $campaign->setStaticSegmentId($campaignFilter['value']);
-                        $campaign->setLabel($campaignFilter['label']);
-                    } elseif ('text_merge' === $campaignFilter['type']) {
-                        $campaign->setCity($campaignFilter['value']);
-                        $campaign->setLabel($campaignFilter['label']);
-                    } elseif ('mailchimp_segment' === $campaignFilter['type']) {
-                        $campaign->addMailchimpSegment($campaignFilter['value']);
-                        $labels[] = $campaignFilter['label'];
-                        $campaign->setLabel(implode(' - ', $labels));
+                    switch ($campaignFilter['type']) {
+                        case self::STATIC_SEGMENT:
+                            $campaign->setStaticSegmentId($campaignFilter['value']);
+                            $campaign->setLabel($campaignFilter['label']);
+                            break;
+                        case self::TEXT_MERGE:
+                            $campaign->setCity($campaignFilter['value']);
+                            $campaign->setLabel($campaignFilter['label']);
+                            break;
+                        case self::MAILCHIMP_SEGMENT:
+                            $campaign->addMailchimpSegment($campaignFilter['value']);
+                            $labels[] = $campaignFilter['label'];
+                            $campaign->setLabel(implode(' - ', $labels));
+                            break;
+                        case self::MAILCHIMP_LIST_TYPE:
+                            $campaign->setMailchimpListType($campaignFilter['value']);
+                            break;
                     }
                 }
             } elseif (isset($campaigns[$i])) {

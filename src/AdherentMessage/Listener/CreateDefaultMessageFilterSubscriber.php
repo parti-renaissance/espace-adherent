@@ -7,6 +7,7 @@ use App\AdherentMessage\Events;
 use App\AdherentMessage\Filter\FilterFactory;
 use App\AdherentMessage\MessageEvent;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
@@ -22,14 +23,17 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
     {
         $message = $event->getMessage();
 
-        if (!\in_array($message->getType(), [
-            AdherentMessageTypeEnum::DEPUTY,
-            AdherentMessageTypeEnum::REFERENT,
-            AdherentMessageTypeEnum::SENATOR,
-            AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE,
-            AdherentMessageTypeEnum::CANDIDATE,
-            AdherentMessageTypeEnum::CORRESPONDENT,
-        ], true)) {
+        if (
+            AdherentMessageInterface::SOURCE_API === $message->getSource()
+            || !\in_array($message->getType(), [
+                AdherentMessageTypeEnum::DEPUTY,
+                AdherentMessageTypeEnum::REFERENT,
+                AdherentMessageTypeEnum::SENATOR,
+                AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE,
+                AdherentMessageTypeEnum::CANDIDATE,
+                AdherentMessageTypeEnum::CORRESPONDENT,
+            ], true)
+        ) {
             return;
         }
 

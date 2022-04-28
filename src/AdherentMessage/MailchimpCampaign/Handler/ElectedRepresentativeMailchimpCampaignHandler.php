@@ -2,11 +2,10 @@
 
 namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
+use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
-use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
-use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
 use App\Repository\MailchimpSegmentRepository;
@@ -25,7 +24,8 @@ class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCam
 
     public function supports(AdherentMessageInterface $message): bool
     {
-        return \in_array(\get_class($message), [ReferentElectedRepresentativeMessage::class, LreManagerElectedRepresentativeMessage::class], true);
+        return $message->getFilter() instanceof AbstractElectedRepresentativeFilter
+            && \in_array($message->getType(), [AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE, AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE], true);
     }
 
     /**
@@ -75,7 +75,7 @@ class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCam
     private function buildCondition(MailchimpSegment $mailchimpSegment): array
     {
         return [
-            'type' => 'mailchimp_segment',
+            'type' => self::MAILCHIMP_SEGMENT,
             'value' => $mailchimpSegment,
             'label' => $mailchimpSegment->getLabel(),
         ];

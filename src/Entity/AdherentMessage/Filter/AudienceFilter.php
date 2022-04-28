@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ManagedZone(zoneGetMethodName="getZone")
  */
-class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
+class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntity, CampaignAdherentMessageFilterInterface
 {
     use GeneralFilterTrait;
     use EntityZoneTrait;
@@ -46,7 +46,7 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
      *
      * @ORM\Column(type="boolean", nullable=true)
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
     protected $isCertified;
 
@@ -55,9 +55,9 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      *
-     * @Assert\NotBlank
+     * @Assert\Expression("this.getSegment() or this.getZone()", message="Cette valeur ne doit pas être vide.")
      */
     private $zone;
 
@@ -73,7 +73,7 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
      *
      * @ORM\Column(length=20)
      *
-     * @Assert\NotNull
+     * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
      * @Assert\Choice(
      *     choices=App\Scope\ScopeEnum::FOR_AUDIENCE_SEGMENT,
      *     message="audience_segment.scope.invalid_choice",
@@ -81,7 +81,7 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
      * )
      * @ValidScope
      *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
+     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
     private $scope;
 
@@ -119,7 +119,7 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
     }
 
     /**
-     * @Groups({"audience_segment_write"})
+     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
      */
     public function setIsCommitteeMember(?bool $value): void
     {
@@ -160,7 +160,7 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
     }
 
     /**
-     * @Groups({"audience_segment_write"})
+     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
      */
     public function setAge(array $minMax): void
     {
@@ -174,7 +174,7 @@ class AudienceFilter extends AbstractAdherentFilter implements ZoneableEntity
     }
 
     /**
-     * @Groups({"audience_segment_write"})
+     * @Groups({"audience_segment_write", "adherent_message_update_filter"})
      */
     public function setRegistered(array $startEnd): void
     {

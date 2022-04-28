@@ -8,7 +8,7 @@ use App\Entity\AdherentMessage\Segment\AudienceSegment;
 
 interface AdherentMessageFilterInterface extends AdherentMessageSynchronizedObjectInterface
 {
-    public function getMessage(): AdherentMessageInterface;
+    public function getMessage(): ?AdherentMessageInterface;
 
     public function setMessage(AdherentMessageInterface $message): void;
 

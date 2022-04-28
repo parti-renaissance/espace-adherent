@@ -13,7 +13,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
 {
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof MunicipalChiefAdherentMessage;
+        return $message instanceof MunicipalChiefAdherentMessage && $message->getFilter() instanceof MunicipalChiefFilter;
     }
 
     /**
@@ -27,7 +27,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
         $filters = [
             [
                 [
-                    'type' => 'text_merge',
+                    'type' => self::TEXT_MERGE,
                     'value' => $inseeCode,
                     'label' => $city['name'] ?? $inseeCode,
                 ],
@@ -43,7 +43,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
 
                 $filters[] = [
                     [
-                        'type' => 'text_merge',
+                        'type' => self::TEXT_MERGE,
                         'value' => $inseeCodeAttachedToAnnecy,
                         'label' => $city['name'] ?? $inseeCodeAttachedToAnnecy,
                     ],
