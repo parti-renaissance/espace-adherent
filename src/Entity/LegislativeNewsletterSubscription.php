@@ -87,7 +87,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
      *
-     * @AssertZoneType(types={"district"})
+     * @AssertZoneType(types={"district", "foreign_district"})
      */
     private Collection $fromZones;
 

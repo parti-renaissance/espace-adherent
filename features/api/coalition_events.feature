@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to see coalition events
   As a non logged-in user
@@ -829,8 +829,8 @@ Feature:
        "name": "My coalition event",
        "description": "Description",
        "time_zone": "Europe/Paris",
-       "begin_at": "2022-04-29 16:30:30",
-       "finish_at": "2022-04-30 16:30:30",
+       "begin_at": "+10 days",
+       "finish_at": "+11 days",
        "category": "kiosque",
        "mode": "online",
        "visio_url": "visio.fr",
@@ -866,8 +866,8 @@ Feature:
       "slug": "@string@-my-coalition-event",
       "description": "Description",
       "time_zone": "Europe/Paris",
-      "begin_at": "2022-04-29T16:30:30+02:00",
-      "finish_at": "2022-04-30T16:30:30+02:00",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
       "organizer": {
         "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
         "first_name": "Gisele",
@@ -903,8 +903,8 @@ Feature:
        "name": "My coalition event",
        "description": "Description",
        "time_zone": "Europe/Paris",
-       "begin_at": "2022-04-29 16:30:30",
-       "finish_at": "2022-04-30 16:30:30",
+       "begin_at": "+10 days",
+       "finish_at": "+11 days",
        "category": "kiosque",
        "mode": "online",
        "visio_url": "http://visio.fr",

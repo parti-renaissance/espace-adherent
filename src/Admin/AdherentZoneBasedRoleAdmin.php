@@ -60,7 +60,7 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
 
         if ($roleType && $zoneTypes = (ZoneBasedRoleTypeEnum::ZONE_TYPES[$roleType] ?? [])) {
             $qb
-                ->andWhere($alias.'.type IN(:types)')
+                ->andWhere(sprintf('%1$s.type IN(:types) AND %1$s.active = 1', $alias))
                 ->setParameter('types', $zoneTypes)
             ;
         }
