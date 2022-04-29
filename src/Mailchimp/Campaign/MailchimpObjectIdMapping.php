@@ -4,7 +4,6 @@ namespace App\Mailchimp\Campaign;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Membership\MembershipSourceEnum;
 
 class MailchimpObjectIdMapping
 {
@@ -179,11 +178,14 @@ class MailchimpObjectIdMapping
 
     public function getListIdFromSource(?string $source): string
     {
-        if (MembershipSourceEnum::JEMENGAGE === $source) {
-            return $this->getJeMengageListId();
+        switch ($source) {
+            case AudienceTypeEnum::JEMENGAGE:
+                return $this->getJeMengageListId();
+            case AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER:
+                return $this->getNewsletterLegislativeCandidateListId();
+            default:
+                return $this->getMainListId();
         }
-
-        return $this->getMainListId();
     }
 
     private function findTemplateId(string $key): ?int

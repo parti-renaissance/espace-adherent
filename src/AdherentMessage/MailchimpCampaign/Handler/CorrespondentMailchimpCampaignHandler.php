@@ -5,7 +5,6 @@ namespace App\AdherentMessage\MailchimpCampaign\Handler;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Membership\MembershipSourceEnum;
 
@@ -17,7 +16,7 @@ class CorrespondentMailchimpCampaignHandler extends AbstractMailchimpCampaignHan
     }
 
     /**
-     * @param AdherentMessageFilterInterface|AdherentGeoZoneFilter $filter
+     * @param AdherentMessageFilterInterface|AudienceFilter $filter
      */
     protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array
     {

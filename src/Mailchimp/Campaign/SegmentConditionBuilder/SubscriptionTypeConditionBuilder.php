@@ -61,6 +61,10 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
             case LegislativeCandidateAdherentMessage::class:
             case CandidateAdherentMessage::class:
+                if ($campaign->getMailchimpListType()) {
+                    return [];
+                }
+
                 $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
                 break;
 

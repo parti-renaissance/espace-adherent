@@ -332,7 +332,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
         $status = true;
 
-        foreach ($this->mailchimpCampaigns as $campaign) {
+        foreach ($this->mailchimpCampaigns->toArray() as $campaign) {
             $status &= $campaign->isSynchronized();
         }
 

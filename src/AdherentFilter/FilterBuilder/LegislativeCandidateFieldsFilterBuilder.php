@@ -17,12 +17,11 @@ class LegislativeCandidateFieldsFilterBuilder implements AdherentFilterBuilderIn
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createSelect('audienceTypes', 'Audience')
+            ->createSelect('audienceType', 'Audience')
             ->setRequired(true)
             ->setChoices([
-                AudienceTypeEnum::ADHERENT,
-                AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER,
-                'all',
+                AudienceTypeEnum::ADHERENT => 'Adhérents',
+                AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER => 'Inscrit newsletter',
             ])
             ->getFilters()
         ;

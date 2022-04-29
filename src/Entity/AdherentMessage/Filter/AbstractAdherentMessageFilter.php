@@ -64,4 +64,11 @@ abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter impl
     {
         $this->segment = $segment;
     }
+
+    public function reset(): void
+    {
+        $this->segment = null;
+
+        parent::reset();
+    }
 }
