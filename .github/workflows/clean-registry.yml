@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: ./.github/actions/docker-login
+        - uses: google-github-actions/auth@v0
+          with:
+            credentials_json: ${{ secrets.GCP_SA_KEY_GCR_PUSHER }}
 
       - run: |
           limitDate=$(date "+%Y-%m-%d %H:%M:%S" -d "$INTERVAL_OLD_IMAGES")
