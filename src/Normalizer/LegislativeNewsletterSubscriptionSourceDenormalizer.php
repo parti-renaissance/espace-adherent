@@ -42,7 +42,7 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
         $subscription = $this->denormalizer->denormalize($data, $type, $format, $context);
 
         if (isset($data['from_zone'])) {
-            if (!$zone = $this->zoneRepository->findOneBy(['type' => Zone::DISTRICT, 'code' => $data['from_zone']])) {
+            if (!$zone = $this->zoneRepository->findOneBy(['type' => [Zone::DISTRICT, Zone::FOREIGN_DISTRICT], 'code' => $data['from_zone']])) {
                 throw new ItemNotFoundException('District zone not found.');
             }
 
