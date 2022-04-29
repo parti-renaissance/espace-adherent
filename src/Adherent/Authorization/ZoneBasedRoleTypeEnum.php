@@ -18,6 +18,7 @@ final class ZoneBasedRoleTypeEnum
         ],
         ScopeEnum::LEGISLATIVE_CANDIDATE => [
             Zone::DISTRICT,
+            Zone::FOREIGN_DISTRICT,
         ],
     ];
 }
