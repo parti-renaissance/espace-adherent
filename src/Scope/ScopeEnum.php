@@ -40,12 +40,4 @@ class ScopeEnum extends Enum
         self::PAP_NATIONAL_MANAGER,
         self::PHONING_NATIONAL_MANAGER,
     ];
-
-    public const FOR_AUDIENCE_SEGMENT = [
-        self::REFERENT,
-        self::DEPUTY,
-        self::SENATOR,
-        self::CANDIDATE,
-        self::CORRESPONDENT,
-    ];
 }

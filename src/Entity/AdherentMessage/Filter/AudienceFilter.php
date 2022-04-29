@@ -20,7 +20,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntity, CampaignAdherentMessageFilterInterface
 {
-    use GeneralFilterTrait;
+    use GeneralFilterTrait {
+        GeneralFilterTrait::reset as generalFilterTraitReset;
+    }
+
     use EntityZoneTrait;
 
     /**
@@ -71,19 +74,23 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     /**
      * @var string|null
      *
-     * @ORM\Column(length=20)
+     * @ORM\Column
      *
      * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
-     * @Assert\Choice(
-     *     choices=App\Scope\ScopeEnum::FOR_AUDIENCE_SEGMENT,
-     *     message="audience_segment.scope.invalid_choice",
-     *     strict=true
-     * )
      * @ValidScope
      *
      * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
     private $scope;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    private $audienceType;
 
     public function __construct()
     {
@@ -185,5 +192,27 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         if (!empty($startEnd['end'])) {
             $this->setRegisteredUntil(new \DateTime($startEnd['end']));
         }
+    }
+
+    public function getAudienceType(): ?string
+    {
+        return $this->audienceType;
+    }
+
+    public function setAudienceType(?string $audienceType): void
+    {
+        $this->audienceType = $audienceType;
+    }
+
+    public function reset(): void
+    {
+        $this->generalFilterTraitReset();
+
+        $this->includeAdherentsNoCommittee = true;
+        $this->includeAdherentsInCommittee = true;
+        $this->isCertified = null;
+        $this->audienceType = null;
+
+        parent::reset();
     }
 }

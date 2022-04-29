@@ -49,13 +49,15 @@ class UpdateAdherentMessageFilterController extends AbstractController
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');
         }
 
-        if ($data instanceof CoalitionsMessage) {
-            $filter = new CoalitionsFilter();
-        } else {
-            $filter = new AudienceFilter();
+        if (!$filter = $data->getFilter()) {
+            if ($data instanceof CoalitionsMessage) {
+                $filter = new CoalitionsFilter();
+            } else {
+                $filter = new AudienceFilter();
+            }
         }
 
-        $data->setFilter($filter);
+        $filter->reset();
 
         $this->serializer->deserialize($request->getContent(), \get_class($filter), JsonEncoder::FORMAT, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

@@ -9,7 +9,7 @@ class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterfa
 {
     public static function getPriority(): int
     {
-        return 1000;
+        return -255;
     }
 
     public function handle(AdherentMessageInterface $message): void

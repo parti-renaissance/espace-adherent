@@ -2,6 +2,7 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class AbstractAdherentFilter implements SegmentFilterInterface
 {
+    use EntityTimestampableTrait;
+
     /**
      * @var int
      *
@@ -35,5 +38,9 @@ abstract class AbstractAdherentFilter implements SegmentFilterInterface
     public function isSynchronized(): bool
     {
         return $this->synchronized;
+    }
+
+    public function reset(): void
+    {
     }
 }

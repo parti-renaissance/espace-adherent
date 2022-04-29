@@ -6,6 +6,7 @@ use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\AudienceTypeEnum;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterface
@@ -19,7 +20,17 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
-        return $this->buildFromFilter($campaign->getMessage()->getFilter());
+        $filter = $campaign->getMessage()->getFilter();
+
+        if (AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER === $campaign->getMailchimpListType()) {
+            return $this->buildZoneCondition(
+                MemberRequest::MERGE_FIELD_ZONE_CODES,
+                $filter->getZone()->getTypeCode(),
+                'contains'
+            );
+        }
+
+        return $this->buildFromFilter($filter);
     }
 
     /**
@@ -27,13 +38,20 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
-        $zone = $filter->getZone();
+        return $this->buildZoneCondition(
+            MemberRequest::getMergeFieldFromZone($zone = $filter->getZone()),
+            sprintf('(%s)', $zone->getCode()),
+            'ends'
+        );
+    }
 
+    protected function buildZoneCondition(string $field, string $value, string $operator): array
+    {
         return [[
             'condition_type' => 'TextMerge',
-            'op' => 'ends',
-            'field' => MemberRequest::getMergeFieldFromZone($zone),
-            'value' => sprintf('(%s)', $zone->getCode()),
+            'op' => $operator,
+            'field' => $field,
+            'value' => $value,
         ]];
     }
 }

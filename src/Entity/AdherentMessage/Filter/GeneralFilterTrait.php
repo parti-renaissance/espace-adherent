@@ -219,4 +219,17 @@ trait GeneralFilterTrait
     {
         $this->registeredUntil = $registeredUntil;
     }
+
+    public function reset(): void
+    {
+        $this->gender = null;
+        $this->ageMin = null;
+        $this->ageMax = null;
+        $this->firstName = null;
+        $this->lastName = null;
+        $this->city = null;
+        $this->interests = [];
+        $this->registeredSince = null;
+        $this->registeredUntil = null;
+    }
 }
