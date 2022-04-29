@@ -108,9 +108,16 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      */
     private ?\DateTimeInterface $confirmedAt = null;
 
-    public function __construct(UuidInterface $uuid = null)
-    {
+    public function __construct(
+        UuidInterface $uuid = null,
+        string $emailAddress = null,
+        string $postalCode = null,
+        bool $personalDataCollection = null
+    ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->emailAddress = $emailAddress;
+        $this->postalCode = $postalCode;
+        $this->personalDataCollection = (bool) $personalDataCollection;
         $this->token = Uuid::uuid4();
         $this->fromZones = new ArrayCollection();
     }
