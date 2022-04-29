@@ -32,6 +32,11 @@
                                 label: 'Demandes traitées'
                             },
                             {
+                                route: 'app_procuration_manager_requests',
+                                status: constant('App\\Procuration\\Filter\\ProcurationRequestFilters::DISABLED'),
+                                label: 'Demandes désactivées'
+                            },
+                            {
                                 route: 'app_procuration_manager_proposals',
                                 status: constant('App\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
                                 label: 'Mandataires disponibles'

@@ -293,6 +293,29 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             0
         ));
 
+        $manager->persist($this->createRequest(
+            'male',
+            'Jean',
+            'Désactivé',
+            'jean.desactive@example.es',
+            '4Q Covent Garden',
+            'GV6H',
+            'London',
+            null,
+            'GB',
+            '+447911123458',
+            '1989-12-22',
+            'GB',
+            'GV6H',
+            'London',
+            null,
+            'Camden',
+            $partialLegislativeElections->getRounds(),
+            ProcurationRequest::REASON_HOLIDAYS,
+            0,
+            false
+        ));
+
         $manager->persist($this->createProxyProposal(
             'male',
             'Maxime',

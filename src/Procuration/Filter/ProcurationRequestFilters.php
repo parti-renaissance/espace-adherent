@@ -10,6 +10,12 @@ class ProcurationRequestFilters extends ProcurationFilters
 {
     public const PROCESSED = 'processed';
     public const UNPROCESSED = 'unprocessed';
+    public const DISABLED = 'disabled';
+    public const STATUSES = [
+      self::PROCESSED,
+      self::UNPROCESSED,
+      self::DISABLED,
+    ];
 
     public static function fromQueryString(Request $request)
     {
@@ -23,7 +29,7 @@ class ProcurationRequestFilters extends ProcurationFilters
     {
         $status = mb_strtolower(trim($status));
 
-        if ($status && !\in_array($status, [self::PROCESSED, self::UNPROCESSED], true)) {
+        if ($status && !\in_array($status, self::STATUSES, true)) {
             throw new ProcurationException(sprintf('Unexpected procuration request status "%s".', $status));
         }
 
@@ -34,16 +40,31 @@ class ProcurationRequestFilters extends ProcurationFilters
     {
         parent::apply($qb, $alias);
 
-        if ($this->matchUnprocessedRequests()) {
-            $qb
-                ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NULL")
-                ->setParameter('flag', 0)
-            ;
-        } else {
-            $qb
-                ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NOT NULL")
-                ->setParameter('flag', 1)
-            ;
+        $qb->andWhere("$alias.enabled = :enabled");
+
+        switch ($this->getStatus()) {
+            case self::PROCESSED:
+                $qb
+                    ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NOT NULL")
+                    ->setParameter('enabled', true)
+                    ->setParameter('flag', 1)
+                ;
+
+                break;
+            case self::UNPROCESSED:
+                $qb
+                    ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NULL")
+                    ->setParameter('enabled', true)
+                    ->setParameter('flag', 0)
+                ;
+
+                break;
+            case self::DISABLED:
+                $qb
+                    ->setParameter('enabled', false)
+                ;
+
+                break;
         }
 
         $qb

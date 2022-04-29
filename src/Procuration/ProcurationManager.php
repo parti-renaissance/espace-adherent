@@ -83,6 +83,18 @@ class ProcurationManager
         }
     }
 
+    public function enableProcurationRequest(ProcurationRequest $request): void
+    {
+        $request->enable();
+        $this->manager->flush();
+    }
+
+    public function disableProcurationRequest(ProcurationRequest $request, ?string $reason = null): void
+    {
+        $request->disable($reason);
+        $this->manager->flush();
+    }
+
     public function getMatchingProcurationProxies(ProcurationRequest $request): array
     {
         return $this->procurationProxyRepository->findMatchingProxies($request);

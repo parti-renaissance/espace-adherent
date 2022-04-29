@@ -145,7 +145,7 @@ class ProcurationControllerTest extends WebTestCase
     {
         $this->setElectionContext();
 
-        $initialProcurationRequestCount = 13;
+        $initialProcurationRequestCount = 14;
         $procurationRequest = new ProcurationRequest();
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
@@ -571,7 +571,7 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testProcurationRequestNotUniqueEmailBirthDate()
     {
-        $initialProcurationRequestCount = 13;
+        $initialProcurationRequestCount = 14;
 
         $this->assertCount($initialProcurationRequestCount, $this->procurationRequestRepostitory->findAll());
 
