@@ -276,6 +276,17 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Jean Dell")'));
     }
 
+    public function testProcurationManagerRequestsListDisabled()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=disabled');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Jean Désactivé")'));
+    }
+
     public function testFilterProcurationProxyProposalsList()
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
@@ -349,6 +360,61 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertProcurationTotalCount($crawler, self::SUBJECT_PROPOSAL, 1, 'désactivée');
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Annie Versaire")'));
+    }
+
+    public function testProcurationManagerDisableEnableRequest()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=disabled');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(0, $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=unprocessed');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(5, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(1, $toDisable = $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
+        $this->assertCount(1, $linkToDisable = $toDisable->closest('tr')->filter('a:contains("Désactiver")'));
+
+        // disable
+        $this->client->click($linkToDisable->link());
+
+        $this->assertResponseStatusCode(302, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/espace-responsable-procuration', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(4, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(0, $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=disabled');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(1, $toEnable = $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
+        $this->assertCount(1, $linkToEnable = $toEnable->closest('tr')->filter('a:contains("Réactiver")'));
+
+        // enable
+        $this->client->click($linkToEnable->link());
+
+        $this->assertResponseStatusCode(302, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/espace-responsable-procuration', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(5, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=disabled');
+
+        $this->isSuccessful($this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(0, $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
     }
 
     protected function setUp(): void

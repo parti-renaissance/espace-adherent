@@ -183,15 +183,34 @@ class ProcurationManagerController extends AbstractController
             throw $this->createNotFoundException(sprintf('No request found for id %d.', $id));
         }
 
-        if (ProcurationRequest::ACTION_PROCESS === $action) {
-            $procurationManager->processProcurationRequest($request);
-            $this->addFlash('info', 'procuration_manager.process.success');
-        } else {
-            $procurationManager->unprocessProcurationRequest($request);
-            $this->addFlash('info', 'procuration_manager.unprocess.success');
+        switch ($action) {
+            case ProcurationRequest::ACTION_PROCESS:
+                $procurationManager->processProcurationRequest($request);
+                $this->addFlash('info', 'procuration_manager.process.success');
+
+                break;
+            case ProcurationRequest::ACTION_UNPROCESS:
+                $procurationManager->unprocessProcurationRequest($request);
+                $this->addFlash('info', 'procuration_manager.unprocess.success');
+
+                break;
+            case ProcurationRequest::ACTION_ENABLE:
+                $procurationManager->enableProcurationRequest($request);
+                $this->addFlash('info', 'procuration_manager.enabled.success');
+
+                break;
+            case ProcurationRequest::ACTION_DISABLE:
+                $procurationManager->disableProcurationRequest($request, 'by_procuration_manager');
+                $this->addFlash('info', 'procuration_manager.disabled.success');
+
+                break;
         }
 
-        return $this->redirectToRoute('app_procuration_manager_request', ['id' => $id]);
+        if (\in_array($action, ProcurationRequest::ACTIVATION_ACTIONS)) {
+            return $this->redirectToRoute('app_procuration_manager_requests');
+        } else {
+            return $this->redirectToRoute('app_procuration_manager_request', ['id' => $id]);
+        }
     }
 
     /**

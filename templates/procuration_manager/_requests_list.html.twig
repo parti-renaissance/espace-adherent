@@ -40,6 +40,19 @@
                target="_blank">
                 Afficher
             </a>
+            {% if request.data.enabled %}
+                <p class="b__nudge--top-15">
+                    <a href="{{ path('app_procuration_manager_request_transform', { id: request.data.id, action: constant('App\\Entity\\ActionEnum::ACTION_DISABLE'), csrfToken: csrf_token('request_action') }) }}">
+                    Désactiver
+                    </a>
+                </p>
+            {% else %}
+                <p class="b__nudge--top-15">
+                    <a href="{{ path('app_procuration_manager_request_transform', { id: request.data.id, action: constant('App\\Entity\\ActionEnum::ACTION_ENABLE'), csrfToken: csrf_token('request_action') }) }}">
+                        Réactiver
+                    </a>
+                </p>
+            {% endif %}
         </td>
     </tr>
 {% endfor %}

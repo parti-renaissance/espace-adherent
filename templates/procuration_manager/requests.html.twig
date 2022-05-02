@@ -20,7 +20,7 @@
                 Vous n'avez pas encore de demande de procuration à traiter.
             {% endif %}
         </div>
-    {% else %}
+    {% elseif constant('DISABLED', filters) != filters.status %}
         <div class="alert alert--tips b__nudge--bottom-60 procuration_requests_total_count">
             {% if constant('PROCESSED', filters) == filters.status %}
                 {{ '{1} Vous avez une demande de procuration traitée.|[2, Inf[ Vous avez %count% demandes de procuration traitées.'|transchoice(total_count) }}
