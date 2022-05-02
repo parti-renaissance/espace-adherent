@@ -29,6 +29,7 @@ class ConvocationObject
     /**
      * @var Address|null
      *
+     * @Assert\Expression("this.getAddress() || this.isMeetingMode()", message="Adresse est obligotoire")
      * @Assert\Valid
      */
     private $address;

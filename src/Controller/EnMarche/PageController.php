@@ -113,14 +113,6 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/okcandidatlegislatives", name="legislatives_confirm_newsletter", methods={"GET"})
-     */
-    public function legislativesConfirmNewsletterAction(): Response
-    {
-        return $this->render('legislative_candidate/confirm_newsletter.html.twig');
-    }
-
-    /**
      * @Route("/elles-marchent", name="page_elles_marchent", methods={"GET"})
      */
     public function ellesMarchentAction(): Response

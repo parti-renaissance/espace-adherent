@@ -55,7 +55,6 @@ class PageControllerTest extends WebTestCase
         yield ['/le-mouvement'];
         yield ['/le-mouvement/les-comites'];
         yield ['/le-mouvement/devenez-benevole'];
-        yield ['/okcandidatlegislatives'];
         yield ['/mentions-legales'];
         yield ['/elles-marchent'];
         yield ['/formation'];
