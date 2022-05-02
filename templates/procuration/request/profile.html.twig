@@ -44,6 +44,10 @@
                     <div class="register__form--mid">
                         {{ form_widget(procuration_form.firstNames, { attr: { placeholder: 'Prénom(s)' } }) }}
                         {{ form_errors(procuration_form.firstNames) }}
+
+                        <span class="text--smallest text--gray b__nudge--top-0">
+                            Renseignez tous vos prénoms.
+                        </span>
                     </div>
                     <div class="register__form--mid">
                         {{ form_widget(procuration_form.lastName, { attr: { placeholder: 'Nom de naissance' } }) }}
@@ -126,11 +130,11 @@
                     <label class="text--gray form form__label">Numéro d'électeur</label>
                     {{ form_widget(procuration_form.voterNumber, { attr: { placeholder: 'Votre Numéro d\'électeur' } }) }}
                     {{ form_errors(procuration_form.voterNumber) }}
-                    <p class="text--small text--gray">
+                    <span class="text--smallest text--gray b__nudge--top-0">
                         Où le trouver ? Sur votre carte électorale ; En ligne grâce au téléservice <a href="https://www.service-public.fr/particuliers/vosdroits/services-en-ligne-et-formulaires/ISE" target="_blank" rel="noopener noreferrer">« Interroger sa situation électorale »</a>
                         en indiquant la commune dans laquelle vous êtes inscrit, votre nom et prénom(s), votre sexe et votre date de naissance. Le téléservice
                         vous communiquera alors votre bureau de vote et votre numéro national d’électeur.
-                    </p>
+                    </span>
                 </div>
 
                 <div class="text--center b__nudge--top-large">
