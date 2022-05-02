@@ -63,7 +63,13 @@ class ProcurationRequest implements RecaptchaChallengeInterface
 
     public const ACTION_PROCESS = 'traiter';
     public const ACTION_UNPROCESS = 'detraiter';
-    public const ACTIONS_URI_REGEX = self::ACTION_PROCESS.'|'.self::ACTION_UNPROCESS;
+    public const ACTION_ENABLE = 'activer';
+    public const ACTION_DISABLE = 'desactiver';
+    public const ACTIVATION_ACTIONS = [
+        self::ACTION_ENABLE,
+        self::ACTION_DISABLE,
+    ];
+    public const ACTIONS_URI_REGEX = self::ACTION_PROCESS.'|'.self::ACTION_UNPROCESS.'|'.self::ACTION_ENABLE.'|'.self::ACTION_DISABLE;
 
     /**
      * @ORM\Column(type="integer")
@@ -785,5 +791,11 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     {
         $this->setEnabled(false);
         $this->disabledReason = $reason;
+    }
+
+    public function enable(): void
+    {
+        $this->setEnabled(true);
+        $this->disabledReason = null;
     }
 }

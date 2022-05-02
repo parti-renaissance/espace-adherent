@@ -75,11 +75,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             return [];
         }
 
-        $qb = $this
-            ->createQueryBuilder($alias = 'pr')
-            ->where('pr.enabled = :enabled')
-            ->setParameter('enabled', true)
-        ;
+        $qb = $this->createQueryBuilder($alias = 'pr');
 
         $filters->apply($qb, $alias);
 
