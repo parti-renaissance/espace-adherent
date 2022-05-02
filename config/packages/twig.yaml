@@ -16,7 +16,6 @@ twig:
         algolia_index_prefix:   "%env(ALGOLIA_INDEX_PREFIX)%"
         url_legacy:             "https://adherents.en-marche.fr"
         legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
-        legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
         url_help_en_marche:     "https://aide.en-marche.fr"
         project_dir:            "%kernel.project_dir%"

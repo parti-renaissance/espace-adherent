@@ -13,8 +13,6 @@ parameters:
     campaign_sender_email:                'jemarche@en-marche.fr'
     campaign_sender_name:                 'La République En Marche !'
     feed_ttl:                             60 # in minutes
-    legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
-    legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
     app_host:                             "%env(APP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     coalitions_host:                      "%env(COALITIONS_HOST)%"

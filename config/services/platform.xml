@@ -3,13 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <!-- Legislatives -->
-        <service id="App\Legislative\LegislativeCampaignContactMessageHandler">
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument>%legislatives_financial_hotline_email%</argument>
-            <argument>%legislatives_standard_hotline_email%</argument>
-        </service>
-
         <!-- Map -->
         <service id="app.map.google_maps_static_provider" class="App\Map\GoogleStaticMapProvider">
             <argument type="service" id="app.http_client.google_maps_static_api" />
