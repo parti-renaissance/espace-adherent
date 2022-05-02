@@ -336,6 +336,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
             $status &= $campaign->isSynchronized();
         }
 
+        $status &= (!$this->filter || $this->filter->isSynchronized());
+
         return $status;
     }
 
