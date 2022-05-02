@@ -125,8 +125,8 @@ Feature:
       "title": "Nouvelle campagne PAP",
       "brief": "**NOUVEAU**",
       "goal": 200,
-      "begin_at": "2022-05-01 00:00:00",
-      "finish_at": "2022-05-31 00:00:00",
+      "begin_at": "+30 days",
+      "finish_at": "+35 days",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
@@ -138,8 +138,8 @@ Feature:
       "title": "Nouvelle campagne PAP",
       "brief": "**NOUVEAU**",
       "goal": 200,
-      "begin_at": "2022-05-01T00:00:00+02:00",
-      "finish_at": "2022-05-31T00:00:00+02:00",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
@@ -157,7 +157,7 @@ Feature:
       "title": "NOUVEAU Campagne de 10 jours suivants",
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
-      "finish_at": "2022-12-30 00:00:00",
+      "finish_at": "+30 days",
       "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
     }
     """
@@ -170,7 +170,7 @@ Feature:
       "brief": "NOUVEAU **Campagne** de 10 jours suivants",
       "goal": 1000,
       "begin_at": "@string@.isDateTime()",
-      "finish_at": "2022-12-30T00:00:00+01:00",
+      "finish_at": "@string@.isDateTime()",
       "survey": {
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
@@ -648,8 +648,8 @@ Feature:
         "title": "Nouvelle campagne PAP",
         "brief": "**NOUVEAU**",
         "goal": 10,
-        "begin_at": "2022-12-01 00:00:00",
-        "finish_at": "2022-12-20 00:00:00",
+        "begin_at": "+30 days",
+        "finish_at": "+40 days",
         "survey": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
         "vote_places": [
             "de7ed0bd-acec-4744-b94d-30b98d895adc"
@@ -664,8 +664,8 @@ Feature:
         "title": "Nouvelle campagne PAP",
         "brief": "**NOUVEAU**",
         "goal": 10,
-        "begin_at": "2022-12-01T00:00:00+01:00",
-        "finish_at": "2022-12-20T00:00:00+01:00",
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
         "survey": {
             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
         },
@@ -696,8 +696,8 @@ Feature:
         "title": "Campagne locale de Paris 8ème (modifié)",
         "brief": "**NOUVEAU**",
         "goal": 10,
-        "begin_at": "2022-12-01 09:00:00",
-        "finish_at": "2022-12-21 20:00:00",
+        "begin_at": "+30 days",
+        "finish_at": "+40 days",
         "survey": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
         "vote_places": [
             "de7ed0bd-acec-4744-b94d-30b98d895adc"
@@ -709,8 +709,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "begin_at": "2022-12-01T09:00:00+01:00",
-        "finish_at": "2022-12-21T20:00:00+01:00",
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
         "brief": "**NOUVEAU**",
         "goal": 10,
         "survey": {
@@ -744,8 +744,8 @@ Feature:
         "title": "Campagne locale de Paris 8ème (modifié)",
         "brief": "**NOUVEAU**",
         "goal": 10,
-        "begin_at": "2022-12-01 09:00:00",
-        "finish_at": "2022-12-21 20:00:00",
+        "begin_at": "+30 days",
+        "finish_at": "+40 days",
         "survey": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
         "vote_places": [
             "de7ed0bd-acec-4744-b94d-30b98d895adc"
