@@ -51,6 +51,11 @@
             {% endif %}
         </td>
         <td>
+            <a href="{{ path('app_procuration_manager_proposal', {'id': proxy.id}) }}" class="b__nudge--bottom"
+               id="request-link-{{ proxy.id }}"
+               target="_blank">
+                Afficher
+            </a>
             {% if proxy.disabled %}
                 <a href="{{ path('app_procuration_manager_proposal_transform', { id: proxy.id, action: constant('ACTION_ENABLE', proxy) }) }}">
                     Réactiver
