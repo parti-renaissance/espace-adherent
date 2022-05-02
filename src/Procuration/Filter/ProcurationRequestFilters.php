@@ -40,13 +40,15 @@ class ProcurationRequestFilters extends ProcurationFilters
     {
         parent::apply($qb, $alias);
 
-        $qb->andWhere("$alias.enabled = :enabled");
+        $qb
+            ->andWhere("$alias.enabled = :enabled")
+            ->setParameter('enabled', true)
+        ;
 
         switch ($this->getStatus()) {
             case self::PROCESSED:
                 $qb
                     ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NOT NULL")
-                    ->setParameter('enabled', true)
                     ->setParameter('flag', 1)
                 ;
 
@@ -54,7 +56,6 @@ class ProcurationRequestFilters extends ProcurationFilters
             case self::UNPROCESSED:
                 $qb
                     ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NULL")
-                    ->setParameter('enabled', true)
                     ->setParameter('flag', 0)
                 ;
 
