@@ -22,7 +22,7 @@
     {% if request.phone %}
         <br />
         Téléphone :
-        <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="request-phone">
+        <a href="{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="request-phone">
             {{ request.phone|phone_number_format }}
         </a>
     {% endif %}

@@ -39,7 +39,7 @@
                 {% if request.phone %}
                     <br />
                     Téléphone :
-                    <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                    <a href="{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
                         {{ request.phone|phone_number_format }}
                     </a>
                 {% endif %}
@@ -111,7 +111,7 @@
                 {% if proxy.phone %}
                     <br />
                     Téléphone :
-                    <a href="tel:{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="proxy-phone">
+                    <a href="{{ proxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="proxy-phone">
                         {{ proxy.phone|phone_number_format }}
                     </a>
                 {% endif %}
