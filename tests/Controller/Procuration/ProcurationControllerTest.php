@@ -504,9 +504,10 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form--warning'));
-        $this->assertCount(2, $errors = $crawler->filter('.form__error'));
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(0)->text());
-        $this->assertSame('Vous devez choisir au moins un tour d\'élection.', $errors->eq(1)->text());
+        $this->assertCount(3, $errors = $crawler->filter('.form__error'));
+        $this->assertSame('Le numéro d\'électeur est requis.', $errors->eq(0)->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(1)->text());
+        $this->assertSame('Vous devez choisir au moins un tour d\'élection.', $errors->eq(2)->text());
 
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
@@ -534,6 +535,7 @@ class ProcurationControllerTest extends WebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
+                'voterNumber' => '123456789',
                 'electionRounds' => ['10'],
                 'conditions' => true,
                 'authorization' => true,
@@ -687,6 +689,7 @@ class ProcurationControllerTest extends WebTestCase
                 'voteCity' => '75018-75120',
                 'voteCityName' => '',
                 'voteOffice' => 'Mairie',
+                'voterNumber' => '123456789',
                 'electionRounds' => ['10'],
                 'conditions' => true,
                 'authorization' => true,

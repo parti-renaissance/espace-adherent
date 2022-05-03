@@ -83,6 +83,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255, groups={"front"})
+     * @Assert\NotBlank(groups={"front"}, message="procuration.voter_number.not_blank")
      */
     private $voterNumber;
 
