@@ -376,11 +376,10 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     public function getRecipientCount(): ?int
     {
-        return $this->recipientCount + array_sum($this->mailchimpCampaigns
-            ->map(static function (MailchimpCampaign $campaign) {
+        return $this->recipientCount + array_sum(
+            array_map(static function (MailchimpCampaign $campaign) {
                 return $campaign->getRecipientCount();
-            })
-            ->toArray()
+            }, $this->mailchimpCampaigns->toArray())
         );
     }
 
