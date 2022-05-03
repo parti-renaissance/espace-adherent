@@ -36,10 +36,10 @@ class CheckProcurationAuthorHandler implements MessageHandlerInterface
         /** @var ConstraintViolation $error */
         foreach ($errors as $error) {
             if ($error->getConstraint() instanceof InvalidEmailAddress) {
-                $object->disable('banned_email');
+                $object->disable(ProcurationRequest::DISABLED_REASON_BANNED_EMAIL);
                 break;
             } elseif ($error->getConstraint() instanceof StrictEmail) {
-                $object->disable('invalid_email');
+                $object->disable(ProcurationRequest::DISABLED_REASON_INVALID_EMAIL);
                 break;
             }
         }

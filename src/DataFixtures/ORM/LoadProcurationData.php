@@ -313,7 +313,8 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             $partialLegislativeElections->getRounds(),
             ProcurationRequest::REASON_HOLIDAYS,
             0,
-            false
+            false,
+            ProcurationRequest::DISABLED_REASON_INVALID_EMAIL
         ));
 
         $manager->persist($this->createProxyProposal(
@@ -560,7 +561,8 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         iterable $electionRounds,
         string $reason = ProcurationRequest::REASON_HOLIDAYS,
         bool $requestFromFrance = true,
-        bool $enabled = true
+        bool $enabled = true,
+        string $disabledReason = null
     ): ProcurationRequest {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);
@@ -587,6 +589,9 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         $request->setReason($reason);
         $request->setRequestFromFrance($requestFromFrance);
         $request->setEnabled($enabled);
+        if (!$enabled) {
+            $request->disable($disabledReason);
+        }
 
         return $request;
     }

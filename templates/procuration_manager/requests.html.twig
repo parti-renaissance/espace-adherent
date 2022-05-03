@@ -28,6 +28,11 @@
                 {{ '{1} Vous avez une demande de procuration à traiter.|[2, Inf[ Vous avez %count% demandes de procuration à traiter.'|transchoice(total_count) }}
             {% endif %}
         </div>
+    {% else %}
+        <div class="alert alert--tips b__nudge--bottom-60">
+            Vous avez la possibilité de réactiver un mandant à tout instant.<br />
+            Néanmoins certains mandants ont été désactivés de manière automatique pour des raisons de sécurité, merci de ne pas les réactiver.
+        </div>
     {% endif %}
 
     {% if requests|length %}
@@ -41,6 +46,9 @@
                     <th class="datagrid__table__col--left">Scrutins concernés</th>
                     <th>Mandataires</th>
                     <th class="datagrid__table__col--hide-mobile">Date de la demande</th>
+                    {% if constant('DISABLED', filters) == filters.status %}
+                        <th>Désactivée</th>
+                    {% endif %}
                     <th>Actions</th>
                 </tr>
                 </thead>

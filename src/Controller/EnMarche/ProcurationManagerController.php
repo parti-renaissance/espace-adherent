@@ -219,7 +219,7 @@ class ProcurationManagerController extends AbstractController
 
                 break;
             case ProcurationRequest::ACTION_DISABLE:
-                $procurationManager->disableProcurationRequest($request, 'by_procuration_manager');
+                $procurationManager->disableProcurationRequest($request, ProcurationRequest::DISABLED_REASON_BY_PROCURATION_MANAGER);
                 $this->addFlash('info', 'procuration_manager.disabled.success');
 
                 break;
