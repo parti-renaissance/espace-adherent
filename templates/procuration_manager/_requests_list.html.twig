@@ -34,6 +34,11 @@
         <td class="datagrid__table__col--hide-mobile">
             {{ request.data.createdAt|date('d/m/Y H:i') }}
         </td>
+        {% if constant('DISABLED', filters) == filters.status %}
+            <td>
+                {{ request.data.disabledReason == constant('App\\Entity\\ProcurationRequest::DISABLED_REASON_BY_PROCURATION_MANAGER') ? 'Manuellement' : 'Automatiquement' }}
+            </td>
+        {% endif %}
         <td>
             <a href="{{ path('app_procuration_manager_request', {'id': request.data.id}) }}"
                id="request-link-{{ request.data.id }}"
