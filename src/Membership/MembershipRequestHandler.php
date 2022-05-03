@@ -84,9 +84,9 @@ class MembershipRequestHandler
 
         if (null === $adherent->getSource() && $adherent->isAdherent()) {
             $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
-
-            $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent, $membershipRequest), AdherentEvents::REGISTRATION_COMPLETED);
         }
+
+        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent, $membershipRequest), AdherentEvents::REGISTRATION_COMPLETED);
 
         return $adherent;
     }
