@@ -143,7 +143,7 @@
                         {% if request.foundProxy.phone %}
                             <br />
                             Téléphone :
-                            <a href="tel:{{ request.foundProxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
+                            <a href="{{ request.foundProxy.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}">
                                 {{ request.foundProxy.phone|phone_number_format }}
                             </a>
                         {% endif %}
