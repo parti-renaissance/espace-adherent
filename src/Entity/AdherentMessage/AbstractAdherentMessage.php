@@ -332,7 +332,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
         $status = true;
 
-        foreach ($this->mailchimpCampaigns->toArray() as $campaign) {
+        foreach ($this->getMailchimpCampaigns() as $campaign) {
             $status &= $campaign->isSynchronized();
         }
 
@@ -366,9 +366,9 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     public function resetFilter(): void
     {
-        $this->mailchimpCampaigns->forAll(static function (int $key, MailchimpCampaign $campaign) {
+        array_map(static function (MailchimpCampaign $campaign) {
             $campaign->reset();
-        });
+        }, $this->getMailchimpCampaigns());
     }
 
     /**
@@ -379,7 +379,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->recipientCount + array_sum(
             array_map(static function (MailchimpCampaign $campaign) {
                 return $campaign->getRecipientCount();
-            }, $this->mailchimpCampaigns->toArray())
+            }, $this->getMailchimpCampaigns())
         );
     }
 
