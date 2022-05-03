@@ -283,6 +283,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration?status=disabled');
 
         $this->isSuccessful($this->client->getResponse());
+        $this->assertStringContainsString('Néanmoins certains mandants ont été désactivés de manière automatique pour des raisons de sécurité, merci de ne pas les réactiver.', trim($crawler->filter('.procuration-manager div.alert--tips')->text()));
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Jean Désactivé")'));
     }
@@ -396,6 +397,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertCount(1, $toEnable = $crawler->filter('.datagrid__table-manager td:contains("Jean-Michel Amoitié")'));
+        $this->assertStringContainsString('Manuellement', $toEnable->closest('tr')->text());
         $this->assertCount(1, $linkToEnable = $toEnable->closest('tr')->filter('a:contains("Réactiver")'));
 
         // enable

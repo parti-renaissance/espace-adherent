@@ -38,6 +38,10 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     public const REASON_HOLIDAYS = 'holidays';
     public const REASON_RESIDENCY = 'residency';
 
+    public const DISABLED_REASON_BANNED_EMAIL = 'banned_email';
+    public const DISABLED_REASON_INVALID_EMAIL = 'invalid_email';
+    public const DISABLED_REASON_BY_PROCURATION_MANAGER = 'by_procuration_manager';
+
     public const STEP_VOTE = 'vote';
     public const STEP_PROFILE = 'profile';
     public const STEP_ELECTION_ROUNDS = 'election_rounds';
