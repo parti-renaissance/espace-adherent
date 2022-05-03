@@ -1079,6 +1079,25 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $this->addReference('correspondent-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'je-mengage-user-2@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Jerome',
+            'last_name' => 'Musk',
+            'address' => PostAddress::createFrenchAddress('44 rue des courcelles', '75008-75108'),
+            'birthdate' => '1969-06-10',
+            'registered_at' => '2020-05-02 19:31:45',
+            'phone' => '+330699008800',
+            'is_adherent' => false,
+        ]));
+        $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->setSource(MembershipSourceEnum::JEMENGAGE);
+        $this->addReference('adherent-jme-2', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
             'uuid' => self::COALITIONS_USER_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'coalitions-user-1@en-marche-dev.fr',

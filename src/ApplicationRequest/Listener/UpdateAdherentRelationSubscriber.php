@@ -38,6 +38,8 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        $this->repository->updateAdherentRelation($adherent->getEmailAddress(), $adherent);
+        if (null === $adherent->getSource() && $adherent->isAdherent()) {
+            $this->repository->updateAdherentRelation($adherent->getEmailAddress(), $adherent);
+        }
     }
 }
