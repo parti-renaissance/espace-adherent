@@ -117,6 +117,25 @@ class ProcurationManagerController extends AbstractController
 
     /**
      * @Route(
+     *     "/mandataires/{id}",
+     *     requirements={"id": "\d+"},
+     *     name="app_procuration_manager_proposal",
+     *     methods={"GET"}
+     * )
+     */
+    public function proposal(int $id, ProcurationManager $procurationManager): Response
+    {
+        if (!$proxy = $procurationManager->getProcurationProxyProposal($id, $this->getUser())) {
+            throw $this->createNotFoundException(sprintf('No procuration proposal found for id %d.', $id));
+        }
+
+        return $this->render('procuration_manager/proposal.html.twig', [
+            'proxy' => $proxy,
+        ]);
+    }
+
+    /**
+     * @Route(
      *     "/mandataires/{id}/{action}",
      *     requirements={ "id": "\d+", "action": App\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
      *     name="app_procuration_manager_proposal_transform",

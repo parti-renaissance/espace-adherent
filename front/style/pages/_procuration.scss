@@ -237,7 +237,7 @@
         flex-direction: column;
     }
 
-    &__request {
+    &__request, &__proxy {
         &__process {
             float: right;
             font-weight: 400;

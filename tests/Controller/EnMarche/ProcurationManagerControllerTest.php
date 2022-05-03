@@ -53,6 +53,9 @@ class ProcurationManagerControllerTest extends WebTestCase
             ['/espace-responsable-procuration/mandataires'],
             ['/espace-responsable-procuration/demande/1'],
             ['/espace-responsable-procuration/demande/2'],
+            ['/espace-responsable-procuration/mandataires/1'],
+            ['/espace-responsable-procuration/mandataires/4'],
+            ['/espace-responsable-procuration/mandataires/7'],
         ];
     }
 
@@ -360,6 +363,31 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertProcurationTotalCount($crawler, self::SUBJECT_PROPOSAL, 1, 'désactivée');
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Annie Versaire")'));
+    }
+
+    public function testSeeProcurationProxyInformation()
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/mandataires/1');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->assertSame('Mandataire n°1', trim($crawler->filter('#proxy-title')->text()));
+        $this->assertStringContainsString('Disponible', trim($crawler->filter('.procuration-manager__proxy h4')->text()));
+        $this->assertSame('Monsieur Maxime Michaux', trim($crawler->filter('#proxy-author')->text()));
+        $this->assertSame('maxime.michaux@example.fr', trim($crawler->filter('#proxy-email')->text()));
+        $this->assertSame('+33 9 88 77 66 55', trim($crawler->filter('#proxy-phone')->text()));
+        $this->assertSame('17/02/1989', trim($crawler->filter('#proxy-birthdate')->text()));
+        $this->assertSame('123456789', trim($crawler->filter('#proxy-voter-number')->text()));
+        $this->assertSame('75018 Paris 18e FR', trim($crawler->filter('#proxy-vote-city')->text()));
+        $this->assertSame('Mairie', trim($crawler->filter('#proxy-vote-office')->text()));
+        $this->assertSame('14 rue Jules Ferry', trim($crawler->filter('#proxy-address')->text()));
+        $this->assertSame('75018 Paris 18e FR', trim($crawler->filter('#proxy-city')->text()));
+        $this->assertStringContainsString('2e tour des éléctions présidentielles 2017', trim($crawler->filter('#proxy-election-rounds')->text()));
+        $this->assertStringContainsString('2e tour des éléctions législatives 2017', trim($crawler->filter('#proxy-election-rounds')->text()));
+        $this->assertSame('en France : Oui', trim($crawler->filter('#proxy-french-request-available')->text()));
+        $this->assertSame('à l\'étranger : Oui', trim($crawler->filter('#proxy-foreign-request-available')->text()));
     }
 
     public function testProcurationManagerDisableEnableRequest()

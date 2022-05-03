@@ -333,7 +333,13 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75018-75118',
             null,
             'Mairie',
-            [$presidentialElections->getRounds()->last(), $legislativeElections->getRounds()->last()]
+            [$presidentialElections->getRounds()->last(), $legislativeElections->getRounds()->last()],
+            ProcurationProxy::RELIABILITY_UNKNOWN,
+            '',
+            1,
+            [],
+            false,
+            '123456789'
         ));
 
         $manager->persist($this->createProxyProposal(
@@ -607,7 +613,8 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         string $reliabilityDescription = '',
         int $proxiesCount = 1,
         array $otherVoteCities = [],
-        bool $disabled = false
+        bool $disabled = false,
+        string $voterNumber = null
     ): ProcurationProxy {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);
@@ -635,6 +642,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         $proxy->setReliabilityDescription($reliabilityDescription);
         $proxy->setDisabled($disabled);
         $proxy->setProxiesCount($proxiesCount);
+        $proxy->setVoterNumber($voterNumber);
         array_map([$proxy, 'addOtherVoteCity'], $otherVoteCities);
 
         return $proxy;
