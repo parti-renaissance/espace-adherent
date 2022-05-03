@@ -99,7 +99,7 @@ class UpdateJemengageUserAccountGeoCodeCommand extends Command
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->where('adherent.source = :source')
-            ->andWhere('adherent.postAddress.latitude IS NULL AND adherent.postAddress.latitude IS NULL')
+            ->andWhere('adherent.postAddress.latitude IS NULL AND adherent.postAddress.longitude IS NULL')
             ->setParameter('source', MembershipSourceEnum::JEMENGAGE)
         ;
 
