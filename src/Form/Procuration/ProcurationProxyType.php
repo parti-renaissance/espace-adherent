@@ -46,7 +46,7 @@ class ProcurationProxyType extends AbstractProcurationType
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
-            ->add('voterNumber', TextType::class, ['required' => false])
+            ->add('voterNumber', TextType::class)
             ->add('voteCountry', UnitedNationsCountryType::class)
             ->add('votePostalCode', TextType::class, [
                 'required' => false,
