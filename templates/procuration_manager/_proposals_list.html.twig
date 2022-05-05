@@ -33,15 +33,9 @@
             {{ proxy.createdAt|date('d/m/Y H:i') }}
         </td>
         <td>
-            Pour une demande faite :<br>
-            en France : {{ proxy.frenchRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }} <br>
-            à l'étranger : {{ proxy.foreignRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }}
-        </td>
-        <td>
             {% if not proxy.foundRequests.isEmpty %}
                 {% for foundRequest in proxy.foundRequests %}
-                    Associé à la<br />
-                    demande n°<a href="{{ path('app_procuration_manager_request', { id: foundRequest.id }) }}">{{ foundRequest.id }}</a>
+                    Associé à la demande n°<a href="{{ path('app_procuration_manager_request', { id: foundRequest.id }) }}">{{ foundRequest.id }}</a><br />
                 {% endfor %}
             {% elseif proxy.disabled %}
                 Désactivé<br />

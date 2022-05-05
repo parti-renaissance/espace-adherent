@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationProxyElectionRound;
 use App\Entity\ProcurationRequest;
 use App\Intl\FranceCitiesBundle;
 use App\Procuration\Filter\ProcurationProxyProposalFilters;
@@ -14,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ProcurationProxyRepository extends ServiceEntityRepository
 {
+    use ProcurationTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProcurationProxy::class);
@@ -28,9 +31,12 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             return [];
         }
 
-        $qb = $this->createQueryBuilder($alias = 'pp');
+        $qb = $this->createQueryBuilder($alias = 'pp')
+            ->leftJoin('pp.procurationProxyElectionRounds', $roundAlias = 'ppElectionRound')
+            ->leftJoin('ppElectionRound.electionRound', 'electionRound')
+        ;
 
-        $filters->apply($qb, $alias);
+        $filters->apply($qb, $alias, $roundAlias);
 
         return $this->addAndWhereManagedBy($qb, $manager)
             ->addGroupBy("$alias.id")
@@ -45,9 +51,12 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             return 0;
         }
 
-        $qb = $this->createQueryBuilder('pp');
+        $qb = $this->createQueryBuilder($alias = 'pp')
+            ->leftJoin('pp.procurationProxyElectionRounds', $roundAlias = 'ppElectionRound')
+            ->leftJoin('ppElectionRound.electionRound', 'electionRound')
+        ;
 
-        $filters->apply($qb, 'pp');
+        $filters->apply($qb, $alias, $roundAlias);
 
         return $this->addAndWhereManagedBy($qb, $manager)
             ->select('COUNT(DISTINCT pp.id)')
@@ -119,7 +128,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->innerJoin('pp.otherVoteCities', 'other_city')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
-            ->andWhere('pp.frenchRequestAvailable = true')
+            ->andWhere('ppElectionRound.frenchRequestAvailable = :true')
             ->andWhere(
                 $qb->expr()->andX(
                     'pp.voteCountry = :voteCountry',
@@ -130,6 +139,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCityInsee', $procurationRequest->getVoteCityInsee())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
+            ->setParameter('true', true)
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC')
         ;
@@ -164,21 +174,18 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         return $qb->andWhere($codesFilter);
     }
 
-    private function andWhereMatchingRounds(QueryBuilder $qb, ProcurationRequest $procurationRequest): QueryBuilder
-    {
-        $matches = [];
-        foreach ($procurationRequest->getElectionRounds() as $i => $round) {
-            $matches[] = $qb->expr()->andX(":round_$i MEMBER OF pp.electionRounds");
-            $qb->setParameter("round_$i", $round->getId());
-        }
-
-        return $qb->andWhere($qb->expr()->andX(...$matches));
-    }
-
     private function createMatchingScore(QueryBuilder $qb, ProcurationRequest $procurationRequest): string
     {
+        $qb->leftJoin('pp.procurationProxyElectionRounds', 'ppElectionRound');
         foreach ($procurationRequest->getElectionRounds() as $i => $round) {
-            $score[] = "(CASE WHEN (:round_$i MEMBER OF pp.electionRounds) THEN 1 ELSE 0 END)";
+            $subElectionsQuery = $this->getEntityManager()->createQueryBuilder()
+                ->from(ProcurationProxyElectionRound::class, "ppElectionRound_s_$i")
+                ->innerJoin("ppElectionRound_s_$i.electionRound", "er_s_$i")
+                ->select("er_s_$i.id")
+                ->where("ppElectionRound_s_$i.procurationProxy = pp")
+                ->getDQL()
+            ;
+            $score[] = sprintf('(CASE WHEN (:round_%s IN (%s)) THEN 1 ELSE 0 END)', $i, $subElectionsQuery);
 
             $qb->setParameter("round_$i", $round->getId());
         }
@@ -217,13 +224,11 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 $qb->expr()->orX(
                     $qb->expr()->andX(
                         'pp.voteCountry = \'FR\'',
-                        $cityCondition,
-                        'pp.frenchRequestAvailable = true'
+                        $cityCondition
                     ),
                     $qb->expr()->andX(
                         'pp.voteCountry != \'FR\'',
-                        'pp.voteCountry = :voteCountry',
-                        'pp.frenchRequestAvailable = true'
+                        'pp.voteCountry = :voteCountry'
                     )
                 )
             );
@@ -234,13 +239,11 @@ class ProcurationProxyRepository extends ServiceEntityRepository
                 $qb->expr()->andX(
                     'pp.voteCountry = \'FR\'',
                     'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
-                    'pp.voteCityName = :voteCityName',
-                    'pp.foreignRequestAvailable = true'
+                    'pp.voteCityName = :voteCityName'
                 ),
                 $qb->expr()->andX(
                     'pp.voteCountry != \'FR\'',
-                    'pp.voteCountry = :voteCountry',
-                    'pp.foreignRequestAvailable = true'
+                    'pp.voteCountry = :voteCountry'
                 )
             )
         );

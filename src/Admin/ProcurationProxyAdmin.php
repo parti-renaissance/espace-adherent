@@ -2,9 +2,11 @@
 
 namespace App\Admin;
 
+use App\Entity\ElectionRound;
 use App\Entity\ProcurationProxy;
 use App\Form\GenderType;
 use App\Form\UnitedNationsCountryType;
+use App\Repository\ElectionRoundRepository;
 use App\Utils\AreaUtils;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -16,6 +18,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -110,9 +113,16 @@ class ProcurationProxyAdmin extends AbstractAdmin
             ->with('Tours', ['class' => 'col-md-6'])
                 ->add('proxiesCount', null, [
                     'label' => 'Nombre de procurations proposées',
+                    'disabled' => $this->getSubject()->getFoundRequests()->count() > 0,
                 ])
-                ->add('electionRounds', null, [
+                ->add('electionRounds', EntityType::class, [
                     'label' => 'Proposés',
+                    'class' => ElectionRound::class,
+                    'query_builder' => function (ElectionRoundRepository $repository) {
+                        return $repository->createQueryBuilderForFutureElectionRounds();
+                    },
+                    'multiple' => true,
+                    'disabled' => $this->getSubject()->getFoundRequests()->count() > 0,
                 ])
             ->end()
         ;

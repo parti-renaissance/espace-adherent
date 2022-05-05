@@ -2,6 +2,7 @@
 
 namespace App\Procuration\Filter;
 
+use App\Entity\ProcurationProxy;
 use App\Exception\ProcurationException;
 use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
@@ -172,16 +173,18 @@ abstract class ProcurationFilters
             }
         }
 
-        $qb
-            ->leftJoin("$alias.electionRounds", 'rounds')
-            ->andWhere('rounds.date >= CURRENT_DATE()')
-        ;
-
-        if ($this->electionRound) {
+        if (ProcurationProxy::class !== $qb->getRootEntities()[0]) {
             $qb
-                ->andWhere(":round MEMBER OF $alias.electionRounds")
-                ->setParameter('round', $this->electionRound)
+                ->leftJoin("$alias.electionRounds", 'electionRound')
+                ->andWhere('electionRound.date >= CURRENT_DATE()')
             ;
+
+            if ($this->electionRound) {
+                $qb
+                    ->andWhere(":round MEMBER OF $alias.electionRounds")
+                    ->setParameter('round', $this->electionRound)
+                ;
+            }
         }
 
         if ($this->lastName) {

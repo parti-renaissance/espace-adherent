@@ -385,10 +385,17 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('Mairie', trim($crawler->filter('#proxy-vote-office')->text()));
         $this->assertSame('14 rue Jules Ferry', trim($crawler->filter('#proxy-address')->text()));
         $this->assertSame('75018 Paris 18e FR', trim($crawler->filter('#proxy-city')->text()));
-        $this->assertStringContainsString('2e tour des éléctions présidentielles 2017', trim($crawler->filter('#proxy-election-rounds')->text()));
-        $this->assertStringContainsString('2e tour des éléctions législatives 2017', trim($crawler->filter('#proxy-election-rounds')->text()));
-        $this->assertSame('en France : Oui', trim($crawler->filter('#proxy-french-request-available')->text()));
-        $this->assertSame('à l\'étranger : Oui', trim($crawler->filter('#proxy-foreign-request-available')->text()));
+        $this->assertCount(2, $rounds = $crawler->filter('#proxy-election-rounds > div > ul > li'));
+
+        $firstRound = $rounds->eq(0);
+        $secondRound = $rounds->eq(1);
+
+        $this->assertStringContainsString('2e tour des éléctions présidentielles 2017', trim($firstRound->text()));
+        $this->assertStringContainsString('2e tour des éléctions législatives 2017', trim($secondRound->text()));
+        $this->assertSame('en France : Oui', trim($firstRound->filter('li.proxy-french-request-available')->text()));
+        $this->assertSame('à l\'étranger : Oui', trim($firstRound->filter('li.proxy-foreign-request-available')->text()));
+        $this->assertSame('en France : Oui', trim($secondRound->filter('li.proxy-french-request-available')->text()));
+        $this->assertSame('à l\'étranger : Oui', trim($secondRound->filter('li.proxy-foreign-request-available')->text()));
     }
 
     public function testProcurationManagerDisableEnableRequest()

@@ -1,11 +1,18 @@
-{% set rounds = proxy.availableRounds %}
+{% set ppElectionRounds = proxy.getAvailableRounds(request ?? null) %}
 
-{% if rounds.isEmpty %}
+{% if ppElectionRounds.isEmpty %}
     Aucun tour disponible
 {% else %}
     <ul class="circle">
-        {% for round in rounds %}
-            <li>{{ round.label }}</li>
+        {% for ppElectionRound in ppElectionRounds %}
+            <li>
+                {{ ppElectionRound.electionRound.label }} ({{ proxy.countFreeSlots(ppElectionRound.electionRound) }})
+                <ul class="disc">
+                    <i>Procurations disponibles pour une demande faite :</i>
+                    <li class="proxy-french-request-available">en France : {{ ppElectionRound.frenchRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }} <br></li>
+                    <li class="proxy-foreign-request-available">à l'étranger : {{ ppElectionRound.foreignRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }}</li>
+                </ul>
+            </li>
         {% endfor %}
     </ul>
 {% endif %}

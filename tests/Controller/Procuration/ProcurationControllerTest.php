@@ -568,7 +568,8 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('6 rue Neyret', $proposal->getAddress());
         $this->assertSame(true, $proposal->isReachable());
         $this->assertSame(1, $proposal->getReliability());
-        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(10)], $proposal->getElectionRounds()->toArray());
+        $this->assertCount(1, $proposal->getElectionRounds());
+        $this->assertEquals(10, $proposal->getElectionRounds()->first()->getId());
     }
 
     public function testProcurationRequestNotUniqueEmailBirthDate()

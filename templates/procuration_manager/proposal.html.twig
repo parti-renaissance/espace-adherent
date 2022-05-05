@@ -91,17 +91,9 @@
                 Scrutins concernés
             </div>
             <div class="profile-value" id="proxy-election-rounds">
-                {{ include('procuration_manager/_election_rounds.html.twig', {
-                    rounds: proxy.electionRounds,
-                }, with_context=false) }}
-            </div>
-
-            <div class="profile-label">
-                Procurations disponibles pour une demande faite
-            </div>
-            <div class="profile-value">
-                <span id="proxy-french-request-available">en France : {{ proxy.frenchRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }}</span><br>
-                <span id="proxy-foreign-request-available">à l'étranger : {{ proxy.foreignRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }}</span>
+                <div class="b__nudge--left">
+                    {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy } %}
+                </div>
             </div>
 
             <div class="profile-label">
