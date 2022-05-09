@@ -32,7 +32,7 @@ abstract class AbstractAdherentVoterTest extends TestCase
 
     abstract public function provideAnonymousCases(): iterable;
 
-    abstract protected function getVoter(): AbstractAdherentVoter;
+    abstract protected function getVoter(): VoterInterface;
 
     /**
      * @dataProvider provideAnonymousCases

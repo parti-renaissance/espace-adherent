@@ -3,21 +3,23 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\ScopeRepository;
-use App\Scope\ScopeEnum;
+use App\Scope\GeneralScopeGenerator;
+use App\Scope\Scope;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class DataCornerVoter extends AbstractAdherentVoter
+class DataCornerVoter extends Voter
 {
     public const DATA_CORNER = 'DATA_CORNER';
 
     private ScopeRepository $scopeRepository;
-    private DelegatedAccessRepository $delegatedAccessRepository;
+    private GeneralScopeGenerator $scopeGenerator;
 
-    public function __construct(ScopeRepository $scopeRepository, DelegatedAccessRepository $delegatedAccessRepository)
+    public function __construct(ScopeRepository $scopeRepository, GeneralScopeGenerator $scopeGenerator)
     {
         $this->scopeRepository = $scopeRepository;
-        $this->delegatedAccessRepository = $delegatedAccessRepository;
+        $this->scopeGenerator = $scopeGenerator;
     }
 
     protected function supports($attribute, $subject)
@@ -25,25 +27,19 @@ class DataCornerVoter extends AbstractAdherentVoter
         return self::DATA_CORNER === $attribute;
     }
 
-    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        $codes = $this->findCodesGrantedForDataCorner();
+        if (
+            !$subject instanceof Adherent
+            || !$codes = $this->scopeRepository->findCodesGrantedForDataCorner()
+        ) {
+            return false;
+        }
 
-        return (\in_array(ScopeEnum::REFERENT, $codes) && $adherent->isReferent())
-            || (\in_array(ScopeEnum::DEPUTY, $codes) && $adherent->isDeputy())
-            || (\in_array(ScopeEnum::CANDIDATE, $codes) && $adherent->isHeadedRegionalCandidate())
-            || (\in_array(ScopeEnum::SENATOR, $codes) && $adherent->isSenator())
-            || (\in_array(ScopeEnum::NATIONAL, $codes) && $adherent->hasNationalRole())
-            || (\in_array(ScopeEnum::PHONING_NATIONAL_MANAGER, $codes) && $adherent->hasPhoningManagerRole())
-            || (\in_array(ScopeEnum::PAP_NATIONAL_MANAGER, $codes) && $adherent->hasPapNationalManagerRole())
-            || (\in_array(ScopeEnum::CORRESPONDENT, $codes) && $adherent->isCorrespondent())
-            || (\in_array(ScopeEnum::LEGISLATIVE_CANDIDATE, $codes) && $adherent->isLegislativeCandidate())
-            || \count($this->delegatedAccessRepository->hasDelegatedAccessWithScopeFeatures($adherent, $codes)) > 0
-        ;
-    }
+        $adherentScopesCodes = array_map(function (Scope $scope) {
+            return $scope->getMainCode();
+        }, $this->scopeGenerator->generateScopes($subject));
 
-    private function findCodesGrantedForDataCorner(): array
-    {
-        return $this->scopeRepository->findCodesGrantedForDataCorner();
+        return !empty(array_intersect($codes, $adherentScopesCodes));
     }
 }

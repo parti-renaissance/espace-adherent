@@ -3,28 +3,32 @@
 namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\ScopeRepository;
+use App\Scope\GeneralScopeGenerator;
+use App\Scope\Scope;
 use App\Scope\ScopeEnum;
-use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\DataCornerVoter;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class DataCornerVoterTest extends AbstractAdherentVoterTest
 {
+    private $scopeGeneratorMock;
+
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, DataCornerVoter::DATA_CORNER];
+        yield [false, false, DataCornerVoter::DATA_CORNER];
     }
 
-    protected function getVoter(): AbstractAdherentVoter
+    protected function getVoter(): VoterInterface
     {
         $scopeRepository = $this->createConfiguredMock(ScopeRepository::class, ['findCodesGrantedForDataCorner' => [
             ScopeEnum::SENATOR,
             ScopeEnum::DEPUTY,
         ]]);
-        $delegatedAccessRepository = $this->createConfiguredMock(DelegatedAccessRepository::class, ['hasDelegatedAccessWithScopeFeatures' => []]);
 
-        return new DataCornerVoter($scopeRepository, $delegatedAccessRepository);
+        $this->scopeGeneratorMock = $this->createConfiguredMock(GeneralScopeGenerator::class, []);
+
+        return new DataCornerVoter($scopeRepository, $this->scopeGeneratorMock);
     }
 
     /**
@@ -34,13 +38,22 @@ class DataCornerVoterTest extends AbstractAdherentVoterTest
     {
         $adherent = $this->getAdherentMock($isDeputy, $isSenator);
 
-        $this->assertGrantedForAdherent($isGranted, true, $adherent, DataCornerVoter::DATA_CORNER);
+        $this->scopeGeneratorMock->expects($this->once())
+            ->method('generateScopes')
+            ->willReturn(
+                 ($isDeputy ? [new Scope('deputy', 'Député', [], [], [])] : [])
+                 + ($isSenator ? [new Scope('senator', 'Sénateur', [], [], [])] : [])
+            )
+        ;
+
+        $this->assertGrantedForAdherent($isGranted, false, $adherent, DataCornerVoter::DATA_CORNER, $adherent);
     }
 
     public function provideAdherent(): iterable
     {
         yield [true, false, true];
         yield [false, true, true];
+        yield [true, true, true];
         yield [false, false, false];
     }
 
