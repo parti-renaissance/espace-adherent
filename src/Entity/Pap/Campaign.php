@@ -109,6 +109,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "groups": {"pap_building_statistics_read"},
  *             },
  *         },
+ *         "get_campaign_vote_places": {
+ *             "method": "GET",
+ *             "path": "/v3/pap_campaigns/{uuid}/vote_places",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Pap\GetCampaignVotePlacesController",
+ *             "pagination_enabled": false,
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *             "normalization_context": {"iri": true, "groups": {"pap_vote_place_read"}},
+ *         },
  *         "get_available_vote_places": {
  *             "method": "GET",
  *             "path": "/v3/pap_campaigns/{uuid}/available_vote_places",
@@ -129,10 +138,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"pap_campaign_survey_read"},
  *             },
- *         },
- *         "vote_places_get_subresource": {
- *             "path": "/v3/pap_campaigns/{id}/vote_places",
- *             "requirements": {"id": "%pattern_uuid%"},
  *         },
  *     },
  * )
