@@ -110,6 +110,13 @@
         </a>
     </li>
 {% endif %}
+{% if app.user.isLegislativeCandidate %}
+    <li>
+        <a href="{{ data_corner_host }}">
+            Espace Candidat aux législatives
+        </a>
+    </li>
+{% endif %}
 {% if app.user.isThematicCommunityChief %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'thematic_community'}) }}">
