@@ -6,7 +6,6 @@ use App\Entity\ElectionRound;
 use App\Entity\ProcurationProxy;
 use App\Form\GenderType;
 use App\Form\UnitedNationsCountryType;
-use App\Repository\ElectionRoundRepository;
 use App\Utils\AreaUtils;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -118,9 +117,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ->add('electionRounds', EntityType::class, [
                     'label' => 'Proposés',
                     'class' => ElectionRound::class,
-                    'query_builder' => function (ElectionRoundRepository $repository) {
-                        return $repository->createQueryBuilderForFutureElectionRounds();
-                    },
                     'multiple' => true,
                     'disabled' => $this->getSubject()->getFoundRequests()->count() > 0,
                 ])

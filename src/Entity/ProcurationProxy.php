@@ -665,14 +665,9 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      */
     public function getElectionRounds(): Collection
     {
-        $electionRounds = new ArrayCollection();
-        $ppElectionRounds = $this->procurationProxyElectionRounds->toArray();
-
-        array_walk($ppElectionRounds, function (ProcurationProxyElectionRound $ppElectionRound) use ($electionRounds) {
-            $electionRounds->add($ppElectionRound->getElectionRound());
-        });
-
-        return $electionRounds;
+        return new ArrayCollection(array_map(function (ProcurationProxyElectionRound $ppElectionRound) {
+            return $ppElectionRound->getElectionRound();
+        }, $this->procurationProxyElectionRounds->toArray()));
     }
 
     public function addElectionRound(ElectionRound $round): void
@@ -700,9 +695,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
     public function hasElectionRound(ElectionRound $round): bool
     {
-        return $this->procurationProxyElectionRounds->filter(function (ProcurationProxyElectionRound $ppElectionRound) use ($round) {
-            return $ppElectionRound->getElectionRound() === $round;
-        })->count() > 0;
+        return null !== $this->findProcurationProxyElectionRoundBy($round);
     }
 
     public function getElection(): Election
@@ -807,10 +800,6 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         foreach ($request->getElectionRounds() as $round) {
             $ppElectionRound = $this->findProcurationProxyElectionRoundBy($round);
             $this->processFrenchAvailability($ppElectionRound);
-        }
-
-        foreach ($request->getElectionRounds() as $round) {
-            $ppElectionRound = $this->findProcurationProxyElectionRoundBy($round);
             $this->processForeignAvailability($ppElectionRound);
         }
     }

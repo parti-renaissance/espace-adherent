@@ -32,15 +32,6 @@ class ElectionRoundRepository extends ServiceEntityRepository
         ;
     }
 
-    public function createQueryBuilderForFutureElectionRounds(): QueryBuilder
-    {
-        return $this->createQueryBuilder('r')
-            ->where('r.date > :now')
-            ->setParameter('now', new \DateTime())
-            ->orderBy('r.date', 'ASC')
-        ;
-    }
-
     public function getAllRoundsAsChoices(): array
     {
         $results = $this->createQueryBuilder('r', 'r.id')
