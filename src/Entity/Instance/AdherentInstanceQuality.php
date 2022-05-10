@@ -58,7 +58,7 @@ class AdherentInstanceQuality
     private $territorialCouncil;
 
     public function __construct(
-        Adherent $adherent,
+        ?Adherent $adherent,
         InstanceQuality $instanceQuality,
         \DateTime $date = null,
         UuidInterface $uuid = null
@@ -92,5 +92,10 @@ class AdherentInstanceQuality
     public function hasNationalCouncilScope(): bool
     {
         return $this->instanceQuality->hasNationalCouncilScope();
+    }
+
+    public function setAdherent(Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
     }
 }

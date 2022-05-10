@@ -2999,15 +2999,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->causes->matching($criteria)->count();
     }
 
-    public function addInstanceQuality(InstanceQuality $quality, \DateTime $data = null): AdherentInstanceQuality
+    public function addInstanceQuality($quality, \DateTime $data = null): AdherentInstanceQuality
     {
-        if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
-            return $adherentInstanceQuality;
+        if ($quality instanceof InstanceQuality) {
+            if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
+                return $adherentInstanceQuality;
+            }
+
+            $quality = new AdherentInstanceQuality($this, $quality, $data ?? new \DateTime());
         }
 
-        $this->instanceQualities->add($adherentInstanceQuality = new AdherentInstanceQuality($this, $quality, $data ?? new \DateTime()));
+        if (!$quality instanceof AdherentInstanceQuality) {
+            throw new \InvalidArgumentException();
+        }
 
-        return $adherentInstanceQuality;
+        if (!$this->instanceQualities->contains($quality)) {
+            $quality->setAdherent($this);
+            $this->instanceQualities->add($quality);
+        }
+
+        return $quality;
     }
 
     public function removeInstanceQuality($quality): void
