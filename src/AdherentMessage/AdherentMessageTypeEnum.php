@@ -64,7 +64,7 @@ class AdherentMessageTypeEnum extends Enum
         ReferentElectedRepresentativeMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
         ReferentInstancesMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
 
-        LegislativeCandidateAdherentMessage::class => 'ROLE_LEGISLATIVE_CANDIDATE',
+        LegislativeCandidateAdherentMessage::class => ['ROLE_LEGISLATIVE_CANDIDATE', 'ROLE_DELEGATED_LEGISLATIVE_CANDIDATE'],
 
         CandidateAdherentMessage::class => ['ROLE_CANDIDATE', 'ROLE_DELEGATED_CANDIDATE'],
         CandidateJecouteMessage::class => ['ROLE_CANDIDATE', 'ROLE_DELEGATED_CANDIDATE'],
