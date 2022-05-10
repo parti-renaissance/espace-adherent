@@ -115,7 +115,9 @@ Feature:
           "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
           "code": "75-1",
           "type": "district",
-          "name": "Paris (1)"
+          "name": "Paris (1)",
+          "latitude": null,
+          "longitude": null
         }
       ],
       "apps": [
@@ -150,7 +152,9 @@ Feature:
           "code": "FR",
           "type": "country",
           "name": "France",
-          "uuid": "e3ef8883-906e-11eb-a875-0242ac150002"
+          "uuid": "e3ef8883-906e-11eb-a875-0242ac150002",
+          "latitude": null,
+          "longitude": null
         }
       ],
       "apps": [
@@ -326,7 +330,9 @@ Feature:
           "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
           "code": "59",
           "type": "department",
-          "name": "Nord"
+          "name": "Nord",
+          "latitude": null,
+          "longitude": null
         }
       ],
       "apps": [
@@ -365,43 +371,57 @@ Feature:
                 "uuid": "e3f01553-906e-11eb-a875-0242ac150002",
                 "code": "13",
                 "type": "department",
-                "name": "Bouches-du-Rhône"
+                "name": "Bouches-du-Rhône",
+                "latitude": null,
+                "longitude": null
             },
             {
                 "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
                 "code": "59",
                 "type": "department",
-                "name": "Nord"
+                "name": "Nord",
+                "latitude": null,
+                "longitude": null
             },
             {
                 "uuid": "e3efef5d-906e-11eb-a875-0242ac150002",
                 "code": "76",
                 "type": "department",
-                "name": "Seine-Maritime"
+                "name": "Seine-Maritime",
+                "latitude": null,
+                "longitude": null
             },
             {
                 "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
                 "code": "77",
                 "type": "department",
-                "name": "Seine-et-Marne"
+                "name": "Seine-et-Marne",
+                "latitude": null,
+                "longitude": null
             },
             {
                 "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                 "code": "92",
                 "type": "department",
-                "name": "Hauts-de-Seine"
+                "name": "Hauts-de-Seine",
+                "latitude": null,
+                "longitude": null
             },
             {
                 "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
                 "code": "ES",
                 "type": "country",
-                "name": "Espagne"
+                "name": "Espagne",
+                "latitude": null,
+                "longitude": null
             },
             {
                 "uuid": "e3efcea1-906e-11eb-a875-0242ac150002",
                 "code": "CH",
                 "type": "country",
-                "name": "Suisse"
+                "name": "Suisse",
+                "latitude": null,
+                "longitude": null
             }
         ],
         "apps": [

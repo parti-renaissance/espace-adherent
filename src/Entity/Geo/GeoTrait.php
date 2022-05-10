@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Entity\GeoData;
 use App\Entity\GeoPointTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait GeoTrait
 {
@@ -19,7 +19,7 @@ trait GeoTrait
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"autocomplete"})
+     * @Groups({"autocomplete"})
      *
      * @ApiProperty(identifier=false)
      */
@@ -30,7 +30,7 @@ trait GeoTrait
      *
      * @ORM\Column(unique=true)
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "zone_read",
      *     "department_read",
      *     "region_read",
@@ -58,7 +58,7 @@ trait GeoTrait
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "zone_read",
      *     "department_read",
      *     "region_read",
@@ -121,7 +121,7 @@ trait GeoTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"autocomplete"})
+     * @Groups({"autocomplete"})
      */
     public function getNameCode(): string
     {
