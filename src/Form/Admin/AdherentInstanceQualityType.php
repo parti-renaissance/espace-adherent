@@ -14,8 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdherentInstanceQualityType extends AbstractType implements DataTransformerInterface
 {
-    private $repository;
-    private $persistingQualities = [];
+    private InstanceQualityRepository $repository;
+    private array $persistingQualities = [];
+    private ?AdherentInstanceQuality $currentAdherentQuality = null;
 
     public function __construct(InstanceQualityRepository $repository)
     {
@@ -52,13 +53,15 @@ class AdherentInstanceQualityType extends AbstractType implements DataTransforme
                 $quality = $adherentQuality->getInstanceQuality();
 
                 if ($quality->isCustom()) {
-                    $qualities[] = $quality;
+                    $qualities[] = $adherentQuality;
                 } else {
                     $this->persistingQualities[] = $adherentQuality;
                 }
             }
 
-            return current($qualities);
+            $this->currentAdherentQuality = $qualities ? current($qualities) : null;
+
+            return $this->currentAdherentQuality ? $this->currentAdherentQuality->getInstanceQuality() : null;
         }
 
         return $value;
@@ -66,6 +69,14 @@ class AdherentInstanceQualityType extends AbstractType implements DataTransforme
 
     public function reverseTransform($value)
     {
-        return array_merge($this->persistingQualities, $value instanceof InstanceQuality ? [$value] : []);
+        if ($value instanceof InstanceQuality) {
+            return array_merge($this->persistingQualities, [
+                $this->currentAdherentQuality && $this->currentAdherentQuality->getInstanceQuality() === $value ?
+                    $this->currentAdherentQuality
+                    : new AdherentInstanceQuality(null, $value),
+            ]);
+        }
+
+        return $this->persistingQualities;
     }
 }

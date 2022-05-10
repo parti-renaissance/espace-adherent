@@ -370,3 +370,8 @@ services:
                 arguments:
                     - '@request_stack'
                     - '%kernel.debug%'
+
+    # SonataAdmin requests public `logger` service
+    logger:
+        alias: 'monolog.logger'
+        public: true
