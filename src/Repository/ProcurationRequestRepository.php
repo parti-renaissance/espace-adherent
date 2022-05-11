@@ -11,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ProcurationRequestRepository extends ServiceEntityRepository
 {
+    use ProcurationTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProcurationRequest::class);
@@ -143,7 +145,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
          * @var ProcurationRequest
          */
         foreach ($requests as $key => $request) {
-            $proxiesCountQuery = $this->andWhereRoundsMatch(clone $qb, $request->getElectionRounds()->toArray());
+            $proxiesCountQuery = $this->andWhereMatchingRounds(clone $qb, $request);
             $proxiesCountQuery = ProcurationProxyRepository::addAndWhereCountryConditions($proxiesCountQuery, $request, true);
 
             $proxiesCountQuery->setParameter('votePostalCodePrefix', substr($request->getVotePostalCode(), 0, 2));
@@ -222,21 +224,5 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         }
 
         return $qb->andWhere($codesFilter);
-    }
-
-    private function andWhereRoundsMatch(QueryBuilder $qb, array $electionRounds): QueryBuilder
-    {
-        if (!$electionRounds) {
-            return $qb;
-        }
-
-        $matches = [];
-
-        foreach ($electionRounds as $i => $round) {
-            $matches[] = ":round_$i MEMBER OF pp.electionRounds";
-            $qb->setParameter("round_$i", $round);
-        }
-
-        return $qb->andWhere($qb->expr()->andX(...$matches));
     }
 }

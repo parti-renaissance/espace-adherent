@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
 class ProcurationProxyType extends AbstractProcurationType
@@ -69,6 +70,11 @@ class ProcurationProxyType extends AbstractProcurationType
             ])
             ->add('electionRounds', ElectionRoundsChoiceType::class, [
                 'election_context' => $options['election_context'],
+                'constraints' => new Count([
+                    'min' => 1,
+                    'minMessage' => 'procuration.election_rounds.min_count',
+                    'groups' => ['front'],
+                ]),
             ])
             ->add('reachable', CheckboxType::class, [
                 'required' => false,

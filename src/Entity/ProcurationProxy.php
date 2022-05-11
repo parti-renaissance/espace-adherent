@@ -29,7 +29,6 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use ElectionRoundsCollectionTrait;
     use RecaptchaChallengeTrait;
 
     public const ACTION_ENABLE = 'activer';
@@ -290,13 +289,12 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     private $voteOffice = '';
 
     /**
-     * @var ElectionRound[]|Collection
+     * @var ProcurationProxyElectionRound[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ElectionRound")
-     * @ORM\JoinTable(name="procuration_proxies_to_election_rounds")
-     *
-     * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"front"})
+     * @ORM\OneToMany(targetEntity="ProcurationProxyElectionRound", mappedBy="procurationProxy", orphanRemoval=true, cascade={"all"})
      */
+    private $procurationProxyElectionRounds;
+
     private $electionRounds;
 
     /**
@@ -377,7 +375,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->phone = static::createPhoneNumber();
-        $this->electionRounds = new ArrayCollection();
+        $this->procurationProxyElectionRounds = new ArrayCollection();
         $this->foundRequests = new ArrayCollection();
         $this->otherVoteCities = new ArrayCollection();
     }
@@ -617,15 +615,92 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     }
 
     /**
-     * @return ElectionRound[]|Collection
+     * @return ProcurationProxyElectionRound[]|Collection
      */
-    public function getAvailableRounds(): Collection
+    public function getAvailableRounds(?ProcurationRequest $request = null): Collection
     {
-        if (0 === $this->countFreeSlots()) {
-            return new ArrayCollection();
+        return $this->procurationProxyElectionRounds->filter(function (ProcurationProxyElectionRound $ppElectionRound) use ($request) {
+            if ((!$request && ($ppElectionRound->isFrenchRequestAvailable() || $ppElectionRound->isForeignRequestAvailable()))
+                || ($request && (($request->isRequestFromFrance() && $ppElectionRound->isFrenchRequestAvailable())
+                    || (!$request->isRequestFromFrance() && $ppElectionRound->isForeignRequestAvailable())))) {
+                return $ppElectionRound->getElectionRound();
+            }
+        });
+    }
+
+    public function setElectionRounds(iterable $rounds): void
+    {
+        // Initialize the collection if not done already
+        $currentRoundsToRemove = new ArrayCollection($this->procurationProxyElectionRounds->toArray());
+
+        foreach ($rounds as $round) {
+            if (!$round instanceof ElectionRound) {
+                throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", but got "%s".', ElectionRound::class, \is_object($round) ? \get_class($round) : \gettype($round)));
+            }
+
+            if ($ppElectionRound = $this->findProcurationProxyElectionRoundBy($round)) {
+                $currentRoundsToRemove->removeElement($ppElectionRound);
+
+                continue;
+            }
+
+            $this->addElectionRound($round);
         }
 
-        return $this->electionRounds;
+        foreach ($currentRoundsToRemove as $round) {
+            $this->procurationProxyElectionRounds->removeElement($round);
+        }
+    }
+
+    /**
+     * @return ProcurationProxyElectionRound[]|Collection
+     */
+    public function getProcurationProxyElectionRounds(): Collection
+    {
+        return $this->procurationProxyElectionRounds;
+    }
+
+    /**
+     * @return ElectionRound[]|Collection
+     */
+    public function getElectionRounds(): Collection
+    {
+        return new ArrayCollection(array_map(function (ProcurationProxyElectionRound $ppElectionRound) {
+            return $ppElectionRound->getElectionRound();
+        }, $this->procurationProxyElectionRounds->toArray()));
+    }
+
+    public function addElectionRound(ElectionRound $round): void
+    {
+        if (!$this->hasElectionRound($round)) {
+            $this->procurationProxyElectionRounds->add(new ProcurationProxyElectionRound($this, $round));
+        }
+    }
+
+    public function removeElectionRound(ElectionRound $round): void
+    {
+        if ($electionRound = $this->findProcurationProxyElectionRoundBy($round)) {
+            $this->procurationProxyElectionRounds->removeElement($electionRound);
+        }
+    }
+
+    public function findProcurationProxyElectionRoundBy(ElectionRound $round): ?ProcurationProxyElectionRound
+    {
+        $electionRounds = $this->procurationProxyElectionRounds->filter(function (ProcurationProxyElectionRound $ppElectionRound) use ($round) {
+            return $ppElectionRound->getElectionRound() === $round;
+        });
+
+        return $electionRounds->count() > 0 ? $electionRounds->first() : null;
+    }
+
+    public function hasElectionRound(ElectionRound $round): bool
+    {
+        return null !== $this->findProcurationProxyElectionRoundBy($round);
+    }
+
+    public function getElection(): Election
+    {
+        return $this->procurationProxyElectionRounds->current()->getElectionRound()->getElection();
     }
 
     /**
@@ -636,13 +711,23 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         return $this->foundRequests;
     }
 
+    /**
+     * @return ProcurationRequest[]|Collection
+     */
+    public function getFoundRequestsByElectionRound(ElectionRound $round): Collection
+    {
+        return $this->getFoundRequests()->filter(function (ProcurationRequest $request) use ($round) {
+            return $request->getElectionRounds()->contains($round);
+        });
+    }
+
     private function addFoundRequest(ProcurationRequest $procurationRequest): void
     {
         if (!$this->foundRequests->contains($procurationRequest)) {
             $this->foundRequests->add($procurationRequest);
             $procurationRequest->setFoundProxy($this);
 
-            $this->processAvailabilities();
+            $this->processAvailabilitiesFor($procurationRequest);
         }
     }
 
@@ -651,7 +736,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->foundRequests->removeElement($procurationRequest);
         $procurationRequest->setFoundProxy(null);
 
-        $this->processAvailabilities();
+        $this->processAvailabilitiesFor($procurationRequest);
     }
 
     public function isDisabled(): bool
@@ -682,7 +767,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         }
 
         foreach ($request->getElectionRounds() as $round) {
-            if (!$this->electionRounds->contains($round)) {
+            if (!$this->hasElectionRound($round)) {
                 return false;
             }
         }
@@ -700,16 +785,6 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->proxiesCount = $proxiesCount;
     }
 
-    public function isFrenchRequestAvailable(): bool
-    {
-        return $this->frenchRequestAvailable;
-    }
-
-    public function isForeignRequestAvailable(): bool
-    {
-        return $this->foreignRequestAvailable;
-    }
-
     public function process(ProcurationRequest $request): void
     {
         $this->addFoundRequest($request);
@@ -720,22 +795,38 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->removeFoundRequest($request);
     }
 
+    public function processAvailabilitiesFor(ProcurationRequest $request): void
+    {
+        foreach ($request->getElectionRounds() as $round) {
+            $ppElectionRound = $this->findProcurationProxyElectionRoundBy($round);
+            $this->processFrenchAvailability($ppElectionRound);
+            $this->processForeignAvailability($ppElectionRound);
+        }
+    }
+
     public function processAvailabilities(): void
     {
-        $this->processFrenchAvailability();
-        $this->processForeignAvailability();
+        foreach ($this->getProcurationProxyElectionRounds() as $ppElectionRound) {
+            $ppElectionRound->setFrenchRequestAvailable($this->hasFreeSlots($round = $ppElectionRound->getElectionRound())
+                && self::MAX_FRENCH_REQUESTS > $this->countFrenchRequests($round));
+        }
+
+        foreach ($this->getProcurationProxyElectionRounds() as $ppElectionRound) {
+            $ppElectionRound->setForeignRequestAvailable($this->hasFreeSlots($round = $ppElectionRound->getElectionRound())
+                && $this->getForeignRequestsLimit() > $this->countForeignRequests($round));
+        }
     }
 
-    private function processFrenchAvailability(): void
+    private function processFrenchAvailability(ProcurationProxyElectionRound $ppElectionRound): void
     {
-        $this->frenchRequestAvailable = $this->hasFreeSlots()
-            && self::MAX_FRENCH_REQUESTS > $this->countFrenchRequests();
+        $ppElectionRound->setFrenchRequestAvailable($this->hasFreeSlots($round = $ppElectionRound->getElectionRound())
+            && self::MAX_FRENCH_REQUESTS > $this->countFrenchRequests($round));
     }
 
-    private function processForeignAvailability(): void
+    private function processForeignAvailability(ProcurationProxyElectionRound $ppElectionRound): void
     {
-        $this->foreignRequestAvailable = $this->hasFreeSlots()
-            && $this->getForeignRequestsLimit() > $this->countForeignRequests();
+        $ppElectionRound->setForeignRequestAvailable($this->hasFreeSlots($round = $ppElectionRound->getElectionRound())
+            && $this->getForeignRequestsLimit() > $this->countForeignRequests($round));
     }
 
     private function getForeignRequestsLimit(): int
@@ -765,33 +856,33 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->state = $state;
     }
 
-    private function hasFreeSlots(): bool
+    private function hasFreeSlots(ElectionRound $round): bool
     {
-        return 0 < $this->countFreeSlots();
+        return 0 < $this->countFreeSlots($round);
     }
 
-    public function countFreeSlots(): int
+    public function countFreeSlots(ElectionRound $round): int
     {
-        return $this->proxiesCount - $this->foundRequests->count();
+        return $this->proxiesCount - $this->getFoundRequestsByElectionRound($round)->count();
     }
 
-    private function countFrenchRequests(): int
+    private function countFrenchRequests(ElectionRound $round): int
     {
         return $this
             ->getFoundRequests()
-            ->filter(function (ProcurationRequest $request) {
-                return true === $request->isRequestFromFrance();
+            ->filter(function (ProcurationRequest $request) use ($round) {
+                return true === $request->isRequestFromFrance() && $request->getElectionRounds()->contains($round);
             })
             ->count()
         ;
     }
 
-    private function countForeignRequests(): int
+    private function countForeignRequests(ElectionRound $round): int
     {
         return $this
             ->getFoundRequests()
-            ->filter(function (ProcurationRequest $request) {
-                return false === $request->isRequestFromFrance();
+            ->filter(function (ProcurationRequest $request) use ($round) {
+                return false === $request->isRequestFromFrance() && $request->getElectionRounds()->contains($round);
             })
             ->count()
         ;

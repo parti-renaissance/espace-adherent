@@ -506,7 +506,7 @@ HELP
                             return $er
                                 ->createQueryBuilder('tc')
                                 ->andWhere('tc.enabled = 1')
-                                ;
+                            ;
                         },
                     ])
                 ->end()

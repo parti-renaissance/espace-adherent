@@ -37,23 +37,31 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
 
         $status = $this->getStatus();
 
-        $qb->andWhere("$alias.disabled = :disabled");
+        $qb->andWhere('electionRound.date >= CURRENT_DATE()')
+            ->andWhere("$alias.disabled = :disabled")
+            ->setParameter('disabled', false)
+        ;
+
+        if ($this->getElectionRound()) {
+            $qb
+                ->andWhere('ppElectionRound.electionRound = :round')
+                ->setParameter('round', $this->getElectionRound())
+            ;
+        }
 
         if (self::UNASSOCIATED === $status) {
             $qb
                 ->andWhere(
                     $qb->expr()->orX(
-                        "$alias.frenchRequestAvailable != 0",
-                        "$alias.foreignRequestAvailable != 0"
+                        'ppElectionRound.frenchRequestAvailable != 0',
+                        'ppElectionRound.foreignRequestAvailable != 0'
                     )
                 )
-                ->setParameter('disabled', false)
              ;
         } elseif (self::ASSOCIATED === $status) {
             $qb
-                ->andWhere("$alias.frenchRequestAvailable = 0")
-                ->andWhere("$alias.foreignRequestAvailable = 0")
-                ->setParameter('disabled', false)
+                ->andWhere('ppElectionRound.frenchRequestAvailable = 0')
+                ->andWhere('ppElectionRound.foreignRequestAvailable = 0')
             ;
         } elseif (self::DISABLED === $status) {
             $qb

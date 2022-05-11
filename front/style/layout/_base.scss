@@ -124,6 +124,10 @@ ul {
     &.disc {
         list-style: disc;
     }
+
+    ul > li {
+        margin-left: 20px;
+    }
 }
 
 hr {

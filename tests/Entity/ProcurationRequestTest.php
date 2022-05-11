@@ -2,6 +2,7 @@
 
 namespace Tests\App\Entity;
 
+use App\Entity\ElectionRound;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
 use PHPUnit\Framework\TestCase;
@@ -18,94 +19,112 @@ class ProcurationRequestTest extends TestCase
         $proxy->setProxiesCount(2);
 
         $this->assertEmpty($proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertEmpty($proxy->getElectionRounds());
+
+        $electionRound = new ElectionRound();
 
         $requestFromForeignCountry = new ProcurationRequest();
         $requestFromForeignCountry->setRequestFromFrance(false);
+        $requestFromForeignCountry->addElectionRound($electionRound);
+
+        $proxy->addElectionRound($electionRound);
+        $ppElectionRound = $proxy->findProcurationProxyElectionRoundBy($electionRound);
+
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromForeignCountry->process($proxy);
 
         $this->assertCount(1, $proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertCount(1, $proxy->getElectionRounds());
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromFrance = new ProcurationRequest();
         $requestFromFrance->setRequestFromFrance(true);
+        $requestFromFrance->addElectionRound($electionRound);
 
         $requestFromFrance->process($proxy);
 
         $this->assertCount(2, $proxy->getFoundRequests());
-        $this->assertFalse($proxy->isFrenchRequestAvailable());
-        $this->assertFalse($proxy->isForeignRequestAvailable());
+        $this->assertFalse($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertFalse($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromForeignCountry->unprocess();
 
         $this->assertCount(1, $proxy->getFoundRequests());
-        $this->assertFalse($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertFalse($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromFrance->unprocess();
 
         $this->assertEmpty($proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
     }
 
     public function testProcessAndUnprocessWithForeignProxy()
     {
+        $electionRound = new ElectionRound();
         $proxy = new ProcurationProxy();
         $proxy->setVoteCountry('GB');
         $proxy->setProxiesCount(3);
 
         $this->assertEmpty($proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
 
         $requestFromFrance = new ProcurationRequest();
         $requestFromFrance->setRequestFromFrance(true);
+        $requestFromFrance->addElectionRound($electionRound);
+
+        $proxy->addElectionRound($electionRound);
+        $ppElectionRound = $proxy->findProcurationProxyElectionRoundBy($electionRound);
+
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromFrance->process($proxy);
 
         $this->assertCount(1, $proxy->getFoundRequests());
-        $this->assertFalse($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertFalse($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromForeignCountry = new ProcurationRequest();
         $requestFromForeignCountry->setRequestFromFrance(false);
+        $requestFromForeignCountry->addElectionRound($electionRound);
 
         $requestFromForeignCountry->process($proxy);
 
         $this->assertCount(2, $proxy->getFoundRequests());
-        $this->assertFalse($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertFalse($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromForeignCountry2 = new ProcurationRequest();
         $requestFromForeignCountry2->setRequestFromFrance(false);
+        $requestFromForeignCountry2->addElectionRound($electionRound);
 
         $requestFromForeignCountry2->process($proxy);
 
         $this->assertCount(3, $proxy->getFoundRequests());
-        $this->assertFalse($proxy->isFrenchRequestAvailable());
-        $this->assertFalse($proxy->isForeignRequestAvailable());
+        $this->assertFalse($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertFalse($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromFrance->unprocess();
 
         $this->assertCount(2, $proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromForeignCountry->unprocess();
 
         $this->assertCount(1, $proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         $requestFromForeignCountry2->unprocess();
 
         $this->assertEmpty($proxy->getFoundRequests());
-        $this->assertTrue($proxy->isFrenchRequestAvailable());
-        $this->assertTrue($proxy->isForeignRequestAvailable());
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
     }
 
     /**
@@ -118,19 +137,26 @@ class ProcurationRequestTest extends TestCase
         bool $expectedFrenchAvailability,
         bool $expectedForeignAvailability
     ): void {
+        $electionRound = new ElectionRound();
         $proxy = new ProcurationProxy();
         $proxy->setVoteCountry($proxyVoteCountry);
         $proxy->setProxiesCount($proxiesCount);
+        $proxy->addElectionRound($electionRound);
+        $ppElectionRound = $proxy->findProcurationProxyElectionRoundBy($electionRound);
+
+        $this->assertTrue($ppElectionRound->isFrenchRequestAvailable());
+        $this->assertTrue($ppElectionRound->isForeignRequestAvailable());
 
         foreach ($requests as $requestData) {
             $request = new ProcurationRequest();
             $request->setRequestFromFrance($requestData);
+            $request->addElectionRound($electionRound);
 
             $request->process($proxy);
         }
 
-        $this->assertEquals($expectedFrenchAvailability, $proxy->isFrenchRequestAvailable());
-        $this->assertEquals($expectedForeignAvailability, $proxy->isForeignRequestAvailable());
+        $this->assertEquals($expectedFrenchAvailability, $ppElectionRound->isFrenchRequestAvailable());
+        $this->assertEquals($expectedForeignAvailability, $ppElectionRound->isForeignRequestAvailable());
     }
 
     public function provideProcessTestCases(): \Generator
