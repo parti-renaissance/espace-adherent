@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 trait GeoPointTrait
 {
     /**
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
+     *
+     * @Groups({"scope"})
      */
     private $latitude;
 
@@ -15,6 +20,8 @@ trait GeoPointTrait
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
+     *
+     * @Groups({"scope"})
      */
     private $longitude;
 
