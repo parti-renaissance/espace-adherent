@@ -14,4 +14,9 @@ class LegislativeCandidateAdherentMessage extends AbstractAdherentMessage implem
     {
         return AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE;
     }
+
+    protected function getFromNameSuffix(): string
+    {
+        return ' | Avec vous';
+    }
 }
