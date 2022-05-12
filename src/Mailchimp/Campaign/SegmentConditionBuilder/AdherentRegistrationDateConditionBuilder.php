@@ -19,6 +19,10 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
+        if (null !== $campaign->getMailchimpListType()) {
+            return [];
+        }
+
         return $this->buildFromFilter($campaign->getMessage()->getFilter());
     }
 

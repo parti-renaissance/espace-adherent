@@ -32,6 +32,10 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
     {
+        if (null !== $campaign->getMailchimpListType()) {
+            return [];
+        }
+
         return $this->buildFromFilter($campaign->getMessage()->getFilter());
     }
 
