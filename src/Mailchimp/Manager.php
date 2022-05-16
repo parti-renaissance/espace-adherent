@@ -42,7 +42,6 @@ class Manager implements LoggerAwareInterface
     public const INTEREST_KEY_COMMITTEE_NO_FOLLOWER = 'COMMITTEE_NO_FOLLOWER';
     public const INTEREST_KEY_REFERENT = 'REFERENT';
     public const INTEREST_KEY_DEPUTY = 'DEPUTY';
-    public const INTEREST_KEY_REC = 'REC';
     public const INTEREST_KEY_COORDINATOR = 'COORDINATOR';
     public const INTEREST_KEY_PROCURATION_MANAGER = 'PROCURATION_MANAGER';
     public const INTEREST_KEY_ASSESSOR_MANAGER = 'ASSESSOR_MANAGER';

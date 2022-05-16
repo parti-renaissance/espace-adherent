@@ -9,7 +9,6 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -195,7 +194,17 @@ class Driver implements LoggerAwareInterface
 
     public function isSuccessfulResponse(?ResponseInterface $response): bool
     {
-        return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+        if ($response) {
+            if (200 <= $response->getStatusCode() && $response->getStatusCode() < 300) {
+                return true;
+            } else {
+                $this->logger->error(sprintf('[API] Error: %s', $response->getContent(false)));
+
+                return false;
+            }
+        }
+
+        return false;
     }
 
     private function sendRequest(string $method, string $uri, array $body = []): bool
@@ -213,13 +222,6 @@ class Driver implements LoggerAwareInterface
                 '/3.0/'.ltrim($uri, '/'),
                 ($body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : [])
             );
-        } catch (HttpExceptionInterface $e) {
-            $this->logger->error(sprintf(
-                '[API] Error: %s',
-                ($response = $e->getResponse()) ? $response->getContent(false) : 'Unknown'
-            ), ['exception' => $e]);
-
-            return $this->lastResponse = $response;
         } catch (TransportExceptionInterface $e) {
             $this->logger->error(sprintf('[API] Error: %s', $e->getMessage()), ['exception' => $e]);
 
