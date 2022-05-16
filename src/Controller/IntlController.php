@@ -2,24 +2,29 @@
 
 namespace App\Controller;
 
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\Intl\VoteOfficeBundle;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IntlController extends AbstractController
 {
+    private FranceCities $franceCities;
+
+    public function __construct(FranceCities $franceCities)
+    {
+        $this->franceCities = $franceCities;
+    }
+
     /**
      * @Route("/postal-code/{postalCode}", name="api_postal_code", methods={"GET"})
      */
     public function postalCodeAction(string $postalCode): JsonResponse
     {
-        return new JsonResponse(FranceCitiesBundle::getPostalCodeCities($postalCode));
+        return new JsonResponse($this->franceCities->getPostalCodeCities($postalCode));
     }
 
     /**
@@ -28,22 +33,6 @@ class IntlController extends AbstractController
     public function voteOfficesAction(string $countryCode): JsonResponse
     {
         return new JsonResponse(VoteOfficeBundle::getVoteOfficies($countryCode));
-    }
-
-    /**
-     * @Route("/city/autocompletion",
-     *     name="api_city_autocomplete",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"}
-     * )
-     */
-    public function cityAutocompleteAction(Request $request): JsonResponse
-    {
-        if (!$search = $request->query->get('search')) {
-            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
-        }
-
-        return new JsonResponse(FranceCitiesBundle::searchCities($search));
     }
 
     /**
