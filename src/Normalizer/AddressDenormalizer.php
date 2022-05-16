@@ -4,7 +4,7 @@ namespace App\Normalizer;
 
 use App\Address\AddressInterface;
 use App\Entity\PostAddress;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -14,6 +14,13 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
     use DenormalizerAwareTrait;
 
     private const ALREADY_CALLED = 'ADDRESS_DENORMALIZER_ALREADY_CALLED';
+
+    private FranceCities $franceCities;
+
+    public function __construct(FranceCities $franceCities)
+    {
+        $this->franceCities = $franceCities;
+    }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
@@ -28,7 +35,7 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             $postalCode = $data['postal_code'];
             $cityName = $data['city_name'];
 
-            $inseeCode = FranceCitiesBundle::getCityInseeCode($postalCode ?? '', $cityName);
+            $inseeCode = $this->franceCities->getCityInseeCode($postalCode ?? '', $cityName);
 
             if ($inseeCode) {
                 $data['city'] = "$postalCode-$inseeCode";

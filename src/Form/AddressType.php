@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Address\Address;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -15,6 +15,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddressType extends AbstractType
 {
+    private FranceCities $franceCities;
+
+    public function __construct(FranceCities $franceCities)
+    {
+        $this->franceCities = $franceCities;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -62,7 +69,7 @@ class AddressType extends AbstractType
             $address = $event->getData();
 
             if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
-                $inseeCode = FranceCitiesBundle::getCityInseeCode($address->getPostalCode(), $address->getCityName());
+                $inseeCode = $this->franceCities->getCityInseeCode($address->getPostalCode(), $address->getCityName());
 
                 if ($inseeCode) {
                     $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $inseeCode));

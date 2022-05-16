@@ -3,7 +3,7 @@
 namespace App\Validator;
 
 use App\Address\AddressInterface;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -11,6 +11,13 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class AddressValidator extends ConstraintValidator
 {
+    private FranceCities $franceCities;
+
+    public function __construct(FranceCities $franceCities)
+    {
+        $this->franceCities = $franceCities;
+    }
+
     public function validate($address, Constraint $constraint)
     {
         if (!$constraint instanceof Address) {
@@ -34,7 +41,7 @@ class AddressValidator extends ConstraintValidator
         }
 
         // Invalid postal code
-        if (!is_scalar($address->getPostalCode()) || 0 === \count(FranceCitiesBundle::getPostalCodeCities($address->getPostalCode()))) {
+        if (!is_scalar($address->getPostalCode()) || 0 === \count($this->franceCities->getPostalCodeCities($address->getPostalCode()))) {
             $this->context->addViolation($constraint->frenchPostalCodeMessage);
 
             return;
@@ -42,7 +49,7 @@ class AddressValidator extends ConstraintValidator
 
         // Invalid city
         $parts = explode('-', $address->getCity());
-        if (2 !== \count($parts) || !FranceCitiesBundle::getCity($parts[0], $parts[1])) {
+        if (2 !== \count($parts) || !$this->franceCities->getCity($parts[0], $parts[1])) {
             $this->context->addViolation($constraint->frenchCityMessage);
 
             return;
