@@ -176,6 +176,17 @@ class Driver implements LoggerAwareInterface
         return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, $this->createHash($mail)));
     }
 
+    public function getMemberStatus(string $mail, string $listId): ?string
+    {
+        $response = $this->send('GET', sprintf('/lists/%s/members/%s?fields=status', $listId, $this->createHash($mail)));
+
+        if ($this->isSuccessfulResponse($response)) {
+            return $response->toArray()['status'] ?? null;
+        }
+
+        return null;
+    }
+
     public function getReportData(string $campaignId): array
     {
         $response = $this->send('GET', sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);

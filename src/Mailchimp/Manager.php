@@ -14,6 +14,7 @@ use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
@@ -69,15 +70,22 @@ class Manager implements LoggerAwareInterface
      */
     public function editMember(Adherent $adherent, AdherentChangeCommandInterface $message): void
     {
+        $listId = $this->mailchimpObjectIdMapping->getListIdFromSource($adherent->getSource());
+
+        if (
+            ($adherentStatus = $this->driver->getMemberStatus($adherent->getEmailAddress(), $listId))
+            && \in_array($adherentStatus, [ContactStatusEnum::SUBSCRIBED, ContactStatusEnum::UNSUBSCRIBED])
+            && $adherentStatus !== $adherent->getMailchimpStatus()
+        ) {
+            $adherent->setEmailUnsubscribed(ContactStatusEnum::UNSUBSCRIBED === $adherentStatus);
+        }
+
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
             ->updateFromAdherent($adherent)
         ;
 
-        $result = $this->driver->editMember(
-            $requestBuilder->buildMemberRequest($message->getEmailAddress()),
-            $this->mailchimpObjectIdMapping->getListIdFromSource($adherent->getSource())
-        );
+        $result = $this->driver->editMember($requestBuilder->buildMemberRequest($message->getEmailAddress()), $listId);
 
         if ($result && null === $adherent->getSource()) {
             $this->updateMemberTags(

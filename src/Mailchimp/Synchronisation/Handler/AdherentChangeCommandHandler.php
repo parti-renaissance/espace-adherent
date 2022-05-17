@@ -46,6 +46,7 @@ class AdherentChangeCommandHandler implements MessageHandlerInterface, LoggerAwa
 
         $this->manager->editMember($adherent, $message);
 
+        $this->entityManager->flush();
         $this->entityManager->clear();
     }
 }
