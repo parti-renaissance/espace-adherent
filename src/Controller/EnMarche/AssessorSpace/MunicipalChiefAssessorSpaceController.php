@@ -7,7 +7,10 @@ use App\Assessor\Filter\AssessorRequestExportFilter;
 use App\Assessor\Filter\AssociationVotePlaceFilter;
 use App\Entity\Election;
 use App\Form\Assessor\DefaultVotePlaceFilterType;
+use App\FranceCities\FranceCities;
 use App\Intl\FranceCitiesBundle;
+use App\Repository\Election\VotePlaceResultRepository;
+use App\Repository\VotePlaceRepository;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
@@ -20,6 +23,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceController
 {
+    private FranceCities $franceCities;
+
+    public function __construct(
+        VotePlaceRepository $votePlaceRepository,
+        VotePlaceResultRepository $voteResultRepository,
+        bool $enableAssessorSpace,
+        FranceCities $franceCities
+    ) {
+        $this->franceCities = $franceCities;
+
+        parent::__construct($votePlaceRepository, $voteResultRepository, $enableAssessorSpace);
+    }
+
     protected function getSpaceType(): string
     {
         return AdherentSpaceEnum::MUNICIPAL_CHIEF;
@@ -31,7 +47,7 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
         $postalCodes = [];
 
         foreach ($inseeCodes as $inseeCode) {
-            if ($cityData = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode)) {
+            if ($cityData = $this->franceCities->getCityByInseeCode($inseeCode)) {
                 $postalCodes[] = $cityData['postal_code'];
             }
         }

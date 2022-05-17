@@ -165,6 +165,11 @@ class FranceCities
         return null;
     }
 
+    public function getCityNameByInseeCode(string $inseeCode): ?string
+    {
+        return $this->getCityByInseeCode($inseeCode)['name'] ?? null;
+    }
+
     private function getCitiesList(): array
     {
         if (empty(self::$cities)) {

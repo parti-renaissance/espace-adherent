@@ -6,11 +6,18 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\Utils\AreaUtils;
 
 class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
+    private FranceCities $franceCities;
+
+    public function __construct(FranceCities $franceCities)
+    {
+        $this->franceCities = $franceCities;
+    }
+
     public function supports(AdherentMessageInterface $message): bool
     {
         return $message instanceof MunicipalChiefAdherentMessage && $message->getFilter() instanceof MunicipalChiefFilter;
@@ -22,7 +29,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
     protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array
     {
         $inseeCode = $filter->getInseeCode();
-        $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
+        $city = $this->franceCities->getCityByInseeCode($inseeCode);
 
         $filters = [
             [
@@ -39,7 +46,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
             && AreaUtils::INSEE_CODE_ANNECY === $inseeCode
         ) {
             foreach (AreaUtils::INSEE_CODES_ATTACHED_TO_ANNECY as $inseeCodeAttachedToAnnecy) {
-                $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCodeAttachedToAnnecy);
+                $city = $this->franceCities->getCityByInseeCode($inseeCodeAttachedToAnnecy);
 
                 $filters[] = [
                     [

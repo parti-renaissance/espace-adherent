@@ -72,6 +72,15 @@ class FranceCitiesTest extends AbstractKernelTestCase
         $this->assertEquals($expectedCities, $this->franceCities->searchCitiesByInseeCodes($inseeCodes));
     }
 
+    /**
+     * @group debug
+     */
+    public function testGetCityNameByInseeCode(): void
+    {
+        $this->assertEquals('Paris 1er', $this->franceCities->getCityNameByInseeCode('75101'));
+        $this->assertEquals(null, $this->franceCities->getCityNameByInseeCode('74101'));
+    }
+
     public function providePostalCodes(): array
     {
         return [
