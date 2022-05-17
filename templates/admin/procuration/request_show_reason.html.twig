@@ -1,7 +1,0 @@
-{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
-
-{% block field_value %}
-    {% if object.reason %}
-        {{ ('procuration_request.reasons.' ~ object.reason)|trans }}
-    {% endif %}
-{% endblock %}

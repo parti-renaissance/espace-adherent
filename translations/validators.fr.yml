@@ -263,9 +263,6 @@ procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
 procuration.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour demander une procuration.
 
-procuration.reason.not_blank: Vous devez spécifier une raison.
-procuration.reason.invalid: Cette raison n'est pas valide.
-
 procuration.proposal_conditions.required: Vous devez vous engager à voter selon les voeux du mandant.
 
 procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.

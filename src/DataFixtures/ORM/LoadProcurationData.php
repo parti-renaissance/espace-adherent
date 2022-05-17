@@ -55,8 +55,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75018-75118',
             null,
             'Damremont',
-            array_merge($presidentialElections->getRounds()->toArray(), $legislativeElections->getRounds()->toArray()),
-            ProcurationRequest::REASON_RESIDENCY
+            array_merge($presidentialElections->getRounds()->toArray(), $legislativeElections->getRounds()->toArray())
         ));
 
         $manager->persist($this->createRequest(
@@ -76,8 +75,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75018-75118',
             null,
             'Aquarius',
-            [$presidentialElections->getRounds()->last(), $legislativeElections->getRounds()->last()],
-            ProcurationRequest::REASON_HEALTH
+            [$presidentialElections->getRounds()->last(), $legislativeElections->getRounds()->last()]
         ));
 
         $manager->persist($this->createRequest(
@@ -97,8 +95,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '92110-92024',
             null,
             'Mairie',
-            [$presidentialElections->getRounds()->last(), $legislativeElections->getRounds()->last()],
-            ProcurationRequest::REASON_HELP
+            [$presidentialElections->getRounds()->last(), $legislativeElections->getRounds()->last()]
         ));
 
         $manager->persist($this->createRequest(
@@ -118,8 +115,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75020-75120',
             null,
             'Lycée Faubourg',
-            $partialLegislativeElections->getRounds(),
-            ProcurationRequest::REASON_HEALTH
+            $partialLegislativeElections->getRounds()
         ));
 
         $manager->persist($this->createRequest(
@@ -139,8 +135,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75010-75110',
             null,
             'Madeleine',
-            [$partialLegislativeElections->getRounds()->last()],
-            ProcurationRequest::REASON_HEALTH
+            [$partialLegislativeElections->getRounds()->last()]
         ));
 
         $manager->persist($request1 = $this->createRequest(
@@ -161,7 +156,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Saighterse',
             array_merge($presidentialElections->getRounds()->toArray(), $legislativeElections->getRounds()->toArray()),
-            ProcurationRequest::REASON_HEALTH,
             true,
             true
         ));
@@ -183,8 +177,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75008-75108',
             null,
             'École de la république',
-            $partialLegislativeElections->getRounds(),
-            ProcurationRequest::REASON_TRAINING
+            $partialLegislativeElections->getRounds()
         ));
 
         $manager->persist($request3 = $this->createRequest(
@@ -205,7 +198,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Gymnase de Iéna',
             $partialLegislativeElections->getRounds(),
-            ProcurationRequest::REASON_RESIDENCY,
             false
         ));
 
@@ -267,7 +259,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Camden',
             $partialLegislativeElections->getRounds(),
-            ProcurationRequest::REASON_HEALTH,
             0
         ));
 
@@ -289,7 +280,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Camden',
             $partialLegislativeElections->getRounds(),
-            ProcurationRequest::REASON_HEALTH,
             0
         ));
 
@@ -311,7 +301,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'Camden',
             $partialLegislativeElections->getRounds(),
-            ProcurationRequest::REASON_HOLIDAYS,
             0,
             false,
             ProcurationRequest::DISABLED_REASON_INVALID_EMAIL
@@ -559,7 +548,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ?string $voteCityName,
         string $voteOffice,
         iterable $electionRounds,
-        string $reason = ProcurationRequest::REASON_HOLIDAYS,
         bool $requestFromFrance = true,
         bool $enabled = true,
         string $disabledReason = null
@@ -586,7 +574,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         $request->setVoteCityName($voteCityName);
         $request->setVoteOffice($voteOffice);
         $request->setElectionRounds($electionRounds);
-        $request->setReason($reason);
         $request->setRequestFromFrance($requestFromFrance);
         $request->setEnabled($enabled);
         if (!$enabled) {

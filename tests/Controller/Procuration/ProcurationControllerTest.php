@@ -264,7 +264,6 @@ class ProcurationControllerTest extends WebTestCase
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
                 'electionRounds' => [],
-                'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
             ],
         ]));
@@ -276,7 +275,6 @@ class ProcurationControllerTest extends WebTestCase
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
                 'electionRounds' => ['10'],
-                'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
                 'reachable' => true,
             ],
@@ -308,7 +306,6 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('6 rue Neyret', $request->getAddress());
         $this->assertSame(true, $request->isReachable());
         $this->assertEquals([$this->getRepository(ElectionRound::class)->find(10)], $request->getElectionRounds()->toArray());
-        $this->assertSame(ProcurationRequest::REASON_HEALTH, $request->getReason());
     }
 
     public function testProcurationRequestWithInvalidEmailAddress(): void
@@ -372,7 +369,6 @@ class ProcurationControllerTest extends WebTestCase
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
                 'electionRounds' => ['10'],
-                'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
                 'reachable' => true,
             ],
@@ -637,7 +633,6 @@ class ProcurationControllerTest extends WebTestCase
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
                 'electionRounds' => ['10'],
-                'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
             ],
         ]));

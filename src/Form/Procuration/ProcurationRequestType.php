@@ -78,16 +78,6 @@ class ProcurationRequestType extends AbstractProcurationType
                     ->add('electionRounds', ElectionRoundsChoiceType::class, [
                         'election_context' => $options['election_context'],
                     ])
-                    ->add('reason', ChoiceType::class, [
-                        'choices' => [
-                            'Je ne réside pas là où je suis électeur(trice)' => ProcurationRequest::REASON_RESIDENCY,
-                            'Je serai en vacances pendant cette période' => ProcurationRequest::REASON_HOLIDAYS,
-                            'Je suis dans l’incapacité physique de me déplacer ' => ProcurationRequest::REASON_HEALTH,
-                            'J’ai des contraintes professionnelles' => ProcurationRequest::REASON_PROFESSIONAL,
-                            'J’ai des contraintes personnelles' => ProcurationRequest::REASON_PERSONAL,
-                            'Je crains le virus du Covid-19' => ProcurationRequest::REASON_COVID19,
-                        ],
-                    ])
                     ->add('authorization', CheckboxType::class, [
                         'mapped' => false,
                         'constraints' => new IsTrue([

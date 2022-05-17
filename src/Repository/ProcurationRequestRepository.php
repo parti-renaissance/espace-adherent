@@ -41,9 +41,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
                 'pr.voteCityName AS request_voteCityName',
                 'pr.voteCountry AS request_voteCountry',
                 'GROUP_CONCAT(er.label SEPARATOR \'\\n\') AS request_electionRounds',
-                'pr.reason AS request_reason',
                 'pr.processedAt AS request_processedAt',
-
                 'pp.id AS proposal_id',
                 'pp.gender AS proposal_birthdate',
                 'pp.firstNames AS proposal_firstNames',

@@ -2,7 +2,6 @@
 
 namespace App\Admin;
 
-use App\Entity\ProcurationRequest;
 use App\Form\GenderType;
 use App\Form\UnitedNationsCountryType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -84,21 +83,6 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('electionRounds', null, [
                     'label' => 'Tours',
                 ])
-                ->add('reason', ChoiceType::class, [
-                    'label' => 'Raison',
-                    'choices' => [
-                        ProcurationRequest::REASON_RESIDENCY,
-                        ProcurationRequest::REASON_HOLIDAYS,
-                        ProcurationRequest::REASON_PROFESSIONAL,
-                        ProcurationRequest::REASON_HANDICAP,
-                        ProcurationRequest::REASON_HEALTH,
-                        ProcurationRequest::REASON_HELP,
-                        ProcurationRequest::REASON_TRAINING,
-                    ],
-                    'choice_label' => function (string $choice) {
-                        return 'procuration_request.reasons.'.$choice;
-                    },
-                ])
                 ->add('requestFromFrance', ChoiceType::class, [
                     'label' => 'Établissement de la procuration',
                     'choices' => [
@@ -178,10 +162,6 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ->with('Procuration', ['class' => 'col-md-4'])
                 ->add('electionRounds', null, [
                     'label' => 'Tours',
-                ])
-                ->add('reason', null, [
-                    'label' => 'Raison',
-                    'template' => 'admin/procuration/request_show_reason.html.twig',
                 ])
                 ->add('requestFromFrance', null, [
                     'label' => 'Établissement de la procuration',
