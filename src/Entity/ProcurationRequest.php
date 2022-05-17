@@ -28,16 +28,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     use ElectionRoundsCollectionTrait;
     use RecaptchaChallengeTrait;
 
-    public const REASON_PROFESSIONAL = 'professional';
-    public const REASON_HANDICAP = 'handicap';
-    public const REASON_PERSONAL = 'personal';
-    public const REASON_COVID19 = 'covid19';
-    public const REASON_HEALTH = 'health';
-    public const REASON_HELP = 'help';
-    public const REASON_TRAINING = 'training';
-    public const REASON_HOLIDAYS = 'holidays';
-    public const REASON_RESIDENCY = 'residency';
-
     public const DISABLED_REASON_BANNED_EMAIL = 'banned_email';
     public const DISABLED_REASON_INVALID_EMAIL = 'invalid_email';
     public const DISABLED_REASON_BY_PROCURATION_MANAGER = 'by_procuration_manager';
@@ -320,21 +310,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"election_rounds"})
      */
     private $electionRounds;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
-     * @Assert\NotBlank(message="procuration.reason.invalid", groups={"election_rounds"})
-     * @Assert\Choice(
-     *     callback={"App\Entity\ProcurationRequest", "getReasons"},
-     *     message="procuration.reason.invalid",
-     *     strict=true,
-     *     groups={"election_rounds"}
-     * )
-     */
-    private $reason = self::REASON_RESIDENCY;
 
     /**
      * @var bool
@@ -647,16 +622,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         }, $this->electionRounds->toArray());
     }
 
-    public function getReason(): ?string
-    {
-        return $this->reason;
-    }
-
-    public function setReason(?string $reason): void
-    {
-        $this->reason = $reason;
-    }
-
     public function isProcessed(): bool
     {
         return $this->processed;
@@ -720,18 +685,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         $stepUris = array_keys(self::STEPS);
 
         return $currentStepUri === end($stepUris);
-    }
-
-    public static function getReasons(): array
-    {
-        return [
-            self::REASON_RESIDENCY,
-            self::REASON_HOLIDAYS,
-            self::REASON_HEALTH,
-            self::REASON_PROFESSIONAL,
-            self::REASON_PERSONAL,
-            self::REASON_COVID19,
-        ];
     }
 
     private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber

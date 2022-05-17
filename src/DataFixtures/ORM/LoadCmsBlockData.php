@@ -77,7 +77,7 @@ TXT
            'Texte affichant les informations de contact au support',
            <<<'TXT'
 En cas de question, n'hésitez pas à nous contacter au <a href="tel:+33186950286">01 86 95 02 86</a>
-ou à <a href="mailto:mobilisation@em-2022.fr">mobilisation@em-2022.fr</a>.
+ou à <a href="mailto:legislatives@avecvous.fr">legislatives@avecvous.fr</a>.
 TXT
         ));
 

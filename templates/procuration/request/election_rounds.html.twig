@@ -6,20 +6,6 @@
 
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/enterprise.js"></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            var reasonSelector = dom('#{{ procuration_form.reason.vars.id }}');
-            var residencyWarning = dom('#reason-residency-warning');
-
-            on(reasonSelector, 'change', function() {
-                if ('residency' == reasonSelector.value) {
-                    show(residencyWarning);
-                } else {
-                    hide(residencyWarning);
-                }
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block procuration_content %}
@@ -62,16 +48,6 @@
                 <p class="text--smallest text--gray b__nudge--top-0">
                     Attention, le scrutin aura lieu les samedi 9 avril 2022 et samedi 23 avril 2022 pour les zones ci-après : les Français résidants d'Amérique du nord, Amérique latine et Caraïbes ansi que les Français résidant dans certains territoires d'outre-mer : Guadeloupe, Martinique, Guyane, Saint-Pierre-et-Miquelon, Saint-Barthélemy, Saint-Martin et Polynésie française.
                 </p>
-
-                <div class="form__row b__nudge--top-40">
-                    {{ form_label(procuration_form.reason, 'Pour quelle raison vous est-il impossible de voter ?') }}
-                    {{ form_errors(procuration_form.reason) }}
-                    {{ form_widget(procuration_form.reason, { attr: { class: 'form--full b__nudge--top-5' } }) }}
-                </div>
-
-                <div class="text--summary" id="reason-residency-warning">
-                    {{ cms_block('procuration-reason-residency-warning') }}
-                </div>
 
                 <div class="b__nudge--top-40">
                     {{ form_errors(procuration_form.reachable) }}

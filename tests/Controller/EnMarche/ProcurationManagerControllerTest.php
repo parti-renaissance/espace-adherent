@@ -100,7 +100,6 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('Madeleine', trim($crawler->filter('#request-vote-office')->text()));
         $this->assertSame('77, Place de la Madeleine', trim($crawler->filter('#request-address')->text()));
         $this->assertSame('75010 Paris 10e FR', trim($crawler->filter('#request-city')->text()));
-        $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/demande/12');
 
@@ -117,7 +116,6 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('Camden', trim($crawler->filter('#request-vote-office')->text()));
         $this->assertSame('4Q Covent Garden', trim($crawler->filter('#request-address')->text()));
         $this->assertSame('GV6H  GB', trim($crawler->filter('#request-city')->text()));
-        $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         // I see request potential proxies
         $proxies = $crawler->filter('.datagrid__table tbody tr');

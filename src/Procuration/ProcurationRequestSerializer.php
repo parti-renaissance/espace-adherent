@@ -54,7 +54,6 @@ class ProcurationRequestSerializer
             'request_electionPresidentialSecondRound',
             'request_electionLegislativeFirstRound',
             'request_electionLegislativeSecondRound',
-            'request_reason',
             'request_processedAt',
             'proposal_id',
             'proposal_birthdate',
