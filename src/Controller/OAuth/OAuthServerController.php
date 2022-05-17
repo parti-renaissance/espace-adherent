@@ -70,7 +70,15 @@ class OAuthServerController extends AbstractController
                     $manager->record($user, $client, $authRequest->getScopes());
                 }
 
-                return $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
+                $response = $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
+
+                if ($this->isGranted('ROLE_PREVIOUS_ADMIN') && $response->hasHeader('location')) {
+                    $currentLocation = $response->getHeaderLine('location');
+
+                    $response = $response->withHeader('location', $currentLocation.(false === strpos($currentLocation, '?') ? '?' : '&').'_switch_user=true');
+                }
+
+                return $response;
             }
         } catch (OAuthServerException $exception) {
             return $exception->generateHttpResponse(new Response());
