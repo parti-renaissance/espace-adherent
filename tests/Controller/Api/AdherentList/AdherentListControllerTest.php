@@ -65,7 +65,7 @@ class AdherentListControllerTest extends AbstractWebCaseTest
 
         $content = json_decode($response->getContent(), true);
 
-        self::assertSame(4, $content['metadata']['count']);
+        self::assertSame(5, $content['metadata']['count']);
         PHPUnitHelper::assertArraySubset(
             [
                 'postal_code' => '77000',

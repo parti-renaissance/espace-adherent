@@ -20,6 +20,11 @@ class AdherentSpaceEnum
     public const ASSESSOR = 'assessor';
     public const CORRESPONDENT = 'correspondent';
 
+    public const WITH_JEMENGAGE_USERS = [
+        ScopeEnum::LEGISLATIVE_CANDIDATE,
+        ScopeEnum::CORRESPONDENT,
+    ];
+
     public const SCOPES = [
         ScopeEnum::REFERENT => self::REFERENT,
         ScopeEnum::CANDIDATE => self::CANDIDATE,

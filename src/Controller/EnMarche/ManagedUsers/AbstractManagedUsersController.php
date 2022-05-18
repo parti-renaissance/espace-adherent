@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\ManagedUsers;
 
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
@@ -79,6 +80,9 @@ abstract class AbstractManagedUsersController extends AbstractController
 
         $model->setCommitteeUuids($this->getRestrictedCommittees($session));
         $model->setCities($this->getRestrictedCities($session));
+        if (!\in_array($this->getSpaceType(), AdherentSpaceEnum::WITH_JEMENGAGE_USERS)) {
+            $model->setOnlyJeMengageUsers(false);
+        }
 
         return $model;
     }

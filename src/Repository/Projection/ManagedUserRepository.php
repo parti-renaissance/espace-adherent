@@ -266,12 +266,18 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
 
-        $userTypeConditions = ['u.source IS NULL'];
-        if ($filter->getWithJeMengageUsers()) {
-            $userTypeConditions[] = 'u.source = :jme_user_type';
-            $qb->setParameter('jme_user_type', MembershipSourceEnum::JEMENGAGE);
+        if (null !== $filter->getOnlyJeMengageUsers()) {
+            if ($filter->getOnlyJeMengageUsers()) {
+                $qb->andWhere('u.source = :jme_user_type');
+                $qb->setParameter('jme_user_type', MembershipSourceEnum::JEMENGAGE);
+            } else {
+                $qb->andWhere('u.source IS NULL');
+            }
+        } else {
+            $qb->andWhere('(u.source IS NULL OR u.source = :jme_user_type)')
+                ->setParameter('jme_user_type', MembershipSourceEnum::JEMENGAGE)
+            ;
         }
-        $qb->andWhere($qb->expr()->orX(...$userTypeConditions));
 
         return $qb;
     }

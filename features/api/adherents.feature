@@ -691,6 +691,10 @@ Feature:
         ]
     }
     """
+    When I send a "GET" request to "/api/v3/adherents?scope=correspondent&onlyJeMengageUsers=1"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 1 |
 
   Scenario Outline: As a user with (delegated) legislative candidate role I can get filters list to filter adherents
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -747,6 +751,17 @@ Feature:
         {
             "code": "isCommitteeMember",
             "label": "Membre d'un comité",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
+            "code": "onlyJeMengageUsers",
+            "label": "Compte de la majorité présidentielle",
             "options": {
                 "choices": [
                     "Non",
@@ -890,6 +905,14 @@ Feature:
         ]
     }
     """
+    When I send a "GET" request to "/api/v3/adherents?scope=<scope>&onlyJeMengageUsers=1"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 0 |
+    When I send a "GET" request to "/api/v3/adherents?scope=<scope>&onlyJeMengageUsers=0"
+    Then the response status code should be 200
+    And the JSON nodes should match:
+      | metadata.total_items  | 2 |
     Examples:
       | user                                    | scope                                           |
       | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
