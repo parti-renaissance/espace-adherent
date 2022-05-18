@@ -55,7 +55,6 @@ Feature:
     Given I fill in the following:
       | become_adherent[address][country]    | FR       |
       | become_adherent[address][postalCode] | 69001    |
-    And I wait 10 seconds
     And I wait until I see "Lyon" in the "#become_adherent_address_city" element
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"

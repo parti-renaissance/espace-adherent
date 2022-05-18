@@ -6,9 +6,6 @@ use App\Entity\Geo\Zone;
 use App\FranceCities\FranceCities;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group debug
- */
 class FranceCitiesTest extends AbstractKernelTestCase
 {
     private ?FranceCities $franceCities = null;
