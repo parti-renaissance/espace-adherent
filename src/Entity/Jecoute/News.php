@@ -36,6 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -331,7 +332,11 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
 
     public function getCleanedCroppedText(): ?string
     {
-        return $this->isEnriched() ? substr(StringCleaner::removeMarkdown($this->text), 0, 512) : $this->text;
+        return $this->isEnriched() ?
+            (new UnicodeString(StringCleaner::removeMarkdown($this->text)))
+                ->truncate(512, '…', false)
+                ->toString()
+            : $this->text;
     }
 
     public function getText(): ?string
