@@ -78,6 +78,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "controller": "App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController",
  *             "defaults": {"_api_receive": false},
  *         },
+ *         "delete": {
+ *             "path": "/v3/pap_campaigns/{id}",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('CAN_DELETE_PAP_CAMPAIGN', object)",
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
