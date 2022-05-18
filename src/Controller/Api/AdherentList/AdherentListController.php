@@ -60,6 +60,9 @@ class AdherentListController extends AbstractController
 
         $scopeGenerator = $this->authorizationChecker->getScopeGenerator($request, $user);
         $filter = $this->filterFactory->createForZones($scopeGenerator->getCode(), $scopeGenerator->generate($user)->getZones());
+        if ($this->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')) {
+            $filter->withJeMengageUsers();
+        }
 
         $this->denormalizer->denormalize($request->query->all(), ManagedUsersFilter::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => $filter,

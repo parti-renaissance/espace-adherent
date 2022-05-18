@@ -278,7 +278,7 @@ Feature:
     And the response should be in JSON
 
   Scenario Outline: As a user with (delegated) referent role I can get columns to list adherents
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents/columns?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -407,7 +407,7 @@ Feature:
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
 
   Scenario Outline: As a user with (delegated) referent role I can get filters list to filter adherents
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -501,16 +501,16 @@ Feature:
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user with (delegated) referent role I can get adherents of my zones
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 4,
+            "total_items": 5,
             "items_per_page": 100,
-            "count": 4,
+            "count": 5,
             "current_page": 1,
             "last_page": 1
         },
@@ -530,6 +530,22 @@ Feature:
                 "region": "Île-de-France",
                 "sms_subscription": false,
                 "email_subscription": false
+            },
+            {
+                "city": "Melun",
+                "city_code": null,
+                "country": "FR",
+                "department": "Hauts-de-Seine",
+                "department_code": "92",
+                "email_subscription": false,
+                "first_name": "Jules",
+                "gender": "male",
+                "interests": [],
+                "last_name": "Fullstack",
+                "postal_code": "77000",
+                "region": "Île-de-France",
+                "region_code": "11",
+                "sms_subscription": false
             },
             {
                 "postal_code": "8802",
@@ -626,7 +642,7 @@ Feature:
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user with correspondent role I can get adherents of my zones
-    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents?scope=correspondent"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -677,7 +693,7 @@ Feature:
     """
 
   Scenario Outline: As a user with (delegated) legislative candidate role I can get filters list to filter adherents
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents/filters?scope=<scope>&feature=contacts"
     Then the response status code should be 200
     And the JSON should be equal to:
@@ -782,7 +798,7 @@ Feature:
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
 
   Scenario Outline: As a user with (delegated) legislative candidate role I can get adherents of my zones
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/adherents?scope=<scope>"
     Then the response status code should be 200
     And the JSON should be equal to:
