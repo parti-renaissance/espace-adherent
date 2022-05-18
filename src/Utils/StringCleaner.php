@@ -16,9 +16,8 @@ class StringCleaner
         // remove bold and italic
         $text = preg_replace('/([\*_]{1,3})(\S.*?\S{0,1})\1/', '$2', $text);
         // remove line break, * and #
-        $text = str_replace(["\r\n", "\r", "\n", '*', '#', '  '], ' ', $text);
-        $text = trim($text);
+        $text = preg_replace("/\*|#|\s?\s+/", ' ', $text);
 
-        return $text;
+        return trim($text);
     }
 }
