@@ -51,7 +51,7 @@ class CreateVotePlaceType extends AbstractType
             if (Address::FRANCE === $votePlace->getCountry()) {
                 $codePrefix = array_search(
                     $votePlace->getCity(),
-                    $this->franceCities->getPostalCodeCities($votePlace->getPostalCode()),
+                    $this->franceCities->findCitiesByPostalCode($votePlace->getPostalCode()),
                     true
                 );
 

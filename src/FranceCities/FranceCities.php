@@ -2,34 +2,42 @@
 
 namespace App\FranceCities;
 
-use App\Entity\ReferentTag;
-use App\Utils\AreaUtils;
+use App\Entity\Geo\Zone;
 
 class FranceCities
 {
     private static $cities = [];
     private static $citiesByInseeCode = [];
-    private CitiesStorage $citiesStorage;
+    private CitiesStorageInterface $citiesStorage;
 
-    public function __construct(CitiesStorage $citiesStorage)
+    public static $countries = [
+        '98000' => 'MC', // Monaco
+        '971' => 'GP', // Guadeloupe
+        '972' => 'MQ', // Martinique
+        '973' => 'GF', // Guyane
+        '974' => 'RE', // Réunion
+        '975' => 'PM', // Saint-Pierre-et-Miquelon
+        '976' => 'YT', // Mayotte
+        '986' => 'WF', // Wallis-et-Futuna
+        '987' => 'PF', // Polynésie
+        '988' => 'NC', // Nouvelle Calédonie
+    ];
+
+    public function __construct(CitiesStorageInterface $citiesStorage)
     {
         $this->citiesStorage = $citiesStorage;
     }
 
-    public function getPostalCodeCities(string $postalCode): array
+    public function findCitiesByPostalCode(string $postalCode): array
     {
         return $this->findCitiesForPostalCode($this->getCitiesList(), $postalCode);
     }
 
-    public function getCity(string $postalCode, ?string $inseeCode): ?string
+    public function getCity(string $postalCode, string $inseeCode): ?string
     {
-        if ($inseeCode) {
-            $citiesList = $this->getCitiesList();
+        $citiesList = $this->getCitiesList();
 
-            return $citiesList[ltrim($inseeCode, '0')]['postal_code'] === $postalCode ? $citiesList[ltrim($inseeCode, '0')]['name'] : null;
-        }
-
-        return null;
+        return \array_key_exists($inseeCode, $citiesList) && \in_array($postalCode, $citiesList[$inseeCode]['postalCode'], true) ? $citiesList[$inseeCode]['name'] : null;
     }
 
     public function getCitiesByInseeCode(): array
@@ -49,7 +57,7 @@ class FranceCities
 
         foreach ($this->getCitiesList() as $inseeCode => $city) {
             if (
-                $city['postal_code'] === $postalCode
+                \in_array($postalCode, $city['postalCode'], true)
                 && str_starts_with($this->canonicalizeCityName($city['name']), $normalizedName)
             ) {
                 return $inseeCode;
@@ -61,7 +69,7 @@ class FranceCities
 
     public function getCountryISOCode(string $postalCode): string
     {
-        foreach (CitiesStorage::$countries as $prefix => $country) {
+        foreach (self::$countries as $prefix => $country) {
             if (0 === strpos($postalCode, (string) $prefix)) {
                 return $country;
             }
@@ -100,12 +108,16 @@ class FranceCities
                     continue;
                 }
             } else {
-                if (0 !== strpos($city['postal_code'], $search)) {
+                if (0 !== strpos(implode(', ', $city['postalCode']), $search)) {
                     continue;
                 }
             }
 
-            $results[$inseeCode] = array_merge($city, ['insee_code' => $inseeCode]);
+            $city['insee_code'] = $city['code'];
+            $city['postal_code'] = implode(', ', $city['postalCode']);
+            unset($city['code'], $city['postalCode']);
+
+            $results[$inseeCode] = $city;
 
             if (is_numeric($search) && \count($results) >= $maxResults) {
                 break;
@@ -122,20 +134,13 @@ class FranceCities
     }
 
     /**
-     * @param ReferentTag[]|array $tags
+     * @param Zone[]|array $zones
      */
-    public function searchCitiesForTags(array $tags, string $search, int $maxResults = 10): array
+    public function searchCitiesForZones(array $zones, string $search, int $maxResults = 10): array
     {
         $filters = [];
-        foreach ($tags as $tag) {
-            if (AreaUtils::PREFIX_POSTALCODE_CORSICA === $tag->getCode()) {
-                $filters[] = AreaUtils::CODE_CORSICA_A;
-                $filters[] = AreaUtils::CODE_CORSICA_B;
-            } elseif ($tag->isDepartmentTag() || $tag->isBoroughTag()) {
-                $filters[] = $tag->getCode();
-            } elseif ($code = $tag->getDepartmentCodeFromCirconscriptionName()) {
-                $filters[] = $code;
-            }
+        foreach ($zones as $zone) {
+            $filters[] = $zone->getCode();
         }
 
         return $this->searchCities($search, $maxResults, [], $filters);
@@ -154,15 +159,18 @@ class FranceCities
 
     public function getCityByInseeCode(string $inseeCode): ?array
     {
+        $foundedCity = null;
         $citiesList = $this->getCitiesList();
-        $trimmedInseeCode = ltrim($inseeCode, '0');
-        if (\array_key_exists($inseeCode, $citiesList) || \array_key_exists($trimmedInseeCode, $citiesList)) {
-            $city = $citiesList[$inseeCode] ?? $citiesList[$trimmedInseeCode];
 
-            return array_merge($city, ['insee_code' => $inseeCode]);
+        if (\array_key_exists($inseeCode, $citiesList)) {
+            $foundedCity = $citiesList[$inseeCode];
+
+            $foundedCity['insee_code'] = $foundedCity['code'];
+            $foundedCity['postal_code'] = implode(', ', $foundedCity['postalCode']);
+            unset($foundedCity['code'], $foundedCity['postalCode']);
         }
 
-        return null;
+        return $foundedCity;
     }
 
     public function getCityNameByInseeCode(string $inseeCode): ?string
@@ -184,7 +192,7 @@ class FranceCities
         $citiesFoundedList = [];
 
         foreach ($citiesList as $inseeCode => $city) {
-            if ($city['postal_code'] === $postalCode) {
+            if (\in_array($postalCode, $city['postalCode'], true)) {
                 $citiesFoundedList[$inseeCode] = $city['name'];
             }
         }

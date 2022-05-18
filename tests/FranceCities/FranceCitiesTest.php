@@ -2,10 +2,13 @@
 
 namespace Tests\App\FranceCities;
 
-use App\Entity\ReferentTag;
+use App\Entity\Geo\Zone;
 use App\FranceCities\FranceCities;
 use Tests\App\AbstractKernelTestCase;
 
+/**
+ * @group debug
+ */
 class FranceCitiesTest extends AbstractKernelTestCase
 {
     private ?FranceCities $franceCities = null;
@@ -27,15 +30,15 @@ class FranceCitiesTest extends AbstractKernelTestCase
     /**
      * @dataProvider providePostalCodes
      */
-    public function testGetPostalCodeCities(string $postalCode, array $expectedCities): void
+    public function testFindCitiesByPostalCode(string $postalCode, array $expectedCities): void
     {
-        $this->assertEquals($expectedCities, $this->franceCities->getPostalCodeCities($postalCode));
+        $this->assertEquals($expectedCities, $this->franceCities->findCitiesByPostalCode($postalCode));
     }
 
     /**
      * @dataProvider provideCity
      */
-    public function testGetCity(string $postalCode, string $inseeCode, string $expectedCity): void
+    public function testGetCity(string $postalCode, string $inseeCode, ?string $expectedCity): void
     {
         $this->assertEquals($expectedCity, $this->franceCities->getCity($postalCode, $inseeCode));
     }
@@ -49,11 +52,11 @@ class FranceCitiesTest extends AbstractKernelTestCase
     }
 
     /**
-     * @dataProvider provideSearchCitiesForTags
+     * @dataProvider provideSearchCitiesForZones
      */
-    public function testSearchCitiesForTags(array $tags, string $search, array $expectedCities): void
+    public function testSearchCitiesForZones(array $tags, string $search, array $expectedCities): void
     {
-        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesForTags($tags, $search));
+        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesForZones($tags, $search));
     }
 
     /**
@@ -72,9 +75,6 @@ class FranceCitiesTest extends AbstractKernelTestCase
         $this->assertEquals($expectedCities, $this->franceCities->searchCitiesByInseeCodes($inseeCodes));
     }
 
-    /**
-     * @group debug
-     */
     public function testGetCityNameByInseeCode(): void
     {
         $this->assertEquals('Paris 1er', $this->franceCities->getCityNameByInseeCode('75101'));
@@ -114,6 +114,11 @@ class FranceCitiesTest extends AbstractKernelTestCase
                 '92009',
                 'Bois-Colombes',
             ],
+            [
+                '01000',
+                '01001',
+                null,
+            ],
         ];
     }
 
@@ -133,11 +138,11 @@ class FranceCitiesTest extends AbstractKernelTestCase
         ];
     }
 
-    public function provideSearchCitiesForTags(): iterable
+    public function provideSearchCitiesForZones(): iterable
     {
         yield [
             [
-                $this->createReferentTag('92', true, false),
+                $this->createReferentZone('92'),
             ],
             'Bois Colom',
             [
@@ -150,7 +155,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
         ];
         yield [
             [
-                $this->createReferentTag('77', true, false),
+                $this->createReferentZone('77'),
             ],
             'Bois Colom',
             [],
@@ -158,14 +163,14 @@ class FranceCitiesTest extends AbstractKernelTestCase
 
         yield [
             [
-                $this->createReferentTag('92', true, false),
+                $this->createReferentZone('92'),
             ],
             'Melun',
             [],
         ];
         yield [
             [
-                $this->createReferentTag('77', true, false),
+                $this->createReferentZone('77'),
             ],
             'Melun',
             [
@@ -216,22 +221,14 @@ class FranceCitiesTest extends AbstractKernelTestCase
         ];
     }
 
-    private function createReferentTag(string $code, bool $isDepartmentTag, bool $isBoroughTag): ReferentTag
+    private function createReferentZone(string $code): Zone
     {
-        $tag = $this->createMock(ReferentTag::class);
-        $tag->expects($this->any())
+        $zone = $this->createMock(Zone::class);
+        $zone->expects($this->any())
             ->method('getCode')
             ->willReturn($code)
         ;
-        $tag->expects($this->any())
-            ->method('isDepartmentTag')
-            ->willReturn($isDepartmentTag)
-        ;
-        $tag->expects($this->any())
-            ->method('isBoroughTag')
-            ->willReturn($isBoroughTag)
-        ;
 
-        return $tag;
+        return $zone;
     }
 }

@@ -128,8 +128,8 @@ class ReferentController extends AbstractController
         /** @var Adherent $referent */
         $referent = $this->getUser();
 
-        $managedTags = $referent->getManagedArea()->getTags();
+        $managedZones = $referent->getManagedArea()->getZones();
 
-        return new JsonResponse($franceCities->searchCitiesForTags($managedTags->toArray(), $search));
+        return new JsonResponse($franceCities->searchCitiesForZones($managedZones->toArray(), $search));
     }
 }

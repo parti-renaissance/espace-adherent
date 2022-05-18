@@ -428,4 +428,17 @@ class ZoneRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function getFranceCities(): array
+    {
+        return $this->createQueryBuilder('zone', 'zone.code')
+            ->select('zone.code, zone.name', 'zone.postalCode')
+            ->where('zone.type IN (:types)')
+            ->andWhere('zone.code NOT IN (:codes)')
+            ->setParameter('types', [Zone::BOROUGH, Zone::CITY])
+            ->setParameter('codes', ['75056', '13055', '69123'])
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
 }

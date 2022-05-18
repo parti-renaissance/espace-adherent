@@ -24,7 +24,7 @@ class IntlController extends AbstractController
      */
     public function postalCodeAction(string $postalCode): JsonResponse
     {
-        return new JsonResponse($this->franceCities->getPostalCodeCities($postalCode));
+        return new JsonResponse($this->franceCities->findCitiesByPostalCode($postalCode));
     }
 
     /**
