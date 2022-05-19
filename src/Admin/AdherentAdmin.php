@@ -43,6 +43,8 @@ use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Intl\UnitedNationsBundle;
 use App\Mailchimp\Contact\ContactStatusEnum;
+use App\Membership\AdherentEvents;
+use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MandatesEnum;
 use App\Membership\UserEvents;
@@ -1080,6 +1082,8 @@ HELP
     public function postUpdate($object)
     {
         $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
+
+        $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($object), AdherentEvents::PROFILE_UPDATED);
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
