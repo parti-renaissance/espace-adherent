@@ -40,9 +40,6 @@ class EventCommandType extends AbstractType
                 ->add('private', CheckboxType::class, [
                     'required' => false,
                 ])
-                ->add('electoral', CheckboxType::class, [
-                    'required' => false,
-                ])
             ;
         }
     }

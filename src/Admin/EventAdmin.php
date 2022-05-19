@@ -215,9 +215,6 @@ class EventAdmin extends AbstractAdmin
                 ->add('private', null, [
                     'label' => 'Réservé aux adhérents',
                 ])
-                ->add('electoral', null, [
-                    'label' => 'Électoral',
-                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
