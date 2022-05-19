@@ -173,9 +173,9 @@ class AdherentControllerTest extends WebTestCase
         self::assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         self::assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
         self::assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('73100', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('73100-73182', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
+        self::assertSame('826 avenue du lys', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
+        self::assertSame('77190', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        self::assertSame('77190-77152', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
         self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
         self::assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
