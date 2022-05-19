@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
@@ -96,6 +97,7 @@ class AdherentAdmin extends AbstractAdmin
     private $politicalCommitteeManager;
     /** @var InstanceQualityRepository */
     private $instanceQualityRepository;
+    private AdherentProfileHandler $adherentProfileHandler;
     private LoggerInterface $logger;
 
     /**
@@ -112,6 +114,7 @@ class AdherentAdmin extends AbstractAdmin
         EventDispatcherInterface $dispatcher,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
         PoliticalCommitteeManager $politicalCommitteeManager,
+        AdherentProfileHandler $adherentProfileHandler,
         LoggerInterface $logger
     ) {
         parent::__construct($code, $class, $baseControllerName);
@@ -119,6 +122,7 @@ class AdherentAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
         $this->politicalCommitteeManager = $politicalCommitteeManager;
+        $this->adherentProfileHandler = $adherentProfileHandler;
         $this->logger = $logger;
     }
 
@@ -1075,7 +1079,7 @@ HELP
      */
     public function postUpdate($object)
     {
-        // No need to handle referent tags update as they are not update-able from admin
+        $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
