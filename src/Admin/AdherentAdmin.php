@@ -37,6 +37,7 @@ use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Intl\UnitedNationsBundle;
@@ -266,6 +267,26 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('boardMember.roles', null, [
                     'label' => 'Rôles',
                     'template' => 'admin/adherent/list_board_member_roles.html.twig',
+                ])
+            ->end()
+            ->with('Adresse', ['class' => 'col-md-6'])
+                ->add('postAddress.address', TextType::class, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', TextType::class, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', TextType::class, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                    'label' => 'Pays',
+                ])
+                ->add('postAddress.latitude', TextType::class, [
+                    'label' => 'Latitude',
+                ])
+                ->add('postAddress.longitude', TextType::class, [
+                    'label' => 'Longitude',
                 ])
             ->end()
             ->with('Coordinateur', ['class' => 'col-md-3'])
@@ -524,6 +545,26 @@ HELP
                     ->add('papUserRole', null, [
                         'label' => 'Utilisateur PAP app mobile',
                         'required' => false,
+                    ])
+                ->end()
+                ->with('Adresse', ['class' => 'col-md-6'])
+                    ->add('postAddress.address', TextType::class, [
+                        'label' => 'Rue',
+                    ])
+                    ->add('postAddress.postalCode', TextType::class, [
+                        'label' => 'Code postal',
+                    ])
+                    ->add('postAddress.cityName', TextType::class, [
+                        'label' => 'Ville',
+                    ])
+                    ->add('postAddress.country', UnitedNationsCountryType::class, [
+                        'label' => 'Pays',
+                    ])
+                    ->add('postAddress.latitude', TextType::class, [
+                        'label' => 'Latitude',
+                    ])
+                    ->add('postAddress.longitude', TextType::class, [
+                        'label' => 'Longitude',
                     ])
                 ->end()
                 ->with('Zone expérimentale 🚧', [
