@@ -79,6 +79,7 @@ abstract class AbstractManagedUsersController extends AbstractController
 
         $model->setCommitteeUuids($this->getRestrictedCommittees($session));
         $model->setCities($this->getRestrictedCities($session));
+        $model->setOnlyJeMengageUsers(false);
 
         return $model;
     }

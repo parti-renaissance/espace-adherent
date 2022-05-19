@@ -13,93 +13,64 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ManagedUsersFilter
 {
     /**
-     * @var string|null
-     *
      * @Groups({"filter_write"})
      */
-    private $gender;
+    private ?string $gender = null;
 
     /**
-     * @var int|null
-     *
      * @Groups({"filter_write"})
      */
-    private $ageMin;
+    private ?int $ageMin = null;
 
     /**
-     * @var int|null
-     *
      * @Groups({"filter_write"})
      */
-    private $ageMax;
+    private ?int $ageMax = null;
 
     /**
-     * @var string|null
-     *
      * @Assert\Length(max=255)
      *
      * @Groups({"filter_write"})
      */
-    private $firstName;
+    private ?string $firstName = null;
 
     /**
-     * @var string|null
-     *
      * @Assert\Length(max=255)
      *
      * @Groups({"filter_write"})
      */
-    private $lastName;
+    private ?string $lastName = null;
 
     /**
-     * @var string|null
-     *
      * @Assert\Length(max=255)
      */
-    private $city;
+    private ?string $city = null;
 
     /**
-     * @var array|null
-     *
      * @Groups({"filter_write"})
      */
-    private $interests = [];
+    private array $interests = [];
 
     /**
-     * @var \DateTime|null
-     *
      * @Groups({"filter_write"})
      */
-    private $registeredSince;
+    private ?\DateTime $registeredSince = null;
 
     /**
-     * @var \DateTime|null
-     *
      * @Groups({"filter_write"})
      */
-    private $registeredUntil;
+    private ?\DateTime $registeredUntil = null;
 
     /**
-     * @var bool|null
-     *
      * @Groups({"filter_write"})
      */
-    private $isCommitteeMember;
+    private ?bool $isCommitteeMember = null;
 
-    /**
-     * @var bool
-     */
-    private $includeCommitteeSupervisors;
+    private ?bool $includeCommitteeSupervisors = null;
 
-    /**
-     * @var bool
-     */
-    private $includeCommitteeProvisionalSupervisors;
+    private ?bool $includeCommitteeProvisionalSupervisors = null;
 
-    /**
-     * @var bool
-     */
-    private $includeCommitteeHosts;
+    private ?bool $includeCommitteeHosts = null;
 
     /**
      * @var Zone[]
@@ -109,78 +80,62 @@ class ManagedUsersFilter
      *     message="referent.managed_zone.empty"
      * )
      */
-    private $managedZones;
+    private array $managedZones;
 
     /**
      * @var Zone[]
      *
      * @Groups({"filter_write"})
      */
-    private $zones;
+    private array $zones;
 
     /**
-     * @var bool|null
-     *
      * @Groups({"filter_write"})
      */
-    private $emailSubscription;
+    private ?bool $emailSubscription = null;
 
     /**
-     * @var bool|null
-     *
      * @Groups({"filter_write"})
      */
-    private $smsSubscription;
+    private ?bool $smsSubscription = null;
+
+    private ?string $subscriptionType;
 
     /**
-     * @var string|null
-     */
-    private $subscriptionType;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices={"createdAt", "lastName"})
      */
-    private $sort = 'createdAt';
+    private string $sort = 'createdAt';
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices={"a", "d"})
      */
-    private $order = 'd';
+    private string $order = 'd';
 
-    /**
-     * @var Committee|null
-     */
-    private $committee;
+    private ?Committee $committee = null;
 
     /**
      * @var string[]
      */
-    private $committeeUuids;
+    private array $committeeUuids;
 
     /**
      * @var string[]
      */
-    private $cities;
+    private array $cities;
+
+    private ?bool $voteInCommittee = null;
 
     /**
-     * @var bool|null
-     */
-    private $voteInCommittee;
-
-    /**
-     * @var bool|null
-     *
      * @Groups({"filter_write"})
      */
-    private $isCertified;
+    private ?bool $isCertified = null;
 
-    private bool $withJeMengageUsers = false;
+    /**
+     * @Groups({"filter_write"})
+     */
+    private ?bool $onlyJeMengageUsers = null;
 
     public function __construct(
         string $subscriptionType = null,
@@ -551,13 +506,13 @@ class ManagedUsersFilter
         );
     }
 
-    public function getWithJeMengageUsers(): bool
+    public function getOnlyJeMengageUsers(): ?bool
     {
-        return $this->withJeMengageUsers;
+        return $this->onlyJeMengageUsers;
     }
 
-    public function withJeMengageUsers(): void
+    public function setOnlyJeMengageUsers(?bool $onlyJeMengageUsers): void
     {
-        $this->withJeMengageUsers = true;
+        $this->onlyJeMengageUsers = $onlyJeMengageUsers;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\ManagedUsers\Filter;
 
-use App\ManagedUsers\ManagedUsersFilter;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 
@@ -16,10 +15,5 @@ class LegislativeCandidateFilterFactory extends AbstractFilterFactory
     protected function getSubscriptionType(): string
     {
         return SubscriptionTypeEnum::CANDIDATE_EMAIL;
-    }
-
-    protected function updateFilter(ManagedUsersFilter $filter): void
-    {
-        $filter->withJeMengageUsers();
     }
 }
