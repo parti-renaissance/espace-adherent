@@ -125,8 +125,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $adherent2->addReferentTag($this->getReference('referent_tag_73'));
-        $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_73'));
+        $adherent2->addReferentTag($this->getReference('referent_tag_77'));
+        $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $this->adherentFactory->createFromArray([
