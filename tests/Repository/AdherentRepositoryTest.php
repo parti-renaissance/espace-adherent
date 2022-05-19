@@ -65,7 +65,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
 
         $managedByReferent = $this->adherentRepository->findAllManagedBy($referent);
 
-        $this->assertCount(11, $managedByReferent, 'Referent should manage 9 adherents + himself in his area.');
+        $this->assertCount(12, $managedByReferent, 'Referent should manage 9 adherents + himself in his area.');
         $this->assertSame('Damien SCHMIDT', $managedByReferent[0]->getFullName());
         $this->assertSame('Michel VASSEUR', $managedByReferent[1]->getFullName());
         $this->assertSame('Michelle Dufour', $managedByReferent[2]->getFullName());
@@ -77,6 +77,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         $this->assertSame('Referent child Referent child', $managedByReferent[8]->getFullName());
         $this->assertSame('Benjamin Duroc', $managedByReferent[9]->getFullName());
         $this->assertSame('Gisele Berthoux', $managedByReferent[10]->getFullName());
+        $this->assertSame('Carl Mirabeau', $managedByReferent[11]->getFullName());
     }
 
     /**
