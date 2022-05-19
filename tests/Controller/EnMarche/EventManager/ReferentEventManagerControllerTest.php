@@ -51,7 +51,6 @@ class ReferentEventManagerControllerTest extends WebTestCase
             'event_command[address][country]' => 'FR',
             'event_command[description]' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'event_command[private]' => true,
-            'event_command[electoral]' => true,
         ]));
         $this->assertResponseIsSuccessful();
         $errors = $crawler->filter('.form__errors > li');
@@ -83,7 +82,7 @@ class ReferentEventManagerControllerTest extends WebTestCase
         self::assertSame('My new referent event', $event->getName());
         self::assertSame('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', $event->getDescription());
         self::assertTrue($event->isPrivate());
-        self::assertTrue($event->isElectoral());
+        self::assertFalse($event->isElectoral());
     }
 
     protected function setUp(): void
