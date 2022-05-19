@@ -432,7 +432,8 @@ class ZoneRepository extends ServiceEntityRepository
     public function getFranceCities(): array
     {
         return $this->createQueryBuilder('zone', 'zone.code')
-            ->select('zone.code, zone.name', 'zone.postalCode')
+            ->select('zone.name')
+            ->addSelect('zone.code AS insee_code', 'zone.postalCode AS postal_code')
             ->where('zone.type IN (:types)')
             ->andWhere('zone.code NOT IN (:codes)')
             ->setParameter('types', [Zone::BOROUGH, Zone::CITY])

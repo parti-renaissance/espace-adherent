@@ -33,13 +33,6 @@ class FranceCities
         return $this->findCitiesForPostalCode($this->getCitiesList(), $postalCode);
     }
 
-    public function getCity(string $postalCode, string $inseeCode): ?string
-    {
-        $citiesList = $this->getCitiesList();
-
-        return \array_key_exists($inseeCode, $citiesList) && \in_array($postalCode, $citiesList[$inseeCode]['postalCode'], true) ? $citiesList[$inseeCode]['name'] : null;
-    }
-
     public function getCitiesByInseeCode(): array
     {
         if (empty(self::$citiesByInseeCode)) {
@@ -57,7 +50,7 @@ class FranceCities
 
         foreach ($this->getCitiesList() as $inseeCode => $city) {
             if (
-                \in_array($postalCode, $city['postalCode'], true)
+                \in_array($postalCode, $city['postal_code'], true)
                 && str_starts_with($this->canonicalizeCityName($city['name']), $normalizedName)
             ) {
                 return $inseeCode;
@@ -108,14 +101,10 @@ class FranceCities
                     continue;
                 }
             } else {
-                if (0 !== strpos(implode(', ', $city['postalCode']), $search)) {
+                if (0 !== strpos(implode(', ', $city['postal_code']), $search)) {
                     continue;
                 }
             }
-
-            $city['insee_code'] = $city['code'];
-            $city['postal_code'] = implode(', ', $city['postalCode']);
-            unset($city['code'], $city['postalCode']);
 
             $results[$inseeCode] = $city;
 
@@ -159,18 +148,7 @@ class FranceCities
 
     public function getCityByInseeCode(string $inseeCode): ?array
     {
-        $foundedCity = null;
-        $citiesList = $this->getCitiesList();
-
-        if (\array_key_exists($inseeCode, $citiesList)) {
-            $foundedCity = $citiesList[$inseeCode];
-
-            $foundedCity['insee_code'] = $foundedCity['code'];
-            $foundedCity['postal_code'] = implode(', ', $foundedCity['postalCode']);
-            unset($foundedCity['code'], $foundedCity['postalCode']);
-        }
-
-        return $foundedCity;
+        return $this->getCitiesList()[$inseeCode] ?? null;
     }
 
     public function getCityNameByInseeCode(string $inseeCode): ?string
@@ -192,7 +170,7 @@ class FranceCities
         $citiesFoundedList = [];
 
         foreach ($citiesList as $inseeCode => $city) {
-            if (\in_array($postalCode, $city['postalCode'], true)) {
+            if (\in_array($postalCode, $city['postal_code'], true)) {
                 $citiesFoundedList[$inseeCode] = $city['name'];
             }
         }

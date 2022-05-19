@@ -28,6 +28,14 @@ class IntlController extends AbstractController
     }
 
     /**
+     * @Route("/insee-code/{inseeCode}", name="api_insee_code", methods={"GET"})
+     */
+    public function inseeCodeAction(string $inseeCode): JsonResponse
+    {
+        return new JsonResponse($this->franceCities->getCityByInseeCode($inseeCode));
+    }
+
+    /**
      * @Route("/vote-offices/{countryCode}", name="api_vote_offices", methods={"GET"})
      */
     public function voteOfficesAction(string $countryCode): JsonResponse

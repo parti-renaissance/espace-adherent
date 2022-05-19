@@ -6,6 +6,9 @@ use App\Entity\Geo\Zone;
 use App\FranceCities\FranceCities;
 use Tests\App\AbstractKernelTestCase;
 
+/**
+ * @group debug
+ */
 class FranceCitiesTest extends AbstractKernelTestCase
 {
     private ?FranceCities $franceCities = null;
@@ -30,14 +33,6 @@ class FranceCitiesTest extends AbstractKernelTestCase
     public function testFindCitiesByPostalCode(string $postalCode, array $expectedCities): void
     {
         $this->assertEquals($expectedCities, $this->franceCities->findCitiesByPostalCode($postalCode));
-    }
-
-    /**
-     * @dataProvider provideCity
-     */
-    public function testGetCity(string $postalCode, string $inseeCode, ?string $expectedCity): void
-    {
-        $this->assertEquals($expectedCity, $this->franceCities->getCity($postalCode, $inseeCode));
     }
 
     /**
@@ -72,10 +67,12 @@ class FranceCitiesTest extends AbstractKernelTestCase
         $this->assertEquals($expectedCities, $this->franceCities->searchCitiesByInseeCodes($inseeCodes));
     }
 
-    public function testGetCityNameByInseeCode(): void
+    /**
+     * @dataProvider provideCity
+     */
+    public function testGetCityNameByInseeCode(string $inseeCode, ?string $expected): void
     {
-        $this->assertEquals('Paris 1er', $this->franceCities->getCityNameByInseeCode('75101'));
-        $this->assertEquals(null, $this->franceCities->getCityNameByInseeCode('74101'));
+        $this->assertEquals($expected, $this->franceCities->getCityNameByInseeCode($inseeCode));
     }
 
     public function providePostalCodes(): array
@@ -102,17 +99,14 @@ class FranceCitiesTest extends AbstractKernelTestCase
     {
         return [
             [
-                '75001',
                 '75101',
                 'Paris 1er',
             ],
             [
-                '92270',
                 '92009',
                 'Bois-Colombes',
             ],
             [
-                '01000',
                 '01001',
                 null,
             ],
@@ -145,7 +139,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
             [
                 [
                     'name' => 'Bois-Colombes',
-                    'postal_code' => '92270',
+                    'postal_code' => ['92270'],
                     'insee_code' => '92009',
                 ],
             ],
@@ -173,7 +167,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
             [
                 [
                     'name' => 'Melun',
-                    'postal_code' => '77000',
+                    'postal_code' => ['77000'],
                     'insee_code' => '77288',
                 ],
             ],
@@ -187,7 +181,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
                 '94048',
                 [
                     'name' => 'Marolles-en-Brie',
-                    'postal_code' => '94440',
+                    'postal_code' => ['94440'],
                     'insee_code' => '94048',
                 ],
             ],
@@ -195,7 +189,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
                 '94070',
                 [
                     'name' => 'Santeny',
-                    'postal_code' => '94440',
+                    'postal_code' => ['94440'],
                     'insee_code' => '94070',
                 ],
             ],
