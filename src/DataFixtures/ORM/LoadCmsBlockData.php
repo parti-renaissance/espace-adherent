@@ -248,6 +248,92 @@ TXT
 TXT
         ));
 
+        $manager->persist($this->createCmsBlock(
+            'donation-index-header-content',
+            'Texte affiché dans le header de la page d\'accueil des dons',
+            <<<'TXT'
+<h1 class="text--larger">
+    Donnons une majorité au Président de la République les 12 et 19 juin
+</h1>
+TXT
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'donation-index-why-content',
+            'Texte affiché dans la section "Pourquoi donner?" de la page d\'accueil des dons',
+            <<<'TXT'
+<h2 class="text--large b__nudge--bottom-larger">Pourquoi faire un don ?</h2>
+<p class="text--body">
+    Grâce aux ressources générées par notre représentation dans la vie politique nationale, 
+    votre générosité fidèle depuis 2017 et grâce à la bonne gestion de notre Mouvement, 
+    <b>La République en Marche a financé une grande partie de la campagne présidentielle 
+    et apporte son soutien aux candidats de la Majorité Présidentielle 
+    pour les élections législatives des 12 et 19 juin.</b>
+</p>
+<p class="text--body">
+    Mais nous avons besoin de compléter cet effort afin de continuer à mener des actions 
+    à la hauteur de nos ambitions, pour continuer d’atteindre l’ensemble de nos concitoyens, 
+    notamment ceux qui sont les plus éloignés de la vie politique, 
+    les écouter et échanger avec eux. Les prochaines échéances sont d’une importance fondamentale 
+    pour la mise en place des réformes annoncées par le Président de la République. 
+</p>
+<p class="text--body">
+    Chaque don, peu importe le montant, sera une aide précieuse. 
+    C’est à chaque fois un acte d’engagement, c’est se mobiliser pour la réussite de notre pays auprès 
+    de notre Président. C’est continuer de faire de la politique autrement en nous donnant les moyens 
+    de gagner au mois de juin. 
+</p>
+<p class="text--body">
+    En 2017, vous étiez déjà 100 000 donateurs à soutenir nos actions. 
+    En 2022, nous avons encore besoin de vous tous!
+</p>
+TXT
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'donation-index-transparence-content',
+            'Texte affiché dans la partie "Transparence" de la page d\'accueil des dons',
+            <<<'TXT'
+<h2 class="text--large b__nudge--bottom-larger">La transparence</h2>
+<div class="">
+    <p class="text--body">
+        Soutenez-nous en toute confiance : dans toutes nos démarches, nos équipes veillent au quotidien à respecter
+        toutes les exigences instaurées par le code électoral et par la loi sur la transparence financière.
+        Nos comptes sont certifiés par deux commissaires aux comptes et transmis à la Commission Nationale des
+        Comptes de Campagne et des Financements Politiques (CNCCFP) qui contrôle le respect des obligations
+        légales des partis politiques et assure la publication des comptes au Journal Officiel.
+    </p>
+</div>
+TXT
+        ));
+
+        $manager->persist($this->createCmsBlock(
+            'donation-index-reduction-content',
+            'Texte affiché dans la partie "Réduction" de la page d\'accueil des dons',
+            <<<'TXT'
+<h2 class="text--large b__nudge--bottom-larger">La réduction fiscale</h2>
+<p class="text--body">
+    66 % de votre don vient en déduction de votre impôt sur le revenu (dans la limite de 20 % du revenu imposable).
+</p>
+<div class="donation-reduction__cols">
+    <p class="text--body donation-reduction__col">
+        <span class="donation-highlight">Par exemple :</span> un don de 100 € vous revient en réalité à 34 € et vous fait bénéficier d’une réduction d’impôt
+        de 66 €. Le montant annuel de votre don ne peut pas excéder 7500 € par personne physique tous partis politiques confondus.
+        <br /><br />
+        <strong>Le reçu fiscal pour votre don de l’année N vous sera envoyé au 2e trimestre de l’année N+1.</strong>
+        <br /><br />
+        <span class="donation-highlight">Par exemple :</span> pour un don effectué en 2022, le reçu fiscal vous sera envoyé vers le mois de mai ou juin en 2023.
+
+    </p>
+    <p class="text--body donation-reduction__col">
+        Le reçu fiscal est édité par la Commission Nationale des Comptes de Campagne et des Financements Politiques (CNCCFP) après la vérification de la liste des donateurs transmise par le mouvement au plus tard le 15 avril de l’année N+1.
+        <br /><br />
+        Il est à noter que vous n’avez pas besoin du reçu fiscal pour déclarer votre don aux impôts, il est seulement nécessaire lors d’un contrôle fiscal.
+    </p>
+</div>
+TXT
+        ));
+
         $manager->flush();
     }
 
