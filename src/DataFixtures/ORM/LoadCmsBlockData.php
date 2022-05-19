@@ -253,11 +253,8 @@ TXT
             'Texte affiché dans le header de la page d\'accueil des dons',
             <<<'TXT'
 <h1 class="text--larger">
-    Vous étiez déjà 100 000 donateurs en 2017,<br>Pour 2022, on compte sur vous !
+    Donnons une majorité au Président de la République les 12 et 19 juin
 </h1>
-<p class="text--medium-small">
-    Chaque don, quel que soit le montant, sera consacré à une campagne ambitieuse en 2022.
-</p>
 TXT
         ));
 
@@ -267,28 +264,28 @@ TXT
             <<<'TXT'
 <h2 class="text--large b__nudge--bottom-larger">Pourquoi faire un don ?</h2>
 <p class="text--body">
-    <b>Plus de la moitié des dépenses de campagne pour une élection présidentielle ne sont pas remboursées par l’État</b>
-    et doivent donc être financées par les partis et par les dons.
+    Grâce aux ressources générées par notre représentation dans la vie politique nationale, 
+    votre générosité fidèle depuis 2017 et grâce à la bonne gestion de notre Mouvement, 
+    <b>La République en Marche a financé une grande partie de la campagne présidentielle 
+    et apporte son soutien aux candidats de la Majorité Présidentielle 
+    pour les élections législatives des 12 et 19 juin.</b>
 </p>
 <p class="text--body">
-    Grâce aux ressources générées par notre représentation dans la vie politique nationale,
-    votre générosité fidèle depuis 2017, et grâce à la bonne gestion de notre Mouvement,
-    La République en Marche financera une grande partie de la prochaine campagne présidentielle.
+    Mais nous avons besoin de compléter cet effort afin de continuer à mener des actions 
+    à la hauteur de nos ambitions, pour continuer d’atteindre l’ensemble de nos concitoyens, 
+    notamment ceux qui sont les plus éloignés de la vie politique, 
+    les écouter et échanger avec eux. Les prochaines échéances sont d’une importance fondamentale 
+    pour la mise en place des réformes annoncées par le Président de la République. 
 </p>
 <p class="text--body">
-    Mais nous avons besoin de compléter cet effort afin de mener une campagne ambitieuse.
-    <b>Une campagne à la hauteur de nos ambitions, pour atteindre l’ensemble de nos concitoyens</b>,
-    notamment ceux qui sont les plus éloignés de la vie politique, les écouter et échanger avec eux.
+    Chaque don, peu importe le montant, sera une aide précieuse. 
+    C’est à chaque fois un acte d’engagement, c’est se mobiliser pour la réussite de notre pays auprès 
+    de notre Président. C’est continuer de faire de la politique autrement en nous donnant les moyens 
+    de gagner au mois de juin. 
 </p>
 <p class="text--body">
-    C’est pourquoi, nous lançons une <b>campagne de collecte de dons de 5 millions d’euros</b>.
-    Chaque don compte. C’est à chaque fois un acte d’engagement, c’est faire partie d’une
-    communauté d’engagés pour la réussite du pays derrière notre Président.
-    C’est <b>continuer à faire de la politique autrement en nous donnant les moyens de gagner</b>.
-</p>
-<p class="text--body">
-    La campagne de 2017 avait été financée par près de 100 000 donateurs.
-    <b>Pour 2022, nous avons à nouveau besoin de vous tous !</b>
+    En 2017, vous étiez déjà 100 000 donateurs à soutenir nos actions. 
+    En 2022, nous avons encore besoin de vous tous!
 </p>
 TXT
         ));
@@ -325,7 +322,7 @@ TXT
         <br /><br />
         <strong>Le reçu fiscal pour votre don de l’année N vous sera envoyé au 2e trimestre de l’année N+1.</strong>
         <br /><br />
-        <span class="donation-highlight">Par exemple :</span> pour un don effectué en 2021, le reçu fiscal vous sera envoyé vers le mois de mai ou juin en 2022.
+        <span class="donation-highlight">Par exemple :</span> pour un don effectué en 2022, le reçu fiscal vous sera envoyé vers le mois de mai ou juin en 2023.
 
     </p>
     <p class="text--body donation-reduction__col">
