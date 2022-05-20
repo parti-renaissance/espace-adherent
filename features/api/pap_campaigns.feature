@@ -13,17 +13,19 @@ Feature:
       | GET     | /api/v3/pap_campaigns                                       |
       | POST    | /api/v3/pap_campaigns                                       |
       | PUT     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb  |
+      | DELETE  | /api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93  |
 
   Scenario Outline: As a JeMarche App user I can not get not active PAP campaigns
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 404
     Examples:
-      | method  | url                                                           |
-      | GET     | /api/v3/pap_campaigns/932d67d1-2da6-4695-82f6-42afc20f2e41    |
-      | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb    |
+      | method  | url                                                         |
+      | GET     | /api/v3/pap_campaigns/932d67d1-2da6-4695-82f6-42afc20f2e41  |
+      | GET     | /api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb  |
+      | DELETE  | /api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93  |
 
-  Scenario Outline: As a user with no correct rights I can not create or edit PAP campaign
+  Scenario Outline: As a user with no correct rights I can not edit PAP campaign
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
@@ -52,12 +54,14 @@ Feature:
     When I send a "<method>" request to "<url>"
     Then the response status code should be 403
     Examples:
-      | method | url                                                                                                    |
-      | GET    | /api/v3/pap_campaigns?scope=pap_national_manager                                                       |
-      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager                  |
-      | GET    | /api/v3/pap_campaigns/kpi?scope=pap_national_manager                                                   |
-      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=phoning_national_manager      |
-      | GET    | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=phoning_national_manager  |
+      | method  | url                                                                                                     |
+      | GET     | /api/v3/pap_campaigns?scope=pap_national_manager                                                        |
+      | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9?scope=pap_national_manager                   |
+      | GET     | /api/v3/pap_campaigns/kpi?scope=pap_national_manager                                                    |
+      | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies?scope=phoning_national_manager       |
+      | GET     | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/questioners?scope=phoning_national_manager   |
+      | DELETE  | /api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9                                              |
+      | DELETE  | /api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93                                              |
 
   Scenario: As a JeMarche App user I cannot update not my PAP campaign
     Given I am logged with "luciole1989@spambox.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
@@ -73,7 +77,7 @@ Feature:
     """
     {
       "metadata": {
-        "total_items": 5,
+        "total_items": 6,
         "items_per_page": 2,
         "count": 2,
         "current_page": 1,
@@ -199,9 +203,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 7,
+            "total_items": 8,
             "items_per_page": 10,
-            "count": 7,
+            "count": 8,
             "current_page": 1,
             "last_page": 1
         },
@@ -316,7 +320,23 @@ Feature:
                 "nb_voters": 0,
                 "nb_vote_places": 0,
                 "nb_collected_contacts": 0,
-                "creator": "Admin"
+                "creator": "Referent Referent"
+            },
+            {
+                "title": "Campagne dans un mois",
+                "brief": "### Campagne dans un mois",
+                "goal": 400,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "visibility": "national",
+                "uuid": "d65b621c-43fb-42e7-a169-6f79c44a31bc",
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Député PARIS I"
             }
         ]
     }
@@ -372,7 +392,7 @@ Feature:
                 "nb_voters": 0,
                 "nb_vote_places": 0,
                 "nb_collected_contacts": 0,
-                "creator": "Admin"
+                "creator": "Referent Referent"
             }
         ]
     }
@@ -385,9 +405,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 5,
+            "total_items": 6,
             "items_per_page": 10,
-            "count": 5,
+            "count": 6,
             "current_page": 1,
             "last_page": 1
         },
@@ -471,6 +491,22 @@ Feature:
                 "nb_vote_places": 0,
                 "nb_collected_contacts": 0,
                 "creator": "Admin"
+            },
+            {
+                "title": "Campagne dans un mois",
+                "brief": "### Campagne dans un mois",
+                "goal": 400,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "visibility": "national",
+                "uuid": "d65b621c-43fb-42e7-a169-6f79c44a31bc",
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Député PARIS I"
             }
         ]
     }
@@ -877,11 +913,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 5,
+            "total_items": 6,
             "items_per_page": 5,
             "count": 5,
             "current_page": 1,
-            "last_page": 1
+            "last_page": 2
         },
         "items": [
             {
@@ -3126,8 +3162,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "5",
-        "nb_ongoing_campaigns": "4",
+        "nb_campaigns": "6",
+        "nb_ongoing_campaigns": "5",
         "nb_visited_doors": "7",
         "nb_visited_doors_last_30d": "6",
         "nb_surveys": "3",
@@ -3142,8 +3178,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "7",
-        "nb_ongoing_campaigns": "6",
+        "nb_campaigns": "8",
+        "nb_ongoing_campaigns": "7",
         "nb_visited_doors": "9",
         "nb_visited_doors_last_30d": "8",
         "nb_surveys": "3",
@@ -3369,6 +3405,40 @@ Feature:
         }
     ]
     """
+
+  Scenario Outline: As a Jemengage user with granted scope, I can delete a PAP campaign
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "DELETE" request to "/api/v3/pap_campaigns/<uuid>?scope=<scope>"
+    Then the response status code should be 204
+    Examples:
+      | user                                  | scope                                          | uuid                                 |
+      | referent@en-marche-dev.fr             | referent                                       | 31f24b6c-0884-461a-af34-dbbb7b1276ab |
+      | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | 31f24b6c-0884-461a-af34-dbbb7b1276ab |
+      | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | d572fb7b-4c60-451a-9303-84f45c60a490 |
+
+  Scenario Outline: As a legislative candidate with granted scope, I cannot delete a PAP campaign
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I send a "DELETE" request to "/api/v3/pap_campaigns/<uuid>?scope=<scope>"
+    Then the response status code should be 403
+    Examples:
+      | user                                  | scope                                          | uuid                                 |
+      # ongoing campaign
+      | referent@en-marche-dev.fr             | referent                                       | 63460047-c81a-44b9-aec9-152ecf58df93 |
+      | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | 63460047-c81a-44b9-aec9-152ecf58df93 |
+      | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | 63460047-c81a-44b9-aec9-152ecf58df93 |
+      # finished campaign
+      | referent@en-marche-dev.fr             | referent                                       | 9ba6b743-5018-4358-bdc0-eb2094010beb |
+      | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | 9ba6b743-5018-4358-bdc0-eb2094010beb |
+      | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | 9ba6b743-5018-4358-bdc0-eb2094010beb |
+      # not my campaign
+      | referent@en-marche-dev.fr             | referent                                       | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      # national campaign
+      | referent@en-marche-dev.fr             | referent                                       | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | d65b621c-43fb-42e7-a169-6f79c44a31bc |
+      | deputy@en-marche-dev.fr               | pap_national_manager                           | d65b621c-43fb-42e7-a169-6f79c44a31bc |
 
   Scenario: As a referent I can get campaign's vote places
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"

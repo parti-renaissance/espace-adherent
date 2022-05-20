@@ -22,6 +22,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
     public const CAMPAIGN_8_UUID = '74a0d169-1e10-4159-a399-bf499706a2c6';
     public const CAMPAIGN_9_UUID = '8fbee663-4f18-49d4-9c2d-4553bcc859cf';
     public const CAMPAIGN_10_UUID = '08463014-bbfe-421c-b8fb-5e456414b088';
+    public const CAMPAIGN_11_UUID = 'd572fb7b-4c60-451a-9303-84f45c60a490';
+    public const CAMPAIGN_12_UUID = 'd65b621c-43fb-42e7-a169-6f79c44a31bc';
 
     public function load(ObjectManager $manager)
     {
@@ -131,7 +133,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             '+20 days',
             0,
             0,
-            [LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')]
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')],
+            $this->getReference('adherent-8'),
         );
 
         $campaign06088 = $this->createCampaign(
@@ -180,6 +183,37 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         $campaign75_08_r->addVotePlace($this->getReference('pap-vote-place--paris-8-e'));
         $this->addReference('pap-campaign-75-08-r', $campaign75_08_r);
 
+        $campaign75_08_upcoming = $this->createCampaign(
+            self::CAMPAIGN_11_UUID,
+            'Campagne locale de Paris 8ème dans 2 mois',
+            null,
+            $nationalSurvey1,
+            100,
+            '+2 months',
+            '+3 months',
+            1,
+            0,
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
+            $this->getReference('senatorial-candidate'),
+        );
+        $campaign75_08_upcoming->addVotePlace($this->getReference('pap-vote-place--paris-8-e'));
+        $this->addReference('pap-campaign-75-08-upcoming', $campaign75_08_upcoming);
+
+        $campaignNationalUpcoming = $this->createCampaign(
+            self::CAMPAIGN_12_UUID,
+            'Campagne dans un mois',
+            '### Campagne dans un mois',
+            $nationalSurvey2,
+            400,
+            '+1 month',
+            '+2 months',
+            4,
+            7,
+            [],
+            $this->getReference('deputy-75-1')
+        );
+        $this->addReference('pap-campaign-national-upcoming', $campaignNationalUpcoming);
+
         $manager->persist($campaign1);
         $manager->persist($campaign2);
         $manager->persist($campaign3);
@@ -190,6 +224,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         $manager->persist($campaign06088);
         $manager->persist($campaign75_08);
         $manager->persist($campaign75_08_r);
+        $manager->persist($campaign75_08_upcoming);
+        $manager->persist($campaignNationalUpcoming);
 
         $manager->flush();
     }
