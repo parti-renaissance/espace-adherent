@@ -365,6 +365,17 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     private bool $associated = false;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({
+     *     "pap_campaign_write",
+     *     "pap_campaign_read",
+     *     "pap_campaign_read_after_write",
+     * })
+     */
+    private bool $enabled;
+
+    /**
      * @ORM\Column(length=30)
      *
      * @Assert\NotBlank(message="scope.visibility.not_blank")
@@ -397,7 +408,8 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
         int $nbAddresses = 0,
         int $nbVoters = 0,
         array $zones = [],
-        Adherent $createdByAdherent = null
+        Adherent $createdByAdherent = null,
+        bool $enabled = true
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;
@@ -409,6 +421,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
         $this->nbAddresses = $nbAddresses;
         $this->nbVoters = $nbVoters;
         $this->createdByAdherent = $createdByAdherent;
+        $this->enabled = $enabled;
 
         $this->campaignHistories = new ArrayCollection();
         $this->votePlaces = new ArrayCollection();
@@ -712,6 +725,16 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     public function isNationalVisibility(): bool
     {
         return ScopeVisibilityEnum::NATIONAL === $this->visibility;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 
     public function getCreator(): string

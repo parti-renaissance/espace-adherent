@@ -24,6 +24,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
     public const CAMPAIGN_10_UUID = '08463014-bbfe-421c-b8fb-5e456414b088';
     public const CAMPAIGN_11_UUID = 'd572fb7b-4c60-451a-9303-84f45c60a490';
     public const CAMPAIGN_12_UUID = 'd65b621c-43fb-42e7-a169-6f79c44a31bc';
+    public const CAMPAIGN_13_UUID = '91ecd823-0e31-4aa1-880b-1cbbcd262762';
+    public const CAMPAIGN_14_UUID = '115efbe5-af28-419a-a0a5-9f61c5d9f527';
 
     public function load(ObjectManager $manager)
     {
@@ -214,6 +216,38 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         );
         $this->addReference('pap-campaign-national-upcoming', $campaignNationalUpcoming);
 
+        $campaign75_08_disabled = $this->createCampaign(
+            self::CAMPAIGN_13_UUID,
+            'Campagne locale désactivée de Paris 8ème avec des portes frappées',
+            null,
+            $nationalSurvey1,
+            100,
+            '-1 day',
+            '+30 days',
+            1,
+            0,
+            [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
+            $this->getReference('senatorial-candidate'),
+            false
+        );
+        $this->addReference('pap-campaign-75-08-disabled', $campaign75_08_disabled);
+
+        $campaignNationalDisabled = $this->createCampaign(
+            self::CAMPAIGN_14_UUID,
+            'Campagne désactivée de 10 jours suivants',
+            '**Campagne désactivée** de 10 jours suivants',
+            $nationalSurvey3,
+            150,
+            '-1 hour',
+            '+10 days',
+            4,
+            7,
+            [],
+            null,
+            false
+        );
+        $this->addReference('pap-campaign-national-disabled', $campaignNationalDisabled);
+
         $manager->persist($campaign1);
         $manager->persist($campaign2);
         $manager->persist($campaign3);
@@ -226,6 +260,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         $manager->persist($campaign75_08_r);
         $manager->persist($campaign75_08_upcoming);
         $manager->persist($campaignNationalUpcoming);
+        $manager->persist($campaign75_08_disabled);
+        $manager->persist($campaignNationalDisabled);
 
         $manager->flush();
     }
@@ -251,7 +287,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         int $nbAddresses = 0,
         int $nbVoters = 0,
         array $zones = [],
-        Adherent $createdBy = null
+        Adherent $createdBy = null,
+        bool $enabled = true
     ): Campaign {
         return new Campaign(
             Uuid::fromString($uuid),
@@ -264,7 +301,8 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             $nbAddresses,
             $nbVoters,
             $zones,
-            $createdBy
+            $createdBy,
+            $enabled
         );
     }
 }

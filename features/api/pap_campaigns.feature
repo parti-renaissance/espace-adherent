@@ -77,11 +77,11 @@ Feature:
     """
     {
       "metadata": {
-        "total_items": 6,
+        "total_items": 7,
         "items_per_page": 2,
         "count": 2,
         "current_page": 1,
-        "last_page": 3
+        "last_page": 4
       },
       "items": [
         {
@@ -148,7 +148,8 @@ Feature:
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "@uuid@",
-      "visibility": "national"
+      "visibility": "national",
+      "enabled": true
     }
     """
 
@@ -179,7 +180,61 @@ Feature:
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
-      "visibility": "national"
+      "visibility": "national",
+      "enabled": true
+    }
+    """
+
+  Scenario: As a user granted with national scope, I can disable/enable a national campaign
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
+    """
+    {
+      "enabled": false
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne dans 10 jours",
+      "brief": "### Campagne dans 10 jours",
+      "goal": 400,
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "survey": {
+          "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f"
+      },
+      "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
+      "visibility": "national",
+      "enabled": false
+    }
+    """
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/63460047-c81a-44b9-aec9-152ecf58df93?scope=pap_national_manager" with body:
+    """
+    {
+      "enabled": true
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne dans 10 jours",
+      "brief": "### Campagne dans 10 jours",
+      "goal": 400,
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "survey": {
+          "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f"
+      },
+      "uuid": "63460047-c81a-44b9-aec9-152ecf58df93",
+      "visibility": "national",
+      "enabled": true
     }
     """
 
@@ -203,9 +258,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 8,
+            "total_items": 9,
             "items_per_page": 10,
-            "count": 8,
+            "count": 9,
             "current_page": 1,
             "last_page": 1
         },
@@ -337,6 +392,22 @@ Feature:
                 "nb_vote_places": 0,
                 "nb_collected_contacts": 0,
                 "creator": "Député PARIS I"
+            },
+            {
+                "title": "Campagne désactivée de 10 jours suivants",
+                "brief": "**Campagne désactivée** de 10 jours suivants",
+                "goal": 150,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "visibility": "national",
+                "uuid": "115efbe5-af28-419a-a0a5-9f61c5d9f527",
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             }
         ]
     }
@@ -405,9 +476,9 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 6,
+            "total_items": 7,
             "items_per_page": 10,
-            "count": 6,
+            "count": 7,
             "current_page": 1,
             "last_page": 1
         },
@@ -507,6 +578,22 @@ Feature:
                 "nb_vote_places": 0,
                 "nb_collected_contacts": 0,
                 "creator": "Député PARIS I"
+            },
+            {
+                "title": "Campagne désactivée de 10 jours suivants",
+                "brief": "**Campagne désactivée** de 10 jours suivants",
+                "goal": 150,
+                "begin_at": "@string@.isDateTime()",
+                "finish_at": "@string@.isDateTime()",
+                "visibility": "national",
+                "uuid": "115efbe5-af28-419a-a0a5-9f61c5d9f527",
+                "nb_surveys": 0,
+                "nb_visited_doors": 0,
+                "nb_addresses": 4,
+                "nb_voters": 7,
+                "nb_vote_places": 0,
+                "nb_collected_contacts": 0,
+                "creator": "Admin"
             }
         ]
     }
@@ -531,6 +618,7 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
+      "enabled": true,
       "creator": "Jacques Picard",
       "nb_surveys": 0,
       "nb_visited_doors": 1,
@@ -585,7 +673,8 @@ Feature:
           "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       },
       "uuid": "@uuid@",
-      "visibility": "local"
+      "visibility": "local",
+      "enabled": true
     }
     """
     Examples:
@@ -614,6 +703,64 @@ Feature:
       "finish_at": "@string@.isDateTime()",
       "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
       "visibility": "local",
+      "enabled": true,
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      }
+    }
+    """
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+  Scenario Outline: As a user granted with local scope, I can disable/enable a local campaign in a zone I am manager of
+    Given I am logged with "<user>" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
+    """
+    {
+      "enabled": false
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne locale du département 92",
+      "brief": null,
+      "goal": 100,
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+      "visibility": "local",
+      "enabled": false,
+      "survey": {
+        "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
+      }
+    }
+    """
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/v3/pap_campaigns/e3c6e83f-7471-4e8f-b348-6c2eb26723ce?scope=<scope>" with body:
+    """
+    {
+      "enabled": true
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "Campagne locale du département 92",
+      "brief": null,
+      "goal": 100,
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
+      "uuid": "e3c6e83f-7471-4e8f-b348-6c2eb26723ce",
+      "visibility": "local",
+      "enabled": true,
       "survey": {
         "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
       }
@@ -706,7 +853,8 @@ Feature:
             "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9"
         },
         "uuid": "@uuid@",
-        "visibility": "local"
+        "visibility": "local",
+        "enabled": true
     }
     """
 
@@ -754,7 +902,8 @@ Feature:
         },
         "title": "Campagne locale de Paris 8ème (modifié)",
         "uuid": "8fbee663-4f18-49d4-9c2d-4553bcc859cf",
-        "visibility": "local"
+        "visibility": "local",
+        "enabled": true
     }
     """
     When I send a "GET" request to "/api/v3/pap_campaigns/8fbee663-4f18-49d4-9c2d-4553bcc859cf/vote_places?scope=legislative_candidate"
@@ -913,7 +1062,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 6,
+            "total_items": 7,
             "items_per_page": 5,
             "count": 5,
             "current_page": 1,
@@ -1020,7 +1169,8 @@ Feature:
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
-        "visibility": "national"
+        "visibility": "national",
+        "enabled": true
     }
     """
 
@@ -1053,6 +1203,7 @@ Feature:
         "nb_open_doors": 1,
         "average_visit_time": 140,
         "visibility": "national",
+        "enabled": true,
         "nb_addresses_todo": 0,
         "nb_addresses_ongoing": 0,
         "nb_addresses_completed": 0
@@ -1073,6 +1224,7 @@ Feature:
         "finish_at": "@string@.isDateTime()",
         "uuid": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9",
         "visibility": "national",
+        "enabled": true,
         "creator": "Admin",
         "nb_surveys": 3,
         "nb_visited_doors": 5,
@@ -3162,8 +3314,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "6",
-        "nb_ongoing_campaigns": "5",
+        "nb_campaigns": "7",
+        "nb_ongoing_campaigns": "6",
         "nb_visited_doors": "7",
         "nb_visited_doors_last_30d": "6",
         "nb_surveys": "3",
@@ -3178,8 +3330,8 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "nb_campaigns": "8",
-        "nb_ongoing_campaigns": "7",
+        "nb_campaigns": "9",
+        "nb_ongoing_campaigns": "8",
         "nb_visited_doors": "9",
         "nb_visited_doors_last_30d": "8",
         "nb_surveys": "3",
