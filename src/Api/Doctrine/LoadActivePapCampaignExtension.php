@@ -48,7 +48,9 @@ class LoadActivePapCampaignExtension implements QueryItemExtensionInterface, Que
 
         $queryBuilder
             ->andWhere("$alias.beginAt < :now AND $alias.finishAt > :now")
+            ->andWhere("$alias.enabled = :true")
             ->setParameter('now', new \DateTime('now'))
+            ->setParameter('true', true)
         ;
     }
 }
