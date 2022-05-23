@@ -33,7 +33,7 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
             throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
         }
 
-        $cityName = $this->franceCities->getCityNameByInseeCode($inseeCode) ??
+        $cityName = $this->franceCities->getCityByInseeCode($inseeCode)->getName() ??
             FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode] ?? null;
 
         if (!$cityName) {

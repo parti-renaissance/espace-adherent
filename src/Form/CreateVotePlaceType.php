@@ -51,7 +51,7 @@ class CreateVotePlaceType extends AbstractType
             if (Address::FRANCE === $votePlace->getCountry()) {
                 $codePrefix = array_search(
                     $votePlace->getCity(),
-                    $this->franceCities->findCitiesByPostalCode($votePlace->getPostalCode()),
+                    $this->getCodesAndCitiesNameFromPostalCode($votePlace->getPostalCode()),
                     true
                 );
 
@@ -81,5 +81,17 @@ class CreateVotePlaceType extends AbstractType
         $resolver->setDefaults([
             'data_class' => VotePlace::class,
         ]);
+    }
+
+    private function getCodesAndCitiesNameFromPostalCode(string $postalCode): array
+    {
+        $cities = $this->franceCities->findCitiesByPostalCode($postalCode);
+
+        $codeAndNameArray = [];
+        foreach ($cities as $city) {
+            $codeAndNameArray[$city->getInseeCode()] = $city->getName();
+        }
+
+        return $codeAndNameArray;
     }
 }

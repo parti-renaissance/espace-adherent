@@ -75,7 +75,9 @@
                 &nbsp;
                 {% if value is not empty %}
                     {% set city_data = get_city_data_from_insee_code(value) %}
-                    {{ city_data.name }} ({{  city_data.postal_code }})
+                    {% if city_data is not null %}
+                        {{ city_data.name }} ({{  city_data.postalCode|join(', ') }})
+                    {% endif %}
                 {% endif %}
             </span>
             <span class="type-and-select__item--remove favorite-city-remove">

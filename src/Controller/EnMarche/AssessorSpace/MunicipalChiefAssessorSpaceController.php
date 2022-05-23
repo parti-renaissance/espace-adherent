@@ -47,8 +47,8 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
         $postalCodes = [];
 
         foreach ($inseeCodes as $inseeCode) {
-            if ($cityData = $this->franceCities->getCityByInseeCode($inseeCode)) {
-                $postalCodes[] = $cityData['postal_code'];
+            if ($city = $this->franceCities->getCityByInseeCode($inseeCode)) {
+                $postalCodes = array_merge($postalCodes, $city->getPostalCode());
             }
         }
 

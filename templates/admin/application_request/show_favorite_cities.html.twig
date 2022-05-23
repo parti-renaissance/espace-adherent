@@ -3,6 +3,8 @@
 {% block field %}
     {% for code in object.favoriteCities %}
         {% set city = get_city_data_from_insee_code(code) %}
-        {{ city.name }} ({{ city.postal_code }}){{ not(loop.last) ? ', ' : '' }}
+        {% if city is not null %}
+            {{ city.name }} ({{ city.postalCode|join(', ') }}){{ not(loop.last) ? ', ' : '' }}
+        {% endif %}
     {% endfor %}
 {% endblock %}

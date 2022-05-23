@@ -35,10 +35,10 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             $postalCode = $data['postal_code'];
             $cityName = $data['city_name'];
 
-            $inseeCode = $this->franceCities->getCityInseeCode($postalCode ?? '', $cityName);
+            $city = $this->franceCities->getCityByPostalCodeAndName($postalCode ?? '', $cityName);
 
-            if ($inseeCode) {
-                $data['city'] = "$postalCode-$inseeCode";
+            if ($city) {
+                $data['city'] = sprintf('%s-%s', $postalCode, $city->getInseeCode());
             }
         }
 

@@ -24,15 +24,14 @@ class IntlController extends AbstractController
      */
     public function postalCodeAction(string $postalCode): JsonResponse
     {
-        return new JsonResponse($this->franceCities->findCitiesByPostalCode($postalCode));
-    }
+        $cities = $this->franceCities->findCitiesByPostalCode($postalCode);
 
-    /**
-     * @Route("/insee-code/{inseeCode}", name="api_insee_code", methods={"GET"})
-     */
-    public function inseeCodeAction(string $inseeCode): JsonResponse
-    {
-        return new JsonResponse($this->franceCities->getCityByInseeCode($inseeCode));
+        $result = [];
+        foreach ($cities as $city) {
+            $result[$city->getInseeCode()] = $city->getName();
+        }
+
+        return new JsonResponse($result);
     }
 
     /**

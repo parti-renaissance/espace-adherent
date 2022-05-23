@@ -130,6 +130,13 @@ class ReferentController extends AbstractController
 
         $managedZones = $referent->getManagedArea()->getZones();
 
-        return new JsonResponse($franceCities->searchCitiesForZones($managedZones->toArray(), $search));
+        $foundedCities = $franceCities->searchCitiesForZones($managedZones->toArray(), $search);
+
+        $result = [];
+        foreach ($foundedCities as $city) {
+            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCode()];
+        }
+
+        return new JsonResponse($result);
     }
 }

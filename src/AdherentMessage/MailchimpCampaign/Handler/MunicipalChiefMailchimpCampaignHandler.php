@@ -36,7 +36,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
                 [
                     'type' => self::TEXT_MERGE,
                     'value' => $inseeCode,
-                    'label' => $city['name'] ?? $inseeCode,
+                    'label' => $city->getName() ?? $inseeCode,
                 ],
             ],
         ];
@@ -52,7 +52,7 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
                     [
                         'type' => self::TEXT_MERGE,
                         'value' => $inseeCodeAttachedToAnnecy,
-                        'label' => $city['name'] ?? $inseeCodeAttachedToAnnecy,
+                        'label' => $city->getName() ?? $inseeCodeAttachedToAnnecy,
                     ],
                 ];
             }

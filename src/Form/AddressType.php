@@ -69,10 +69,10 @@ class AddressType extends AbstractType
             $address = $event->getData();
 
             if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
-                $inseeCode = $this->franceCities->getCityInseeCode($address->getPostalCode(), $address->getCityName());
+                $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
 
-                if ($inseeCode) {
-                    $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $inseeCode));
+                if ($city) {
+                    $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
                 }
             }
         });

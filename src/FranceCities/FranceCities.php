@@ -6,71 +6,45 @@ use App\Entity\Geo\Zone;
 
 class FranceCities
 {
-    private static $cities = [];
-    private static $citiesByInseeCode = [];
+    private static array $cities = [];
     private CitiesStorageInterface $citiesStorage;
-
-    public static $countries = [
-        '98000' => 'MC', // Monaco
-        '971' => 'GP', // Guadeloupe
-        '972' => 'MQ', // Martinique
-        '973' => 'GF', // Guyane
-        '974' => 'RE', // Réunion
-        '975' => 'PM', // Saint-Pierre-et-Miquelon
-        '976' => 'YT', // Mayotte
-        '986' => 'WF', // Wallis-et-Futuna
-        '987' => 'PF', // Polynésie
-        '988' => 'NC', // Nouvelle Calédonie
-    ];
 
     public function __construct(CitiesStorageInterface $citiesStorage)
     {
         $this->citiesStorage = $citiesStorage;
     }
 
+    /** @return CityValueObject[] */
     public function findCitiesByPostalCode(string $postalCode): array
     {
-        return $this->findCitiesForPostalCode($this->getCitiesList(), $postalCode);
-    }
+        $citiesFoundedList = [];
 
-    public function getCitiesByInseeCode(): array
-    {
-        if (empty(self::$citiesByInseeCode)) {
-            foreach ($this->getCitiesList() as $inseeCode => $city) {
-                self::$citiesByInseeCode[str_pad($inseeCode, 5, '0', \STR_PAD_LEFT)] = $city['name'];
+        foreach ($this->getCitiesList() as $city) {
+            if (\in_array($postalCode, $city['postal_code'], true)) {
+                $citiesFoundedList[] = CityValueObject::createFromCityArray($city);
             }
         }
 
-        return self::$citiesByInseeCode;
+        return $citiesFoundedList;
     }
 
-    public function getCityInseeCode(string $postalCode, string $name): ?string
+    public function getCityByPostalCodeAndName(string $postalCode, string $name): ?CityValueObject
     {
         $normalizedName = $this->canonicalizeCityName($name);
 
-        foreach ($this->getCitiesList() as $inseeCode => $city) {
+        foreach ($this->getCitiesList() as $city) {
             if (
                 \in_array($postalCode, $city['postal_code'], true)
                 && str_starts_with($this->canonicalizeCityName($city['name']), $normalizedName)
             ) {
-                return $inseeCode;
+                return CityValueObject::createFromCityArray($city);
             }
         }
 
         return null;
     }
 
-    public function getCountryISOCode(string $postalCode): string
-    {
-        foreach (self::$countries as $prefix => $country) {
-            if (0 === strpos($postalCode, (string) $prefix)) {
-                return $country;
-            }
-        }
-
-        return 'FR';
-    }
-
+    /** @return CityValueObject[] */
     public function searchCities(string $search, int $maxResults = 20, array $ignore = [], array $filters = []): array
     {
         $search = $this->canonicalizeCityName($search);
@@ -78,8 +52,6 @@ class FranceCities
 
         $results = [];
         foreach ($citiesList as $inseeCode => $city) {
-            $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
-
             $matchFilters = false;
             foreach ($filters as $filter) {
                 if (0 === strpos($inseeCode, $filter)) {
@@ -106,7 +78,7 @@ class FranceCities
                 }
             }
 
-            $results[$inseeCode] = $city;
+            $results[] = CityValueObject::createFromCityArray($city);
 
             if (is_numeric($search) && \count($results) >= $maxResults) {
                 break;
@@ -114,8 +86,8 @@ class FranceCities
         }
 
         if (!is_numeric($search)) {
-            usort($results, function (array $city1, array $city2) {
-                return $city1['name'] <=> $city2['name'];
+            usort($results, function (CityValueObject $city1, CityValueObject $city2) {
+                return $city1->getName() <=> $city2->getName();
             });
         }
 
@@ -123,7 +95,9 @@ class FranceCities
     }
 
     /**
-     * @param Zone[]|array $zones
+     * @param Zone[] $zones
+     *
+     * @return CityValueObject[]
      */
     public function searchCitiesForZones(array $zones, string $search, int $maxResults = 10): array
     {
@@ -135,25 +109,9 @@ class FranceCities
         return $this->searchCities($search, $maxResults, [], $filters);
     }
 
-    public function searchCitiesByInseeCodes(array $inseeCodes): array
+    public function getCityByInseeCode(string $inseeCode): ?CityValueObject
     {
-        $results = array_intersect_key(
-            $this->getCitiesByInseeCode(),
-            array_flip($inseeCodes)
-        );
-        asort($results);
-
-        return $results;
-    }
-
-    public function getCityByInseeCode(string $inseeCode): ?array
-    {
-        return $this->getCitiesList()[$inseeCode] ?? null;
-    }
-
-    public function getCityNameByInseeCode(string $inseeCode): ?string
-    {
-        return $this->getCityByInseeCode($inseeCode)['name'] ?? null;
+        return isset($this->getCitiesList()[$inseeCode]) ? CityValueObject::createFromCityArray($this->getCitiesList()[$inseeCode]) : null;
     }
 
     private function getCitiesList(): array
@@ -163,19 +121,6 @@ class FranceCities
         }
 
         return self::$cities;
-    }
-
-    private function findCitiesForPostalCode(array $citiesList, string $postalCode): array
-    {
-        $citiesFoundedList = [];
-
-        foreach ($citiesList as $inseeCode => $city) {
-            if (\in_array($postalCode, $city['postal_code'], true)) {
-                $citiesFoundedList[$inseeCode] = $city['name'];
-            }
-        }
-
-        return $citiesFoundedList;
     }
 
     private function canonicalizeCityName(string $cityName): string

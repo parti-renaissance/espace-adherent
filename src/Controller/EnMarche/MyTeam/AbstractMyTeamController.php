@@ -149,7 +149,14 @@ abstract class AbstractMyTeamController extends AbstractController
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($franceCities->searchCitiesForZones($this->getZones($this->getUser()), $search));
+        $foundedCities = $franceCities->searchCitiesForZones($this->getZones($this->getUser()), $search);
+
+        $result = [];
+        foreach ($foundedCities as $city) {
+            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCode()];
+        }
+
+        return new JsonResponse($result);
     }
 
     abstract protected function getSpaceType(): string;

@@ -179,14 +179,14 @@ class ManagedUserRepository extends ServiceEntityRepository
 
             foreach ($cities as $key => $inseeCode) {
                 $city = $this->franceCities->getCityByInseeCode($inseeCode);
-                $postalCode = $city ? $city['postal_code'] : null;
+                $postalCode = $city ? $city->getPostalCode() : null;
 
                 if (!$postalCode) {
                     continue;
                 }
 
                 $cityExpression = $qb->expr()->andX(
-                    'u.postalCode = :city_postalCode_'.$key,
+                    'u.postalCode IN (:city_postalCode_'.$key.')',
                     'u.country = :country_france'
                 );
                 $qb->setParameter('city_postalCode_'.$key, $postalCode);

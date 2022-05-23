@@ -3,12 +3,10 @@
 namespace Tests\App\FranceCities;
 
 use App\Entity\Geo\Zone;
+use App\FranceCities\CityValueObject;
 use App\FranceCities\FranceCities;
 use Tests\App\AbstractKernelTestCase;
 
-/**
- * @group debug
- */
 class FranceCitiesTest extends AbstractKernelTestCase
 {
     private ?FranceCities $franceCities = null;
@@ -36,43 +34,27 @@ class FranceCitiesTest extends AbstractKernelTestCase
     }
 
     /**
-     * @dataProvider provideForCityInseeCode
+     * @dataProvider provideForCityByPostalCodeAndName
      */
-    public function testGetCityInseeCode(string $postalCode, string $name, string $expected): void
+    public function testGetCityByPostalCodeAndName(string $postalCode, string $name, CityValueObject $expected): void
     {
-        $this->assertEquals($expected, $this->franceCities->getCityInseeCode($postalCode, $name));
+        $this->assertEquals($expected, $this->franceCities->getCityByPostalCodeAndName($postalCode, $name));
     }
 
     /**
      * @dataProvider provideSearchCitiesForZones
      */
-    public function testSearchCitiesForZones(array $tags, string $search, array $expectedCities): void
+    public function testSearchCitiesForZones(array $zones, string $search, array $expectedCities): void
     {
-        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesForZones($tags, $search));
+        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesForZones($zones, $search));
     }
 
     /**
      * @dataProvider provideForCityByInseeCode
      */
-    public function testGetCityByInseeCode(string $inseeCode, array $expectedCities): void
+    public function testGetCityByInseeCode(string $inseeCode, CityValueObject $expectedCities): void
     {
         $this->assertEquals($expectedCities, $this->franceCities->getCityByInseeCode($inseeCode));
-    }
-
-    /**
-     * @dataProvider provideForSearchCitiesByInseeCodes
-     */
-    public function testSearchCitiesByInseeCodes(array $inseeCodes, array $expectedCities): void
-    {
-        $this->assertEquals($expectedCities, $this->franceCities->searchCitiesByInseeCodes($inseeCodes));
-    }
-
-    /**
-     * @dataProvider provideCity
-     */
-    public function testGetCityNameByInseeCode(string $inseeCode, ?string $expected): void
-    {
-        $this->assertEquals($expected, $this->franceCities->getCityNameByInseeCode($inseeCode));
     }
 
     public function providePostalCodes(): array
@@ -81,50 +63,32 @@ class FranceCitiesTest extends AbstractKernelTestCase
             [
                 '75001',
                 [
-                    75101 => 'Paris 1er',
+                    CityValueObject::createFromCityArray(['name' => 'Paris 1er', 'postal_code' => ['75001'], 'insee_code' => '75101']),
                 ],
             ],
             [
                 '94440',
                 [
-                    94048 => 'Marolles-en-Brie',
-                    94070 => 'Santeny',
-                    94075 => 'Villecresnes',
+                    CityValueObject::createFromCityArray(['name' => 'Marolles-en-Brie', 'postal_code' => ['94440'], 'insee_code' => '94048']),
+                    CityValueObject::createFromCityArray(['name' => 'Santeny', 'postal_code' => ['94440'], 'insee_code' => '94070']),
+                    CityValueObject::createFromCityArray(['name' => 'Villecresnes', 'postal_code' => ['94440'], 'insee_code' => '94075']),
                 ],
             ],
         ];
     }
 
-    public function provideCity(): array
-    {
-        return [
-            [
-                '75101',
-                'Paris 1er',
-            ],
-            [
-                '92009',
-                'Bois-Colombes',
-            ],
-            [
-                '01001',
-                null,
-            ],
-        ];
-    }
-
-    public function provideForCityInseeCode(): array
+    public function provideForCityByPostalCodeAndName(): array
     {
         return [
             [
                 '77000',
                 'Melun',
-                '77288',
+                CityValueObject::createFromCityArray(['name' => 'Melun', 'postal_code' => ['77000'], 'insee_code' => '77288']),
             ],
             [
                 '94440',
                 'Santeny',
-                '94070',
+                CityValueObject::createFromCityArray(['name' => 'Santeny', 'postal_code' => ['94440'], 'insee_code' => '94070']),
             ],
         ];
     }
@@ -137,11 +101,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
             ],
             'Bois Colom',
             [
-                [
-                    'name' => 'Bois-Colombes',
-                    'postal_code' => ['92270'],
-                    'insee_code' => '92009',
-                ],
+                CityValueObject::createFromCityArray(['name' => 'Bois-Colombes', 'postal_code' => ['92270'], 'insee_code' => '92009']),
             ],
         ];
         yield [
@@ -165,11 +125,7 @@ class FranceCitiesTest extends AbstractKernelTestCase
             ],
             'Melun',
             [
-                [
-                    'name' => 'Melun',
-                    'postal_code' => ['77000'],
-                    'insee_code' => '77288',
-                ],
+                CityValueObject::createFromCityArray(['name' => 'Melun', 'postal_code' => ['77000'], 'insee_code' => '77288']),
             ],
         ];
     }
@@ -179,35 +135,11 @@ class FranceCitiesTest extends AbstractKernelTestCase
         return [
             [
                 '94048',
-                [
-                    'name' => 'Marolles-en-Brie',
-                    'postal_code' => ['94440'],
-                    'insee_code' => '94048',
-                ],
+                CityValueObject::createFromCityArray(['name' => 'Marolles-en-Brie', 'postal_code' => ['94440'], 'insee_code' => '94048']),
             ],
             [
                 '94070',
-                [
-                    'name' => 'Santeny',
-                    'postal_code' => ['94440'],
-                    'insee_code' => '94070',
-                ],
-            ],
-        ];
-    }
-
-    public function provideForSearchCitiesByInseeCodes(): array
-    {
-        return [
-            [
-                [
-                    75102,
-                    92009,
-                ],
-                [
-                    75102 => 'Paris 2ème',
-                    92009 => 'Bois-Colombes',
-                ],
+                CityValueObject::createFromCityArray(['name' => 'Santeny', 'postal_code' => ['94440'], 'insee_code' => '94070']),
             ],
         ];
     }
