@@ -153,7 +153,7 @@ abstract class AbstractMyTeamController extends AbstractController
 
         $result = [];
         foreach ($foundedCities as $city) {
-            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCode()];
+            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCodeAsString()];
         }
 
         return new JsonResponse($result);

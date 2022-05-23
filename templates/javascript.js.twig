@@ -396,7 +396,7 @@ $(document).ready(function() {
                 $.get("{{ urlSearch|raw }}?search=" + term, function(data) {
                     var array = $.map(data, function(m) {
                         return {
-                            label: `${m.name} (${m.postal_code.toString()})`,
+                            label: `${m.name} (${m.postal_code})`,
                             value: m.insee_code
                         };
                     });

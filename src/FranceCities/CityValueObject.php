@@ -23,6 +23,11 @@ class CityValueObject
         return $this->postalCode;
     }
 
+    public function getPostalCodeAsString(): string
+    {
+        return implode(', ', $this->getPostalCode());
+    }
+
     public static function createFromCityArray(array $city): self
     {
         $object = new self();
