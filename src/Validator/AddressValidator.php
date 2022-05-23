@@ -49,7 +49,8 @@ class AddressValidator extends ConstraintValidator
 
         // Invalid city
         $parts = explode('-', $address->getCity());
-        if (2 !== \count($parts) || !$this->franceCities->getCityByInseeCode($parts[1])) {
+        $city = $this->franceCities->getCityByInseeCode($parts[1]);
+        if (2 !== \count($parts) || !\in_array($parts[0], $city ? $city->getPostalCode() : [], true)) {
             $this->context->addViolation($constraint->frenchCityMessage);
 
             return;
