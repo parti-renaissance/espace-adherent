@@ -276,22 +276,22 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-6'])
-                ->add('postAddress.address', TextType::class, [
+                ->add('postAddress.address', null, [
                     'label' => 'Rue',
                 ])
-                ->add('postAddress.postalCode', TextType::class, [
+                ->add('postAddress.postalCode', null, [
                     'label' => 'Code postal',
                 ])
-                ->add('postAddress.cityName', TextType::class, [
+                ->add('postAddress.cityName', null, [
                     'label' => 'Ville',
                 ])
                 ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
                 ])
-                ->add('postAddress.latitude', TextType::class, [
+                ->add('postAddress.latitude', null, [
                     'label' => 'Latitude',
                 ])
-                ->add('postAddress.longitude', TextType::class, [
+                ->add('postAddress.longitude', null, [
                     'label' => 'Longitude',
                 ])
             ->end()
