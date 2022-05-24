@@ -113,7 +113,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', null, 45.570898, 5.927206),
+            'address' => PostAddress::createFrenchAddress('826 avenue du lys', '77190-77152', null, 48.5182193, .624205),
             'birthdate' => '1950-07-08',
             'position' => 'retired',
             'phone' => '+33111223344',
@@ -125,8 +125,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $adherent2->addReferentTag($this->getReference('referent_tag_73'));
-        $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_73'));
+        $adherent2->addReferentTag($this->getReference('referent_tag_77'));
+        $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $this->adherentFactory->createFromArray([

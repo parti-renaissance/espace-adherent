@@ -4,7 +4,7 @@ namespace App\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Projection\ManagedUser;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\GeoZoneTrait;
@@ -22,8 +22,12 @@ class ManagedUserRepository extends ServiceEntityRepository
     use PaginatorTrait;
     use GeoZoneTrait;
 
-    public function __construct(ManagerRegistry $registry)
+    private FranceCities $franceCities;
+
+    public function __construct(ManagerRegistry $registry, FranceCities $franceCities)
     {
+        $this->franceCities = $franceCities;
+
         parent::__construct($registry, ManagedUser::class);
     }
 
@@ -174,15 +178,15 @@ class ManagedUserRepository extends ServiceEntityRepository
             $citiesExpression = $qb->expr()->orX();
 
             foreach ($cities as $key => $inseeCode) {
-                $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
-                $postalCode = $city ? $city['postal_code'] : null;
+                $city = $this->franceCities->getCityByInseeCode($inseeCode);
+                $postalCode = $city ? $city->getPostalCode() : null;
 
                 if (!$postalCode) {
                     continue;
                 }
 
                 $cityExpression = $qb->expr()->andX(
-                    'u.postalCode = :city_postalCode_'.$key,
+                    'u.postalCode IN (:city_postalCode_'.$key.')',
                     'u.country = :country_france'
                 );
                 $qb->setParameter('city_postalCode_'.$key, $postalCode);

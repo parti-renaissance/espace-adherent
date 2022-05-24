@@ -9,6 +9,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadUserData        |
       | LoadReferentTagData |
+      | LoadGeoZoneData     |
 
   Scenario: I can become adherent with a foreign country
     And I am logged as "simple-user@example.ch"

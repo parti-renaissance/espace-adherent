@@ -301,7 +301,7 @@ class OAuthServerControllerTest extends WebTestCase
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
             'country' => 'FR',
-            'postal_code' => '73100',
+            'postal_code' => '77190',
             'nickname' => 'pont',
             'use_nickname' => false,
             'comments_cgu_accepted' => false,
@@ -310,7 +310,7 @@ class OAuthServerControllerTest extends WebTestCase
             'emailAddress' => 'carl999@example.fr',
             'firstName' => 'Carl',
             'lastName' => 'Mirabeau',
-            'zipCode' => '73100',
+            'zipCode' => '77190',
         ];
         foreach ($expected as $expectedKey => $expectedValue) {
             static::assertArrayHasKey($expectedKey, $data);

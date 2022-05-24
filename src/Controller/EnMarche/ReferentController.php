@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Entity\Adherent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use App\Form\ReferentPersonLinkType;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\Referent\OrganizationalChartManager;
 use App\Repository\CommitteeRepository;
 use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
@@ -119,7 +119,7 @@ class ReferentController extends AbstractController
      * )
      * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
      */
-    public function cityAutocompleteAction(Request $request): JsonResponse
+    public function cityAutocompleteAction(Request $request, FranceCities $franceCities): JsonResponse
     {
         if (!$search = $request->query->get('search')) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
@@ -128,8 +128,15 @@ class ReferentController extends AbstractController
         /** @var Adherent $referent */
         $referent = $this->getUser();
 
-        $managedTags = $referent->getManagedArea()->getTags();
+        $managedZones = $referent->getManagedArea()->getZones();
 
-        return new JsonResponse(FranceCitiesBundle::searchCitiesForTags($managedTags->toArray(), $search));
+        $foundedCities = $franceCities->searchCitiesForZones($managedZones->toArray(), $search);
+
+        $result = [];
+        foreach ($foundedCities as $city) {
+            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCodeAsString()];
+        }
+
+        return new JsonResponse($result);
     }
 }

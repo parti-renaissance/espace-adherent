@@ -23,10 +23,10 @@ Feature:
         "custom_gender": null,
         "nationality": "FR",
         "post_address": {
-            "address": "122 rue de Mouxy",
-            "postal_code": "73100",
-            "city": "73100-73182",
-            "city_name": "Mouxy",
+            "address": "826 avenue du lys",
+            "postal_code": "77190",
+            "city": "77190-77152",
+            "city_name": "Dammarie-les-Lys",
             "region": null,
             "country": "FR"
         },

@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Address\Address;
 use App\Entity\VotePlace;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\Repository\VotePlaceRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,10 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CreateVotePlaceType extends AbstractType
 {
     private $votePlaceRepository;
+    private FranceCities $franceCities;
 
-    public function __construct(VotePlaceRepository $votePlaceRepository)
+    public function __construct(VotePlaceRepository $votePlaceRepository, FranceCities $franceCities)
     {
         $this->votePlaceRepository = $votePlaceRepository;
+        $this->franceCities = $franceCities;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -49,7 +51,7 @@ class CreateVotePlaceType extends AbstractType
             if (Address::FRANCE === $votePlace->getCountry()) {
                 $codePrefix = array_search(
                     $votePlace->getCity(),
-                    FranceCitiesBundle::getPostalCodeCities($votePlace->getPostalCode()),
+                    $this->getCodesAndCitiesNameFromPostalCode($votePlace->getPostalCode()),
                     true
                 );
 
@@ -79,5 +81,17 @@ class CreateVotePlaceType extends AbstractType
         $resolver->setDefaults([
             'data_class' => VotePlace::class,
         ]);
+    }
+
+    private function getCodesAndCitiesNameFromPostalCode(string $postalCode): array
+    {
+        $cities = $this->franceCities->findCitiesByPostalCode($postalCode);
+
+        $codeAndNameArray = [];
+        foreach ($cities as $city) {
+            $codeAndNameArray[$city->getInseeCode()] = $city->getName();
+        }
+
+        return $codeAndNameArray;
     }
 }

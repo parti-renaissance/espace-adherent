@@ -56,15 +56,15 @@ Feature:
     """
     {
       "female":3,
-      "male":6,
-      "total":9,
+      "male":7,
+      "total":10,
       "adherents": [
-          {"date": "2018-04", "total": 8},
-          {"date": "2018-03", "total": 8},
-          {"date": "2018-02", "total": 8},
-          {"date": "2018-01", "total": 8},
-          {"date": "2017-12", "total": 7},
-          {"date": "2017-11", "total": 7}
+          {"date": "2018-04", "total": 9},
+          {"date": "2018-03", "total": 9},
+          {"date": "2018-02", "total": 9},
+          {"date": "2018-01", "total": 9},
+          {"date": "2017-12", "total": 8},
+          {"date": "2017-11", "total": 8}
       ],
       "committee_members": [
           {"date": "2018-04", "count": 3},

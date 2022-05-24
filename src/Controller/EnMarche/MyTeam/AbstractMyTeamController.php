@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Form\MyTeam\DelegateAccessType;
 use App\Form\MyTeam\MyTeamSearchAdherentType;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
@@ -143,13 +143,20 @@ abstract class AbstractMyTeamController extends AbstractController
      *     methods={"GET"}
      * )
      */
-    public function cityAutocompleteAction(Request $request): JsonResponse
+    public function cityAutocompleteAction(Request $request, FranceCities $franceCities): JsonResponse
     {
         if (!$search = $request->query->get('search')) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(FranceCitiesBundle::searchCitiesForTags($this->getManagedTags($this->getUser()), $search));
+        $foundedCities = $franceCities->searchCitiesForZones($this->getZones($this->getUser()), $search);
+
+        $result = [];
+        foreach ($foundedCities as $city) {
+            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCodeAsString()];
+        }
+
+        return new JsonResponse($result);
     }
 
     abstract protected function getSpaceType(): string;

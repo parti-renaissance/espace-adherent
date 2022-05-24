@@ -157,11 +157,11 @@ class AdherentControllerTest extends WebTestCase
         $oldLongitude = $adherent->getLongitude();
         $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
         $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
-        $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
-        $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
+        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
+        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
 
-        $this->assertCount(6, $histories73Subscriptions);
-        $this->assertCount(0, $histories73Unsubscriptions);
+        $this->assertCount(6, $histories77Subscriptions);
+        $this->assertCount(0, $histories77Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
 
@@ -173,16 +173,15 @@ class AdherentControllerTest extends WebTestCase
         self::assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         self::assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
         self::assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('73100', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('73100-73182', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
+        self::assertSame('826 avenue du lys', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
+        self::assertSame('77190', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        self::assertSame('77190-77152', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
         self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
         self::assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
         self::assertSame('1950-07-08', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
         self::assertCount(2, $adherent->getReferentTags());
-        self::assertAdherentHasReferentTag($adherent, '73');
-        self::assertAdherentHasReferentTag($adherent, 'CIRCO_73004');
+        self::assertAdherentHasReferentTag($adherent, '77');
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -310,11 +309,11 @@ class AdherentControllerTest extends WebTestCase
 
         $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
         $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
-        $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
-        $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
+        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
+        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
 
-        $this->assertCount(6, $histories73Subscriptions);
-        $this->assertCount(6, $histories73Unsubscriptions);
+        $this->assertCount(6, $histories77Subscriptions);
+        $this->assertCount(6, $histories77Unsubscriptions);
         $this->assertCount(6, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }

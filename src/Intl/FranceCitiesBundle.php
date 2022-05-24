@@ -172,21 +172,6 @@ class FranceCitiesBundle
         return $citiesByInsee;
     }
 
-    public static function getCityInseeCode(string $postalCode, string $name): ?string
-    {
-        $normalizedName = self::canonicalizeCityName($name);
-
-        $cities = self::getPostalCodeCities($postalCode);
-
-        foreach ($cities as $inseeCode => $cityName) {
-            if (str_starts_with(self::canonicalizeCityName($cityName), $normalizedName)) {
-                return $inseeCode;
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Returns the country ISO code for the given french postal code (FR by default).
      *

@@ -34,6 +34,7 @@ use App\Entity\District;
 use App\Entity\Geo\Zone;
 use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\ReferentTag;
+use App\FranceCities\FranceCities;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
@@ -68,7 +69,6 @@ use App\Mailchimp\Driver;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -76,14 +76,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class AdherentMessageChangeCommandHandlerTest extends TestCase
+class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
 {
     private $adherentDummy;
     private $commandDummy;
     private $clientMock;
     /** @var MailchimpObjectIdMapping */
     private $mailchimpMapping;
+    private ?FranceCities $franceCities = null;
 
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
@@ -427,7 +429,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $message->setFilter($filter = new MunicipalChiefFilter(75101));
         $filter->setContactRunningMateTeam(true);
 
-        (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
+        (new MunicipalChiefMailchimpCampaignHandler($this->franceCities))->handle($message);
 
         $this->clientMock
             ->expects($this->exactly(2))
@@ -492,16 +494,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
-    public function testAnnecyMunicipalChiefMessageGeneratesGoodPayloads(): void
+    public function testBoisColombesMunicipalChiefMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
-        $message->setFilter($filter = new MunicipalChiefFilter(74010));
+        $message->setFilter($filter = new MunicipalChiefFilter(92009));
         $filter->setContactAdherents(true);
 
-        (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
+        (new MunicipalChiefMailchimpCampaignHandler($this->franceCities))->handle($message);
 
         $this->clientMock
-            ->expects($this->exactly(12))
+            ->expects($this->exactly(2))
             ->method('request')
             ->withConsecutive(
                 ['POST', '/3.0/campaigns', ['json' => [
@@ -510,7 +512,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '5',
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y').' - Annecy',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Bois-Colombes',
                         'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -523,7 +525,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'TextMerge',
                                     'op' => 'starts',
                                     'field' => 'CITY',
-                                    'value' => 'Annecy (',
+                                    'value' => 'Bois-Colombes (',
                                 ],
                                 [
                                     'condition_type' => 'Interests',
@@ -1034,6 +1036,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->clientMock = $this->createMock(HttpClientInterface::class);
         $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
         $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::uuid4());
+
+        $this->franceCities = $this->get(FranceCities::class);
     }
 
     protected function tearDown(): void
@@ -1043,6 +1047,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->adherentDummy = null;
         $this->clientMock = null;
         $this->commandDummy = null;
+        $this->franceCities = null;
     }
 
     private function preparedMessage(string $messageClass): AdherentMessageInterface
@@ -1127,7 +1132,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     new ContactAgeConditionBuilder(),
                     new ContactCityConditionBuilder(),
                     new JecouteConditionBuilder(),
-                    new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping),
+                    new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping, $this->franceCities),
                     new MunicipalChiefToCandidateConditionBuilder($this->mailchimpMapping),
                     new MunicipalChiefToNewsletterConditionBuilder($this->mailchimpMapping),
                     new ReferentToAdherentConditionBuilder($this->mailchimpMapping),

@@ -51,8 +51,8 @@ class NotificationTopicBuilderTest extends AbstractKernelTestCase
         ]];
 
         yield ['carl999@example.fr', [
-            'staging_jemarche_department_73',
-            'staging_jemarche_region_84',
+            'staging_jemarche_department_77',
+            'staging_jemarche_region_11',
             'staging_jemarche_global',
         ]];
 

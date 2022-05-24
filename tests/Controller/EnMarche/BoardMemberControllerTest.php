@@ -67,7 +67,7 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertSame('Tous les résultats (8)', $crawler->filter('h2')->first()->text());
         $this->assertSame(8, $resultRow->count());
         $this->assertSame('Carl Mirabeau', $resultRow->eq(0)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
-        $this->assertMatchesRegularExpression('/\d+, M, Mouxy/', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
+        $this->assertMatchesRegularExpression('/\d+, M, Dammarie-les-Lys/', $resultRow->eq(0)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Laura Deloche', $resultRow->eq(1)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
         $this->assertMatchesRegularExpression('/\d+, F, Rouen/', $resultRow->eq(1)->filter('li')->eq(1)->filter('div')->eq(1)->text());
         $this->assertSame('Martine Lindt', $resultRow->eq(2)->filter('li')->eq(1)->filter('.text--bold')->first()->text());
@@ -167,7 +167,7 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(4, $members);
         $this->assertStringContainsString('Carl Mirabeau', $members->first()->text());
-        $this->assertMatchesRegularExpression('/\d+, M, Mouxy/', $members->first()->text());
+        $this->assertMatchesRegularExpression('/\d+, M, Dammarie-les-Lys/', $members->first()->text());
         $this->assertStringContainsString('Laura Deloche', $members->eq(1)->text());
         $this->assertMatchesRegularExpression('/\d+, F, Rouen/', $members->eq(1)->text());
         $this->assertStringContainsString('Martine Lindt', $members->eq(2)->text());
