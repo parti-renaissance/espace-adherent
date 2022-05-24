@@ -627,20 +627,26 @@ class CommitteeRepository extends ServiceEntityRepository
      *
      * @return Committee[]
      */
-    public function findAllInDistrict(District $district): array
+    public function findInZone(Zone $zone): array
     {
-        return $this->createQueryBuilder('c')
-            ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
-            ->innerJoin('d.geoData', 'gd')
-            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',c.postAddress.longitude,' ',c.postAddress.latitude,')')), gd.geoShape) = 1")
+        $qb = $this->createQueryBuilder('c')
             ->andWhere('c.status = :status')
-            ->setParameter('district_id', $district->getId())
             ->setParameter('status', Committee::APPROVED)
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
         ;
+
+        $this->withGeoZones(
+            [$zone],
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2'
+        );
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findCommitteesForHost(Adherent $adherent): array

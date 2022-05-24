@@ -57,6 +57,14 @@ class AdherentZoneBasedRole
         return $role;
     }
 
+    public static function createDeputy(Zone $zone): self
+    {
+        $role = new self(ScopeEnum::DEPUTY);
+        $role->addZone($zone);
+
+        return $role;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

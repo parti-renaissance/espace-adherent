@@ -2160,11 +2160,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedDistrict = $district;
     }
 
-    public function isDeputy(): bool
-    {
-        return $this->managedDistrict instanceof District;
-    }
-
     public function isDelegatedDeputy(): bool
     {
         return \count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
@@ -2711,19 +2706,29 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::CORRESPONDENT);
     }
 
-    public function isLegislativeCandidate(): bool
-    {
-        return $this->hasZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE);
-    }
-
     public function getCorrespondentZone(): Zone
     {
         return $this->findZoneBasedRole(ScopeEnum::CORRESPONDENT)->getZones()->first();
     }
 
+    public function isLegislativeCandidate(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE);
+    }
+
     public function getLegislativeCandidateZone(): Zone
     {
         return $this->findZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE)->getZones()->first();
+    }
+
+    public function isDeputy(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::DEPUTY);
+    }
+
+    public function getDeputyZone(): Zone
+    {
+        return $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first();
     }
 
     public function getLreArea(): ?LreArea
