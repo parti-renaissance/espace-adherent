@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\AdherentProfile\AdherentProfileHandler;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
@@ -37,10 +38,13 @@ use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\CoalitionModeratorRoleListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Intl\UnitedNationsBundle;
 use App\Mailchimp\Contact\ContactStatusEnum;
+use App\Membership\AdherentEvents;
+use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MandatesEnum;
 use App\Membership\UserEvents;
@@ -95,6 +99,7 @@ class AdherentAdmin extends AbstractAdmin
     private $politicalCommitteeManager;
     /** @var InstanceQualityRepository */
     private $instanceQualityRepository;
+    private AdherentProfileHandler $adherentProfileHandler;
     private LoggerInterface $logger;
 
     /**
@@ -111,6 +116,7 @@ class AdherentAdmin extends AbstractAdmin
         EventDispatcherInterface $dispatcher,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
         PoliticalCommitteeManager $politicalCommitteeManager,
+        AdherentProfileHandler $adherentProfileHandler,
         LoggerInterface $logger
     ) {
         parent::__construct($code, $class, $baseControllerName);
@@ -118,6 +124,7 @@ class AdherentAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
         $this->politicalCommitteeManager = $politicalCommitteeManager;
+        $this->adherentProfileHandler = $adherentProfileHandler;
         $this->logger = $logger;
     }
 
@@ -266,6 +273,26 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('boardMember.roles', null, [
                     'label' => 'Rôles',
                     'template' => 'admin/adherent/list_board_member_roles.html.twig',
+                ])
+            ->end()
+            ->with('Adresse', ['class' => 'col-md-6'])
+                ->add('postAddress.address', null, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', null, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', null, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                    'label' => 'Pays',
+                ])
+                ->add('postAddress.latitude', null, [
+                    'label' => 'Latitude',
+                ])
+                ->add('postAddress.longitude', null, [
+                    'label' => 'Longitude',
                 ])
             ->end()
             ->with('Coordinateur', ['class' => 'col-md-3'])
@@ -524,6 +551,26 @@ HELP
                     ->add('papUserRole', null, [
                         'label' => 'Utilisateur PAP app mobile',
                         'required' => false,
+                    ])
+                ->end()
+                ->with('Adresse', ['class' => 'col-md-6'])
+                    ->add('postAddress.address', TextType::class, [
+                        'label' => 'Rue',
+                    ])
+                    ->add('postAddress.postalCode', TextType::class, [
+                        'label' => 'Code postal',
+                    ])
+                    ->add('postAddress.cityName', TextType::class, [
+                        'label' => 'Ville',
+                    ])
+                    ->add('postAddress.country', UnitedNationsCountryType::class, [
+                        'label' => 'Pays',
+                    ])
+                    ->add('postAddress.latitude', TextType::class, [
+                        'label' => 'Latitude',
+                    ])
+                    ->add('postAddress.longitude', TextType::class, [
+                        'label' => 'Longitude',
                     ])
                 ->end()
                 ->with('Zone expérimentale 🚧', [
@@ -1034,7 +1081,9 @@ HELP
      */
     public function postUpdate($object)
     {
-        // No need to handle referent tags update as they are not update-able from admin
+        $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
+
+        $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($object), AdherentEvents::PROFILE_UPDATED);
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 

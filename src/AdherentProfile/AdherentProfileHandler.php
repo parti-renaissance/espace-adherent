@@ -81,7 +81,7 @@ class AdherentProfileHandler
         $this->subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
     }
 
-    private function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
+    public function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
     {
         if ($this->referentTagManager->isUpdateNeeded($adherent)) {
             $oldReferentTags = $adherent->getReferentTags()->toArray();

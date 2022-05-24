@@ -19,7 +19,7 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
-class AbstractApplicationRequestAdmin extends AbstractAdmin
+abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_sort_order' => 'ASC',
