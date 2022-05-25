@@ -7,6 +7,7 @@ use Psr\SimpleCache\CacheInterface;
 class CachedCitiesStorage implements CitiesStorageInterface
 {
     private const CACHE_KEY = 'france_cities';
+
     private CitiesStorageInterface $decorated;
     private CacheInterface $cache;
 
