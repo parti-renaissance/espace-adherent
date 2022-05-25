@@ -21,3 +21,4 @@ framework:
                 adapter: cache.adapter.doctrine
             app.cache.municipal_site: ~
             app.cache.voting_platform: ~
+            app.cache.france_cities: ~
