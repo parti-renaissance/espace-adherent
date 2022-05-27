@@ -44,3 +44,19 @@ services:
 
     kreait_firebase.jemarche_app.dynamic_links: '@Tests\App\Test\Firebase\DummyDynamicLinks'
     kreait_firebase.jemarche_app.messaging: '@Tests\App\Test\Firebase\DummyMessaging'
+
+    app.storage.public:
+        class: 'App\Storage\Storage'
+        arguments:
+            - !service
+                factory: 'App\Storage\AdapterFactory::createLocal'
+                arguments:
+                    - '%kernel.project_dir%/app/storage/public'
+
+    app.storage.private:
+        class: 'App\Storage\Storage'
+        arguments:
+            - !service
+                factory: 'App\Storage\AdapterFactory::createLocal'
+                arguments:
+                    - '%kernel.project_dir%/app/storage/private'
