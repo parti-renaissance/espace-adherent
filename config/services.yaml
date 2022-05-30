@@ -370,6 +370,17 @@ services:
                 arguments:
                     - '@request_stack'
                     - '%kernel.debug%'
+                    -
+    App\FranceCities\CitiesStorageInterface: '@App\FranceCities\CitiesStorage'
+
+    App\FranceCities\CachedCitiesStorage:
+        decorates: App\FranceCities\CitiesStorage
+        arguments:
+            $decorated: '@App\FranceCities\CachedCitiesStorage.inner'
+            $cache: !service
+                class: Symfony\Component\Cache\Simple\Psr6Cache
+                arguments:
+                    - '@app.cache.france_cities'
 
     # SonataAdmin requests public `logger` service
     logger:
