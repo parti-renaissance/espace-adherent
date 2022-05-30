@@ -6306,10 +6306,10 @@ react-is@^16.13.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-power-select@^1.0.0-beta.17:
-  version "1.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/react-power-select/-/react-power-select-1.0.0-beta.17.tgz#f4deffe1dbfd56cb678b7a03d5ea662c3e56d1e6"
-  integrity sha512-LowiICCO4IE8P9PAXcsKnWI7Oo3mDZCAUVlxn75x1S+VhwwHNCn9oK+sC3i90j09SplfegnJvB6blrwX3DuuKg==
+react-power-select@^1.0.0-beta.19:
+  version "1.0.0-beta.19"
+  resolved "https://registry.yarnpkg.com/react-power-select/-/react-power-select-1.0.0-beta.19.tgz#3f3fa5acd34638859c68e8ec9d588deb36b6a5b0"
+  integrity sha512-cXJ+fXavz1EqSohhs1F5DhPC8S2omXYn3Am1tfdroDUDZkVPO5a9pYaxYtiUUx5h+XaYrVUNb+SjztkFKLpd3A==
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.5.10"
