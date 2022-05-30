@@ -929,8 +929,8 @@ Feature:
     {
       "name": "Nouvel objectif",
       "description": "Nouvelle description",
-      "begin_at": "2022-05-15 16:30:30",
-      "finish_at": "2022-05-16 16:30:30",
+      "begin_at": "+30 days",
+      "finish_at": "+31 days",
       "category": "reunion-dequipe",
       "mode": "online",
       "visio_url": "http://visio.fr",
@@ -962,11 +962,11 @@ Feature:
       },
       "uuid": "472d1f86-6522-4122-a0f4-abd69d17bb2d",
       "name": "Nouvel objectif",
-      "slug": "2022-05-15-nouvel-objectif",
+      "slug": "@string@-nouvel-objectif",
       "description": "Nouvelle description",
       "time_zone": "Europe/Paris",
-      "begin_at": "2022-05-15T16:30:30+02:00",
-      "finish_at": "2022-05-16T16:30:30+02:00",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
       "organizer": {
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
@@ -987,7 +987,7 @@ Feature:
       "visio_url": "http://visio.fr",
       "mode": "online",
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/2022-05-15-nouvel-objectif"
+      "link": "http://test.enmarche.code/evenements/@string@-nouvel-objectif"
     }
     """
 
@@ -1047,8 +1047,8 @@ Feature:
        "name": "My cause event",
        "description": "Description",
        "time_zone": "Europe/Paris",
-       "begin_at": "2022-05-29 10:30:30",
-       "finish_at": "2022-05-29 16:30:30",
+       "begin_at": "+30 days",
+       "finish_at": "+31 days",
        "category": "kiosque",
        "mode": "online",
        "visio_url": "visio.fr",
@@ -1088,8 +1088,8 @@ Feature:
       "slug": "@string@-my-cause-event",
       "description": "Description",
       "time_zone": "Europe/Paris",
-      "begin_at": "2022-05-29T10:30:30+02:00",
-      "finish_at": "2022-05-29T16:30:30+02:00",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
       "organizer": {
         "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
         "first_name": "Gisele",
@@ -1145,11 +1145,11 @@ Feature:
           },
           {
             "name": "event_date",
-            "content": "dimanche 29 mai 2022"
+            "content": "@string@"
           },
           {
             "name": "event_hour",
-            "content": "10h30"
+            "content": "@string@"
           },
           {
             "name": "event_address",
@@ -1253,8 +1253,8 @@ Feature:
        "name": "My cause event",
        "description": "Description",
        "time_zone": "Europe/Paris",
-       "begin_at": "2022-05-29 10:30:30",
-       "finish_at": "2022-05-29 16:30:30",
+       "begin_at": "+30 days",
+       "finish_at": "+31 days",
        "category": "kiosque",
        "mode": "online",
        "visio_url": "http://visio.fr",
@@ -1279,8 +1279,8 @@ Feature:
       "name": "Nouvel objectif",
       "description": "Nouvelle description",
       "time_zone": "Europe/Paris",
-      "begin_at": "2022-05-12 10:30:30",
-      "finish_at": "2022-05-12 16:30:30",
+      "begin_at": "+30 days",
+      "finish_at": "+31 days",
       "category": "kiosque",
       "mode": "online",
       "visio_url": "http://visio.fr",
@@ -1316,11 +1316,11 @@ Feature:
       },
       "uuid": "ef62870c-6d42-47b6-91ea-f454d473adf8",
       "name": "Nouvel objectif",
-      "slug": "2022-05-12-nouvel-objectif",
+      "slug": "@string@-nouvel-objectif",
       "description": "Nouvelle description",
       "time_zone": "Europe/Paris",
-      "begin_at": "2022-05-12T10:30:30+02:00",
-      "finish_at": "2022-05-12T16:30:30+02:00",
+      "begin_at": "@string@.isDateTime()",
+      "finish_at": "@string@.isDateTime()",
       "organizer": {
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
@@ -1341,7 +1341,7 @@ Feature:
       "visio_url": "http://visio.fr",
       "mode": "online",
       "image_url": null,
-      "link": "http://test.enmarche.code/evenements/2022-05-12-nouvel-objectif"
+      "link": "http://test.enmarche.code/evenements/@string@-nouvel-objectif"
     }
     """
     And I should have 1 email
@@ -1364,11 +1364,11 @@ Feature:
           },
           {
             "name": "event_date",
-            "content": "jeudi 12 mai 2022"
+            "content": "@string@"
           },
           {
             "name": "event_hour",
-            "content": "10h30"
+            "content": "@string@"
           },
           {
             "name": "event_address",
