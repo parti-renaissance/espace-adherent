@@ -139,13 +139,17 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         $codesFilter = $qb->expr()->orX();
 
         foreach ($assessorManager->getAssessorManagedArea()->getCodes() as $key => $code) {
+            if ('all' === strtolower($code)) {
+                continue;
+            }
+
             if (is_numeric($code)) {
                 // Postal code prefix
                 $codesFilter->add(
                     $qb->expr()->like(self::ALIAS.'.assessorPostalCode', ':code'.$key)
                 );
                 $qb->setParameter('code'.$key, $code.'%');
-            } elseif ('all' !== strtolower($code)) {
+            } else {
                 // Country
                 $codesFilter->add($qb->expr()->eq(self::ALIAS.'.assessorCountry', ':code'.$key));
                 $qb->setParameter('code'.$key, $code);
