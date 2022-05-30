@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\VotePlaceRepository")
  *
  * @UniqueEntity(fields={"code"})
+ *
+ * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
 class VotePlace
 {

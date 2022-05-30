@@ -38,6 +38,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={},
  * )
+ *
+ * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
 class VotePlace
 {
