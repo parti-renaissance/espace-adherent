@@ -2,6 +2,7 @@
 
 namespace App\Repository\Pap;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Pap\Campaign;
 use App\Entity\Pap\VotePlace;
 use App\Repository\GeoZoneTrait;
@@ -56,6 +57,18 @@ SQL;
         $result = $stmt->executeQuery();
 
         return $result->fetchAllAssociative();
+    }
+
+    public function findForZone(Zone $zone): array
+    {
+        $qb = $this->createQueryBuilder('vp');
+
+        $this->withZones($qb, [$zone], 'vp');
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function withZones(QueryBuilder $queryBuilder, array $zones, string $alias): void

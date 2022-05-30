@@ -6,6 +6,7 @@ use App\Entity\Geo\City;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
+use App\Entity\Pap\Campaign;
 use App\Entity\ReferentTag;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -369,6 +370,29 @@ class ZoneRepository extends ServiceEntityRepository
             $qb
                 ->innerJoin('zone.parents', 'zone_parent')
                 ->andWhere($qb->expr()->in('zone_parent.id', $parentIds))
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findZonesWithoutLocalPapCampaign(string $type, string $code = null): array
+    {
+        $qb = $this
+            ->createQueryBuilder('zone')
+            ->leftJoin(Campaign::class, 'campaign', Join::WITH, 'zone MEMBER OF campaign.zones')
+            ->andWhere('campaign IS NULL')
+            ->andWhere('zone.type = :type')
+            ->setParameter('type', $type)
+        ;
+
+        if ($code) {
+            $qb
+                ->andWhere('zone.code = :code')
+                ->setParameter('code', $code)
             ;
         }
 
