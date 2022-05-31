@@ -5,10 +5,11 @@ namespace App\Command;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Choice;
 use App\Entity\Jecoute\LocalSurvey;
-use App\Entity\Jecoute\Question;
+use App\Entity\Jecoute\SuggestedQuestion;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Entity\Pap\Campaign;
 use App\Jecoute\SurveyQuestionTypeEnum;
+use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Pap\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PapCampaignsCreateLocalCommand extends Command
 {
@@ -26,6 +28,7 @@ class PapCampaignsCreateLocalCommand extends Command
     private ?EntityManagerInterface $entityManager = null;
     private ?ZoneRepository $zoneRepository = null;
     private ?VotePlaceRepository $votePlaceRepository = null;
+    private ?MessageBusInterface $bus = null;
 
     protected function configure()
     {
@@ -59,6 +62,7 @@ class PapCampaignsCreateLocalCommand extends Command
         $questions = $this->createSurveyQuestions();
 
         $count = 0;
+        $limit = $input->getOption('limit');
         foreach ($zones as $zone) {
             $this->io->comment(sprintf('Creating PAP campaign for zone %s', $zone->getNameCode()));
 
@@ -69,12 +73,15 @@ class PapCampaignsCreateLocalCommand extends Command
             $this->entityManager->persist($survey);
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
+
+            $this->bus->dispatch(new UpdateCampaignAddressInfoCommand($campaign->getUuid()));
+
             $this->entityManager->clear(LocalSurvey::class);
             $this->entityManager->clear(Campaign::class);
 
             ++$count;
 
-            if ($count >= $input->getOption('limit')) {
+            if ($limit && $count >= $limit) {
                 break;
             }
         }
@@ -86,14 +93,14 @@ class PapCampaignsCreateLocalCommand extends Command
 
     private function createSurveyQuestions(): array
     {
-        $question1 = new Question(
+        $question1 = new SuggestedQuestion(
             'Avez-vous prévu d\'aller voter les 12 et 19 juin prochains ?',
             SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE
         );
         $question1->addChoice(new Choice('Oui'));
         $question1->addChoice(new Choice('Non'));
 
-        $question2 = new Question(
+        $question2 = new SuggestedQuestion(
             'Si vous n\'êtes pas présent(e) le jour du scrutin, un de nos militants pourra prendre une procuration pour vous',
             SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE
         );
@@ -165,5 +172,13 @@ class PapCampaignsCreateLocalCommand extends Command
     public function setVotePlaceRepository(VotePlaceRepository $votePlaceRepository): void
     {
         $this->votePlaceRepository = $votePlaceRepository;
+    }
+
+    /**
+     * @required
+     */
+    public function setBus(MessageBusInterface $bus)
+    {
+        $this->bus = $bus;
     }
 }
