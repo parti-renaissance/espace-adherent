@@ -47,7 +47,6 @@ class PapCampaignsCreateLocalCommandTest extends AbstractCommandCaseTest
         self::assertSame('92-1', $zone->getCode());
         self::assertLessThan(new \DateTime('now'), $campaign->getBeginAt());
         self::assertGreaterThan(new \DateTime('now'), $campaign->getFinishAt());
-        self::assertTrue($campaign->isEnabled());
     }
 
     protected function setUp(): void

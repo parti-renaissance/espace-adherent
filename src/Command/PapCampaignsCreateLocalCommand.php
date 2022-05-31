@@ -136,9 +136,7 @@ class PapCampaignsCreateLocalCommand extends Command
             new \DateTime('2022-06-19 23:59:59'),
             0,
             0,
-            [$zone],
-            null,
-            true
+            [$zone]
         );
 
         $votePlaces = $this->votePlaceRepository->findForZone($zone);
