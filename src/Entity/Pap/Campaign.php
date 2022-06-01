@@ -371,6 +371,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *     "pap_campaign_write",
      *     "pap_campaign_read",
      *     "pap_campaign_read_after_write",
+     *     "pap_campaign_read_list",
      * })
      */
     private bool $enabled;
