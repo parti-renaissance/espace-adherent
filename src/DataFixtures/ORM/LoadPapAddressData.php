@@ -54,18 +54,9 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         $vpAnthonya = $this->getReference('pap-vote-place--anthony-a');
         /** @var VotePlace $vpAnthonyb */
         $vpAnthonyb = $this->getReference('pap-vote-place--anthony-b');
-        /** @var VotePlace $vpAnthonyc */
-        $vpAnthonyc = $this->getReference('pap-vote-place--anthony-c');
-        /** @var VotePlace $vpSartrouvillea */
-        $vpSartrouvillea = $this->getReference('pap-vote-place--sartrouville-a');
-        /** @var VotePlace $vSartrouvilleb */
-        $vpSartrouvilleb = $this->getReference('pap-vote-place--sartrouville-b');
-        /** @var VotePlace $vpSartrouvilec */
-        $vpSartrouvilec = $this->getReference('pap-vote-place--sartrouville-c');
-        /** @var VotePlace $vpAchereLAForeta */
-        $vpAchereLAForeta = $this->getReference('pap-vote-place--achere-la-forêt-a');
         /** @var VotePlace $vpNicea */
         $vpNicea = $this->getReference('pap-vote-place--nice-a');
+
         $address = $this->createAddress(
             self::ADDRESS_01_UUID,
             '55',

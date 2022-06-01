@@ -14,7 +14,7 @@
 </div>
 <div class="profile-value">
     <span id="vote-place-address">{{ votePlace.address }}</span><br />
-    <span id="vote-place-postalCode">{{ votePlace.postalCode }}</span> <span id="vote-place-city">{{ votePlace.city }}</span>
+    <span id="vote-place-postalCode">{{ votePlace.postalCode }}</span> <span id="vote-place-city">{{ votePlace.cityName }}</span>
 </div>
 
 <div class="profile-label">
@@ -22,8 +22,11 @@
 </div>
 <div class="profile-value">
     <ul id="vote-place-available-offices">
-        {% for availableOffice in votePlace.getAvailableOffices %}
-            <li>{{ availableOffice|trans }}</li>
-        {% endfor %}
+        {% if availabilities[votePlace.getId()].holder_count < 1 %}
+            <li>{{ 'assessor_request.office.holder.label'|trans }}</li>
+        {% endif %}
+        {% if availabilities[votePlace.getId()].substitute_count < 1 %}
+            <li>{{ 'assessor_request.office.substitute.label'|trans }}</li>
+        {% endif %}
     </ul>
 </div>

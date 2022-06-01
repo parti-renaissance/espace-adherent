@@ -32,11 +32,11 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         }
 
         $qb = $this->createQueryBuilder($alias = 'pp')
-            ->leftJoin('pp.procurationProxyElectionRounds', $roundAlias = 'ppElectionRound')
+            ->leftJoin('pp.procurationProxyElectionRounds', 'ppElectionRound')
             ->leftJoin('ppElectionRound.electionRound', 'electionRound')
         ;
 
-        $filters->apply($qb, $alias, $roundAlias);
+        $filters->apply($qb, $alias);
 
         return $this->addAndWhereManagedBy($qb, $manager)
             ->addGroupBy("$alias.id")
@@ -52,11 +52,11 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         }
 
         $qb = $this->createQueryBuilder($alias = 'pp')
-            ->leftJoin('pp.procurationProxyElectionRounds', $roundAlias = 'ppElectionRound')
+            ->leftJoin('pp.procurationProxyElectionRounds', 'ppElectionRound')
             ->leftJoin('ppElectionRound.electionRound', 'electionRound')
         ;
 
-        $filters->apply($qb, $alias, $roundAlias);
+        $filters->apply($qb, $alias);
 
         return $this->addAndWhereManagedBy($qb, $manager)
             ->select('COUNT(DISTINCT pp.id)')

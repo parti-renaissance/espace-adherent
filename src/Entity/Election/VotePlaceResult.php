@@ -3,7 +3,6 @@
 namespace App\Entity\Election;
 
 use App\Entity\ElectionRound;
-use App\Entity\VotePlace;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,12 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 class VotePlaceResult extends BaseWithListCollectionResult
 {
     /**
-     * @var VotePlace
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotePlace", inversedBy="voteResults")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election\VotePlace")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $votePlace;
+    private VotePlace $votePlace;
 
     public function __construct(VotePlace $votePlace, ElectionRound $electionRound)
     {

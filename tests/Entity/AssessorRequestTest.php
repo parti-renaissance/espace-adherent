@@ -4,7 +4,7 @@ namespace Tests\App\Entity;
 
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,19 +21,16 @@ class AssessorRequestTest extends TestCase
         bool $substituteOfficeAvailable,
         array $availableOffices
     ) {
-        $assessorRequet = new AssessorRequest();
-        $assessorRequet->setOffice($assessorOffice);
+        $assessorRequest = new AssessorRequest();
+        $assessorRequest->setOffice($assessorOffice);
 
         $votePlace = new VotePlace();
 
-        $assessorRequet->process($votePlace);
+        $assessorRequest->process($votePlace);
 
-        $this->assertEquals($holderOfficeAvailable, $votePlace->isHolderOfficeAvailable());
-        $this->assertEquals($substituteOfficeAvailable, $votePlace->isSubstituteOfficeAvailable());
-        $this->assertEquals($availableOffices, $votePlace->getAvailableOffices());
-        $this->assertEquals(true, $assessorRequet->isProcessed());
-        $this->assertEquals(true, $assessorRequet->getProcessedAt() instanceof \DateTime);
-        $this->assertEquals(false, null === $assessorRequet->getVotePlace());
+        $this->assertEquals(true, $assessorRequest->isProcessed());
+        $this->assertEquals(true, $assessorRequest->getProcessedAt() instanceof \DateTime);
+        $this->assertEquals(false, null === $assessorRequest->getVotePlace());
     }
 
     public function provideProcessTestCases(): \Generator
@@ -55,20 +52,17 @@ class AssessorRequestTest extends TestCase
         bool $substituteOfficeAvailable,
         array $availableOffices
     ) {
-        $assessorRequet = new AssessorRequest();
-        $assessorRequet->setOffice($assessorOffice);
+        $assessorRequest = new AssessorRequest();
+        $assessorRequest->setOffice($assessorOffice);
 
         $votePlace = new VotePlace();
 
-        $assessorRequet->process($votePlace);
-        $assessorRequet->unprocess();
+        $assessorRequest->process($votePlace);
+        $assessorRequest->unprocess();
 
-        $this->assertEquals($holderOfficeAvailable, $votePlace->isHolderOfficeAvailable());
-        $this->assertEquals($substituteOfficeAvailable, $votePlace->isSubstituteOfficeAvailable());
-        $this->assertEquals($availableOffices, $votePlace->getAvailableOffices());
-        $this->assertEquals(false, $assessorRequet->isProcessed());
-        $this->assertEquals(false, $assessorRequet->getProcessedAt() instanceof \DateTime);
-        $this->assertEquals(true, null === $assessorRequet->getVotePlace());
+        $this->assertEquals(false, $assessorRequest->isProcessed());
+        $this->assertEquals(false, $assessorRequest->getProcessedAt() instanceof \DateTime);
+        $this->assertEquals(true, null === $assessorRequest->getVotePlace());
     }
 
     public function provideUnprocessTestCases(): \Generator

@@ -3,7 +3,7 @@
 namespace App\Entity\Election;
 
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityPostAddressTrait;
+use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Election\VotePlaceRepository")
  * @ORM\Table(name="election_vote_place")
  *
  * @UniqueEntity(fields={"code"})
@@ -23,7 +23,7 @@ class VotePlace
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use EntityPostAddressTrait;
+    use EntityNullablePostAddressTrait;
 
     /**
      * @ORM\Column
@@ -108,8 +108,29 @@ class VotePlace
      */
     public ?int $secondRoundPriority = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(UuidInterface $uuid = null, string $code = null, string $name = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->code = $code;
+        $this->name = $name;
+    }
+
+    public function getLabel(): string
+    {
+        return implode(', ', array_filter([
+            $this->alias ?? $this->name,
+            $this->getAddress(),
+            $this->getLocalCode(),
+        ]));
+    }
+
+    public function __toString(): string
+    {
+        return $this->getLabel();
+    }
+
+    public function getLocalCode(): string
+    {
+        return explode('_', $this->code, 2)[1];
     }
 }

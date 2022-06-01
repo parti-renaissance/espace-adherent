@@ -2,14 +2,15 @@
 
 namespace App\Assessor;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Assessor\Filter\AssessorRequestFilters;
 use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Repository\AssessorRequestRepository;
-use App\Repository\VotePlaceRepository;
+use App\Repository\Election\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -72,14 +73,18 @@ class AssessorManager
         return $this->assessorRequestRepository->countMatchingRequests($manager, $filters);
     }
 
-    public function getVotePlacesProposals(Adherent $manager, VotePlaceFilters $filters): array
+    public function getVotePlacesProposals(Adherent $manager, VotePlaceFilters $filters): PaginatorInterface
     {
         return $this->votePlaceRepository->findMatchingProposals($manager, $filters);
     }
 
-    public function countVotePlacesProposals(Adherent $manager, VotePlaceFilters $filters)
+    public function getOfficeAvailabilities(array $votePlaceIds): array
     {
-        return $this->votePlaceRepository->countMatchingProposals($manager, $filters);
+        if (empty($votePlaceIds)) {
+            return [];
+        }
+
+        return $this->votePlaceRepository->getOfficeAvailabilities($votePlaceIds);
     }
 
     public function getVotePlacesCities(Adherent $manager, CitiesFilters $filters): array

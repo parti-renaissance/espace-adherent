@@ -73,7 +73,7 @@ class AssessorControllerTest extends WebTestCase
                 'assessorCountry' => 'FR',
                 'assessorPostalCode' => '59000',
                 'assessorCity' => 'Lille',
-                'votePlaceWishes' => [0 => 1],
+                'votePlaceWishes' => [0 => 15],
                 'office' => AssessorOfficeEnum::HOLDER,
                 'electionRounds' => [0 => 'first_round'],
                 'reachable' => 1,

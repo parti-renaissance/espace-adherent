@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Assessor\AssessorRequestElectionRoundsEnum;
+use App\Entity\Election\VotePlace as ElectionVotePlace;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -240,18 +241,18 @@ class AssessorRequest implements RecaptchaChallengeInterface
     private $office = AssessorOfficeEnum::HOLDER;
 
     /**
-     * @var VotePlace|null
+     * @var ElectionVotePlace|null
      *
-     * @ORM\ManyToOne(targetEntity="VotePlace", inversedBy="assessorRequests")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election\VotePlace")
      */
     private $votePlace;
 
     /**
-     * @var ArrayCollection
+     * @var ElectionVotePlace[]|ArrayCollection
      *
      * @Assert\NotBlank(message="assessor.vote_place_wishes.not_blank", groups={"fill_assessor_info"})
      *
-     * @ORM\ManyToMany(targetEntity="VotePlace")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Election\VotePlace")
      * @ORM\JoinTable(name="assessor_requests_vote_place_wishes")
      */
     private $votePlaceWishes;
@@ -362,16 +363,8 @@ class AssessorRequest implements RecaptchaChallengeInterface
         return $assessorRequest;
     }
 
-    public function process(VotePlace $votePlace): void
+    public function process(ElectionVotePlace $votePlace): void
     {
-        $votePlace->addAssessorRequest($this);
-
-        if (AssessorOfficeEnum::HOLDER == $this->office) {
-            $votePlace->setHolderOfficeAvailable(false);
-        } else {
-            $votePlace->setSubstituteOfficeAvailable(false);
-        }
-
         $this->votePlace = $votePlace;
         $this->processed = true;
         $this->processedAt = new \DateTime();
@@ -379,14 +372,6 @@ class AssessorRequest implements RecaptchaChallengeInterface
 
     public function unprocess(): void
     {
-        if (AssessorOfficeEnum::HOLDER == $this->office) {
-            $this->votePlace->setHolderOfficeAvailable(true);
-        } else {
-            $this->votePlace->setSubstituteOfficeAvailable(true);
-        }
-
-        $this->votePlace->removeAssessorRequest($this);
-
         $this->votePlace = null;
         $this->processed = false;
         $this->processedAt = null;
@@ -569,12 +554,12 @@ class AssessorRequest implements RecaptchaChallengeInterface
         $this->office = $office;
     }
 
-    public function getVotePlace(): ?VotePlace
+    public function getVotePlace(): ?ElectionVotePlace
     {
         return $this->votePlace;
     }
 
-    public function setVotePlace(VotePlace $votePlace): void
+    public function setVotePlace(ElectionVotePlace $votePlace): void
     {
         $this->votePlace = $votePlace;
     }
@@ -589,14 +574,14 @@ class AssessorRequest implements RecaptchaChallengeInterface
         $this->votePlaceWishes = $votePlaceWishes;
     }
 
-    public function addVotePlaceWish(VotePlace $votePlace): void
+    public function addVotePlaceWish(ElectionVotePlace $votePlace): void
     {
         if (!$this->votePlaceWishes->contains($votePlace)) {
             $this->votePlaceWishes->add($votePlace);
         }
     }
 
-    public function removeVotePlaceWish(VotePlace $votePlace): void
+    public function removeVotePlaceWish(ElectionVotePlace $votePlace): void
     {
         $this->votePlaceWishes->removeElement($votePlace);
     }

@@ -3,10 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\AssessorRequest;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-abstract class AbstractAssessorRepository extends ServiceEntityRepository
+trait AssessorLocationTrait
 {
     protected static function addAndWhereAssessorRequestLocation(
         QueryBuilder $qb,

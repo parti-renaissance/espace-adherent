@@ -4,20 +4,12 @@ namespace App\Exporter;
 
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Serializer\XlsxEncoder;
 use App\Utils\PhoneNumberUtils;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CityAssessorExporter
 {
-    private TranslatorInterface $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function export(array $votePlaces): string
     {
         return (new XlsxEncoder())->encode(
@@ -52,11 +44,12 @@ class CityAssessorExporter
     {
         $data = [];
 
-        foreach ($votePlaces as $votePlace) {
+        foreach ($votePlaces as $row) {
+            $votePlace = $row['vote_place'];
             $votePlaceData = [
                'votePlaceId' => $votePlace->getId(),
-               'votePlaceName' => $votePlace->getName().' '.$votePlace->getCode(),
-               'votePlaceAddress' => $votePlace->getAddress().', '.$votePlace->getPostalCode().' '.$votePlace->getCity().' '.$votePlace->getCountry(),
+               'votePlaceName' => $votePlace->name.' '.$votePlace->code,
+               'votePlaceAddress' => $votePlace->getAddress().', '.$votePlace->getPostalCode().' '.$votePlace->getCityName().' '.$votePlace->getCountry(),
             ];
 
             $holder = [
@@ -78,7 +71,7 @@ class CityAssessorExporter
             ];
 
             /** @var AssessorRequest $assessorRequest */
-            foreach ($votePlace->getAssessorRequests() as $assessorRequest) {
+            foreach ($row['assessors'] as $assessorRequest) {
                 if (AssessorOfficeEnum::HOLDER === $assessorRequest->getOffice()) {
                     $holder = [
                         'holderLastName' => $assessorRequest->getLastName(),

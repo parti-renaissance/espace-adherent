@@ -2,7 +2,10 @@
 
 namespace App\Assessor\Filter;
 
+use App\Entity\AssessorOfficeEnum;
+use App\Entity\AssessorRequest;
 use App\Exception\ProcurationException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,26 +41,44 @@ class VotePlaceFilters extends AssessorFilters
 
         if (self::UNASSOCIATED === $status) {
             $qb
-                ->andWhere(
-                    $qb->expr()->orX(
-                        $alias.'.substituteOfficeAvailable = true',
-                        $alias.'.holderOfficeAvailable = true'
-                    )
+                ->leftJoin(
+                    AssessorRequest::class,
+                    'assessor_request_holder',
+                    Join::WITH,
+                    'assessor_request_holder.office = :holder_office AND assessor_request_holder.votePlace = '.$alias
                 )
+                ->leftJoin(
+                    AssessorRequest::class,
+                    'assessor_request_substitute',
+                    Join::WITH,
+                    'assessor_request_substitute.office = :substitute_office AND assessor_request_substitute.votePlace = '.$alias
+                )
+                ->setParameter('holder_office', AssessorOfficeEnum::HOLDER)
+                ->setParameter('substitute_office', AssessorOfficeEnum::SUBSTITUTE)
+                ->andWhere('assessor_request_holder.id IS NULL OR assessor_request_substitute.id IS NULL')
             ;
         } elseif (self::ASSOCIATED === $status) {
-            $qb->andWhere($alias.'.holderOfficeAvailable = false');
+            $qb
+                ->leftJoin(
+                    AssessorRequest::class,
+                    'assessor_request',
+                    Join::WITH,
+                    'assessor_request.office = :holder_office AND assessor_request.votePlace = '.$alias
+                )
+                ->andWhere('assessor_request.id IS NOT NULL')
+                ->setParameter('holder_office', AssessorOfficeEnum::HOLDER)
+            ;
         }
 
         if ($this->getCity()) {
             if (is_numeric($this->getCity())) {
                 $qb
-                    ->andWhere("FIND_IN_SET(:postalCode, $alias.postalCode) > 0")
+                    ->andWhere("FIND_IN_SET(:postalCode, $alias.postAddress.postalCode) > 0")
                     ->setParameter('postalCode', $this->getCity())
                 ;
             } else {
                 $qb
-                    ->andWhere("LOWER($alias.city) LIKE :city")
+                    ->andWhere("$alias.postAddress.cityName LIKE :city")
                     ->setParameter('city', '%'.strtolower($this->getCity()).'%')
                 ;
             }
@@ -65,7 +86,7 @@ class VotePlaceFilters extends AssessorFilters
 
         if ($this->getCountry()) {
             $qb
-                ->andWhere("$alias.country = :country")
+                ->andWhere("$alias.postAddress.country = :country")
                 ->setParameter('country', $this->getCountry())
             ;
         }

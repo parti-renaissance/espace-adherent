@@ -25,8 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssessorRequestType extends AbstractType
 {
-    /** @var VotePlaceManager */
-    private $votePlaceManager;
+    private VotePlaceManager $votePlaceManager;
 
     public function __construct(VotePlaceManager $votePlaceManager)
     {

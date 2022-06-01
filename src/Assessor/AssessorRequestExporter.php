@@ -61,8 +61,8 @@ class AssessorRequestExporter
             $votePlace = $assessorRequest->getVotePlace();
 
             $data[] = [
-                'votePlaceCity' => $votePlace->getCity(),
-                'votePlaceName' => $votePlace->getName(),
+                'votePlaceCity' => $votePlace->getCityName(),
+                'votePlaceName' => $votePlace->name,
                 'votePlaceAddress' => $votePlace->getAddress(),
                 'votePlaceCountry' => Countries::getName($votePlace->getCountry()),
                 'officeName' => $this->translator->trans($assessorRequest->getOfficeName()),

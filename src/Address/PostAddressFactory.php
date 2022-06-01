@@ -67,7 +67,7 @@ class PostAddressFactory
             );
         }
 
-        return NullablePostAddress::createForeignAddress(
+        return NullablePostAddress::createAddress(
             $address->getCountry(),
             $address->getPostalCode(),
             $address->getCityName(),

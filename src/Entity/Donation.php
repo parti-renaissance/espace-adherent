@@ -580,11 +580,6 @@ class Donation implements GeoPointInterface
         return $this->lastSuccessDate;
     }
 
-    public function setPostAddress(PostAddress $postAddress): void
-    {
-        $this->postAddress = $postAddress;
-    }
-
     public function getSubscriptionTransactionsAsString(): ?string
     {
         if (!$this->hasSubscription()) {
