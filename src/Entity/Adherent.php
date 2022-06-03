@@ -2173,6 +2173,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function join(): void
     {
+        $this->source = null;
         $this->adherent = true;
     }
 

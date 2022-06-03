@@ -63,7 +63,7 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        if (null === $adherent->getSource()) {
+        if (null === $adherent->getSource() || $adherent->isAdherent()) {
             $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } else {
             if ($hasBeenActivated) {
