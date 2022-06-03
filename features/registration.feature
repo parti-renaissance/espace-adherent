@@ -242,7 +242,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "La R\u00e9publique En Marche !",
+        "from_name": "La République En Marche !",
         "to": [
           {
             "email": "jp@test.com",

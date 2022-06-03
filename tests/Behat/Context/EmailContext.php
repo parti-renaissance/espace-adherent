@@ -42,7 +42,14 @@ class EmailContext extends RawMinkContext
     public function iShouldHaveMessages(int $number)
     {
         if (($nb = $this->emailRepository->count([])) !== $number) {
-            throw new \RuntimeException(sprintf('I found %d email(s) instead of %d', $nb, $number));
+            $messages = [];
+            if ($nb > 0) {
+                foreach ($this->emailRepository->findAll() as $email) {
+                    $messages[] = sprintf('%s (%s) - ', $email->getMessageClass(), $email->getRecipientsAsString());
+                }
+            }
+
+            throw new \RuntimeException(sprintf('I found %d email(s) instead of %d. (%s)', $nb, $number, implode(', ', $messages)));
         }
     }
 

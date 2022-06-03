@@ -37,6 +37,37 @@ Feature: Manage adherent from admin panel
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+    And I should have 1 email
+    And I should have 1 email "AdherentAccountConfirmationMessage" for "je-mengage-user-1@en-marche-dev.fr" with payload:
+    """
+    {
+      "template_name": "adherent-account-confirmation",
+      "template_content": [],
+      "message": {
+        "subject": "Et maintenant ?",
+        "from_email": "contact@en-marche.fr",
+        "merge_vars": [
+          {
+            "rcpt": "je-mengage-user-1@en-marche-dev.fr",
+            "vars": [
+              {
+                "name": "target_firstname",
+                "content": "Jules"
+              }
+            ]
+          }
+        ],
+        "from_name": "La République En Marche !",
+        "to": [
+          {
+            "email": "je-mengage-user-1@en-marche-dev.fr",
+            "type": "to",
+            "name": "Jules Fullstack"
+          }
+        ]
+      }
+    }
+    """
     Then I go to "/deconnexion"
     Then I should be on "/"
 
@@ -51,7 +82,6 @@ Feature: Manage adherent from admin panel
 
     Then I follow "Connexion"
     Then I should be on "/connexion"
-    And I should have 0 email
     Then I follow "Mot de passe oublié ? Cliquez ici"
     Then I should be on "/mot-de-passe-oublie"
     And I fill in the following:
@@ -60,33 +90,35 @@ Feature: Manage adherent from admin panel
     And I press "Envoyer un e-mail"
     Then I should be on "/connexion"
     And I should see "Si l'adresse que vous avez saisie est valide, un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe."
-    And I should have 1 email
+    And I should have 2 emails
     And I should have 1 email "AdherentResetPasswordMessage" for "je-mengage-user-1@en-marche-dev.fr" with payload:
     """
     {
-      "template_name": "adherent-reset-password,
-      "template_content": [],
+      "template_name":"adherent-reset-password",
+      "template_content":[],
       "message": {
-        "subject": "Réinitialisation de votre mot de passe",
-        "from_email": "contact@en-marche.fr",
-        "from_name": "La République En Marche !",
+        "subject":"Réinitialisation de votre mot de passe",
+        "from_email":"contact@en-marche.fr",
         "global_merge_vars": [
           {
-            "name": "first_name",
-            "content": "Jules"
+            "name":"first_name",
+            "content":"Jules"
           },
           {
-            "name": "reset_link",
-            "content": "http://enmarche.code/changer-mot-de-passe/@string@/@string@"
+            "name":"reset_link",
+            "content":"http://test.enmarche.code/changer-mot-de-passe/@uuid@/@string@"
           }
         ],
-        "to": [
+        "from_name":"La République En Marche !",
+        "to":[
           {
-            "email": "je-mengage-user-1@en-marche-dev.fr",
-            "type": "to",
-            "name": "Jules Fullstack"
+            "email":"je-mengage-user-1@en-marche-dev.fr",
+            "type":"to",
+            "name":"Jules Fullstack"
           }
         ]
       }
     }
     """
+    When I click on the email link "reset_link"
+    Then the url should match "#^/changer-mot-de-passe/[a-z0-9-]+/[a-zA-Z0-9]+$#"
