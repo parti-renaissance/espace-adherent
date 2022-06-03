@@ -7,31 +7,21 @@ use App\Assessor\Filter\AssessorRequestFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-class AssessorRequestRepository extends AbstractAssessorRepository
+class AssessorRequestRepository extends ServiceEntityRepository
 {
     use GeoFilterTrait;
+    use AssessorLocationTrait;
 
     private const ALIAS = 'ar';
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AssessorRequest::class);
-    }
-
-    public function findOneEnabledByUuid(string $uuid): ?AssessorRequest
-    {
-        return $this->createQueryBuilder(self::ALIAS)
-            ->where(self::ALIAS.'.enabled :enabled')
-            ->setParameter(':enabled', true)
-            ->andWhere(self::ALIAS.'.uuid :uuid')
-            ->setParameter(':uuid', $uuid)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
 
     /**
@@ -52,7 +42,7 @@ class AssessorRequestRepository extends AbstractAssessorRepository
             ->leftJoin(self::ALIAS.'.votePlace', 'vp')
             ->andWhere(self::ALIAS.'.processed = true')
             ->andWhere(self::ALIAS.'.enabled = true')
-            ->addOrderBy('vp.country', 'DESC')
+            ->addOrderBy('vp.postAddress.country', 'DESC')
             ->addOrderBy('vp.code', 'DESC')
             ->getQuery()
             ->getResult()
@@ -136,6 +126,7 @@ class AssessorRequestRepository extends AbstractAssessorRepository
 
     private static function addAndWhereManagedBy(QueryBuilder $qb, Adherent $assessorManager): QueryBuilder
     {
+        $zoneJoined = false;
         $codesFilter = $qb->expr()->orX();
 
         foreach ($assessorManager->getAssessorManagedArea()->getCodes() as $key => $code) {
@@ -149,6 +140,17 @@ class AssessorRequestRepository extends AbstractAssessorRepository
                     $qb->expr()->like(self::ALIAS.'.assessorPostalCode', ':code'.$key)
                 );
                 $qb->setParameter('code'.$key, $code.'%');
+            } elseif (str_starts_with($code, 'CIRCO_')) {
+                // District
+                if (!$zoneJoined) {
+                    $zoneJoined = true;
+                    $qb
+                        ->leftJoin(self::ALIAS.'.votePlaceWishes', 'vote_place')
+                        ->leftJoin('vote_place.zone', 'vote_place_zone')
+                    ;
+                }
+                $codesFilter->add('vote_place_zone.code = :code'.$key);
+                $qb->setParameter('code'.$key, explode('_', $code, 2)[1]);
             } else {
                 // Country
                 $codesFilter->add($qb->expr()->eq(self::ALIAS.'.assessorCountry', ':code'.$key));

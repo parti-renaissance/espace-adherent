@@ -1277,7 +1277,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             LoadAdherentTagData::class,
             LoadReferentTagData::class,
             LoadSubscriptionTypeData::class,
-            LoadVotePlaceData::class,
+            LoadElectionVotePlaceData::class,
             LoadCityData::class,
             LoadTerritorialCouncilData::class,
             LoadThematicCommunityData::class,

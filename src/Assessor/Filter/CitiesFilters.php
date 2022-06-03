@@ -35,12 +35,12 @@ class CitiesFilters extends AssessorFilters
         if ($this->getCity()) {
             if (is_numeric($this->getCity())) {
                 $qb
-                    ->andWhere("FIND_IN_SET(:postalCode, $alias.postalCode) > 0")
+                    ->andWhere("FIND_IN_SET(:postalCode, $alias.postAddress.postalCode) > 0")
                     ->setParameter('postalCode', $this->getCity())
                 ;
             } else {
                 $qb
-                    ->andWhere("LOWER($alias.city) LIKE :city")
+                    ->andWhere("LOWER($alias.postAddress.cityName) LIKE :city")
                     ->setParameter('city', '%'.strtolower($this->getCity()).'%')
                 ;
             }

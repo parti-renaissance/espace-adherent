@@ -46,7 +46,7 @@
                     Lieu du bureau de vote
                 </div>
                 <div class="profile-value">
-                    {{ request.votePlace.postalCode }} {{ request.votePlace.city }}
+                    {{ request.votePlace.postalCode }} {{ request.votePlace.cityName }}
                 </div>
 
                 <div class="profile-label">
@@ -54,14 +54,19 @@
                 </div>
                 <div class="profile-value">
                     {% if request.votePlace is not empty %}
-                        {% for availableOffice in request.votePlace.getAvailableOffices %}
-                            <li>{{ availableOffice|trans }}</li>
-                        {% endfor %}
+                        <ul>
+                            {% if availabilities[request.votePlace.getId()].holder_count < 1 %}
+                                <li>{{ 'assessor_request.office.holder.label'|trans }}</li>
+                            {% endif %}
+                            {% if availabilities[request.votePlace.getId()].substitute_count < 1 %}
+                                <li>{{ 'assessor_request.office.substitute.label'|trans }}</li>
+                            {% endif %}
+                        </ul>
                     {% endif %}
                 </div>
             {% else %}
                 <h4 class="b__nudge--bottom">
-                    Bureau de vote trouvés dans la même commune
+                    Bureau(x) de vote trouvé(s) dans la même commune
                 </h4>
                 {% set vote_places_count = matchingVotePlaces|length %}
                 {% if vote_places_count is same as(0) %}
@@ -96,14 +101,17 @@
                                 <td class="datagrid__table__col--left datagrid__table__col--top">
                                     <em>Disponibilités :</em><br />
                                     <ul>
-                                        {% for availableOffice in votePlace.getAvailableOffices %}
-                                            <li>{{ availableOffice|trans }}</li>
-                                        {% endfor %}
+                                        {% if availabilities[votePlace.getId()].holder_count < 1 %}
+                                            <li>{{ 'assessor_request.office.holder.label'|trans }}</li>
+                                        {% endif %}
+                                        {% if availabilities[votePlace.getId()].substitute_count < 1 %}
+                                            <li>{{ 'assessor_request.office.substitute.label'|trans }}</li>
+                                        {% endif %}
                                     </ul>
                                 </td>
                                 <td class="datagrid__table__col--left">
                                     <em>Adresse du bureau de vote :</em><br />
-                                    {{ votePlace.address ~ ' ' ~ votePlace.postalCode ~ ', ' ~ votePlace.city }}
+                                    {{ votePlace.address ~ ' ' ~ votePlace.postalCode ~ ', ' ~ votePlace.cityName }}
                                 </td>
                                 <td>
                                     <a href="{{ path('app_assessor_manager_request_associate', {uuid: request.uuid, votePlaceId: votePlace.id}) }}"

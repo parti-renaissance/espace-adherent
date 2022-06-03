@@ -9,12 +9,12 @@ use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\ActionEnum;
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Exception\AssessorException;
 use App\Exporter\CityAssessorExporter;
 use App\Form\ConfirmActionType;
 use App\Repository\AssessorRequestRepository;
-use App\Repository\VotePlaceRepository;
+use App\Repository\Election\VotePlaceRepository;
 use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -30,8 +30,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AssessorManagerController extends AbstractController
 {
-    private const _FORMAT = 'xls';
-
     /**
      * @Route(name="app_assessor_manager_requests", methods={"GET"})
      */
@@ -82,15 +80,24 @@ class AssessorManagerController extends AbstractController
      *     name="app_assessor_manager_request",
      *     methods={"GET"}
      * )
-     * @Security("is_granted('MANAGE', assessorRequest)")
+     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
      */
     public function assessorRequestAction(
         AssessorRequest $assessorRequest,
-        VotePlaceRepository $votePlaceRepository
+        AssessorManager $manager,
+        VotePlaceRepository $repository
     ): Response {
         return $this->render('assessor_manager/request.html.twig', [
             'request' => $assessorRequest,
-            'matchingVotePlaces' => $votePlaceRepository->findMatchingVotePlaces($assessorRequest),
+            'matchingVotePlaces' => $matchingVotePlaces = $repository->findMatchingVotePlaces($assessorRequest),
+            'availabilities' => $manager->getOfficeAvailabilities(
+                array_map(function (VotePlace $votePlace) {
+                    return $votePlace->getId();
+                }, array_merge(
+                    $matchingVotePlaces,
+                    $assessorRequest->getVotePlace() ? [$assessorRequest->getVotePlace()] : []
+                ))
+            ),
         ]);
     }
 
@@ -102,8 +109,8 @@ class AssessorManagerController extends AbstractController
      *     methods={"GET", "POST"}
      * )
      * @ParamConverter("assessorRequest", class="App\Entity\AssessorRequest", options={"mapping": {"uuid": "uuid"}})
-     * @ParamConverter("votePlace", class="App\Entity\VotePlace", options={"id": "votePlaceId"})
-     * @Security("is_granted('MANAGE', assessorRequest)")
+     * @ParamConverter("votePlace", class="App\Entity\Election\VotePlace", options={"id": "votePlaceId"})
+     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
      */
     public function assessorRequestAssociateAction(
         Request $request,
@@ -133,6 +140,7 @@ class AssessorManagerController extends AbstractController
             'form' => $form->createView(),
             'request' => $assessorRequest,
             'votePlace' => $votePlace,
+            'availabilities' => $manager->getOfficeAvailabilities([$votePlace->getId()]),
         ]);
     }
 
@@ -143,7 +151,7 @@ class AssessorManagerController extends AbstractController
      *     name="app_assessor_manager_request_deassociate",
      *     methods={"GET", "POST"}
      * )
-     * @Security("is_granted('MANAGE', assessorRequest)")
+     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
      */
     public function assessorRequestDessociateAction(
         Request $request,
@@ -169,7 +177,8 @@ class AssessorManagerController extends AbstractController
         return $this->render('assessor_manager/deassociate.html.twig', [
             'form' => $form->createView(),
             'request' => $assessorRequest,
-            'votePlace' => $assessorRequest->getVotePlace(),
+            'votePlace' => $votePlace = $assessorRequest->getVotePlace(),
+            'availabilities' => $manager->getOfficeAvailabilities([$votePlace->getId()]),
         ]);
     }
 
@@ -180,7 +189,7 @@ class AssessorManagerController extends AbstractController
      *     name="app_assessor_manager_request_transform",
      *     methods={"GET"}
      * )
-     * @Security("is_granted('MANAGE', assessorRequest)")
+     * @Security("is_granted('MANAGE_ASSESSOR', assessorRequest)")
      */
     public function assessorRequestTransformAction(
         AssessorRequest $assessorRequest,
@@ -212,8 +221,13 @@ class AssessorManagerController extends AbstractController
         $user = $this->getUser();
 
         return $this->render('assessor_manager/vote_places.twig', [
-            'votePlaces' => $manager->getVotePlacesProposals($user, $filters),
-            'total_count' => $manager->countVotePlacesProposals($user, $filters),
+            'vote_places' => $paginator = $manager->getVotePlacesProposals($user, $filters),
+            'total_count' => $paginator->getTotalItems(),
+            'availabilities' => $manager->getOfficeAvailabilities(
+                array_map(function (VotePlace $votePlace) {
+                    return $votePlace->getId();
+                }, iterator_to_array($paginator))
+            ),
             'filters' => $filters,
         ]);
     }
@@ -234,12 +248,19 @@ class AssessorManagerController extends AbstractController
             throw new BadRequestHttpException('Unexpected vote place filters in the query string.', $e);
         }
 
-        if (!$votePlaces = $manager->getVotePlacesProposals($this->getUser(), $filters)) {
+        $votePlaces = $manager->getVotePlacesProposals($this->getUser(), $filters);
+
+        if (!$votePlaces->count()) {
             return new Response();
         }
 
-        return $this->render('assessor_manager/_requests_list.html.twig', [
-            'votePlaces' => $votePlaces,
+        return $this->render('assessor_manager/_vote_places_list.html.twig', [
+            'vote_places' => $votePlaces,
+            'availabilities' => $manager->getOfficeAvailabilities(
+                array_map(function (VotePlace $votePlace) {
+                    return $votePlace->getId();
+                }, iterator_to_array($votePlaces))
+            ),
         ]);
     }
 
@@ -303,21 +324,19 @@ class AssessorManagerController extends AbstractController
             throw new BadRequestHttpException('commune parameter is missing');
         }
 
-        $cityName = $request->query->get('commune');
-        if (!$cityName) {
+        $cityCode = $request->query->get('commune');
+        if (!$cityCode) {
             return new Response();
         }
 
         return new Response(
-            $exporter->export(
-                $repository->FindForCityAssessors($this->getUser(), $cityName)
-            ),
+            $exporter->export($repository->findForCityAssessors($this->getUser(), $cityCode)),
             Response::HTTP_OK,
             [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'Content-Disposition' => sprintf(
                     'attachment;filename=%s-Assesseurs-%s.%s',
-                    $cityName,
+                    $cityCode,
                     (new \DateTime())->format('d-m-Y'),
                     XlsxEncoder::FORMAT
                 ),

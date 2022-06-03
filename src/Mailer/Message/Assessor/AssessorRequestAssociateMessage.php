@@ -20,8 +20,8 @@ final class AssessorRequestAssociateMessage extends AbstractAssessorMessage
                 'firstname' => $assessorRequest->getFirstName(),
                 'assessor_function' => $officeName,
                 'polling_station_name' => $assessorRequest->getVotePlace()->getLabel(),
-                'polling_station_number' => $assessorRequest->getVotePlace()->getCode(),
-                'polling_station_city_name' => $assessorRequest->getVotePlace()->getCity(),
+                'polling_station_number' => $assessorRequest->getVotePlace()->code,
+                'polling_station_city_name' => $assessorRequest->getVotePlace()->getCityName(),
                 'polling_station_country_name' => Countries::getName(
                     $assessorRequest->getVotePlace()->getCountry()
                 ),

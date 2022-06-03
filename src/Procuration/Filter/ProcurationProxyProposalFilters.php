@@ -64,9 +64,7 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
                 ->andWhere('ppElectionRound.foreignRequestAvailable = 0')
             ;
         } elseif (self::DISABLED === $status) {
-            $qb
-                ->setParameter('disabled', true)
-            ;
+            $qb->setParameter('disabled', true);
         }
 
         $qb

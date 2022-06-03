@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Entity\Election\VotePlaceResult;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -99,18 +98,6 @@ class VotePlace
     private $country = 'FR';
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace", fetch="EAGER")
-     *
-     * @Assert\Count(
-     *     max=VotePlace::MAX_ASSESSOR_REQUESTS,
-     *     maxMessage="vote_place.assessor_request.max"
-     * )
-     */
-    private $assessorRequests;
-
-    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -131,16 +118,10 @@ class VotePlace
      */
     private $enabled = true;
 
-    /**
-     * @var VotePlaceResult[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Election\VotePlaceResult", mappedBy="votePlace", fetch="EXTRA_LAZY")
-     */
     private $voteResults;
 
     public function __construct()
     {
-        $this->assessorRequests = new ArrayCollection();
         $this->voteResults = new ArrayCollection();
     }
 
@@ -266,36 +247,6 @@ class VotePlace
     public function setCode(string $code): void
     {
         $this->code = $code;
-    }
-
-    public function getAssessorRequests(): Collection
-    {
-        return $this->assessorRequests;
-    }
-
-    public function addAssessorRequest(AssessorRequest $assessorRequests): void
-    {
-        if (!$this->assessorRequests->contains($assessorRequests)) {
-            $this->assessorRequests->add($assessorRequests);
-        }
-    }
-
-    public function removeAssessorRequest(AssessorRequest $assessorRequests): void
-    {
-        $this->assessorRequests->removeElement($assessorRequests);
-    }
-
-    public function getAvailableOffices(): array
-    {
-        $availableOffices = AssessorOfficeEnum::CHOICES;
-
-        foreach ($this->assessorRequests as $assessorRequest) {
-            if (\in_array($assessorRequest->getOffice(), $availableOffices)) {
-                unset($availableOffices[array_search($assessorRequest->getOffice(), $availableOffices)]);
-            }
-        }
-
-        return array_keys($availableOffices);
     }
 
     public function isHolderOfficeAvailable(): bool

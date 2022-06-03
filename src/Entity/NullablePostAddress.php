@@ -32,7 +32,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      *
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $postalCode;
 
@@ -127,7 +127,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         return $address;
     }
 
-    public static function createForeignAddress(
+    public static function createAddress(
         string $country,
         ?string $zipCode,
         ?string $cityName,

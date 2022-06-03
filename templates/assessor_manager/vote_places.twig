@@ -12,7 +12,7 @@
 
     {{ include('assessor_manager/_filters.html.twig') }}
 
-    {% if 0 == votePlaces|length %}
+    {% if 0 == vote_places|length %}
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>
                 {% if constant('UNASSOCIATED', filters) == filters.status %}
@@ -34,7 +34,7 @@
         </div>
     {% endif %}
 
-    {% if votePlaces|length %}
+    {% if vote_places|length %}
         <div class="datagrid__table-container">
             <table class="datagrid__table-manager managed__list__table">
                 <thead>

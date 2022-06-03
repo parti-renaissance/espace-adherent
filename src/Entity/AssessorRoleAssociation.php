@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Election\VotePlace as ElectionVotePlace;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,13 +20,11 @@ class AssessorRoleAssociation
     private $id;
 
     /**
-     * @var VotePlace
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotePlace")
+     * @ORM\OneToOne(targetEntity="App\Entity\Election\VotePlace")
      */
-    private $votePlace;
+    private ?ElectionVotePlace $votePlace;
 
-    public function __construct(VotePlace $votePlace)
+    public function __construct(ElectionVotePlace $votePlace)
     {
         $this->votePlace = $votePlace;
     }
@@ -35,7 +34,7 @@ class AssessorRoleAssociation
         return $this->id;
     }
 
-    public function getVotePlace(): VotePlace
+    public function getVotePlace(): ElectionVotePlace
     {
         return $this->votePlace;
     }

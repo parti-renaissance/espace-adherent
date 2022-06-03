@@ -3,15 +3,14 @@
 namespace App\Assessor;
 
 use App\Entity\AssessorRequest;
-use App\Entity\VotePlace;
+use App\Entity\Election\VotePlace;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 
 class AssessorRequestFactory
 {
-    /** @var EntityManagerInterface */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     public function __construct(EntityManagerInterface $manager)
     {
@@ -87,7 +86,7 @@ class AssessorRequestFactory
     }
 
     /**
-     * @param int|string|\DateTime $birthdate Valid date reprensentation
+     * @param int|string|\DateTime $birthdate Valid date representation
      */
     private static function createBirthdate($birthdate): \DateTime
     {

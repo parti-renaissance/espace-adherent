@@ -2,13 +2,12 @@
 
 namespace App\VotePlace;
 
-use App\Entity\VotePlace;
-use App\Repository\VotePlaceRepository;
+use App\Entity\Election\VotePlace;
+use App\Repository\Election\VotePlaceRepository;
 
 class VotePlaceManager
 {
-    /** @var VotePlaceRepository VotePlaceRepository */
-    private $repository;
+    private VotePlaceRepository $repository;
 
     public function __construct(VotePlaceRepository $repository)
     {
@@ -21,24 +20,14 @@ class VotePlaceManager
         ?string $assessorCity
     ): array {
         if (null !== $assessorCountry && 'FR' !== $assessorCountry) {
-            return $this->getVotePlaceWishesByCountry($assessorCountry);
+            $this->formatVotePlaceWishes($this->repository->findByCountry($assessorCountry));
         }
 
         if (!empty($assessorPostalCode) && !empty($assessorCity)) {
-            return $this->getVotePlaceWishesByPostalCode($assessorPostalCode, $assessorCity);
+            return $this->formatVotePlaceWishes($this->repository->findByPostalCode($assessorPostalCode, $assessorCity));
         }
 
         return [];
-    }
-
-    public function getVotePlaceWishesByPostalCode(string $postalCode, string $city): array
-    {
-        return $this->formatVotePlaceWishes($this->repository->findByPostalCode($postalCode, $city));
-    }
-
-    public function getVotePlaceWishesByCountry(string $country): array
-    {
-        return $this->formatVotePlaceWishes($this->repository->findByCountry($country));
     }
 
     public function getVotePlacesLabelsByIds(array $votePlacesIds): array

@@ -122,7 +122,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
         self::assertSame('Restaurant Scolaire - Rue H. Lefebvre, 0407', trim($votePlaces->first()->text()));
 
         // Associate the request with the vote place
-        $linkNode = $crawler->filter('#associate-link-2');
+        $linkNode = $crawler->filter('#associate-link-16');
 
         $this->assertCount(1, $linkNode);
 
@@ -539,8 +539,8 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         $this->assertAssessorRequestTotalCount($crawler, self::SUBJECT_VOTE_PLACE_CITIES, 2, 'avec au moins un assesseur');
         $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
-        $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Lille(59000,59100)")'));
-        $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Saint-Denis(93200,93066)")'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Lille (59000,59100)")'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Saint-Denis (93200,93066)")'));
     }
 
     public function testCitiesAssignedAssesorsExport()
@@ -580,7 +580,7 @@ class AssessorManagerControllerTest extends AbstractWebCaseTest
 
         PHPUnitHelper::assertArraySubset(
             [
-                1,
+                15,
                 'Salle Polyvalente De Wazemmes 59350_0113',
                 'Rue De L\'Abbé Aerts, 59000,59100 Lille FR',
                 'Coptère',

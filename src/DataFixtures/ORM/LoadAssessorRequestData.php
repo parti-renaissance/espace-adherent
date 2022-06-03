@@ -259,7 +259,7 @@ class LoadAssessorRequestData extends Fixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            LoadVotePlaceData::class,
+            LoadElectionVotePlaceData::class,
         ];
     }
 }
