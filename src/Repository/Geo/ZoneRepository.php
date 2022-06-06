@@ -429,6 +429,24 @@ class ZoneRepository extends ServiceEntityRepository
         ;
     }
 
+    /** @return Zone[] */
+    public function findParent(string $parentType, string $childCode, string $childType): array
+    {
+        return $this->createQueryBuilder('parent_zone')
+            ->innerJoin('parent_zone.children', 'child_zone')
+            ->where('child_zone.type = :child_zone_type')
+            ->andWhere('child_zone.code = :child_zone_code')
+            ->andWhere('parent_zone.type = :parent_zone_type')
+            ->setParameters([
+                'child_zone_type' => $childType,
+                'child_zone_code' => $childCode,
+                'parent_zone_type' => $parentType,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function getFranceCities(): array
     {
         return $this->createQueryBuilder('zone', 'zone.code')

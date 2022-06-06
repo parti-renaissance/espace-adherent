@@ -115,8 +115,8 @@ class BindAdherentDistrictSubscriberTest extends TestCase
 
         $this->manager = $this->createMock(EntityManagerInterface::class);
         $this->districtRepository = $this->createMock(DistrictRepository::class);
-        $this->manager->expects($this->once())->method('getRepository')->willReturn($this->districtRepository);
-        $this->subscriber = new BindAdherentDistrictSubscriber($this->manager);
+
+        $this->subscriber = new BindAdherentDistrictSubscriber($this->manager, $this->districtRepository);
     }
 
     protected function tearDown(): void

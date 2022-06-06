@@ -81,9 +81,8 @@ class BindAdherentZoneSubscriberTest extends TestCase
         $this->manager = $this->createMock(EntityManagerInterface::class);
 
         $this->repository = $this->createMock(ZoneRepository::class);
-        $this->manager->expects($this->once())->method('getRepository')->willReturn($this->repository);
 
-        $this->subscriber = new BindAdherentZoneSubscriber($this->manager);
+        $this->subscriber = new BindAdherentZoneSubscriber($this->manager, $this->repository);
     }
 
     protected function tearDown(): void

@@ -17,32 +17,28 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
         Zone::FOREIGN_DISTRICT,
     ];
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
+    private ZoneRepository $repository;
 
-    /**
-     * @var ZoneRepository
-     */
-    private $repository;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ZoneRepository $zoneRepository)
     {
         $this->em = $em;
-        $this->repository = $em->getRepository(Zone::class);
+        $this->repository = $zoneRepository;
     }
 
     public function updateZones(AdherentEvent $event): void
     {
         $adherent = $event->getAdherent();
-        if (!$adherent->isGeocoded()) {
-            return;
+
+        if ($adherent->isForeignResident()) {
+            $toAdd = $this->repository->findParent(Zone::FOREIGN_DISTRICT, $adherent->getCountry(), Zone::COUNTRY);
+        } elseif ($adherent->isGeocoded()) {
+            $latitude = $adherent->getLatitude();
+            $longitude = $adherent->getLongitude();
+
+            $toAdd = $this->repository->findByCoordinatesAndTypes($latitude, $longitude, self::TYPES);
         }
 
-        $latitude = $adherent->getLatitude();
-        $longitude = $adherent->getLongitude();
-        $toAdd = $this->repository->findByCoordinatesAndTypes($latitude, $longitude, self::TYPES);
         if (empty($toAdd)) {
             return;
         }

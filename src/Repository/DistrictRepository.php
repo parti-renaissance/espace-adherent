@@ -31,4 +31,17 @@ class DistrictRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findDistrictCountryCode(string $code): ?District
+    {
+        return $this->createQueryBuilder('district')
+            ->join('district.referentTag', 'referentTag')
+            ->addSelect('referentTag')
+            ->where('FIND_IN_SET(:country_code, district.countries) > 0')
+            ->setParameter('country_code', $code)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
