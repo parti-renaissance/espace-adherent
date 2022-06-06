@@ -62,6 +62,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/adherent_messages",
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
+ *         "get_kpi": {
+ *             "method": "GET",
+ *             "path": "/v3/adherent_messages/kpi",
+ *             "controller": "App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController",
+ *             "access_control": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('REQUEST_SCOPE_GRANTED')",
+ *         },
  *     },
  *     itemOperations={
  *         "get": {
