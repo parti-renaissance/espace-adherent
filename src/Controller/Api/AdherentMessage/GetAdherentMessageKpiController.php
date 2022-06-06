@@ -14,7 +14,7 @@ class GetAdherentMessageKpiController
         MailchimpCampaignReportRepository $mailchimpCampaignReportRepository,
         ScopeGeneratorResolver $resolver
     ): array {
-        $maxHistory = (int) $request->query->get('max_history', 30);
+        $maxHistory = $request->query->getInt('max_history', 30);
         $scope = $resolver->generate();
 
         return [
