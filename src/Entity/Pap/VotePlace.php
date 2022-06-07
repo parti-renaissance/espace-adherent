@@ -67,36 +67,6 @@ class VotePlace
     public ?string $code = null;
 
     /**
-     * @ORM\Column(name="delta_prediction_and_result_2017", type="float", nullable=true)
-     */
-    public ?float $deltaPredictionAndResult2017 = null;
-
-    /**
-     * @ORM\Column(name="delta_average_predictions", type="float", nullable=true)
-     */
-    public ?float $deltaAveragePredictions = null;
-
-    /**
-     * @ORM\Column(name="abstentions_2017", type="float", nullable=true)
-     */
-    public ?float $abstentions2017 = null;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    public ?int $misregistrationsPriority = null;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    public ?int $firstRoundPriority = null;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    public ?int $secondRoundPriority = null;
-
-    /**
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      *
      * @Groups({"pap_vote_place_read"})
@@ -127,13 +97,7 @@ class VotePlace
         int $nbAddresses = 0,
         int $nbVoters = 0,
         UuidInterface $uuid = null,
-        ?Zone $zone = null,
-        ?float $deltaPredictionAndResult2017 = null,
-        ?float $deltaAveragePredictions = null,
-        ?float $abstentions2017 = null,
-        ?int $misregistrationsPriority = null,
-        ?int $firstRoundPriority = null,
-        ?int $secondRoundPriority = null
+        ?Zone $zone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;
@@ -142,12 +106,6 @@ class VotePlace
         $this->nbAddresses = $nbAddresses;
         $this->nbVoters = $nbVoters;
         $this->zone = $zone;
-        $this->deltaPredictionAndResult2017 = $deltaPredictionAndResult2017;
-        $this->deltaAveragePredictions = $deltaAveragePredictions;
-        $this->abstentions2017 = $abstentions2017;
-        $this->misregistrationsPriority = $misregistrationsPriority;
-        $this->firstRoundPriority = $firstRoundPriority;
-        $this->secondRoundPriority = $secondRoundPriority;
         $this->campaigns = new ArrayCollection();
     }
 

@@ -75,11 +75,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             4
         ));
 
-        $object->deltaPredictionAndResult2017 = 0.03448712620899716;
-        $object->deltaAveragePredictions = -0.04701780333257613;
-        $object->abstentions2017 = 0.1924375422012154;
-        $object->misregistrationsPriority = 1;
-
         $this->setReference('vote-place--paris-8-b', $object);
 
         $manager->persist($object = $this->createVotePlace(
@@ -108,11 +103,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             1
         ));
 
-        $object->deltaPredictionAndResult2017 = -0.11020033706766413;
-        $object->deltaAveragePredictions = 0.09149141048645792;
-        $object->abstentions2017 = 0.1564625850340136;
-        $object->misregistrationsPriority = 2;
-
         $this->setReference('vote-place--paris-3-b', $object);
 
         $manager->persist($object = $this->createVotePlace(
@@ -126,11 +116,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             2,
             4
         ));
-
-        $object->deltaPredictionAndResult2017 = -0.01368787135603089;
-        $object->deltaAveragePredictions = 0.08377306353576569;
-        $object->abstentions2017 = 0.1395582329317269;
-        $object->misregistrationsPriority = 1;
 
         $this->setReference('vote-place--anthony-a', $object);
 
@@ -146,11 +131,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             1
         ));
 
-        $object->deltaPredictionAndResult2017 = -0.02095552502504222;
-        $object->deltaAveragePredictions = 0.08456851575224938;
-        $object->abstentions2017 = 0.14551804423748546;
-        $object->misregistrationsPriority = 1;
-
         $this->setReference('vote-place--anthony-b', $object);
 
         $manager->persist($object = $this->createVotePlace(
@@ -165,11 +145,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             0
         ));
 
-        $object->deltaPredictionAndResult2017 = -0.06196240784844481;
-        $object->deltaAveragePredictions = 0.09086137737347927;
-        $object->abstentions2017 = 0.14814814814814814;
-        $object->misregistrationsPriority = 1;
-
         $this->setReference('vote-place--anthony-c', $object);
 
         $manager->persist($object = $this->createVotePlace(
@@ -183,11 +158,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             0,
             0
         ));
-
-        $object->deltaPredictionAndResult2017 = -0.050389164528078456;
-        $object->deltaAveragePredictions = 0.07462764506078307;
-        $object->abstentions2017 = 0.1825876662636034;
-        $object->misregistrationsPriority = 1;
 
         $this->setReference('vote-place--sartrouville-a', $object);
 
@@ -231,11 +201,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             0
         ));
 
-        $object->deltaPredictionAndResult2017 = 0.027060904596480972;
-        $object->deltaAveragePredictions = 0.01574765192935429;
-        $object->abstentions2017 = 0.17720090293453725;
-        $object->misregistrationsPriority = 1;
-
         $this->setReference('vote-place--achere-la-forêt-a', $object);
 
         $manager->persist($object = $this->createVotePlace(
@@ -249,10 +214,6 @@ class LoadElectionVotePlaceData extends Fixture implements DependentFixtureInter
             1,
             0
         ));
-
-        $object->deltaPredictionAndResult2017 = 0.03922582276744235;
-        $object->deltaAveragePredictions = -0.021542342902355627;
-        $object->abstentions2017 = 0.2491767288693743;
 
         $this->setReference('vote-place--nice-a', $object);
 

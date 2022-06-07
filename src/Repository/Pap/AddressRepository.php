@@ -120,56 +120,6 @@ SQL;
             'start_date' => $campaign->getBeginAt()->format('Y-m-d H:i:s'),
         ];
 
-        if (null !== $campaign->getDeltaPredictionAndResultMin2017()) {
-            $conditions[] = 'vote_place.delta_prediction_and_result_2017 >= :delta_prediction_and_result_min_2017';
-            $params['delta_prediction_and_result_min_2017'] = $campaign->getDeltaPredictionAndResultMin2017();
-        }
-
-        if (null !== $campaign->getDeltaPredictionAndResultMax2017()) {
-            $conditions[] = 'vote_place.delta_prediction_and_result_2017 <= :delta_prediction_and_result_max_2017';
-            $params['delta_prediction_and_result_max_2017'] = $campaign->getDeltaPredictionAndResultMax2017();
-        }
-
-        if (null !== $campaign->getDeltaAveragePredictionsMin()) {
-            $conditions[] = 'vote_place.delta_average_predictions >= :delta_average_predictions_min';
-            $params['delta_average_predictions_min'] = $campaign->getDeltaAveragePredictionsMin();
-        }
-
-        if (null !== $campaign->getDeltaAveragePredictionsMax()) {
-            $conditions[] = 'vote_place.delta_average_predictions <= :delta_average_predictions_max';
-            $params['delta_average_predictions_max'] = $campaign->getDeltaAveragePredictionsMax();
-        }
-
-        if (null !== $campaign->getAbstentionsMin2017()) {
-            $conditions[] = 'vote_place.abstentions_2017 >= :abstentions_min_2017';
-            $params['abstentions_min_2017'] = $campaign->getAbstentionsMin2017();
-        }
-
-        if (null !== $campaign->getAbstentionsMax2017()) {
-            $conditions[] = 'vote_place.abstentions_2017 <= :abstentions_max_2017';
-            $params['abstentions_max_2017'] = $campaign->getAbstentionsMax2017();
-        }
-
-        if (null !== $campaign->getMisregistrationsPriorityMin()) {
-            $conditions[] = 'vote_place.misregistrations_priority >= :misregistrations_priority_min';
-            $params['misregistrations_priority_min'] = $campaign->getMisregistrationsPriorityMin();
-        }
-
-        if (null !== $campaign->getMisregistrationsPriorityMax()) {
-            $conditions[] = 'vote_place.misregistrations_priority <= :misregistrations_priority_max';
-            $params['misregistrations_priority_max'] = $campaign->getMisregistrationsPriorityMax();
-        }
-
-        if (null !== $campaign->getFirstRoundPriority()) {
-            $conditions[] = 'vote_place.first_round_priority >= :first_round_priority';
-            $params['first_round_priority'] = $campaign->getFirstRoundPriority();
-        }
-
-        if (null !== $campaign->getSecondRoundPriority()) {
-            $conditions[] = 'vote_place.second_round_priority >= :second_round_priority';
-            $params['second_round_priority'] = $campaign->getSecondRoundPriority();
-        }
-
         if (!$campaign->isNationalVisibility()) {
             $votePlaceIds = implode(',', array_map(function (VotePlace $votePlace) {
                 return $votePlace->getId();
