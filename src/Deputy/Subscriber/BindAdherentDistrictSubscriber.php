@@ -2,7 +2,6 @@
 
 namespace App\Deputy\Subscriber;
 
-use App\Entity\District;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Repository\DistrictRepository;
@@ -14,15 +13,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class BindAdherentDistrictSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var DistrictRepository
-     */
-    private $districtRepository;
-    private $em;
+    private DistrictRepository $districtRepository;
+    private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, DistrictRepository $repository)
     {
-        $this->districtRepository = $em->getRepository(District::class);
+        $this->districtRepository = $repository;
         $this->em = $em;
     }
 
@@ -30,23 +26,28 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if ($adherent->isGeocoded()) {
+        if ($adherent->isForeignResident()) {
+            $country = $adherent->getCountry();
+            if ($district = $this->districtRepository->findDistrictCountryCode($country)) {
+                $districts = [$district];
+            }
+        } elseif ($adherent->isGeocoded()) {
             $districts = $this->districtRepository->findDistrictsByCoordinates(
                 $adherent->getLatitude(),
                 $adherent->getLongitude()
             );
+        }
 
-            if (!empty($districts)) {
-                foreach ($districts as $district) {
-                    if (!\in_array($adherent->getCountry(), $district->getCountries())) {
-                        continue;
-                    }
-
-                    $adherent->addReferentTag($district->getReferentTag());
+        if (!empty($districts)) {
+            foreach ($districts as $district) {
+                if (!\in_array($adherent->getCountry(), $district->getCountries())) {
+                    continue;
                 }
 
-                $this->em->flush();
+                $adherent->addReferentTag($district->getReferentTag());
             }
+
+            $this->em->flush();
         }
     }
 
