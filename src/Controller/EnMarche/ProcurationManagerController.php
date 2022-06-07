@@ -7,6 +7,7 @@ use App\Entity\ProcurationRequest;
 use App\Exception\ProcurationException;
 use App\Procuration\Filter\ProcurationProxyProposalFilters;
 use App\Procuration\Filter\ProcurationRequestFilters;
+use App\Procuration\ProcurationDisableReasonEnum;
 use App\Procuration\ProcurationManager;
 use App\Repository\ElectionRoundRepository;
 use App\Repository\ProcurationRequestRepository;
@@ -219,7 +220,7 @@ class ProcurationManagerController extends AbstractController
 
                 break;
             case ProcurationRequest::ACTION_DISABLE:
-                $procurationManager->disableProcurationRequest($request, ProcurationRequest::DISABLED_REASON_BY_PROCURATION_MANAGER);
+                $procurationManager->disableProcurationRequest($request, ProcurationDisableReasonEnum::BY_PROCURATION_MANAGER);
                 $this->addFlash('info', 'procuration_manager.disabled.success');
 
                 break;

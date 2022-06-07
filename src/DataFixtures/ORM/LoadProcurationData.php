@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
+use App\Procuration\ProcurationDisableReasonEnum;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -303,7 +304,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             $partialLegislativeElections->getRounds(),
             0,
             false,
-            ProcurationRequest::DISABLED_REASON_INVALID_EMAIL
+            ProcurationDisableReasonEnum::INVALID_EMAIL
         ));
 
         $manager->persist($this->createProxyProposal(

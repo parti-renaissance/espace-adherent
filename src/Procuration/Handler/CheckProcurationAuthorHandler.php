@@ -5,6 +5,7 @@ namespace App\Procuration\Handler;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
 use App\Procuration\Command\NewProcurationObjectCommand;
+use App\Procuration\ProcurationDisableReasonEnum;
 use App\Validator\InvalidEmailAddress;
 use App\Validator\StrictEmail;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,10 +37,10 @@ class CheckProcurationAuthorHandler implements MessageHandlerInterface
         /** @var ConstraintViolation $error */
         foreach ($errors as $error) {
             if ($error->getConstraint() instanceof InvalidEmailAddress) {
-                $object->disable(ProcurationRequest::DISABLED_REASON_BANNED_EMAIL);
+                $object->disable(ProcurationDisableReasonEnum::BANNED_EMAIL);
                 break;
             } elseif ($error->getConstraint() instanceof StrictEmail) {
-                $object->disable(ProcurationRequest::DISABLED_REASON_INVALID_EMAIL);
+                $object->disable(ProcurationDisableReasonEnum::INVALID_EMAIL);
                 break;
             }
         }

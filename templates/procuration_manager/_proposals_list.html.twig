@@ -38,7 +38,7 @@
                     Associé à la demande n°<a href="{{ path('app_procuration_manager_request', { id: foundRequest.id }) }}">{{ foundRequest.id }}</a><br />
                 {% endfor %}
             {% elseif proxy.disabled %}
-                Désactivé<br />
+                Désactivé {{ proxy.isAutoDisabled() ? 'automatiquement' }}<br />
                 (n'est plus associable)
             {% else %}
                 <strong>Disponible</strong>

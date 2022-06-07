@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Intl\FranceCitiesBundle;
+use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Utils\AreaUtils;
@@ -27,10 +28,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     use EntityTimestampableTrait;
     use ElectionRoundsCollectionTrait;
     use RecaptchaChallengeTrait;
-
-    public const DISABLED_REASON_BANNED_EMAIL = 'banned_email';
-    public const DISABLED_REASON_INVALID_EMAIL = 'invalid_email';
-    public const DISABLED_REASON_BY_PROCURATION_MANAGER = 'by_procuration_manager';
 
     public const STEP_VOTE = 'vote';
     public const STEP_PROFILE = 'profile';
@@ -742,6 +739,11 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     public function getDisabledReason(): ?string
     {
         return $this->disabledReason;
+    }
+
+    public function isAutoDisabled(): bool
+    {
+        return !$this->enabled && \in_array($this->disabledReason, ProcurationDisableReasonEnum::AUTO_DISABLED_REASONS, true);
     }
 
     public function disable(?string $reason): void
