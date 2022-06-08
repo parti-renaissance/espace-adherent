@@ -20,7 +20,6 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -71,56 +70,6 @@ class CampaignAdmin extends AbstractAdmin
                     'required' => false,
                     'multiple' => true,
                     'help' => 'Laissez vide pour appliquer une visibilité nationale.',
-                ])
-            ->end()
-            ->with('Filtre - Ciblage par bureau de vote', ['class' => 'col-md-6'])
-                ->add('deltaPredictionAndResultMin2017', PercentType::class, [
-                    'label' => 'Écart entre prédiction et résultat 2017 - Min',
-                    'scale' => 2,
-                    'required' => false,
-                ])
-                ->add('deltaPredictionAndResultMax2017', PercentType::class, [
-                    'label' => 'Écart entre prédiction et résultat 2017 - Max',
-                    'scale' => 2,
-                    'required' => false,
-                ])
-                ->add('deltaAveragePredictionsMin', PercentType::class, [
-                    'label' => 'Écart prediction et prediction moyenne - Min',
-                    'scale' => 2,
-                    'required' => false,
-                ])
-                ->add('deltaAveragePredictionsMax', PercentType::class, [
-                    'label' => 'Écart prediction et prediction moyenne - Max',
-                    'scale' => 2,
-                    'required' => false,
-                ])
-                ->add('abstentionsMin2017', PercentType::class, [
-                    'label' => 'Taux d\'abstention 2017 - Min',
-                    'scale' => 2,
-                    'required' => false,
-                ])
-                ->add('abstentionsMax2017', PercentType::class, [
-                    'label' => 'Taux d\'abstention 2017 - Max',
-                    'scale' => 2,
-                    'required' => false,
-                ])
-                ->add('misregistrationsPriorityMin', IntegerType::class, [
-                    'label' => 'Liste des priorités de mal-inscrits - Min',
-                    'required' => false,
-                ])
-                ->add('misregistrationsPriorityMax', IntegerType::class, [
-                    'label' => 'Liste des priorités de mal-inscrits - Max',
-                    'required' => false,
-                ])
-                ->add('firstRoundPriority', IntegerType::class, [
-                    'label' => 'Priorité 1er tour',
-                    'required' => false,
-                    'help' => 'Indiquer la priorité minimum des bureaux de vote à cibler',
-                ])
-                ->add('secondRoundPriority', IntegerType::class, [
-                    'label' => 'Priorité 2ème tour',
-                    'required' => false,
-                    'help' => 'Indiquer la priorité minimum des bureaux de vote à cibler',
                 ])
             ->end()
         ;

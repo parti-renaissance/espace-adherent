@@ -78,36 +78,6 @@ class VotePlace
      */
     public ?Zone $zone = null;
 
-    /**
-     * @ORM\Column(name="delta_prediction_and_result_2017", type="float", nullable=true)
-     */
-    public ?float $deltaPredictionAndResult2017 = null;
-
-    /**
-     * @ORM\Column(name="delta_average_predictions", type="float", nullable=true)
-     */
-    public ?float $deltaAveragePredictions = null;
-
-    /**
-     * @ORM\Column(name="abstentions_2017", type="float", nullable=true)
-     */
-    public ?float $abstentions2017 = null;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    public ?int $misregistrationsPriority = null;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    public ?int $firstRoundPriority = null;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
-    public ?int $secondRoundPriority = null;
-
     public function __construct(UuidInterface $uuid = null, string $code = null, string $name = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
