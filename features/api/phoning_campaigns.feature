@@ -1,4 +1,4 @@
-@api @debug
+@api
 Feature:
   In order to see phoning campaigns
   As a non logged-in user
