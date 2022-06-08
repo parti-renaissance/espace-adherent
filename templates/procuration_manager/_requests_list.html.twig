@@ -36,7 +36,7 @@
         </td>
         {% if constant('DISABLED', filters) == filters.status %}
             <td>
-                {{ request.data.disabledReason == constant('App\\Entity\\ProcurationRequest::DISABLED_REASON_BY_PROCURATION_MANAGER') ? 'Manuellement' : 'Automatiquement' }}
+                {{ request.data.isAutoDisabled() ? 'Automatiquement' : 'Manuellement' }}
             </td>
         {% endif %}
         <td>

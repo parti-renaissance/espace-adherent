@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Geo\Zone;
 use App\Intl\FranceCitiesBundle;
+use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Utils\AreaUtils;
@@ -758,6 +759,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     {
         $this->disabled = true;
         $this->disabledReason = $reason;
+    }
+
+    public function isAutoDisabled(): bool
+    {
+        return $this->disabled && \in_array($this->disabledReason, ProcurationDisableReasonEnum::AUTO_DISABLED_REASONS, true);
     }
 
     public function matchesRequest(ProcurationRequest $request): bool
