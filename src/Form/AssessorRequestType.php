@@ -6,7 +6,7 @@ use App\Assessor\AssessorRequestCommand;
 use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Assessor\AssessorRequestEnum;
 use App\Entity\AssessorOfficeEnum;
-use App\Intl\FranceCitiesBundle;
+use App\FranceCities\FranceCities;
 use App\VotePlace\VotePlaceManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
@@ -26,10 +26,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AssessorRequestType extends AbstractType
 {
     private VotePlaceManager $votePlaceManager;
+    private FranceCities $franceCities;
 
-    public function __construct(VotePlaceManager $votePlaceManager)
+    public function __construct(VotePlaceManager $votePlaceManager, FranceCities $franceCities)
     {
         $this->votePlaceManager = $votePlaceManager;
+        $this->franceCities = $franceCities;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -174,11 +176,11 @@ class AssessorRequestType extends AbstractType
 
     public function formatCitiesByPostalCode(string $postalCode): array
     {
-        $data = FranceCitiesBundle::$cities[$postalCode];
+        $data = $this->franceCities->findCitiesByPostalCode($postalCode);
 
         $cities = [];
         foreach ($data as $city) {
-            $cities[$city] = $city;
+            $cities[$city->getName()] = $city->getName();
         }
 
         return $cities;
