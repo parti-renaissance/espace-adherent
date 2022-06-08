@@ -240,7 +240,11 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
      */
     private bool $permanent = false;
 
-    /** @ORM\Column(type="integer", options={"default": 0}) */
+    /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     *
+     * @Groups({"phoning_campaign_read", "phoning_campaign_list"})
+     */
     private int $participantsCount = 0;
 
     public function __construct(

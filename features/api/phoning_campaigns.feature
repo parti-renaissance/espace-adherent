@@ -1,4 +1,4 @@
-@api
+@api @debug
 Feature:
   In order to see phoning campaigns
   As a non logged-in user
@@ -57,7 +57,9 @@ Feature:
           "zone": null,
           "creator": "Admin",
           "nb_calls": 0,
-          "nb_surveys": 0
+          "nb_surveys": 0,
+          "participants_count": 0,
+          "nb_adherents_called": 0
         },
         {
           "title": "Campagne avec l'audience contenant tous les paramètres",
@@ -75,7 +77,9 @@ Feature:
           "zone": null,
           "creator": "Admin",
           "nb_calls": 0,
-          "nb_surveys": 0
+          "nb_surveys": 0,
+          "participants_count": 0,
+          "nb_adherents_called": 0
         }
       ]
     }
@@ -165,6 +169,8 @@ Feature:
       "creator": "Député P.",
       "nb_calls": 0,
       "nb_surveys": 0,
+      "participants_count": 0,
+      "nb_adherents_called": 0,
       "visibility": "national",
       "zone": null
     }
@@ -228,7 +234,9 @@ Feature:
       "zone": null,
       "creator": "Admin",
       "nb_calls": 0,
-      "nb_surveys": 0
+      "nb_surveys": 0,
+      "participants_count": 0,
+      "nb_adherents_called": 0
     }
     """
 
@@ -325,7 +333,9 @@ Feature:
           },
           "creator": "Admin",
           "nb_calls": 0,
-          "nb_surveys": 0
+          "nb_surveys": 0,
+          "participants_count": 0,
+          "nb_adherents_called": 0
         },
         {
           "title": "Campagne locale de la ville de Lille (59350)",
@@ -347,7 +357,9 @@ Feature:
           },
           "creator": "Admin",
           "nb_calls": 0,
-          "nb_surveys": 0
+          "nb_surveys": 0,
+          "participants_count": 0,
+          "nb_adherents_called": 0
         }
       ]
     }
@@ -416,6 +428,8 @@ Feature:
       "creator": "Admin",
       "nb_calls": 0,
       "nb_surveys": 0,
+      "participants_count": 0,
+      "nb_adherents_called": 0,
       "nb_un_join": 0,
       "nb_un_subscribe": 0,
       "to_remind": 0,
@@ -495,6 +509,8 @@ Feature:
       "goal": 50,
       "nb_calls": 0,
       "nb_surveys": 0,
+      "participants_count": 0,
+      "nb_adherents_called": 0,
       "permanent": false,
       "survey": {
         "created_at": "@string@.isDateTime()",
@@ -567,6 +583,8 @@ Feature:
       "goal": 10,
       "nb_calls": 0,
       "nb_surveys": 0,
+      "participants_count": 1,
+      "nb_adherents_called": 0,
       "permanent": false,
       "survey": {
       "created_at": "@string@.isDateTime()",
@@ -1326,6 +1344,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 12,
             "nb_surveys": 6,
+            "participants_count": 0,
+            "nb_adherents_called": 8,
             "visibility": "national",
             "zone": null
          },
@@ -1344,6 +1364,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 6,
             "nb_surveys": 5,
+            "participants_count": 0,
+            "nb_adherents_called": 6,
             "visibility": "national",
             "zone": null
          },
@@ -1362,6 +1384,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 4,
             "nb_surveys": 3,
+            "participants_count": 0,
+            "nb_adherents_called": 4,
             "visibility": "national",
             "zone": null
          },
@@ -1380,6 +1404,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 0,
             "nb_surveys": 0,
+            "participants_count": 0,
+            "nb_adherents_called": 0,
             "visibility": "national",
             "zone": null
          },
@@ -1398,6 +1424,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 0,
             "nb_surveys": 0,
+            "participants_count": 0,
+            "nb_adherents_called": 0,
             "visibility": "national",
             "zone": null
          },
@@ -1416,6 +1444,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 0,
             "nb_surveys": 0,
+            "participants_count": 0,
+            "nb_adherents_called": 0,
             "visibility": "national",
             "zone": null
          },
@@ -1428,6 +1458,8 @@ Feature:
             "creator": "Admin",
             "nb_calls": 1,
             "nb_surveys": 0,
+            "participants_count": 0,
+            "nb_adherents_called": 0,
             "visibility": "national",
             "zone": null
          }
@@ -1493,6 +1525,8 @@ Feature:
       "creator": "Admin",
       "nb_calls": 12,
       "nb_surveys": 6,
+      "participants_count": 0,
+      "nb_adherents_called": 8,
       "nb_un_join": 1,
       "nb_un_subscribe": 1,
       "to_remind": 1,
@@ -1587,6 +1621,8 @@ Feature:
       "creator": "Referent R.",
       "nb_calls": 0,
       "nb_surveys": 0,
+      "participants_count": 0,
+      "nb_adherents_called": 0,
       "visibility": "national",
       "zone": null
     }
@@ -1724,6 +1760,8 @@ Feature:
       "creator": "Admin",
       "nb_calls": 12,
       "nb_surveys": 6,
+      "participants_count": 0,
+      "nb_adherents_called": 8,
       "visibility": "national",
       "zone": null
     }
@@ -2496,6 +2534,8 @@ Feature:
       "creator": "Admin",
       "nb_calls": 4,
       "nb_surveys": 3,
+      "participants_count": 0,
+      "nb_adherents_called": 4,
       "nb_un_join": 0,
       "nb_un_subscribe": 0,
       "to_remind": 0,

@@ -44,4 +44,18 @@ class CampaignHistoryRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
             ;
     }
+
+    public function countPhoningCampaignAdherentsCalled(Campaign $campaign): int
+    {
+        return (int) $this->createQueryBuilder('campaignHistory')
+            ->select('COUNT(DISTINCT campaignHistory.adherent)')
+            ->where('campaignHistory.campaign = :campaign AND campaignHistory.status != :send')
+            ->setParameters([
+                'campaign' => $campaign,
+                'send' => CampaignHistoryStatusEnum::SEND,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
 }
