@@ -32,6 +32,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 
         $campaign['nb_calls'] = $object->getCampaignHistoriesCount();
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
+        $campaign['nb_adherents_called'] = $this->campaignHistoryRepository->countPhoningCampaignAdherentsCalled($object);
 
         if (($context['item_operation_name'] ?? null) === 'get') {
             $campaign['nb_un_join'] = $object->getCampaignHistoriesToUnjoin()->count();
