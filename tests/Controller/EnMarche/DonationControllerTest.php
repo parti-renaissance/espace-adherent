@@ -166,7 +166,7 @@ class DonationControllerTest extends WebTestCase
         ]));
 
         // Check payment was successful
-        $callbackUrl = $crawler->filter('a')->first()->attr('href');
+        $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
         $callbackUrlRegExp = 'http://'.$this->getParameter('app_host').'/don/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
@@ -175,7 +175,7 @@ class DonationControllerTest extends WebTestCase
         }
         $callbackUrlRegExp .= '&authorization=XXXXXX&result=00000';
         $callbackUrlRegExp .= '&transaction=(\d+)&amount=3000&date=(\d+)&time=(.+)';
-        $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard|Maestro)&card_end=3212&card_print=(.+)&subscription=(\d+)&Sign=(.+)';
+        $callbackUrlRegExp .= '&card_type=(CB|Visa|MasterCard)&card_end=3212&card_print=(.+)&subscription=(\d+)&Sign=(.+)';
 
         $this->assertMatchesRegularExpression('#'.$callbackUrlRegExp.'#', $callbackUrl);
 

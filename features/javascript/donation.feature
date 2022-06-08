@@ -35,13 +35,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click the "td a" selector
+    When I click the "td#ticketCell img" selector
     Then I should see "Continuons à transformer notre pays ensemble !"
 
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
@@ -79,7 +80,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click the "td a" selector
+    When I click the "td#ticketCell img" selector
     And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -144,7 +145,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click the "td a" selector
+    When I click the "td#ticketCell img" selector
     And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -197,7 +198,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click the "td a" selector
+    When I click the "td#ticketCell img" selector
     Then I should see "Continuons à transformer notre pays ensemble !"
 
   Scenario: The logged user can continue to donate punctually with a subscription currently running
@@ -236,11 +237,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I wait 2 seconds
+    And I click the "#pbx-card-button-choice1" selector
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click the "td a" selector
+    When I click the "td#ticketCell img" selector
     Then I should see "Continuons à transformer notre pays ensemble !"
