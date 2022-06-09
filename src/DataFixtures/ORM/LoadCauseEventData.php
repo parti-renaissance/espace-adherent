@@ -10,6 +10,7 @@ use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
+use App\FranceCities\FranceCities;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -28,9 +29,10 @@ class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtu
     public function __construct(
         string $environment,
         EventFactory $eventFactory,
-        EventRegistrationFactory $eventRegistrationFactory
+        EventRegistrationFactory $eventRegistrationFactory,
+        FranceCities $franceCities
     ) {
-        parent::__construct($environment, $eventFactory, $eventRegistrationFactory);
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
     }
 
     public function loadEvents(ObjectManager $manager): void
@@ -53,7 +55,7 @@ class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtu
             $eventCategory5,
             'Événement culturel 1 de la cause culturelle 1',
             'C\'est un événement culturel de la cause',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('+6 days'))->format('Y-m-d').' 09:00:00',
             (new Chronos('+6 days'))->format('Y-m-d').' 18:00:00'
         );
@@ -67,7 +69,7 @@ class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtu
             $eventCategory5,
             'Événement culturel 2 de la cause culturelle 1',
             'Un autre événement culturel',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('+4 days'))->format('Y-m-d').' 09:00:00',
             (new Chronos('+4 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -91,7 +93,7 @@ class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtu
             $eventCategory5,
             'Événement culturel annulé de la cause',
             'Cet événement de la cause est annulé',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('+20 days'))->format('Y-m-d').' 10:30:00',
             (new Chronos('+20 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -107,7 +109,7 @@ class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtu
             $eventCategory5,
             'Événement culturel passé de la cause',
             'Cet événement de la cause est passé',
-            PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+            $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             (new Chronos('-20 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('-20 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -132,7 +134,7 @@ class LoadCauseEventData extends AbstractLoadEventData implements DependentFixtu
             $eventCategory1,
             'Événement de l\'éducation 1 de la cause',
             'C\'est un événement de l\'éducation de la cause',
-            PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
+            $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
             (new Chronos('+10 days'))->format('Y-m-d').' 10:30:00',
             (new Chronos('+10 days'))->format('Y-m-d').' 18:00:00'
         );

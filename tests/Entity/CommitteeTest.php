@@ -3,15 +3,14 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Committee;
-use App\Entity\PostAddress;
 use App\Exception\CommitteeAlreadyApprovedException;
 use App\Geocoder\Coordinates;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class CommitteeTest extends TestCase
+class CommitteeTest extends AbstractKernelTestCase
 {
     public function testConstructor()
     {
@@ -147,7 +146,7 @@ class CommitteeTest extends TestCase
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
             'En Marche ! - Lyon 1',
             'Le comité En Marche ! de Lyon village',
-            PostAddress::createFrenchAddress('50 Rue de la Villette', '69003-69383'),
+            $this->createPostAddress('50 Rue de la Villette', '69003-69383'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon'
         );

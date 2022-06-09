@@ -6,9 +6,12 @@ use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
 use Tests\App\AbstractKernelTestCase;
+use Tests\App\TestHelperTrait;
 
 class ZoneMatcherTest extends AbstractKernelTestCase
 {
+    use TestHelperTrait;
+
     /**
      * @var ZoneMatcher
      */
@@ -30,9 +33,9 @@ class ZoneMatcherTest extends AbstractKernelTestCase
 
     public function testInseeMatch(): void
     {
-        $clichy = PostAddress::createFrenchAddress('98 bld Victor Hugo', 'XXXXX-92024');
-        $paris8 = PostAddress::createFrenchAddress('26 rue de la Paix', 'XXXXX-75108');
-        $lyon1 = PostAddress::createFrenchAddress('2 Rue de la République', 'XXXXX-69381');
+        $clichy = $this->createPostAddress('98 bld Victor Hugo', 'XXXXX-92024');
+        $paris8 = $this->createPostAddress('26 rue de la Paix', 'XXXXX-75108');
+        $lyon1 = $this->createPostAddress('2 Rue de la République', 'XXXXX-69381');
 
         $zonesClichy = $this->matcher->match($clichy);
         $zonesParis8 = $this->matcher->match($paris8);

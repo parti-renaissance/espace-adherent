@@ -44,6 +44,7 @@ class PostAddressFactory
             return PostAddress::createFrenchAddress(
                 $address->getAddress(),
                 $address->getCity(),
+                $address->getCityName(),
                 $address->getRegion()
             );
         }

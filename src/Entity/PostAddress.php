@@ -7,7 +7,6 @@ use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
-use App\Intl\FranceCitiesBundle;
 use App\Validator\UnitedNationsCountry;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
@@ -170,6 +169,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     public static function createFrenchAddress(
         ?string $street = null,
         ?string $cityCode = null,
+        ?string $cityName = null,
         ?string $region = null,
         float $latitude = null,
         float $longitude = null
@@ -179,7 +179,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         $address = new self(
             self::FRANCE,
             $postalCode,
-            (string) FranceCitiesBundle::getCity($postalCode, $inseeCode),
+            $cityName,
             $street,
             $latitude,
             $longitude,

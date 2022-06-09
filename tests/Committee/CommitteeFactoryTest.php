@@ -7,16 +7,15 @@ use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeFactory;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
 use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group committee
  */
-class CommitteeFactoryTest extends TestCase
+class CommitteeFactoryTest extends AbstractKernelTestCase
 {
     public function testCreateCommitteeFromCommitteeCreationCommand()
     {
@@ -26,7 +25,7 @@ class CommitteeFactoryTest extends TestCase
         $description = 'Le comité En Marche ! de Lyon 1er';
         $facebook = 'https://facebook.com/en-marche';
         $twitter = 'enMarcheLyon';
-        $address = Address::createFromAddress(PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
+        $address = Address::createFromAddress($this->createPostAddress('2 Rue de la République', '69001-69381'));
 
         $adherent = Adherent::create(
             $uuid,
@@ -37,7 +36,7 @@ class CommitteeFactoryTest extends TestCase
             'DUPONT',
             new \DateTime('1979-03-25'),
             'position',
-            PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381')
+            $this->createPostAddress('2 Rue de la République', '69001-69381')
         );
 
         $command = CommitteeCreationCommand::createFromAdherent($adherent);

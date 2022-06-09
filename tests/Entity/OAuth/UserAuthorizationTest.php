@@ -5,14 +5,16 @@ namespace Tests\App\Entity\OAuth;
 use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\UserAuthorization;
-use App\Entity\PostAddress;
 use App\OAuth\Model\Scope;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Tests\App\AbstractKernelTestCase;
+use Tests\App\TestHelperTrait;
 
-class UserAuthorizationTest extends TestCase
+class UserAuthorizationTest extends AbstractKernelTestCase
 {
+    use TestHelperTrait;
+
     public function testConstructor(): void
     {
         $authorization = $this->createUserAuthorization();
@@ -66,7 +68,7 @@ class UserAuthorizationTest extends TestCase
             'Member',
             new \DateTime('-30 years'),
             '',
-            PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024')
+            $this->createPostAddress('92 bld Victor Hugo', '92110-92024')
         );
     }
 }

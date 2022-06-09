@@ -3,7 +3,6 @@
 namespace App\Address;
 
 use App\Geocoder\GeocodableInterface;
-use App\Intl\FranceCitiesBundle;
 use App\Validator\Address as AssertValidAddress;
 use App\Validator\FrenchZipCode;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
@@ -113,14 +112,6 @@ class Address implements AddressInterface, GeocodableInterface
 
     public function getCityName(): ?string
     {
-        if ($this->cityName) {
-            return $this->cityName;
-        }
-
-        if ($this->postalCode && $this->city) {
-            $this->cityName = FranceCitiesBundle::getCity($this->postalCode, $this->getInseeCode());
-        }
-
         return $this->cityName;
     }
 

@@ -73,7 +73,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.8761,
             'longitude' => 2.3082,
         ],
-        '44 rue des courcelles, 75008 paris 8e, fr' => [
+        '44 rue des courcelles, 75008 paris 8ème, fr' => [
             'latitude' => 48.8761,
             'longitude' => 2.3082,
         ],

@@ -4,15 +4,14 @@ namespace Tests\App\Committee;
 
 use App\Committee\CommitteeCommand;
 use App\Entity\Committee;
-use App\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group committee
  */
-class CommitteeCommandTest extends TestCase
+class CommitteeCommandTest extends AbstractKernelTestCase
 {
     public const CREATOR_UUID = '3966af25-2b09-407c-9283-c4d2103d0448';
 
@@ -29,7 +28,7 @@ class CommitteeCommandTest extends TestCase
             Uuid::fromString(self::CREATOR_UUID),
             $name,
             $description,
-            PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
+            $this->createPostAddress('2 Rue de la République', '69001-69381'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69001-en-marche-lyon'
         );

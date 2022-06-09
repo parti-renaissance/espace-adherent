@@ -7,23 +7,19 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
-use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Geocoder\Coordinates;
 use App\Membership\ActivityPositionsEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
-use Tests\App\TestHelperTrait;
+use Tests\App\AbstractKernelTestCase;
 
-class AdherentTest extends TestCase
+class AdherentTest extends AbstractKernelTestCase
 {
-    use TestHelperTrait;
-
     public function testConstruct(): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
 
         $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertFalse($adherent->isEnabled());
@@ -52,9 +48,9 @@ class AdherentTest extends TestCase
 
     public function testAdherentsAreEqual(): void
     {
-        $adherent1 = $this->createAdherent('john.smith@example.org');
-        $adherent2 = $this->createAdherent('john.smith@example.org');
-        $adherent3 = $this->createAdherent('foo.bar@example.org');
+        $adherent1 = $this->createNewAdherent('john.smith@example.org');
+        $adherent2 = $this->createNewAdherent('john.smith@example.org');
+        $adherent3 = $this->createNewAdherent('foo.bar@example.org');
 
         $this->assertTrue($adherent1->equals($adherent2));
         $this->assertTrue($adherent2->equals($adherent1));
@@ -65,7 +61,7 @@ class AdherentTest extends TestCase
 
     public function testGeoAddressAndCoordinates(): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->updateCoordinates(new Coordinates(12.456323, 89.735324));
 
         $this->assertSame('92 bld du Général Leclerc, 92110 Clichy, FR', $adherent->getGeocodableAddress());
@@ -75,7 +71,7 @@ class AdherentTest extends TestCase
 
     public function testActivateAdherentAccount(): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $activationToken = AdherentActivationToken::generate($adherent);
 
         $this->assertFalse($adherent->isEnabled());
@@ -92,7 +88,7 @@ class AdherentTest extends TestCase
     public function testActivateAdherentAccountTwice(): void
     {
         $this->expectException(AdherentAlreadyEnabledException::class);
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $activationToken = AdherentActivationToken::generate($adherent);
 
         $adherent->activate($activationToken);
@@ -102,7 +98,7 @@ class AdherentTest extends TestCase
 
     public function testAuthenticateAdherentAccount(): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $this->assertNull($adherent->getLastLoggedAt());
 
         $adherent->recordLastLoginTime('2016-01-01 13:30:00');
@@ -112,17 +108,17 @@ class AdherentTest extends TestCase
 
     public function testUserWithLegislativeCandidateRole(): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
 
-        $adherent = $this->createAdherent('john.smith@en-marche.fr');
+        $adherent = $this->createNewAdherent('john.smith@en-marche.fr');
         $this->assertNotContains('ROLE_LEGISLATIVE_CANDIDATE', $adherent->getRoles());
     }
 
     public function testIsBasicAdherent(): void
     {
         // User
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
 
         $this->assertFalse($adherent->isBasicAdherent());
 
@@ -132,7 +128,7 @@ class AdherentTest extends TestCase
         $this->assertTrue($adherent->isBasicAdherent());
 
         // Host
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->join();
         $memberships = $adherent->getMemberships();
 
@@ -143,13 +139,13 @@ class AdherentTest extends TestCase
         $this->assertFalse($adherent->isBasicAdherent());
 
         // Referent
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setReferent([new ReferentTag('06', null, new Zone('', '', '06'))], -1.6743, 48.112);
 
         $this->assertFalse($adherent->isBasicAdherent());
 
         // BoardMember
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setBoardMember(BoardMember::AREA_ABROAD, new ArrayCollection());
 
         $this->assertFalse($adherent->isBasicAdherent());
@@ -160,7 +156,7 @@ class AdherentTest extends TestCase
      */
     public function testInitials(string $firstName, string $lastName, string $initials): void
     {
-        $adherent = $this->createAdherent('john.smith@example.org', $firstName, $lastName);
+        $adherent = $this->createNewAdherent('john.smith@example.org', $firstName, $lastName);
 
         $this->assertSame($initials, $adherent->getInitials());
     }
@@ -173,7 +169,7 @@ class AdherentTest extends TestCase
         yield ['Jack', 'L\'éventreur', 'JL'];
     }
 
-    private function createAdherent(
+    private function createNewAdherent(
         $email = 'john.smith@example.org',
         $firstName = 'John',
         $lastName = 'Smith'
@@ -191,7 +187,7 @@ class AdherentTest extends TestCase
             $lastName,
             new \DateTime('1990-12-12'),
             ActivityPositionsEnum::STUDENT,
-            PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
+            $this->createPostAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone
         );
     }

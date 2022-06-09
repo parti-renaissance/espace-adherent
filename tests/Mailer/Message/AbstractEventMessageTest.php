@@ -8,10 +8,9 @@ use App\Entity\CommitteeFeedItem;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventRegistration;
-use App\Entity\PostAddress;
-use PHPUnit\Framework\TestCase;
+use Tests\App\AbstractKernelTestCase;
 
-abstract class AbstractEventMessageTest extends TestCase
+abstract class AbstractEventMessageTest extends AbstractKernelTestCase
 {
     protected function createEventMock(
         string $name,
@@ -22,7 +21,7 @@ abstract class AbstractEventMessageTest extends TestCase
         string $timeZone = 'Europe/Paris',
         string $description = ''
     ): CommitteeEvent {
-        $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
+        $address = $this->createPostAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
         $event = $this->createMock(CommitteeEvent::class);
         $event->expects(static::any())->method('getName')->willReturn($name);

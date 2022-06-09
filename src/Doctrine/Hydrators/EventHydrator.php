@@ -7,11 +7,22 @@ use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
+use App\FranceCities\FranceCities;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
 
 class EventHydrator extends AbstractHydrator
 {
+    private FranceCities $franceCities;
+
+    public function __construct(EntityManagerInterface $em, FranceCities $franceCities)
+    {
+        parent::__construct($em);
+
+        $this->franceCities = $franceCities;
+    }
+
     protected function hydrateAllData()
     {
         $result = [];
@@ -100,7 +111,14 @@ class EventHydrator extends AbstractHydrator
         ?float $latitude,
         ?float $longitude
     ): PostAddress {
-        return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $latitude, $longitude);
+        if ($cityCode) {
+            [$postalCode, $inseeCode] = explode('-', $cityCode);
+            $city = $this->franceCities->getCityByInseeCode($inseeCode);
+
+            return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, null, $latitude, $longitude);
+        }
+
+        return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', null, null, $latitude, $longitude);
     }
 
     private function createForeignAddress(

@@ -5,17 +5,16 @@ namespace Tests\App\Deputy\Subscriber;
 use App\Deputy\Subscriber\BindAdherentZoneSubscriber;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\PostAddress;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Tests\App\AbstractKernelTestCase;
 
-class BindAdherentZoneSubscriberTest extends TestCase
+class BindAdherentZoneSubscriberTest extends AbstractKernelTestCase
 {
-    private $manager;
+    protected $manager;
 
     /* @var ZoneRepository */
     private $repository;
@@ -37,7 +36,7 @@ class BindAdherentZoneSubscriberTest extends TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositionsEnum::EMPLOYED,
-            PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
+            $this->createPostAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
         );
 
         $this->assertSame(0, $adherent->getZones()->count());

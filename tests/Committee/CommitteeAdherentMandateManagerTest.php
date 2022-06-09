@@ -12,7 +12,6 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BaseGroup;
 use App\Entity\Committee;
-use App\Entity\PostAddress;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -20,14 +19,14 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group committee
  */
-class CommitteeAdherentMandateManagerTest extends TestCase
+class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
 {
     /** @var MockObject|EntityManagerInterface */
     private $entityManager;
@@ -77,7 +76,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::OTHER);
+        $adherent = $this->createNewAdherent(Genders::OTHER);
         $committee = $this->createCommittee();
 
         $this->translator
@@ -94,13 +93,13 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->expectException(CommitteeAdherentMandateException::class);
 
         $activeMandate = new CommitteeAdherentMandate(
-            $this->createAdherent(),
+            $this->createNewAdherent(),
             Genders::FEMALE,
             new \DateTime()
         );
         $activeMandate->setCommittee($this->createCommittee());
 
-        $adherent = $this->createAdherent(Genders::FEMALE);
+        $adherent = $this->createNewAdherent(Genders::FEMALE);
         $committee = $this->createCommittee();
         $mandate = new CommitteeAdherentMandate(
             new Adherent(),
@@ -128,7 +127,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::FEMALE);
+        $adherent = $this->createNewAdherent(Genders::FEMALE);
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership());
         $committee = $this->createCommittee();
 
@@ -154,7 +153,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent($gender);
+        $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
         $mandate = new CommitteeAdherentMandate(new Adherent(), $gender, new \DateTime('2020-07-07'));
         $mandate->setCommittee($committee);
@@ -174,7 +173,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
      */
     public function testCreateMandate(string $gender)
     {
-        $adherent = $this->createAdherent($gender);
+        $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
 
         $this->entityManager
@@ -196,7 +195,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     public function testCannotEndMandateBecauseMandateNotFound(string $gender)
     {
         $this->expectException(CommitteeAdherentMandateException::class);
-        $adherent = $this->createAdherent($gender);
+        $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
 
         $this->mandateRepository
@@ -214,7 +213,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
      */
     public function testEndMandate(string $gender)
     {
-        $adherent = $this->createAdherent($gender);
+        $adherent = $this->createNewAdherent($gender);
         $committee = $this->createCommittee();
         $mandate = new CommitteeAdherentMandate($adherent, $gender, new \DateTime('2020-08-26 10:10:10'));
         $mandate->setCommittee($committee);
@@ -237,7 +236,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::OTHER);
+        $adherent = $this->createNewAdherent(Genders::OTHER);
         $committee = $this->createCommittee();
 
         $this->translator
@@ -253,7 +252,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::MALE, '2005-04-04');
+        $adherent = $this->createNewAdherent(Genders::MALE, '2005-04-04');
         $committee = $this->createCommittee();
 
         $this->translator
@@ -269,7 +268,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::MALE);
+        $adherent = $this->createNewAdherent(Genders::MALE);
         $committee = $this->createCommittee();
 
         $this->translator
@@ -291,7 +290,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::MALE);
+        $adherent = $this->createNewAdherent(Genders::MALE);
 
         $this->translator
             ->expects($this->once())
@@ -306,7 +305,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::MALE, '2005-04-04');
+        $adherent = $this->createNewAdherent(Genders::MALE, '2005-04-04');
 
         $this->translator
             ->expects($this->once())
@@ -321,7 +320,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         $this->expectException(CommitteeAdherentMandateException::class);
 
-        $adherent = $this->createAdherent(Genders::MALE);
+        $adherent = $this->createNewAdherent(Genders::MALE);
 
         $this->electedRepresentativeRepository
             ->expects($this->once())
@@ -341,7 +340,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     public function testCanReplaceMandate(): void
     {
         $committee = $this->createCommittee();
-        $adherent = $this->createAdherent(Genders::MALE);
+        $adherent = $this->createNewAdherent(Genders::MALE);
         $mandate = $this->createMandate(Genders::MALE, $committee);
         $command = new CommitteeAdherentMandateCommand($committee);
         $command->setGender($mandate->getGender());
@@ -376,7 +375,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     public function testCanCreateMandateFromCommand(): void
     {
         $committee = $this->createCommittee();
-        $adherent = $this->createAdherent(Genders::MALE);
+        $adherent = $this->createNewAdherent(Genders::MALE);
         $mandateCommand = new CommitteeAdherentMandateCommand($committee);
         $mandateCommand->setAdherent($adherent);
         $mandateCommand->setGender($gender = Genders::MALE);
@@ -410,7 +409,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->assertNull($mandate->getReason());
     }
 
-    private function createAdherent(string $gender = Genders::MALE, string $birthday = null): Adherent
+    private function createNewAdherent(string $gender = Genders::MALE, string $birthday = null): Adherent
     {
         return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
@@ -421,7 +420,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             'DUPONT',
             new \DateTime($birthday ?: '1979-03-25'),
             'position',
-            PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381')
+            $this->createPostAddress('2 Rue de la République', '69001-69381')
         );
     }
 
@@ -432,7 +431,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
             'En Marche ! - Lyon 1',
             'Le comité En Marche ! de Lyon village',
-            PostAddress::createFrenchAddress('50 Rue de la Villette', '69003-69383'),
+            $this->createPostAddress('50 Rue de la Villette', '69003-69383'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon',
             BaseGroup::APPROVED
@@ -443,7 +442,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     {
         return CommitteeAdherentMandate::createForCommittee(
             $committee ?? $this->createCommittee(),
-            $this->createAdherent($gender)
+            $this->createNewAdherent($gender)
         );
     }
 

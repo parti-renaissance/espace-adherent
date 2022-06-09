@@ -54,6 +54,7 @@ use App\Entity\TonMacronChoice;
 use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
 use App\Entity\UserListDefinition;
+use App\FranceCities\FranceCities;
 use App\Membership\ActivityPositionsEnum;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
@@ -440,6 +441,11 @@ trait TestHelperTrait
         return $this->getRepository(DelegatedAccess::class);
     }
 
+    public function getFranceCities(): ?FranceCities
+    {
+        return $this->get(FranceCities::class);
+    }
+
     /**
      * @param bool $refresh Leave to false to avoid reloading from database
      *
@@ -476,7 +482,7 @@ trait TestHelperTrait
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositionsEnum::STUDENT,
-            PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
+            $this->createPostAddress('92 bld du Général Leclerc', '92110-92024'),
             $phone
         );
     }
@@ -495,5 +501,18 @@ trait TestHelperTrait
     protected function getEventCategoryIdForName(string $categoryName): int
     {
         return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
+    }
+
+    protected function createPostAddress(
+        string $street,
+        string $cityCode,
+        string $region = null,
+        float $latitude = null,
+        float $longitude = null
+    ): PostAddress {
+        [$postalCode, $inseeCode] = explode('-', $cityCode);
+        $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
+
+        return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
     }
 }

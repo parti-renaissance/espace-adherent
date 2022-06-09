@@ -7,7 +7,6 @@ use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
-use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
 
@@ -115,7 +114,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $address = new self(
             self::FRANCE,
             $postalCode,
-            (string) FranceCitiesBundle::getCity($postalCode, $inseeCode),
+            null,
             $street,
             $latitude,
             $longitude,
@@ -152,6 +151,11 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
     public function getCityName(): ?string
     {
         return $this->cityName;
+    }
+
+    public function setCityName(?string $cityName): void
+    {
+        $this->cityName = $cityName;
     }
 
     public function getAddress(): ?string

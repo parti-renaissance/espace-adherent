@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Address\Address;
+use App\Form\DataTransformer\CityNameDataTransformer;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -16,10 +17,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AddressType extends AbstractType
 {
     private FranceCities $franceCities;
+    private CityNameDataTransformer $cityNameDataTransformer;
 
-    public function __construct(FranceCities $franceCities)
+    public function __construct(FranceCities $franceCities, CityNameDataTransformer $cityNameDataTransformer)
     {
         $this->franceCities = $franceCities;
+        $this->cityNameDataTransformer = $cityNameDataTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -63,6 +66,8 @@ class AddressType extends AbstractType
         ));
 
         $builder->add($field);
+
+        $builder->addModelTransformer($this->cityNameDataTransformer);
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             /** @var Address $address */

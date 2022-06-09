@@ -4,12 +4,11 @@ namespace Tests\App\Donation;
 
 use App\Donation\DonationRequest;
 use App\Entity\Adherent;
-use App\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class DonationRequestTest extends TestCase
+class DonationRequestTest extends AbstractKernelTestCase
 {
     public function testCreateDonationRequestFromAdherent()
     {
@@ -28,7 +27,7 @@ class DonationRequestTest extends TestCase
             'DUPONT',
             new \DateTime('1979-03-25'),
             'position',
-            PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'),
+            $this->createPostAddress('2 Rue de la République', '69001-69381'),
             $phone
         );
 

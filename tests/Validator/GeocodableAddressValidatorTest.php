@@ -25,7 +25,7 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(
-            PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024'),
+            PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024', 'Clichy'),
             new NotBlank()
         );
     }
@@ -57,7 +57,7 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
         $address->setCityName('Zürich');
 
         return [
-            [PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024')],
+            [PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024', 'Clichy')],
             [PostAddress::createForeignAddress('CH', '8057', 'Zürich', '36 Zeppelinstrasse')],
             [$address],
         ];

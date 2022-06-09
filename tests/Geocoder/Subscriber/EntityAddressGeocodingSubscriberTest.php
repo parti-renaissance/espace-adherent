@@ -5,7 +5,6 @@ namespace Tests\App\Geocoder\Subscriber;
 use App\Committee\CommitteeEvent;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\PostAddress;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
@@ -14,20 +13,20 @@ use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Tests\App\AbstractKernelTestCase;
 use Tests\App\Test\Geocoder\DummyGeocoder;
 
-class EntityAddressGeocodingSubscriberTest extends TestCase
+class EntityAddressGeocodingSubscriberTest extends AbstractKernelTestCase
 {
-    private $manager;
+    protected $manager;
 
     /* @var EntityAddressGeocodingSubscriber */
     private $subscriber;
 
     public function testOnAdherentAccountRegistrationCompletedSucceeds()
     {
-        $adherent = $this->createAdherent('92 bld Victor Hugo');
+        $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
         $this->assertInstanceOf(GeoPointInterface::class, $adherent);
         $this->assertNull($adherent->getLatitude());
@@ -42,7 +41,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
 
     public function testOnAdherentAccountRegistrationCompletedFails()
     {
-        $adherent = $this->createAdherent('58 rue de Picsou');
+        $adherent = $this->createNewAdherent('58 rue de Picsou');
 
         $this->assertInstanceOf(GeoPointInterface::class, $adherent);
         $this->assertNull($adherent->getLatitude());
@@ -57,7 +56,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
 
     public function testOnAdherentProfileUpdatedWithSameAddressDoNothing()
     {
-        $adherent = $this->createAdherent('92 bld Victor Hugo');
+        $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
         $this->manager->expects($this->once())->method('flush');
         $this->subscriber->updateCoordinates(new AdherentAccountWasCreatedEvent($adherent));
@@ -74,7 +73,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
 
     public function testOnAdherentProfileUpdatedWithNewAddressSucceeds()
     {
-        $adherent = $this->createAdherent('92 bld Victor Hugo');
+        $adherent = $this->createNewAdherent('92 bld Victor Hugo');
 
         $this->assertInstanceOf(GeoPointInterface::class, $adherent);
         $this->assertNull($adherent->getLatitude());
@@ -124,13 +123,13 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
             'En Marche ! - Lyon',
             'Le comité En Marche ! de Lyon village',
-            PostAddress::createFrenchAddress($address, '69001-69381'),
+            $this->createPostAddress($address, '69001-69381'),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69001-en-marche-clichy'
         );
     }
 
-    private function createAdherent(string $address): Adherent
+    private function createNewAdherent(string $address): Adherent
     {
         return Adherent::create(
             Uuid::fromString('d3522426-1bac-4da4-ade8-5204c9e2caae'),
@@ -141,7 +140,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositionsEnum::STUDENT,
-            PostAddress::createFrenchAddress($address, '92110-92024')
+            $this->createPostAddress($address, '92110-92024')
         );
     }
 

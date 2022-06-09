@@ -10,6 +10,7 @@ use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
+use App\FranceCities\FranceCities;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -41,9 +42,10 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
     public function __construct(
         string $environment,
         EventFactory $eventFactory,
-        EventRegistrationFactory $eventRegistrationFactory
+        EventRegistrationFactory $eventRegistrationFactory,
+        FranceCities $franceCities
     ) {
-        parent::__construct($environment, $eventFactory, $eventRegistrationFactory);
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
     }
 
     public function loadEvents(ObjectManager $manager): void
@@ -76,7 +78,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel 1',
             'Nous allons échanger autour de différents sujets',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('+5 days'))->format('Y-m-d').' 10:30:00',
             (new Chronos('+5 days'))->format('Y-m-d').' 18:00:00'
         );
@@ -89,7 +91,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel 2',
             'Nous allons échanger encore autour de différents sujets culturels',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('+3 days'))->format('Y-m-d').' 19:30:00'
         );
@@ -137,7 +139,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory9,
             'Événement culturel 6',
             'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('now'))->modify('+30 minutes')->format('Y-m-d H:i:00'),
             (new Chronos('now'))->modify('+3 hours')->format('Y-m-d H:i:00'),
         );
@@ -149,7 +151,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel annulé',
             'Cet événement est annulé',
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             (new Chronos('+30 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('+30 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -162,7 +164,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory5,
             'Événement culturel passé',
             'Cet événement est passé',
-            PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+             $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             (new Chronos('-20 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('-20 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -187,7 +189,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory1,
             'Événement Europe 1',
             'Nous allons échanger autour de différents sujets concenant l\'Europe',
-            PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
+             $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
             (new Chronos('+11 days'))->format('Y-m-d').' 10:30:00',
             (new Chronos('+11 days'))->format('Y-m-d').' 18:00:00'
         );
@@ -199,7 +201,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory2,
             'Événement international',
             'Nous allons échanger autour de différents sujets internationals',
-            PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
+             $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
             (new Chronos('tomorrow'))->format('Y-m-d').' 10:30:00',
             (new Chronos('tomorrow'))->format('Y-m-d').' 18:00:00'
         );
@@ -211,7 +213,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory3,
             'Événement numérique',
             'Nous allons échanger autour de différents sujets numériques',
-            PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
+             $this->createPostAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
             (new Chronos('+16 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('+16 days'))->format('Y-m-d').' 19:00:00'
         );
@@ -223,7 +225,7 @@ class LoadCoalitionEventData extends AbstractLoadEventData implements DependentF
             $eventCategory6,
             'Événement économique',
             'Nous allons échanger autour de différents sujets économiques',
-            PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+             $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             (new Chronos('+17 days'))->format('Y-m-d').' 09:30:00',
             (new Chronos('+17 days'))->format('Y-m-d').' 19:00:00'
         );

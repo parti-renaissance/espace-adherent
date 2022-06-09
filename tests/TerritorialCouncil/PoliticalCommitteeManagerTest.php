@@ -4,7 +4,6 @@ namespace Tests\App\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
-use App\Entity\PostAddress;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeQuality;
@@ -22,11 +21,11 @@ use App\ValueObject\Genders;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class PoliticalCommitteeManagerTest extends TestCase
+class PoliticalCommitteeManagerTest extends AbstractKernelTestCase
 {
     /** @var MockObject|EntityManagerInterface */
     private $entityManager;
@@ -344,7 +343,7 @@ class PoliticalCommitteeManagerTest extends TestCase
     {
         $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
 
         $this->translator
             ->expects($this->once())
@@ -358,7 +357,7 @@ class PoliticalCommitteeManagerTest extends TestCase
     {
         $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setPoliticalCommitteeMembership(new PoliticalCommitteeMembership(new PoliticalCommittee('Test CoPol', new TerritorialCouncil())));
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
 
@@ -376,7 +375,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $politicalCommittee = new PoliticalCommittee('Test CoPol', $territorialCouncil);
         $territorialCouncil->setPoliticalCommittee($politicalCommittee);
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
 
         $this->membershipRepository
@@ -398,7 +397,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $politicalCommittee = new PoliticalCommittee('Test CoPol', $territorialCouncil);
         $territorialCouncil->setPoliticalCommittee($politicalCommittee);
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
 
         $this->membershipRepository
@@ -434,7 +433,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $politicalCommittee = new PoliticalCommittee('Test CoPol', $territorialCouncil);
         $territorialCouncil->setPoliticalCommittee($politicalCommittee);
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
 
         $this->membershipRepository
@@ -469,7 +468,7 @@ class PoliticalCommitteeManagerTest extends TestCase
     {
         $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
 
         $this->translator
             ->expects($this->once())
@@ -483,7 +482,7 @@ class PoliticalCommitteeManagerTest extends TestCase
     {
         $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
 
         $this->translator
@@ -499,7 +498,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
         $pcMembership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::MAYOR));
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
         $adherent->setPoliticalCommitteeMembership($pcMembership);
 
@@ -525,7 +524,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
         $pcMembership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::LEADER));
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
         $adherent->setPoliticalCommitteeMembership($pcMembership);
 
@@ -576,7 +575,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         yield [TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT];
     }
 
-    private function createAdherent(): Adherent
+    private function createNewAdherent(): Adherent
     {
         return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
@@ -587,7 +586,7 @@ class PoliticalCommitteeManagerTest extends TestCase
             'DUPONT',
             new \DateTime('1979-03-25'),
             'position',
-            PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381')
+            $this->createPostAddress('2 Rue de la République', '69001-69381')
         );
     }
 }
