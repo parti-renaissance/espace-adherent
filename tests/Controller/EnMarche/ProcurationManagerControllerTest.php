@@ -13,6 +13,7 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group procuration
+ * @group debug
  */
 class ProcurationManagerControllerTest extends WebTestCase
 {
@@ -96,10 +97,10 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('belle.carole@example.fr', trim($crawler->filter('#request-email')->text()));
         $this->assertSame('+33 6 55 44 33 22', trim($crawler->filter('#request-phone')->text()));
         $this->assertSame('09/03/1978', trim($crawler->filter('#request-birthdate')->text()));
-        $this->assertSame('75010 Paris 10e FR', trim($crawler->filter('#request-vote-city')->text()));
+        $this->assertSame('75010 Paris 10ème FR', trim($crawler->filter('#request-vote-city')->text()));
         $this->assertSame('Madeleine', trim($crawler->filter('#request-vote-office')->text()));
         $this->assertSame('77, Place de la Madeleine', trim($crawler->filter('#request-address')->text()));
-        $this->assertSame('75010 Paris 10e FR', trim($crawler->filter('#request-city')->text()));
+        $this->assertSame('75010 Paris 10ème FR', trim($crawler->filter('#request-city')->text()));
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-procuration/demande/12');
 
@@ -379,10 +380,10 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('+33 9 88 77 66 55', trim($crawler->filter('#proxy-phone')->text()));
         $this->assertSame('17/02/1989', trim($crawler->filter('#proxy-birthdate')->text()));
         $this->assertSame('123456789', trim($crawler->filter('#proxy-voter-number')->text()));
-        $this->assertSame('75018 Paris 18e FR', trim($crawler->filter('#proxy-vote-city')->text()));
+        $this->assertSame('75018 Paris 18ème FR', trim($crawler->filter('#proxy-vote-city')->text()));
         $this->assertSame('Mairie', trim($crawler->filter('#proxy-vote-office')->text()));
         $this->assertSame('14 rue Jules Ferry', trim($crawler->filter('#proxy-address')->text()));
-        $this->assertSame('75018 Paris 18e FR', trim($crawler->filter('#proxy-city')->text()));
+        $this->assertSame('75018 Paris 18ème FR', trim($crawler->filter('#proxy-city')->text()));
         $this->assertCount(2, $rounds = $crawler->filter('#proxy-election-rounds > div > ul > li'));
 
         $firstRound = $rounds->eq(0);
