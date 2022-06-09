@@ -22,12 +22,12 @@ class DeputyMyTeamController extends AbstractMyTeamController
 
     protected function getManagedTags(Adherent $adherent): array
     {
-        return [$adherent->getManagedDistrict()->getReferentTag()];
+        return [];
     }
 
     protected function getZones(Adherent $adherent): array
     {
-        return [];
+        return [$adherent->getDeputyZone()];
     }
 
     protected function getSpaceType(): string

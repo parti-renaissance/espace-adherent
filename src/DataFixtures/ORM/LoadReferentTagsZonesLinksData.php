@@ -33,7 +33,6 @@ class LoadReferentTagsZonesLinksData extends Fixture implements DependentFixture
         return [
             LoadGeoZoneData::class,
             LoadReferentTagData::class,
-            LoadDistrictData::class,
         ];
     }
 

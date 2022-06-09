@@ -2,14 +2,7 @@
 @javascript2
 Feature:
   As deputy
-  I can send messages to the adherents, see committees and events of my district
-
-  Background:
-    Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadDistrictData      |
-      | LoadEventCategoryData |
-      | LoadCommitteeEventData |
+  I can see committees of my district
 
   Scenario: As deputy of 1st Paris district I can see committees.
     Given I am logged as "deputy@en-marche-dev.fr"

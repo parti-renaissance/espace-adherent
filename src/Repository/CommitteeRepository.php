@@ -13,7 +13,6 @@ use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
-use App\Entity\District;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
@@ -477,7 +476,15 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
         ;
 
-        $this->applyGeoFilter($qb, [$deputy->getManagedDistrict()->getReferentTag()], $alias);
+        $this->withGeoZones(
+            [$deputy->getDeputyZone()],
+            $qb,
+            $alias,
+            Committee::class,
+            'c2',
+            'zones',
+            'z2'
+        );
 
         return $qb->getQuery()->getResult();
     }
@@ -622,12 +629,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit, false);
     }
 
-    /**
-     * Finds committees in the district.
-     *
-     * @return Committee[]
-     */
-    public function findInZone(Zone $zone): array
+    public function createQueryBuilderForZones(array $zones): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->andWhere('c.status = :status')
@@ -636,8 +638,8 @@ class CommitteeRepository extends ServiceEntityRepository
             ->orderBy('c.createdAt', 'DESC')
         ;
 
-        $this->withGeoZones(
-            [$zone],
+        return $this->withGeoZones(
+            $zones,
             $qb,
             'c',
             Committee::class,
@@ -645,8 +647,14 @@ class CommitteeRepository extends ServiceEntityRepository
             'zones',
             'z2'
         );
+    }
 
-        return $qb->getQuery()->getResult();
+    /**
+     * @return Committee[]
+     */
+    public function findInZones(array $zones): array
+    {
+        return $this->createQueryBuilderForZones($zones)->getQuery()->getResult();
     }
 
     public function findCommitteesForHost(Adherent $adherent): array

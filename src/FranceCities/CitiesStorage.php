@@ -15,6 +15,6 @@ class CitiesStorage implements CitiesStorageInterface
 
     public function getCitiesList(): array
     {
-        return $this->zoneRepository->getFranceCities();
+        return $this->zoneRepository->getFrenchCities();
     }
 }

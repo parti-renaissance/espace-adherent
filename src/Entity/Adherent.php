@@ -2726,9 +2726,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::DEPUTY);
     }
 
-    public function getDeputyZone(): Zone
+    public function getDeputyZone(): ?Zone
     {
-        return $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first();
+        return $this->findZoneBasedRole(ScopeEnum::DEPUTY)
+            ? $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first()
+            : null
+        ;
     }
 
     public function getLreArea(): ?LreArea

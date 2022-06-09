@@ -5,6 +5,7 @@ namespace App\Security\Voter;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\ReferentTagRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -12,12 +13,13 @@ class ManagedUserVoter extends AbstractAdherentVoter
 {
     public const IS_MANAGED_USER = 'IS_MANAGED_USER';
 
-    /** @var SessionInterface */
-    private $session;
+    private SessionInterface $session;
+    private ZoneRepository $zoneRepository;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(SessionInterface $session, ZoneRepository $zoneRepository)
     {
         $this->session = $session;
+        $this->zoneRepository = $zoneRepository;
     }
 
     protected function supports($attribute, $subject)
@@ -44,10 +46,7 @@ class ManagedUserVoter extends AbstractAdherentVoter
 
         // Check Deputy role
         if (!$isGranted && $user->isDeputy()) {
-            $isGranted = (bool) array_intersect(
-                $adherent->getReferentTagCodes(),
-                [$user->getManagedDistrict()->getReferentTag()->getCode()],
-            );
+            $isGranted = $this->zoneRepository->isInZones($adherent->getZones(), [$user->getDeputyZone()]);
         }
 
         // Check Senator role

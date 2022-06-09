@@ -462,7 +462,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }, array_column($query->getArrayResult(), 'uuid'));
     }
 
-    public function findAdherentsByName(array $tags, ?string $name): array
+    public function findAdherentsByNameAndReferentTags(array $tags, ?string $name): array
     {
         $qb = $this->createQueryBuilder('a')
             ->leftJoin('a.referentTags', 'referent_tags')
@@ -470,12 +470,34 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if ($name) {
             $qb
-                ->orWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
+                ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
                 ->setParameter('name', '%'.strtolower($name).'%')
             ;
         }
 
         $this->applyGeoFilter($qb, $tags, 'a', null, null, 'referent_tags');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAdherentsByName(array $zones, ?string $name): array
+    {
+        $this->withGeoZones(
+            $zones,
+            $qb = $this->createQueryBuilder('a'),
+            'a',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        if ($name) {
+            $qb
+                ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
+                ->setParameter('name', '%'.strtolower($name).'%')
+            ;
+        }
 
         return $qb->getQuery()->getResult();
     }

@@ -8,6 +8,7 @@ use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
 use App\Entity\UserListDefinitionEnum;
 use App\Exception\InvalidAdherentMessageType;
 use App\Form\AdherentMessage\AdherentGeoZoneFilterType;
+use App\Form\AdherentMessage\AdherentZoneAdvancedFilterType;
 use App\Form\AdherentMessage\AdvancedMessageFilterType;
 use App\Form\AdherentMessage\ElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\JecouteFilterType;
@@ -40,7 +41,7 @@ class FilterFormFactory
             case AdherentMessageTypeEnum::DEPUTY:
                 return $this->formFactory->create(AdvancedMessageFilterType::class, $data, [
                     'message_type' => $messageType,
-                    'zones' => [$adherent->getManagedDistrict()->getReferentTag()->getZone()],
+                    'zones' => [$adherent->getDeputyZone()],
                 ]);
 
             case AdherentMessageTypeEnum::SENATOR:

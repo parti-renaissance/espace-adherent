@@ -10,18 +10,6 @@ use Tests\App\AbstractKernelTestCase;
 
 class RevokeDelegatedAccessListenerTest extends AbstractKernelTestCase
 {
-    public function testDeputyDelegatedAccessAreRemovedWhenAdherentLostHisAccess()
-    {
-        $deputy = $this->manager->getRepository(Adherent::class)->findOneByEmail('deputy-ch-li@en-marche-dev.fr');
-
-        $this->assertCount(3, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $deputy]));
-
-        $deputy->setManagedDistrict(null);
-        $this->manager->flush();
-
-        $this->assertCount(0, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $deputy]));
-    }
-
     public function testSenatorDelegatedAccessAreRemovedWhenAdherentLostHisAccess()
     {
         $senator = $this->manager->getRepository(Adherent::class)->findOneByEmail('senateur@en-marche-dev.fr');

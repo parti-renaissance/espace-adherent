@@ -64,7 +64,7 @@ abstract class FilterFactory
             throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a deputy');
         }
 
-        return new MessageFilter([$user->getManagedDistrict()->getReferentTag()->getZone()]);
+        return new MessageFilter([$user->getDeputyZone()]);
     }
 
     private static function createCommitteeFilter(): MessageFilter

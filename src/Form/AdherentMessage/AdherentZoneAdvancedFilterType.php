@@ -2,7 +2,7 @@
 
 namespace App\Form\AdherentMessage;
 
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Form\CommitteeChoiceType;
 use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdherentZoneFilterType extends AbstractType
+class AdherentZoneAdvancedFilterType extends AbstractType
 {
     /** @var IncludeExcludeFilterRoleListener */
     private $includeExcludeFilterRoleListener;
@@ -50,7 +50,7 @@ class AdherentZoneFilterType extends AbstractType
             ->add('committee', CommitteeChoiceType::class, [
                 'required' => false,
                 'query_builder' => static function (CommitteeRepository $repository) use ($options) {
-                    return $repository->getQueryBuilderForTags($options['referent_tags']);
+                    return $repository->createQueryBuilderForZones($options['zones']);
                 },
             ])
         ;
@@ -62,11 +62,11 @@ class AdherentZoneFilterType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => AdherentZoneFilter::class,
-                'referent_tags' => null, // refTags migration: remove when the migration is completed
+                'data_class' => AdherentGeoZoneFilter::class,
+                'zones' => null,
             ])
-            ->setAllowedTypes('referent_tags', ['array'])
-            ->setRequired(['referent_tags'])
+            ->setAllowedTypes('zones', ['array'])
+            ->setRequired(['zones'])
         ;
     }
 }

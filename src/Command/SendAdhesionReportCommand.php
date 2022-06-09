@@ -9,6 +9,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AdhesionReportMessage;
 use App\Repository\AdherentRepository;
 use App\Repository\ReferentTagRepository;
+use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -79,9 +80,9 @@ class SendAdhesionReportCommand extends Command
             }
 
             if ($adherent->isDeputy()) {
-                $this->executeForTags(
+                $this->executeForZones(
                     clone $qb,
-                    [$adherent->getManagedDistrict()->getReferentTag()],
+                    [$adherent->getDeputyZone()],
                     SubscriptionTypeEnum::DEPUTY_EMAIL,
                     $adherent,
                     $dryRunMode
@@ -116,15 +117,17 @@ class SendAdhesionReportCommand extends Command
     private function getAdherentsToNotify(): array
     {
         return $this->repository->createQueryBuilder('a')
+            ->leftJoin('a.zoneBasedRoles', 'zoneBasedRole')
             ->where('a.status = :status AND a.adherent = :true')
             ->andWhere(
                 (new Orx())
                     ->add('a.managedArea IS NOT NULL') // Select Referents
-                    ->add('a.managedDistrict IS NOT NULL') // Select Deputies
+                    ->add('zoneBasedRole.type = :deputy') // Select Deputies
                     ->add('a.senatorArea IS NOT NULL') // Select Senators
             )
             ->setParameters([
                 'status' => Adherent::ENABLED,
+                'deputy' => ScopeEnum::DEPUTY,
                 'true' => true,
             ])
             ->getQuery()
@@ -142,7 +145,45 @@ class SendAdhesionReportCommand extends Command
         Adherent $recipient,
         bool $dryRun = false
     ): void {
-        $this->addZoneCondition($qb, $tags);
+        $this->addTagCondition($qb, $tags);
+
+        $countNewAdherents = $qb->getQuery()->getSingleScalarResult();
+
+        $countSubscribedNewAdherents = $qb
+            ->innerJoin('a.subscriptionTypes', 'subscriptionType')
+            ->andWhere('subscriptionType.code = :subscription_code AND a.mailchimpStatus = :mailchimp_status')
+            ->setParameter('mailchimp_status', ContactStatusEnum::SUBSCRIBED)
+            ->setParameter('subscription_code', $type)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if ($dryRun) {
+            $this->reports[] = [
+                'email' => $recipient->getEmailAddress(),
+                'type' => $type,
+                'total_new' => $countNewAdherents,
+                'total_new_subs' => $countSubscribedNewAdherents,
+            ];
+
+            return;
+        }
+
+        if ($countNewAdherents && $countSubscribedNewAdherents) {
+            $this->mailer->sendMessage(
+                AdhesionReportMessage::create($recipient, $countNewAdherents, $countSubscribedNewAdherents)
+            );
+        }
+    }
+
+    private function executeForZones(
+        QueryBuilder $qb,
+        array $zones,
+        string $type,
+        Adherent $recipient,
+        bool $dryRun = false
+    ): void {
+        $this->addZoneCondition($qb, $zones);
 
         $countNewAdherents = $qb->getQuery()->getSingleScalarResult();
 
@@ -179,7 +220,7 @@ class SendAdhesionReportCommand extends Command
         $endDate = new \DateTime('-1 days');
 
         return $this->repository->createQueryBuilder('a')
-            ->select('COUNT(1)')
+            ->select('COUNT(DISTINCT a.id)')
             ->leftJoin('a.referentTags', 'tags')
             ->where('a.status = :status AND a.adherent = :true')
             ->andWhere('a.activatedAt >= :start_date AND a.activatedAt <= :end_date')
@@ -192,7 +233,7 @@ class SendAdhesionReportCommand extends Command
         ;
     }
 
-    private function addZoneCondition(QueryBuilder $qb, array $tags, string $alias = 'a'): void
+    private function addTagCondition(QueryBuilder $qb, array $tags, string $alias = 'a'): void
     {
         $zoneCondition = new Orx();
 
@@ -208,5 +249,18 @@ class SendAdhesionReportCommand extends Command
             ->andWhere($zoneCondition)
             ->setParameter('tags', $tags)
         ;
+    }
+
+    private function addZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'a'): void
+    {
+        $this->repository->withGeoZones(
+            $zones,
+            $qb->innerJoin("$alias.zones", 'zone'),
+            $alias,
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
     }
 }

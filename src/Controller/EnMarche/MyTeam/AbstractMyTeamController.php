@@ -9,6 +9,7 @@ use App\Form\MyTeam\MyTeamSearchAdherentType;
 use App\FranceCities\FranceCities;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -92,7 +93,12 @@ abstract class AbstractMyTeamController extends AbstractController
 
         $users = [];
         if ($form->isSubmitted() && $form->isValid()) {
-            $users = $adherentRepository->findAdherentsByName($this->getManagedTags($this->getUser()), $form->get('name')->getData());
+            // refTags migration: keep only 'else' logic after the migration is completed
+            if ($this->getManagedTags($this->getUser())) {
+                $users = $adherentRepository->findAdherentsByNameAndReferentTags($this->getManagedTags($this->getUser()), $form->get('name')->getData());
+            } else {
+                $users = $adherentRepository->findAdherentsByName($this->getZones($this->getUser()), $form->get('name')->getData());
+            }
         }
 
         if (empty($users)) {
@@ -143,17 +149,25 @@ abstract class AbstractMyTeamController extends AbstractController
      *     methods={"GET"}
      * )
      */
-    public function cityAutocompleteAction(Request $request, FranceCities $franceCities): JsonResponse
-    {
+    public function cityAutocompleteAction(
+        Request $request,
+        FranceCities $franceCities,
+        ZoneRepository $zoneRepository
+    ): JsonResponse {
         if (!$search = $request->query->get('search')) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        $foundedCities = $franceCities->searchCitiesForZones($this->getZones($this->getUser()), $search);
+        // refTags migration: keep only 'else' logic after the migration is completed
+        if ($this->getManagedTags($this->getUser())) {
+            $foundedCities = $franceCities->searchCitiesForZones($this->getZones($this->getUser()), $search);
+        } else {
+            $foundedCities = $zoneRepository->searchCitiesInZones($this->getZones($this->getUser()), $search);
+        }
 
         $result = [];
         foreach ($foundedCities as $city) {
-            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getInseeCode(), 'postal_code' => $city->getPostalCodeAsString()];
+            $result[] = ['name' => $city->getName(), 'insee_code' => $city->getCode(), 'postal_code' => $city->getPostalCodeAsString()];
         }
 
         return new JsonResponse($result);
@@ -167,6 +181,7 @@ abstract class AbstractMyTeamController extends AbstractController
         CommitteeRepository $committeeRepository
     ): array;
 
+    // refTags migration: remove when the migration is completed
     abstract protected function getManagedTags(Adherent $adherent): array;
 
     abstract protected function getZones(Adherent $adherent): array;
