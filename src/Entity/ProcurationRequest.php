@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Intl\FranceCitiesBundle;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
@@ -473,11 +472,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     public function setCity(?string $cityCode): void
     {
         $this->city = $cityCode;
-
-        if ($cityCode && false !== strpos($cityCode, '-')) {
-            list($postalCode, $inseeCode) = explode('-', $cityCode);
-            $this->cityName = (string) FranceCitiesBundle::getCity($postalCode, $inseeCode);
-        }
     }
 
     public function getCityName(): ?string
@@ -571,7 +565,6 @@ class ProcurationRequest implements RecaptchaChallengeInterface
             $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
             $this->voteCity = "$postalCode-$inseeCode";
-            $this->voteCityName = (string) FranceCitiesBundle::getCity($postalCode, $inseeCode);
         }
     }
 

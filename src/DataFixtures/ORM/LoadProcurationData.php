@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
+use App\FranceCities\FranceCities;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,6 +14,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadProcurationData extends Fixture implements DependentFixtureInterface
 {
+    private FranceCities $franceCities;
+
+    public function __construct(FranceCities $franceCities)
+    {
+        $this->franceCities = $franceCities;
+    }
+
     public function load(ObjectManager $manager)
     {
         $presidentialElections = $this->getReference('elections-presidential');
@@ -557,6 +565,20 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             $phone = PhoneNumberUtils::create($phone);
         }
 
+        if ($city && false !== strpos($city, '-')) {
+            list(, $cityInseeCode) = explode('-', $city);
+            $foundedCity = $this->franceCities->getCityByInseeCode($cityInseeCode);
+
+            $cityName = $foundedCity ? $foundedCity->getName() : null;
+        }
+
+        if ($voteCity && false !== strpos($voteCity, '-')) {
+            list(, $voteCityInseeCode) = explode('-', $voteCity);
+            $foundedVoteCity = $this->franceCities->getCityByInseeCode($voteCityInseeCode);
+
+            $voteCityName = $foundedVoteCity ? $foundedVoteCity->getName() : null;
+        }
+
         $request = new ProcurationRequest();
         $request->setGender($gender);
         $request->setFirstNames($firstNames);
@@ -611,6 +633,20 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
     ): ProcurationProxy {
         if ($phone) {
             $phone = PhoneNumberUtils::create($phone);
+        }
+
+        if ($city && false !== strpos($city, '-')) {
+            list(, $cityInseeCode) = explode('-', $city);
+            $foundedCity = $this->franceCities->getCityByInseeCode($cityInseeCode);
+
+            $cityName = $foundedCity ? $foundedCity->getName() : null;
+        }
+
+        if ($voteCity && false !== strpos($voteCity, '-')) {
+            list(, $voteCityInseeCode) = explode('-', $voteCity);
+            $foundedVoteCity = $this->franceCities->getCityByInseeCode($voteCityInseeCode);
+
+            $voteCityName = $foundedVoteCity ? $foundedVoteCity->getName() : null;
         }
 
         $proxy = new ProcurationProxy();
