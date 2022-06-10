@@ -19,7 +19,6 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group procuration
- * @group debug
  */
 class ProcurationControllerTest extends WebTestCase
 {
