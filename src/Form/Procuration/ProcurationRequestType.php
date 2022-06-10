@@ -3,6 +3,7 @@
 namespace App\Form\Procuration;
 
 use App\Entity\ProcurationRequest;
+use App\Form\DataTransformer\CityNameDataTransformer;
 use App\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,6 +16,13 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class ProcurationRequestType extends AbstractProcurationType
 {
+    private CityNameDataTransformer $cityNameDataTransformer;
+
+    public function __construct(CityNameDataTransformer $dataTransformer)
+    {
+        $this->cityNameDataTransformer = $dataTransformer;
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -92,6 +100,8 @@ class ProcurationRequestType extends AbstractProcurationType
 
                 break;
         }
+
+        $builder->addModelTransformer($this->cityNameDataTransformer);
     }
 
     public function getBlockPrefix()

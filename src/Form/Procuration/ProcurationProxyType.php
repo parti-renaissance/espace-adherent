@@ -4,6 +4,7 @@ namespace App\Form\Procuration;
 
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationProxy;
+use App\Form\DataTransformer\CityNameDataTransformer;
 use App\Form\UnitedNationsCountryType;
 use App\Form\ZoneAutoCompleteType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -18,6 +19,13 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class ProcurationProxyType extends AbstractProcurationType
 {
+    private CityNameDataTransformer $cityNameDataTransformer;
+
+    public function __construct(CityNameDataTransformer $dataTransformer)
+    {
+        $this->cityNameDataTransformer = $dataTransformer;
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -94,6 +102,8 @@ class ProcurationProxyType extends AbstractProcurationType
                 ]),
             ])
         ;
+
+        $builder->addModelTransformer($this->cityNameDataTransformer);
     }
 
     public function getBlockPrefix()

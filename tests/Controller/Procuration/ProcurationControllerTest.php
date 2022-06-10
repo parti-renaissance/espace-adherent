@@ -171,7 +171,7 @@ class ProcurationControllerTest extends WebTestCase
         $procurationRequest->setVoteCountry('FR');
         $procurationRequest->setVotePostalCode('92110');
         $procurationRequest->setVoteCity('92110-92024');
-        $procurationRequest->setVoteCityName('');
+        $procurationRequest->setVoteCityName('Clichy');
         $procurationRequest->setVoteOffice('TestOfficeName');
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
@@ -244,7 +244,7 @@ class ProcurationControllerTest extends WebTestCase
         $procurationRequest->setCountry('FR');
         $procurationRequest->setPostalCode('69001');
         $procurationRequest->setCity('69001-69381');
-        $procurationRequest->setCityName('');
+        $procurationRequest->setCityName('Lyon 1er');
         $procurationRequest->setPhone($this->createPhoneNumber('33', '140998080'));
         $procurationRequest->setBirthdate(date_create_from_format('Y m d His', '1950 1 20 000000'));
         $procurationRequest->setVoterNumber('123456789');
@@ -417,7 +417,7 @@ class ProcurationControllerTest extends WebTestCase
         $procurationRequest->setVoteCountry('FR');
         $procurationRequest->setVotePostalCode('92110');
         $procurationRequest->setVoteCity('92110-92024');
-        $procurationRequest->setVoteCityName('');
+        $procurationRequest->setVoteCityName('Clichy');
         $procurationRequest->setVoteOffice('TestOfficeName');
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
@@ -433,7 +433,7 @@ class ProcurationControllerTest extends WebTestCase
         $procurationRequest->setCountry('FR');
         $procurationRequest->setPostalCode('75009');
         $procurationRequest->setCity('75009-75109');
-        $procurationRequest->setCityName('');
+        $procurationRequest->setCityName('Paris 9e');
         $procurationRequest->setPhone($this->createPhoneNumber('33', '727363643'));
         $procurationRequest->setBirthdate(date_create_from_format('Y m d His', '1989 9 17 000000'));
 
