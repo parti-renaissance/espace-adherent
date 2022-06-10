@@ -18,8 +18,6 @@ class RabbitMqContext implements Context
         'api_sync',
         'mailer-delayed-campaign',
         'mailer-delayed-transactional',
-        'referent-message-dispatcher',
-        'deputy-message-dispatcher',
     ];
 
     private $container;

@@ -592,7 +592,6 @@ Republican Silence List: Liste des Silences Républicains
 #
 # Deputy
 #
-deputy.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 deputy.popup.title: Charte de bonne utilisation des outils numériques
 deputy.popup.subtitle: à l'usage des députés
 deputy.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_deputes.pdf

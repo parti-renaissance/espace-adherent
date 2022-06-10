@@ -6,9 +6,7 @@ use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\DataFixtures\ORM\LoadDelegatedAccessData;
 use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentManagedUsersMessage;
 use App\Mailer\Message\InstitutionalEventInvitationMessage;
-use App\Repository\ReferentManagedUsersMessageRepository;
 use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,11 +22,6 @@ class ReferentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;
-
-    /**
-     * @var ReferentManagedUsersMessageRepository
-     */
-    private $referentMessageRepository;
 
     /**
      * @dataProvider providePages
@@ -475,15 +468,6 @@ class ReferentControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->referentMessageRepository = $this->getRepository(ReferentManagedUsersMessage::class);
-
         $this->disableRepublicanSilence();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->referentMessageRepository = null;
-
-        parent::tearDown();
     }
 }

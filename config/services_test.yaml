@@ -37,9 +37,6 @@ services:
         class: 'Tests\App\Test\Producer\MailerNullProducer'
         public: false
 
-    old_sound_rabbit_mq.deputy_message_dispatcher_producer:
-        class: 'Tests\App\Test\Producer\DeputyMessageNullProducer'
-
     old_sound_rabbit_mq.chezvous_algolia_producer:
         class: 'Tests\App\Test\Producer\ChezVous\AlgoliaNullProducer'
 

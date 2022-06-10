@@ -47,32 +47,6 @@
             </call>
         </service>
 
-        <service id="App\Consumer\ReferentMessageDispatcherConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
-            <call method="setMailer">
-                <argument type="service" id="app.mailer.campaign"/>
-            </call>
-            <call method="setReferentManagedUserRepository">
-                <argument type="service" id="App\Repository\Projection\ManagedUserRepository"/>
-            </call>
-            <call method="setReferentMessageRepository">
-                <argument type="service" id="App\Repository\ReferentManagedUsersMessageRepository"/>
-            </call>
-        </service>
-
-        <service id="App\Consumer\DeputyMessageDispatcherConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
-            <call method="setMailer">
-                <argument type="service" id="app.mailer.campaign"/>
-            </call>
-            <call method="setAdherentRepository">
-                <argument type="service" id="App\Repository\AdherentRepository"/>
-            </call>
-            <call method="setDeputyManagedUsersMessageRepository">
-                <argument type="service" id="App\Repository\DeputyManagedUsersMessageRepository"/>
-            </call>
-        </service>
-
         <service id="app_abstract_consumer" class="App\Consumer\AbstractConsumer" abstract="true">
             <argument type="service" id="validator" />
             <argument type="service" id="doctrine.orm.entity_manager" />

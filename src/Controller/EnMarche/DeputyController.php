@@ -2,11 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Deputy\DeputyMessage;
-use App\Deputy\DeputyMessageNotifier;
-use App\Form\DeputyMessageType;
 use App\Referent\ManagedCommitteesExporter;
-use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,36 +21,6 @@ class DeputyController extends AbstractController
     public function getSpaceType(): string
     {
         return 'deputy';
-    }
-
-    /**
-     * @Route("/utilisateurs/message", name="users_message", methods={"GET", "POST"})
-     */
-    public function usersSendMessageAction(
-        Request $request,
-        AdherentRepository $adherentRepository,
-        DeputyMessageNotifier $notifier
-    ): Response {
-        $currentUser = $this->getMainUser($request->getSession());
-
-        $message = DeputyMessage::create($currentUser);
-
-        $form = $this
-            ->createForm(DeputyMessageType::class, $message)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $notifier->sendMessage($message);
-            $this->addFlash('info', 'deputy.message.success');
-
-            return $this->redirectToRoute('app_deputy_users_message');
-        }
-
-        return $this->render('deputy/users_message.html.twig', [
-            'results_count' => $adherentRepository->countAllInDistrict($currentUser->getManagedDistrict()),
-            'form' => $form->createView(),
-        ]);
     }
 
     /**

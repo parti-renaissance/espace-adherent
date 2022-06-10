@@ -13,7 +13,6 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Entity\District;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
@@ -31,8 +30,6 @@ use App\Utils\AreaUtils;
 use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -654,49 +651,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if (!$referent->isReferent()) {
             throw new \InvalidArgumentException('Adherent must be a referent.');
         }
-    }
-
-    /**
-     * Finds enabled adherents in the deputy district that subscribed to deputy emails.
-     */
-    public function createQueryBuilderForDistrict(District $district): QueryBuilder
-    {
-        return $this->createQueryBuilder('adherent')
-            ->distinct()
-            ->join('adherent.referentTags', 'tag')
-            ->join('adherent.subscriptionTypes', 'subscriptionType')
-            ->where('tag = :tag')
-            ->andWhere('adherent.status = :status')
-            ->andWhere('subscriptionType.code = :subscription_type')
-            ->setParameter('tag', $district->getReferentTag())
-            ->setParameter('status', Adherent::ENABLED)
-            ->setParameter('subscription_type', SubscriptionTypeEnum::DEPUTY_EMAIL)
-        ;
-    }
-
-    /**
-     * Count enabled adherents in the deputy district.
-     */
-    public function countAllInDistrict(District $district): int
-    {
-        return $this->createQueryBuilderForDistrict($district)
-            ->select('COUNT(adherent)')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function createDispatcherIteratorForDistrict(District $district, $offset = null): IterableResult
-    {
-        $qb = $this->createQueryBuilderForDistrict($district)
-            ->select('partial adherent.{id, firstName, lastName, emailAddress}')
-        ;
-
-        if ($offset) {
-            $qb->setFirstResult($offset);
-        }
-
-        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 
     public function refresh(Adherent $adherent): void
