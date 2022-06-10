@@ -82,7 +82,9 @@ class CampaignRepository extends ServiceEntityRepository
         return array_map('intval', array_column($this->createQueryBuilder('campaign')
             ->select('campaign.id')
             ->where('campaign.beginAt < :now AND campaign.finishAt > :now')
+            ->andWhere('campaign.enabled = :true')
             ->setParameter('now', new \DateTime())
+            ->setParameter('true', true)
             ->getQuery()
             ->getScalarResult(), 'id'))
         ;

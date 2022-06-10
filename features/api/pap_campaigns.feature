@@ -1203,6 +1203,11 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I cannot get disabled PAP campaign
+    Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+    When I send a "GET" request to "/api/v3/pap_campaigns/91ecd823-0e31-4aa1-880b-1cbbcd262762"
+    Then the response status code should be 404
+
   Scenario: As a logged-in user I can get passed PAP campaign
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/pap_campaigns/9ba6b743-5018-4358-bdc0-eb2094010beb?scope=pap_national_manager"

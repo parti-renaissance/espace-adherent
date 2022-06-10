@@ -3,6 +3,7 @@ Feature:
   In order to complete PAP campaigns
   I should be able to retrieve vote places for a given position
 
+  @debug
   Scenario: As a logged-in user I can retrieve vote places near a given position ordered by distance
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/pap/vote-places/near?latitude=48.879001640&longitude=2.3187434"
@@ -15,7 +16,7 @@ Feature:
             "uuid": "1cc8f1bf-533d-4c3a-a02b-00ba651e056a",
             "latitude": "48.879414",
             "longitude": "2.319874",
-            "addresses": "1",
+            "addresses": "2",
             "distance": "0.09452285753944736"
         },
         {
