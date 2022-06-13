@@ -326,11 +326,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(
-     *     value="+1 hour",
-     *     message="committee.event.invalid_start_date",
-     *     groups={"event_creation"}
-     * )
      */
     protected $beginAt;
 
@@ -342,6 +337,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @SymfonySerializer\Groups({"event_read", "event_sync", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
+     * @Assert\Expression("!value or value > this.getBeginAt()", message="committee.event.invalid_date_range")
      */
     protected $finishAt;
 

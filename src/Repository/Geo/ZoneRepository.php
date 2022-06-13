@@ -275,6 +275,13 @@ class ZoneRepository extends ServiceEntityRepository
             return true;
         }
 
+        // If parent zone is a District (circonscription) we need to compare it with the same type
+        // instead of matching by parent relation.
+        $filterDistrictZoneCallback = function (Zone $zone) { return $zone->isDistrict(); };
+        if ($districtParents = array_filter($parents, $filterDistrictZoneCallback)) {
+            return !empty(array_intersect(array_filter($zones, $filterDistrictZoneCallback), $districtParents));
+        }
+
         $count = (int) $this->createQueryBuilder('zone')
             ->select('COUNT(1)')
             ->innerJoin('zone.parents', 'parent')

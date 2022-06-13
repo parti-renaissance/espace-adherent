@@ -1303,7 +1303,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\nbegin_at: La date de début doit être dans le futur.\npost_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
+      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018 à 09:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.\npost_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
@@ -1328,10 +1328,6 @@ Feature:
               "propertyPath": "description"
           },
           {
-              "message": "La date de début doit être dans le futur.",
-              "propertyPath": "begin_at"
-          },
-          {
               "propertyPath": "post_address",
               "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
           }
@@ -1341,6 +1337,42 @@ Feature:
 
   Scenario: As a deputy I can create an event
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/events" with body:
+    """
+    {
+        "name": "Nouveau événement",
+        "category": "kiosque",
+        "description": "Une description de l'événement",
+        "begin_at": "2023-02-20 16:30:30",
+        "finish_at": "2023-01-30 16:30:30",
+        "capacity": 100,
+        "mode": "online",
+        "visio_url": "https://en-marche.fr/reunions/123",
+        "post_address": {
+          "address": "62 avenue des champs-élysées",
+          "postal_code": "75008",
+          "city_name": "Paris 8e",
+          "country": "FR"
+        },
+        "time_zone": "Europe/Paris",
+        "electoral": false,
+        "private": true
+    }
+    """
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+    {
+      "detail": "finish_at: La date de fin de l'événement doit être postérieure à la date de début.",
+      "title": "An error occurred",
+      "type": "https://tools.ietf.org/html/rfc2616#section-10",
+      "violations": [{
+       "message": "La date de fin de l'événement doit être postérieure à la date de début.",
+       "propertyPath": "finish_at"
+      }]
+    }
+    """
     When I add "Content-Type" header equal to "application/json"
     And I send a "POST" request to "/api/v3/events" with body:
     """
