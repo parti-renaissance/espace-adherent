@@ -920,4 +920,9 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     {
         $this->remindedAt = new \DateTime();
     }
+
+    public function getDisabledReason(): ?string
+    {
+        return $this->disabledReason;
+    }
 }
