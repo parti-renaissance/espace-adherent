@@ -2340,11 +2340,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "le pouvoir d'achat"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'aspect financier",
                             "La préservation de l'environnement"
@@ -2385,11 +2387,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "la conquête de l'espace"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
@@ -2430,11 +2434,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "l'écologie sera le sujet le plus important"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"

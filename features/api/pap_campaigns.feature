@@ -3057,11 +3057,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "Nouvelles technologies"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
@@ -3101,11 +3103,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "Les ressources énergétiques"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'aspect financier",
                             "La préservation de l'environnement"
@@ -3145,16 +3149,17 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "Vie publique, répartition des pouvoirs et démocratie"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
                         ]
-
                     }
                 ]
             }
@@ -3210,11 +3215,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "Nouvelles technologies"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
@@ -3254,11 +3261,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "Les ressources énergétiques"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'aspect financier",
                             "La préservation de l'environnement"
@@ -3298,11 +3307,13 @@ Feature:
                     {
                         "question": "A votre avis quels seront les enjeux des 10 prochaines années?",
                         "type": "simple_field",
+                        "question_id": @integer@,
                         "answer": "Vie publique, répartition des pouvoirs et démocratie"
                     },
                     {
                         "question": "L'écologie est selon vous, importante pour :",
                         "type": "multiple_choice",
+                        "question_id": @integer@,
                         "answer": [
                             "L'héritage laissé aux générations futures",
                             "Le bien-être sanitaire"
