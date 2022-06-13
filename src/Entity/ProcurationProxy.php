@@ -334,20 +334,6 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
-    public $frenchRequestAvailable = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
-    public $foreignRequestAvailable = true;
-
-    /**
-     * @var bool
-     *
      * @ORM\Column(type="boolean", options={"default": false})
      */
     public $reachable = false;
