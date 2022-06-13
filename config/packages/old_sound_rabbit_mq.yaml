@@ -22,11 +22,6 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'mailer-delayed-transactional', type: direct }
             class:            App\Producer\MailerProducer
 
-        deputy_message_dispatcher:
-            connection:       default
-            exchange_options: { name: 'deputy-message-dispatcher', type: direct }
-            class:            App\Producer\DeputyMessageDispatcherProducer
-
         chezvous_algolia:
             connection:       default
             exchange_options: { name: 'chezvous_algolia', type: direct }
@@ -49,20 +44,6 @@ old_sound_rabbit_mq:
             exchange_options:  { name: 'mailer-delayed-transactional', type: direct }
             queue_options:     { name: 'mailer-delayed-transactional', durable: false }
             callback:          App\Consumer\TransactionalMailerConsumer
-            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
-
-        referent_message_dispatcher:
-            connection:        default
-            exchange_options:  { name: 'referent-message-dispatcher', type: direct }
-            queue_options:     { name: 'referent-message-dispatcher', durable: false }
-            callback:          App\Consumer\ReferentMessageDispatcherConsumer
-            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
-
-        deputy_message_dispatcher:
-            connection:        default
-            exchange_options:  { name: 'deputy-message-dispatcher', type: direct }
-            queue_options:     { name: 'deputy-message-dispatcher', durable: false }
-            callback:          App\Consumer\DeputyMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         chezvous_algolia:
