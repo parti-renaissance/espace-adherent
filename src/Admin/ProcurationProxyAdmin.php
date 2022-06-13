@@ -189,7 +189,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ->add('proxiesCount', null, [
                     'label' => 'Nombre de procurations proposées',
                 ])
-                ->add('electionRounds', null, [
+                ->add('electionRounds', 'array', [
                     'label' => 'Proposés',
                 ])
             ->end()
@@ -265,5 +265,33 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 'template' => 'admin/procuration/proxy_list_actions.html.twig',
             ])
         ;
+    }
+
+    public function getExportFields()
+    {
+        return [
+            'gender',
+            'firstNames',
+            'lastName',
+            'emailAddress',
+            'birthdate',
+            'voterNumber',
+            'reachable',
+            'reliability',
+            'reliabilityDescription',
+            'address',
+            'postalCode',
+            'cityName',
+            'country',
+            'phone',
+            'votePostalCode',
+            'voteCityName',
+            'voteCountry',
+            'voteOffice',
+            'electionRounds',
+            'disabled',
+            'disabledReason',
+            'otherVoteCities',
+        ];
     }
 }
