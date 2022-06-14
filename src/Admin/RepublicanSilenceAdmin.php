@@ -13,7 +13,7 @@ class RepublicanSilenceAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list)
     {
         $list
-            ->addIdentifier('referentTags', 'array', ['label' => 'silence_republican.referent_tags.label'])
+            ->addIdentifier('zones', 'array', ['label' => 'silence_republican.zones.label'])
             ->add('beginAt', null, ['label' => 'common.begin_at'])
             ->add('finishAt', null, ['label' => 'common.finish_at'])
         ;
@@ -23,7 +23,7 @@ class RepublicanSilenceAdmin extends AbstractAdmin
     {
         $form
             ->with('Général', ['class' => 'col-md-6', 'description' => 'silence_republican.help'])
-                ->add('referentTags', null, ['label' => 'silence_republican.referent_tags.label'])
+                ->add('zones', null, ['label' => 'silence_republican.zones.label'])
                 ->add('beginAt', DateTimePickerType::class, [
                     'label' => 'common.begin_at',
                 ])
@@ -46,6 +46,6 @@ class RepublicanSilenceAdmin extends AbstractAdmin
      */
     public function toString($object)
     {
-        return implode(', ', $object->getReferentTags()->toArray());
+        return implode(', ', $object->getZones()->toArray());
     }
 }

@@ -116,16 +116,16 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findStartedEventBetweenDatesForTags(
+    public function findStartedEventBetweenDatesForZones(
         \DateTimeInterface $startDate,
         \DateTimeInterface $endDate,
-        array $referentTags
+        array $zones
     ): array {
-        if (!$referentTags) {
+        if (!$zones) {
             return [];
         }
 
-        return $this
+        $qb = $this
             ->createQueryBuilder('event')
             ->addSelect('adherent')
             ->join('event.organizer', 'adherent')
@@ -137,13 +137,39 @@ class EventRepository extends ServiceEntityRepository
                 'status' => BaseEvent::STATUS_SCHEDULED,
             ])
             ->leftJoin('event.committee', 'committee')
-            ->leftJoin('committee.referentTags', 'committeeReferentTags')
-            ->leftJoin('adherent.referentTags', 'adherentReferentTags')
+            ->leftJoin('committee.zones', 'committeeZones')
+            ->leftJoin('adherent.zones', 'adherentZones')
+        ;
+
+        $adherentZonesCondition = $this->createGeoZonesQueryBuilder(
+            $zones,
+            $qb,
+            Adherent::class,
+            'adherent_2',
+            'zones',
+            'adherent_zone_2',
+            null,
+            true,
+            'adherent_zone_parent'
+        );
+
+        $committeeZoneCondition = $this->createGeoZonesQueryBuilder(
+            $zones,
+            $qb,
+            Committee::class,
+            'committee_2',
+            'zones',
+            'committee_zone_2',
+            null,
+            true,
+            'committee_zone_parent'
+        );
+
+        return $qb
             ->andWhere((new Orx())
-                ->add('committee IS NOT NULL AND committeeReferentTags IN (:tags)')
-                ->add('committee IS NULL AND adherentReferentTags IN (:tags)')
+                ->add(sprintf('committee IS NOT NULL AND committee.id IN (%s)', $adherentZonesCondition->getDQL()))
+                ->add(sprintf('committee IS NULL AND adherent.id IN (%s)', $committeeZoneCondition->getDQL()))
             )
-            ->setParameter('tags', $referentTags)
             ->getQuery()
             ->getResult()
         ;

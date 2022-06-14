@@ -109,6 +109,8 @@ services:
             tags: [ 'app.auth_app.url_generator' ]
         App\Recaptcha\RecaptchaApiClientInterface:
             tags: ['app.recaptcha_api_client']
+        App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface:
+            tags: [ 'app.republican_silence.zone_extractor' ]
         App\Statistics\Acquisition\Calculator\CalculatorInterface:
             tags: ['app.acquisition_statistics.calculator']
 
@@ -331,6 +333,9 @@ services:
 
     App\Firebase\JeMarcheMessaging:
         lazy: true
+
+    App\RepublicanSilence\ZoneExtractorFactory:
+        arguments: [!tagged_iterator 'app.republican_silence.zone_extractor']
 
     Symfony\Component\Serializer\NameConverter\NameConverterInterface:
         alias: api_platform.name_converter

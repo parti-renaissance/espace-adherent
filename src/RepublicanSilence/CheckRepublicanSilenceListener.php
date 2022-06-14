@@ -3,10 +3,12 @@
 namespace App\RepublicanSilence;
 
 use App\Entity\Adherent;
-use App\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
+use App\Entity\MyTeam\DelegatedAccess;
+use App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -17,57 +19,62 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 {
     private const ROUTES = [
         // Referent Space
-        'app_referent_managed_users_list' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_referent_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_referent_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_message_send' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_message_referent_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_referent_managed_users_list' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_referent_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_message_send' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_message_referent_*' => ZoneExtractorInterface::ADHERENT_TYPE_REFERENT,
 
         // Committee
-        'app_committee_show' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
-        'app_committee_contact_members' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
-        'app_committee_manager_add_event' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
-        'app_message_committee_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_committee_show' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_committee_contact_members' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_committee_manager_add_event' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_message_committee_*' => ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
 
         // Deputy Space
-        'app_message_deputy_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
-        'app_deputy_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
+        'app_message_deputy_*' => ZoneExtractorInterface::ADHERENT_TYPE_DEPUTY,
+        'app_deputy_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_DEPUTY,
 
         // Municipal Space
-        'app_municipal_chief_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
-        'app_message_municipal_chief_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
+        'app_municipal_chief_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
+        'app_message_municipal_chief_*' => ZoneExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
 
         // Senator Space
-        'app_message_senator_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
-        'app_senator_event_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
+        'app_message_senator_*' => ZoneExtractorInterface::ADHERENT_TYPE_SENATOR,
+        'app_senator_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_SENATOR,
 
         // Candidate Space
-        'app_candidate_*' => ReferentTagExtractorInterface::NONE,
-        'app_jecoute_candidate_*' => ReferentTagExtractorInterface::NONE,
-        'app_jecoute_news_candidate_*' => ReferentTagExtractorInterface::NONE,
+        'app_candidate_*' => ZoneExtractorInterface::NONE,
+        'app_jecoute_candidate_*' => ZoneExtractorInterface::NONE,
+        'app_jecoute_news_candidate_*' => ZoneExtractorInterface::NONE,
 
         // Procuration Space
-        'app_procuration_manager_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_PROCURATION_MANAGER,
+        'app_procuration_manager_*' => ZoneExtractorInterface::ADHERENT_TYPE_PROCURATION_MANAGER,
 
         // LRE Space
-        'app_lre_*' => ReferentTagExtractorInterface::NONE,
+        'app_lre_*' => ZoneExtractorInterface::NONE,
 
         // All message actions
-        'app_message_*' => ReferentTagExtractorInterface::NONE,
+        'app_message_*' => ZoneExtractorInterface::NONE,
     ];
 
-    private $tokenStorage;
-    private $republicanSilenceManager;
-    private $templateEngine;
+    private TokenStorageInterface $tokenStorage;
+    private RepublicanSilenceManager $republicanSilenceManager;
+    private Environment $templateEngine;
+    private ZoneExtractorFactory $zoneExtractorFactory;
+    private SessionInterface $session;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
         RepublicanSilenceManager $manager,
-        Environment $engine
+        Environment $engine,
+        ZoneExtractorFactory $zoneExtractorFactory,
+        SessionInterface $session
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->republicanSilenceManager = $manager;
         $this->templateEngine = $engine;
+        $this->zoneExtractorFactory = $zoneExtractorFactory;
+        $this->session = $session;
     }
 
     public static function getSubscribedEvents()
@@ -88,13 +95,17 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
+        if ($delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+            $user = $delegatedAccess->getDelegator();
+        }
+
         $route = $event->getRequest()->attributes->get('_route');
 
         if (null === $type = $this->getRouteType($route)) {
             return;
         }
 
-        if (ReferentTagExtractorInterface::NONE === $type) {
+        if (ZoneExtractorInterface::NONE === $type) {
             if ($this->republicanSilenceManager->hasStartedSilence()) {
                 $this->setResponse($event);
             }
@@ -102,13 +113,13 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
-        $tagExtractor = ReferentTagExtractorFactory::create($type);
+        $zoneExtractor = $this->zoneExtractorFactory->create($type);
 
-        if (!$tags = $tagExtractor->extractTags($user, $this->getSlug($event->getRequest(), $type))) {
+        if (!$zones = $zoneExtractor->extractZones($user, $this->getSlug($event->getRequest(), $type))) {
             return;
         }
 
-        if ($this->republicanSilenceManager->hasStartedSilence($tags)) {
+        if ($this->republicanSilenceManager->hasStartedSilence($zones)) {
             $this->setResponse($event);
         }
     }
@@ -136,7 +147,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
     private function getSlug(Request $request, string $type): ?string
     {
         switch ($type) {
-            case ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
+            case ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
                 return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
         }
 

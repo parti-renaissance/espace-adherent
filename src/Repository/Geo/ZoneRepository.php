@@ -467,4 +467,16 @@ class ZoneRepository extends ServiceEntityRepository
             ->getArrayResult()
         ;
     }
+
+    public function findByInseeCode(string $code): ?Zone
+    {
+        return $this->createQueryBuilder('zone', 'zone.code')
+            ->where('zone.type IN (:types)')
+            ->andWhere('zone.code = :code')
+            ->setParameter('types', [Zone::BOROUGH, Zone::CITY])
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

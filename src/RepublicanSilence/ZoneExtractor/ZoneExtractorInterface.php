@@ -1,10 +1,10 @@
 <?php
 
-namespace App\RepublicanSilence\TagExtractor;
+namespace App\RepublicanSilence\ZoneExtractor;
 
 use App\Entity\Adherent;
 
-interface ReferentTagExtractorInterface
+interface ZoneExtractorInterface
 {
     public const NONE = -1;
     public const ADHERENT_TYPE_REFERENT = 0;
@@ -14,5 +14,7 @@ interface ReferentTagExtractorInterface
     public const ADHERENT_TYPE_SENATOR = 5; // Senator
     public const ADHERENT_TYPE_PROCURATION_MANAGER = 6;
 
-    public function extractTags(Adherent $adherent, ?string $slug): array;
+    public function extractZones(Adherent $adherent, ?string $slug): array;
+
+    public function supports(int $type): bool;
 }
