@@ -112,7 +112,7 @@ Feature:
       "address": {
           "address": "50 rue de la villette",
           "postal_code": "69003",
-          "city_name": "Lyon 3e",
+          "city_name": "Lyon 3ème",
           "country": "FR"
       }
     }
@@ -128,7 +128,7 @@ Feature:
           "address": "50 rue de la villette",
           "postal_code": "69003",
           "city": "69003-69383",
-          "city_name": "Lyon 3e",
+          "city_name": "Lyon 3ème",
           "country": "FR"
       }
     }

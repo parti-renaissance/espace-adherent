@@ -7,22 +7,11 @@ use App\Entity\Committee;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
-use App\FranceCities\FranceCities;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
 
 class EventHydrator extends AbstractHydrator
 {
-    private FranceCities $franceCities;
-
-    public function __construct(EntityManagerInterface $em, FranceCities $franceCities)
-    {
-        parent::__construct($em);
-
-        $this->franceCities = $franceCities;
-    }
-
     protected function hydrateAllData()
     {
         $result = [];
@@ -40,20 +29,20 @@ class EventHydrator extends AbstractHydrator
         }
 
         if ('FR' === $row['event_address_country']) {
-            $addressEvent = $this->createFrenchAddress($row['event_address_address'], $row['event_address_city_insee'], $row['event_address_latitude'], $row['event_address_longitude']);
+            $addressEvent = $this->createFrenchAddress($row['event_address_address'], $row['event_address_city_insee'], $row['event_address_city_name'], $row['event_address_latitude'], $row['event_address_longitude']);
         } else {
             $addressEvent = $this->createForeignAddress($row['event_address_country'], $row['event_address_postal_code'], $row['event_address_city_name'], $row['event_address_address'], $row['event_address_latitude'], $row['event_address_longitude']);
         }
 
         $addressCommittee = null;
         if ('FR' === $row['committee_address_country']) {
-            $addressCommittee = $this->createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_latitude'], $row['committee_address_longitude']);
+            $addressCommittee = $this->createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_city_name'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         } elseif ($row['committee_address_country']) {
             $addressCommittee = $this->createForeignAddress($row['committee_address_country'], $row['committee_address_postal_code'], $row['committee_address_city_name'], $row['committee_address_address'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         }
 
         if ('FR' === $row['adherent_address_country']) {
-            $addressAdherent = $this->createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
+            $addressAdherent = $this->createFrenchAddress($row['adherent_address_address'], $row['adherent_address_city_insee'], $row['adherent_address_city_name'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
         } else {
             $addressAdherent = $this->createForeignAddress($row['adherent_address_country'], $row['adherent_address_postal_code'], $row['adherent_address_city_name'], $row['adherent_address_address'], $row['adherent_address_latitude'], $row['adherent_address_longitude']);
         }
@@ -108,17 +97,11 @@ class EventHydrator extends AbstractHydrator
     private function createFrenchAddress(
         ?string $street,
         ?string $cityCode,
+        ?string $cityName,
         ?float $latitude,
         ?float $longitude
     ): PostAddress {
-        if ($cityCode) {
-            [$postalCode, $inseeCode] = explode('-', $cityCode);
-            $city = $this->franceCities->getCityByInseeCode($inseeCode);
-
-            return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, null, $latitude, $longitude);
-        }
-
-        return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', null, null, $latitude, $longitude);
+        return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $cityName ?? '', null, $latitude, $longitude);
     }
 
     private function createForeignAddress(
@@ -129,6 +112,6 @@ class EventHydrator extends AbstractHydrator
         ?float $latitude,
         ?float $longitude
     ): PostAddress {
-        return PostAddress::createForeignAddress($country ?? '', $zipCode ?? '', $cityName, $street ?? '', $latitude, $longitude);
+        return PostAddress::createForeignAddress($country ?? '', $zipCode ?? '', $cityName, $street ?? '', null, $latitude, $longitude);
     }
 }

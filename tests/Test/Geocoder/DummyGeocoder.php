@@ -29,7 +29,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 45.7713288,
             'longitude' => 4.8288758,
         ],
-        '50 rue de la villette, 69003 lyon 3e, fr' => [
+        '50 rue de la villette, 69003 lyon 3ème, fr' => [
             'latitude' => 45.7596356,
             'longitude' => 4.8614359,
         ],
@@ -93,11 +93,11 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.633333,
             'longitude' => 2.450000,
         ],
-        '12 rue des saussaies, 75008 paris 8e, fr' => [
+        '12 rue des saussaies, 75008 paris 8ème, fr' => [
             'latitude' => 48.8713699,
             'longitude' => 2.318119,
         ],
-        '62 avenue des champs-élysées, 75008 paris 8e, fr' => [
+        '62 avenue des champs-élysées, 75008 paris 8ème, fr' => [
             'latitude' => 48.870590,
             'longitude' => 2.305370,
         ],
@@ -129,7 +129,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5278939,
             'longitude' => 2.6484923,
         ],
-        '30 boulevard louis guichoux, 13003 marseille 3e, fr' => [
+        '30 boulevard louis guichoux, 13003 marseille 3ème, fr' => [
             'latitude' => 43.325900,
             'longitude' => 5.374680,
         ],

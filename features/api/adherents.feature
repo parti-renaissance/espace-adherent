@@ -829,7 +829,7 @@ Feature:
         "items": [
             {
                 "postal_code": "75008",
-                "city": "Paris 8e",
+                "city": "Paris 8ème",
                 "country": "FR",
                 "first_name": "Député",
                 "last_name": "PARIS I",
@@ -848,7 +848,7 @@ Feature:
             },
             {
                 "postal_code": "75008",
-                "city": "Paris 8e",
+                "city": "Paris 8ème",
                 "country": "FR",
                 "first_name": "Jacques",
                 "last_name": "Picard",
@@ -884,7 +884,7 @@ Feature:
         "items": [
             {
                 "postal_code": "75008",
-                "city": "Paris 8e",
+                "city": "Paris 8ème",
                 "country": "FR",
                 "first_name": "Jacques",
                 "last_name": "Picard",
