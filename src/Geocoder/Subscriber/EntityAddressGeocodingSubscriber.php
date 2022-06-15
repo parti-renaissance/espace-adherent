@@ -10,7 +10,6 @@ use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,15 +22,6 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     {
         $this->geocoder = $geocoder;
         $this->manager = $manager;
-    }
-
-    public function onAdherentProfileUpdated(AdherentProfileWasUpdatedEvent $event): void
-    {
-        $adherent = $event->getAdherent();
-
-        if (!$adherent->getLatitude()) {
-            $this->updateGeocodableEntity($adherent);
-        }
     }
 
     /**
@@ -74,7 +64,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     {
         return [
             AdherentEvents::REGISTRATION_COMPLETED => ['updateCoordinates', -256],
-            AdherentEvents::PROFILE_UPDATED => ['onAdherentProfileUpdated', -256],
+            AdherentEvents::PROFILE_UPDATED => ['updateCoordinates', -256],
             Events::COMMITTEE_CREATED => ['updateCoordinates', -256],
             Events::COMMITTEE_UPDATED => ['updateCoordinates', -256],
             Events::EVENT_CREATED => ['updateCoordinates', -256],

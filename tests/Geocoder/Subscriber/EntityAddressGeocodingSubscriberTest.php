@@ -66,7 +66,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertSame(2.318325, $adherent->getLongitude());
 
         $this->manager->expects($this->never())->method('flush');
-        $this->subscriber->onAdherentProfileUpdated(new AdherentProfileWasUpdatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentProfileWasUpdatedEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
@@ -81,7 +81,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->assertNull($adherent->getLongitude());
 
         $this->manager->expects($this->once())->method('flush');
-        $this->subscriber->onAdherentProfileUpdated(new AdherentProfileWasUpdatedEvent($adherent));
+        $this->subscriber->updateCoordinates(new AdherentProfileWasUpdatedEvent($adherent));
 
         $this->assertSame(48.901058, $adherent->getLatitude());
         $this->assertSame(2.318325, $adherent->getLongitude());
