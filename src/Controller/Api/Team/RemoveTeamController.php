@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(
  *     "/v3/teams/{uuid}",
- *     requirements={"uuid": "%pattern_uuid%", "adherent_uuid": "%pattern_uuid%"},
+ *     requirements={"uuid": "%pattern_uuid%"},
  *     name="api_team_remove",
  *     methods={"DELETE"}
  * )
