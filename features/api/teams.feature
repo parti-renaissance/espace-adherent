@@ -108,27 +108,29 @@ Feature:
     """
     {
       "metadata": {
-        "total_items": 2,
+        "total_items": 3,
         "items_per_page": 2,
         "count": 2,
         "current_page": 1,
-        "last_page": 1
+        "last_page": 2
       },
       "items": [
+        {
+          "name": "Équipe à supprimer",
+          "uuid": "389a40c3-d8c1-4611-bf52-f172088066db",
+          "visibility": "national",
+          "is_deletable": true,
+          "zone": null,
+          "members_count": 1,
+          "creator": "Admin"
+        },
         {
           "name": "Deuxième équipe de phoning",
           "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
           "visibility": "national",
+          "is_deletable": false,
           "zone": null,
           "members_count": 4,
-          "creator": "Admin"
-        },
-        {
-          "name": "Première équipe de phoning",
-          "uuid": "3deeb1f5-819e-4629-85a1-eb75c916ce2f",
-          "visibility": "national",
-          "zone": null,
-          "members_count": 3,
           "creator": "Admin"
         }
       ]
@@ -180,6 +182,22 @@ Feature:
       "members": "@array@.count(4)"
     }
     """
+
+  Scenario: As a connected user, I can delete a team
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "DELETE" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "title": "An error occurred",
+      "detail": "Vous ne pouvez pas supprimer ce groupe car il est utilisé"
+    }
+    """
+    When I send a "DELETE" request to "/api/v3/teams/389a40c3-d8c1-4611-bf52-f172088066db?scope=phoning_national_manager"
+    Then the response status code should be 200
 
   Scenario: As a user granted with national scope, I can not create a local team
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -239,6 +257,7 @@ Feature:
           "name": "Équipe locale de la ville de Lille (59350)",
           "uuid": "ba9ab5dd-c8da-4721-8acb-5a96e285aec3",
           "visibility": "local",
+          "is_deletable": true,
           "zone": {
             "code": "59350",
             "name": "Lille",
@@ -251,6 +270,7 @@ Feature:
           "name": "Équipe locale du département 92",
           "uuid": "c608c447-8c45-4ee7-b39c-7d0217d1c6db",
           "visibility": "local",
+          "is_deletable": true,
           "zone": {
             "code": "92",
             "name": "Hauts-de-Seine",
@@ -774,6 +794,7 @@ Feature:
           "uuid": "6434f2ac-edd0-412a-9c4b-99ab4b039146",
           "visibility": "national",
           "zone": null,
+          "is_deletable": false,
           "members_count": 4,
           "creator": "Admin"
         }
