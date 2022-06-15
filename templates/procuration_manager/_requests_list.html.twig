@@ -34,7 +34,7 @@
         <td class="datagrid__table__col--hide-mobile">
             {{ request.data.createdAt|date('d/m/Y H:i') }}
         </td>
-        {% if constant('DISABLED', filters) == filters.status %}
+`        {% if not request.data.isEnabled() %}
             <td>
                 {{ request.data.isAutoDisabled() ? 'Automatiquement' : 'Manuellement' }}
             </td>
