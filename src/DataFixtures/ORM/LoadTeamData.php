@@ -18,6 +18,7 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
     public const TEAM_3_UUID = 'c608c447-8c45-4ee7-b39c-7d0217d1c6db';
     public const TEAM_4_UUID = 'ba9ab5dd-c8da-4721-8acb-5a96e285aec3';
     public const TEAM_5_UUID = 'a4ad9bde-9fd5-4eda-92e5-9e5576cac9e2';
+    public const TEAM_6_UUID = '389a40c3-d8c1-4611-bf52-f172088066db';
 
     public const MEMBER_1_UUID = '934ccb1d-9742-41e2-87e2-4ee439565f6a';
     public const MEMBER_2_UUID = 'a8981a72-4660-4cb0-bc08-725a0c8c9afe';
@@ -78,6 +79,13 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         );
         $team5->setCreatedAt(new \DateTime('-7 hours'));
         $team5->addMember($this->createMember(self::MEMBER_10_UUID, $this->getReference('adherent-4')));
+
+        $manager->persist($team = $this->createTeam(
+            self::TEAM_6_UUID,
+            'Équipe à supprimer',
+        ));
+        $team->setCreatedAt(new \DateTime('-8 hours'));
+        $team->addMember($this->createMember(Uuid::uuid4()->toString(), $this->getReference('adherent-1')));
 
         $manager->persist($team1);
         $manager->persist($team2);
