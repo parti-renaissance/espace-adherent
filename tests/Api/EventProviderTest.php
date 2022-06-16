@@ -5,11 +5,9 @@ namespace Tests\App\Api;
 use App\Api\EventProvider;
 use App\Entity\Event\CommitteeEvent;
 use App\Repository\EventRepository;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\App\AbstractKernelTestCase;
-use Tests\App\TestHelperTrait;
 
 /**
  * @group api

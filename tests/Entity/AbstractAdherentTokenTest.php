@@ -5,10 +5,8 @@ namespace Tests\App\Entity;
 use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenMismatchException;
 use App\ValueObject\SHA1;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Tests\App\AbstractKernelTestCase;
-use Tests\App\TestHelperTrait;
 
 abstract class AbstractAdherentTokenTest extends AbstractKernelTestCase
 {
