@@ -25,17 +25,6 @@ class RepublicanSilence
     private $id;
 
     /**
-     * @var ReferentTag[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="ReferentTag")
-     *
-     * @Assert\Count(min=1)
-     *
-     * @Groups({"read_api"})
-     */
-    private $referentTags;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -63,14 +52,6 @@ class RepublicanSilence
     public function __construct()
     {
         $this->zones = new ArrayCollection();
-    }
-
-    /**
-     * @return ReferentTag[]|Collection
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
     }
 
     public function getId(): int
