@@ -5,11 +5,12 @@ namespace Tests\App\Address;
 use App\Address\Address;
 use App\Address\GeocodableAddress;
 use PHPUnit\Framework\TestCase;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group address
  */
-class GeocodableAddressTest extends TestCase
+class GeocodableAddressTest extends AbstractKernelTestCase
 {
     public function testCreateGeocodableAddressFromAddress()
     {
@@ -22,6 +23,10 @@ class GeocodableAddressTest extends TestCase
         $address->setAddress($addressStr);
         $address->setPostalCode($postalCode);
         $address->setCity('94110-94003');
+
+        list(, $inseeCode) = explode('-', $address->getCity());
+        $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
+        $address->setCityName($city ? $city->getName() : null);
 
         $geocodableAddress = GeocodableAddress::createFromAddress($address);
 
