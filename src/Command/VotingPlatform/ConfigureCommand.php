@@ -100,6 +100,8 @@ class ConfigureCommand extends Command
                 $this->configureCopolElections($designation);
             } elseif ($designation->isExecutiveOfficeType()) {
                 $this->configureExecutiveOffice($designation);
+            } elseif ($designation->isPollType()) {
+                $this->configurePoll($designation);
             } else {
                 throw new RuntimeException(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
@@ -233,6 +235,38 @@ class ConfigureCommand extends Command
         $this->entityManager->persist($this->createVoterList($election, $adherents));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+
+        $this->entityManager->clear();
+
+        $this->io->progressAdvance();
+    }
+
+    private function configurePoll(Designation $designation): void
+    {
+        if ($this->electionRepository->findByDesignation($designation)) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+        $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($designation->getType()));
+        $election->addElectionPool($pool);
+
+        $pool->addCandidateGroup($group = new CandidateGroup());
+        $group->addCandidate(new Candidate('Oui', '', ''));
+
+        $pool->addCandidateGroup($group = new CandidateGroup());
+        $group->addCandidate(new Candidate('Non', '', ''));
+
+        $this->entityManager->persist($list = $this->createVoterList($election, []));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        /** @var AdherentRepository $adherentRepository */
+        $adherentRepository = $this->entityManager->getRepository(Adherent::class);
+
+        $adherentRepository->associateWithVoterList($designation, $list);
 
         $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
 

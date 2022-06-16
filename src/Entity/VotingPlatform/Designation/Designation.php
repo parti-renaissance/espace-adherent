@@ -206,6 +206,10 @@ class Designation
     public function setType(?string $type): void
     {
         $this->type = $type;
+
+        if ($this->isPollType()) {
+            $this->limited = true;
+        }
     }
 
     public function getZones(): ?array
@@ -403,7 +407,7 @@ class Designation
      */
     public function hasValidZone(): bool
     {
-        if ($this->isExecutiveOfficeType()) {
+        if (\in_array($this->type, [DesignationTypeEnum::EXECUTIVE_OFFICE, DesignationTypeEnum::POLL], true)) {
             return true;
         }
 
@@ -499,6 +503,11 @@ class Designation
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::COPOL,
         ], true);
+    }
+
+    public function isPollType(): bool
+    {
+        return DesignationTypeEnum::POLL === $this->type;
     }
 
     public function isExecutiveOfficeType(): bool

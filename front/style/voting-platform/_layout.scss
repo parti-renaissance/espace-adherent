@@ -535,6 +535,12 @@
             }
         }
 
+        &__poll {
+            .ballot-paper {
+                margin: inherit;
+            }
+        }
+
         &__committee_supervisor,
         &__national_council {
             .election-vote {

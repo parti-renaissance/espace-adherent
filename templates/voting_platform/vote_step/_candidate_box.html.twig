@@ -1,6 +1,12 @@
-<div class="candidate__box l__row l__row--v-stretch b__nudge--bottom-medium">
+<div class="candidate__box l__row {{ not designation.isPollType() ? 'l__row--v-stretch' }} b__nudge--bottom-medium">
     {{ form_widget(form) }}
     {{ form_label(form, ' ') }}
 
-    {% include 'voting_platform/vote_step/candidate_box/' ~ (designation.isExecutiveOfficeType ? 'burex' : 'default') ~ '_content.html.twig' %}
+    {% if designation.isExecutiveOfficeType() %}
+        {% include 'voting_platform/vote_step/candidate_box/burex_content.html.twig' %}
+    {% elseif designation.isPollType() %}
+        {% include 'voting_platform/vote_step/candidate_box/poll_content.html.twig' %}
+    {% else %}
+        {% include 'voting_platform/vote_step/candidate_box/default_content.html.twig' %}
+    {% endif %}
 </div>

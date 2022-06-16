@@ -900,6 +900,7 @@ voting_platform.designation.type_committee_supervisor: Comités-Animateurs
 voting_platform.designation.type_copol: Comité politique
 voting_platform.designation.type_national_council: Conseil national
 voting_platform.designation.type_executive_office: Bureau Exécutif
+voting_platform.designation.type_poll: Vote des statuts
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
 voting_platform.designation.zone_outre_mer: Outre-Mer
@@ -909,6 +910,7 @@ voting_platform.vote.majority_vote_mention.good: Bien
 voting_platform.vote.majority_vote_mention.fair: Passable
 voting_platform.vote.majority_vote_mention.insufficient: Insuffisant
 voting_platform.pool_title.committee_supervisor: Animateurs Locaux
+voting_platform.pool_title.poll:  
 voting_platform.pool_title.national_council:  
 voting_platform.pool_title.executive_office:  
 designation.dashboard.stats.block_label.committee_supervisor: Binôme
