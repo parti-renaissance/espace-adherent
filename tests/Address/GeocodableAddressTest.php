@@ -4,7 +4,6 @@ namespace Tests\App\Address;
 
 use App\Address\Address;
 use App\Address\GeocodableAddress;
-use PHPUnit\Framework\TestCase;
 use Tests\App\AbstractKernelTestCase;
 
 /**
