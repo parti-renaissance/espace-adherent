@@ -65,7 +65,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 47.316558,
             'longitude' => 8.55319899999995,
         ],
-        'paris 8e, france' => [
+        'paris 8ème, france' => [
             'latitude' => 48.866667,
             'longitude' => 2.333333,
         ],
@@ -77,7 +77,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.8761,
             'longitude' => 2.3082,
         ],
-        'paris 9e, france' => [
+        'paris 9ème, france' => [
             'latitude' => 48.8790183,
             'longitude' => 2.3379062,
         ],
@@ -136,6 +136,14 @@ class DummyGeocoder implements Geocoder
         '226 rue de rivoli, 75001 paris 1er, fr' => [
             'latitude' => 48.859599,
             'longitude' => 2.344967,
+        ],
+        'paris 8ème' => [
+            'latitude' => 48.866667,
+            'longitude' => 2.333333,
+        ],
+        'paris 9ème' => [
+            'latitude' => 48.8790183,
+            'longitude' => 2.3379062,
         ],
     ];
 

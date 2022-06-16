@@ -69,9 +69,9 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Abst
         PoliticalFunctionNameEnum::PRESIDENT_OF_REGIONAL_COUNCIL => TerritorialCouncilQualityEnum::REGIONAL_COUNCIL_PRESIDENT,
     ];
 
-    private Adherent $adherent;
-    private TerritorialCouncil $actualTC;
-    private TerritorialCouncil $newTC;
+    private ?Adherent $adherent;
+    private ?TerritorialCouncil $actualTC;
+    private ?TerritorialCouncil $newTC;
 
     /**
      * @dataProvider provideData

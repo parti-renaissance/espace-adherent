@@ -24,14 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EventControllerTest extends AbstractEventControllerTest
 {
-    /** @var EventRegistrationRepository */
-    private $repository;
-
-    /** @var EmailRepository */
-    private $emailRepository;
-
-    /** @var NewsletterSubscriptionRepository */
-    private $subscriptionsRepository;
+    private ?EventRegistrationRepository $repository;
+    private ?EmailRepository $emailRepository;
+    private ?NewsletterSubscriptionRepository $subscriptionsRepository;
 
     public function testAnonymousUserCanRegisterToEvent()
     {
@@ -245,9 +240,9 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function dataProviderNearbyEvents(): iterable
     {
-        yield ['Marche Parisienne', 'Paris 8e'];
-        yield ['Événement à Paris 2', 'Paris 8e'];
-        yield ['Événement à Paris 1', 'Paris 8e'];
+        yield ['Marche Parisienne', 'Paris 8ème'];
+        yield ['Événement à Paris 2', 'Paris 8ème'];
+        yield ['Événement à Paris 1', 'Paris 8ème'];
     }
 
     public function testAnonymousCanInviteToEvent()
