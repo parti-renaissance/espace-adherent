@@ -2,9 +2,6 @@
 
 namespace App\Intl;
 
-use App\Entity\ReferentTag;
-use App\Utils\AreaUtils;
-
 class FranceCitiesBundle
 {
     public const DOMTOM_INSEE_CODE = [
@@ -139,22 +136,6 @@ class FranceCitiesBundle
     ];
 
     /**
-     * Returns the list of cities for a given french postal code.
-     */
-    public static function getPostalCodeCities(string $postalCode): array
-    {
-        return self::$cities[$postalCode] ?? [];
-    }
-
-    /**
-     * Returns the city for the given postal code and INSEE code or null if the city was not found.
-     */
-    public static function getCity(string $postalCode, ?string $inseeCode): ?string
-    {
-        return self::$cities[$postalCode][$inseeCode] ?? self::$cities[$postalCode][ltrim($inseeCode, '0')] ?? null;
-    }
-
-    /**
      * Returns the cities indexed by INSEE code.
      */
     public static function getCityByInseeCode(): array
@@ -186,100 +167,6 @@ class FranceCitiesBundle
         }
 
         return 'FR';
-    }
-
-    /**
-     * Returns the list of cities by matching:
-     * - postal codes if given parameter is a number
-     * - city names otherwise
-     *
-     * Cities are ordered by:
-     * - postal codes if given parameter is a number
-     * - city names otherwise
-     */
-    public static function searchCities(
-        string $search,
-        int $maxResults = 20,
-        array $ignore = [],
-        array $filters = []
-    ): array {
-        $search = self::canonicalizeCityName($search);
-
-        $list = [];
-
-        foreach (self::$cities as $postalCode => $cities) {
-            foreach ($cities as $inseeCode => $cityName) {
-                $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
-
-                $matchFilters = false;
-                foreach ($filters as $filter) {
-                    if (0 === strpos($inseeCode, $filter)) {
-                        $matchFilters = true;
-                        break;
-                    }
-                }
-
-                if (!empty($filters) && !$matchFilters) {
-                    continue;
-                }
-
-                if (\in_array($inseeCode, $ignore)) {
-                    continue;
-                }
-
-                if (!is_numeric($search)) {
-                    if (0 !== strpos(self::canonicalizeCityName($cityName), $search)) {
-                        continue;
-                    }
-                } else {
-                    if (0 !== strpos($postalCode, $search)) {
-                        continue;
-                    }
-                }
-
-                if (\array_key_exists($inseeCode, $list)) {
-                    continue;
-                }
-
-                $list[$inseeCode] = [
-                    'postal_code' => $postalCode,
-                    'insee_code' => $inseeCode,
-                    'name' => $cityName,
-                ];
-
-                if (is_numeric($search) && \count($list) >= $maxResults) {
-                    break 2;
-                }
-            }
-        }
-
-        if (!is_numeric($search)) {
-            usort($list, function (array $city1, array $city2) {
-                return $city1['name'] < $city2['name'] ? -1 : 1;
-            });
-        }
-
-        return $list;
-    }
-
-    /**
-     * @param ReferentTag[]|array $tags
-     */
-    public static function searchCitiesForTags(array $tags, string $search, int $maxResults = 10): array
-    {
-        $filters = [];
-        foreach ($tags as $tag) {
-            if (AreaUtils::PREFIX_POSTALCODE_CORSICA === $tag->getCode()) {
-                $filters[] = AreaUtils::CODE_CORSICA_A;
-                $filters[] = AreaUtils::CODE_CORSICA_B;
-            } elseif ($tag->isDepartmentTag() || $tag->isBoroughTag()) {
-                $filters[] = $tag->getCode();
-            } elseif ($code = $tag->getDepartmentCodeFromCirconscriptionName()) {
-                $filters[] = $code;
-            }
-        }
-
-        return self::searchCities($search, $maxResults, [], $filters);
     }
 
     /**
