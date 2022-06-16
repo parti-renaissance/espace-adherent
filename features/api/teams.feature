@@ -496,6 +496,82 @@ Feature:
     """
     Then the response status code should be 401
 
+  Scenario: As a user granted with national scope, I cannot create a national team with the same name
+    Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
+    """
+    {
+      "name": "Première équipe de phoning"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "name: Une équipe porte déjà le même nom.",
+        "violations": [
+            {
+                "propertyPath": "name",
+                "message": "Une équipe porte déjà le même nom."
+            }
+        ]
+    }
+    """
+
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/teams?scope=phoning_national_manager" with body:
+    """
+    {
+      "name": "Équipe locale du département 92"
+    }
+    """
+    Then the response status code should be 201
+
+  Scenario Outline: As a user granted with local scope, I cannot create a team with the same name and zone
+    When I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    And I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    """
+    {
+      "name": "Équipe locale du département 92",
+      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "name: Une équipe porte déjà le même nom.",
+        "violations": [
+            {
+                "propertyPath": "name",
+                "message": "Une équipe porte déjà le même nom."
+            }
+        ]
+    }
+    """
+
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    """
+    {
+      "name": "Première équipe de phoning",
+      "zone": "e3efe6fd-906e-11eb-a875-0242ac150002"
+    }
+    """
+    Then the response status code should be 201
+    Examples:
+      | user                      | scope                                          |
+      | referent@en-marche-dev.fr | referent                                       |
+      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
   Scenario: As a user granted with team feature, I can add a member to a team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/teams/6434f2ac-edd0-412a-9c4b-99ab4b039146?scope=phoning_national_manager"
