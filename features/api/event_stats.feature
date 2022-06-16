@@ -132,7 +132,7 @@ Feature:
       | grant_type    | client_credentials                           |
       | scope         | read:stats                                   |
     And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&city=Paris%208e"
+    When I send a "GET" request to "/api/statistics/events/count-by-month?referent=referent-75-77@en-marche-dev.fr&city=Paris%208ème"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

@@ -88,6 +88,7 @@ Feature:
     And I am on "/api/statistics/committees/members/count-by-month"
     Then the response status code should be 401
 
+  @debug
   Scenario: As a referent I can get the committee members count in referent managed zone
     Given I freeze the clock to "2018-04-15"
     Given I send a "POST" request to "/oauth/v2/token" with parameters:
@@ -169,7 +170,7 @@ Feature:
       | grant_type    | client_credentials                           |
       | scope         | read:stats                                   |
     And I add the access token to the Authorization header
-    When I send a "GET" request to "/api/statistics/committees/members/count-by-month?referent=referent-75-77@en-marche-dev.fr&city=Paris%208e"
+    When I send a "GET" request to "/api/statistics/committees/members/count-by-month?referent=referent-75-77@en-marche-dev.fr&city=Paris%208ème"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
