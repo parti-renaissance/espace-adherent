@@ -25,11 +25,11 @@ class BuildingStatisticsRepository extends ServiceEntityRepository
     public function countByStatus(Campaign $campaign): array
     {
         $kpis = $this->createQueryBuilder('buildingStatistics')
-            ->select('COUNT(IF(buildingStatistics.status = :status_todo, buildingStatistics.id, null)) AS nb_addresses_todo')
             ->addSelect('COUNT(IF(buildingStatistics.status = :status_ongoing, buildingStatistics.id, null)) AS nb_addresses_ongoing')
             ->addSelect('COUNT(IF(buildingStatistics.status = :status_completed, buildingStatistics.id, null)) AS nb_addresses_completed')
             ->innerJoin('buildingStatistics.campaign', 'campaign')
             ->andWhere('campaign = :campaign')
+            ->andWhere('buildingStatistics.status != :status_todo')
             ->setParameters([
                 'campaign' => $campaign,
                 'status_todo' => BuildingStatusEnum::TODO,
@@ -43,6 +43,11 @@ class BuildingStatisticsRepository extends ServiceEntityRepository
         foreach ($kpis as $key => $kpi) {
             $kpis[$key] = \intval($kpi);
         }
+
+        $kpis['nb_addresses_todo'] = max(
+            $campaign->getNbAddresses() - $kpis['nb_addresses_ongoing'] - $kpis['nb_addresses_completed'],
+            0
+        );
 
         return $kpis;
     }
