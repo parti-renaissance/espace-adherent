@@ -9,7 +9,7 @@ final class Version20220616154158 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        if ($schema->hasTable('rememberme_token')) {
+        if ($this->sm->tablesExist('rememberme_token')) {
             return;
         }
 
