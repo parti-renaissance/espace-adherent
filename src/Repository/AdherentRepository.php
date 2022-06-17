@@ -20,6 +20,8 @@ use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\SmsCampaign\SmsCampaign;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\VotersList;
 use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
@@ -30,6 +32,7 @@ use App\Utils\AreaUtils;
 use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -1491,5 +1494,27 @@ SQL;
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
         ;
+    }
+
+    public function associateWithVoterList(Designation $designation, VotersList $list): void
+    {
+        $sql = <<<SQL
+INSERT IGNORE INTO voting_platform_voters_list_voter (voters_list_id, voter_id)
+SELECT :voter_list_id, voter.id FROM voting_platform_voter AS voter
+INNER JOIN adherents AS adherent ON adherent.id = voter.adherent_id
+WHERE 
+    voter.is_poll_voter = 1
+    AND adherent.status = :status
+    AND adherent.registered_at < :since_date
+    AND adherent.adherent = 1
+SQL;
+        /** @var Connection $connection */
+        $connection = $this->getEntityManager()->getConnection();
+
+        $connection->prepare($sql)->executeStatement([
+            'voter_list_id' => $list->getId(),
+            'status' => Adherent::ENABLED,
+            'since_date' => (clone $designation->getVoteStartDate())->modify('-3 months')->format(\DateTimeInterface::ATOM),
+        ]);
     }
 }

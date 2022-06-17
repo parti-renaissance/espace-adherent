@@ -53,6 +53,11 @@ class Voter
      */
     private $isGhost = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $isPollVoter = false;
+
     public function __construct(Adherent $adherent = null)
     {
         $this->adherent = $adherent;

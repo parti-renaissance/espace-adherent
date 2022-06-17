@@ -2,6 +2,12 @@
     {% for pool in pools %}
         {% set vote_choice = vote_command.getChoiceForPool(pool) %}
 
-        {% include 'voting_platform/confirmation/candidate_box/' ~ (designation.isExecutiveOfficeType ? 'burex' : 'default') ~ '_content.html.twig' %}
+        {% if designation.isExecutiveOfficeType() %}
+            {% include 'voting_platform/confirmation/candidate_box/burex_content.html.twig' %}
+        {% elseif designation.isPollType() %}
+            {% include 'voting_platform/confirmation/candidate_box/poll_content.html.twig' %}
+        {% else %}
+            {% include 'voting_platform/confirmation/candidate_box/default_content.html.twig' %}
+        {% endif %}
     {% endfor %}
 </div>
