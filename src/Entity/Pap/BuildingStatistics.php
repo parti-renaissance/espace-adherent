@@ -13,9 +13,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingStatisticsRepository")
- * @ORM\Table(name="pap_building_statistics", uniqueConstraints={
- *     @ORM\UniqueConstraint(columns={"building_id", "campaign_id"}),
- * })
+ * @ORM\Table(
+ *     name="pap_building_statistics",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(columns={"building_id", "campaign_id"}),
+ *     },
+ *     indexes={
+ *         @ORM\Index(columns={"status"}),
+ *     },
+ * )
  *
  * @ApiResource(
  *     attributes={
