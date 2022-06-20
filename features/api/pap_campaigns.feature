@@ -1238,7 +1238,7 @@ Feature:
         "average_visit_time": 140,
         "visibility": "national",
         "enabled": true,
-        "nb_addresses_todo": 0,
+        "nb_addresses_todo": 4,
         "nb_addresses_ongoing": 0,
         "nb_addresses_completed": 0
     }
