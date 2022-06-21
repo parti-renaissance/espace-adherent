@@ -334,6 +334,23 @@ TXT
 TXT
         ));
 
+        $manager->persist($this->createCmsBlock('vote-statuses-landing-page-title', '', 'Vote des statuts'));
+
+        $manager->persist($this->createCmsBlock('vote-statuses-landing-page-content', '', <<<TXT
+<p>Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis. </p><p>Qui saepe nobis et nulla natus aut enim unde est voluptatem expedita aut unde vero quo necessitatibus rerum. Vel cumque autem non corrupti ipsa sit saepe dignissimos ut exercitationem molestiae non dolores alias hic alias molestiae ut optio ipsum. </p><p>In quae accusantium et facere galisum aut repellat voluptatem sit iure autem qui iusto aliquid hic ratione ratione. Ut aspernatur nulla aut dolorum nobis ea vitae quam ad ipsa commodi. A quia voluptas ut itaque officiis sed asperiores distinctio qui quis tenetur aut quia velit et fugiat dicta nam asperiores dolore?</p>
+TXT
+));
+
+        $manager->persist($this->createCmsBlock('vote-statuses-landing-page-regulation', '', <<<TXT
+<p>Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis. </p><p>Qui saepe nobis et nulla natus aut enim unde est voluptatem expedita aut unde vero quo necessitatibus rerum. Vel cumque autem non corrupti ipsa sit saepe dignissimos ut exercitationem molestiae non dolores alias hic alias molestiae ut optio ipsum. </p><p>In quae accusantium et facere galisum aut repellat voluptatem sit iure autem qui iusto aliquid hic ratione ratione. Ut aspernatur nulla aut dolorum nobis ea vitae quam ad ipsa commodi. A quia voluptas ut itaque officiis sed asperiores distinctio qui quis tenetur aut quia velit et fugiat dicta nam asperiores dolore?</p>
+TXT
+        ));
+
+        $manager->persist($this->createCmsBlock('vote-statuses-landing-page-designation-description', '', <<<TXT
+<p>Lorem ipsum dolor sit amet. Eum  facilis et nemo dicta et  sint et numquam sapiente eum commodi consequatur ut dolorem natus? Sed similique itaque in  rerum ea alias voluptates ut optio odio nam officiis deleniti aut sapiente voluptates et culpa tenetur. Vel dignissimos provident et eligendi officia in animi distinctio est omnis esse vel cumque doloribus eos cumque nobis. </p><p>Qui saepe nobis et nulla natus aut enim unde est voluptatem expedita aut unde vero quo necessitatibus rerum. Vel cumque autem non corrupti ipsa sit saepe dignissimos ut exercitationem molestiae non dolores alias hic alias molestiae ut optio ipsum. </p><p>In quae accusantium et facere galisum aut repellat voluptatem sit iure autem qui iusto aliquid hic ratione ratione. Ut aspernatur nulla aut dolorum nobis ea vitae quam ad ipsa commodi. A quia voluptas ut itaque officiis sed asperiores distinctio qui quis tenetur aut quia velit et fugiat dicta nam asperiores dolore?</p>
+TXT
+        ));
+
         $manager->flush();
     }
 

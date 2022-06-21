@@ -15,6 +15,7 @@ class VotingPlatformExtension extends AbstractExtension
             new TwigFunction('get_voting_platform_election_for_committee', [VotingPlatformRuntime::class, 'findElectionForCommittee']),
             new TwigFunction('get_voting_platform_election_for_territorial_council_election', [VotingPlatformRuntime::class, 'findElectionForTerritorialCouncilElection']),
             new TwigFunction('get_voting_platform_election_for_national_council_election', [VotingPlatformRuntime::class, 'findElectionForNationalCouncilElection']),
+            new TwigFunction('get_voting_platform_election_for_designation', [VotingPlatformRuntime::class, 'findElectionForDesignation']),
             new TwigFunction('get_my_vote_for_election', [VotingPlatformRuntime::class, 'findMyVoteForElection']),
             new TwigFunction('has_voted_for_designation', [VotingPlatformRuntime::class, 'hasVotedForDesignation']),
             new TwigFunction('get_election_pool_title_key', [$this, 'getElectionPoolTitleKey']),
@@ -22,6 +23,7 @@ class VotingPlatformExtension extends AbstractExtension
             new TwigFunction('get_election_candidate_result', [VotingPlatformRuntime::class, 'getElectionCandidateResult']),
             new TwigFunction('find_committee_for_recent_candidate', [VotingPlatformRuntime::class, 'findCommitteeForRecentCandidate']),
             new TwigFunction('find_committee_for_recent_vote', [VotingPlatformRuntime::class, 'findCommitteeForRecentVote']),
+            new TwigFunction('find_active_poll_designation', [VotingPlatformRuntime::class, 'findActivePollDesignation']),
         ];
     }
 

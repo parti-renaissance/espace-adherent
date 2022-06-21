@@ -1092,6 +1092,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CORRESPONDENT';
         }
 
+        if ($this->isStatusesVoter()) {
+            $roles[] = 'ROLE_STATUSES_VOTER';
+        }
+
         // Must be at the end as it uses $roles array
         if ($this->isAdherentMessageRedactor($roles)) {
             $roles[] = 'ROLE_MESSAGE_REDACTOR';
@@ -3136,5 +3140,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setAuthAppCode(?string $authAppCode): void
     {
         $this->authAppCode = $authAppCode;
+    }
+
+    public function isStatusesVoter(): bool
+    {
+        return $this->isCertified()
+            && $this->isAdherent()
+            && $this->isEnabled()
+            && $this->activatedAt
+            && (clone $this->activatedAt)->modify('+3 months') < new \DateTime('2022-07-08 8:00:00')
+        ;
     }
 }

@@ -94,6 +94,8 @@ class ConfigureCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
+            $this->entityManager->merge($designation);
+
             if ($designation->isCommitteeType()) {
                 $this->configureCommitteeElections($designation);
             } elseif ($designation->isCopolType()) {

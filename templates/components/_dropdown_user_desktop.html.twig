@@ -70,6 +70,9 @@
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
+                        {% if is_granted('ROLE_STATUSES_VOTER') %}
+                            <li><a href="{{ path('app_vote_statuses_index') }}">Vote des statuts</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

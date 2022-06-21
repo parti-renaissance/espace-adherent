@@ -144,6 +144,19 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $this->setReference('designation-11', $designation);
         $manager->persist($designation);
 
+        // POLL election
+        $designation = new Designation('Vote des statuts');
+        $designation->setType(DesignationTypeEnum::POLL);
+        $designation->setDenomination(Designation::DENOMINATION_ELECTION);
+        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTime('-10 minutes'));
+        $designation->setVoteStartDate(new \DateTime('-5 minutes'));
+        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->setResultScheduleDelay(2.5);
+
+        $this->setReference('designation-12', $designation);
+        $manager->persist($designation);
+
         $manager->flush();
     }
 

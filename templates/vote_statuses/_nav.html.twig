@@ -1,0 +1,10 @@
+<nav class="tabs-nav border-on b__nudge--bottom-larger">
+    <ul>
+        <li class="{{ is_active_route(app.request, 'app_vote_statuses_index') ? 'active' }}">
+            <a href="{{ path("app_vote_statuses_index") }}" class="tabs-nav__item">Accueil</a>
+        </li>
+        <li class="{{ is_active_route(app.request, 'app_vote_statuses_regulation') ? 'active' }}">
+            <a href="{{ path("app_vote_statuses_regulation") }}" class="tabs-nav__item">Règlement</a>
+        </li>
+    </ul>
+</nav>

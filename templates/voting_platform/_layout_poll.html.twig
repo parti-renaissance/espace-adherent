@@ -3,7 +3,7 @@
 {% block banner %}
     <div class="space--10-0 background--green-territory">
         <div class="l__wrapper--wide">
-            <a href="#"
+            <a href="{{ path('app_vote_statuses_index') }}"
                class="text--body text--small text--white link--no-decor">
                 Retourner →
             </a>
@@ -17,7 +17,7 @@
 
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
-        <a href="#" class="btn btn--blue">
+        <a href="{{ path('app_vote_statuses_index') }}" class="btn btn--blue">
             Retour
         </a>
     </div>

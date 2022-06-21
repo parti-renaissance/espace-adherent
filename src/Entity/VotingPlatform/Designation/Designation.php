@@ -605,4 +605,9 @@ class Designation
     {
         return !$this->isExecutiveOfficeType();
     }
+
+    public function isVotePeriodStarted(): bool
+    {
+        return $this->getVoteStartDate() && $this->getVoteStartDate() <= (new \DateTime());
+    }
 }

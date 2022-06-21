@@ -417,6 +417,8 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             $adherent = $membership->getAdherent();
             $voterList->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
 
+            $this->voters[$adherent->getId()]->isPollVoter = true;
+
             if ($candidacy = $membership->getCandidacyForElection($currentElection)) {
                 if ($candidacy->isConfirmed()) {
                     $pools[$candidacy->getQuality()][] = $candidacy;

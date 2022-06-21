@@ -11,28 +11,38 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Repository\CommitteeRepository;
+use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class VotingPlatformRuntime implements RuntimeExtensionInterface
 {
-    private $electionRepository;
-    private $voteRepository;
-    private $voteResultRepository;
-    private $committeeRepository;
+    private ElectionRepository $electionRepository;
+    private VoteRepository $voteRepository;
+    private VoteResultRepository $voteResultRepository;
+    private CommitteeRepository $committeeRepository;
+    private DesignationRepository $designationRepository;
 
     public function __construct(
         ElectionRepository $electionRepository,
         VoteRepository $voteRepository,
         VoteResultRepository $voteResultRepository,
-        CommitteeRepository $committeeRepository
+        CommitteeRepository $committeeRepository,
+        DesignationRepository $designationRepository
     ) {
         $this->electionRepository = $electionRepository;
         $this->voteRepository = $voteRepository;
         $this->voteResultRepository = $voteResultRepository;
         $this->committeeRepository = $committeeRepository;
+        $this->designationRepository = $designationRepository;
+    }
+
+    public function findActivePollDesignation(): ?Designation
+    {
+        return current($this->designationRepository->getDesignations([DesignationTypeEnum::POLL], 1)) ?: null;
     }
 
     public function findElectionForCommittee(Committee $committee): ?Election
@@ -51,7 +61,12 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
 
     public function findElectionForNationalCouncilElection(NationalCouncilElection $nationalCouncilElection): ?Election
     {
-        return $this->electionRepository->findByDesignation($nationalCouncilElection->getDesignation());
+        return $this->findElectionForDesignation($nationalCouncilElection->getDesignation());
+    }
+
+    public function findElectionForDesignation(Designation $designation): ?Election
+    {
+        return $this->electionRepository->findByDesignation($designation);
     }
 
     public function findMyVoteForElection(Adherent $adherent, ElectionRound $electionRound): ?Vote
