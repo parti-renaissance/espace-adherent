@@ -86,9 +86,7 @@ trait EntityDesignationTrait
 
     public function isVotePeriodStarted(): bool
     {
-        $now = new \DateTime();
-
-        return $this->designation && $this->getVoteStartDate() && $this->getVoteStartDate() <= $now;
+        return $this->designation && $this->designation->isVotePeriodStarted();
     }
 
     public function isBinomeDesignation(): bool

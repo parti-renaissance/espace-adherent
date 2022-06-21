@@ -41,6 +41,33 @@
         }
     }
 
+    &.instance--vote-statuses {
+        .instance-page__header {
+            background-color: #5BAEDB;
+        }
+
+        .instance-page__main {
+            .instance__elections-box {
+                box-shadow: 0 15px 30px 0 rgb(204 6 19 / 15%);
+
+                &:hover {
+                    box-shadow: 0 15px 30px 0 rgb(204 6 19 / 30%);
+                }
+
+                h2 {
+                    color: $red--secondary;
+                }
+            }
+
+            .tabs-nav li {
+                &:hover a,
+                &.active a {
+                    border-color: #5BAEDB;
+                }
+            }
+        }
+    }
+
     &.instance--national-council {
         .instance-page__header {
             background-color: $blue--dark;

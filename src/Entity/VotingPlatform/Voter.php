@@ -56,7 +56,7 @@ class Voter
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private bool $isPollVoter = false;
+    public bool $isPollVoter = false;
 
     public function __construct(Adherent $adherent = null)
     {

@@ -30,6 +30,29 @@ class DesignationRepository extends ServiceEntityRepository
     /**
      * @return Designation[]
      */
+    public function getDesignations(array $types, int $limit = null): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->orderBy('d.voteStartDate', 'DESC')
+        ;
+
+        if ($types) {
+            $qb
+                ->andWhere('d.type IN (:types)')
+                ->setParameter('types', $types)
+            ;
+        }
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return Designation[]
+     */
     public function getIncomingCandidacyDesignations(\DateTime $candidacyStartDate): array
     {
         return $this->createQueryBuilder('d')
