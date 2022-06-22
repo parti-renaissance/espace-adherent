@@ -439,6 +439,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $remindSent = false;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $voteStatusesConvocationSentAt = null;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
      * @Groups({"user_profile"})
