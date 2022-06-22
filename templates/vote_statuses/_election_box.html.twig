@@ -16,12 +16,14 @@
     <div class="text--body l__row l__row--wrap">
         {% set voting_platform_election = get_voting_platform_election_for_designation(designation) %}
 
-        {% if not designation.isVotePeriodStarted or not voting_platform_election %}
+        {% if not designation.isVotePeriodStarted %}
             <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ designation.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                 <span class="text--dark text--small">Le vote ouvrira dans :</span>
                 <span class="clock-container"></span>
             </div>
-        {% elseif voting_platform_election %}
+        {% elseif not voting_platform_election %}
+            <p>Le vote commencera dans quelques instants.</p>
+        {% else %}
             {% if voting_platform_election.isVotePeriodActive %}
                 {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
                     <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
