@@ -7,6 +7,7 @@ $black: #000000;
 $white: #FFFFFF;
 $blue: #2ABAFF; //old
 $blue--softer: #39c3ff;
+$blue--soft-dark: #5BAEDB;
 $blue-hover: #009FE1; //old
 $blue--extra-light: #ebf4ff;
 $blue--light: #9AD7E8;
@@ -298,6 +299,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--green-territory {
     background-color: $green--territory;
+}
+
+.background--blue-soft-dark {
+    background-color: $blue--soft-dark;
 }
 
 .background--blue-light {

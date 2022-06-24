@@ -539,6 +539,28 @@
             .ballot-paper {
                 margin: inherit;
             }
+
+            .btn {
+                &.btn--blue {
+                    background-color: $blue--soft-dark;
+                    border-color: $blue--soft-dark;
+
+                    &:hover {
+                        background-color: $white;
+                        color: $blue--soft-dark;
+                    }
+                }
+
+                &.btn--ghosting--blue {
+                    border-color: $blue--soft-dark;
+                    color: $blue--soft-dark;
+
+                    &:hover {
+                        background-color: $blue--soft-dark;
+                        color: $white;
+                    }
+                }
+            }
         }
 
         &__committee_supervisor,

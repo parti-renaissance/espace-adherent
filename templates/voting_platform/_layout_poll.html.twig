@@ -1,7 +1,7 @@
 {% extends 'voting_platform/_layout_base.html.twig' %}
 
 {% block banner %}
-    <div class="space--10-0 background--green-territory">
+    <div class="space--10-0 background--blue-soft-dark">
         <div class="l__wrapper--wide">
             <a href="{{ path('app_vote_statuses_index') }}"
                class="text--body text--small text--white link--no-decor">
@@ -12,13 +12,26 @@
 {% endblock %}
 
 {% block vote_step_pool_title %}
-    Sélectionnez un choix
+    Êtes-vous d’accord pour que La République En Marche devienne Renaissance ?
+{% endblock %}
+
+{% block election_sub_title %}
+    <h2>Bienvenue sur la plateforme de vote électronique de La République En Marche !</h2>
 {% endblock %}
 
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
         <a href="{{ path('app_vote_statuses_index') }}" class="btn btn--blue">
-            Retour
+            Retour à l’accueil
         </a>
     </div>
+{% endblock %}
+
+{% block voting_platform_subtitle %}
+    Le vote est ouvert du
+    {% if election.isSecondRoundVotePeriodActive %}
+        {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
+    {% else %}
+        {{ election.voteStartDate|date('d/m/Y \à H:i') }} au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
+    {% endif %}
 {% endblock %}

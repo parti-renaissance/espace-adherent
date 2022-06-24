@@ -35,6 +35,8 @@
             <h1 class="text--larger b__nudge--bottom-large">
                 {% if designation.isExecutiveOfficeType() %}
                     Félicitations, votre bulletin est dans l'urne !
+                {% elseif designation.isPollType() %}
+                    Félicitations, votre vote est bien enregistré !
                 {% else %}
                     Félicitations, vos bulletins sont dans l'urne !
                 {% endif %}

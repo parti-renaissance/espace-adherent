@@ -85,6 +85,8 @@
 
                     <h2>Mon choix est-il anonyme ?</h2>
                     <p>Ici, vous êtes comme dans l’isoloir. Votre choix ne sera connu que de vous seul. Lors de votre vote, vous recevrez un numéro anonymisé qui vous permettra de retrouver votre choix lors de l’affichage des résultats dans l’espace du Conseil national.</p>
+                {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::POLL') %}
+                    {{ cms_block('voting-platform-vote-statuses-description') }}
                 {% endif %}
             </div>
 
