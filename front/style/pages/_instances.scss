@@ -43,7 +43,7 @@
 
     &.instance--vote-statuses {
         .instance-page__header {
-            background-color: #5BAEDB;
+            background-color: $blue--soft-dark;
         }
 
         .instance-page__main {
@@ -62,7 +62,7 @@
             .tabs-nav li {
                 &:hover a,
                 &.active a {
-                    border-color: #5BAEDB;
+                    border-color: $blue--soft-dark;
                 }
             }
         }

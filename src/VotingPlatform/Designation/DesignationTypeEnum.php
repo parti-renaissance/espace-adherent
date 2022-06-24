@@ -30,7 +30,7 @@ final class DesignationTypeEnum extends Enum
         self::COPOL => 'Désignation des binômes au Copol',
         self::NATIONAL_COUNCIL => 'Désignation des membres siégeant au Conseil national',
         self::EXECUTIVE_OFFICE => 'Élection des membres du Bureau Exécutif',
-        self::POLL => 'Vote des statuts',
+        self::POLL => 'Changement des statuts de l’association',
     ];
 
     public const MAIN_TYPES = [
