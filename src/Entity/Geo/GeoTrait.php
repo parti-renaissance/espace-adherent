@@ -49,7 +49,7 @@ trait GeoTrait
      *     "pap_campaign_read_after_write",
      *     "phoning_campaign_read",
      *     "phoning_campaign_list",
-     *     "read_api"
+     *     "read_api",
      * })
      */
     private $code;

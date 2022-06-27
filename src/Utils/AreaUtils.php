@@ -24,26 +24,6 @@ class AreaUtils
     public const PREFIX_POSTALCODE_DOM = '97';
     public const PREFIX_POSTALCODE_PARIS_DISTRICTS = '75';
     public const PREFIX_POSTALCODE_TOM = '98';
-    public const DISTRICT_PARIS = [
-        '75001' => ['75001', '75002', '75008', '75009'],
-        '75002' => ['75005', '75006', '75007'],
-        '75003' => ['75017', '75018'],
-        '75004' => ['75016', '75017'],
-        '75005' => ['75003', '75010'],
-        '75006' => ['75011', '75020'],
-        '75007' => ['75004', '75011', '75012'],
-        '75008' => ['75012', '75020'],
-        '75009' => ['75013'],
-        '75010' => ['75013', '75014'],
-        '75011' => ['75006', '75014'],
-        '75012' => ['75007', '75015'],
-        '75013' => ['75015'],
-        '75014' => ['75016'],
-        '75015' => ['75020'],
-        '75016' => ['75019'],
-        '75017' => ['75018', '75019'],
-        '75018' => ['75009', '75018'],
-    ];
 
     public const INSEE_CODE_ANNECY = '74010';
     public const INSEE_CODES_ATTACHED_TO_ANNECY = [
@@ -195,25 +175,6 @@ class AreaUtils
         $code = (string) array_search($country, FranceCitiesBundle::$countries);
 
         return self::POSTALCODE_MONACO === $code ? self::CODE_MONACO : $code;
-    }
-
-    public static function getCodeFromDistrict(District $district): array
-    {
-        if ($district->isFrenchDistrict()) {
-            $code = $district->getDepartmentCode();
-            if (self::PREFIX_POSTALCODE_PARIS_DISTRICTS === $code) {
-                return array_merge(['FR', '75'], self::DISTRICT_PARIS[$district->getCode()]);
-            } else {
-                return ['FR', $district->getDepartmentCode()];
-            }
-        } else {
-            $codes = [];
-            foreach ($district->getCountries() as $country) {
-                $codes[] = self::getCodeFromCountry($country);
-            }
-
-            return $codes;
-        }
     }
 
     public static function getMetropolisCode(EntityPostAddressInterface $entity): ?string

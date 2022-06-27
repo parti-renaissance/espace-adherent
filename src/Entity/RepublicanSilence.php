@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,14 +34,6 @@ class RepublicanSilence
      * @Groups({"read_api"})
      */
     private $referentTags;
-
-    /**
-     * @var Collection|Zone[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     * @Groups({"read_api"})
-     */
-    protected $zones;
 
     /**
      * @var \DateTime
