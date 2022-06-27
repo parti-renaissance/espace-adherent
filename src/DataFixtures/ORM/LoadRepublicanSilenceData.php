@@ -12,10 +12,10 @@ class LoadRepublicanSilenceData extends Fixture implements DependentFixtureInter
     public function load(ObjectManager $manager)
     {
         $entity = new RepublicanSilence();
-        $entity->addReferentTag($this->getReference('referent_tag_75001'));
-        $entity->addReferentTag($this->getReference('referent_tag_91'));
-        $entity->addReferentTag($this->getReference('referent_tag_93'));
-        $entity->addReferentTag($this->getReference('referent_tag_sg'));
+        $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
+        $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_91'));
+        $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_93'));
+        $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_SG'));
         $entity->setBeginAt(new \DateTime('-10 days'));
         $entity->setFinishAt(new \DateTime('+10 days'));
 
@@ -27,6 +27,7 @@ class LoadRepublicanSilenceData extends Fixture implements DependentFixtureInter
     {
         return [
             LoadReferentTagData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

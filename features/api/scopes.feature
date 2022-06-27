@@ -191,9 +191,9 @@ Feature:
         "name": "Député délégué",
         "zones": [
           {
-            "uuid": "e3efabd2-906e-11eb-a875-0242ac150002",
-            "code": "LI",
-            "name": "Liechtenstein"
+            "uuid": "e3efac36-906e-11eb-a875-0242ac150002",
+            "code": "CIRCO_FDE-06",
+            "name": "Suisse"
           }
         ],
         "apps": [

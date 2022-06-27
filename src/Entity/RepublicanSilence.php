@@ -11,8 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class RepublicanSilence implements \Serializable
+class RepublicanSilence
 {
+    use EntityZoneTrait;
+
     /**
      * @var int
      *
@@ -60,12 +62,7 @@ class RepublicanSilence implements \Serializable
 
     public function __construct()
     {
-        $this->referentTags = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
+        $this->zones = new ArrayCollection();
     }
 
     /**
@@ -76,16 +73,9 @@ class RepublicanSilence implements \Serializable
         return $this->referentTags;
     }
 
-    public function addReferentTag(ReferentTag $referentTag): void
+    public function getId(): int
     {
-        if (!$this->referentTags->contains($referentTag)) {
-            $this->referentTags->add($referentTag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTags->removeElement($referentTag);
+        return $this->id;
     }
 
     public function getBeginAt(): ?\DateTime
@@ -106,35 +96,5 @@ class RepublicanSilence implements \Serializable
     public function setFinishAt(\DateTime $finishAt): void
     {
         $this->finishAt = $finishAt;
-    }
-
-    public function getReferentTagCodes(): array
-    {
-        return array_map(function (ReferentTag $tag) {
-            return $tag->getCode();
-        }, $this->referentTags->toArray());
-    }
-
-    /**
-     * Controls serialized data of republican silence for storing in the cache
-     */
-    public function serialize()
-    {
-        return serialize([
-            $this->id,
-            $this->beginAt,
-            $this->finishAt,
-            $this->referentTags->toArray(),
-        ]);
-    }
-
-    /**
-     * Controls unserialize process to change the type of referentsTags property to ArrayCollection
-     */
-    public function unserialize($serialized)
-    {
-        [$this->id, $this->beginAt, $this->finishAt, $referentTags] = unserialize($serialized);
-
-        $this->referentTags = new ArrayCollection($referentTags);
     }
 }

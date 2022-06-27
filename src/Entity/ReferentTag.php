@@ -51,7 +51,7 @@ class ReferentTag
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      *
-     * @SymfonySerializer\Groups({"read_api", "adherent_change_diff"})
+     * @SymfonySerializer\Groups({"adherent_change_diff"})
      */
     private $code;
 
@@ -68,8 +68,6 @@ class ReferentTag
      * @var string
      *
      * @ORM\Column(nullable=true)
-     *
-     * @SymfonySerializer\Groups({"read_api"})
      */
     private $type;
 

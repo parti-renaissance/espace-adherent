@@ -20,6 +20,8 @@ class RepublicanSilenceRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('silence')
+            ->addSelect('zone')
+            ->leftJoin('silence.zones', 'zone')
             ->where('silence.beginAt <= :date AND silence.finishAt > :date')
             ->setParameter('date', $startDate)
             ->getQuery()

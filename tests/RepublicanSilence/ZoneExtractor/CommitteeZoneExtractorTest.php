@@ -6,14 +6,16 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
+use App\Entity\Geo\Zone;
+use App\RepublicanSilence\ZoneExtractor\CommitteeZoneExtractor;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
-class CommitteeReferentTagExtractorTest extends TestCase
+class CommitteeZoneExtractorTest extends TestCase
 {
-    public function testExtractTags()
+    public function testExtractZoness()
     {
-        $tagExtractor = new CommitteeReferentTagExtractor();
+        $tagExtractor = new CommitteeZoneExtractor();
 
         $adherentMock = $this->createConfiguredMock(Adherent::class, [
             'getMemberships' => new CommitteeMembershipCollection([
@@ -21,15 +23,18 @@ class CommitteeReferentTagExtractorTest extends TestCase
                     'isHostMember' => true,
                     'getCommittee' => $this->createConfiguredMock(Committee::class, [
                         'getSlug' => 'committee-slug',
-                        'getReferentTagsCodes' => ['tag1', 'tag2', 'tag10'],
+                        'getZones' => new ArrayCollection([
+                            $zone1 = new Zone('mock', 'tag1', ''),
+                            $zone2 = new Zone('mock', 'tag2', ''),
+                        ]),
                     ]),
                 ]),
             ]),
         ]);
 
         $this->assertSame(
-            ['tag1', 'tag2', 'tag10'],
-            $tagExtractor->extractTags($adherentMock, 'committee-slug')
+            [$zone1, $zone2],
+            $tagExtractor->extractZones($adherentMock, 'committee-slug')
         );
     }
 }
