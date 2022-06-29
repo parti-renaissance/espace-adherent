@@ -91,6 +91,41 @@ class MembershipRequestHandler
         return $adherent;
     }
 
+    public function createRenaissanceAdherent(MembershipInterface $membershipRequest): Adherent
+    {
+        $this->manager->persist($adherent = $this->adherentFactory->createFromRenaisssanceMembershipRequest($membershipRequest));
+
+        $this->referentZoneManager->assignZone($adherent);
+
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(new UserEvent(
+            $adherent,
+            $membershipRequest->allowEmailNotifications,
+            $membershipRequest->allowMobileNotifications
+        ), UserEvents::RENAISSANCE_USER_CREATED);
+
+        if (null === $adherent->getSource() && $adherent->isAdherent()) {
+            $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
+        }
+
+        return $adherent;
+    }
+
+    public function finishRenaissanceAdhesion(Adherent $adherent): Adherent
+    {
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::RENAISSANCE_USER_SEND_EMAIL_CONFIRMATION);
+        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+
+        return $adherent;
+    }
+
+    public function removeUnsuccessfulRenaissainceAdhesion(Adherent $adherent): void
+    {
+        $this->manager->remove($adherent);
+        $this->manager->flush();
+    }
+
     public function join(Adherent $user, PlatformMembershipRequest $membershipRequest): void
     {
         $user->updateMembership(

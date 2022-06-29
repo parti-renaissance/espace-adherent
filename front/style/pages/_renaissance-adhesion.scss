@@ -1,0 +1,1032 @@
+.adhesion {
+
+    &__form {
+        width: 550px;
+        background: white;
+        margin: 0 50px 0 auto;
+        text-align: center;
+        box-sizing: border-box;
+
+        @media (max-width: $mobile) {
+            width: 100%;
+            margin: 0;
+        }
+
+        &.donate-adhesion {
+            margin: auto;
+
+            .amount-chooser {
+                &__button,
+                &__other {
+                    border: 1px solid $lines-grey;
+                }
+
+                &__button {
+                    &--selected {
+                        border: none;
+                    }
+                }
+            }
+        }
+
+        form {
+            font-family: $font-roboto;
+            @include text--small;
+            padding: 20px;
+        }
+
+        h2 {
+            font-family: $font-gillsans;
+            font-size: 35px;
+            font-weight: 700;
+            font-style: italic;
+            line-height: 1.15;
+            letter-spacing: -0.7px;
+        }
+
+        h3 {
+            @include text--medium-small;
+            font-family: $font-gillsans;
+        }
+
+        .fluo {
+            background: $yellow;
+            font-family: $font-roboto;
+            padding: 5px 10px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            margin: 10px 0 17px;
+            display: inline-block;
+        }
+
+        .montant {
+            margin-bottom: 20px;
+            text-align: left;
+            @include text--small-plus;
+        }
+
+        &__amount {
+            margin-bottom: 40px;
+
+            .donate__amounts {
+                label.amount {
+                    background: #9b9b9b;
+                    color: white;
+
+                    &:hover {
+                        background: $pink;
+                    }
+                }
+
+                .other-amount {
+                    background: #ececec;
+                }
+            }
+        }
+
+        &__reductions {
+            div:nth-child(1) {
+                margin-top: 40px;
+                font-size: 30px;
+                font-weight: 700;
+            }
+        }
+
+        &__phone {
+            max-width: 200px;
+        }
+
+        &__city {
+            width: 208px;
+        }
+    }
+
+    &__frequency {
+        input {
+            visibility: hidden;
+
+            &:checked + label {
+                background-color: $pink;
+                border-color: $pink;
+                color: #fff;
+            }
+        }
+
+        .btn--frequency {
+            background: $gray;
+            border-color: $gray;
+            color: black;
+            width: 100px;
+        }
+
+        &--amount {
+            border: solid $gray 1px;
+        }
+    }
+
+    &__form-note {
+        top: 110px;
+        position: relative;
+
+        @media (max-width: $tablet) {
+            display: none;
+        }
+    }
+
+    &__form-quote {
+        width: 250px;
+        color: white;
+        font-size: 20px;
+    }
+
+    &__loader {
+        display: none;
+        text-align: center;
+        margin-top: 60px;
+
+        &__text {
+            margin-top: 50px;
+        }
+    }
+
+    &__amount-chooser {
+        position: relative;
+        padding-bottom: 60px;
+
+        &__after-taxes {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 15px 0 25px;
+            font-size: 15px;
+            color: $dark;
+            font-family: $font-roboto;
+
+            .after-taxes-amount {
+                font-size: 20px;
+                font-weight: bold;
+                color: $black;
+            }
+
+            .infos-taxe-reduction {
+                width: 18px;
+                min-width: 18px;
+                height: 18px;
+                display: inline-block;
+                box-sizing: border-box;
+                line-height: 15px;
+                font-size: 13px;
+                text-align: center;
+                border-radius: 20px;
+                border: 2px solid $lines-grey;
+                font-weight: bold;
+                color: $dark;
+                cursor: pointer;
+
+                &__content {
+                    opacity: 0;
+                    pointer-events: none;
+                    z-index: 25;
+                    box-sizing: border-box;
+                    background: #d3e2f0;
+                    padding: 20px;
+                    text-align: left;
+                    border-radius: 3px;
+                    color: $dark;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 35px;
+                    transition: 0.125s opacity ease-in-out;
+                    -webkit-transition: 0.125s opacity ease-in-out;
+
+                    @media (min-width: $tablet) {
+                        width: 480px;
+                        padding: 30px;
+                        right: -20px;
+                        left: auto;
+                    }
+
+                    div {
+                        font-size: 18px;
+                        color: $black;
+                        margin-bottom: 15px;
+                    }
+
+                    p {
+                        font-weight: normal;
+                        font-size: 14px;
+                        line-height: 20px;
+                        margin: 0;
+                    }
+                }
+
+                &:hover {
+                    .infos-taxe-reduction__content {
+                        opacity: 1;
+                        pointer-events: all;
+                    }
+                }
+            }
+        }
+
+        input[type="checkbox"]:checked + label:before {
+            background: $green--apple;
+            border-color: $green--apple;
+        }
+    }
+
+    &__payment {
+        min-height: 100vh;
+    }
+
+    &__loader {
+        margin: auto auto;
+    }
+}
+
+/*
+===================================================================================
+===================================================================================
+*/
+
+// adhesion - Global elements
+@mixin content-mw {
+    max-width: 100%;
+
+    @media (min-width: $tablet) {
+        max-width: calc((100% - 440px) - 10%);
+    }
+}
+
+.adhesion-highlight {
+    color: $blue--dark;
+    font-weight: bold;
+}
+
+.adhesion-reassurance {
+    font-size: 0;
+
+    &__item {
+        display: inline-flex;
+        align-items: center;
+        color: $silver-grey;
+        border-radius: 2px;
+        text-transform: uppercase;
+        margin-right: 20px;
+        line-height: normal;
+
+        span {
+            line-height: 26px;
+            font-size: 14px;
+        }
+
+        svg {
+            padding: 2px;
+            border-radius: 30px;
+            margin-right: 8px;
+            background-color: $blue--extra-light;
+            fill: $inf-modl--text-blue;
+        }
+    }
+
+    &.dark {
+        .adhesion-reassurance__item {
+            color: white;
+        }
+
+        svg {
+            fill: white;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+    }
+}
+
+.adhesion-subtitle {
+    font-family: $font-roboto;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 28px;
+    color: black;
+
+    span {
+        background-color: $blue--extra-light;
+        color: $blue--dark;
+    }
+}
+
+// adhesion Header
+.adhesion__header {
+    position: relative;
+    z-index: 20;
+    color: $white;
+    background-color: #3A3241;
+
+    &.with-bkg {
+        background-image: url('https://storage.googleapis.com/en-marche-prod/static/donation-background.jpg');
+        background-position: center top -245px;
+    }
+
+    &__content {
+        height: 100px;
+        display: flex;
+        align-items: center;
+    }
+
+    &__steps {
+        margin: 0 auto;
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            li {
+                display: inline-block;
+                text-transform: uppercase;
+                font-family: $font-gillsans;
+                font-size: 12px;
+                color: $white;
+                margin: 0 6px;
+                vertical-align: middle;
+
+                &.chevron {
+                    display: none;
+                }
+
+                &.active {
+                    display: inline-block;
+                }
+
+                &.next {
+                    opacity: 0.5;
+                }
+
+                a {
+                    color: $white;
+                    border-color: $white;
+                }
+
+                img {
+                    vertical-align: middle;
+                }
+
+                @media (min-width: $mobile) {
+                    font-size: 14px;
+                    margin: 0 10px;
+
+                    &.chevron {
+                        display: inline-block;
+                    }
+                }
+
+                @media (min-width: $tablet) {
+                    display: inline-block;
+                }
+            }
+        }
+
+        &.right {
+            margin: 0 0 0 auto;
+        }
+    }
+}
+
+/*
+=====================================================================
+*/
+
+// adhesion landing page
+.adhesion__landing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .adhesion__header {
+
+        @media (min-width: $tablet) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: transparent;
+        }
+    }
+
+    // adhesion landing hero
+    .adhesion-hero {
+        position: relative;
+        width: 100%;
+        height: 670px;
+        background-color: black;
+        background-image: url('https://storage.googleapis.com/en-marche-prod/static/donation-background.jpg');
+        background-position: left -450px top -280px;
+        order: 2;
+
+        @media (min-width: $tablet) {
+            order: 1;
+            background-position: center -275px;
+            background-repeat: no-repeat;
+        }
+
+        @media (min-width: 2000px) {
+            background-position: center center;
+            background-size: cover;
+        }
+
+        &__overlay {
+            position: absolute;
+            pointer-events: none;
+            width: 100%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 438px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+        }
+
+        &__container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            color: $white;
+        }
+
+        &__content {
+            width: 100%;
+            @include content-mw;
+            padding-bottom: 70px;
+
+            h1 {
+                line-height: normal;
+                margin-bottom: 30px;
+            }
+
+            p {
+                margin-bottom: 40px;
+            }
+        }
+    }
+}
+
+
+// adhesion box
+.adhesion-box__container {
+    position: relative;
+    background-color: #3A3241;
+    pointer-events: none;
+    padding-bottom: 30px;
+
+    @media (min-width: $tablet) {
+        background-color: transparent;
+        margin-top: -550px;
+        position: sticky;
+        position: -webkit-sticky;
+        position: -moz-sticky;
+        position: -ms-sticky;
+        position: -o-sticky;
+        top: 6vh;
+        order: 2;
+        padding-bottom: 0;
+    }
+
+    .l__wrapper {
+        display: flex;
+        justify-content: center;
+
+        @media (min-width: $tablet) {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.adhesion-box,
+.adhesion-box__flip,
+.adhesion-box__front,
+.adhesion-box__back {
+    height: 620px;
+    width: 100%;
+    max-width: 440px;
+    box-sizing: border-box;
+}
+
+.adhesion-box,
+.adhesion-box__flip {
+    position: relative;
+}
+
+.adhesion-box__front,
+.adhesion-box__back {
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 3px;
+    padding: 50px 20px 0;
+    pointer-events: all;
+
+    &.disable {
+        pointer-events: none;
+    }
+
+    @media (min-width: $mobile) {
+        padding: 50px 50px 0;
+    }
+}
+
+.adhesion-box {
+    pointer-events: all;
+    -webkit-perspective: 1500px;
+    perspective: 1500px;
+
+    &__flip {
+        background-color: white;
+        transition: all 0.5s ease-out;
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        border-radius: 3px;
+        -webkit-perspective: 1500px;
+        perspective: 1500px;
+
+        &.with-shadow {
+            box-shadow: 10px 10px 36px 0 rgba(18, 48, 100, 0.15);
+        }
+
+        &.flipped {
+            -webkit-transform: rotateY(-180deg);
+            -moz-transform: rotateY(-180deg);
+            -ms-transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
+        }
+    }
+
+    &__front {
+        background-color: white;
+        text-align: center;
+    }
+
+    &__back {
+        background-color: white;
+        -webkit-transform: rotateY(180deg);
+        -moz-transform: rotateY(180deg);
+        -ms-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    }
+
+    &__head {
+
+        h1 {
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        h2 {
+            font-family: $font-roboto;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+    }
+
+    &__sending-address {
+        background-color: $gray--pale;
+        border-radius: 3px;
+        padding: 20px;
+        margin: 20px 0 30px;
+    }
+
+    .adhesion-button {
+        width: 100%;
+        position: relative;
+
+        &:disabled {
+            &:before {
+                content: attr(data-error);
+                position: absolute;
+                text-transform: none;
+                width: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                top: -45px;
+                color: $red--spike;
+            }
+        }
+    }
+
+    .adhesion-button-separator {
+        width: 100%;
+        height: 1px;
+        background-color: $lines-grey;
+        margin: 20px 0;
+        position: relative;
+
+        &::before {
+            content: 'ou';
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: bold;
+            background-color: $white;
+            position: absolute;
+            top: -10px;
+            left: calc(50% - 25px);
+            font-family: $font-roboto;
+            width: 50px;
+            text-align: center;
+        }
+    }
+}
+
+.others-sections {
+    order: 3;
+
+    .section {
+        margin-top: 50px;
+
+        @media (min-width: $mobile) {
+            margin-top: 100px;
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+// adhesion section - Distribution
+.adhesion-distribution {
+    padding-top: 50px;
+
+    @media (min-width: $mobile) {
+        padding-top: 75px;
+    }
+
+    @media (min-width: $tablet) {
+        padding-top: 0;
+    }
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+    }
+
+    &__items-list {
+        display: inline;
+        font-size: 0;
+    }
+
+    &__item {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 15px;
+        width: 100%;
+        margin-top: 50px;
+        margin-right: 0;
+
+        @media (min-width: $mobile) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+
+        @media (min-width: $tablet) {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        @media (min-width: 1200px) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+
+        &:last-child {
+            width: 100%;
+            margin-right: 0;
+            max-width: 420px;
+        }
+
+        &--head {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &--amount {
+            display: block;
+            width: 68px;
+            min-width: 68px;
+            height: 68px;
+            text-align: center;
+            line-height: 68px;
+            background-color: $blue--extra-light;
+            color: $blue--dark;
+            margin-right: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        &--title {
+            font-family: $font-roboto;
+            line-height: normal;
+            font-size: 18px;
+        }
+
+        &:first-child .adhesion-distribution__item--amount {
+            background-color: $blue--dark;
+            color: $white;
+        }
+
+        p {
+            color: $silver-dark;
+            letter-spacing: 0.3px;
+            margin: 20px 0 0;
+            font-size: 18px;
+        }
+    }
+}
+
+// adhesion section - Why donate ?
+.adhesion-why {
+    padding-top: 50px;
+
+    @media (min-width: $mobile) {
+        padding-top: 75px;
+    }
+
+    @media (min-width: $tablet) {
+        padding-top: 0;
+    }
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+
+        p {
+            color: $silver-dark;
+            letter-spacing: 0.3px;
+            font-size: 18px;
+        }
+    }
+
+    &__cols {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &__col {
+        width: 100%;
+
+        @media (min-width: $mobile) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+    }
+}
+
+// adhesion section - Transparence
+.adhesion-transparence {
+    background-color: $blue--dark;
+    padding: 50px 0;
+    color: $white;
+
+    @media (min-width: $mobile) {
+        padding: 80px 0;
+    }
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+
+        p {
+            font-size: 18px;
+            letter-spacing: 0.3px;
+        }
+    }
+}
+
+// adhesion section - Reduction ?
+.adhesion-reduction {
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+
+        p {
+            color: $silver-dark;
+            letter-spacing: 0.3px;
+            font-size: 18px;
+        }
+    }
+
+    &__cols {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &__col {
+        width: 100%;
+
+        @media (min-width: $mobile) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+    }
+}
+
+// adhesion section - Brochure
+.adhesion-brochure {
+    margin-top: 50px;
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+        border-top: 1px solid $lines-grey;
+        padding-top: 60px;
+
+        p {
+            font-family: $font-roboto;
+            margin: 0;
+        }
+    }
+
+    &__new {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: bold;
+        line-height: normal;
+        font-family: $font-roboto;
+        color: $blue--dark;
+    }
+
+    &__open {
+        position: relative;
+        top: 5px;
+    }
+}
+
+/*
+=====================================================================
+*/
+
+// adhesion information (form) page
+.adhesion__informations {
+
+    &__form {
+
+        @media (min-width: $mobile) {
+            padding: 0 25px;
+        }
+
+        .em-form__group .em-form__label .em-form__required {
+            color: $blue--dark;
+        }
+    }
+
+    &__recap {
+        border-bottom: 1px solid $lines-grey;
+        margin-bottom: 30px;
+    }
+
+    &__amount {
+        font-size: 50px;
+        font-family: $font-gillsans;
+        line-height: normal;
+        letter-spacing: -.5px;
+
+        span {
+            font-size: 20px;
+        }
+    }
+}
+
+/*
+=====================================================================
+*/
+
+// adhesion result page
+.adhesion__result {
+
+    &__intro {
+        padding-top: 100px;
+
+        &--text {
+            font-family: $font-roboto;
+            color: $silver-dark;
+            font-size: 18px;
+            line-height: 28px;
+        }
+    }
+
+    &__opportunities {
+        margin-top: 100px;
+
+        .opportunities-list {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .opportunity {
+                flex-basis: 100%;
+                padding: 30px;
+                border: 1px solid $lines-grey;
+                text-align: center;
+                box-sizing: border-box;
+                margin-bottom: 24px;
+
+                &.large {
+                    flex-basis: 100%;
+                }
+
+                h2 {
+                    font-weight: normal;
+                    line-height: normal;
+                }
+
+                p {
+                    margin-bottom: 22px;
+                }
+
+                .btn {
+                    font-weight: 500;
+                }
+
+                @media (min-width: $tablet) {
+                    flex-basis: calc(50% - 12px);
+                    padding: 50px;
+                }
+            }
+        }
+    }
+
+    &__failed {
+        box-sizing: border-box;
+        padding: 80px 0;
+        min-height: calc(100vh - 350px);
+    }
+}
+
+/*
+=====================================================================
+*/
+
+// adhesion footer
+.adhesion__footer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 100px;
+    background-color: $pale-grey;
+    min-height: 150px;
+
+    &__sections {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        padding-top: 40px;
+    }
+
+    .footer__section {
+        flex-grow: 1;
+        margin-right: 30px;
+        margin-bottom: 40px;
+
+        h5 {
+            margin: 0 0 10px 0;
+            font-family: $font-roboto;
+            color: $black;
+            font-size: 16px;
+            line-height: normal;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .list__links--svgs li {
+            padding: 0 20px 0 0 !important;
+
+            .fa {
+                font-size: 20px;
+            }
+        }
+    }
+}

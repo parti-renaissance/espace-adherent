@@ -9,6 +9,7 @@ use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -40,6 +41,10 @@ class AdherentFactory
 
         if ($membershipRequest instanceof PlatformMembershipRequest) {
             return $this->createFromPlatformMembershipRequest($membershipRequest);
+        }
+
+        if ($membershipRequest instanceof RenaissanceMembershipRequest) {
+            return $this->createFromRenaisssanceMembershipRequest($membershipRequest);
         }
 
         throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', \get_class($membershipRequest)));
@@ -121,6 +126,38 @@ class AdherentFactory
             [],
             [],
             $request->getMandates(),
+            $request->nationality,
+            $request->customGender
+        );
+
+        if (!$request->isAsUser()) {
+            $adherent->join();
+            $adherent->setPapUserRole(true);
+        }
+
+        return $adherent;
+    }
+
+    public function createFromRenaisssanceMembershipRequest(RenaissanceMembershipRequest $request): Adherent
+    {
+        $adherent = Adherent::create(
+            Adherent::createUuid($request->getEmailAddress()),
+            $request->getEmailAddress(),
+            $this->encodePassword($request->password),
+            $request->gender,
+            $request->firstName,
+            $request->lastName,
+            $request->getBirthdate() ? clone $request->getBirthdate() : null,
+            $request->position,
+            $this->addressFactory->createFromAddress($request->getAddress()),
+            $request->getPhone(),
+            null,
+            false,
+            Adherent::DISABLED,
+            'now',
+            [],
+            [],
+            null,
             $request->nationality,
             $request->customGender
         );

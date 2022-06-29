@@ -1,0 +1,46 @@
+{% extends 'renaissance/adhesion/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            hide(dom('#app-adhesion-redirect-form'));
+            show(dom('#app-adhesion-redirect-loader'));
+            document.getElementById('app-adhesion-redirect-form').submit();
+        });
+    </script>
+{% endblock %}
+
+{% block adhesion_content %}
+    <div class="adhesion__payment">
+        <section class="adhesion__header with-bkg">
+            <div class="l__wrapper">
+                <div class="adhesion__header__content">
+                    <div class="adhesion__header__steps">
+                        <ul>
+                            <li>1. Montant</li>
+                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
+                            <li>2. Informations</li>
+                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
+                            <li>3. Paiement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="l__wrapper text--center b__nudge--top-50">
+            <div class="adhesion__loader" id="app-adhesion-redirect-loader">
+                <p class="adhesion__loader__text text--medium">
+                    Veuillez patienter pendant que nous vous redirigons vers votre banque...
+                </p>
+            </div>
+            <form class="adhesion__nojs" action="{{ url }}" method="post" name="app_adhesion_payment" id="app-adhesion-redirect-form">
+                {% for field in form %}
+                    <input type="{{ field.vars.block_prefixes[1] }}"
+                           name="{{ field.vars.name }}"
+                           {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
+                {% endfor %}
+                <input type="submit" class="form btn btn--red text--center" value="Continuer vers ma banque" />
+            </form>
+        </div>
+    </div>
+{% endblock %}

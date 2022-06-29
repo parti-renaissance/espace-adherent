@@ -198,6 +198,17 @@ class Donation implements GeoPointInterface
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="membershipDonation")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private ?Adherent $adherent = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $source = null;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $type = null,
@@ -607,5 +618,25 @@ class Donation implements GeoPointInterface
     public function getBeneficiary(): ?string
     {
         return $this->beneficiary;
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    public function setAdherent(?Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(?string $source): void
+    {
+        $this->source = $source;
     }
 }

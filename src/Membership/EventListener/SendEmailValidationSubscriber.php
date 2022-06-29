@@ -82,6 +82,7 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
     {
         return [
             UserEvents::USER_CREATED => 'sendConfirmationEmail',
+            UserEvents::RENAISSANCE_USER_SEND_EMAIL_CONFIRMATION => 'sendConfirmationEmail',
         ];
     }
 }

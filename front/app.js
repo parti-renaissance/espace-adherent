@@ -109,6 +109,12 @@ class App {
         this._di.get('form.date_synchronizer').sync(referenceDateFieldName, targetDateFieldName);
     }
 
+    runRenaissanceAdhesion() {
+        System.import('pages/renaissance_adhesion').catch((error) => { throw error; }).then((module) => {
+            module.default('.adhesion-widget-wrapper');
+        });
+    }
+
     runDonation() {
         import('pages/donation').catch((error) => { throw error; }).then((module) => {
             module.default('.donation-widget-wrapper');
@@ -165,6 +171,12 @@ class App {
 
     runJoin(formType) {
         import('pages/join').catch((error) => { throw error; }).then((module) => {
+            module.default(formType);
+        });
+    }
+
+    runRenaissanceAdhesionInformation(formType) {
+        System.import('pages/renaissance_adhesion_information').catch((error) => { throw error; }).then((module) => {
             module.default(formType);
         });
     }
