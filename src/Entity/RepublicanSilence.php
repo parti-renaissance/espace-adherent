@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,17 +22,6 @@ class RepublicanSilence
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * @var ReferentTag[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="ReferentTag")
-     *
-     * @Assert\Count(min=1)
-     *
-     * @Groups({"read_api"})
-     */
-    private $referentTags;
 
     /**
      * @var \DateTime
@@ -63,14 +51,6 @@ class RepublicanSilence
     public function __construct()
     {
         $this->zones = new ArrayCollection();
-    }
-
-    /**
-     * @return ReferentTag[]|Collection
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
     }
 
     public function getId(): int
