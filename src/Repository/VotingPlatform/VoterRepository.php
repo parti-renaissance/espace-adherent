@@ -74,9 +74,13 @@ class VoterRepository extends ServiceEntityRepository
     /**
      * @return Voter[]
      */
-    public function findForElection(Election $election, bool $partial = false): array
-    {
-        return $this->createQueryBuilder('voter')
+    public function findForElection(
+        Election $election,
+        bool $partial = false,
+        int $offset = null,
+        int $limit = null
+    ): array {
+        $queryBuilder = $this->createQueryBuilder('voter')
             ->addSelect($partial ? 'PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}' : 'adherent')
             ->innerJoin('voter.votersLists', 'list')
             ->innerJoin('voter.adherent', 'adherent')
@@ -84,9 +88,17 @@ class VoterRepository extends ServiceEntityRepository
             ->andWhere('voter.isGhost = :false')
             ->setParameter('election', $election)
             ->setParameter('false', false)
-            ->getQuery()
-            ->getResult()
         ;
+
+        if (null !== $offset && null !== $limit) {
+            $queryBuilder
+                ->setMaxResults($limit)
+                ->setFirstResult($offset)
+                ->orderBy('voter.id')
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
