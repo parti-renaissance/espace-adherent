@@ -14,7 +14,6 @@ abstract class AbstractLoadEventData extends Fixture
 {
     private string $environment;
     private FranceCities $franceCities;
-
     protected EventFactory $eventFactory;
     protected EventRegistrationFactory $eventRegistrationFactory;
 

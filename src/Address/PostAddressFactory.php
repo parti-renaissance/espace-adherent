@@ -64,6 +64,7 @@ class PostAddressFactory
             return NullablePostAddress::createFrenchAddress(
                 $address->getAddress(),
                 $address->getCity(),
+                $address->getCityName(),
                 $address->getRegion()
             );
         }

@@ -33,13 +33,12 @@ use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAdherentData extends Fixture implements DependentFixtureInterface
+class LoadAdherentData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     public const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     public const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
@@ -80,12 +79,12 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
     public const DEFAULT_PASSWORD = 'secret!12345';
 
     private AdherentFactory $adherentFactory;
-    private FranceCities $franceCities;
 
     public function __construct(AdherentFactory $adherentFactory, FranceCities $franceCities)
     {
+        parent::__construct($franceCities);
+
         $this->adherentFactory = $adherentFactory;
-        $this->franceCities = $franceCities;
     }
 
     public function load(ObjectManager $manager)
@@ -1264,19 +1263,6 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $manager->persist($resetPasswordToken);
 
         $manager->flush();
-    }
-
-    private function createPostAddress(
-        string $street,
-        string $cityCode,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
-    ): PostAddress {
-        [$postalCode, $inseeCode] = explode('-', $cityCode);
-        $city = $this->franceCities->getCityByInseeCode($inseeCode);
-
-        return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
     }
 
     private function getStandardSubscriptionTypes(): array

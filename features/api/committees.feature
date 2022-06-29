@@ -88,7 +88,6 @@ Feature:
     And I am on "/api/statistics/committees/members/count-by-month"
     Then the response status code should be 401
 
-  @debug
   Scenario: As a referent I can get the committee members count in referent managed zone
     Given I freeze the clock to "2018-04-15"
     Given I send a "POST" request to "/oauth/v2/token" with parameters:

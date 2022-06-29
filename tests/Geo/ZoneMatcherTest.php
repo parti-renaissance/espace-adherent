@@ -6,12 +6,9 @@ use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
 use Tests\App\AbstractKernelTestCase;
-use Tests\App\TestHelperTrait;
 
 class ZoneMatcherTest extends AbstractKernelTestCase
 {
-    use TestHelperTrait;
-
     /**
      * @var ZoneMatcher
      */

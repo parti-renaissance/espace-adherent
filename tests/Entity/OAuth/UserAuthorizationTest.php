@@ -9,12 +9,9 @@ use App\OAuth\Model\Scope;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Tests\App\AbstractKernelTestCase;
-use Tests\App\TestHelperTrait;
 
 class UserAuthorizationTest extends AbstractKernelTestCase
 {
-    use TestHelperTrait;
-
     public function testConstructor(): void
     {
         $authorization = $this->createUserAuthorization();

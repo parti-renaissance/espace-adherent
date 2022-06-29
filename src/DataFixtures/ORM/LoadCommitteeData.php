@@ -7,11 +7,10 @@ use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\CommitteeElection;
 use App\Entity\PostAddress;
 use App\FranceCities\FranceCities;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCommitteeData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -31,12 +30,12 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
     public const COMMITTEE_16_UUID = '9640c5fc-c904-428f-8a79-2d90e555478a';
 
     private $committeeFactory;
-    private FranceCities $franceCities;
 
     public function __construct(CommitteeFactory $committeeFactory, FranceCities $franceCities)
     {
+        parent::__construct($franceCities);
+
         $this->committeeFactory = $committeeFactory;
-        $this->franceCities = $franceCities;
     }
 
     public function load(ObjectManager $manager)
@@ -400,19 +399,6 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
-    }
-
-    private function createPostAddress(
-        string $street,
-        string $cityCode,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
-    ): PostAddress {
-        [$postalCode, $inseeCode] = explode('-', $cityCode);
-        $city = $this->franceCities->getCityByInseeCode($inseeCode);
-
-        return PostAddress::createFrenchAddress($street, $cityCode, $city ? $city->getName() : null, $region, $latitude, $longitude);
     }
 
     public function getDependencies()

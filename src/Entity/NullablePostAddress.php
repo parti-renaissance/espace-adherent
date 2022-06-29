@@ -86,9 +86,9 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
 
     private function __construct(
         string $country,
-        ?string $postalCode,
-        ?string $cityName,
-        ?string $street,
+        ?string $postalCode = null,
+        ?string $cityName = null,
+        ?string $street = null,
         float $latitude = null,
         $longitude = null,
         ?string $region = null
@@ -105,6 +105,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
     public static function createFrenchAddress(
         ?string $street,
         string $cityCode,
+        ?string $cityName = null,
         ?string $region = null,
         float $latitude = null,
         float $longitude = null
@@ -114,7 +115,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         $address = new self(
             self::FRANCE,
             $postalCode,
-            null,
+            $cityName,
             $street,
             $latitude,
             $longitude,

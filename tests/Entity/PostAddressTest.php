@@ -4,12 +4,9 @@ namespace Tests\App\Entity;
 
 use App\Entity\PostAddress;
 use Tests\App\AbstractKernelTestCase;
-use Tests\App\TestHelperTrait;
 
 class PostAddressTest extends AbstractKernelTestCase
 {
-    use TestHelperTrait;
-
     public function testCreateFullFrenchAddress()
     {
         $address = $this->createPostAddress('92 bld Victor Hugo', '92110-92024', null, 48.123456, 5.987654);
