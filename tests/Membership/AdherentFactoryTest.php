@@ -9,15 +9,15 @@ use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use libphonenumber\PhoneNumber;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group membership
  */
-class AdherentFactoryTest extends TestCase
+class AdherentFactoryTest extends AbstractKernelTestCase
 {
     public function testCreateNonFrenchAdherentFromArray()
     {
@@ -64,7 +64,7 @@ class AdherentFactoryTest extends TestCase
             'gender' => 'male',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182'),
+            'address' => $this->createPostAddress('122 rue de Mouxy', '73100-73182'),
             'birthdate' => '1950-07-08',
             'position' => ActivityPositionsEnum::RETIRED,
             'phone' => '+330102030405',

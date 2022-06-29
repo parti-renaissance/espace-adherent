@@ -4,15 +4,14 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
-use App\Entity\PostAddress;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\FranceCities\FranceCities;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
+class LoadDefaultEventData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     private const EVENT_1_UUID = '5cab27a7-dbb3-4347-9781-566dad1b9eb5';
     private const EVENT_2_UUID = '2b7238f9-10ca-4a39-b8a4-ad7f438aa95f';
@@ -21,8 +20,10 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
 
     private $eventRegistrationFactory;
 
-    public function __construct(EventRegistrationFactory $eventRegistrationFactory)
+    public function __construct(EventRegistrationFactory $eventRegistrationFactory, FranceCities $franceCities)
     {
+        parent::__construct($franceCities);
+
         $this->eventRegistrationFactory = $eventRegistrationFactory;
     }
 
@@ -42,7 +43,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event1->setMode(BaseEvent::MODE_ONLINE);
         $event1->setTimeZone('Europe/Paris');
         $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
-        $event1->setPostAddress(PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
+        $event1->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
         $event1->setOrganizer($referent);
 
         $event2 = new DefaultEvent(Uuid::fromString(self::EVENT_2_UUID));
@@ -58,7 +59,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event2->setOrganizer($referent);
         $event2->setPrivate(true);
         $event2->setElectoral(true);
-        $event2->setPostAddress(PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
+        $event2->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
         $event2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
 
         $event3 = new DefaultEvent(Uuid::fromString(self::EVENT_3_UUID));
@@ -72,7 +73,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event3->setMode(BaseEvent::MODE_ONLINE);
         $event3->setTimeZone('Europe/Paris');
         $event3->setOrganizer($referent);
-        $event3->setPostAddress(PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
+        $event3->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
         $event3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $event3->cancel();
 
@@ -87,7 +88,7 @@ class LoadDefaultEventData extends Fixture implements DependentFixtureInterface
         $event4->setMode(BaseEvent::MODE_MEETING);
         $event4->setTimeZone('Europe/Paris');
         $event4->setOrganizer($senatorialCandidate);
-        $event4->setPostAddress(PostAddress::createFrenchAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
+        $event4->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
 

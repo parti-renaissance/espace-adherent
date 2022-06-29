@@ -6,34 +6,32 @@ use App\Coalition\CoalitionUrlGenerator;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
-use App\Entity\PostAddress;
 use App\Event\EventRegistrationEvent;
 use App\Event\EventRegistrationSubscriber;
 use App\Mailer\MailerService;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class EventRegistrationSubscriberTest extends TestCase
+class EventRegistrationSubscriberTest extends AbstractKernelTestCase
 {
     private const REGISTRATION_UUID = '75aac96a-9cba-4bd8-91f4-414d269ca0b0';
     private const EVENT_UUID = 'a103e823-1bd1-406d-81ec-d1f764437d1b';
     private const EVENT_SLUG = '/foobar-slug';
 
-    /** @var MailerService */
-    private $mailer;
+    private ?MailerService $mailer;
     private $urlGenerator;
     private $coalitionUrlGenerator;
 
     /**
      * @dataProvider provideEventRegistrationCreated
      */
-    public function testSendRegistrationEmail(?EventRegistration $registration, bool $sendMail)
+    public function testSendRegistrationEmail(bool $sendMail)
     {
         $eventSubscriber = new EventRegistrationSubscriber($this->mailer, $this->urlGenerator, $this->coalitionUrlGenerator);
 
         $eventRegistrationEvent = new EventRegistrationEvent(
-            $registration,
+            $this->createRegistration(),
             self::EVENT_SLUG,
             $sendMail
         );
@@ -53,10 +51,12 @@ class EventRegistrationSubscriberTest extends TestCase
         $eventSubscriber->sendRegistrationEmail($eventRegistrationEvent);
     }
 
-    public function provideEventRegistrationCreated(): iterable
+    public function provideEventRegistrationCreated(): array
     {
-        yield [$this->createRegistration(), true];
-        yield [$this->createRegistration(), false];
+        return [
+            [true],
+            [false],
+        ];
     }
 
     private function createRegistration(): EventRegistration
@@ -80,7 +80,7 @@ class EventRegistrationSubscriberTest extends TestCase
             'My name',
             new EventCategory(),
             'My description',
-            PostAddress::createFrenchAddress('street', '59000-59000'),
+            $this->createPostAddress('street', '59000-59000'),
             '2017-01-01',
             '2017-01-04'
         );

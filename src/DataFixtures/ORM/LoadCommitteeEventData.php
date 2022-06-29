@@ -13,6 +13,7 @@ use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
+use App\FranceCities\FranceCities;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -47,9 +48,10 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         string $environment,
         EventFactory $eventFactory,
         EventRegistrationFactory $eventRegistrationFactory,
-        CommitteeFeedManager $committeeFeedManager
+        CommitteeFeedManager $committeeFeedManager,
+        FranceCities $franceCities
     ) {
-        parent::__construct($environment, $eventFactory, $eventRegistrationFactory);
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
 
         $this->committeeFeedManager = $committeeFeedManager;
     }
@@ -95,7 +97,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Événement de la catégorie masquée',
             'category' => $hiddenEventCategory,
             'description' => 'Allons à la rencontre des citoyens.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 10,
@@ -110,7 +112,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Réunion de réflexion parisienne',
             'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('+3 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
@@ -126,7 +128,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Réunion de réflexion dammarienne',
             'category' => $eventCategory1,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
+            'address' => $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.624205),
             'begin_at' => (new Chronos('+10 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+10 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
@@ -141,7 +143,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Réunion de réflexion bellifontaine',
             'category' => $eventCategory2,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
+            'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
             'begin_at' => (new Chronos('tomorrow'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('tomorrow'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
@@ -158,7 +160,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Réunion de réflexion évryenne',
             'category' => $eventCategory3,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
+            'address' => $this->createPostAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.624157, 2.4266),
             'begin_at' => (new Chronos('+15 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+15 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
@@ -172,7 +174,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Réunion de réflexion marseillaise',
             'category' => $eventCategory6,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+            'address' => $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             'begin_at' => (new Chronos('+17 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+17 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 1,
@@ -186,7 +188,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Réunion de réflexion parisienne annulé',
             'category' => $eventCategory5,
             'description' => 'Nous allons échanger autour de différents sujets',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('+60 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('+60 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
@@ -202,7 +204,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Grand Meeting de Paris',
             'category' => $eventCategory5,
             'description' => 'Unissons nos forces pour la Présidentielle !',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => '2017-02-20 09:30:00',
             'finish_at' => '2017-02-20 19:30:00',
             'capacity' => 2000,
@@ -217,7 +219,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Grand Meeting de Marseille',
             'category' => $eventCategory5,
             'description' => 'Unissons nos forces pour la Présidentielle !',
-            'address' => PostAddress::createFrenchAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
+            'address' => $this->createPostAddress('2 Place de la Major', '13002-13202', null, 43.2984913, 5.3623771),
             'begin_at' => '2017-02-20 09:30:00',
             'finish_at' => '2017-02-20 19:00:00',
             'capacity' => 2000,
@@ -231,7 +233,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Marche Parisienne',
             'category' => $eventCategory10,
             'description' => 'Allons à la rencontre des citoyens.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => '2017-03-07 12:30:00',
             'finish_at' => '2017-03-07 17:30:00',
             'capacity' => 20,
@@ -246,7 +248,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Grand débat parisien',
             'category' => $eventCategory10,
             'description' => 'Débatons ensemble du programme.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('yesterday'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
@@ -336,7 +338,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Référent event',
             'category' => $eventCategory9,
             'description' => 'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('now'))->format('Y-m-d').' 09:00:00',
             'finish_at' => (new Chronos('now'))->format('Y-m-d').' 18:00:00',
             'capacity' => 15,
@@ -351,7 +353,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Événement à Paris 1',
             'category' => $eventCategory10,
             'description' => 'Allons à la rencontre des citoyens.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('-3 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('-3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
@@ -366,7 +368,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Événement à Paris 2',
             'category' => $eventCategory1,
             'description' => 'Allons à la rencontre des citoyens.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
             'begin_at' => (new Chronos('-10 days'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('-10 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
@@ -381,7 +383,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Événements à Fontainebleau 1',
             'category' => $eventCategory5,
             'description' => 'Allons à la rencontre des citoyens.',
-            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
+            'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
             'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 09:30:00',
             'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
@@ -395,7 +397,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             'name' => 'Événements à Fontainebleau 2',
             'category' => $eventCategory3,
             'description' => 'Allons à la rencontre des citoyens.',
-            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
+            'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759),
             'begin_at' => (new Chronos('-1 month'))->format('Y-m-d').' 10:30:00',
             'finish_at' => (new Chronos('-1 month'))->format('Y-m-d').' 19:30:00',
             'capacity' => 50,

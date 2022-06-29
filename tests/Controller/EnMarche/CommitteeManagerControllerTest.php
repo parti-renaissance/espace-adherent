@@ -123,7 +123,7 @@ class CommitteeManagerControllerTest extends WebTestCase
                     'address' => '62 avenue des Champs-Élysées',
                     'postalCode' => '75008',
                     'city' => '75008-75108',
-                    'cityName' => 'Paris 8e',
+                    'cityName' => 'Paris 8ème',
                 ],
                 'facebookPageUrl' => 'https://www.facebook.com/NouveauEnMarche',
                 'twitterNickname' => '@nvenmarche',
@@ -140,7 +140,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('62 avenue des Champs-Élysées', $crawler->filter('#committee_address_address')->attr('value'));
         $this->assertSame('75008', $crawler->filter('#committee_address_postalCode')->attr('value'));
         $this->assertSame('75008-75108', $crawler->filter('#committee_address_city')->attr('value'));
-        $this->assertSame('Paris 8e', $crawler->filter('#committee_address_cityName')->attr('value'));
+        $this->assertSame('Paris 8ème', $crawler->filter('#committee_address_cityName')->attr('value'));
         $this->assertSame('France', $crawler->filter('#committee_address_country option:selected')->text());
         $this->assertSame('https://www.facebook.com/NouveauEnMarche', $crawler->filter('#committee_facebookPageUrl')->attr('value'));
         $this->assertSame('nvenmarche', $crawler->filter('#committee_twitterNickname')->attr('value'));
@@ -456,7 +456,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         self::assertCount(0, $crawler->filter('.member-name img.b__nudge--left-nano'));
         self::assertCount(0, $crawler->filter('.member-phone'));
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
-        self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
+        self::assertSame('Paris 8ème', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
         self::assertCount(4, $crawler->filter('.member-status .em-tooltip'));
         self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
@@ -567,7 +567,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         self::assertCount(1, $crawler->filter('.member-name img.b__nudge--left-nano'));
         self::assertSame('+33 1 87 26 42 36', trim($crawler->filter('.member-phone')->eq(0)->text()));
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
-        self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
+        self::assertSame('Paris 8ème', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
         self::assertCount(8, $crawler->filter('.member-status .em-tooltip'));
         self::assertSame('Vote dans ce comité', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());

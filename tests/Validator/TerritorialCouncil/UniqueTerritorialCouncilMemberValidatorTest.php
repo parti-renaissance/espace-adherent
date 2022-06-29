@@ -72,7 +72,7 @@ class UniqueTerritorialCouncilMemberValidatorTest extends ConstraintValidatorTes
             'SL',
             new \DateTime('1990-01-01'),
             ActivityPositionsEnum::EMPLOYED,
-            PostAddress::createFrenchAddress('92-98 Boulevard Victor Hugo', '92110-92024')
+            PostAddress::createFrenchAddress('92-98 Boulevard Victor Hugo', '92110-92024', 'Clichy')
         );
 
         $this->validator = $this->createCustomValidatorSuccess($territorialCouncil, $adherent, $foundAdherent, 'referent');

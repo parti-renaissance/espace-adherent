@@ -5,18 +5,15 @@ namespace Tests\App\Api;
 use App\Api\EventProvider;
 use App\Entity\Event\CommitteeEvent;
 use App\Repository\EventRepository;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Tests\App\TestHelperTrait;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group api
  */
-class EventProviderTest extends TestCase
+class EventProviderTest extends AbstractKernelTestCase
 {
-    use TestHelperTrait;
-
     public function testGetUpcomingEvents()
     {
         $events[] = $event1 = $this->createCommitteeEventMock(

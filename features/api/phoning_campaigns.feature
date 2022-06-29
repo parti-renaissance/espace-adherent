@@ -1002,7 +1002,7 @@ Feature:
     """
     {
      "adherent": {
-       "info": "Député, @integer@ ans, habitant Paris 2e (75002). N’a encore jamais été appelé.",
+       "info": "Député, @integer@ ans, habitant Paris 2ème (75002). N’a encore jamais été appelé.",
        "gender": "male",
        "phone": {
          "country": "FR",

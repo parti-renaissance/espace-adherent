@@ -3,13 +3,13 @@
 namespace Tests\App\Entity;
 
 use App\Entity\PostAddress;
-use PHPUnit\Framework\TestCase;
+use Tests\App\AbstractKernelTestCase;
 
-class PostAddressTest extends TestCase
+class PostAddressTest extends AbstractKernelTestCase
 {
     public function testCreateFullFrenchAddress()
     {
-        $address = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024', null, 48.123456, 5.987654);
+        $address = $this->createPostAddress('92 bld Victor Hugo', '92110-92024', null, 48.123456, 5.987654);
 
         $this->assertSame('FR', $address->getCountry());
         $this->assertSame('92 bld Victor Hugo', $address->getAddress());
@@ -47,8 +47,8 @@ class PostAddressTest extends TestCase
 
     public function testEquals()
     {
-        $address1 = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024');
-        $address2 = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024');
+        $address1 = $this->createPostAddress('92 bld Victor Hugo', '92110-92024');
+        $address2 = $this->createPostAddress('92 bld Victor Hugo', '92110-92024');
 
         $this->assertTrue($address1->equals($address2));
         $this->assertTrue($address2->equals($address1));
@@ -56,8 +56,8 @@ class PostAddressTest extends TestCase
 
     public function testNotEquals()
     {
-        $address1 = PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024');
-        $address2 = PostAddress::createFrenchAddress('94 bld Victor Hugo', '92110-92024');
+        $address1 = $this->createPostAddress('92 bld Victor Hugo', '92110-92024');
+        $address2 = $this->createPostAddress('94 bld Victor Hugo', '92110-92024');
 
         $this->assertFalse($address1->equals($address2));
         $this->assertFalse($address2->equals($address1));

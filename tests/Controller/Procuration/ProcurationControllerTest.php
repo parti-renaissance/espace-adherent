@@ -433,7 +433,7 @@ class ProcurationControllerTest extends WebTestCase
         $procurationRequest->setCountry('FR');
         $procurationRequest->setPostalCode('75009');
         $procurationRequest->setCity('75009-75109');
-        $procurationRequest->setCityName('Paris 9e');
+        $procurationRequest->setCityName('Paris 9ème');
         $procurationRequest->setPhone($this->createPhoneNumber('33', '727363643'));
         $procurationRequest->setBirthdate(date_create_from_format('Y m d His', '1989 9 17 000000'));
 

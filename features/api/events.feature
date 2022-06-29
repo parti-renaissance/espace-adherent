@@ -279,7 +279,7 @@ Feature:
                     "address": "2 Place de la Major",
                     "postal_code": "13002",
                     "city": "13002-13202",
-                    "city_name": "Marseille 2e",
+                    "city_name": "Marseille 2ème",
                     "country": "FR",
                     "latitude": 43.298492,
                     "longitude": 5.362377
@@ -555,7 +555,7 @@ Feature:
                     "address": "2 Place de la Major",
                     "postal_code": "13002",
                     "city": "13002-13202",
-                    "city_name": "Marseille 2e",
+                    "city_name": "Marseille 2ème",
                     "country": "FR",
                     "latitude": 43.298492,
                     "longitude": 5.362377
@@ -651,7 +651,7 @@ Feature:
                     "address": "2 Place de la Major",
                     "postal_code": "13002",
                     "city": "13002-13202",
-                    "city_name": "Marseille 2e",
+                    "city_name": "Marseille 2ème",
                     "country": "FR",
                     "latitude": 43.298492,
                     "longitude": 5.362377
@@ -910,7 +910,7 @@ Feature:
                     "address": "2 Place de la Major",
                     "postal_code": "13002",
                     "city": "13002-13202",
-                    "city_name": "Marseille 2e",
+                    "city_name": "Marseille 2ème",
                     "country": "FR",
                     "latitude": 43.298492,
                     "longitude": 5.362377
@@ -1202,7 +1202,7 @@ Feature:
             "address": "60 avenue des Champs-Élysées",
             "postal_code": "75008",
             "city": "75008-75108",
-            "city_name": "Paris 8e",
+            "city_name": "Paris 8ème",
             "country": "FR",
             "latitude": 48.870506,
             "longitude": 2.313243
@@ -1255,7 +1255,7 @@ Feature:
             "address": "60 avenue des Champs-Élysées",
             "postal_code": "75008",
             "city": "75008-75108",
-            "city_name": "Paris 8e",
+            "city_name": "Paris 8ème",
             "country": "FR",
             "latitude": 48.870506,
             "longitude": 2.313243
@@ -1293,7 +1293,7 @@ Feature:
        "post_address": {
           "address": "50 rue de la villette",
           "postal_code": "69003",
-          "city_name": "Lyon 3e",
+          "city_name": "Lyon 3ème",
           "country": "FR"
         }
     }
@@ -1352,7 +1352,7 @@ Feature:
         "post_address": {
           "address": "62 avenue des champs-élysées",
           "postal_code": "75008",
-          "city_name": "Paris 8e",
+          "city_name": "Paris 8ème",
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
@@ -1388,7 +1388,7 @@ Feature:
         "post_address": {
           "address": "62 avenue des champs-élysées",
           "postal_code": "75008",
-          "city_name": "Paris 8e",
+          "city_name": "Paris 8ème",
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
@@ -1420,7 +1420,7 @@ Feature:
             "address": "62 avenue des champs-élysées",
             "postal_code": "75008",
             "city": "75008-75108",
-            "city_name": "Paris 8e",
+            "city_name": "Paris 8ème",
             "country": "FR",
             "latitude": 48.870590,
             "longitude": 2.305370

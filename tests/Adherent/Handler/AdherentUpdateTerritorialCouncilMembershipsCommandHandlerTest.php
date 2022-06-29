@@ -15,7 +15,6 @@ use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\Geo\Zone;
-use App\Entity\PostAddress;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
@@ -54,15 +53,15 @@ use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends TestCase
+class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends AbstractKernelTestCase
 {
     private const QUALITIES_DEPENDING_ON_FUNCTION = [
         PoliticalFunctionNameEnum::PRESIDENT_OF_DEPARTMENTAL_COUNCIL => TerritorialCouncilQualityEnum::DEPARTMENTAL_COUNCIL_PRESIDENT,
@@ -70,12 +69,9 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
         PoliticalFunctionNameEnum::PRESIDENT_OF_REGIONAL_COUNCIL => TerritorialCouncilQualityEnum::REGIONAL_COUNCIL_PRESIDENT,
     ];
 
-    /** @var Adherent */
-    private $adherent;
-    /** @var TerritorialCouncil */
-    private $actualTC;
-    /** @var TerritorialCouncil */
-    private $newTC;
+    private ?Adherent $adherent;
+    private ?TerritorialCouncil $actualTC;
+    private ?TerritorialCouncil $newTC;
 
     /**
      * @dataProvider provideData
@@ -1035,7 +1031,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
             Uuid::uuid4(),
             "Committee for $type",
             "Description of the committee for $type",
-            PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3132432)
+            $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3132432)
         );
     }
 }

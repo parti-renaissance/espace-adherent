@@ -5,14 +5,11 @@ namespace Tests\App\Entity;
 use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenMismatchException;
 use App\ValueObject\SHA1;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
-use Tests\App\TestHelperTrait;
+use Tests\App\AbstractKernelTestCase;
 
-abstract class AbstractAdherentTokenTest extends TestCase
+abstract class AbstractAdherentTokenTest extends AbstractKernelTestCase
 {
-    use TestHelperTrait;
-
     protected $tokenClass;
 
     public function testCannotCreateExpiredToken()

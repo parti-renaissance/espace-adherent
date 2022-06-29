@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationFactory;
+use App\FranceCities\FranceCities;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -16,9 +16,10 @@ class LoadInstitutionalEventData extends AbstractLoadEventData implements Depend
     public function __construct(
         string $environment,
         EventFactory $eventFactory,
-        EventRegistrationFactory $eventRegistrationFactory
+        EventRegistrationFactory $eventRegistrationFactory,
+        FranceCities $franceCities
     ) {
-        parent::__construct($environment, $eventFactory, $eventRegistrationFactory);
+        parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
     }
 
     public function loadEvents(ObjectManager $manager): void
@@ -29,7 +30,7 @@ class LoadInstitutionalEventData extends AbstractLoadEventData implements Depend
             'name' => 'Evénement institutionnel numéro 1',
             'category' => $this->getReference('institutional-event-category-1'),
             'description' => 'Un événement institutionnel',
-            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
+            'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
             'begin_at' => (new Chronos('+3 days'))->setTime(9, 30, 00, 000),
             'finish_at' => (new Chronos('+3 days'))->setTime(19, 00, 00, 000),
             'capacity' => 10,

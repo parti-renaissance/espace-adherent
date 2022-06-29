@@ -6,11 +6,11 @@ use App\Committee\CommitteeFactory;
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\CommitteeElection;
 use App\Entity\PostAddress;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\FranceCities\FranceCities;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadCommitteeData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -31,8 +31,10 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
 
     private $committeeFactory;
 
-    public function __construct(CommitteeFactory $committeeFactory)
+    public function __construct(CommitteeFactory $committeeFactory, FranceCities $franceCities)
     {
+        parent::__construct($franceCities);
+
         $this->committeeFactory = $committeeFactory;
     }
 
@@ -48,7 +50,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche Paris 8',
             'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
-            'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3132432),
+            'address' => $this->createPostAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3132432),
             'phone' => '+33187264236',
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
@@ -64,7 +66,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-01-12 19:34:12',
             'name' => 'En Marche Marseille 3',
             'description' => "En Marche ! C'est aussi à Marseille !",
-            'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
+            'address' => $this->createPostAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
             'phone' => '+33673643424',
         ]);
         $this->addReference('committee-2', $committee2);
@@ -76,7 +78,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche Dammarie-les-Lys',
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
-            'address' => PostAddress::createFrenchAddress('826 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
+            'address' => $this->createPostAddress('826 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
             'phone' => '+33673654349',
             'name_locked' => true,
         ]);
@@ -90,7 +92,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-01-19 08:36:55',
             'name' => 'Antenne En Marche de Fontainebleau',
             'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
-            'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.4047652, 2.6987591),
+            'address' => $this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.4047652, 2.6987591),
             'phone' => '+33673654349',
         ]);
         $committee4->approved('-35 days');
@@ -103,7 +105,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-01-19 10:54:28',
             'name' => 'En Marche - Comité de Évry',
             'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
-            'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
+            'address' => $this->createPostAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
             'phone' => '+33673654349',
         ]);
         $committee5->approved();
@@ -116,7 +118,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-03-18 20:12:33',
             'name' => 'En Marche - Comité de Rouen',
             'description' => 'En Marche pour la France et la ville de Rouen.',
-            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
+            'address' => $this->createPostAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
             'phone' => '+33234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
@@ -246,7 +248,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'created_at' => '2021-01-03 09:00:00',
             'name' => 'Une nouvelle demande',
             'description' => 'Nouveau dans l\'année 2021',
-            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
+            'address' => $this->createPostAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
             'phone' => '+33673654349',
         ]);
         $this->addReference('committee-16', $committee16);

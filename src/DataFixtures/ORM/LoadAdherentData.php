@@ -27,18 +27,18 @@ use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
 use App\Entity\SenatorialCandidateManagedArea;
+use App\FranceCities\FranceCities;
 use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAdherentData extends Fixture implements DependentFixtureInterface
+class LoadAdherentData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     public const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     public const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
@@ -78,10 +78,12 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
-    private $adherentFactory;
+    private AdherentFactory $adherentFactory;
 
-    public function __construct(AdherentFactory $adherentFactory)
+    public function __construct(AdherentFactory $adherentFactory, FranceCities $franceCities)
     {
+        parent::__construct($franceCities);
+
         $this->adherentFactory = $adherentFactory;
     }
 
@@ -113,7 +115,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
-            'address' => PostAddress::createFrenchAddress('826 avenue du lys', '77190-77152', null, 48.5182193, .624205),
+            'address' => $this->createPostAddress('826 avenue du lys', '77190-77152', null, 48.5182193, .624205),
             'birthdate' => '1950-07-08',
             'position' => 'retired',
             'phone' => '+33111223344',
@@ -139,7 +141,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nickname_used' => true,
             'first_name' => 'Jacques',
             'last_name' => 'Picard',
-            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
+            'address' => $this->createPostAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
             'birthdate' => '1953-04-03',
             'position' => 'retired',
             'phone' => '+33187264236',
@@ -172,7 +174,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Lucie',
             'last_name' => 'Olivera',
-            'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109', null, 48.8713224, 2.3353755),
+            'address' => $this->createPostAddress('13 boulevard des Italiens', '75009-75109', null, 48.8713224, 2.3353755),
             'birthdate' => '1989-09-17',
             'position' => 'student',
             'phone' => '+33727363643',
@@ -203,7 +205,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Gisele',
             'last_name' => 'Berthoux',
-            'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
+            'address' => $this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
             'birthdate' => '1983-12-24',
             'position' => 'unemployed',
             'phone' => '+33138764334',
@@ -231,7 +233,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Benjamin',
             'last_name' => 'Duroc',
-            'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203', null, 43.3062866, 5.3791498),
+            'address' => $this->createPostAddress('39 rue de Crimée', '13003-13203', null, 43.3062866, 5.3791498),
             'birthdate' => '1987-02-08',
             'position' => 'employed',
             'phone' => '+33673643424',
@@ -257,7 +259,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Francis',
             'last_name' => 'Brioul',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -282,7 +284,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Laura',
             'last_name' => 'Deloche',
-            'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
+            'address' => $this->createPostAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
             'birthdate' => '1973-04-11',
             'position' => 'employed',
             'phone' => '+33234823644',
@@ -433,7 +435,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Patrick',
             'last_name' => 'Bialès',
-            'address' => PostAddress::createFrenchAddress('26 Rue Louis Blanc', '75010-75110', null, 50.649561, 3.0644126),
+            'address' => $this->createPostAddress('26 Rue Louis Blanc', '75010-75110', null, 50.649561, 3.0644126),
             'birthdate' => '1950-07-25',
             'position' => 'commissioner',
             'phone' => '+33712345678',
@@ -451,7 +453,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Jean-Claude',
             'last_name' => 'Dusse',
-            'address' => PostAddress::createFrenchAddress('13 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
+            'address' => $this->createPostAddress('13 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
             'birthdate' => '1952-04-16',
             'position' => 'commissioner',
             'phone' => '+33712345678',
@@ -470,7 +472,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => 'FR',
             'first_name' => 'Bernard',
             'last_name' => 'Morin',
-            'address' => PostAddress::createFrenchAddress('230 Rue du Moulin', '59246-59411', null, 50.481964435189084, 3.10317921728396),
+            'address' => $this->createPostAddress('230 Rue du Moulin', '59246-59411', null, 50.481964435189084, 3.10317921728396),
             'birthdate' => '1951-05-04',
             'position' => 'commissioner',
             'phone' => '+33712345678',
@@ -489,7 +491,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nickname_used' => true,
             'first_name' => 'Cédric',
             'last_name' => 'Lebon',
-            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
+            'address' => $this->createPostAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
             'birthdate' => '1967-01-03',
             'position' => 'retired',
             'phone' => '+33187264236',
@@ -505,7 +507,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Referent',
             'last_name' => 'Referent',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -544,7 +546,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'female',
             'first_name' => 'Referent75and77',
             'last_name' => 'Referent75and77',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '75001-75101', null, 48.5278939, 2.6484923),
             'birthdate' => '1970-01-08',
             'position' => 'employed',
             'phone' => '+336765204050',
@@ -573,7 +575,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Referent child',
             'last_name' => 'Referent child',
-            'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('3 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-02-07',
             'position' => 'employed',
             'registered_at' => '2017-01-25 19:31:45',
@@ -598,7 +600,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Coordinateur',
             'last_name' => 'Coordinateur',
-            'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', null, 48.805347, 2.325805),
+            'address' => $this->createPostAddress('75 Avenue Aristide Briand', '94110-94003', null, 48.805347, 2.325805),
             'birthdate' => '1969-04-10',
             'position' => 'employed',
             'phone' => '+33665859053',
@@ -616,7 +618,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'female',
             'first_name' => 'Coordinatrice',
             'last_name' => 'CITIZEN PROJECT [OLD]',
-            'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', null, 48.8704135, 2.324256),
+            'address' => $this->createPostAddress('Place de la Madeleine', '75008-75108', null, 48.8704135, 2.324256),
             'birthdate' => '1989-03-13',
             'position' => 'employed',
             'phone' => '+33665859053',
@@ -635,7 +637,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Député',
             'last_name' => 'PARIS I',
-            'address' => PostAddress::createFrenchAddress('3 Avenue du Général Eisenhower', '75008-75108', null, 48.8665777, 2.311635),
+            'address' => $this->createPostAddress('3 Avenue du Général Eisenhower', '75008-75108', null, 48.8665777, 2.311635),
             'birthdate' => '1982-06-02',
             'registered_at' => '2017-06-01 09:26:31',
         ]);
@@ -663,7 +665,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Député',
             'last_name' => 'PARIS II',
-            'address' => PostAddress::createFrenchAddress('26 rue Vivienne', '75002-75102', null, 48.870025, 2.340985),
+            'address' => $this->createPostAddress('26 rue Vivienne', '75002-75102', null, 48.870025, 2.340985),
             'birthdate' => '1975-04-01',
             'registered_at' => '2018-08-05 15:02:34',
             'phone' => '+33187656781',
@@ -684,7 +686,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Député',
             'last_name' => 'CHLI FDESIX',
-            'address' => PostAddress::createFrenchAddress('1 Place Colette', '75001-75101', null, 48.863571, 2.335938),
+            'address' => $this->createPostAddress('1 Place Colette', '75001-75101', null, 48.863571, 2.335938),
             'birthdate' => '1979-07-02',
             'registered_at' => '2017-06-26 10:15:17',
         ]);
@@ -704,7 +706,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Bob',
             'last_name' => 'Senateur (59)',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1992-07-28',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -724,7 +726,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Municipal 1',
             'last_name' => 'Chef 1',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1992-07-28',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -744,7 +746,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Municipal 2',
             'last_name' => 'Chef 2',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -762,7 +764,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Municipal 3',
             'last_name' => 'Chef 3',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -780,7 +782,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Bob',
             'last_name' => 'Assesseur',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -798,7 +800,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'female',
             'first_name' => 'Isabelle',
             'last_name' => 'Responsable Communal',
-            'address' => PostAddress::createFrenchAddress('12 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
+            'address' => $this->createPostAddress('12 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
             'birthdate' => '1983-08-27',
             'position' => 'employed',
             'phone' => '+33673654350',
@@ -814,7 +816,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'gender' => 'male',
             'first_name' => 'Jean-Baptiste',
             'last_name' => 'Fortin',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
             'phone' => '+33673654349',
@@ -835,7 +837,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Adrien',
             'last_name' => 'Petit',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699008800',
@@ -855,7 +857,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Agathe',
             'last_name' => 'Petit',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
@@ -874,7 +876,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Étienne',
             'last_name' => 'Petit',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699887766',
@@ -894,7 +896,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Denise',
             'last_name' => 'Durand',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
@@ -912,7 +914,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Léon',
             'last_name' => 'Moreau',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330688887766',
@@ -931,7 +933,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Claire',
             'last_name' => 'Moreau',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
@@ -949,7 +951,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Alfred',
             'last_name' => 'Leroy',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330677887766',
@@ -968,7 +970,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Geneviève',
             'last_name' => 'Leroy',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
@@ -986,7 +988,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Guillaume',
             'last_name' => 'Richard',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330666887766',
@@ -1005,7 +1007,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Denise',
             'last_name' => 'Richard',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
@@ -1023,7 +1025,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Jeanne',
             'last_name' => 'Simon',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-03-04',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
@@ -1044,7 +1046,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
                 'nationality' => Address::FRANCE,
                 'first_name' => 'Adherent '.$index,
                 'last_name' => 'Fa'.$index.'ke',
-                'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+                'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
                 'birthdate' => '1962-03-04',
                 'registered_at' => '2017-01-25 19:31:45',
                 'phone' => "+3306998877$index",
@@ -1066,7 +1068,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Jules',
             'last_name' => 'Fullstack',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1942-01-10',
             'registered_at' => '2017-01-25 19:31:45',
             'phone' => '+330699008800',
@@ -1086,7 +1088,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Jerome',
             'last_name' => 'Musk',
-            'address' => PostAddress::createFrenchAddress('44 rue des courcelles', '75008-75108'),
+            'address' => $this->createPostAddress('44 rue des courcelles', '75008-75108'),
             'birthdate' => '1969-06-10',
             'registered_at' => '2020-05-02 19:31:45',
             'phone' => '+330699008800',
@@ -1105,7 +1107,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'nationality' => Address::FRANCE,
             'first_name' => 'Luis',
             'last_name' => 'Phplover',
-            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1942-01-10',
             'registered_at' => '2017-01-25 19:31:45',
             'is_adherent' => false,

@@ -29,7 +29,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 45.7713288,
             'longitude' => 4.8288758,
         ],
-        '50 rue de la villette, 69003 lyon 3e, fr' => [
+        '50 rue de la villette, 69003 lyon 3ème, fr' => [
             'latitude' => 45.7596356,
             'longitude' => 4.8614359,
         ],
@@ -65,7 +65,7 @@ class DummyGeocoder implements Geocoder
             'latitude' => 47.316558,
             'longitude' => 8.55319899999995,
         ],
-        'paris 8e, france' => [
+        'paris 8ème, france' => [
             'latitude' => 48.866667,
             'longitude' => 2.333333,
         ],
@@ -73,11 +73,11 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.8761,
             'longitude' => 2.3082,
         ],
-        '44 rue des courcelles, 75008 paris 8e, fr' => [
+        '44 rue des courcelles, 75008 paris 8ème, fr' => [
             'latitude' => 48.8761,
             'longitude' => 2.3082,
         ],
-        'paris 9e, france' => [
+        'paris 9ème, france' => [
             'latitude' => 48.8790183,
             'longitude' => 2.3379062,
         ],
@@ -93,11 +93,11 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.633333,
             'longitude' => 2.450000,
         ],
-        '12 rue des saussaies, 75008 paris 8e, fr' => [
+        '12 rue des saussaies, 75008 paris 8ème, fr' => [
             'latitude' => 48.8713699,
             'longitude' => 2.318119,
         ],
-        '62 avenue des champs-élysées, 75008 paris 8e, fr' => [
+        '62 avenue des champs-élysées, 75008 paris 8ème, fr' => [
             'latitude' => 48.870590,
             'longitude' => 2.305370,
         ],
@@ -129,13 +129,21 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5278939,
             'longitude' => 2.6484923,
         ],
-        '30 boulevard louis guichoux, 13003 marseille 3e, fr' => [
+        '30 boulevard louis guichoux, 13003 marseille 3ème, fr' => [
             'latitude' => 43.325900,
             'longitude' => 5.374680,
         ],
         '226 rue de rivoli, 75001 paris 1er, fr' => [
             'latitude' => 48.859599,
             'longitude' => 2.344967,
+        ],
+        'paris 8ème' => [
+            'latitude' => 48.866667,
+            'longitude' => 2.333333,
+        ],
+        'paris 9ème' => [
+            'latitude' => 48.8790183,
+            'longitude' => 2.3379062,
         ],
     ];
 

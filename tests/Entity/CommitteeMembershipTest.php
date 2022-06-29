@@ -5,19 +5,18 @@ namespace Tests\App\Entity;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Entity\PostAddress;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Tests\App\AbstractKernelTestCase;
 
-class CommitteeMembershipTest extends TestCase
+class CommitteeMembershipTest extends AbstractKernelTestCase
 {
     public const ADHERENT_UUID = '0f5afdb8-09f6-4522-9e36-f0fd227a8442';
     public const COMMITTEE_UUID = 'ebd9f0c8-4158-4939-8372-28505f6cf892';
 
     public function testCreateHostMembership()
     {
-        $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createAdherent(), new \DateTime());
+        $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createNewAdherent(), new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -31,7 +30,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateFollowerMembership()
     {
-        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTime());
+        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createNewAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -45,7 +44,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testChangePrivileges()
     {
-        $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createAdherent(), new \DateTime());
+        $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createNewAdherent(), new \DateTime());
 
         $this->assertFalse($membership->isSupervisor());
         $this->assertTrue($membership->isHostMember());
@@ -62,7 +61,7 @@ class CommitteeMembershipTest extends TestCase
         $this->assertFalse($membership->isDemotableHost());
     }
 
-    private function createAdherent(): Adherent
+    private function createNewAdherent(): Adherent
     {
         return Adherent::create(
             Uuid::fromString(self::ADHERENT_UUID),
@@ -73,7 +72,7 @@ class CommitteeMembershipTest extends TestCase
             'Dupont',
             new \DateTime('1980-03-22'),
             'position',
-            PostAddress::createFrenchAddress('50 Rue de la Villette', '69003-69383')
+            $this->createPostAddress('50 Rue de la Villette', '69003-69383')
         );
     }
 

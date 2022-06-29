@@ -19,6 +19,8 @@ interface AddressInterface
      */
     public function getCityName(): ?string;
 
+    public function setCityName(?string $cityName): void;
+
     /**
      * Returns the french city representation (zip code + insee code).
      *

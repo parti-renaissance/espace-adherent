@@ -7,36 +7,34 @@ use App\Entity\Adherent;
 use App\Entity\District;
 use App\Entity\Geo\Zone;
 use App\Entity\GeoData;
-use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
+use App\FranceCities\FranceCities;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group legacy
  */
-class BindAdherentDistrictSubscriberTest extends TestCase
+class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
 {
-    private $manager;
+    protected $manager;
 
-    /* @var DistrictRepository */
-    private $districtRepository;
-
-    /* @var BindAdherentDistrictSubscriber */
-    private $subscriber;
+    private ?DistrictRepository $districtRepository;
+    private ?BindAdherentDistrictSubscriber $subscriber;
+    private ?FranceCities $franceCities;
 
     /**
      * @dataProvider provideReferentTagHasCount
      */
     public function testOnAdherentAccountRegistrationCompletedSucceeds(array $districts, int $count): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
 
         $this->assertInstanceOf(ReferentTaggableEntity::class, $adherent);
         $this->assertSame(0, $adherent->getReferentTags()->count());
@@ -55,7 +53,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
      */
     public function testOnAdherentProfileUpdatedSuccessfully(array $referentTags, int $count): void
     {
-        $adherent = $this->createAdherent();
+        $adherent = $this->createNewAdherent();
 
         $this->assertInstanceOf(ReferentTaggableEntity::class, $adherent);
         $this->assertSame(0, $adherent->getReferentTags()->count());
@@ -69,7 +67,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         $this->assertSame($count, $adherent->getReferentTags()->count());
     }
 
-    private function createAdherent(): Adherent
+    private function createNewAdherent(): Adherent
     {
         return Adherent::create(
             Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
@@ -80,7 +78,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
             'Smith',
             new \DateTime('1990-12-12'),
             ActivityPositionsEnum::EMPLOYED,
-            PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
+            $this->createPostAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
         );
     }
 
@@ -117,6 +115,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         $this->districtRepository = $this->createMock(DistrictRepository::class);
 
         $this->subscriber = new BindAdherentDistrictSubscriber($this->manager, $this->districtRepository);
+        $this->franceCities = $this->get(FranceCities::class);
     }
 
     protected function tearDown(): void
@@ -124,6 +123,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         $this->manager = null;
         $this->districtRepository = null;
         $this->subscriber = null;
+        $this->franceCities = null;
 
         parent::tearDown();
     }

@@ -3,12 +3,12 @@
 namespace Tests\App\Address;
 
 use App\Address\Address;
-use PHPUnit\Framework\TestCase;
+use Tests\App\AbstractKernelTestCase;
 
 /**
  * @group address
  */
-class AddressTest extends TestCase
+class AddressTest extends AbstractKernelTestCase
 {
     public function testCreateValidForeignAddress()
     {
@@ -33,6 +33,10 @@ class AddressTest extends TestCase
         $address->setCountry('FR');
         $address->setAddress('6 rue Neyret');
         $address->setCity('69001-69381');
+
+        list($postalCode, $inseeCode) = explode('-', $address->getCity());
+        $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
+        $address->setCityName($city ? $city->getName() : null);
 
         $this->assertSame('FR', $address->getCountry());
         $this->assertSame('6 rue Neyret', $address->getAddress());
