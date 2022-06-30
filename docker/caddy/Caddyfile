@@ -1,0 +1,22 @@
+{
+    # Debug
+    {$DEBUG}
+    # HTTP/3 support
+    servers {
+        protocol {
+            experimental_http3
+        }
+    }
+}
+
+http://{$SERVER_NAME}
+
+log
+
+route {
+    root * /srv/app/public
+    push
+    php_fastcgi unix//var/run/php/php-fpm.sock
+    encode zstd gzip
+    file_server
+}

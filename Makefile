@@ -1,9 +1,10 @@
 DOCKER_COMPOSE_ARGS?=
 DOCKER_COMPOSE?=docker-compose $(DOCKER_COMPOSE_ARGS)
-RUN_ARGS?=
-RUN=$(DOCKER_COMPOSE) run --rm $(RUN_ARGS) app
+RUN_ARGS?=--rm
+RUN=$(DOCKER_COMPOSE) run $(RUN_ARGS) app
+RUN_NODE?=$(DOCKER_COMPOSE) run --rm node
 EXEC_ARGS?=
-EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app entrypoint.sh
+EXEC?=$(DOCKER_COMPOSE) exec $(EXEC_ARGS) app
 COMPOSER=$(EXEC) composer
 CONSOLE=$(EXEC) bin/console
 PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
@@ -115,10 +116,10 @@ watch-mac:
 	yarn watch
 
 assets: node_modules                                                                                   ## Build the development version of the assets
-	$(EXEC) yarn build-dev
+	$(RUN_NODE) yarn build-dev
 
 assets-prod: node_modules                                                                              ## Build the production version of the assets
-	$(EXEC) yarn build-prod
+	$(RUN_NODE) yarn build-prod
 
 ##
 ## Tests
@@ -231,7 +232,7 @@ composer.lock: composer.json
 	@echo composer.lock is not up to date.
 
 node_modules: yarn.lock
-	$(EXEC) yarn install
+	$(RUN_NODE) yarn install
 
 yarn.lock: package.json
 	@echo yarn.lock is not up to date.

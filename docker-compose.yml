@@ -1,39 +1,44 @@
 version: "3.9"
 
 services:
-    ## en-marche.fr
-    ###############
     app:
-        networks:
-            default:
-                aliases:
-                    - test.enmarche.code
-                    - enmarche.code
-        build: docker/dev
-        depends_on:
-            - db
-            - redis
-            - rabbitmq
+        build:
+            context: .
+            target: php_caddy
+            args:
+                BUILD_DEV: true
+        restart: unless-stopped
         volumes:
-            - .:/app
+            - ./:/srv/app
+            - /srv/app/var
+        ports:
+            - "80:80"
+#            - "443:443"
+        environment:
+            APP_ENV: dev
+            SERVER_NAME: enmarche.localhost
+        healthcheck:
+            interval: 10s
+            timeout: 3s
+            retries: 3
+            start_period: 30s
 
     db:
         image: mysql:8.0
-        volumes:
-            - ./docker/dev/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: root
 
     redis:
-        image: redis:3.2
+        image: redis:6-alpine
 
-    ## testing
-    ####################
-    selenium:
-        image: selenium/standalone-firefox-debug:2.53.1
-        shm_size: 2g
-
-    ## common
-    ####################
     rabbitmq:
         image: rabbitmq:3-management
+
+    node:
+        build:
+            target: node
+#        init: true
+#        working_dir: /srv
+#        command: apk add --no-cache git
+        volumes:
+            - ./:/srv/app
