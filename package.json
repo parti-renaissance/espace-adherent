@@ -4,7 +4,6 @@
     "build-prod": "node_modules/.bin/webpack --config webpack.production.js",
     "build-dev": "node_modules/.bin/webpack --config webpack.development.js",
     "watch": "node_modules/.bin/webpack --config webpack.development.js --progress --color --watch",
-    "test": "node_modules/.bin/mocha-webpack --webpack-config webpack.development.js --recursive front/tests",
     "lint": "eslint front/**/*.js .eslintrc.js",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --watch"
@@ -44,8 +43,6 @@
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^1.6.2",
-    "mocha": "^10.0.0",
-    "mocha-webpack": "^1.0.0",
     "moment": "^2.29.3",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "prop-types": "^15.8.1",
