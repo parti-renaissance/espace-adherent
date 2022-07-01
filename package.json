@@ -46,7 +46,7 @@
     "moment": "^2.29.3",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "prop-types": "^15.8.1",
-    "qs": "^6.10.5",
+    "qs": "^6.11.0",
     "randomatic": "^3.0.0",
     "react": "^17.0.2",
     "react-addons-test-utils": "^15.3.2",
