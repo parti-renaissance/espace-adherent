@@ -12,7 +12,8 @@ framework:
         handler_id:  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
     fragments:       ~
     http_method_override: true
-    assets: ~
+    assets:
+        json_manifest_path: '%kernel.project_dir%/public/built/manifest.json'
     cache:
         app: cache.adapter.doctrine
         default_doctrine_provider: cache.redis_doctrine_provider

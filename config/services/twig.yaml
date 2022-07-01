@@ -12,7 +12,6 @@ services:
     App\Twig\AssetRuntime:
         arguments:
             $secret: '%kernel.secret%'
-            $env: '%kernel.environment%'
             $hash: '%assets_hash%'
             $symfonyAssetExtension: '@twig.extension.assets'
 
