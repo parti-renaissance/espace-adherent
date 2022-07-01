@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
     context: path.join(__dirname, './front'),
@@ -10,8 +11,9 @@ module.exports = {
     output: {
         path: path.join(__dirname, './public/built'),
         publicPath: '/built/',
-        filename: '[name].js',
-        chunkFilename: '[name].js',
+        filename: '[fullhash].[name].js',
+        chunkFilename: '[chunkhash].[name].js',
+        clean: true,
     },
     module: {
         rules: [
@@ -61,6 +63,11 @@ module.exports = {
         },
     },
     plugins: [
+        new WebpackManifestPlugin({}),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[fullhash].app.css',
+        }),
         new CopyWebpackPlugin({
             patterns: [
                 { from: path.resolve(__dirname, 'node_modules/select2/dist/js/select2.min.js'), to: './../select2/' },

@@ -13,25 +13,18 @@ class AssetRuntime implements RuntimeExtensionInterface
     private $urlGenerator;
     private $symfonyAssetExtension;
     private $secret;
-    private $env;
     private $hash;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         BaseAssetExtension $symfonyAssetExtension,
         string $secret,
-        string $env,
         ?string $hash
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->symfonyAssetExtension = $symfonyAssetExtension;
         $this->secret = $secret;
-        $this->env = $env;
         $this->hash = $hash;
-
-        if ('dev' !== $env && !$this->hash) {
-            throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments but dev. Please build them.');
-        }
     }
 
     public function transformedStaticAsset(
@@ -70,11 +63,7 @@ class AssetRuntime implements RuntimeExtensionInterface
 
     public function webpackAsset(string $path, $packageName = null): string
     {
-        if ('dev' === $this->env) {
-            return $this->symfonyAssetExtension->getAssetUrl('built/'.$path, $packageName);
-        }
-
-        return $this->symfonyAssetExtension->getAssetUrl('built/'.$this->hash.'.'.$path, $packageName);
+        return $this->symfonyAssetExtension->getAssetUrl($path, $packageName);
     }
 
     private function generateAssetUrl(string $path, array $parameters, int $referenceType): string
