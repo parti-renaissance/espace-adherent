@@ -26,9 +26,9 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up assets-prod assets db keys perm cc rabbitmq-fabric ## Install and start the project
+start: build up assets db keys perm cc rabbitmq-fabric ## Install and start the project
 
-start-mac: build up assets-prod web-built-mac db keys.key perm cc rabbitmq-fabric   ## Install and start the project
+start-mac: build up web-built-mac db keys.key perm cc rabbitmq-fabric   ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill || true

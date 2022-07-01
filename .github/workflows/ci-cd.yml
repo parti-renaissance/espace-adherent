@@ -166,8 +166,8 @@ jobs:
           keys: true
           cache-warmup: true
 
-      - run: |-
-          make tfp-db
+      - name: Prepare app (assets, cache, db, rabbitmq)
+        run: make tfp
 
       - env:
           PHPUNIT_ARGS: -v --log-junit ./phpunit/junit.xml
@@ -201,8 +201,8 @@ jobs:
           keys: true
           cache-warmup: true
 
-      - run: |-
-          make tfp-rabbitmq tfp-db
+      - name: Prepare app (assets, cache, db, rabbitmq)
+        run: make tfp
 
       - env:
           BEHAT_ARGS: --suite=default -vvv --colors -f progress -o std -f junit -o ./behat --
@@ -257,12 +257,8 @@ jobs:
           extra-containers: db redis rabbitmq selenium
           keys: true
 
-      - name: Build static assets
-        run: |-
-          make assets-prod
-
-      - run: |-
-          make tfp-cc tfp-rabbitmq tfp-db
+      - name: Prepare app (assets, cache, db, rabbitmq)
+        run: make tfp
 
       - env:
           BEHAT_ARGS: --suite=javascript --tags="${{ matrix.tags }}" -vvv --colors -f progress -o std -f junit -o ./behat --
