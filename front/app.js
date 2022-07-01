@@ -110,133 +110,133 @@ class App {
     }
 
     runDonation() {
-        System.import('pages/donation').catch((error) => { throw error; }).then((module) => {
+        import('pages/donation').catch((error) => { throw error; }).then((module) => {
             module.default('.donation-widget-wrapper');
         });
     }
 
     runProgrammaticFoundation() {
-        System.import('pages/programmatic_foundation').catch((error) => { throw error; }).then((module) => {
+        import('pages/programmatic_foundation').catch((error) => { throw error; }).then((module) => {
             module.default('.programmatic-foundation-widget-wrapper', this.get('api'));
         });
     }
 
     runDonationInformation(formType) {
-        System.import('pages/donation_information').catch((error) => { throw error; }).then((module) => {
+        import('pages/donation_information').catch((error) => { throw error; }).then((module) => {
             module.default(formType);
         });
     }
 
     runReport() {
-        System.import('pages/report').catch((error) => { throw error; }).then((module) => {
+        import('pages/report').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runCommitteesMap() {
-        System.import('pages/committees_map').catch((error) => { throw error; }).then((module) => {
+        import('pages/committees_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
         });
     }
 
     runEventsMap() {
-        System.import('pages/events_map').catch((error) => { throw error; }).then((module) => {
+        import('pages/events_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
         });
     }
 
     runManagedList(columns, items) {
-        System.import('pages/managed_list').catch((error) => { throw error; }).then((module) => {
+        import('pages/managed_list').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('slugifier'), columns, items);
         });
     }
 
     runJeMarche() {
-        System.import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
+        import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runRegistration(formType) {
-        System.import('pages/registration').catch((error) => { throw error; }).then((module) => {
+        import('pages/registration').catch((error) => { throw error; }).then((module) => {
             module.default(formType);
         });
     }
 
     runJoin(formType) {
-        System.import('pages/join').catch((error) => { throw error; }).then((module) => {
+        import('pages/join').catch((error) => { throw error; }).then((module) => {
             module.default(formType);
         });
     }
 
     runComplete() {
-        System.import('pages/complete').catch((error) => { throw error; }).then((module) => {
+        import('pages/complete').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runCopyToClipboard() {
-        System.import('pages/copy_to_clipboard').catch((error) => { throw error; }).then((module) => {
+        import('pages/copy_to_clipboard').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runProcurationManagerRequests(queryString, totalCount, perPage) {
-        System.import('pages/procuration_manager_requests').catch((error) => { throw error; }).then((module) => {
+        import('pages/procuration_manager_requests').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));
         });
     }
 
     runProcurationManagerProposals(queryString, totalCount, perPage) {
-        System.import('pages/procuration_manager_proposals').catch((error) => { throw error; }).then((module) => {
+        import('pages/procuration_manager_proposals').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));
         });
     }
 
     runSocialShare(urlAll, urlCategory) {
-        System.import('pages/social_share').catch((error) => { throw error; }).then((module) => {
+        import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);
         });
     }
 
     runFacebookPictureChooser(urls) {
-        System.import('pages/facebook_pictures').catch((error) => { throw error; }).then((module) => {
+        import('pages/facebook_pictures').catch((error) => { throw error; }).then((module) => {
             module.default(urls, this.get('api'));
         });
     }
 
     runLegislativesCandidatesList() {
-        System.import('pages/candidates_list').catch((error) => { throw error; }).then((module) => {
+        import('pages/candidates_list').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runLegislativesCandidatesMap() {
-        System.import('pages/candidates_map').catch((error) => { throw error; }).then((module) => {
+        import('pages/candidates_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
         });
     }
 
     runReferentsList() {
-        System.import('pages/referents_list').catch((error) => { throw error; }).then((module) => {
+        import('pages/referents_list').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runBoardMember() {
-        System.import('pages/board_member_list').catch((error) => { throw error; }).then((module) => {
+        import('pages/board_member_list').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'));
         });
     }
 
     runManageParticipants() {
-        System.import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
+        import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runManageUserSegment(segmentType, wrapperSelector, checkboxSelector, countMembers) {
-        System.import('pages/manage_user_segment').catch((error) => { throw error; }).then((module) => {
+        import('pages/manage_user_segment').catch((error) => { throw error; }).then((module) => {
             module.default(segmentType, wrapperSelector, checkboxSelector, this.get('api'), countMembers);
         });
     }
@@ -249,7 +249,7 @@ class App {
         mainCheckboxSelector,
         postApplyCallback
     ) {
-        System.import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
+        import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
             module.default(
                 memberType,
                 type,
@@ -263,7 +263,7 @@ class App {
     }
 
     runBatchActions(wrapperSelector, checkboxSelector, mainCheckboxSelector, actions) {
-        System.import('pages/batch_actions').catch((error) => { throw error; }).then((module) => {
+        import('pages/batch_actions').catch((error) => { throw error; }).then((module) => {
             module.default(
                 wrapperSelector,
                 checkboxSelector,
@@ -275,103 +275,103 @@ class App {
     }
 
     runGrandeMarcheEurope() {
-        System.import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
+        import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runMessageFilters(messageId, synchronized, recipientCount, sendLocked) {
-        System.import('pages/message_filters').catch((error) => { throw error; }).then((module) => {
+        import('pages/message_filters').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), messageId, synchronized, recipientCount, sendLocked);
         });
     }
 
     runProcurationProxy(countryFieldSelector, stateFieldSelector) {
-        System.import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
+        import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
             module.default(countryFieldSelector, stateFieldSelector);
         });
     }
 
     runProcurationRequest(countryFieldSelector, stateFieldSelector) {
-        System.import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
+        import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
             module.default(countryFieldSelector, stateFieldSelector);
         });
     }
 
     runAssessorRequest(countryFieldSelector) {
-        System.import('pages/assessor_request').catch((error) => { throw error; }).then((module) => {
+        import('pages/assessor_request').catch((error) => { throw error; }).then((module) => {
             module.default(countryFieldSelector);
         });
     }
 
     runAssessorManagerRequests(queryString, totalCount, perPage) {
-        System.import('pages/assessor_manager_requests').catch((error) => { throw error; }).then((module) => {
+        import('pages/assessor_manager_requests').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));
         });
     }
 
     runAssessorManagerVotePlaces(queryString, totalCount, perPage) {
-        System.import('pages/assessor_manager_vote_places').catch((error) => { throw error; }).then((module) => {
+        import('pages/assessor_manager_vote_places').catch((error) => { throw error; }).then((module) => {
             module.default(queryString, totalCount, perPage, this.get('api'));
         });
     }
 
     runMessageList(buttonClass) {
-        System.import('pages/message_list').catch((error) => { throw error; }).then((module) => {
+        import('pages/message_list').catch((error) => { throw error; }).then((module) => {
             module.default(buttonClass, this.get('api'));
         });
     }
 
     runApplicationRequest(formToDisplay) {
-        System.import('pages/application_request').catch((error) => { throw error; }).then((module) => {
+        import('pages/application_request').catch((error) => { throw error; }).then((module) => {
             module.default(formToDisplay);
         });
     }
 
     createCKEditor(elementSelector, uploadUrl) {
-        System.import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
+        import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
             module.default(elementSelector, uploadUrl, { removePlugins: ['MediaEmbed'] });
         });
     }
 
     runReferentUserList(committeeModalButtonClass) {
-        System.import('pages/referent_user_list').catch((error) => { throw error; }).then((module) => {
+        import('pages/referent_user_list').catch((error) => { throw error; }).then((module) => {
             module.default(committeeModalButtonClass, this.get('api'));
         });
     }
 
     runMyActivityCommitteeList(switchSelector) {
-        System.import('pages/my_activity_committees').catch((error) => { throw error; }).then((module) => {
+        import('pages/my_activity_committees').catch((error) => { throw error; }).then((module) => {
             module.default(switchSelector, this.get('api'));
         });
     }
 
     runCandidacyModal(triggerSelector) {
-        System.import('pages/committee_candidacies').catch((error) => { throw error; }).then((module) => {
+        import('pages/committee_candidacies').catch((error) => { throw error; }).then((module) => {
             module.default(triggerSelector, this.get('api'));
         });
     }
 
     runProfileUpdatePage() {
-        System.import('pages/profile_update').catch((error) => { throw error; }).then((module) => {
+        import('pages/profile_update').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
 
     runImageCropper(inputFileElement, inputCroppedImageElement, inputsContainerElement, options = { ratio: 1, width: 500, height: 500 }) {
-        System.import('services/utils/imageCropper').catch((error) => { throw error; }).then((module) => {
+        import('services/utils/imageCropper').catch((error) => { throw error; }).then((module) => {
             module.default(inputFileElement, inputCroppedImageElement, inputsContainerElement, options);
         });
     }
 
     runCountdownClock(clockSelector, refreshPage = false) {
-        System.import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
+        import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
             module.default(clockSelector, refreshPage);
         });
     }
 
     runTerritorialCouncilCandidacy(qualityFieldSelector, submitButtonSelector, wrapperSelector) {
-        System.import('pages/territorial_council_candidacy').catch((error) => { throw error; }).then((module) => {
+        import('pages/territorial_council_candidacy').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), qualityFieldSelector, submitButtonSelector, wrapperSelector);
         });
     }
@@ -385,7 +385,7 @@ class App {
         neededQualities,
         invitations
     ) {
-        System.import('pages/national_council_candidacy').catch((error) => { throw error; }).then((module) => {
+        import('pages/national_council_candidacy').catch((error) => { throw error; }).then((module) => {
             module.default(
                 this.get('api'),
                 qualityFieldSelector,
@@ -400,7 +400,7 @@ class App {
     }
 
     runCommitteeCandidacy(slug, submitButtonSelector, wrapperSelector) {
-        System.import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
+        import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), slug, submitButtonSelector, wrapperSelector);
         });
     }
@@ -408,7 +408,7 @@ class App {
     runResubscribeEmail({
         redirectUrl = null, signupPayload = null, authenticated = true, callback = null,
     }) {
-        System.import('pages/resubscribe_email').catch((error) => { throw error; }).then((module) => {
+        import('pages/resubscribe_email').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), redirectUrl, signupPayload, authenticated, callback);
         });
     }
