@@ -10,21 +10,21 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class AssetRuntime implements RuntimeExtensionInterface
 {
-    private $urlGenerator;
-    private $symfonyAssetExtension;
-    private $secret;
-    private $hash;
+    private UrlGeneratorInterface $urlGenerator;
+    private BaseAssetExtension $symfonyAssetExtension;
+    private string $secret;
+    private string $appVersion;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         BaseAssetExtension $symfonyAssetExtension,
         string $secret,
-        ?string $hash
+        string $appVersion
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->symfonyAssetExtension = $symfonyAssetExtension;
         $this->secret = $secret;
-        $this->hash = $hash;
+        $this->appVersion = $appVersion;
     }
 
     public function transformedStaticAsset(
@@ -32,7 +32,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         array $parameters = [],
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ): string {
-        $parameters['cache'] = $this->hash;
+        $parameters['cache'] = $this->appVersion;
 
         return $this->generateAssetUrl('static/'.$path, $parameters, $referenceType);
     }

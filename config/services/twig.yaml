@@ -12,7 +12,7 @@ services:
     App\Twig\AssetRuntime:
         arguments:
             $secret: '%kernel.secret%'
-            $hash: '%assets_hash%'
+            $appVersion: '%env(APP_VERSION)%'
             $symfonyAssetExtension: '@twig.extension.assets'
 
     App\Twig\MunicipalSiteRuntime:
