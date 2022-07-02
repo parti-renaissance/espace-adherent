@@ -104,7 +104,7 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
-        $this->assertCount(2, $results);
+        $this->assertCount(3, $results);
         $this->assertStringContainsString('Laura Deloche', $results->first()->text());
 
         // Name
