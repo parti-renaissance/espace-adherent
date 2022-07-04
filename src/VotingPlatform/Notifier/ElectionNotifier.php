@@ -15,6 +15,7 @@ use App\Mailer\Message\VotingPlatformElectionVoteIsOpenMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOverMessage;
 use App\Mailer\Message\VotingPlatformVoteReminderMessage;
 use App\Mailer\Message\VotingPlatformVoteStatusesIsOpenMessage;
+use App\Mailer\Message\VotingPlatformVoteStatusesIsOverMessage;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -131,22 +132,32 @@ class ElectionNotifier
             return;
         }
 
-        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            $adherents = array_map(
-                function (Voter $voter) { return $voter->getAdherent(); },
-                $this->voterRepository->findVotedForElection($election)
-            );
+        if (($electionType = $election->getDesignationType()) === DesignationTypeEnum::COMMITTEE_SUPERVISOR) {
+            $getRecipientsCallback = function () use ($election): array {
+                return array_map(
+                    function (Voter $voter) { return $voter->getAdherent(); },
+                    $this->voterRepository->findVotedForElection($election)
+                );
+            };
         } else {
-            $adherents = $this->getAdherentForElection($election);
+            $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+                return $this->getAdherentForElection($election, $offset, $limit);
+            };
         }
 
-        if ($adherents) {
-            $this->mailer->sendMessage(VotingPlatformElectionVoteIsOverMessage::create(
-                $election,
-                $adherents,
-                $this->getUrl($election)
-            ));
-        }
+        $url = $this->getUrl($election);
+
+        $this->batchSendEmail(
+            $getRecipientsCallback,
+            function (array $recipients) use ($election, $electionType, $url) {
+                if (DesignationTypeEnum::POLL === $electionType) {
+                    return VotingPlatformVoteStatusesIsOverMessage::create($election, $recipients, $url);
+                }
+
+                return VotingPlatformElectionVoteIsOverMessage::create($election, $recipients, $url);
+            },
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $electionType
+        );
     }
 
     public function notifyElectionSecondRound(Election $election): void
@@ -205,6 +216,10 @@ class ElectionNotifier
 
         if ($election->getDesignation()->isExecutiveOfficeType()) {
             return $this->urlGenerator->generate('app_national_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
+        if ($election->getDesignation()->isPollType()) {
+            return $this->urlGenerator->generate('app_vote_statuses_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         if ($entityElection = $election->getElectionEntity()) {

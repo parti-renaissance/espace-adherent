@@ -291,6 +291,17 @@ class Designation
         $this->voteEndDate = $voteEndDate;
     }
 
+    public function getResultStartDate(\DateTime $voteEndDate = null): \DateTime
+    {
+        $date = $voteEndDate ?? $this->voteEndDate;
+
+        if (!$this->resultScheduleDelay || !$date) {
+            return $date;
+        }
+
+        return (clone $date)->modify(sprintf('+%d minutes', \intval($this->resultScheduleDelay * 60)));
+    }
+
     public function getResultDisplayDelay(): int
     {
         return $this->resultDisplayDelay;
@@ -604,6 +615,11 @@ class Designation
     public function isBlankVoteEnabled(): bool
     {
         return !$this->isExecutiveOfficeType();
+    }
+
+    public function isSecondRoundEnabled(): bool
+    {
+        return !($this->isExecutiveOfficeType() || $this->isPollType());
     }
 
     public function isVotePeriodStarted(): bool

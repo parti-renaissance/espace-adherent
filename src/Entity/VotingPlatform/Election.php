@@ -273,7 +273,7 @@ class Election
 
         $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
 
-        if ($roundResult && $this->designation->isExecutiveOfficeType()) {
+        if ($roundResult && !$this->designation->isSecondRoundEnabled()) {
             return true;
         }
 
@@ -321,14 +321,10 @@ class Election
             return false;
         }
 
-        if (0 == $scheduleDelay = $this->designation->getResultScheduleDelay()) {
-            return true;
-        }
-
         if (!$date = $this->closedAt ?? $this->secondRoundEndDate) {
             return true;
         }
 
-        return (clone $date)->modify((sprintf('+%d minutes', $scheduleDelay * 60))) <= new \DateTime();
+        return $this->designation->getResultStartDate($date) <= new \DateTime();
     }
 }
