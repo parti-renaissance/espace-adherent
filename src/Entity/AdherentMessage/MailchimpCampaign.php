@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use App\Entity\Geo\Zone;
 use App\Entity\MailchimpSegment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -111,6 +112,11 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      * @ORM\Column(nullable=true)
      */
     private ?string $mailchimpListType = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private ?Zone $zone = null;
 
     public function __construct(AdherentMessageInterface $message)
     {
@@ -263,5 +269,15 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     public function setMailchimpListType(?string $mailchimpListType): void
     {
         $this->mailchimpListType = $mailchimpListType;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): void
+    {
+        $this->zone = $zone;
     }
 }

@@ -56,9 +56,7 @@
                 {% endif %}
 
                 <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_update", message_route_params) }}">Editer le message</a>
-                {% if not message.readOnlyFilter %}
-                    <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Modifier les filtres</a>
-                {% endif %}
+                <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Modifier les filtres</a>
             </div>
         {% endif %}
     </div>

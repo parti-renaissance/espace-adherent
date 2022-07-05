@@ -19,8 +19,8 @@ use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -90,7 +90,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(CommitteeAdherentMessage::class);
-        $message->setFilter($committeeFilter = new CommitteeFilter());
+        $message->setFilter($committeeFilter = new MessageFilter());
         $committeeFilter->setCommittee($this->createConfiguredMock(Committee::class, [
             'getName' => 'Committee name',
             'getMailchimpId' => 456,
@@ -115,6 +115,15 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [
+                                        5,
+                                        6,
+                                    ],
+                                ],
                                 [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',

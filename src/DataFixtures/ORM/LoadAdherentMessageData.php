@@ -3,17 +3,19 @@
 namespace App\DataFixtures\ORM;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\AdherentMessage\Listener\AdherentMessageChangeSubscriber;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
@@ -25,6 +27,13 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
     public function load(ObjectManager $manager)
     {
+        /** @var EntityManager $manager */
+        $eventManager = $manager->getEventManager();
+        $listener = current(array_filter($eventManager->getListeners(Events::postFlush), function ($listener) {
+            return $listener instanceof AdherentMessageChangeSubscriber;
+        }));
+        $eventManager->removeEventSubscriber($listener);
+
         $faker = Factory::create('FR_fr');
 
         // message draft
@@ -37,11 +46,8 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message1->setSubject($faker->sentence(5));
         $message1->setLabel($faker->sentence(2));
 
-        if ($filter = $this->getFilter(ReferentAdherentMessage::class)) {
-            $message1->setFilter($filter);
-        }
         $message1->addMailchimpCampaign(new MailchimpCampaign($message1));
-        $message1->setFilter(new ReferentUserFilter([$this->getReference('referent_tag_75')]));
+        $message1->setFilter(new MessageFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75')]));
 
         // message sent
         $message2 = ReferentAdherentMessage::createFromAdherent(
@@ -53,18 +59,14 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message2->setSubject($faker->sentence(5));
         $message2->setLabel($faker->sentence(2));
 
-        if ($filter = $this->getFilter(ReferentAdherentMessage::class)) {
-            $message2->setFilter($filter);
-        }
         $message2->addMailchimpCampaign(new MailchimpCampaign($message2));
-        $message2->setFilter(new ReferentUserFilter([$this->getReference('referent_tag_75')]));
+        $message2->setFilter(new MessageFilter([$parisZone]));
         $message2->markAsSent();
 
         $manager->persist($message1);
         $manager->persist($message2);
         $manager->flush();
 
-        $message = null;
         foreach ($this->getMessageClasses() as $class) {
             for ($i = 1; $i <= 100; ++$i) {
                 /** @var AdherentMessageInterface $message */
@@ -75,7 +77,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
                 $message->setSubject($faker->sentence(5));
                 $message->setLabel($faker->sentence(2));
 
-                if ($filter = $this->getFilter($class)) {
+                if ($filter = $this->getFilter($manager, $class)) {
                     $message->setFilter($filter);
                 }
                 $message->addMailchimpCampaign(new MailchimpCampaign($message));
@@ -94,7 +96,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         return [
             LoadCommitteeData::class,
             LoadDistrictData::class,
-            LoadReferentTagData::class,
+            LoadGeoZoneData::class,
         ];
     }
 
@@ -104,6 +106,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
             CommitteeAdherentMessage::class,
             ReferentAdherentMessage::class,
             DeputyAdherentMessage::class,
+            SenatorAdherentMessage::class,
         ];
     }
 
@@ -115,23 +118,23 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
                 return $this->getReference('adherent-8'); // referent@en-marche-dev.fr
             case DeputyAdherentMessage::class:
                 return $this->getReference('deputy-75-1');
+            case SenatorAdherentMessage::class:
+                return $this->getReference('senator-59');
         }
 
         return $this->getReference('adherent-3');
     }
 
-    private function getFilter($class): ?AdherentMessageFilterInterface
+    private function getFilter(ObjectManager $manager, string $class): ?AdherentMessageFilterInterface
     {
         switch ($class) {
             case CommitteeAdherentMessage::class:
-                return new CommitteeFilter($this->getReference('committee-10'));
+                $filter = new MessageFilter();
+                $filter->setCommittee($this->getReference('committee-10'));
+
+                return $filter;
             case DeputyAdherentMessage::class:
-                return new AdherentZoneFilter(
-                    $this
-                        ->getReference('deputy-75-1')
-                        ->getManagedDistrict()
-                        ->getReferentTag()
-                );
+                return new MessageFilter([LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')]);
         }
 
         return null;

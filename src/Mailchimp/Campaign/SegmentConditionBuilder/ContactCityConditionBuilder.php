@@ -4,6 +4,7 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -15,6 +16,7 @@ class ContactCityConditionBuilder implements SegmentConditionBuilderInterface
     {
         return $filter instanceof AdherentZoneFilter
             || $filter instanceof ReferentUserFilter
+            || $filter instanceof MessageFilter
             || $filter instanceof CommitteeFilter
         ;
     }

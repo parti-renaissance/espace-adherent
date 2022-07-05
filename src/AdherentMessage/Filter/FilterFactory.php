@@ -5,15 +5,13 @@ namespace App\AdherentMessage\Filter;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 
 abstract class FilterFactory
 {
@@ -36,8 +34,6 @@ abstract class FilterFactory
                 return static::createLreManagerElectedRepresentativeFilter($user);
             case AdherentMessageTypeEnum::REFERENT_INSTANCES:
                 return static::createReferentTerritorialCouncilFilter($user);
-            case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
-                return static::createLegislativeCandidateFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE:
                 return static::createCandidateFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
@@ -51,7 +47,7 @@ abstract class FilterFactory
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
     }
 
-    private static function createReferentFilter(Adherent $user): ReferentUserFilter
+    private static function createReferentFilter(Adherent $user): MessageFilter
     {
         $managedArea = $user->getManagedArea();
 
@@ -59,21 +55,21 @@ abstract class FilterFactory
             throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
         }
 
-        return new ReferentUserFilter($managedArea->getTags()->toArray());
+        return new MessageFilter($managedArea->getZones()->toArray());
     }
 
-    private static function createDeputyFilter(Adherent $user): AdherentZoneFilter
+    private static function createDeputyFilter(Adherent $user): MessageFilter
     {
         if (!$user->isDeputy()) {
             throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a deputy');
         }
 
-        return new AdherentZoneFilter($user->getManagedDistrict()->getReferentTag());
+        return new MessageFilter([$user->getManagedDistrict()->getReferentTag()->getZone()]);
     }
 
-    private static function createCommitteeFilter(): CommitteeFilter
+    private static function createCommitteeFilter(): MessageFilter
     {
-        return new CommitteeFilter();
+        return new MessageFilter();
     }
 
     private static function createMunicipalChiefFilter(Adherent $adherent): MunicipalChiefFilter
@@ -81,9 +77,9 @@ abstract class FilterFactory
         return new MunicipalChiefFilter($adherent->getMunicipalChiefManagedArea()->getInseeCode());
     }
 
-    private static function createSenatorFilter(Adherent $user): AdherentZoneFilter
+    private static function createSenatorFilter(Adherent $user): MessageFilter
     {
-        return new AdherentZoneFilter($user->getSenatorArea()->getDepartmentTag());
+        return new MessageFilter([$user->getSenatorArea()->getDepartmentTag()->getZone()]);
     }
 
     private static function createReferentElectedRepresentativeFilter(
@@ -119,15 +115,6 @@ abstract class FilterFactory
         }
 
         return new ReferentInstancesFilter();
-    }
-
-    private static function createLegislativeCandidateFilter(Adherent $user): AdherentZoneFilter
-    {
-        if (!$user->isLegislativeCandidate()) {
-            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a legislative candidate');
-        }
-
-        return new AdherentZoneFilter($user->getLegislativeCandidateManagedDistrict()->getReferentTag());
     }
 
     private static function createCandidateFilter(Adherent $user): AdherentGeoZoneFilter

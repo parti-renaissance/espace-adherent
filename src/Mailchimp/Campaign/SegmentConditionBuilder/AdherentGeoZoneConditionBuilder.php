@@ -4,8 +4,10 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\Geo\Zone;
 use App\Mailchimp\Campaign\AudienceTypeEnum;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
@@ -15,6 +17,7 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
     {
         return $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof AudienceFilter
+            || $filter instanceof MessageFilter
         ;
     }
 
@@ -30,6 +33,10 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
             );
         }
 
+        if ($campaign->getZone()) {
+            return $this->buildFromZone($campaign->getZone());
+        }
+
         return $this->buildFromFilter($filter);
     }
 
@@ -38,8 +45,19 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
+        if ($filter instanceof MessageFilter) {
+            $zone = current($filter->getZones());
+        } else {
+            $zone = $filter->getZone();
+        }
+
+        return $zone ? $this->buildFromZone($zone) : [];
+    }
+
+    private function buildFromZone(Zone $zone): array
+    {
         return $this->buildZoneCondition(
-            MemberRequest::getMergeFieldFromZone($zone = $filter->getZone()),
+            MemberRequest::getMergeFieldFromZone($zone),
             sprintf('(%s)', $zone->getCode()),
             'ends'
         );

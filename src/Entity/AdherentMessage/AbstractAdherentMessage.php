@@ -431,11 +431,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this;
     }
 
-    public function hasReadOnlyFilter(): bool
-    {
-        return false;
-    }
-
     /** @return MailchimpCampaign[] */
     public function getMailchimpCampaigns(): array
     {

@@ -7,6 +7,7 @@ use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
@@ -44,7 +45,10 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
         switch ($messageClass = \get_class($campaign->getMessage())) {
             case ReferentAdherentMessage::class:
                 if (
-                    ($filter = $campaign->getMessage()->getFilter()) instanceof ReferentUserFilter
+                    (
+                        ($filter = $campaign->getMessage()->getFilter()) instanceof ReferentUserFilter
+                        || $filter instanceof MessageFilter
+                    )
                     && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())
                 ) {
                     return [];

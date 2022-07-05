@@ -29,8 +29,6 @@ interface AdherentMessageInterface extends AuthoredItemsCollectionInterface
 
     public function getFromName(): ?string;
 
-    public function hasReadOnlyFilter(): bool;
-
     public function setLabel(string $label): void;
 
     public function setSubject(string $subject): void;
