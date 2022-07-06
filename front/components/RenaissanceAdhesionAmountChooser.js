@@ -9,12 +9,11 @@ export default class RenaissanceAdhesionAmountChooser extends React.Component {
         super(props);
 
         this.state = {
-            amount: props.value
-        }
+            amount: props.value,
+        };
 
         this.handleAmountChange = this.handleAmountChange.bind(this);
     }
-
 
     handleAmountChange(amount) {
         if (this.props.onChange) {
@@ -34,7 +33,6 @@ export default class RenaissanceAdhesionAmountChooser extends React.Component {
                     onChange={this.handleAmountChange}
                     maxValue={maxAmount}
                 />
-
 
                 {this.state.amount
                     ? <div className="adhesion__amount-chooser__after-taxes">

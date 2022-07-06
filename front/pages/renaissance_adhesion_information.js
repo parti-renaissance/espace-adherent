@@ -4,7 +4,6 @@ import AutocompletedAddressForm from '../services/address/AutocompletedAddressFo
 import AddressObject from '../services/address/AddressObject';
 
 export default (formType) => {
-
     const form = dom('form[name="renaissance_adherent_registration"]');
     const rootIdField = `#${form.name}`;
 
