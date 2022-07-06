@@ -6,7 +6,7 @@ import 'utils/text';
 import 'utils/url';
 import { decode } from 'js-base64';
 import * as Sentry from '@sentry/browser';
-import { Integrations } from '@sentry/tracing';
+import { BrowserTracing } from '@sentry/tracing';
 
 import './style/app.scss';
 
@@ -24,7 +24,7 @@ window.Kernel = class {
                         dsn: sentryDsn,
                         release,
                         environment,
-                        integrations: [new Integrations.BrowserTracing()],
+                        integrations: [new BrowserTracing()],
                         ignoreErrors: ['Non-Error promise rejection captured'],
                         tracesSampleRate: 0.025,
                     });

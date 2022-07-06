@@ -9,9 +9,14 @@ default:
                     symfony: ~
                 javascript:
                     selenium2:
+                        wd_host: http://selenium:4444/wd/hub
+                        browser: 'chrome'
                         capabilities:
                             version: ''
-                        wd_host: http://selenium:4444/wd/hub
+                            extra_capabilities:
+                                chromeOptions:
+                                    args:
+                                        - "--start-maximized"
         Bex\Behat\SkipTestsExtension: ~
         Behatch\Extension: ~
     suites:
