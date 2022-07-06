@@ -188,7 +188,7 @@ class RenaissanceMembershipController extends AbstractController
      *
      * @Route(
      *     path="/inscription/finaliser/{adherent_uuid}/{activation_token}",
-     *     name="app_membership_activate",
+     *     name="app_renaissance_membership_activate",
      *     requirements={
      *         "adherent_uuid": "%pattern_uuid%",
      *         "activation_token": "%pattern_sha1%"

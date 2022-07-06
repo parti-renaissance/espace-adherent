@@ -80,7 +80,7 @@ class TransactionSubscriber implements EventSubscriberInterface
         $this->manager->flush();
 
         if ($transaction->isSuccessful()) {
-            if (DonationSourceEnum::MEMBERSHIP !== $donation->getSource()) {
+            if (DonationSourceEnum::MEMBERSHIP === $donation->getSource()) {
                 $this->membershipRequestHandler->finishRenaissanceAdhesion($donation->getAdherent());
 
                 return;

@@ -26,14 +26,17 @@ class MembershipNotifier
         $this->manager = $manager;
     }
 
-    public function sendEmailValidation(Adherent $adherent, bool $isReminder = false): bool
-    {
+    public function sendEmailValidation(
+        Adherent $adherent,
+        bool $isReminder = false,
+        bool $isRenaissanceAdherent = false
+    ): bool {
         $token = AdherentActivationToken::generate($adherent);
 
         $this->manager->persist($token);
         $this->manager->flush();
 
-        $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
+        $activationUrl = $this->generateMembershipActivationUrl($adherent, $token, $isRenaissanceAdherent);
 
         if ($isReminder) {
             return $this->mailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl));
@@ -59,13 +62,16 @@ class MembershipNotifier
         $this->mailer->sendMessage(Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent));
     }
 
-    private function generateMembershipActivationUrl(Adherent $adherent, AdherentActivationToken $token): string
-    {
+    private function generateMembershipActivationUrl(
+        Adherent $adherent,
+        AdherentActivationToken $token,
+        bool $isRenaissanceAdherent = false
+    ): string {
         $params = [
             'adherent_uuid' => (string) $adherent->getUuid(),
             'activation_token' => (string) $token->getValue(),
         ];
 
-        return $this->callbackManager->generateUrl('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->callbackManager->generateUrl($isRenaissanceAdherent ? 'app_renaissance_membership_activate' : 'app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }
