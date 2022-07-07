@@ -393,8 +393,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $tags;
 
     /**
-     * TODO: remove
-     *
      * @var District|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})

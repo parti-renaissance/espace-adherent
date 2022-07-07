@@ -406,6 +406,7 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
         return [
             LoadAdherentData::class,
             LoadDesignationData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

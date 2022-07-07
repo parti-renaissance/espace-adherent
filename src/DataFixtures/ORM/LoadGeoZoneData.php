@@ -2,35 +2,22 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Deputy\LightFileDistrictLoader;
 use App\Entity\Geo\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadGeoZoneData extends Fixture
+class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
 {
     public static $zoneCache;
-
-    private $districtLoader;
-
-    public function __construct(LightFileDistrictLoader $districtLoader)
-    {
-        $this->districtLoader = $districtLoader;
-    }
 
     public function load(ObjectManager $manager): void
     {
         /** @var Connection $conn */
         $conn = $manager->getConnection();
         $conn->exec(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
-
-        $this->districtLoader->load(
-            __DIR__.'/../deputy/circonscriptions_all.csv',
-            __DIR__.'/../deputy/france_circonscriptions_legislatives.json',
-            __DIR__.'/../deputy/country_boundaries.json'
-        );
     }
 
     public static function getZoneReference(EntityManagerInterface $manager, string $reference): ?Zone
@@ -52,5 +39,12 @@ class LoadGeoZoneData extends Fixture
                 static::$zoneCache[$row['zone']] = (int) $row['id'];
             }
         }
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadGeoPolygonsData::class,
+        ];
     }
 }

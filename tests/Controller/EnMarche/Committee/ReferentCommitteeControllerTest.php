@@ -167,7 +167,7 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
         $this->assertStringContainsString('Une nouvelle demande', $fields->eq(1)->text());
         $this->assertCount(0, $fields->eq(1)->filter('a'));
         $this->assertSame('824 Avenue du Lys, 77190 Dammarie-les-Lys, FR', $fields->eq(2)->text());
-        $this->assertSame('Dammarie-les-Lys 77152', $fields->eq(3)->text());
+        $this->assertSame('Seine-et-Marne (1) 77-1Dammarie-les-Lys 77152', $fields->eq(3)->text());
         $this->assertSame('Referent Referent', $fields->eq(4)->text());
         $this->assertStringContainsString('En attente', $fields->eq(5)->filter('.status__pending')->text());
 
@@ -176,7 +176,7 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
         $this->assertStringContainsString('En Marche - Suisse', $fields->eq(1)->text());
         $this->assertCount(1, $fields->eq(1)->filter('a'));
         $this->assertSame('32 Zeppelinstrasse, 8057 Zürich, CH', $fields->eq(2)->text());
-        $this->assertSame('Suisse CH', $fields->eq(3)->text());
+        $this->assertSame('Suisse CIRCO_FDE-06Suisse CH', $fields->eq(3)->text());
         $this->assertSame('Referent Referent', $fields->eq(4)->text());
         $this->assertStringContainsString('Approuvé', $fields->eq(5)->filter('.status__approved')->text());
     }

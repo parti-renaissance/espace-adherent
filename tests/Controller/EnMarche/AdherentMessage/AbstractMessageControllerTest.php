@@ -3,6 +3,8 @@
 namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
 use App\Entity\Adherent;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use App\Scope\ScopeEnum;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -116,8 +118,12 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->getEntityManager(Adherent::class)->clear();
 
         $deputy = $this->manager->getRepository(Adherent::class)->findOneByEmail('deputy-ch-li@en-marche-dev.fr');
+        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_BEFORE_UPDATE);
+
         $deputy->removeZoneBasedRole($deputy->findZoneBasedRole(ScopeEnum::DEPUTY));
         $this->manager->flush();
+
+        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_UPDATED);
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 

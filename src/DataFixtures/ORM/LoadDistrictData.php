@@ -12,6 +12,9 @@ class LoadDistrictData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $conn = $manager->getConnection();
+        $conn->exec(file_get_contents(__DIR__.'/../../../dump/districts.sql'));
+
         $districtRepository = $manager->getRepository(District::class);
 
         // Create referent tags for districts
@@ -45,7 +48,7 @@ SQL;
     {
         return [
             LoadAdherentData::class,
-            LoadGeoZoneData::class,
+            LoadReferentData::class,
         ];
     }
 }
