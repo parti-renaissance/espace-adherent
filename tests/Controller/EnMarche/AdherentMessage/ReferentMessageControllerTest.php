@@ -41,10 +41,10 @@ class ReferentMessageControllerTest extends WebTestCase
             trim($crawler->filter('h4.manager__filters__subtitle')->text())
         );
 
-        self::assertCount(7, $crawler->filter('select#referent_filter_referentTags option[selected="selected"]'));
+        self::assertCount(7, $crawler->filter('select#referent_filter_zones option[selected="selected"]'));
 
         $this->client->submit($crawler->selectButton('Filtrer')->form([
-            'referent_filter[referentTags]' => [13],
+            'referent_filter[zones]' => [72],
         ]));
 
         $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);

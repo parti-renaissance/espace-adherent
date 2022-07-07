@@ -11,7 +11,7 @@ use App\AdherentMessage\Filter\FilterFormFactory;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Form\AdherentMessage\AdherentMessageType;
@@ -90,7 +90,8 @@ class CommitteeMessageController extends AbstractController
                 $form->getData(),
                 AdherentMessageTypeEnum::COMMITTEE
             );
-            $message->setFilter(new CommitteeFilter($committee));
+            $message->setFilter($filter = new MessageFilter());
+            $filter->setCommittee($committee);
             $manager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
@@ -171,7 +172,8 @@ class CommitteeMessageController extends AbstractController
 
         // Reset Filter object
         if ($request->query->has('reset') && $message->getFilter()) {
-            $manager->updateFilter($message, new CommitteeFilter($committee));
+            $manager->updateFilter($message, $filter = new MessageFilter());
+            $filter->setCommittee($committee);
 
             return $this->redirectToRoute('app_message_committee_filter', [
                 'uuid' => $message->getUuid()->toString(),
@@ -179,7 +181,8 @@ class CommitteeMessageController extends AbstractController
             ]);
         }
 
-        $filter = $message->getFilter() ?? new CommitteeFilter($committee);
+        $filter = $message->getFilter() ?? new MessageFilter();
+        $filter->setCommittee($committee);
 
         $form = $formFactory
             ->createForm($message->getType(), $filter, $adherent)
@@ -197,7 +200,7 @@ class CommitteeMessageController extends AbstractController
             ]);
         }
 
-        return $this->renderTemplate('message/filter/committee.html.twig', $committee, [
+        return $this->renderTemplate('message/filter/message_filter.html.twig', $committee, [
             'message' => $message,
             'form' => $form->createView(),
         ]);

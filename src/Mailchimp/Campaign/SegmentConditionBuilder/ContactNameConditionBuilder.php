@@ -8,6 +8,7 @@ use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CoalitionsFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
@@ -21,6 +22,7 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
     {
         return $filter instanceof ReferentUserFilter
             || $filter instanceof AdherentZoneFilter
+            || $filter instanceof MessageFilter
             || $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof CommitteeFilter
             || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())

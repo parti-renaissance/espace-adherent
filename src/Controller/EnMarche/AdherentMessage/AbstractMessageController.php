@@ -184,10 +184,6 @@ abstract class AbstractMessageController extends AbstractController
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        if ($message->hasReadOnlyFilter()) {
-            return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", ['message' => $message]);
-        }
-
         $adherent = $this->getMainUser($request->getSession());
 
         // Reset Filter object
@@ -212,7 +208,7 @@ abstract class AbstractMessageController extends AbstractController
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", [
+        return $this->renderTemplate('message/filter/message_filter.html.twig', [
             'message' => $message,
             'form' => $form->createView(),
         ]);

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Coalition\Listener\FollowerChangeSubscriber;
 use App\Entity\Adherent;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\CauseFollower;
@@ -11,6 +12,8 @@ use App\Entity\Geo\Zone;
 use App\Image\ImageManagerInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -35,6 +38,13 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
+        /** @var EntityManager $manager */
+        $eventManager = $manager->getEventManager();
+        $listener = current(array_filter($eventManager->getListeners(Events::postPersist), function ($listener) {
+            return $listener instanceof FollowerChangeSubscriber;
+        }));
+        $eventManager->removeEventSubscriber($listener);
+
         $carl = $this->getReference('adherent-2');
         $jacques = $this->getReference('adherent-3');
         $referent = $this->getReference('adherent-8');

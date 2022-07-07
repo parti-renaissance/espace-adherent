@@ -4,6 +4,7 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -16,9 +17,9 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
         return $filter instanceof AdherentZoneFilter
             || $filter instanceof AudienceFilter
             || (
-                $filter instanceof ReferentUserFilter
-                    && false === $filter->getContactOnlyVolunteers()
-                    && false === $filter->getContactOnlyRunningMates()
+                ($filter instanceof ReferentUserFilter || $filter instanceof MessageFilter)
+                && false === $filter->getContactOnlyVolunteers()
+                && false === $filter->getContactOnlyRunningMates()
             )
         ;
     }

@@ -214,6 +214,32 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function getQueryBuilderForZones(array $zones): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.status = :status')
+            ->setParameter('status', Committee::APPROVED)
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC')
+        ;
+
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+            }
+        );
+
+        return $qb;
+    }
+
     /**
      * @return Committee[]|PaginatorInterface
      */

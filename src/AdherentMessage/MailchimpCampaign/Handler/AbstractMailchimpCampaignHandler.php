@@ -9,6 +9,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {
     protected const TEXT_MERGE = 'text_merge';
+    protected const ZONE = 'zone';
     protected const STATIC_SEGMENT = 'static_segment';
     protected const MAILCHIMP_SEGMENT = 'mailchimp_segment';
     protected const MAILCHIMP_LIST_TYPE = 'mailchimp_list_type';
@@ -42,7 +43,6 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
                     $campaigns[$i] = new MailchimpCampaign($message);
                 }
 
-                /** @var MailchimpCampaign $campaign */
                 $campaign = $campaigns[$i];
                 $campaign->resetFilter();
                 $labels = [];
@@ -64,6 +64,10 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
                             break;
                         case self::MAILCHIMP_LIST_TYPE:
                             $campaign->setMailchimpListType($campaignFilter['value']);
+                            break;
+                        case self::ZONE:
+                            $campaign->setZone($campaignFilter['value']);
+                            $campaign->setLabel($campaignFilter['label']);
                             break;
                     }
                 }

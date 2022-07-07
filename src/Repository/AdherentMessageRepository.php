@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
-use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\Committee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -153,7 +153,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
     private function withCommittee(QueryBuilder $queryBuilder, Committee $committee, string $alias = 'message'): self
     {
         $queryBuilder
-            ->innerJoin(CommitteeFilter::class, 'filter', Join::WITH, "$alias.filter = filter")
+            ->innerJoin(MessageFilter::class, 'filter', Join::WITH, "$alias.filter = filter")
             ->andWhere('filter.committee = :committee')
             ->setParameter('committee', $committee)
         ;

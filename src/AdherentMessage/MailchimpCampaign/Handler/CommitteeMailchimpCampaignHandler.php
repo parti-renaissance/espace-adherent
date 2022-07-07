@@ -6,16 +6,18 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\MessageFilter;
 
 class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof CommitteeAdherentMessage && $message->getFilter() instanceof CommitteeFilter;
+        return $message instanceof CommitteeAdherentMessage
+            && ($message->getFilter() instanceof CommitteeFilter || $message->getFilter() instanceof MessageFilter);
     }
 
     /**
-     * @param AdherentMessageFilterInterface|CommitteeFilter $filter
+     * @param AdherentMessageFilterInterface|CommitteeFilter|MessageFilter $filter
      */
     protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array
     {
