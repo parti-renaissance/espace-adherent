@@ -91,7 +91,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="adherents")
  * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
- * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\RevokeReferentTeamMemberRolesListener",
+ * })
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  * @UniqueMembership(groups={"Admin"})
@@ -391,6 +393,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $tags;
 
     /**
+     * TODO: remove
+     *
      * @var District|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
@@ -2150,16 +2154,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->coordinatorCommitteeArea = $coordinatorCommitteeArea;
     }
 
-    public function getManagedDistrict(): ?District
-    {
-        return $this->managedDistrict;
-    }
-
-    public function setManagedDistrict(?District $district): void
-    {
-        $this->managedDistrict = $district;
-    }
-
     public function isDelegatedDeputy(): bool
     {
         return \count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
@@ -2728,10 +2722,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getDeputyZone(): ?Zone
     {
-        return $this->findZoneBasedRole(ScopeEnum::DEPUTY)
-            ? $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first()
-            : null
-        ;
+        return $this->isDeputy() ? $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first() : null;
     }
 
     public function getLreArea(): ?LreArea

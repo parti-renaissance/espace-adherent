@@ -8,13 +8,11 @@ class DeputyZoneExtractor implements ZoneExtractorInterface
 {
     public function extractZones(Adherent $adherent, ?string $slug): array
     {
-        $district = $adherent->getManagedDistrict();
-
-        if (null === $district) {
-            return [];
+        if ($zone = $adherent->getDeputyZone()) {
+            return [$zone];
         }
 
-        return [$district->getReferentTag()->getZone()];
+        return [];
     }
 
     public function supports(int $type): bool

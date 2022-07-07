@@ -605,6 +605,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         parent::setUp();
 
         $this->committeeRepository = $this->getCommitteeRepository();
+        $this->disableRepublicanSilence();
     }
 
     protected function tearDown(): void

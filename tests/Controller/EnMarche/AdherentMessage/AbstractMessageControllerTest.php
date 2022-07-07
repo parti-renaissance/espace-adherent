@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
 use App\Entity\Adherent;
+use App\Scope\ScopeEnum;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -115,7 +116,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->getEntityManager(Adherent::class)->clear();
 
         $deputy = $this->manager->getRepository(Adherent::class)->findOneByEmail('deputy-ch-li@en-marche-dev.fr');
-        $deputy->setManagedDistrict(null);
+        $deputy->removeZoneBasedRole($deputy->findZoneBasedRole(ScopeEnum::DEPUTY));
         $this->manager->flush();
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');

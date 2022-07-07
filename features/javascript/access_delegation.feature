@@ -7,7 +7,13 @@ Feature:
     I want to access to a delegated space
 
     Background:
-        Given I am logged as "deputy-ch-li@en-marche-dev.fr"
+        Given the following fixtures are loaded:
+            | LoadReferentTagsZonesLinksData |
+            | LoadAdherentData        |
+            | LoadCommitteeData       |
+            | LoadDelegatedAccessData |
+            | LoadDistrictData        |
+        And I am logged as "deputy-ch-li@en-marche-dev.fr"
 
     Scenario: I can delegate a space to an adherent of my area by searching for its name
         When I go to "/espace-depute/messagerie"

@@ -110,6 +110,7 @@ use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 trait TestHelperTrait
 {
@@ -444,6 +445,11 @@ trait TestHelperTrait
     public function getFranceCities(): ?FranceCities
     {
         return $this->get(FranceCities::class);
+    }
+
+    protected function getEventDispatcher(): EventDispatcherInterface
+    {
+        return $this->get(EventDispatcherInterface::class);
     }
 
     /**
