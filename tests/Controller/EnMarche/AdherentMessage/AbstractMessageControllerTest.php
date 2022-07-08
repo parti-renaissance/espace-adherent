@@ -3,6 +3,9 @@
 namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
 use App\Entity\Adherent;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
+use App\Scope\ScopeEnum;
 use Tests\App\AbstractWebCaseTest as WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -31,10 +34,10 @@ class AbstractMessageControllerTest extends WebTestCase
 
     public function provideSpaces(): \Generator
     {
-        yield ['referent@en-marche-dev.fr', 'Espace député partagé (FDE-06)', 'espace-depute/messagerie'];
+        yield ['referent@en-marche-dev.fr', 'Espace député partagé (CIRCO_FDE-06)', 'espace-depute/messagerie'];
         yield ['gisele-berthoux@caramail.com', 'Espace sénateur partagé (59)', 'espace-senateur/messagerie'];
-        yield ['gisele-berthoux@caramail.com', 'Espace député partagé (FDE-06)', 'espace-depute/messagerie'];
-        yield ['gisele-berthoux@caramail.com', 'Espace député partagé (75002)', 'espace-depute/utilisateurs'];
+        yield ['gisele-berthoux@caramail.com', 'Espace député partagé (CIRCO_FDE-06)', 'espace-depute/messagerie'];
+        yield ['gisele-berthoux@caramail.com', 'Espace député partagé (75-2)', 'espace-depute/utilisateurs'];
     }
 
     public function testICanAccessADelegatedSpace()
@@ -43,8 +46,8 @@ class AbstractMessageControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/');
 
-        self::assertStringContainsString('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
-        $crawler = $this->client->click($crawler->selectLink('Espace député partagé (FDE-06)')->link());
+        self::assertStringContainsString('Espace député partagé (CIRCO_FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        $crawler = $this->client->click($crawler->selectLink('Espace député partagé (CIRCO_FDE-06)')->link());
 
         self::assertEquals('http://test.enmarche.code/espace-depute/messagerie', $crawler->getUri());
         self::assertEquals(0, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
@@ -109,19 +112,23 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertStringContainsString('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringContainsString('Espace député partagé (CIRCO_FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
 
         $this->logout($this->client);
         $this->getEntityManager(Adherent::class)->clear();
 
         $deputy = $this->manager->getRepository(Adherent::class)->findOneByEmail('deputy-ch-li@en-marche-dev.fr');
-        $deputy->setManagedDistrict(null);
+        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_BEFORE_UPDATE);
+
+        $deputy->removeZoneBasedRole($deputy->findZoneBasedRole(ScopeEnum::DEPUTY));
         $this->manager->flush();
+
+        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_UPDATED);
 
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertStringNotContainsString('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringNotContainsString('Espace député partagé (CIRCO_FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
     }
 
     /**

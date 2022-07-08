@@ -6,9 +6,8 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData                  |
-      | LoadDistrictData                  |
       | LoadReferentTagsZonesLinksData    |
+      | LoadAdherentData                  |
       | LoadCommitteeData                 |
       | LoadCommitteeAdherentMandateData  |
 

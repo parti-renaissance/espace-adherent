@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Deputy\LightFileDistrictLoader;
 use App\Entity\District;
 use App\Entity\ReferentTag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -11,27 +10,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadDistrictData extends Fixture implements DependentFixtureInterface
 {
-    private $districtLoader;
-
-    public function __construct(LightFileDistrictLoader $districtLoader)
-    {
-        $this->districtLoader = $districtLoader;
-    }
-
     public function load(ObjectManager $manager)
     {
-        $this->districtLoader->load(
-            __DIR__.'/../deputy/circonscriptions_all.csv',
-            __DIR__.'/../deputy/france_circonscriptions_legislatives.json',
-            __DIR__.'/../deputy/country_boundaries.json'
-        );
+        $conn = $manager->getConnection();
+        $conn->exec(file_get_contents(__DIR__.'/../../../dump/districts.sql'));
 
         $districtRepository = $manager->getRepository(District::class);
-
-        $this->getReference('deputy-75-1')->setManagedDistrict($districtRepository->findOneBy(['code' => '75001']));
-        $this->getReference('deputy-75-2')->setManagedDistrict($districtRepository->findOneBy(['code' => '75002']));
-
-        $this->getReference('deputy-ch-li')->setManagedDistrict($districtRepository->findOneBy(['code' => 'FDE-06']));
 
         // Create referent tags for districts
         foreach ($districtRepository->findAll() as $district) {
@@ -64,7 +48,7 @@ SQL;
     {
         return [
             LoadAdherentData::class,
-            LoadGeoZoneData::class,
+            LoadReferentData::class,
         ];
     }
 }

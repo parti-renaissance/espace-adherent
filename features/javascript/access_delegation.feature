@@ -12,7 +12,6 @@ Feature:
             | LoadAdherentData        |
             | LoadCommitteeData       |
             | LoadDelegatedAccessData |
-            | LoadDistrictData        |
         And I am logged as "deputy-ch-li@en-marche-dev.fr"
 
     Scenario: I can delegate a space to an adherent of my area by searching for its name

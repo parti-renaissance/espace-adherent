@@ -168,15 +168,6 @@ class District
         $this->referentTag = $referentTag;
     }
 
-    public function update(array $countries, string $name, GeoData $geoData): self
-    {
-        $this->countries = $countries;
-        $this->name = $name;
-        $this->geoData = $geoData;
-
-        return $this;
-    }
-
     public function getFullName(): string
     {
         return sprintf(

@@ -9,7 +9,6 @@ use App\Entity\Geo\Zone;
 use App\Entity\GeoData;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
-use App\FranceCities\FranceCities;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Membership\Event\AdherentProfileWasUpdatedEvent;
@@ -27,7 +26,6 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
 
     private ?DistrictRepository $districtRepository;
     private ?BindAdherentDistrictSubscriber $subscriber;
-    private ?FranceCities $franceCities;
 
     /**
      * @dataProvider provideReferentTagHasCount
@@ -115,7 +113,6 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
         $this->districtRepository = $this->createMock(DistrictRepository::class);
 
         $this->subscriber = new BindAdherentDistrictSubscriber($this->manager, $this->districtRepository);
-        $this->franceCities = $this->get(FranceCities::class);
     }
 
     protected function tearDown(): void
@@ -123,7 +120,6 @@ class BindAdherentDistrictSubscriberTest extends AbstractKernelTestCase
         $this->manager = null;
         $this->districtRepository = null;
         $this->subscriber = null;
-        $this->franceCities = null;
 
         parent::tearDown();
     }

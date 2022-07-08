@@ -1251,6 +1251,7 @@ mailchimp_contact.status.cleaned: Cleaned
 
 adherent.zone_based_role_type.correspondent: Correspondant
 adherent.zone_based_role_type.legislative_candidate: Candidat aux législatives
+adherent.zone_based_role_type.deputy: Député
 
 #
 # Scope

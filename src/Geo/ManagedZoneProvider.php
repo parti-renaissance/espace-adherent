@@ -15,7 +15,7 @@ class ManagedZoneProvider
     public function getManagedZones(Adherent $adherent, string $spaceType): array
     {
         if (AdherentSpaceEnum::DEPUTY === $spaceType) {
-            return $adherent->getManagedDistrict() ? [$adherent->getManagedDistrict()->getReferentTag()->getZone()] : [];
+            return [$adherent->getDeputyZone()];
         }
 
         if (AdherentSpaceEnum::LRE === $spaceType) {

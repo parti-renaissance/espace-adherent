@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use App\Entity\District;
 use App\Entity\EntityPostAddressInterface;
 use App\Intl\FranceCitiesBundle;
 

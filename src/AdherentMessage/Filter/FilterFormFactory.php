@@ -40,7 +40,7 @@ class FilterFormFactory
             case AdherentMessageTypeEnum::DEPUTY:
                 return $this->formFactory->create(AdvancedMessageFilterType::class, $data, [
                     'message_type' => $messageType,
-                    'zones' => [$adherent->getManagedDistrict()->getReferentTag()->getZone()],
+                    'zones' => [$adherent->getDeputyZone()],
                 ]);
 
             case AdherentMessageTypeEnum::SENATOR:

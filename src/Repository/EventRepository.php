@@ -5,7 +5,6 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\District;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
@@ -20,7 +19,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -187,27 +185,6 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('slug', $slug)
             ->andWhere('e.published = :published')
             ->setParameter('published', true)
-        ;
-    }
-
-    /**
-     * @return BaseEvent[]
-     */
-    public function findAllInDistrict(District $district): array
-    {
-        return $this->_em->getRepository(BaseEvent::class)->createQueryBuilder('e')
-            ->select('e', 'o')
-            ->leftJoin('e.organizer', 'o')
-            ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
-            ->innerJoin('d.geoData', 'gd')
-            ->where('e.published = :published')
-            ->andWhere("ST_Within(ST_GeomFromText(CONCAT('POINT(',e.postAddress.longitude,' ',e.postAddress.latitude,')')), gd.geoShape) = 1")
-            ->setParameter('district_id', $district->getId())
-            ->orderBy('e.beginAt', 'DESC')
-            ->addOrderBy('e.name', 'ASC')
-            ->setParameter('published', true)
-            ->getQuery()
-            ->getResult()
         ;
     }
 

@@ -454,17 +454,23 @@ class ZoneRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getFranceCities(): array
+    public function getFrenchCities(): array
     {
-        return $this->createQueryBuilder('zone', 'zone.code')
+        return $this->createFrenchCitiesQueryBuilder()
             ->select('zone.name')
             ->addSelect('zone.code AS insee_code', 'zone.postalCode AS postal_code')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+    public function createFrenchCitiesQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('zone', 'zone.code')
             ->where('zone.type IN (:types)')
             ->andWhere('zone.code NOT IN (:codes)')
             ->setParameter('types', [Zone::BOROUGH, Zone::CITY])
             ->setParameter('codes', ['75056', '13055', '69123'])
-            ->getQuery()
-            ->getArrayResult()
         ;
     }
 
@@ -478,5 +484,20 @@ class ZoneRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function searchCitiesInZones(array $zones, string $search): array
+    {
+        $qb = $this->createFrenchCitiesQueryBuilder()
+            ->select('PARTIAL zone.{id, name, code, postalCode}')
+            ->innerJoin('zone.parents', 'parent')
+            ->andWhere('zone IN (:zones) OR parent IN (:zones)')
+            ->andWhere('(zone.name LIKE :name OR zone.postalCode LIKE :postal_code)')
+            ->setParameter('name', $search.'%')
+            ->setParameter('postal_code', '%'.$search.'%')
+            ->setParameter('zones', $zones)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -730,6 +730,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->committeeEventRepository = $this->getEventRepository();
         $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
+
+        $this->disableRepublicanSilence();
     }
 
     protected function tearDown(): void

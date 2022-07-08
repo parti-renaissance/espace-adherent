@@ -26,10 +26,8 @@ use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
-use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
-use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
@@ -281,31 +279,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return new AdherentCollection($qb->getQuery()->getResult());
     }
 
-    /**
-     * Finds the list of adherents managed by the given referent.
-     *
-     * @return Adherent[]
-     */
-    public function findAllManagedBy(Adherent $referent): array
-    {
-        if (!$referent->isReferent()) {
-            return [];
-        }
-
-        return $this->createQueryBuilder('a')
-            ->select('a', 'm')
-            ->leftJoin('a.memberships', 'm')
-            ->innerJoin('a.referentTags', 'tag')
-            ->andWhere('tag IN (:tags)')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->orderBy('a.registeredAt', 'DESC')
-            ->addOrderBy('a.firstName', 'ASC')
-            ->addOrderBy('a.lastName', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
     {
         return $this
@@ -489,7 +462,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }, array_column($query->getArrayResult(), 'uuid'));
     }
 
-    public function findAdherentsByName(array $tags, ?string $name): array
+    public function findAdherentsByNameAndReferentTags(array $tags, ?string $name): array
     {
         $qb = $this->createQueryBuilder('a')
             ->leftJoin('a.referentTags', 'referent_tags')
@@ -497,12 +470,34 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if ($name) {
             $qb
-                ->orWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
+                ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
                 ->setParameter('name', '%'.strtolower($name).'%')
             ;
         }
 
         $this->applyGeoFilter($qb, $tags, 'a', null, null, 'referent_tags');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAdherentsByName(array $zones, ?string $name): array
+    {
+        $this->withGeoZones(
+            $zones,
+            $qb = $this->createQueryBuilder('a'),
+            'a',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        if ($name) {
+            $qb
+                ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
+                ->setParameter('name', '%'.strtolower($name).'%')
+            ;
+        }
 
         return $qb->getQuery()->getResult();
     }
@@ -581,35 +576,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         return $this->formatCount($result);
-    }
-
-    public function countCommitteeMembersInReferentManagedArea(
-        Adherent $referent,
-        StatisticsParametersFilter $filter = null,
-        int $months = 5
-    ): array {
-        $this->checkReferent($referent);
-
-        $query = $this->createQueryBuilder('adherent', 'adherent.gender')
-            ->select('COUNT(DISTINCT adherent.id) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
-            ->join('adherent.memberships', 'membership')
-            ->join('membership.committee', 'committee')
-            ->innerJoin('committee.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->andWhere('committee.status = :status')
-            ->andWhere('membership.joinedAt >= :from')
-            ->andWhere('membership.joinedAt <= :until')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
-            ->groupBy('yearmonth')
-        ;
-
-        $query = RepositoryUtils::addStatstFilter($filter, $query)->getQuery();
-        $query->useResultCache(true, 3600); // 1 hour
-
-        return RepositoryUtils::aggregateCountByMonth($query->getArrayResult());
     }
 
     private function formatCount(array $count): array

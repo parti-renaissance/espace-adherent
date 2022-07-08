@@ -13,7 +13,6 @@ use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
-use App\Entity\District;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
@@ -477,7 +476,15 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
         ;
 
-        $this->applyGeoFilter($qb, [$deputy->getManagedDistrict()->getReferentTag()], $alias);
+        $this->withGeoZones(
+            [$deputy->getDeputyZone()],
+            $qb,
+            $alias,
+            Committee::class,
+            'c2',
+            'zones',
+            'z2'
+        );
 
         return $qb->getQuery()->getResult();
     }
@@ -622,25 +629,32 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit, false);
     }
 
-    /**
-     * Finds committees in the district.
-     *
-     * @return Committee[]
-     */
-    public function findAllInDistrict(District $district): array
+    public function createQueryBuilderForZones(array $zones): QueryBuilder
     {
-        return $this->createQueryBuilder('c')
-            ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
-            ->innerJoin('d.geoData', 'gd')
-            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',c.postAddress.longitude,' ',c.postAddress.latitude,')')), gd.geoShape) = 1")
+        $qb = $this->createQueryBuilder('c')
             ->andWhere('c.status = :status')
-            ->setParameter('district_id', $district->getId())
             ->setParameter('status', Committee::APPROVED)
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
         ;
+
+        return $this->withGeoZones(
+            $zones,
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2'
+        );
+    }
+
+    /**
+     * @return Committee[]
+     */
+    public function findInZones(array $zones): array
+    {
+        return $this->createQueryBuilderForZones($zones)->getQuery()->getResult();
     }
 
     public function findCommitteesForHost(Adherent $adherent): array

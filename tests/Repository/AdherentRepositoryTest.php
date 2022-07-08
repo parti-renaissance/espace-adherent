@@ -57,29 +57,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         );
     }
 
-    public function testFindAllManagedBy()
-    {
-        $referent = $this->adherentRepository->loadUserByUsername('referent@en-marche-dev.fr');
-
-        $this->assertInstanceOf(Adherent::class, $referent, 'Enabled referent must be returned.');
-
-        $managedByReferent = $this->adherentRepository->findAllManagedBy($referent);
-
-        $this->assertCount(12, $managedByReferent, 'Referent should manage 9 adherents + himself in his area.');
-        $this->assertSame('Damien SCHMIDT', $managedByReferent[0]->getFullName());
-        $this->assertSame('Michel VASSEUR', $managedByReferent[1]->getFullName());
-        $this->assertSame('Michelle Dufour', $managedByReferent[2]->getFullName());
-        $this->assertSame('Député CHLI FDESIX', $managedByReferent[3]->getFullName());
-        $this->assertSame('Thomas Leclerc', $managedByReferent[4]->getFullName());
-        $this->assertSame('Laura Deloche', $managedByReferent[5]->getFullName());
-        $this->assertSame('Francis Brioul', $managedByReferent[6]->getFullName());
-        $this->assertSame('Referent Referent', $managedByReferent[7]->getFullName());
-        $this->assertSame('Referent child Referent child', $managedByReferent[8]->getFullName());
-        $this->assertSame('Benjamin Duroc', $managedByReferent[9]->getFullName());
-        $this->assertSame('Gisele Berthoux', $managedByReferent[10]->getFullName());
-        $this->assertSame('Carl Mirabeau', $managedByReferent[11]->getFullName());
-    }
-
     /**
      * @dataProvider dataProviderSearchBoardMembers
      */

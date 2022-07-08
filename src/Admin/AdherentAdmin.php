@@ -25,7 +25,6 @@ use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentInstanceQualityType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
-use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\CoordinatorManagedAreaType;
 use App\Form\Admin\JecouteManagedAreaType;
@@ -259,7 +258,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('isDeputy', 'boolean', [
                     'label' => 'Est un(e) député(e) ?',
                 ])
-                ->add('managedDistrict.name', null, [
+                ->add('deputyZone', null, [
                     'label' => 'Circonscription député',
                 ])
             ->end()
@@ -494,12 +493,6 @@ HELP
                     ])
                 ->end()
                 ->with('Mandat électif', ['class' => 'col-md-6'])
-                    ->add('managedDistrict', AvailableDistrictAutocompleteType::class, [
-                        'label' => 'Circonscription député',
-                        'by_reference' => false,
-                        'required' => false,
-                        'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
-                    ])
                     ->add('senatorArea', SenatorAreaType::class, [
                         'required' => false,
                         'label' => 'Circonscription sénateur',

@@ -4,11 +4,12 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Geo\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadGeoZoneData extends Fixture
+class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
 {
     public static $zoneCache;
 
@@ -38,5 +39,12 @@ class LoadGeoZoneData extends Fixture
                 static::$zoneCache[$row['zone']] = (int) $row['id'];
             }
         }
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadGeoPolygonsData::class,
+        ];
     }
 }

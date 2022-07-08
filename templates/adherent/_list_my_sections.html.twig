@@ -23,7 +23,7 @@
 {% if app.user.isDelegatedDeputy %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('deputy') %}
         <li>
-            <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace député partagé ({{ delegated_access.delegator.managedDistrict.code }})</a>
+            <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace député partagé ({{ delegated_access.delegator.deputyZone.code }})</a>
         </li>
     {% endfor %}
 {% endif %}

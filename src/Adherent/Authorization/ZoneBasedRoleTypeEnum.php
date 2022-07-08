@@ -10,6 +10,7 @@ final class ZoneBasedRoleTypeEnum
     public const ALL = [
         ScopeEnum::CORRESPONDENT,
         ScopeEnum::LEGISLATIVE_CANDIDATE,
+        ScopeEnum::DEPUTY,
     ];
 
     public const ZONE_TYPES = [
@@ -17,6 +18,10 @@ final class ZoneBasedRoleTypeEnum
             Zone::DEPARTMENT,
         ],
         ScopeEnum::LEGISLATIVE_CANDIDATE => [
+            Zone::DISTRICT,
+            Zone::FOREIGN_DISTRICT,
+        ],
+        ScopeEnum::DEPUTY => [
             Zone::DISTRICT,
             Zone::FOREIGN_DISTRICT,
         ],

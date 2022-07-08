@@ -91,7 +91,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="adherents")
  * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
- * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
+ * @ORM\EntityListeners({
+ *     "App\EntityListener\RevokeReferentTeamMemberRolesListener",
+ * })
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  * @UniqueMembership(groups={"Admin"})
@@ -2150,21 +2152,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->coordinatorCommitteeArea = $coordinatorCommitteeArea;
     }
 
-    public function getManagedDistrict(): ?District
-    {
-        return $this->managedDistrict;
-    }
-
-    public function setManagedDistrict(?District $district): void
-    {
-        $this->managedDistrict = $district;
-    }
-
-    public function isDeputy(): bool
-    {
-        return $this->managedDistrict instanceof District;
-    }
-
     public function isDelegatedDeputy(): bool
     {
         return \count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
@@ -2711,19 +2698,29 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::CORRESPONDENT);
     }
 
-    public function isLegislativeCandidate(): bool
-    {
-        return $this->hasZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE);
-    }
-
     public function getCorrespondentZone(): Zone
     {
         return $this->findZoneBasedRole(ScopeEnum::CORRESPONDENT)->getZones()->first();
     }
 
+    public function isLegislativeCandidate(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE);
+    }
+
     public function getLegislativeCandidateZone(): Zone
     {
         return $this->findZoneBasedRole(ScopeEnum::LEGISLATIVE_CANDIDATE)->getZones()->first();
+    }
+
+    public function isDeputy(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::DEPUTY);
+    }
+
+    public function getDeputyZone(): ?Zone
+    {
+        return $this->isDeputy() ? $this->findZoneBasedRole(ScopeEnum::DEPUTY)->getZones()->first() : null;
     }
 
     public function getLreArea(): ?LreArea

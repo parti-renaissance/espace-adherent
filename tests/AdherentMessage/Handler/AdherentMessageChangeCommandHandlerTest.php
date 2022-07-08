@@ -30,7 +30,6 @@ use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
 use App\Entity\Committee;
-use App\Entity\District;
 use App\Entity\Geo\Zone;
 use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\ReferentTag;
@@ -1038,7 +1037,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
             'getFullName' => 'Full Name',
             'getFirstName' => 'First Name',
             'getEmailAddress' => 'adherent@mail.com',
-            'getManagedDistrict' => $this->createConfiguredMock(District::class, ['__toString' => 'District1']),
+            'getDeputyZone' => $this->createConfiguredMock(Zone::class, ['__toString' => 'District1']),
             'getMunicipalChiefManagedArea' => $this->createConfiguredMock(MunicipalChiefManagedArea::class, ['getCityName' => 'Paris 1er']),
         ]);
 

@@ -656,6 +656,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $deputy_75_1->certify();
         $deputy_75_1->setPapUserRole(true);
+        $deputy_75_1->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $this->adherentFactory->createFromArray([
@@ -677,6 +678,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_75_2->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_2->addReferentTag($this->getReference('referent_tag_75002'));
         $deputy_75_2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
+        $deputy_75_2->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-2')));
         $this->addReference('deputy-75-2', $deputy_75_2);
 
         $deputy_ch_li = $this->adherentFactory->createFromArray([
@@ -696,6 +698,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $deputy_ch_li->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
         $deputy_ch_li->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
+        $deputy_ch_li->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_foreign_district_CIRCO_FDE-06')));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
         // senator

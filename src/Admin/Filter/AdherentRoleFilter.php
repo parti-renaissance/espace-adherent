@@ -65,12 +65,6 @@ class AdherentRoleFilter extends CallbackFilter
                     $qb->setParameter('committee_privilege', CommitteeMembership::COMMITTEE_HOST);
                 }
 
-                // Deputy
-                if (\in_array(AdherentRoleEnum::DEPUTY, $value['value'], true)) {
-                    $qb->leftJoin(sprintf('%s.managedDistrict', $alias), 'district');
-                    $where->add('district IS NOT NULL');
-                }
-
                 // Senator
                 if (\in_array(AdherentRoleEnum::SENATOR, $value['value'], true)) {
                     $qb->leftJoin(sprintf('%s.senatorArea', $alias), 'senatorArea');
@@ -201,7 +195,7 @@ class AdherentRoleFilter extends CallbackFilter
                     }, $delegatedTypes));
                 }
 
-                // Legislative candidate | Correspondent
+                // Legislative candidate | Correspondent | Deputy
                 if ($zoneBasedRoles = array_intersect(ZoneBasedRoleTypeEnum::ALL, $value['value'])) {
                     $qb
                         ->leftJoin(sprintf('%s.zoneBasedRoles', $alias), 'zone_based_role')

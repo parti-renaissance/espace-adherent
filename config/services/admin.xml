@@ -318,14 +318,6 @@
             </call>
         </service>
 
-        <service id="app.admin.district" class="App\Admin\DistrictAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Circonscriptions" group="Territoires" show_in_dashboard="false" />
-
-            <argument />
-            <argument>App\Entity\District</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.vote_place_admin" class="App\Admin\VotePlaceAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Bureaux de vote" group="Territoires" />
 
