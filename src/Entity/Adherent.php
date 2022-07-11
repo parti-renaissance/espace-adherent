@@ -3150,7 +3150,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && $this->isAdherent()
             && $this->isEnabled()
             && $this->activatedAt
-            && (clone $this->activatedAt)->modify('+3 months') < new \DateTime('2022-07-08 8:00:00')
+            && (clone $this->activatedAt)->modify('+3 months') < new \DateTime('2022-09-01 08:00:00')
         ;
     }
 }
