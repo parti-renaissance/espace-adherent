@@ -64,6 +64,10 @@ export default class AddressForm {
             show(this._cityName);
             if (null !== this._region) {
                 show(this._region);
+                const regionLabel = find(this._region.parentNode, 'label');
+                if (regionLabel) {
+                    show(regionLabel);
+                }
             }
             this._cityName.required = this._cityNameRequired;
             this._cityName.value = this._initialCityName;
@@ -72,6 +76,10 @@ export default class AddressForm {
 
         if (null !== this._region) {
             hide(this._region);
+            const regionLabel = find(this._region.parentNode, 'label');
+            if (regionLabel) {
+                hide(regionLabel);
+            }
         }
 
         show(this._city);

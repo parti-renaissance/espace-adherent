@@ -806,13 +806,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $papUserRole = false;
 
-    /**
-     * @var Donation[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Donation", mappedBy="adherent", cascade={"persist"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
-    private Collection $membershipDonation;
-
     private ?string $authAppCode = null;
 
     public function __construct()
@@ -831,7 +824,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
-        $this->membershipDonation = new ArrayCollection();
     }
 
     public static function createLight(
@@ -2979,6 +2971,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return MembershipSourceEnum::JEMENGAGE === $this->source;
     }
 
+    public function isRenaissanceUser(): bool
+    {
+        return MembershipSourceEnum::RENAISSANCE === $this->source;
+    }
+
     public function isCoalitionSubscription(): bool
     {
         return $this->coalitionSubscription;
@@ -3163,25 +3160,5 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && $this->activatedAt
             && (clone $this->activatedAt)->modify('+3 months') < new \DateTime('2022-07-08 8:00:00')
         ;
-    }
-
-    public function getMembershipDonation(): Collection
-    {
-        return $this->membershipDonation;
-    }
-
-    public function addMembershipDonation(Donation $donation): void
-    {
-        if (!$this->membershipDonation->contains($donation)) {
-            $donation->setAdherent($this);
-            $this->membershipDonation->add($donation);
-        }
-    }
-
-    public function removeMembershipDonation(Donation $donation): void
-    {
-        if ($this->membershipDonation->contains($donation)) {
-            $this->membershipDonation->removeElement($donation);
-        }
     }
 }

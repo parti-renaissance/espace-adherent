@@ -92,7 +92,7 @@ export default class DonationAmountChooser extends React.Component {
                 {this.state.amount
                     ? <div className="donation__amount-chooser__after-taxes">
                         soit <span className="after-taxes-amount">
-                            {App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)} €
+                            {App.get('tax_return_provider').getAmountAfterTaxReturn(this.state.amount)} €
                         </span> après réduction d’impôt <div className="infos-taxe-reduction">
                         ?
                             <div className="infos-taxe-reduction__content">

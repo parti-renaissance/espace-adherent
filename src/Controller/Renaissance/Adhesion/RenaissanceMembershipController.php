@@ -6,7 +6,6 @@ use App\Address\GeoCoder;
 use App\Donation\DonationRequest;
 use App\Donation\DonationRequestHandler;
 use App\Donation\DonationRequestUtils;
-use App\Donation\DonationSourceEnum;
 use App\Donation\PayboxFormFactory;
 use App\Donation\TransactionCallbackHandler;
 use App\Entity\Adherent;
@@ -28,7 +27,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -39,14 +37,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RenaissanceMembershipController extends AbstractController
 {
     public const RESULT_STATUS_EFFECTUE = 'effectue';
-    public const RESULT_STATUS_ERREUR = 'erreur';
-
-    private SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
 
     /**
      * @Route(name="app_renaissance_index_action", methods={"GET"})
@@ -73,31 +63,31 @@ class RenaissanceMembershipController extends AbstractController
         DonationRequestHandler $donationRequestHandler,
         EntityManagerInterface $entityManager
     ): Response {
-        if (!$request->query->get('montant') || !is_numeric($request->query->get('montant'))) {
+        if (!($amount = $request->query->get('montant')) || !is_numeric($amount)) {
             return $this->redirectToRoute('app_renaissance_index_action');
         }
 
         $membership = RenaissanceMembershipRequest::createWithCaptcha(
-            $geoCoder->getCountryCodeFromIp($request->getClientIp()),
+            $geoCoder->getCountryCodeFromIp($clientIP = $request->getClientIp()),
             $request->request->get('g-recaptcha-response')
         );
+        $membership->setClientIp($clientIP);
+        $membership->setAmount(\floatval($amount));
 
         $form = $this
             ->createForm(RenaissanceAdherentRegistrationType::class, $membership)
             ->add('submit', SubmitType::class, ['label' => 'Continuer'])
             ->handleRequest($request)
         ;
+
         try {
             if ($form->isSubmitted() && $form->isValid()) {
                 $adherent = $membershipRequestHandler->createRenaissanceAdherent($membership);
 
                 $donationRequest = DonationRequest::createFromAdherent($adherent, $membership->getClientIp(), $membership->getAmount());
-                $donation = $donationRequestHandler->handle($donationRequest);
-                $donation->setSource(DonationSourceEnum::MEMBERSHIP);
+                $donationRequest->forMembership();
 
-                $adherent->addMembershipDonation($donation);
-
-                $entityManager->flush();
+                $donationRequestHandler->handle($donationRequest);
 
                 return $this->redirectToRoute('app_renaissance_adhesion_pay', [
                     'uuid' => $donationRequest->getUuid(),
@@ -205,7 +195,7 @@ class RenaissanceMembershipController extends AbstractController
         MembershipNotifier $membershipNotifier
     ): Response {
         try {
-            $accountActivationHandler->handle($adherent, $activationToken, true);
+            $accountActivationHandler->handle($adherent, $activationToken);
 
             if ($adherent->isAdherent()) {
                 $membershipNotifier->sendConfirmationJoinMessage($adherent);

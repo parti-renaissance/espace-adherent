@@ -3,6 +3,7 @@
 namespace App\Membership\MembershipRequest;
 
 use App\Address\Address;
+use App\Membership\MembershipSourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\BannedAdherent;
@@ -26,7 +27,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     /**
      * @Assert\NotBlank
      * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
-//     * @MaxFiscalYearDonation
+     * @MaxFiscalYearDonation
      */
     private ?float $amount = null;
 
@@ -122,24 +123,16 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      */
     private ?\DateTimeInterface $birthdate = null;
 
-    private bool $asUser;
-
-    private bool $certified = false;
-
     private ?string $clientIp = null;
 
-    public function __construct(bool $asUser = false)
+    public function __construct()
     {
-        $this->asUser = $asUser;
         $this->address = new Address();
     }
 
-    public static function createWithCaptcha(
-        ?string $countryIso,
-        string $recaptchaAnswer = null,
-        bool $asUser = false
-    ): self {
-        $dto = new self($asUser);
+    public static function createWithCaptcha(?string $countryIso, string $recaptchaAnswer = null): self
+    {
+        $dto = new self();
         $dto->setRecaptcha($recaptchaAnswer);
 
         if ($countryIso) {
@@ -162,16 +155,6 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public function getGender(): ?string
     {
         return $this->gender;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
     }
 
     public function setAddress(Address $address): void
@@ -214,16 +197,6 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         return $this->birthdate;
     }
 
-    public function isAsUser(): bool
-    {
-        return $this->asUser;
-    }
-
-    public function isCertified(): bool
-    {
-        return $this->certified;
-    }
-
     public function getClientIp(): ?string
     {
         return $this->clientIp;
@@ -234,8 +207,8 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         $this->clientIp = $clientIp;
     }
 
-    public function getSource(): ?string
+    final public function getSource(): string
     {
-        return null;
+        return MembershipSourceEnum::RENAISSANCE;
     }
 }

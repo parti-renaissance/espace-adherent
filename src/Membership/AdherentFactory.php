@@ -50,7 +50,7 @@ class AdherentFactory
         throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', \get_class($membershipRequest)));
     }
 
-    public function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent
+    private function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent
     {
         return Adherent::createLight(
             Adherent::createUuid($request->getEmailAddress()),
@@ -65,7 +65,7 @@ class AdherentFactory
         );
     }
 
-    public function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent
+    private function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
@@ -85,7 +85,7 @@ class AdherentFactory
         return $adherent;
     }
 
-    public function createFromJeMengageMembershipRequest(JeMengageMembershipRequest $request): Adherent
+    private function createFromJeMengageMembershipRequest(JeMengageMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
@@ -106,7 +106,7 @@ class AdherentFactory
         return $adherent;
     }
 
-    public function createFromPlatformMembershipRequest(PlatformMembershipRequest $request): Adherent
+    private function createFromPlatformMembershipRequest(PlatformMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
@@ -162,10 +162,9 @@ class AdherentFactory
             $request->customGender
         );
 
-        if (!$request->isAsUser()) {
-            $adherent->join();
-            $adherent->setPapUserRole(true);
-        }
+        $adherent->join();
+        $adherent->setSource($request->getSource());
+        $adherent->setPapUserRole(true);
 
         return $adherent;
     }

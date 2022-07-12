@@ -24,13 +24,13 @@ class AdherentAccountActivationHandler
         $this->dispatcher = $dispatcher;
     }
 
-    public function handle(Adherent $adherent, AdherentActivationToken $token, bool $isRenaissanceAdhrent = false): void
+    public function handle(Adherent $adherent, AdherentActivationToken $token): void
     {
         $this->adherentManager->activateAccount($adherent, $token);
 
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
 
-        if (!$isRenaissanceAdhrent) {
+        if (!$adherent->isRenaissanceUser()) {
             $this->authenticator->authenticateAdherent($adherent);
         }
     }

@@ -10,18 +10,15 @@ class UserEvent extends Event
     private Adherent $user;
     private ?bool $allowEmailNotifications;
     private ?bool $allowMobileNotifications;
-    private bool $isRenaissanceMembership;
 
     public function __construct(
         Adherent $adherent,
         bool $allowEmailNotifications = null,
-        bool $allowMobileNotifications = null,
-        bool $isRenaissanceMembership = false
+        bool $allowMobileNotifications = null
     ) {
         $this->user = $adherent;
         $this->allowEmailNotifications = $allowEmailNotifications;
         $this->allowMobileNotifications = $allowMobileNotifications;
-        $this->isRenaissanceMembership = $isRenaissanceMembership;
     }
 
     public function getUser(): Adherent
@@ -37,10 +34,5 @@ class UserEvent extends Event
     public function allowMobileNotifications(): ?bool
     {
         return $this->allowMobileNotifications;
-    }
-
-    public function isRenaissanceMembership(): bool
-    {
-        return $this->isRenaissanceMembership;
     }
 }

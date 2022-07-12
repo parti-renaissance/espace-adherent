@@ -3,9 +3,10 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            hide(dom('#app-adhesion-redirect-form'));
             show(dom('#app-adhesion-redirect-loader'));
-            document.getElementById('app-adhesion-redirect-form').submit();
+            var form = dom('#app-adhesion-redirect-form');
+            hide(form);
+            form.submit();
         });
     </script>
 {% endblock %}
@@ -33,7 +34,7 @@
                     Veuillez patienter pendant que nous vous redirigons vers votre banque...
                 </p>
             </div>
-            <form class="adhesion__nojs" action="{{ url }}" method="post" name="app_adhesion_payment" id="app-adhesion-redirect-form">
+            <form action="{{ url }}" method="post" name="app_adhesion_payment" id="app-adhesion-redirect-form">
                 {% for field in form %}
                     <input type="{{ field.vars.block_prefixes[1] }}"
                            name="{{ field.vars.name }}"

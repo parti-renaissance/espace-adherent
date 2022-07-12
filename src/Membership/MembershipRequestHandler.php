@@ -93,7 +93,7 @@ class MembershipRequestHandler
 
     public function createRenaissanceAdherent(MembershipInterface $membershipRequest): Adherent
     {
-        $this->manager->persist($adherent = $this->adherentFactory->createFromRenaisssanceMembershipRequest($membershipRequest));
+        $this->manager->persist($adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest));
 
         $this->referentZoneManager->assignZone($adherent);
 
@@ -112,12 +112,10 @@ class MembershipRequestHandler
         return $adherent;
     }
 
-    public function finishRenaissanceAdhesion(Adherent $adherent): Adherent
+    public function finishRenaissanceAdhesion(Adherent $adherent): void
     {
-        $this->dispatcher->dispatch(new UserEvent($adherent, null, null, true), UserEvents::RENAISSANCE_USER_SEND_EMAIL_CONFIRMATION);
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
-
-        return $adherent;
     }
 
     public function removeUnsuccessfulRenaissainceAdhesion(Adherent $adherent): void
