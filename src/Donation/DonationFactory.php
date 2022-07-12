@@ -19,7 +19,7 @@ class DonationFactory
 
     public function createFromDonationRequest(DonationRequest $request, Donator $donator): Donation
     {
-        return new Donation(
+        $donation = new Donation(
             $request->getUuid(),
             $request->getType(),
             $request->getAmount() * 100,
@@ -40,5 +40,9 @@ class DonationFactory
             $request->getCode(),
             $donator
         );
+
+        $donation->setSource($request->getSource());
+
+        return $donation;
     }
 }

@@ -30,6 +30,8 @@ class AdherentAccountActivationHandler
 
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
 
-        $this->authenticator->authenticateAdherent($adherent);
+        if (!$adherent->isRenaissanceUser()) {
+            $this->authenticator->authenticateAdherent($adherent);
+        }
     }
 }

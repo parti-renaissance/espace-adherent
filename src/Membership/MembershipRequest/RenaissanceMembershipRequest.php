@@ -3,11 +3,12 @@
 namespace App\Membership\MembershipRequest;
 
 use App\Address\Address;
-use App\Entity\Adherent;
+use App\Membership\MembershipSourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\BannedAdherent;
 use App\Validator\CustomGender as AssertCustomGender;
+use App\Validator\MaxFiscalYearDonation;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UniqueMembership as AssertUniqueMembership;
 use libphonenumber\PhoneNumber;
@@ -19,13 +20,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @AssertCustomGender(groups={"Registration", "Update"})
  * @AssertRecaptcha(groups={"Registration"})
  */
-class PlatformMembershipRequest extends AbstractMembershipRequest implements RecaptchaChallengeInterface, MembershipCustomGenderInterface
+class RenaissanceMembershipRequest extends AbstractMembershipRequest implements RecaptchaChallengeInterface, MembershipCustomGenderInterface
 {
     use RecaptchaChallengeTrait;
 
     /**
-     * @var string|null
-     *
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
+     * @MaxFiscalYearDonation
+     */
+    private ?float $amount = null;
+
+    /**
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -34,16 +40,11 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      *     groups={"Update"}
      * )
      */
-    public $gender;
+    public ?string $gender = null;
+
+    public ?string $customGender = null;
 
     /**
-     * @var string|null
-     */
-    public $customGender;
-
-    /**
-     * @var string
-     *
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -67,18 +68,14 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      *     groups={"Registration", "Update"}
      * )
      */
-    public $lastName;
+    public ?string $lastName = null;
 
     /**
-     * @var Address
-     *
      * @Assert\Valid
      */
-    private $address;
+    private Address $address;
 
     /**
-     * @var string|null
-     *
      * @Assert\Choice(
      *     callback={"App\Membership\ActivityPositionsEnum", "all"},
      *     message="adherent.activity_position.invalid_choice",
@@ -86,15 +83,13 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      *     groups={"Update"}
      * )
      */
-    public $position;
+    public ?string $position = null;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(groups="Registration")
      * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
      */
-    public $password;
+    public string $password;
 
     /**
      * @var bool
@@ -104,12 +99,10 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
     public $conditions;
 
     /**
-     * @var string|null
-     *
      * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Country(message="common.nationality.invalid")
      */
-    public $nationality;
+    public ?string $nationality = null;
 
     /**
      * @Assert\NotBlank(groups={"Registration", "Update"})
@@ -120,51 +113,26 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
     protected string $emailAddress = '';
 
     /**
-     * @var PhoneNumber|null
-     *
      * @AssertPhoneNumber(defaultRegion="FR", groups={"Update"})
      */
-    private $phone;
+    private ?PhoneNumber $phone = null;
 
     /**
-     * @var \DateTime|null
-     *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"Update"})
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"Update"})
      */
-    private $birthdate;
+    private ?\DateTimeInterface $birthdate = null;
 
-    /**
-     * @var bool
-     */
-    private $elected = false;
+    private ?string $clientIp = null;
 
-    /**
-     * @var array
-     *
-     * @Assert\Choice(callback={"App\Membership\MandatesEnum", "all"})
-     */
-    private $mandates;
-
-    /**
-     * @var bool
-     */
-    private $certified = false;
-
-    private bool $asUser;
-
-    public function __construct(bool $asUser = false)
+    public function __construct()
     {
-        $this->asUser = $asUser;
         $this->address = new Address();
     }
 
-    public static function createWithCaptcha(
-        ?string $countryIso,
-        string $recaptchaAnswer = null,
-        bool $asUser = false
-    ): self {
-        $dto = new self($asUser);
+    public static function createWithCaptcha(?string $countryIso, string $recaptchaAnswer = null): self
+    {
+        $dto = new self();
         $dto->setRecaptcha($recaptchaAnswer);
 
         if ($countryIso) {
@@ -174,44 +142,19 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
         return $dto;
     }
 
-    public static function createFromAdherent(Adherent $adherent): self
+    public function getAmount(): ?float
     {
-        $dto = new self();
-        $dto->customGender = $adherent->getCustomGender();
-        $dto->gender = $adherent->getGender();
-        $dto->firstName = $adherent->getFirstName();
-        $dto->lastName = $adherent->getLastName();
-        $dto->birthdate = $adherent->getBirthdate();
-        $dto->position = $adherent->getPosition();
-        $dto->address = Address::createFromAddress($adherent->getPostAddress());
-        $dto->phone = $adherent->getPhone();
-        $dto->emailAddress = $adherent->getEmailAddress();
-        $dto->mandates = $adherent->getMandates();
-        $dto->elected = $adherent->hasMandate();
-        $dto->nationality = $adherent->getNationality();
-        $dto->certified = $adherent->isCertified();
+        return $this->amount;
+    }
 
-        return $dto;
+    public function setAmount(?float $amount): void
+    {
+        $this->amount = floor($amount * 100) / 100;
     }
 
     public function getGender(): ?string
     {
         return $this->gender;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function isCertified(): bool
-    {
-        return $this->certified;
     }
 
     public function setAddress(Address $address): void
@@ -244,43 +187,28 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
         return $this->phone;
     }
 
-    public function setBirthdate(?\DateTime $birthdate): void
+    public function setBirthdate(?\DateTimeInterface $birthdate): void
     {
         $this->birthdate = $birthdate;
     }
 
-    public function getBirthdate(): ?\DateTime
+    public function getBirthdate(): ?\DateTimeInterface
     {
         return $this->birthdate;
     }
 
-    public function isElected(): bool
+    public function getClientIp(): ?string
     {
-        return $this->elected;
+        return $this->clientIp;
     }
 
-    public function setElected(bool $elected): void
+    public function setClientIp(?string $clientIp): void
     {
-        $this->elected = $elected;
+        $this->clientIp = $clientIp;
     }
 
-    public function getMandates(): ?array
+    final public function getSource(): string
     {
-        return $this->mandates;
-    }
-
-    public function setMandates(?array $mandates): void
-    {
-        $this->mandates = $mandates;
-    }
-
-    final public function getSource(): ?string
-    {
-        return null;
-    }
-
-    public function isAsUser(): bool
-    {
-        return $this->asUser;
+        return MembershipSourceEnum::RENAISSANCE;
     }
 }

@@ -9,6 +9,7 @@ use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -42,10 +43,14 @@ class AdherentFactory
             return $this->createFromPlatformMembershipRequest($membershipRequest);
         }
 
+        if ($membershipRequest instanceof RenaissanceMembershipRequest) {
+            return $this->createFromRenaisssanceMembershipRequest($membershipRequest);
+        }
+
         throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', \get_class($membershipRequest)));
     }
 
-    public function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent
+    private function createFromCoalitionMembershipRequest(CoalitionMembershipRequest $request): Adherent
     {
         return Adherent::createLight(
             Adherent::createUuid($request->getEmailAddress()),
@@ -60,7 +65,7 @@ class AdherentFactory
         );
     }
 
-    public function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent
+    private function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
@@ -80,7 +85,7 @@ class AdherentFactory
         return $adherent;
     }
 
-    public function createFromJeMengageMembershipRequest(JeMengageMembershipRequest $request): Adherent
+    private function createFromJeMengageMembershipRequest(JeMengageMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
@@ -101,7 +106,7 @@ class AdherentFactory
         return $adherent;
     }
 
-    public function createFromPlatformMembershipRequest(PlatformMembershipRequest $request): Adherent
+    private function createFromPlatformMembershipRequest(PlatformMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
@@ -129,6 +134,37 @@ class AdherentFactory
             $adherent->join();
             $adherent->setPapUserRole(true);
         }
+
+        return $adherent;
+    }
+
+    public function createFromRenaisssanceMembershipRequest(RenaissanceMembershipRequest $request): Adherent
+    {
+        $adherent = Adherent::create(
+            Adherent::createUuid($request->getEmailAddress()),
+            $request->getEmailAddress(),
+            $this->encodePassword($request->password),
+            $request->gender,
+            $request->firstName,
+            $request->lastName,
+            $request->getBirthdate() ? clone $request->getBirthdate() : null,
+            $request->position,
+            $this->addressFactory->createFromAddress($request->getAddress()),
+            $request->getPhone(),
+            null,
+            false,
+            Adherent::DISABLED,
+            'now',
+            [],
+            [],
+            null,
+            $request->nationality,
+            $request->customGender
+        );
+
+        $adherent->join();
+        $adherent->setSource($request->getSource());
+        $adherent->setPapUserRole(true);
 
         return $adherent;
     }

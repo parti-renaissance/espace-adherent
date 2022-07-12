@@ -66,6 +66,10 @@ class MembershipNotifier
             'activation_token' => (string) $token->getValue(),
         ];
 
-        return $this->callbackManager->generateUrl('app_membership_activate', $params, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->callbackManager->generateUrl(
+            MembershipSourceEnum::RENAISSANCE === $adherent->getSource() ? 'app_renaissance_membership_activate' : 'app_membership_activate',
+            $params,
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

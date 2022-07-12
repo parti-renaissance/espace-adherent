@@ -248,7 +248,7 @@
             @include em-form-search;
         }
 
-        & > .em-form__label {
+        .em-form__label {
             @include em-form-label;
         }
 

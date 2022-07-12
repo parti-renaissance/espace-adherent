@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Donation\DonationSourceEnum;
 use App\Donation\PayboxPaymentSubscription;
 use App\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
@@ -180,7 +181,7 @@ class Donation implements GeoPointInterface
     /**
      * @var Donator|null
      *
-     * @ORM\ManyToOne(targetEntity="Donator", inversedBy="donations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Donator", inversedBy="donations")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $donator;
@@ -197,6 +198,11 @@ class Donation implements GeoPointInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\DonationTag")
      */
     private $tags;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $source = null;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -607,5 +613,15 @@ class Donation implements GeoPointInterface
     public function getBeneficiary(): ?string
     {
         return $this->beneficiary;
+    }
+
+    public function setSource(?string $source): void
+    {
+        $this->source = $source;
+    }
+
+    public function isForMembership(): bool
+    {
+        return DonationSourceEnum::MEMBERSHIP === $this->source;
     }
 }

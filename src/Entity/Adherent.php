@@ -2968,6 +2968,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return MembershipSourceEnum::JEMENGAGE === $this->source;
     }
 
+    public function isRenaissanceUser(): bool
+    {
+        return MembershipSourceEnum::RENAISSANCE === $this->source;
+    }
+
     public function isCoalitionSubscription(): bool
     {
         return $this->coalitionSubscription;

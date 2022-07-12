@@ -7,7 +7,6 @@ use App\Donation\DonationRequest;
 use App\Donation\DonationRequestUtils;
 use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Adherent;
-use App\Form\DataTransformer\FloatToStringTransformer;
 use App\Membership\MembershipRegistrationProcess;
 use App\Repository\AdherentRepository;
 use App\ValueObject\Genders;
@@ -58,11 +57,7 @@ class DonationRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                $builder
-                    ->create('amount', HiddenType::class)
-                    ->addViewTransformer(new FloatToStringTransformer())
-            )
+            ->add('amount', AmountType::class)
             ->add('duration', HiddenType::class)
         ;
 

@@ -38,7 +38,7 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getUser();
 
-        if (null === $adherent->getSource()) {
+        if (null === $adherent->getSource() || MembershipSourceEnum::RENAISSANCE === $adherent->getSource()) {
             $this->notifier->sendEmailValidation($adherent);
 
             return;

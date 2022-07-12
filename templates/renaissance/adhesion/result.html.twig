@@ -1,0 +1,27 @@
+{% extends 'renaissance/adhesion/_layout.html.twig' %}
+
+{% block adhesion_content %}
+<div class="adhesion__result {{ successful ? 'adhesion__result--successful' : 'adhesion__result--failure' }}">
+    <section class="adhesion__header with-bkg">
+        <div class="l__wrapper">
+            <div class="adhesion__header__content"></div>
+        </div>
+    </section>
+
+    {% if successful %}
+        <section class="adhesion__result__intro text--center">
+            <div class="l__wrapper">
+                <div class="adhesion__result__into--title">
+                    <h1 class="text--larger b__nudge--bottom-larger b__nudge--top-40">Votre adhésion de {{ (donation.amount/100)|format_currency('EUR')|replace({',00' : ''}) }} est validé, merci !</h1>
+                </div>
+            </div>
+            <div class="l__wrapper--narrow">
+                <p class="adhesion__result__intro--text">
+                    Nous venons de vous envoyer un email pour confirmer votre adresse email.<br/>
+                    Rendez-vous sur votre boîte email.
+                </p>
+            </div>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Donation;
 use App\Entity\Donation;
 use App\Mailer\MailerService;
 use App\Mailer\Message\DonationThanksMessage;
+use App\Membership\MembershipRequestHandler;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -16,23 +17,26 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TransactionSubscriber implements EventSubscriberInterface
 {
-    private $mailer;
-    private $manager;
-    private $transactionRepository;
-    private $donationRepository;
-    private $logger;
+    private MailerService $mailer;
+    private ObjectManager $manager;
+    private TransactionRepository $transactionRepository;
+    private DonationRepository $donationRepository;
+    private MembershipRequestHandler $membershipRequestHandler;
+    private LoggerInterface $logger;
 
     public function __construct(
         MailerService $transactionalMailer,
         ObjectManager $manager,
         TransactionRepository $transactionRepository,
         DonationRepository $donationRepository,
+        MembershipRequestHandler $membershipRequestHandler,
         LoggerInterface $logger
     ) {
         $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->transactionRepository = $transactionRepository;
         $this->donationRepository = $donationRepository;
+        $this->membershipRequestHandler = $membershipRequestHandler;
         $this->logger = $logger;
     }
 
@@ -76,6 +80,12 @@ class TransactionSubscriber implements EventSubscriberInterface
         $this->manager->flush();
 
         if ($transaction->isSuccessful()) {
+            if ($donation->isForMembership()) {
+                $this->membershipRequestHandler->finishRenaissanceAdhesion($donation->getDonator()->getAdherent());
+
+                return;
+            }
+
             $this->mailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
         }
     }

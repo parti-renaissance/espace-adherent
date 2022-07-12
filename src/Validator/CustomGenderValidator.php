@@ -3,7 +3,7 @@
 namespace App\Validator;
 
 use App\Jecoute\GenderEnum;
-use App\Membership\MembershipRequest\PlatformMembershipRequest;
+use App\Membership\MembershipRequest\MembershipCustomGenderInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 class CustomGenderValidator extends ConstraintValidator
 {
     /**
-     * @param PlatformMembershipRequest $value
-     * @param CustomGender|Constraint   $constraint
+     * @param MembershipCustomGenderInterface $value
+     * @param CustomGender|Constraint         $constraint
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -25,8 +25,8 @@ class CustomGenderValidator extends ConstraintValidator
             return;
         }
 
-        if (!$value instanceof PlatformMembershipRequest) {
-            throw new UnexpectedValueException($value, PlatformMembershipRequest::class);
+        if (!$value instanceof MembershipCustomGenderInterface) {
+            throw new UnexpectedValueException($value, MembershipCustomGenderInterface::class);
         }
 
         if (GenderEnum::OTHER !== $value->gender && !empty($value->customGender)) {

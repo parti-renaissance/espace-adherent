@@ -7,6 +7,8 @@ final class UserEvents
     public const USER_CREATED = 'user.created';
     public const USER_VALIDATED = 'user.validated';
 
+    public const RENAISSANCE_USER_CREATED = 'renaissance.user.created';
+
     public const USER_BEFORE_UPDATE = 'user.before_update';
     public const USER_UPDATED = 'user.updated';
     public const USER_UPDATE_SUBSCRIPTIONS = 'user.update_subscriptions';

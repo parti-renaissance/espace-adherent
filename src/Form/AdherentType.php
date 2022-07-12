@@ -7,7 +7,6 @@ use App\Membership\MandatesEnum;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -52,15 +51,8 @@ class AdherentType extends AbstractType
             ->add('customGender', TextType::class, [
                 'required' => false,
             ])
-            ->add('birthdate', BirthdayType::class, [
-                'widget' => 'choice',
-                'years' => $options['years'],
+            ->add('birthdate', BirthdateType::class, [
                 'disabled' => $isCertified,
-                'placeholder' => [
-                    'year' => 'AAAA',
-                    'month' => 'MM',
-                    'day' => 'JJ',
-                ],
             ])
             ->add('address', AddressType::class)
             ->add('phone', PhoneNumberType::class, [

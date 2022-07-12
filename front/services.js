@@ -41,10 +41,7 @@ export default (di) => {
      */
     di.set('api', () => new ReqwestApiClient(di.get('reqwest')));
 
-    /*
-     * Donation
-     */
-    di.set('donation.tax_return_provider', () => new TaxReturnProvider());
+    di.set('tax_return_provider', () => new TaxReturnProvider());
 
     /*
      * Address form

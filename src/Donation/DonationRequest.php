@@ -133,6 +133,8 @@ class DonationRequest
 
     private $type;
 
+    private ?string $source = null;
+
     public function __construct(
         UuidInterface $uuid,
         string $clientIp,
@@ -381,5 +383,15 @@ class DonationRequest
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function forMembership()
+    {
+        $this->source = DonationSourceEnum::MEMBERSHIP;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
     }
 }
