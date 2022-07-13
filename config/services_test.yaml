@@ -29,6 +29,9 @@ services:
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
+    app.storage.cache.adapter:
+        class: 'League\Flysystem\Memory\MemoryAdapter'
+
     old_sound_rabbit_mq.mailer_campaign_producer:
         class: 'Tests\App\Test\Producer\MailerNullProducer'
         public: false

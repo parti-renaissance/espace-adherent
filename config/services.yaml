@@ -78,6 +78,8 @@ services:
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
+            $publicStorage: '@app.storage.public'
+            $privateStorage: '@app.storage.private'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -392,3 +394,55 @@ services:
     logger:
         alias: 'monolog.logger'
         public: true
+
+    app.storage.public_filesystem:
+        class: 'League\Flysystem\Filesystem'
+        factory: 'App\Storage\FilesystemFactory::createLocal'
+        arguments:
+            - '%kernel.project_dir%/app/storage/public'
+
+    app.storage.private_filesystem:
+        class: 'League\Flysystem\Filesystem'
+        factory: 'App\Storage\FilesystemFactory::createLocal'
+        arguments:
+            - '%kernel.project_dir%/app/storage/private'
+
+    app.storage.cache.adapter:
+        class: 'Danhunsaker\Flysystem\Redis\RedisAdapter'
+        arguments: ['@snc_redis.default']
+
+    app.storage.cache.filesystem:
+        class: 'League\Flysystem\Filesystem'
+        arguments: ['@app.storage.cache.adapter']
+
+    app.storage.cache.public:
+        class: 'League\Glide\Server'
+        factory: 'League\Glide\ServerFactory::create'
+        arguments:
+            - {
+                source: '@app.storage.public_filesystem',
+                cache: '@app.storage.cache.filesystem',
+                cache_path_prefix: '.cache.public'
+            }
+
+    app.storage.cache.private:
+        class: 'League\Glide\Server'
+        factory: 'League\Glide\ServerFactory::create'
+        arguments:
+            - {
+                source: '@app.storage.private_filesystem',
+                cache: '@app.storage.cache.filesystem',
+                cache_path_prefix: '.cache.private'
+            }
+
+    app.storage.public:
+        class: 'App\Storage\Storage'
+        arguments:
+            - '@app.storage.public_filesystem'
+            - '@app.storage.cache.public'
+
+    app.storage.private:
+        class: 'App\Storage\Storage'
+        arguments:
+            - '@app.storage.private_filesystem'
+            - '@app.storage.cache.private'

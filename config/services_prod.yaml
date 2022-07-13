@@ -7,3 +7,15 @@ services:
     App\Monolog\SentryHandler:
         decorates: 'monolog.handler.sentry'
         arguments: [ '@App\Monolog\SentryHandler.inner' ]
+
+    app.storage.public_filesystem:
+        class: 'League\Flysystem\Filesystem'
+        factory: 'App\Storage\FilesystemFactory::createGoogleStorage'
+        arguments:
+            - '%env(GCLOUD_PUBLIC_BUCKET)%'
+
+    app.storage.private_filesystem:
+        class: 'League\Flysystem\Filesystem'
+        factory: 'App\Storage\FilesystemFactory::createLocal'
+        arguments:
+            - '%env(GCLOUD_PRIVATE_BUCKET)%'
