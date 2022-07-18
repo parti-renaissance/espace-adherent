@@ -98,10 +98,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
             if (
                 $personLink instanceof ReferentPersonLink
                 && ($adherent = $personLink->getAdherent())
-                && (
-                    $adherent->isCoReferent()
-                    || $adherent->isJecouteManager()
-                )
+                && ($adherent->isCoReferent() || $adherent->isJecouteManager())
             ) {
                 $this->removeRoles($adherent, $personLink);
                 $uow->computeChangeSets();
