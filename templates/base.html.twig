@@ -47,9 +47,14 @@
         {% block extra_link '' %}
 
         <title>{% block title %}{% spaceless %}{% block page_title '' %}{% endspaceless %} | {% block app_title 'La République En Marche !' %}{% endblock %}</title>
-
         {% if app.environment == 'prod' %}
-            <script async defer data-website-id="0c4ed75f-e3ea-4bd2-84dc-ad006c571beb" src="https://s.abla.io/abla.js"></script>
+            <!-- Google Tag Manager -->
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-W4TQQ7T');</script>
+            <!-- End Google Tag Manager -->
         {% endif %}
 
         <link rel="canonical" href="{% block canonical_url homepage_url %}" />
@@ -105,6 +110,14 @@
         {% block head_javascripts '' %}
     </head>
     <body>
+        {% if app.environment == 'prod' %}
+            <!-- Google Tag Manager (noscript) -->
+            <noscript>
+                <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W4TQQ7T" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+            </noscript>
+            <!-- End Google Tag Manager (noscript) -->
+        {% endif %}
+
         <!-- START Display Upgrade Message for IE 10 or Less -->
         <!-- [if lte IE 9]>
             {% block ie_warning %}
