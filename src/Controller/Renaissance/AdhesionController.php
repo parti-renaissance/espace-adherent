@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion;
+namespace App\Controller\Renaissance;
 
 use App\Address\GeoCoder;
 use App\Donation\DonationRequest;
 use App\Donation\DonationRequestHandler;
-use App\Donation\DonationRequestUtils;
 use App\Donation\PayboxFormFactory;
 use App\Donation\TransactionCallbackHandler;
 use App\Entity\Adherent;
@@ -34,12 +33,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * @Route("/adhesion")
  */
-class RenaissanceMembershipController extends AbstractController
+class AdhesionController extends AbstractController
 {
     public const RESULT_STATUS_EFFECTUE = 'effectue';
 
     /**
-     * @Route(name="app_renaissance_index_action", methods={"GET"})
+     * @Route(name="app_renaissance_index", methods={"GET"})
      */
     public function indexAction(Request $request): Response
     {
@@ -47,13 +46,13 @@ class RenaissanceMembershipController extends AbstractController
             return $this->render('renaissance/adhesion/index.html.twig');
         }
 
-        return $this->redirectToRoute('app_renaissance_information_action', [
+        return $this->redirectToRoute('app_renaissance_information', [
             'montant' => $amount,
         ]);
     }
 
     /**
-     * @Route("/coordonnees", name="app_renaissance_information_action", methods={"GET", "POST"})
+     * @Route("/coordonnees", name="app_renaissance_information", methods={"GET", "POST"})
      */
     public function informationAction(
         Request $request,
@@ -64,7 +63,7 @@ class RenaissanceMembershipController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         if (!($amount = $request->query->get('montant')) || !is_numeric($amount)) {
-            return $this->redirectToRoute('app_renaissance_index_action');
+            return $this->redirectToRoute('app_renaissance_index');
         }
 
         $membership = RenaissanceMembershipRequest::createWithCaptcha(
@@ -127,7 +126,7 @@ class RenaissanceMembershipController extends AbstractController
         $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
-            return $this->redirectToRoute('app_renaissance_index_action');
+            return $this->redirectToRoute('app_renaissance_index');
         }
 
         return $transactionCallbackHandler->handle($id, $request, $_callback_token, true);
@@ -145,7 +144,6 @@ class RenaissanceMembershipController extends AbstractController
     public function resultAction(
         Request $request,
         Donation $donation,
-        DonationRequestUtils $donationRequestUtils,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         MembershipRequestHandler $membershipRequestHandler,
         string $status
@@ -158,7 +156,7 @@ class RenaissanceMembershipController extends AbstractController
                 $membershipRequestHandler->removeUnsuccessfulRenaissainceAdhesion($adherent);
             }
             $retryUrl = $this->generateUrl(
-                'app_renaissance_index_action'
+                'app_renaissance_index'
             );
         }
 
@@ -208,6 +206,6 @@ class RenaissanceMembershipController extends AbstractController
             $this->addFlash('info', 'adherent.activation.expired_key');
         }
 
-        return $this->redirectToRoute('app_renaissance_index_action');
+        return $this->redirectToRoute('app_renaissance_index');
     }
 }

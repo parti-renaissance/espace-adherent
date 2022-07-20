@@ -4,15 +4,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
-    context: path.join(__dirname, './front'),
     entry: {
-        kernel: ['kernel'],
+        kernel: './front/kernel.js',
+        bootstrap: './assets/bootstrap.js',
     },
     output: {
         path: path.join(__dirname, './public/built'),
         publicPath: '/built/',
-        filename: '[fullhash].[name].js',
-        chunkFilename: '[chunkhash].[name].js',
+        filename: '[name].[fullhash:12].js',
+        chunkFilename: '[id].[chunkhash].js',
         clean: true,
     },
     module: {
@@ -29,7 +29,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -39,6 +39,7 @@ module.exports = {
                         },
                     },
                     'sass-loader',
+                    'postcss-loader',
                 ],
             },
             {
@@ -60,6 +61,7 @@ module.exports = {
         extensions: ['.js'],
         modules: [
             path.resolve('./front'),
+            path.resolve('./assets'),
             'node_modules',
         ],
         alias: {
@@ -70,8 +72,7 @@ module.exports = {
     plugins: [
         new WebpackManifestPlugin({}),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[fullhash].app.css',
+            filename: '[name].[fullhash].css',
         }),
         new CopyWebpackPlugin({
             patterns: [

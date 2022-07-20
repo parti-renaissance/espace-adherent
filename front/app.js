@@ -1,5 +1,3 @@
-import './style/app.scss';
-
 import Container from './services/Container';
 import registerServices from './services';
 
