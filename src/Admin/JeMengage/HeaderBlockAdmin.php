@@ -3,8 +3,6 @@
 namespace App\Admin\JeMengage;
 
 use App\Admin\AbstractAdmin;
-use App\Entity\JeMengage\HeaderBlock;
-use App\Image\ImageManagerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,8 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class HeaderBlockAdmin extends AbstractAdmin
 {
-    private ImageManagerInterface $imageManager;
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         if (!$this->isCreation()) {
@@ -104,39 +100,5 @@ HELP
                 ],
             ])
         ;
-    }
-
-    /** @param HeaderBlock $resource */
-    public function prePersist($resource)
-    {
-        parent::prePersist($resource);
-
-        if ($resource->getImage()) {
-            $this->imageManager->saveImage($resource);
-        }
-    }
-
-    /** @param HeaderBlock $resource */
-    public function preUpdate($resource)
-    {
-        parent::preUpdate($resource);
-
-        if ($resource->getImage()) {
-            $this->imageManager->saveImage($resource);
-        }
-    }
-
-    /** @param HeaderBlock $resource */
-    public function postRemove($resource)
-    {
-        parent::postRemove($resource);
-
-        $this->imageManager->removeImage($resource);
-    }
-
-    /** @required */
-    public function setImageManager(ImageManagerInterface $imageManager): void
-    {
-        $this->imageManager = $imageManager;
     }
 }

@@ -4,19 +4,21 @@
 
 {% block content %}
     <main>
-        <section class="bg-gray-100">
-            <div class="grid grid-cols-4 gap-8 mt-8 p-8">
-                {% for value in values %}
+        <section class="bg-gray-100 p-8">
+            <div class="columns-1 md:columns-2 lg:columns-4 gap-8">
+                {% for commitment in commitments %}
+                    {% set slug = commitment.title|slug %}
                     <div
-                        id="valeur-{{ value.slug }}"
-                        class="bg-white rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 cursor-pointer slide-over--trigger"
-                        data-commitment-title="{{ value.title|e('html_attr') }}"
-                        data-commitment-slug="{{ value.slug }}"
-                        data-commitment-description="{{ value.description|e('html_attr') }}"
+                        id="valeur-{{ slug }}"
+                        class="{{ not loop.first ? 'mt-8 ' }} bg-white rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 cursor-pointer slide-over--trigger"
+                        data-commitment-title="{{ commitment.title|e('html_attr') }}"
+                        data-commitment-slug="{{ slug }}"
+                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
+                        data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
-                        <h3 class="text-blue-600 font-bold">{{ value.title }}</h3>
+                        <h3 class="text-blue-600 font-bold">{{ commitment.title }}</h3>
 
-                        <p class="mt-4">{{ value.short_description }}</p>
+                        <div class="mt-4">{{ commitment.shortDescription }}</div>
                     </div>
                 {% endfor %}
             </div>

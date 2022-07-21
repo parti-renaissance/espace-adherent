@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
-class ImageUploadExtension extends AbstractAdminExtension
+class ImageRelationUploadExtension extends AbstractAdminExtension
 {
     private $storage;
     private $logger;

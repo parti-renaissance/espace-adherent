@@ -3,8 +3,6 @@
 namespace App\Admin\Jecoute;
 
 use App\Admin\AbstractAdmin;
-use App\Entity\Jecoute\ResourceLink;
-use App\Image\ImageManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,8 +17,6 @@ class ResourceLinkAdmin extends AbstractAdmin
 {
     protected $baseRoutePattern = 'app/jecoute-resource-link';
     protected $baseRouteName = 'admin_app_jecoute_resource_link';
-
-    private ImageManagerInterface $imageManager;
 
     public function createQuery($context = 'list')
     {
@@ -107,45 +103,5 @@ class ResourceLinkAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-    }
-
-    /**
-     * @param ResourceLink $resource
-     */
-    public function prePersist($resource)
-    {
-        parent::prePersist($resource);
-
-        if ($resource->getImage()) {
-            $this->imageManager->saveImage($resource);
-        }
-    }
-
-    /**
-     * @param ResourceLink $resource
-     */
-    public function preUpdate($resource)
-    {
-        parent::preUpdate($resource);
-
-        if ($resource->getImage()) {
-            $this->imageManager->saveImage($resource);
-        }
-    }
-
-    /**
-     * @param ResourceLink $resource
-     */
-    public function postRemove($resource)
-    {
-        parent::postRemove($resource);
-
-        $this->imageManager->removeImage($resource);
-    }
-
-    /** @required */
-    public function setImageManager(ImageManagerInterface $imageManager): void
-    {
-        $this->imageManager = $imageManager;
     }
 }

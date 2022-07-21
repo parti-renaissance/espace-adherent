@@ -20,6 +20,7 @@ const CommitmentSlideOver = () => {
         return <Commitment
             title={attributes.commitmentTitle}
             slug={attributes.commitmentSlug}
+            imageUrl={attributes.commitmentImage}
             description={attributes.commitmentDescription}
             nextPreviousCallback={(needToMoveToPreviousElement) => {
                 if (needToMoveToPreviousElement) {

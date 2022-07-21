@@ -52,7 +52,7 @@ const SlideOver = ({ open, onClose, contentCallback }) => (
                                     </div>
                                 </Transition.Child>
 
-                                <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                                <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                                     {contentCallback()}
                                 </div>
                             </Dialog.Panel>

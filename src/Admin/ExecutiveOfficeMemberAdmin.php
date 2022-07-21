@@ -2,10 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\Biography\ExecutiveOfficeMember;
 use App\Form\PurifiedTextareaType;
-use App\Image\ImageManager;
-use App\Image\ImageManagerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -22,17 +19,6 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
-
-    /**
-     * @var ImageManager
-     */
-    private $imageManager;
-
-    /** @required */
-    public function setImageManager(ImageManagerInterface $imageManager): void
-    {
-        $this->imageManager = $imageManager;
-    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -169,39 +155,5 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    /**
-     * @param ExecutiveOfficeMember $executiveOfficeMember
-     */
-    public function postRemove($executiveOfficeMember)
-    {
-        parent::postRemove($executiveOfficeMember);
-
-        $this->imageManager->removeImage($executiveOfficeMember);
-    }
-
-    /**
-     * @param ExecutiveOfficeMember $executiveOfficeMember
-     */
-    public function prePersist($executiveOfficeMember)
-    {
-        parent::prePersist($executiveOfficeMember);
-
-        if ($executiveOfficeMember->getImage()) {
-            $this->imageManager->saveImage($executiveOfficeMember);
-        }
-    }
-
-    /**
-     * @param ExecutiveOfficeMember $executiveOfficeMember
-     */
-    public function preUpdate($executiveOfficeMember)
-    {
-        parent::preUpdate($executiveOfficeMember);
-
-        if ($executiveOfficeMember->getImage()) {
-            $this->imageManager->saveImage($executiveOfficeMember);
-        }
     }
 }
