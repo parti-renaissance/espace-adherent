@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% apply spaceless %}{% block page_title '' %}{% endapply %} | {% block app_title 'La République En Marche !' %}{% endblock %}</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ webpack_asset('bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}" />
+</head>
+<body>
+    {% block content '' %}
+    {% block footer '' %}
+
+    <div id="modal-wrapper"></div>
+
+    <script type="text/javascript" src="{{ webpack_asset('bootstrap.js') }}"></script>
+
+    <script type="text/javascript">
+        on(window, 'load', function() {
+            Bootstrap.boot(
+                '{{ app_version }}',
+                {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                '{{ app_environment }}',
+                '{{ app.user ? app.user.getUsername() }}'
+            );
+        });
+    </script>
+
+    {% block final_javascripts '' %}
+</body>
+</html>

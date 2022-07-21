@@ -8,6 +8,8 @@ import { decode } from 'js-base64';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 
+import './style/app.scss';
+
 window.Kernel = class {
     static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist, algoliaIndexPrefix, user) {
         let app = false;

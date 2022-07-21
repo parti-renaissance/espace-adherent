@@ -257,7 +257,7 @@ app_api_intl:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%procuration_host%|%adhesion_renaissance_host%"
+        app_domain: "%app_host%|%procuration_host%|%renaissance_host%"
 
 app_nous_reussirons:
     host:     "%nous_reussirons_host%"
@@ -275,12 +275,9 @@ app_static_page:
         slug: .+
 
 
-#
-# Renaissance
-#
-app_adhesion_renaissance:
-    host:   "%adhesion_renaissance_host%"
-    resource: "../src/Controller/Renaissance/Adhesion"
+app_renaissance:
+    host:   "%renaissance_host%"
+    resource: "../src/Controller/Renaissance"
     type: "annotation"
 
 app_api_form_validation:
@@ -291,4 +288,4 @@ app_api_form_validation:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%adhesion_renaissance_host%"
+        app_domain: "%app_host%|%renaissance_host%"

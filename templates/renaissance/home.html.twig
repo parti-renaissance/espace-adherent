@@ -1,0 +1,33 @@
+{% extends 'base_ren.html.twig' %}
+
+{% block page_title 'Bienvenue' %}
+
+{% block content %}
+    <main>
+        <section class="bg-gray-100">
+            <div class="grid grid-cols-4 gap-8 mt-8 p-8">
+                {% for value in values %}
+                    <div
+                        id="valeur-{{ value.slug }}"
+                        class="bg-white rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 cursor-pointer slide-over--trigger"
+                        data-commitment-title="{{ value.title|e('html_attr') }}"
+                        data-commitment-slug="{{ value.slug }}"
+                        data-commitment-description="{{ value.description|e('html_attr') }}"
+                    >
+                        <h3 class="text-blue-600 font-bold">{{ value.title }}</h3>
+
+                        <p class="mt-4">{{ value.short_description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            Main.runHomePage();
+        });
+    </script>
+{% endblock %}

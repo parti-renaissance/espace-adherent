@@ -17,7 +17,7 @@ CONTAINERS?=
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
 .PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db tfp-db-init test-behat test-phpunit-functional
-.PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock
+.PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock assets
 
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
