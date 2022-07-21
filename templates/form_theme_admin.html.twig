@@ -376,12 +376,15 @@
     {{ block('form_row') }}
 
     {% if value %}
-        <div>
-            <p><em>Image actuelle:</em></p>
-            <p class="text-center">
-                <img class="img-thumbnail" src="{{ path('asset_url', { path: value is instanceof('App\\Entity\\ImageOwnerInterface') ? value.getImagePath() : value.getFilePath() }) }}">
-            </p>
-        </div>
+        {% set path = value is instanceof('App\\Entity\\ImageOwnerInterface') ? value.getImagePath() : value.getFilePath() %}
+        {% if path %}
+            <div>
+                <p><em>Image actuelle:</em></p>
+                <p class="text-center">
+                    <img class="img-thumbnail" src="{{ path('asset_url', { path: path }) }}">
+                </p>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
