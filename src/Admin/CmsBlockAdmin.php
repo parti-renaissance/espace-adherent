@@ -34,6 +34,7 @@ class CmsBlockAdmin extends AbstractAdmin
                 'required' => false,
                 'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
                 'help' => 'help.markdown',
+                'help_html' => true,
             ])
         ;
     }

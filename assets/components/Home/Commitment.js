@@ -1,16 +1,20 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const Commitment = ({
-    title, slug, description, nextPreviousCallback,
+    title, slug, description, imageUrl, nextPreviousCallback,
 }) => {
     const currentHref = window.location.href.split('#')[0];
 
     return (
         <div className="relative h-full">
-            <h3 className="text-blue-600 font-bold">{title}</h3>
+            {imageUrl ? <div><img src={imageUrl} alt="valeur image" /></div> : null}
+            <div className="p-8">
+                <h3 className="text-blue-600 font-bold">{title}</h3>
 
-            <div className="mt-4">
-                {description}
+                <div className="mt-4">
+                    <ReactMarkdown>{description}</ReactMarkdown>
+                </div>
             </div>
 
             <div className="fixed w-full bottom-0 bg-yellow-400 flex flex-row items-stretch">
