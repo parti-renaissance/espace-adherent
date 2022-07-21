@@ -36,6 +36,7 @@ class CommitmentAdmin extends AbstractAdmin
                     'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
                     'help' => 'help.markdown',
                     'help_html' => true,
+                    'required' => false,
                 ])
             ->end()
             ->with('Photo', ['class' => 'col-md-6'])
