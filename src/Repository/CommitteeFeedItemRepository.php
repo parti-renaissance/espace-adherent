@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\CommitteeFeedItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -88,15 +87,14 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
         $qb
             ->select('i, a, e')
             ->leftJoin('i.author', 'a')
-            ->leftJoin('i.event', 'e', Join::WITH, 'e.id = :e_null OR e.published = :e_published')
+            ->leftJoin('i.event', 'e')
             ->leftJoin('i.committee', 'c')
             ->where('c.uuid = :committee')
             ->andWhere('i.published = :published')
+            ->andWhere('e.id IS NULL OR e.published = :published')
             ->orderBy('i.id', 'DESC')
             ->setParameter('committee', $committeeUuid)
             ->setParameter('published', true)
-            ->setParameter('e_null', null)
-            ->setParameter('e_published', true)
         ;
 
         return $qb;
