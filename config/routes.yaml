@@ -49,7 +49,7 @@ app_user_login_check:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"
+        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%|%renaissance_host%"
 
 logout:
     host: "{app_domain}"
@@ -274,11 +274,17 @@ app_static_page:
     requirements:
         slug: .+
 
-
 app_renaissance:
     host:   "%renaissance_host%"
     resource: "../src/Controller/Renaissance"
     type: "annotation"
+
+app_renaissance_login:
+    host: "%renaissance_host%"
+    path: "/connexion"
+    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
+    defaults:
+        app: renaissance
 
 app_api_form_validation:
     host: "{app_domain}"

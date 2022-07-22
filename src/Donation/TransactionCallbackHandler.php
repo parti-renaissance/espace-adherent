@@ -34,7 +34,7 @@ class TransactionCallbackHandler
 
         if (!$donation) {
             if ($isFromAdhesionRequest) {
-                return new RedirectResponse($this->router->generate('app_renaissance_index_action'));
+                return new RedirectResponse($this->router->generate('app_renaissance_adhesion'));
             }
 
             return new RedirectResponse($this->router->generate('donation_index'));

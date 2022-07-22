@@ -38,7 +38,7 @@ class AdhesionController extends AbstractController
     public const RESULT_STATUS_EFFECTUE = 'effectue';
 
     /**
-     * @Route(name="app_renaissance_index", methods={"GET"})
+     * @Route(name="app_renaissance_adhesion", methods={"GET"})
      */
     public function indexAction(Request $request): Response
     {
@@ -63,7 +63,7 @@ class AdhesionController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         if (!($amount = $request->query->get('montant')) || !is_numeric($amount)) {
-            return $this->redirectToRoute('app_renaissance_index');
+            return $this->redirectToRoute('app_renaissance_adhesion');
         }
 
         $membership = RenaissanceMembershipRequest::createWithCaptcha(
@@ -126,7 +126,7 @@ class AdhesionController extends AbstractController
         $id = explode('_', $request->query->get('id'))[0];
 
         if (!$id || !Uuid::isValid($id)) {
-            return $this->redirectToRoute('app_renaissance_index');
+            return $this->redirectToRoute('app_renaissance_adhesion');
         }
 
         return $transactionCallbackHandler->handle($id, $request, $_callback_token, true);
@@ -155,9 +155,7 @@ class AdhesionController extends AbstractController
             if ($adherent = $donation->getAdherent()) {
                 $membershipRequestHandler->removeUnsuccessfulRenaissainceAdhesion($adherent);
             }
-            $retryUrl = $this->generateUrl(
-                'app_renaissance_index'
-            );
+            $retryUrl = $this->generateUrl('app_renaissance_adhesion');
         }
 
         $membershipRegistrationProcess->terminate();
@@ -206,6 +204,6 @@ class AdhesionController extends AbstractController
             $this->addFlash('info', 'adherent.activation.expired_key');
         }
 
-        return $this->redirectToRoute('app_renaissance_index');
+        return $this->redirectToRoute('app_renaissance_adhesion');
     }
 }

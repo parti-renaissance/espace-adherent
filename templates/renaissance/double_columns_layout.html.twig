@@ -1,0 +1,8 @@
+{% extends 'base_ren.html.twig' %}
+
+{% block content %}
+    <div class="grid grid-cols-2 h-screen">
+        <div>{% block content_left_side '' %}</div>
+        <div class="grid place-content-center bg-blue-600">{% block content_right_side '' %}</div>
+    </div>
+{% endblock %}
