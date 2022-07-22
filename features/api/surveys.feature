@@ -2032,3 +2032,27 @@ Feature:
       "national_surveys_published_count": 3
     }
     """
+
+  Scenario: As a user with a local role I can get the last month jemengage data survey geocode
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "GET" request to "/api/v3/jemarche_data_surveys/kpi?scope=referent"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "latitude": null,
+        "longitude": null,
+        "posted_at": "@string@.isDateTime()",
+        "survey_name": "Questionnaire numéro 1"
+      },
+      {
+        "latitude": null,
+        "longitude": null,
+        "posted_at": "@string@.isDateTime()",
+        "survey_name": "Questionnaire national numéro 1"
+      }
+    ]
+    """
