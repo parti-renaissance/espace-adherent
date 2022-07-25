@@ -111,6 +111,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
             ->select('jds.latitude', 'jds.longitude')
             ->addSelect('ds.postedAt AS posted_at', 'survey.name AS survey_name')
             ->where('ds.postedAt >= :last_month')
+            ->andWhere('jds.latitude IS NOT NULL OR jds.longitude IS NOT NULL')
             ->setParameter('last_month', new \DateTime("-$maxHistory days"))
         ;
 

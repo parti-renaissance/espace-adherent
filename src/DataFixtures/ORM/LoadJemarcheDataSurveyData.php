@@ -31,12 +31,12 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         /** @var Adherent $adherent7 */
         $adherent7 = $this->getReference('adherent-7');
 
-        $dataSurvey1 = $this->createDataSurvey($adherent7, 'Juan', 'Nanardinho', GenderEnum::MALE, $survey1);
+        $dataSurvey1 = $this->createDataSurvey($adherent7, 'Juan', 'Nanardinho', GenderEnum::MALE, $survey1, null, null, 48.5182194, 2.624205);
         $dataSurvey2 = $this->createDataSurvey($adherent7, 'Brigitte', 'Brioulini', GenderEnum::FEMALE, $survey1);
         $dataSurvey3 = $this->createDataSurvey($adherent7, 'Michel', 'Mimolette', GenderEnum::MALE, $survey1);
         $dataSurvey4 = $this->createDataSurvey($adherent7, 'Roger', 'Camembert', GenderEnum::MALE, $nationalSurvey1);
         $dataSurvey5 = $this->createDataSurvey($adherent7, 'Sophie', 'Stiket', GenderEnum::FEMALE, $nationalSurvey1);
-        $dataSurvey6 = $this->createDataSurvey($adherent7, 'Pierre', 'Feuilcizo', GenderEnum::MALE, $nationalSurvey1);
+        $dataSurvey6 = $this->createDataSurvey($adherent7, 'Pierre', 'Feuilcizo', GenderEnum::MALE, $nationalSurvey1, null, null, 48.5182194, 2.624205);
         $dataSurvey7 = $this->createDataSurvey($adherent7, 'Maria', 'Mozzarella', GenderEnum::MALE, null, 'maria@mozzarella.com', self::JEMARCHE_DATA_SURVEY_1_UUID);
 
         $manager->persist($dataSurvey1);
@@ -64,13 +64,17 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         string $gender,
         Survey $survey = null,
         string $emailAddress = null,
-        string $uuid = null
+        string $uuid = null,
+        float $latitude = null,
+        float $longitude = null
     ): JemarcheDataSurvey {
         $jemarcheDataSurvey = new JemarcheDataSurvey($uuid ? Uuid::fromString($uuid) : null);
         $jemarcheDataSurvey->setGender($gender);
         $jemarcheDataSurvey->setFirstName($firstName);
         $jemarcheDataSurvey->setLastName($lastName);
         $jemarcheDataSurvey->setEmailAddress($emailAddress);
+        $jemarcheDataSurvey->setLatitude($latitude);
+        $jemarcheDataSurvey->setLongitude($longitude);
 
         if ($survey) {
             $dataSurvey = new DataSurvey($survey);
