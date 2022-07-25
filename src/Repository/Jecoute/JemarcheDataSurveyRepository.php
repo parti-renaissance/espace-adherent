@@ -103,6 +103,35 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findLastJemarcheDataSurvey(array $zones, int $maxHistory): array
+    {
+        $qb = $this->createQueryBuilder('jds')
+            ->leftJoin('jds.dataSurvey', 'ds')
+            ->leftJoin('ds.survey', 'survey')
+            ->select('jds.latitude', 'jds.longitude')
+            ->addSelect('ds.postedAt AS posted_at', 'survey.name AS survey_name')
+            ->where('ds.postedAt >= :last_month')
+            ->andWhere('jds.latitude IS NOT NULL OR jds.longitude IS NOT NULL')
+            ->setParameter('last_month', new \DateTime("-$maxHistory days"))
+        ;
+
+        if ($zones) {
+            $qb
+                ->distinct()
+                ->leftJoin('ds.author', 'author')
+                ->innerJoin('author.zones', 'zone')
+                ->innerJoin('zone.parents', 'parent')
+                ->andWhere('zone IN (:zones) OR parent IN (:zones)')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
     private function createCountByDeviceQueryBuilder(Device $device): QueryBuilder
     {
         return $this->createQueryBuilder('jds')
