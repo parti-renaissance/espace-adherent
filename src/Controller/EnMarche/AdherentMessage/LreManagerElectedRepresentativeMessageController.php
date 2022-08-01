@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,5 +17,10 @@ class LreManagerElectedRepresentativeMessageController extends AbstractMessageCo
     protected function getMessageType(): string
     {
         return AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE;
+    }
+
+    protected function getMessageFilterTemplate(AbstractAdherentMessage $message): string
+    {
+        return sprintf('message/filter/%s.html.twig', $message->getType());
     }
 }

@@ -109,4 +109,9 @@ class ReferentInstancesMessageController extends AbstractMessageController
             return $membership->getAdherent();
         }, $memberships);
     }
+
+    protected function getMessageFilterTemplate(AbstractAdherentMessage $message): string
+    {
+        return sprintf('message/filter/%s.html.twig', $message->getType());
+    }
 }

@@ -208,7 +208,7 @@ abstract class AbstractMessageController extends AbstractController
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        return $this->renderTemplate('message/filter/message_filter.html.twig', [
+        return $this->renderTemplate($this->getMessageFilterTemplate($message), [
             'message' => $message,
             'form' => $form->createView(),
         ]);
@@ -295,6 +295,11 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     abstract protected function getMessageType(): string;
+
+    protected function getMessageFilterTemplate(AbstractAdherentMessage $message): string
+    {
+        return 'message/filter/message_filter.html.twig';
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
