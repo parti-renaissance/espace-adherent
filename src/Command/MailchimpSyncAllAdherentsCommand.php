@@ -46,6 +46,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
+            ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
         ;
     }
 
@@ -63,7 +64,8 @@ class MailchimpSyncAllAdherentsCommand extends Command
             $input->getOption('disabled-only'),
             $input->getOption('certified-only'),
             $input->getOption('committee-voter-only'),
-            $input->getOption('source')
+            $input->getOption('source'),
+            $input->getOption('emails')
         );
 
         $count = $paginator->count();
@@ -109,7 +111,8 @@ class MailchimpSyncAllAdherentsCommand extends Command
         bool $disabledOnly,
         bool $certifiedOnly,
         bool $committeeVoterOnly,
-        ?string $source
+        ?string $source,
+        array $emails
     ): Paginator {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -132,7 +135,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         if ($refTags) {
             $queryBuilder
                 ->innerJoin('adherent.referentTags', 'tag')
-                ->andWhere('tag.code IN(:tags)')
+                ->andWhere('tag.code IN (:tags)')
                 ->setParameter('tags', $refTags)
             ;
         }
@@ -149,6 +152,13 @@ class MailchimpSyncAllAdherentsCommand extends Command
                     Join::WITH,
                     'membership.adherent = adherent AND membership.enableVote IS NOT NULL'
                 )
+            ;
+        }
+
+        if ($emails) {
+            $queryBuilder
+                ->andWhere('adherent.emailAddress IN (:emails)')
+                ->setParameter('emails', $emails)
             ;
         }
 
