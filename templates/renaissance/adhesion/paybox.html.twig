@@ -1,8 +1,10 @@
-{% extends 'renaissance/adhesion/_layout.html.twig' %}
+{% extends 'renaissance/double_columns_layout.html.twig' %}
 
-{% block javascripts %}
+{% block title 'Adhérer à Renaissance' %}
+
+{% block final_javascripts %}
     <script type="text/javascript">
-        Kernel.onLoad(function() {
+        Bootstrap.onLoad(function() {
             show(dom('#app-adhesion-redirect-loader'));
             var form = dom('#app-adhesion-redirect-form');
             hide(form);
@@ -11,37 +13,24 @@
     </script>
 {% endblock %}
 
-{% block adhesion_content %}
-    <div class="adhesion__payment">
-        <section class="adhesion__header with-bkg">
-            <div class="l__wrapper">
-                <div class="adhesion__header__content">
-                    <div class="adhesion__header__steps">
-                        <ul>
-                            <li>1. Montant</li>
-                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
-                            <li>2. Informations</li>
-                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
-                            <li>3. Paiement</li>
-                        </ul>
-                    </div>
+{% block content_right_side %}
+    <section class="text-white">
+        <div class="adhesion__payment">
+            <div class="l__wrapper text--center b__nudge--top-50">
+                <div class="adhesion__loader" id="app-adhesion-redirect-loader">
+                    <p class="adhesion__loader__text text--medium">
+                        Veuillez patienter pendant que nous vous redirigons vers votre banque...
+                    </p>
                 </div>
+                <form action="{{ url }}" method="post" name="app_adhesion_payment" id="app-adhesion-redirect-form">
+                    {% for field in form %}
+                        <input type="{{ field.vars.block_prefixes[1] }}"
+                               name="{{ field.vars.name }}"
+                               {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
+                    {% endfor %}
+                    <input type="submit" class="form btn btn--red text--center" value="Continuer vers ma banque" />
+                </form>
             </div>
-        </section>
-        <div class="l__wrapper text--center b__nudge--top-50">
-            <div class="adhesion__loader" id="app-adhesion-redirect-loader">
-                <p class="adhesion__loader__text text--medium">
-                    Veuillez patienter pendant que nous vous redirigons vers votre banque...
-                </p>
-            </div>
-            <form action="{{ url }}" method="post" name="app_adhesion_payment" id="app-adhesion-redirect-form">
-                {% for field in form %}
-                    <input type="{{ field.vars.block_prefixes[1] }}"
-                           name="{{ field.vars.name }}"
-                           {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
-                {% endfor %}
-                <input type="submit" class="form btn btn--red text--center" value="Continuer vers ma banque" />
-            </form>
         </div>
-    </div>
+    </section>
 {% endblock %}

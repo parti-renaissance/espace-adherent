@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @MaxMonthDonation
  * @FrenchAddressOrNationalityDonation
  */
-class DonationRequest
+class DonationRequest implements DonationRequestInterface
 {
     public const DEFAULT_AMOUNT = 50.0;
     public const ALERT_AMOUNT = 200;

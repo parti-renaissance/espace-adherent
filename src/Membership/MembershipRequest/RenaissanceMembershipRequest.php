@@ -6,6 +6,7 @@ use App\Address\Address;
 use App\Membership\MembershipSourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Renaissance\Membership\MembershipRequestCommand;
 use App\Validator\BannedAdherent;
 use App\Validator\CustomGender as AssertCustomGender;
 use App\Validator\MaxFiscalYearDonation;
@@ -138,6 +139,27 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         if ($countryIso) {
             $dto->address->setCountry($countryIso);
         }
+
+        return $dto;
+    }
+
+    public static function createFromCommand(MembershipRequestCommand $command): self
+    {
+        $dto = new self();
+        $dto->gender = $command->getGender();
+        $dto->customGender = $command->customGender;
+        $dto->firstName = $command->firstName;
+        $dto->lastName = $command->lastName;
+        $dto->nationality = $command->nationality;
+        $dto->password = $command->password;
+        $dto->allowEmailNotifications = $command->allowEmailNotifications;
+        $dto->allowMobileNotifications = $command->allowMobileNotifications;
+        $dto->setEmailAddress($command->getEmailAddress());
+        $dto->setAddress($command->getAddress());
+        $dto->setBirthdate($command->getBirthdate());
+        $dto->setAmount($command->getAmount());
+        $dto->setPhone($command->getPhone());
+        $dto->setClientIp($command->getClientIp());
 
         return $dto;
     }

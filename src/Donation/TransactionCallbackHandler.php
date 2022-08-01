@@ -43,7 +43,7 @@ class TransactionCallbackHandler
         $payload = $this->donationRequestUtils->extractPayboxResultFromCallback($request, $callbackToken);
 
         return new RedirectResponse($this->router->generate(
-            $isFromAdhesionRequest ? 'app_renaissance_adhesion_pay_result' : 'donation_result',
+            $isFromAdhesionRequest ? 'app_renaissance_adhesion_payment_result' : 'donation_result',
             $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid)
         ));
     }

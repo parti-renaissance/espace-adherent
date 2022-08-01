@@ -43,12 +43,12 @@ abstract class AbstractMembershipRequest implements MembershipInterface
     public bool $cguAccepted = false;
 
     /**
-     * @Groups({"merbership:write"})
+     * @Groups({"merbership:write", "membership_request_mentions"})
      */
     public ?bool $allowEmailNotifications = null;
 
     /**
-     * @Groups({"merbership:write"})
+     * @Groups({"merbership:write", "membership_request_mentions"})
      */
     public ?bool $allowMobileNotifications = null;
 
