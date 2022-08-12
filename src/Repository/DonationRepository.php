@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Donation\DonationSourceEnum;
 use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -82,6 +84,22 @@ class DonationRepository extends ServiceEntityRepository
             ->andWhere('donation.donator = :donator')
             ->addOrderBy('donation.donatedAt', 'DESC')
             ->setParameter('donator', $donator)
+        ;
+    }
+
+    public function findInProgressMembershipDonationFromAdherent(Adherent $adherent): ?Donation
+    {
+        return $this->createQueryBuilder('donation')
+            ->innerJoin('donation.donator', 'donator')
+            ->leftJoin('donator.adherent', 'adherent')
+            ->andWhere('adherent = :adherent')
+            ->andWhere('donation.status = :status')
+            ->andWhere('donation.source = :source')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('status', Donation::STATUS_WAITING_CONFIRMATION)
+            ->setParameter('source', DonationSourceEnum::MEMBERSHIP)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }
