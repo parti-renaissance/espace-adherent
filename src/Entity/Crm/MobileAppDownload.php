@@ -5,14 +5,9 @@ namespace App\Entity\Crm;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Crm\CRMUsageRepository")
- * @ORM\Table(
- *     indexes={
- *         @ORM\Index(columns={"index"})
- *     }
- * )
+ * @ORM\Entity
  */
-class CRMUsage
+class MobileAppDownload
 {
     /**
      * @var int
@@ -21,7 +16,7 @@ class CRMUsage
      * @ORM\Id
      * @ORM\GeneratedValue
      */
-    protected $index;
+    protected $id;
 
     /**
      * @ORM\Column(type="date")
@@ -49,14 +44,21 @@ class CRMUsage
      */
     protected $uniqueUser;
 
-    public function getIndex(): int
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="float")
+     */
+    protected $downloadPer1000;
+
+    public function getId(): int
     {
-        return $this->index;
+        return $this->id;
     }
 
-    public function setIndex(int $index): void
+    public function setId(int $id): void
     {
-        $this->index = $index;
+        $this->id = $id;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -97,5 +99,15 @@ class CRMUsage
     public function setUniqueUser(int $uniqueUser): void
     {
         $this->uniqueUser = $uniqueUser;
+    }
+
+    public function getDownloadPer1000(): float
+    {
+        return $this->downloadPer1000;
+    }
+
+    public function setDownloadPer1000(float $downloadPer1000): void
+    {
+        $this->downloadPer1000 = $downloadPer1000;
     }
 }
