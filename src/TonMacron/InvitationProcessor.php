@@ -131,10 +131,8 @@ final class InvitationProcessor
 
     /**
      * Handled by the workflow.
-     *
-     * @var string
      */
-    public $marking;
+    private ?string $marking = null;
 
     /**
      * @return string[]
@@ -215,5 +213,15 @@ final class InvitationProcessor
             $refreshedReasons[] = $manager->merge($reason);
         }
         $this->selfReasons = $refreshedReasons;
+    }
+
+    public function getMarking(): ?string
+    {
+        return $this->marking;
+    }
+
+    public function setMarking(?string $marking): void
+    {
+        $this->marking = $marking;
     }
 }

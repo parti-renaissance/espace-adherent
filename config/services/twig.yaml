@@ -18,7 +18,7 @@ services:
     App\Twig\MunicipalSiteRuntime:
         arguments:
             $cache: !service
-                class: Symfony\Component\Cache\Simple\Psr6Cache
+                class: Symfony\Component\Cache\Psr16Cache
                 arguments:
                     - '@app.cache.municipal_site'
 

@@ -128,10 +128,8 @@ final class MyEuropeProcessor implements RecaptchaChallengeInterface
 
     /**
      * Handled by the workflow.
-     *
-     * @var string
      */
-    public $marking;
+    private ?string $marking = null;
 
     /**
      * @return string[]
@@ -196,5 +194,15 @@ final class MyEuropeProcessor implements RecaptchaChallengeInterface
             $refreshedReasons[] = $manager->merge($reason);
         }
         $this->friendAppreciations = $refreshedReasons;
+    }
+
+    public function getMarking(): ?string
+    {
+        return $this->marking;
+    }
+
+    public function setMarking(?string $marking): void
+    {
+        $this->marking = $marking;
     }
 }

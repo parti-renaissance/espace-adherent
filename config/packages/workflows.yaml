@@ -4,9 +4,8 @@ framework:
             type: state_machine
             supports: [App\TonMacron\InvitationProcessor]
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - 'marking'
+                type: 'method'
+                property: 'marking'
             places:
                 - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INFO
                 - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
@@ -35,13 +34,13 @@ framework:
                     from:
                         - !php/const App\TonMacron\InvitationProcessor::STATE_SUMMARY
                     to: !php/const App\TonMacron\InvitationProcessor::STATE_SENT
+
         my_europe:
             type: state_machine
             supports: [App\Interactive\MyEuropeProcessor]
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - 'marking'
+                type: 'method'
+                property: 'marking'
             places:
                 - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
                 - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
@@ -68,12 +67,11 @@ framework:
 
         assessor_request:
             type: state_machine
-            initial_place: !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+            initial_marking: !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
             supports: [App\Assessor\AssessorRequestCommand]
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - 'marking'
+                type: 'method'
+                property: 'marking'
             places:
                 - !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
                 - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
@@ -104,13 +102,13 @@ framework:
                     from:
                         - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
                     to : !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+
         voting_process:
             type: 'state_machine'
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - 'state'
-            initial_place: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
+                type: 'method'
+                property: 'state'
+            initial_marking: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
             supports:
                 - App\VotingPlatform\Election\VoteCommand\VoteCommand
             places:

@@ -186,10 +186,8 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 
     /**
      * Handled by the workflow.
-     *
-     * @var string
      */
-    public $marking;
+    private ?string $marking = null;
 
     public function __construct()
     {
@@ -431,5 +429,15 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
     public function setReachable(bool $reachable): void
     {
         $this->reachable = $reachable;
+    }
+
+    public function getMarking(): ?string
+    {
+        return $this->marking;
+    }
+
+    public function setMarking(?string $marking): void
+    {
+        $this->marking = $marking;
     }
 }
