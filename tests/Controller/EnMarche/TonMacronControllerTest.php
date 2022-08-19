@@ -58,7 +58,7 @@ class TonMacronControllerTest extends WebTestCase
 
         $invitation->friendAge = 32;
         $invitation->friendPosition = $this->getChoice(4);
-        $invitation->marking = InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT;
+        $invitation->setMarking(InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT);
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -74,7 +74,7 @@ class TonMacronControllerTest extends WebTestCase
         ]));
 
         $invitation->friendProject = $this->getChoice(19);
-        $invitation->marking = InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS;
+        $invitation->setMarking(InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS);
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -92,7 +92,7 @@ class TonMacronControllerTest extends WebTestCase
         ]));
 
         $invitation->friendInterests = $this->getChoices([29, 47]);
-        $invitation->marking = InvitationProcessor::STATE_NEEDS_SELF_REASONS;
+        $invitation->setMarking(InvitationProcessor::STATE_NEEDS_SELF_REASONS);
 
         $this->assertEquals($invitation, $this->getCurrentInvitation());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -108,7 +108,7 @@ class TonMacronControllerTest extends WebTestCase
         ]));
 
         $invitation->selfReasons = $this->getChoices([62, 63], true);
-        $invitation->marking = InvitationProcessor::STATE_SUMMARY;
+        $invitation->setMarking(InvitationProcessor::STATE_SUMMARY);
 
         $currentInvitation = $this->getCurrentInvitation();
 

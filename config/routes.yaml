@@ -198,9 +198,9 @@ app_legislatives:
 app_desintox:
     host: "%app_host%"
     path: /emmanuel-macron/desintox/{slug}
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
         slug: ~
-        _controller: FrameworkBundle:Redirect:redirect
         route: ''
 
 #
@@ -209,22 +209,22 @@ app_desintox:
 app_redirect_login:
     host: "%app_host%"
     path: /login
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
-        _controller: FrameworkBundle:Redirect:redirect
         route: app_user_login
 
 app_redirect_register:
     host: "%app_host%"
     path: /register
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
-        _controller: FrameworkBundle:Redirect:redirect
         route: app_membership_join
 
 app_redirect_inscription:
     host: "%app_host%"
     path: /inscription
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
-        _controller: FrameworkBundle:Redirect:redirect
         route: app_membership_join
         permanent: true
 

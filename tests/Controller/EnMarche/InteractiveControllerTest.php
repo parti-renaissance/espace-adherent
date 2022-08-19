@@ -51,7 +51,7 @@ class InteractiveControllerTest extends WebTestCase
         ]));
 
         $myEurope->friendAge = 26;
-        $myEurope->marking = MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES;
+        $myEurope->setMarking(MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES);
         $myEurope->messageSubject = InteractiveController::MESSAGE_SUBJECT;
 
         $this->assertEquals($myEurope, $this->getCurrentMyEurope());
