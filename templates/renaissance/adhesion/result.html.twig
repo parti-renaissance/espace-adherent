@@ -2,38 +2,36 @@
 
 {% block title 'Adhérer à Renaissance' %}
 
-
 {% block content_right_side %}
     <section class="text-white">
-            {% if successful %}
+        {% if successful %}
+            <div>
+                <h1>Adhésion réussie !</h1>
+                <p>
+                    Le paiement à bien été validé. Vous êtes désormais inscrit, <br/>
+                    bienvenu(e)! Il ne reste plus qu’à confirmer votre inscription <br/>
+                    en cliquant sur le lien que vous avez reçu sur votre email.
+                </p>
+            </div>
+            <div class="mt-4">
+                <a href="{{ path('app_ren_homepage') }}" class="bg-green-400 hover:bg-green-700 text-white-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                    Retourner sur la page d'accueil
+                </a>
+            </div>
+        {% else %}
+            <div>
                 <div>
-                    <h1>Adhésion réussie !</h1>
+                    <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
+
+                    <a href="{{ retry_url }}" class="btn btn--red">
+                        Je souhaite réessayer
+                    </a>
+
                     <p>
-                        Le paiement à bien été validé. Vous êtes désormais inscrit, <br/>
-                        bienvenu(e)! Il ne reste plus qu’à confirmer votre inscription <br/>
-                        en cliquant sur le lien que vous avez reçu sur votre email.
+                        Si le problème persiste, veuillez <a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">nous contacter</a>.
                     </p>
                 </div>
-                <div class="mt-4">
-                    <a href="{{ path('app_ren_homepage') }}" class="bg-green-400 hover:bg-green-700 text-white-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                        Retourner sur la page d'accueil
-                    </a>
-                </div>
-            {% else %}
-                <div>
-                    <div>
-                        <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
-
-                        <a href="{{ retry_url }}" class="btn btn--red">
-                            Je souhaite réessayer
-                        </a>
-
-                        <p>
-                            Si le problème persiste, veuillez <a href="https://contact.en-marche.fr/" target="_blank" rel="noopener noreferrer">nous contacter</a>.
-                        </p>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

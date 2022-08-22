@@ -279,19 +279,6 @@ app_renaissance:
     resource: "../src/Controller/Renaissance"
     type: "annotation"
 
-app_renaissance_adhesion:
-    host:   "%renaissance_host%"
-    resource: "../src/Controller/Renaissance/Adhesion"
-    type: "annotation"
-    prefix: "/adhesion"
-
-app_renaissance_login:
-    host: "%renaissance_host%"
-    path: "/connexion"
-    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
-    defaults:
-        app: renaissance
-
 app_api_form_validation:
     host: "{app_domain}"
     prefix: "/api/"

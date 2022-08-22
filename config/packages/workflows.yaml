@@ -135,17 +135,16 @@ framework:
                 !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_FINISH:
                     from: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
                     to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::FINISH
+
         membership_request:
             type: 'state_machine'
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - 'state'
-            initial_place: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_INITIALIZE
+                type: 'method'
+                property: 'state'
+            initial_marking: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO
             supports:
                 - App\Renaissance\Membership\MembershipRequestCommand
             places:
-                - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_INITIALIZE
                 - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO
                 - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_AMOUNT
                 - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_TERMS_AND_CONDITIONS
@@ -155,33 +154,37 @@ framework:
             transitions:
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_FILL_PERSONAL_INFO:
                     from:
-                        - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_INITIALIZE
+                        - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_AMOUNT
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_SUMMARY
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_PAYMENT
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO
+
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_CHOOSE_ADHESION_AMOUNT:
                     from:
+                        - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_AMOUNT
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_TERMS_AND_CONDITIONS
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_AMOUNT
+
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_ACCEPT_TERMS_AND_CONDITIONS:
                     from:
+                        - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_TERMS_AND_CONDITIONS
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_AMOUNT
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_TERMS_AND_CONDITIONS
+
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_VALID_SUMMARY:
                     from:
+                        - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_SUMMARY
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_TERMS_AND_CONDITIONS
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_SUMMARY
+
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_PAY_MEMBERSHIP:
                     from:
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_SUMMARY
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_PAYMENT
+
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_FINISH:
                     from:
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_PAYMENT
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_FINISH
-
-
-
-

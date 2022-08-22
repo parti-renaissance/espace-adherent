@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MembershipRequestCommand extends AbstractMembershipRequest implements MembershipCustomGenderInterface, DonationRequestInterface
 {
-    private string $state = MembershipRequestCommandStateEnum::STATE_INITIALIZE;
+    private string $state = MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO;
 
     /**
      * @Assert\NotBlank(groups={"membership_request_amount"})
@@ -222,35 +222,5 @@ class MembershipRequestCommand extends AbstractMembershipRequest implements Memb
     final public function getSource(): string
     {
         return MembershipSourceEnum::RENAISSANCE;
-    }
-
-    public function isFillPersonalInfo(): bool
-    {
-        return MembershipRequestCommandStateEnum::STATE_PERSONAL_INFO === $this->state;
-    }
-
-    public function isChooseAmount(): bool
-    {
-        return MembershipRequestCommandStateEnum::STATE_ADHESION_AMOUNT === $this->state;
-    }
-
-    public function isTermsAndConditions(): bool
-    {
-        return MembershipRequestCommandStateEnum::STATE_TERMS_AND_CONDITIONS === $this->state;
-    }
-
-    public function isSummary(): bool
-    {
-        return MembershipRequestCommandStateEnum::STATE_SUMMARY === $this->state;
-    }
-
-    public function isPayment(): bool
-    {
-        return MembershipRequestCommandStateEnum::STATE_ADHESION_PAYMENT === $this->state;
-    }
-
-    public function isFinish(): bool
-    {
-        return MembershipRequestCommandStateEnum::STATE_FINISH === $this->state;
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/recapitulatif", name="app_renaissance_adhesion_summary", methods={"GET|POST"})
+ * @Route(path="/adhesion/recapitulatif", name="app_renaissance_adhesion_summary", methods={"GET|POST"})
  */
 class SummaryController extends AbstractAdhesionController
 {
@@ -21,11 +21,13 @@ class SummaryController extends AbstractAdhesionController
         MembershipRequestHandler $membershipRequestHandler,
         DonationRequestHandler $donationRequestHandler
     ): Response {
-        $membershipRequestCommand = $this->storage->getMembershipRequestCommand();
+        $command = $this->getCommand();
 
-        if (!$this->processor->canValidSummary($membershipRequestCommand)) {
+        if (!$this->processor->canValidSummary($command)) {
             return $this->redirectToRoute('app_renaissance_adhesion_mentions');
         }
+
+        $this->processor->doValidSummary($command);
 
         $form = $this
             ->createForm(MembershipRequestProceedPaymentType::class)
@@ -33,19 +35,13 @@ class SummaryController extends AbstractAdhesionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->processor->canPayMembership($membershipRequestCommand)) {
-                return $this->redirectToRoute('app_renaissance_adhesion_summary');
-            }
+            $command->setClientIp($request->getClientIp());
 
-            $this->processor->doPayMembership($membershipRequestCommand);
+            $adherent = $membershipRequestHandler->createRenaissanceAdherent(
+                RenaissanceMembershipRequest::createFromCommand($command)
+            );
 
-            $adherent = $membershipRequestHandler
-                ->createRenaissanceAdherent(
-                    RenaissanceMembershipRequest::createFromCommand($membershipRequestCommand)
-                )
-            ;
-
-            $donationRequest = DonationRequest::createFromAdherent($adherent, $membershipRequestCommand->getClientIp(), $membershipRequestCommand->getAmount());
+            $donationRequest = DonationRequest::createFromAdherent($adherent, $command->getClientIp(), $command->getAmount());
             $donationRequest->forMembership();
 
             $donationRequestHandler->handle($donationRequest);
@@ -57,7 +53,7 @@ class SummaryController extends AbstractAdhesionController
 
         return $this->render('renaissance/adhesion/summary.html.twig', [
             'form' => $form->createView(),
-            'membershipRequest' => $membershipRequestCommand,
+            'membershipRequest' => $command,
         ]);
     }
 }

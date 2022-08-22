@@ -8,45 +8,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/mentions", name="app_renaissance_adhesion_mentions", methods={"GET|POST"})
+ * @Route(path="/adhesion/mentions", name="app_renaissance_adhesion_mentions", methods={"GET|POST"})
  */
 class MentionsController extends AbstractAdhesionController
 {
     public function __invoke(Request $request): Response
     {
-        $membershipRequestCommand = $this->storage->getMembershipRequestCommand();
+        $command = $this->getCommand();
 
-        if (!$this->processor->canAcceptTermsAndConditions($membershipRequestCommand)) {
+        if (!$this->processor->canAcceptTermsAndConditions($command)) {
             return $this->redirectToRoute('app_renaissance_adhesion_amount');
         }
 
-        if ($request->query->has('back') && $this->processor->canChooseAmount($membershipRequestCommand)) {
-            $this->processor->doChooseAmount($membershipRequestCommand);
-
-            return $this->redirectToRoute('app_renaissance_adhesion_amount');
-        }
+        $this->processor->doAcceptTermsAndConditions($command);
 
         $form = $this
-            ->createForm(
-                MembershipRequestMentionsType::class,
-                $membershipRequestCommand
-            )
+            ->createForm(MembershipRequestMentionsType::class, $command)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->processor->canValidSummary($membershipRequestCommand)) {
-                return $this->redirectToRoute('app_renaissance_adhesion_mentions');
-            }
-
-            $this->processor->doValidSummary($membershipRequestCommand);
-
             return $this->redirectToRoute('app_renaissance_adhesion_summary');
         }
 
         return $this->render('renaissance/adhesion/mentions.html.twig', [
             'form' => $form->createView(),
-            'membershipRequest' => $membershipRequestCommand,
         ]);
     }
 }

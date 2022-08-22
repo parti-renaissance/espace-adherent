@@ -8,35 +8,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(name="app_renaissance_adhesion", methods={"GET|POST"})
+ * @Route(path="/adhesion", name="app_renaissance_adhesion", methods={"GET|POST"})
  */
 class AdhesionController extends AbstractAdhesionController
 {
     public function __invoke(Request $request): Response
     {
-        $membershipRequestCommand = $this->storage->getMembershipRequestCommand();
+        $command = $this->getCommand();
 
-        if (!$this->processor->canFillPersonalInfo($membershipRequestCommand)) {
+        if (!$this->processor->canFillPersonalInfo($command)) {
             return $this->redirectToRoute('app_ren_homepage');
         }
 
-        $this->processor->doFillPersonalInfo($membershipRequestCommand);
+        $this->processor->doFillPersonalInfo($command);
 
         $form = $this
-            ->createForm(
-                MembershipRequestPersonalInfoType::class,
-                $membershipRequestCommand
-            )
+            ->createForm(MembershipRequestPersonalInfoType::class, $command)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$this->processor->canChooseAmount($membershipRequestCommand)) {
-                return $this->redirectToRoute('app_renaissance_adhesion');
-            }
-
-            $this->processor->doChooseAmount($membershipRequestCommand);
-
             return $this->redirectToRoute('app_renaissance_adhesion_amount');
         }
 

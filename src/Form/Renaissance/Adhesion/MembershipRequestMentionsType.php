@@ -25,7 +25,7 @@ class MembershipRequestMentionsType extends AbstractType
             ])
         ;
 
-        $builder->add('membership_request_mentions', SubmitType::class, ['label' => 'Finaliser']);
+        $builder->add('membership_request_mentions', SubmitType::class, ['label' => 'Étape suivante']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

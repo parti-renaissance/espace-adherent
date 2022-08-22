@@ -16,7 +16,7 @@
                     {{ form_errors(form.otherAmount) }}
                 </div>
                 <div class="mt-4 text-black">
-                    <a href="{{ path('app_renaissance_adhesion_amount', {back: true }) }}" class="bg-blue-700 hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded {{ not workflow_can(membershipRequest, 'to_fill_personal_info') ? 'disabled' : '' }}">
+                    <a href="{{ path('app_renaissance_adhesion') }}" class="bg-blue-700 hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                         ⟵ Étape précédente
                     </a>
                     {{ form_widget(form.membership_amount, { attr: { class: 'bg-white hover:bg-slate-400 text-blue-700 font-semibold hover:text-blue-700 py-2 px-4 border border-blue-500 hover:border-transparent rounded' } }) }}

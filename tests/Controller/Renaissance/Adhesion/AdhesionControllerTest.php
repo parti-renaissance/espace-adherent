@@ -35,9 +35,9 @@ class AdhesionControllerTest extends WebTestCase
 
     public function testRenaissanceMembershipRequest(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion/');
+        $crawler = $this->client->request(Request::METHOD_GET, '/adhesion');
 
-        //$this->assertCount(0, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
 
         // fill personal info
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -103,14 +103,14 @@ class AdhesionControllerTest extends WebTestCase
 
         // summary
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('Smith', $crawler->filter('.summary-bloc tr.lastname td:last-child')->text());
-        $this->assertStringContainsString('John', $crawler->filter('.summary-bloc tr.firstname td:last-child')->text());
-        $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $crawler->filter('.summary-bloc tr.address td:last-child')->text());
-        $this->assertStringContainsString('john@test.com', $crawler->filter('.summary-bloc tr.email td:last-child')->text());
-        $this->assertStringContainsString('01/01/1989', $crawler->filter('.summary-bloc tr.birthdate td:last-child')->text());
-        $this->assertStringContainsString('France', $crawler->filter('.summary-bloc tr.nationality td:last-child')->text());
-        $this->assertStringContainsString('Homme', $crawler->filter('.summary-bloc tr.gender td:last-child')->text());
-        $this->assertStringContainsString('30', $crawler->filter('.summary-bloc tr.amount td:last-child')->text());
+        $this->assertStringContainsString('Smith', $crawler->filter('.summary-block tr.lastname td:last-child')->text());
+        $this->assertStringContainsString('John', $crawler->filter('.summary-block tr.firstname td:last-child')->text());
+        $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $crawler->filter('.summary-block tr.address td:last-child')->text());
+        $this->assertStringContainsString('john@test.com', $crawler->filter('.summary-block tr.email td:last-child')->text());
+        $this->assertStringContainsString('01/01/1989', $crawler->filter('.summary-block tr.birthdate td:last-child')->text());
+        $this->assertStringContainsString('France', $crawler->filter('.summary-block tr.nationality td:last-child')->text());
+        $this->assertStringContainsString('Homme', $crawler->filter('.summary-block tr.gender td:last-child')->text());
+        $this->assertStringContainsString('30', $crawler->filter('.summary-block tr.amount td:last-child')->text());
 
         $this->client->submit($crawler->selectButton('Procéder au paiement')->form());
 
@@ -118,7 +118,6 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findOneByEmail('john@test.com'));
 
         $this->assertInstanceOf(Donation::class, $donation = $this->donationRepository->findInProgressMembershipDonationFromAdherent($adherent));
-        /* @var Donation $donation */
         $this->assertEquals(3000, $donation->getAmount());
         $this->assertSame('male', $donation->getDonator()->getGender());
         $this->assertSame('Smith', $donation->getDonator()->getLastName());
@@ -211,6 +210,6 @@ class AdhesionControllerTest extends WebTestCase
                 $this->payboxProvider->prepareCallbackParameters($donation->getUuid()->toString(), $status)
             )
             ->text()
-            ;
+        ;
     }
 }

@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * membership account.
  *
  * @Route(
- *     path="/inscription/finaliser/{adherent_uuid}/{activation_token}",
+ *     path="/adhesion/finaliser/{adherent_uuid}/{activation_token}",
  *     name="app_renaissance_membership_activate",
  *     requirements={
  *         "adherent_uuid": "%pattern_uuid%",
