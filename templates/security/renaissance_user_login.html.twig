@@ -1,0 +1,37 @@
+{% extends 'renaissance/double_columns_layout.html.twig' %}
+
+{% block title 'Connectez-vous avec vos identifiants' %}
+
+{% block content_right_side %}
+    <section class="text-white">
+        <h1>Connectez-vous</h1>
+
+        {% if error %}
+            <div>
+                {{- error.messageKey|trans(error.messageData)|raw -}}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, { action: path('app_user_login_check', {app_domain: renaissance_host}) }) }}
+            <div>
+                <div class="text-black">
+                     {{ form_errors(form._login_email) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
+                </div>
+
+                <div class="mt-4 text-black">
+                    {{ form_errors(form._login_password) }}
+                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+                </div>
+
+                <div>
+                    <button type="submit">Connexion</button>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </section>
+
+    <div class="">
+        Pas encore de compte ? <a href="{{ path('app_renaissance_adhesion') }}">S’inscrire</a>
+    </div>
+{% endblock %}

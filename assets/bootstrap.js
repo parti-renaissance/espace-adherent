@@ -1,5 +1,6 @@
 import 'utils/dom';
 import 'utils/sharer';
+
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
 

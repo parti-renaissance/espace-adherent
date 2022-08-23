@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Donation\DonationRequest;
+use App\Donation\DonationRequestInterface;
 use App\Repository\TransactionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,8 +28,8 @@ class MaxFiscalYearDonationValidator extends ConstraintValidator
             return;
         }
 
-        if (!($donationRequest = $this->context->getObject()) instanceof DonationRequest) {
-            throw new UnexpectedValueException($value, DonationRequest::class);
+        if (!($donationRequest = $this->context->getObject()) instanceof DonationRequestInterface) {
+            throw new UnexpectedValueException($value, DonationRequestInterface::class);
         }
 
         if (!$email = $donationRequest->getEmailAddress()) {
