@@ -1,9 +1,19 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
 
-{% block title 'Adhérer à Renaissance' %}
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% set active_step = 'Contributions' %}
+
+{% block adhesion_title %}
+    Bienvenue {{ command.firstName }}.<br/>
+    Choisissez le montant<br/>
+    de votre contribution.
+{% endblock %}
 
 {% block content_right_side %}
-    <section class="text-white">
+    {{ parent() }}
+
+    <section class="self-center w-full">
         {{ form_start(form) }}
             {{ form_errors(form) }}
             <div>
@@ -11,16 +21,13 @@
                     {{ form_widget(form.predefinedAmount) }}
                     {{ form_errors(form.predefinedAmount) }}
                 </div>
-                <div class="text-black">
-                    {{ form_widget(form.otherAmount, { attr: { placeholder: 'Autre montant' } }) }}
-                    {{ form_errors(form.otherAmount) }}
-                </div>
-                <div class="mt-4 text-black">
-                    <a href="{{ path('app_renaissance_adhesion') }}" class="bg-blue-700 hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                        ⟵ Étape précédente
-                    </a>
-                    {{ form_widget(form.membership_amount, { attr: { class: 'bg-white hover:bg-slate-400 text-blue-700 font-semibold hover:text-blue-700 py-2 px-4 border border-blue-500 hover:border-transparent rounded' } }) }}
-                </div>
+
+                {{ form_row(form.otherAmount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
+
+                {% include 'renaissance/adhesion/partials/previous-next-buttons.html.twig' with {
+                    route_name: 'app_renaissance_adhesion',
+                    form_button: form.membership_amount
+                } %}
             </div>
         {{ form_end(form) }}
     </section>

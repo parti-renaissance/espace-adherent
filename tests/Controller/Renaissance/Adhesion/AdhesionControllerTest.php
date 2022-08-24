@@ -103,14 +103,16 @@ class AdhesionControllerTest extends WebTestCase
 
         // summary
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('Smith', $crawler->filter('.summary-block tr.lastname td:last-child')->text());
-        $this->assertStringContainsString('John', $crawler->filter('.summary-block tr.firstname td:last-child')->text());
-        $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $crawler->filter('.summary-block tr.address td:last-child')->text());
-        $this->assertStringContainsString('john@test.com', $crawler->filter('.summary-block tr.email td:last-child')->text());
-        $this->assertStringContainsString('01/01/1989', $crawler->filter('.summary-block tr.birthdate td:last-child')->text());
-        $this->assertStringContainsString('France', $crawler->filter('.summary-block tr.nationality td:last-child')->text());
-        $this->assertStringContainsString('Homme', $crawler->filter('.summary-block tr.gender td:last-child')->text());
-        $this->assertStringContainsString('30', $crawler->filter('.summary-block tr.amount td:last-child')->text());
+        $list = $crawler->filter('.py-10 > div');
+        $this->assertStringContainsString('John', $list->eq(0)->text());
+        $this->assertStringContainsString('Smith', $list->eq(1)->text());
+        $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $list->eq(2)->text());
+        $this->assertStringContainsString('john@test.com', $list->eq(3)->text());
+        $this->assertStringContainsString('1 janvier 1989', $list->eq(4)->text());
+        $this->assertStringContainsString('Homme', $list->eq(5)->text());
+        $this->assertStringContainsString('France', $list->eq(6)->text());
+        $this->assertStringContainsString('Téléphone', $list->eq(7)->text());
+        $this->assertStringContainsString('30 €', $list->eq(8)->text());
 
         $this->client->submit($crawler->selectButton('Procéder au paiement')->form());
 

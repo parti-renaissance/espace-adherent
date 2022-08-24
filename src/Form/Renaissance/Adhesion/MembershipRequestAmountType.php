@@ -6,7 +6,7 @@ use App\Form\AmountType;
 use App\Renaissance\Membership\MembershipRequestCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -19,7 +19,7 @@ class MembershipRequestAmountType extends AbstractType
     {
         $builder
             ->add('amount', AmountType::class)
-            ->add('otherAmount', NumberType::class, [
+            ->add('otherAmount', IntegerType::class, [
                 'required' => false,
                 'scale' => 2,
             ])

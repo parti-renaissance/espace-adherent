@@ -1,58 +1,33 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
 
-{% block title 'Adhérer à Renaissance' %}
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block navigation_steps '' %}
+
+{% block adhesion_title %}
+    Voici un récapitulatif<br/>de vos informations.
+{% endblock %}
 
 {% block content_right_side %}
-    <section class="text-white">
-        <div class="summary-block">
-            <table>
-                <tr class="lastname">
-                    <td>Nom</td>
-                    <td>{{ membershipRequest.lastName }}</td>
-                </tr>
-                <tr class="firstname">
-                    <td>Prénom</td>
-                    <td>{{ membershipRequest.firstName }}</td>
-                </tr>
-                <tr class="address">
-                    <td>Adresse postale</td>
-                    <td>{{ membershipRequest.address.fullAddress }}</td>
-                </tr>
-                <tr class="email">
-                    <td>Email</td>
-                    <td>{{ membershipRequest.emailAddress }}</td>
-                </tr>
-                <tr class="birthdate">
-                    <td>Date de naissance</td>
-                    <td>{{ membershipRequest.birthdate|date('d/m/Y') }}</td>
-                </tr>
-                <tr class="gender">
-                    <td>Genre</td>
-                    <td>{{ membershipRequest.getGenderName|trans }}</td>
-                </tr>
-                <tr class="nationality">
-                    <td>Nationalité</td>
-                    <td>{{ membershipRequest.nationality|countryName }}</td>
-                </tr>
-                <tr class="phone">
-                    <td>Téléphone</td>
-                    <td>{{ membershipRequest.phone ? membershipRequest.phone|phone_number_format }}</td>
-                </tr>
-                <tr class="amount">
-                    <td>Cotisation</td>
-                    <td>{{ membershipRequest.amount|format_currency('EUR')|replace({',00' : ''}) }}</td>
-                </tr>
-            </table>
-        </div>
+    <section class="py-10">
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Prénom', value: command.firstName } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nom', value: command.lastName } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Adresse postale', value: command.address.fullAddress } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'E-mail', value: command.emailAddress } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Date de naissance', value: command.birthdate|format_date(pattern='d MMMM y') } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Genre', value: command.genderName|trans } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nationalité', value: command.nationality|countryName } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Téléphone', value: command.phone ? command.phone|phone_number_format } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Cotisation', value: command.amount|format_currency('EUR')|replace({',00' : ''}) } %}
 
         {{ form_start(form) }}
             {{ form_errors(form) }}
-            <div class="mt-4 text-black">
-                <a href="{{ path('app_renaissance_adhesion') }}" class="bg-blue-700 hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded {{ not workflow_can(membershipRequest, 'to_fill_personal_info') ? 'disabled' : '' }}">
-                    Modifier mes informations
-                </a>
-                {{ form_widget(form.payment, { attr: { class: 'bg-white hover:bg-slate-200 text-black font-semibold py-2 px-4 border border-blue-500 hover:border-transparent rounded', disabled: not workflow_can(membershipRequest, 'to_pay_membership') ? 'disabled' : false } }) }}
-            </div>
+
+            {% include 'renaissance/adhesion/partials/previous-next-buttons.html.twig' with {
+                route_name: 'app_renaissance_adhesion',
+                route_label: 'Modifier mes informations',
+                form_button: form.payment,
+            } %}
         {{ form_end(form) }}
     </section>
 {% endblock %}

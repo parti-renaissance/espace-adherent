@@ -4,7 +4,7 @@
 
 {% block content %}
     <header class="fixed border-b border-b-white/10 bg-light-blue z-10 w-full h-12.5 md:h-16.25 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
-        <img src="images/renaissance/logo.svg" alt="logo"/>
+        <img src="/images/renaissance/logo.svg" alt="logo"/>
     </header>
 
     <section
@@ -35,21 +35,14 @@
                     </a>
                 </div>
                 <div class="flex-column-container max-w-[31.875rem]">
-                    <p
-                            class="flex-1 text-base md:text-xl md:leading-7.5 mb-3.75 md:mb-12.5"
-                    >
+                    <p class="flex-1 text-base md:text-xl md:leading-7.5 mb-3.75 md:mb-12.5">
                         Vous soutenez le Président, adhérez au parti de la République et
                         du progrès. 3 minutes suffisent !
                     </p>
-                    <a
-                            class="flex bg-dark-blue px-5 pt-3 pb-2 md:px-7.5 md:pt-4.25 md:pb-3.25 rounded w-fit items-center"
-                            href="#"
-                    >
-                        <p
-                                class="font-bold text-xs leading-5 md:text-base md:leading-7.5 uppercase mr-4"
-                        >
+                    <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 pt-3 pb-2 md:px-7.5 md:pt-4.25 md:pb-3.25 rounded w-fit items-center">
+                        <span class="font-bold text-xs leading-5 md:text-base md:leading-7.5 uppercase mr-4">
                             Adhérer
-                        </p>
+                        </span>
                         <i class="fa fa-caret-right"></i>
                     </a>
                 </div>
@@ -57,14 +50,8 @@
         </div>
     </section>
     <!-- Translated picture/video -->
-    <div
-            class="h-[180px] md:h-[350px] lg:h-[500px] max-w-7xl mx-3.75 md:mx-20 xl:mx-auto"
-    >
-        <img
-                src="images/renaissance/bain-foule-macron.jpg"
-                alt="bain-foule-macron"
-                class="rounded-lg w-full -translate-y-1/2"
-        />
+    <div class="h-[180px] md:h-[350px] lg:h-[500px] max-w-7xl mx-3.75 md:mx-20 xl:mx-auto">
+        <img src="/images/renaissance/bain-foule-macron.jpg" alt="bain-foule-macron" class="rounded-lg w-full -translate-y-1/2"/>
     </div>
 
     <section class="px-3.75 md:px-20 mb-12.5 md:mb-25 -mt-12.5">
@@ -87,11 +74,11 @@
                     les Français au cœur de la République pour porter un projet
                     progressiste français et européen.
                 </p>
-                <img src="images/renaissance/section-1.jpg" class="rounded-lg mb-12.5 md:hidden" alt="qui-sommes-nous"/>
+                <img src="/images/renaissance/section-1.jpg" class="rounded-lg mb-12.5 md:hidden" alt="qui-sommes-nous"/>
             </div>
             <div class="flex-1">
                 <img
-                        src="images/renaissance/section-1.jpg"
+                        src="/images/renaissance/section-1.jpg"
                         class="hidden md:inline rounded-lg mb-12.5" alt="qui-sommes-nous"
                 />
                 <p class="font-normal text-base md:text-lg md:leading-7.5">
@@ -220,7 +207,7 @@
                 </div>
                 <div class="md:w-3/5 lg:2/3">
                     <img
-                            src="images/renaissance/grid-section-pic.jpg"
+                            src="/images/renaissance/grid-section-pic.jpg"
                             class="rounded-lg md:h-full md:w-full"
                             alt="nos-valeurs"
                     />
@@ -232,12 +219,12 @@
                 {% for commitment in commitments %}
                     {% set slug = commitment.title|slug %}
                     <div
-                            id="valeur-{{ slug }}"
-                            class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger"
-                            data-commitment-title="{{ commitment.title|e('html_attr') }}"
-                            data-commitment-slug="{{ slug }}"
-                            data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
-                            data-commitment-description="{{ commitment.description|e('html_attr') }}"
+                        id="valeur-{{ slug }}"
+                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger"
+                        data-commitment-title="{{ commitment.title|e('html_attr') }}"
+                        data-commitment-slug="{{ slug }}"
+                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
+                        data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
                         <h3 class="text-light-blue font-medium text-custom-xs lg:text-custom-base2 mb-2.5">{{ commitment.title }}</h3>
 
@@ -269,7 +256,7 @@
                 </div>
                 <div class="md:w-3/5 lg:2/3">
                     <img
-                            src="images/renaissance/executive-office.jpg"
+                            src="/images/renaissance/executive-office.jpg"
                             class="rounded-lg md:h-full w-full"
                     />
                 </div>
@@ -282,7 +269,7 @@
             >
                 <div class="flex flex-col">
                     <img
-                            src="images/renaissance/burex/macron.jpg"
+                            src="/images/renaissance/burex/macron.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -296,7 +283,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/sejourne.jpg"
+                            src="/images/renaissance/burex/sejourne.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -310,7 +297,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/borello.jpg"
+                            src="/images/renaissance/burex/borello.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -324,7 +311,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/guevenoux.jpg"
+                            src="/images/renaissance/burex/guevenoux.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -345,7 +332,7 @@
             >
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/castaner.jpg"
+                            src="/images/renaissance/burex/castaner.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -359,7 +346,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/bourguignon.jpg"
+                            src="/images/renaissance/burex/bourguignon.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -373,7 +360,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/beaune.jpg"
+                            src="/images/renaissance/burex/beaune.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -387,7 +374,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/blanquer.jpg"
+                            src="/images/renaissance/burex/blanquer.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -408,7 +395,7 @@
             >
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/cicurel.jpg"
+                            src="/images/renaissance/burex/cicurel.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -422,7 +409,7 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <img
-                            src="images/renaissance/burex/avia.jpg"
+                            src="/images/renaissance/burex/avia.jpg"
                             class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"
                     />
                     <p
@@ -458,7 +445,7 @@
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
-                    <img src="images/renaissance/D2D.jpg" class="rounded-lg md:h-full md:w-full"/>
+                    <img src="/images/renaissance/D2D.jpg" class="rounded-lg md:h-full md:w-full"/>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
@@ -582,8 +569,9 @@
     <section class="bg-dark-blue pt-25 md:pt-50">
         <div class="max-w-7xl md:mx-auto mb-12.5">
             <img
-                    src="images/renaissance/logo.svg"
+                    src="/images/renaissance/logo.svg"
                     class="mx-auto mb-[7.8125rem] md:mb-50 h-[1.25rem] md:h-8.75"
+                    alt="logo"
             />
             <div
                     class="grid grid-cols-3 lg:grid-cols-5 divide-white/10 gap-y-6.25 px-7.5 md:px-20 md:mb-6.25"
@@ -666,18 +654,18 @@
                 class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7.5 pb-12.5 md:py-6.25"
         >
             <a href="#">
-                <p class="text-white font-normal text-sm">Mentions légales</p>
+                <span class="text-white font-normal text-sm">Mentions légales</span>
             </a>
             <a href="#">
-                <p class="text-white font-normal text-sm">
+                <span class="text-white font-normal text-sm">
                     Politique de confidentialité
-                </p>
+                </span>
             </a>
             <a href="#">
-                <p class="text-white font-normal text-sm">Contactez-nous</p>
+                <span class="text-white font-normal text-sm">Contactez-nous</span>
             </a>
             <a href="#">
-                <p class="text-white font-normal text-sm">Données personnelles</p>
+                <span class="text-white font-normal text-sm">Données personnelles</span>
             </a>
         </div>
     </section>

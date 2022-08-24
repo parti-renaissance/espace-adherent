@@ -75,5 +75,11 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    safelist: [
+        'form-group',
+        'form-control',
+    ],
+    plugins: [
+        require('@tailwindcss/forms')({ strategy: 'base' }),
+    ],
 };

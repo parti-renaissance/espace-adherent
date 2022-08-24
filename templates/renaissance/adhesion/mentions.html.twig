@@ -1,50 +1,57 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
 
-{% block title 'Adhérer à Renaissance' %}
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% set active_step = 'Mentions' %}
+
+{% block adhesion_title %}
+    Quelques mentions<br/>légales, et c’est fini.
+{% endblock %}
 
 {% block content_right_side %}
-    <section class="text-white">
+    {{ parent() }}
+
+    <section class="py-10">
         {{ form_start(form) }}
             {{ form_errors(form) }}
-            <div>
-                <div>
-                    {{ form_widget(form.conditions) }}
-                    <label for="{{ form.conditions.vars.id }}">
-                        <span>
-                            Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux politiques de protection des données à caractère personnel du site
-                        </span>
-                    </label>
-                    {{ form_errors(form.conditions) }}
-                </div>
-                <div>
-                    {{ form_widget(form.allowEmailNotifications) }}
-                    <label for="{{ form.allowEmailNotifications.vars.id }}">
-                        <span>
-                            Je souhaite être informé(e) de l'actualité de Renaissance par e-mail ({{ 'common.optional'|trans }})
-                        </span>
-                    </label>
-                    {{ form_errors(form.allowEmailNotifications) }}
-                </div>
-                <div>
-                    {{ form_widget(form.allowMobileNotifications) }}
-                    <label for="{{ form.allowMobileNotifications.vars.id }}">
-                        <span>
-                            Je souhaite recevoir des informations sur les actions militantes du parti par téléphone ({{ 'common.optional'|trans }})
-                        </span>
-                    </label>
-                    {{ form_errors(form.allowMobileNotifications) }}
-                </div>
-
-                {{ cms_block('renaissance-adhesion-rgpd-block') }}
-
-                <div class="mt-4">
-                    <a href="{{ path('app_renaissance_adhesion_amount') }}"
-                       class="bg-blue-700 hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                        ⟵ Étape précédente
-                    </a>
-                    {{ form_widget(form.membership_request_mentions, { attr: { class: 'bg-white hover:bg-slate-400 text-blue-700 font-semibold hover:text-blue-700 py-2 px-4 border border-blue-500 hover:border-transparent rounded' } }) }}
-                </div>
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.conditions) }}
+                <label for="{{ form.conditions.vars.id }}">
+                    <span>
+                        Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux politiques de protection des données à caractère personnel du site
+                    </span>
+                </label>
+                {{ form_errors(form.conditions) }}
             </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.allowEmailNotifications) }}
+                <label for="{{ form.allowEmailNotifications.vars.id }}">
+                    <span>
+                        Je souhaite être informé(e) de l'actualité de Renaissance par e-mail ({{ 'common.optional'|trans }})
+                    </span>
+                </label>
+                {{ form_errors(form.allowEmailNotifications) }}
+            </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.allowMobileNotifications) }}
+                <label for="{{ form.allowMobileNotifications.vars.id }}">
+                    <span>
+                        Je souhaite recevoir des informations sur les actions militantes du parti par téléphone ({{ 'common.optional'|trans }})
+                    </span>
+                </label>
+                {{ form_errors(form.allowMobileNotifications) }}
+            </div>
+
+            <div class="mt-5 text-xs">
+                {{ cms_block('renaissance-adhesion-rgpd-block') }}
+            </div>
+
+            {% include 'renaissance/adhesion/partials/previous-next-buttons.html.twig' with {
+                route_name: 'app_renaissance_adhesion_amount',
+                form_button: form.membership_request_mentions
+            } %}
         {{ form_end(form) }}
     </section>
 {% endblock %}

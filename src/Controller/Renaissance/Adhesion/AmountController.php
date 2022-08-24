@@ -35,6 +35,7 @@ class AmountController extends AbstractAdhesionController
 
         return $this->render('renaissance/adhesion/choose_amount.html.twig', [
             'form' => $form->createView(),
+            'command' => $command,
         ]);
     }
 }
