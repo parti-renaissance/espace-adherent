@@ -1,83 +1,63 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
 
-{% block title 'Adhérer à Renaissance' %}
+{% form_theme form 'renaissance/form_theme.html.twig' %}
 
 {% block content_right_side %}
-    <section class="text-white">
+    {{ parent() }}
+
+    <section class="py-10">
         {{ form_start(form) }}
             {{ form_errors(form) }}
-            <div>
-                <div class="text-black">
-                    {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
-                    {{ form_errors(form.firstName) }}
-                </div>
-                <div class="text-black">
-                    {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
-                    {{ form_errors(form.lastName) }}
-                </div>
-                <div class="text-black">
-                    {{ form_widget(form.emailAddress.first, { attr: { placeholder: 'E-mail' } }) }}
-                    {{ form_errors(form.emailAddress.first) }}
-                </div>
-                <div class="text-black">
-                    {{ form_widget(form.emailAddress.second, { attr: {placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
-                    {{ form_errors(form.emailAddress.second) }}
-                    {{ form_errors(form.emailAddress) }}
+
+            <div class="overflow-auto">
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
+                    {{ form_row(form.lastName, { label: false, attr: { placeholder: 'Nom' } }) }}
                 </div>
 
-                <div class="text-black">
-                    {{ form_widget(form.password, { attr: { placeholder: 'Mot de passe' } }) }}
-                    {{ form_errors(form.password) }}
-                </div>
-                <div class="text-black">
-                    {{ form_errors(form.nationality) }}
-                    {{ form_widget(form.nationality, { attr: { placeholder: 'Nationalité'} }) }}
-                </div>
+                {{ form_row(form.emailAddress.first, { label: false, attr: { placeholder: 'E-mail' } }) }}
+                {{ form_row(form.emailAddress.second, { label: false, attr: {placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
+
+                {{ form_row(form.password, { label: false, attr: { placeholder: 'Mot de passe' } }) }}
+
+                {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
+
                 <div>
                     <div class="text-black">
                         {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
                         {{ form_errors(form.address.address) }}
                     </div>
-                    <div class="text-black">
-                        {{ form_widget(form.address.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
-                        {{ form_errors(form.address.postalCode) }}
+
+                    <div class="flex flex-row space-x-4">
+                        {{ form_row(form.address.postalCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
+                        {{ form_widget(form.address.cityName, { label: false, attr: { placeholder: 'Ville' } }) }}
                     </div>
-                    <div class="text-black">
-                        {{ form_widget(form.address.city) }}
-                        {{ form_widget(form.address.cityName, { attr: { placeholder: 'Ville' } }) }}
-                        {{ form_errors(form.address.city) }}
-                        {{ form_errors(form.address.cityName) }}
-                    </div>
-                    <div class="text-black">
-                        {{ form_widget(form.address.region, { attr: { placeholder: 'Région' } }) }}
-                        {{ form_errors(form.address.region) }}
-                    </div>
-                    <div class="text-black">
-                        {{ form_widget(form.address.country) }}
-                        {{ form_errors(form.address.country) }}
+
+                    {{ form_row(form.address.city, { attr: { placeholder: 'Ville' } }) }}
+
+                    <div class="flex flex-row space-x-4">
+                        {{ form_row(form.address.region, { label: false, attr: { placeholder: 'Région' } }) }}
+                        {{ form_widget(form.address.country, { label: false }) }}
                     </div>
                 </div>
-                <div class="text-black">
-                    {{ form_widget(form.birthdate, { attr: { placeholder: 'Date de naissance'} }) }}
-                    {{ form_errors(form.birthdate) }}
+
+                {{ form_row(form.birthdate, { label: false }) }}
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.gender, { label: false }) }}
+
+                    {{ form_row(form.customGender, { label: false, attr: { placeholder: 'Personnaliser mon genre' } }) }}
                 </div>
-                <div class="text-black">
-                    {{ form_widget(form.gender) }}
-                    {{ form_errors(form.gender) }}
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.phone.country, { label: false, attr: { placeholder: 'Indicatif Pays', 'data-validated-with': form.phone.number.vars.id } }) }}
+                    {{ form_row(form.phone.number, { label: false, attr: { placeholder: 'Téléphone' } }) }}
                 </div>
-                <div class="text-black">
-                    {{ form_widget(form.customGender, { attr: { placeholder: 'Personnaliser mon genre' } }) }}
-                    {{ form_errors(form.customGender) }}
-                </div>
-                <div class="text-black">
-                    {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays', attr: {'data-validated-with': form.phone.number.vars.id } }) }}
-                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
-                    {{ form_errors(form.phone.country) }}
-                    {{ form_errors(form.phone.number) }}
-                    {{ form_errors(form.phone) }}
-                </div>
-                <div class="mt-4 text-black">
-                    {{ form_widget(form.fill_personal_info, { attr: { class: 'bg-white hover:bg-slate-400 text-blue-700 font-semibold hover:text-blue-700 py-2 px-4 border border-blue-500 hover:border-transparent rounded' } }) }}
+            </div>
+
+            <div class="mt-4">
+                <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
+                    {{ form_widget(form.fill_personal_info, { attr: { class: 'w-full rounded py-5 bg-white text-dark-blue font-din font-bold text-base uppercase text-center' } }) }}
                 </div>
             </div>
         {{ form_end(form) }}

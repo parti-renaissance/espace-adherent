@@ -1,14 +1,24 @@
-{% extends 'renaissance/double_columns_layout.html.twig' %}
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
 
-{% block title 'Adhérer à Renaissance' %}
+{% block navigation_steps '' %}
+
+{% block adhesion_title %}
+    <span class="text-yellow font-bold">
+        {% if successful %}
+            Adhésion réussie !
+        {% else %}
+            L’adhésion a échoué !
+        {% endif %}
+    </span>
+{% endblock %}
 
 {% block content_right_side %}
-    <section class="text-white">
+    <section class="self-center">
         {% if successful %}
             <div>
                 <h1>Adhésion réussie !</h1>
                 <p>
-                    Le paiement à bien été validé. Vous êtes désormais inscrit, <br/>
+                    Le paiement a bien été validé. Vous êtes désormais inscrit, <br/>
                     bienvenu(e)! Il ne reste plus qu’à confirmer votre inscription <br/>
                     en cliquant sur le lien que vous avez reçu sur votre email.
                 </p>
@@ -23,7 +33,7 @@
                 <div>
                     <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 
-                    <a href="{{ retry_url }}" class="btn btn--red">
+                    <a href="{{ retry_url }}">
                         Je souhaite réessayer
                     </a>
 

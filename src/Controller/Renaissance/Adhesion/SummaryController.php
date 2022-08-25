@@ -53,7 +53,7 @@ class SummaryController extends AbstractAdhesionController
 
         return $this->render('renaissance/adhesion/summary.html.twig', [
             'form' => $form->createView(),
-            'membershipRequest' => $command,
+            'command' => $command,
         ]);
     }
 }

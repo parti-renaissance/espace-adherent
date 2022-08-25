@@ -182,6 +182,7 @@ framework:
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_PAY_MEMBERSHIP:
                     from:
                         - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_SUMMARY
+                        - !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_PAYMENT
                     to: !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::STATE_ADHESION_PAYMENT
 
                 !php/const App\Renaissance\Membership\MembershipRequestCommandStateEnum::TO_FINISH:

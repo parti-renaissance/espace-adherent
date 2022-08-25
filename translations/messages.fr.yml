@@ -1080,7 +1080,7 @@ adherent_commitment.availability.punctual: Disponibilité ponctuelle
 adherent_commitment.availability.more_5h_a_month: Plus de 5h par mois
 adherent_commitment.availability.more_5h_a_week: Plus de 20h par mois (+ 5h par semaine)
 
-adherent_commitment.update_success: Votre engagement à bien été enregistré.
+adherent_commitment.update_success: Votre engagement a bien été enregistré.
 
 #
 # AdherentMandate

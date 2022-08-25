@@ -1,0 +1,41 @@
+{% extends 'renaissance/double_columns_layout.html.twig' %}
+
+{% block page_title 'Adhésion' %}
+
+{% set default_active_step = 'Informations' %}
+
+{% block content_left_side %}
+    <div class="absolute bottom-0 md:h-full flex flex-col justify-end md:justify-center px-3.75 md:px-7.5 mb-3.75">
+        <p class="text-white font-bold text-[1.75rem] leading-8 md:text-custom-xl md:mb-16">
+            {% block adhesion_title 'Adhérez au parti <br />Renaissance.' %}
+        </p>
+    </div>
+
+    {% block navigation_steps %}
+        <div class="hidden md:flex md:items-center w-full h-[4.6875rem] border-t-2 border-white/20 py-7.5 pl-7.5">
+            {% for step in ['Informations', 'Contributions', 'Mentions'] %}
+                <p class="{{ step == active_step|default(default_active_step) ? 'text-yellow' : 'text-white' }} font-bold text-sm mr-4">{{ step }}</p>
+
+                {% if not loop.last %}
+                    <i class="fa fa-caret-right text-white opacity-30 mr-4"></i>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block content_right_side %}
+    <div class="md:hidden h-12.5 flex justify-between items-center mb-12.5 bg-dark-gray/10">
+        <div class="mx-5.5 opacity-50">
+            <i class="fa fa-caret-left"></i>
+        </div>
+
+        <div class="text-white font-bold text-3.25 leading-5">
+            {{ active_step|default(default_active_step) }}
+        </div>
+
+        <a href="#" class="mx-5.5">
+            <i class="fa fa-caret-right text-white"></i>
+        </a>
+    </div>
+{% endblock %}
