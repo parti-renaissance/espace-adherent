@@ -6,6 +6,10 @@
 @import 'components';
 
 @layer components {
+  .flex-column-container {
+    @apply block md:flex flex-col flex-1 border-t border-white w-10/12 pt-3.75 md:pt-7.5 mb-12.5 md:mb-0;
+  }
+
   .form-control {
     @apply rounded-lg border-2 border-white/20 focus:outline-white w-full bg-light-blue text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75
   }
