@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import 'mixins';
+@import 'components';
 
 @layer components {
   .form-control {

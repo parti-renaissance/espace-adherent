@@ -3,16 +3,15 @@
 {% block page_title 'Bienvenue' %}
 
 {% block content %}
-    <header class="fixed border-b border-b-white/10 bg-light-blue z-10 w-full h-12.5 md:h-16.25 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
-        <img src="/images/renaissance/logo.svg" alt="logo"/>
+    <header class="sticky top-0 border-b border-b-white/10 bg-light-blue z-10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
+        <a href="{{ path('app_ren_homepage') }}"><img src="/images/renaissance/logo.svg" alt="logo"/></a>
     </header>
 
-    <section
-            class="h-[44.375rem] md:h-[68.75rem] lg:h-[65.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
-        <div class="max-w-7xl mx-auto lg:mx-auto m-0">
+    <section class="h-[44.375rem] md:h-[68.75rem] lg:h-[65.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
+        <div class="xl:container">
             <div class="max-w-[345px] md:max-w-[900px] mb-12.5 md:mb-[4.6875rem]">
                 <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5rem]">
-                    Rejoignez Renaissance, le parti d'Emmanuel Macron
+                    Rejoignez Renaissance, le parti <span class="stabilo stabilo-green">d'Emmanuel Macron.</span>
                 </p>
             </div>
             <div class="md:flex md:gap-x-37.5 mb-12.5 text-white">
@@ -24,7 +23,7 @@
                     </p>
                     <a
                             class="flex bg-dark-blue px-5 pt-3 pb-2 md:px-7.5 md:pt-4.25 md:pb-3.25 rounded w-fit items-center"
-                            href="#"
+                            href="{{ path('app_renaissance_login') }}"
                     >
                         <p
                                 class="font-bold text-xs leading-5 md:text-base md:leading-7.5 uppercase mr-4"
@@ -50,7 +49,7 @@
         </div>
     </section>
     <!-- Translated picture/video -->
-    <div class="h-[180px] md:h-[350px] lg:h-[500px] max-w-7xl mx-3.75 md:mx-20 xl:mx-auto">
+    <div class="xl:container h-[180px] md:h-[350px] lg:h-[500px] mx-3.75 md:mx-20">
         <img src="/images/renaissance/bain-foule-macron.jpg" alt="bain-foule-macron" class="rounded-lg w-full -translate-y-1/2"/>
     </div>
 
@@ -65,7 +64,7 @@
                         class="text-light-blue font-bold text-[1.5rem] leading-8 md:text-custom-xl mb-6.25 md:mb-7.5"
                 >
                     Renaissance: <br/>
-                    Qui sommes-nous?
+                    Qui <span class="stabilo stabilo-rose">sommes-nous?</span>
                 </p>
                 <p
                         class="text-light-blue font-normal text-lg leading-6.25 md:text-2xl md:leading-9 mb-12.5 md:mb-0"
@@ -196,7 +195,7 @@
                     <p
                             class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5"
                     >
-                        Nos valeurs et nos engagements
+                        Nos valeurs et nos <span class="stabilo stabilo-rose">engagements</span>
                     </p>
                     <p
                             class="text-light-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5"
@@ -207,15 +206,13 @@
                 </div>
                 <div class="md:w-3/5 lg:2/3">
                     <img
-                            src="/images/renaissance/grid-section-pic.jpg"
-                            class="rounded-lg md:h-full md:w-full"
-                            alt="nos-valeurs"
+                        src="/images/renaissance/grid-section-pic.jpg"
+                        class="rounded-lg md:h-full md:w-full"
+                        alt="nos-valeurs"
                     />
                 </div>
             </div>
-            <div
-                    class="columns-2 md:columns-3 lg:columns-4 gap-3.75 lg:gap-10 pb-12.5 lg:pb-25"
-            >
+            <div class="columns-2 md:columns-3 lg:columns-4 gap-3.75 lg:gap-10 pb-12.5 lg:pb-25">
                 {% for commitment in commitments %}
                     {% set slug = commitment.title|slug %}
                     <div
@@ -245,7 +242,7 @@
                     <p
                             class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5"
                     >
-                        Le bureau exécutif
+                        Le bureau <span class="stabilo stabilo-rose">exécutif</span>
                     </p>
                     <p
                             class="text-light-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5"
@@ -435,7 +432,7 @@
                     <p
                             class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5"
                     >
-                        Devenir le parti le plus délocalisé de France
+                        Devenir le parti le plus <span class="stabilo stabilo-rose">délocalisé</span> de France
                     </p>
                     <p
                             class="text-light-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5 lg:mb-0"
@@ -560,7 +557,6 @@
                             class="font-din text-dark-blue uppercase font-bold text-lg leading-5 text-center my-auto"
                     >
                         M'inscrire
-                    </span>
                 </button>
             </div>
         </div>
@@ -568,84 +564,84 @@
     <!-- Footer -->
     <section class="bg-dark-blue pt-25 md:pt-50">
         <div class="max-w-7xl md:mx-auto mb-12.5">
-            <img
+            <a href="{{ path('app_ren_homepage') }}">
+                <img
                     src="/images/renaissance/logo.svg"
                     class="mx-auto mb-[7.8125rem] md:mb-50 h-[1.25rem] md:h-8.75"
                     alt="logo"
-            />
-            <div
-                    class="grid grid-cols-3 lg:grid-cols-5 divide-white/10 gap-y-6.25 px-7.5 md:px-20 md:mb-6.25"
-            >
+                />
+            </a>
+            <div class="grid grid-cols-3 lg:grid-cols-5 divide-white/10 gap-y-6.25 px-7.5 md:px-20 md:mb-6.25">
                 <!-- Facebook -->
                 <a
-                        href="#"
-                        class="flex flex-col md:flex-row items-center pr-6.25 lg:px-12.5 border-r-2 border-white/10"
+                    href="#"
+                    class="flex flex-col md:flex-row items-center pr-6.25 lg:px-12.5 border-r-2 border-white/10"
                 >
-            <span class="fa-stack mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-              <i
-                      class="fa fa-circle fa-stack-2x"
-                      style="color: rgba(255, 255, 255, 0.1)"
-              ></i>
-              <i class="fa fa-facebook-f fa-stack-1x fa-inverse"></i>
-            </span>
-                    <p class="text-white font-medium text-custom-base1">Facebook</p>
+                    <span class="fa-stack mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                        <i
+                            class="fa fa-circle fa-stack-2x"
+                            style="color: rgba(255, 255, 255, 0.1)"
+                        ></i>
+                        <i class="fa fa-facebook-f fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="text-white font-medium text-custom-base1">Facebook</span>
                 </a>
                 <!-- Instagram -->
                 <a
-                        href="#"
-                        class="flex flex-col md:flex-row items-center px-6.25 lg:px-12.5 border-r-2 border-white/10"
+                    href="#"
+                    class="flex flex-col md:flex-row items-center px-6.25 lg:px-12.5 border-r-2 border-white/10"
                 >
-            <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-              <i
-                      class="fa fa-circle fa-stack-2x"
-                      style="color: rgba(255, 255, 255, 0.1)"
-              ></i>
-              <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
-            </span>
-                    <p class="text-white font-medium text-custom-base1">Instagram</p>
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                        <i
+                            class="fa fa-circle fa-stack-2x"
+                            style="color: rgba(255, 255, 255, 0.1)"
+                        ></i>
+                        <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="text-white font-medium text-custom-base1">Instagram</span>
                 </a>
                 <!-- Twitter -->
                 <a
-                        href="#"
-                        class="flex flex-col md:flex-row items-center pl-6.25 lg:px-12.5 lg:border-r-2 lg:border-white/10"
+                    href="#"
+                    class="flex flex-col md:flex-row items-center pl-6.25 lg:px-12.5 lg:border-r-2 lg:border-white/10"
                 >
-            <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-              <i
-                      class="fa fa-circle fa-stack-2x"
-                      style="color: rgba(255, 255, 255, 0.1)"
-              ></i>
-              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-            </span>
-                    <p class="text-white font-medium text-custom-base1">Twitter</p>
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                        <i
+                            class="fa fa-circle fa-stack-2x"
+                            style="color: rgba(255, 255, 255, 0.1)"
+                        ></i>
+                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="text-white font-medium text-custom-base1">Twitter</span>
                 </a>
 
                 <!-- Linkedin -->
                 <a
-                        href="#"
-                        class="flex flex-col md:flex-row items-center pr-6.25 lg:px-12.5 lg:pl-6.25 border-r-2 border-white/10"
+                    href="#"
+                    class="flex flex-col md:flex-row items-center pr-6.25 lg:px-12.5 lg:pl-6.25 border-r-2 border-white/10"
                 >
-            <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-              <i
-                      class="fa fa-circle fa-stack-2x"
-                      style="color: rgba(255, 255, 255, 0.1)"
-              ></i>
-              <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-            </span>
-                    <p class="text-white font-medium text-custom-base1">Linkedin</p>
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                        <i
+                            class="fa fa-circle fa-stack-2x"
+                            style="color: rgba(255, 255, 255, 0.1)"
+                        ></i>
+                        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="text-white font-medium text-custom-base1">Linkedin</span>
                 </a>
                 <!-- Youtube -->
                 <a
-                        href="#"
-                        class="flex flex-col md:flex-row items-center px-6.25 lg:px-12.5 border-r-2 border-white/10 md:border-0"
+                    href="#"
+                    class="flex flex-col md:flex-row items-center px-6.25 lg:px-12.5 border-r-2 border-white/10 md:border-0"
                 >
-            <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-              <i
-                      class="fa fa-circle fa-stack-2x"
-                      style="color: rgba(255, 255, 255, 0.1)"
-              ></i>
-              <i class="fa fa-youtube fa-stack-1x fa-inverse"></i>
-            </span>
-                    <p class="text-white font-medium text-custom-base1">Youtube</p>
+                    <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
+                        <i
+                            class="fa fa-circle fa-stack-2x"
+                            style="color: rgba(255, 255, 255, 0.1)"
+                        ></i>
+                        <i class="fa fa-youtube fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <span class="text-white font-medium text-custom-base1">Youtube</span>
                 </a>
             </div>
         </div>

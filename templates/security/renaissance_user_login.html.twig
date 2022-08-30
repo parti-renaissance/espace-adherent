@@ -2,36 +2,22 @@
 
 {% block title 'Connectez-vous avec vos identifiants' %}
 
-{% block content_right_side %}
-    <section class="text-white">
-        <h1>Connectez-vous</h1>
+{% form_theme form 'renaissance/form_theme.html.twig' %}
 
+{% block content_right_side %}
+    <section class="self-center w-full">
         {% if error %}
-            <div>
+            <div class="text-red-400 py-3">
                 {{- error.messageKey|trans(error.messageData)|raw -}}
             </div>
         {% endif %}
 
         {{ form_start(form, { action: path('app_user_login_check', {app_domain: renaissance_host}) }) }}
+            {{ form_row(form._login_email, { label: false, attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
+            {{ form_row(form._login_password, { label: false, attr: { placeholder: 'Mot de passe' } }) }}
             <div>
-                <div class="text-black">
-                     {{ form_errors(form._login_email) }}
-                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
-                </div>
-
-                <div class="mt-4 text-black">
-                    {{ form_errors(form._login_password) }}
-                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
-                </div>
-
-                <div>
-                    <button type="submit">Connexion</button>
-                </div>
+                <button type="submit" class="w-full rounded py-5 bg-white text-dark-blue font-din font-bold text-base uppercase text-center">Connexion</button>
             </div>
         {{ form_end(form) }}
     </section>
-
-    <div class="">
-        Pas encore de compte ? <a href="{{ path('app_renaissance_adhesion') }}">S’inscrire</a>
-    </div>
 {% endblock %}
