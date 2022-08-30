@@ -1,7 +1,7 @@
 <div class="flex mt-4 justify-between">
-    <a href="{{ path(route_name) }}" class="py-5 bg-blue-700 hover:bg-blue-500 text-white hover:text-white uppercase px-4 border border-blue-500 hover:border-transparent rounded font-din font-bold text-base uppercase text-center">
+    <a href="{{ path(route_name) }}" class="w-full py-5 bg-blue-700 hover:bg-blue-500 text-white hover:text-white px-4 border border-blue-500 hover:border-transparent rounded font-din font-bold text-base uppercase text-center">
         {{ route_label|default('Étape précédente') }}
     </a>
 
-    {{ form_widget(form_button, { attr: { class: 'rounded py-5 bg-white text-dark-blue font-din font-bold text-base uppercase text-center px-4' } }) }}
+    {{ form_widget(form_button, { attr: { class: 'rounded w-full py-5 bg-white text-dark-blue font-din font-bold text-base uppercase text-center px-4' } }) }}
 </div>
