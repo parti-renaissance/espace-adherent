@@ -28,9 +28,6 @@ module.exports = {
                 'gray-border': '#DDDDDD',
                 yellow: '#FFDC6B',
             },
-            container: {
-                center: true,
-            },
             spacing: {
                 3.25: '0.8125rem',
                 3.75: '0.9375rem',

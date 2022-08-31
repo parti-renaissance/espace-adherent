@@ -11,17 +11,6 @@
 
 @font-face {
     font-family: 'Maax';
-    src: url('/fonts/Maax-205TF/Maax-Bold-205TF.eot');
-    src: url('/fonts/Maax-205TF/Maax-Bold-205TF.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/Maax-205TF/Maax-Bold-205TF.woff2') format('woff2'),
-    url('/fonts/Maax-205TF/Maax-Bold-205TF.woff') format('woff'),
-    url('/fonts/Maax-205TF/Maax-Bold-205TF.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Maax';
     src: url('/fonts/Maax-205TF/Maax-Medium-205TF.eot');
     src: url('/fonts/Maax-205TF/Maax-Medium-205TF.eot?#iefix') format('embedded-opentype'),
     url('/fonts/Maax-205TF/Maax-Medium-205TF.woff2') format('woff2'),
@@ -32,8 +21,33 @@
 }
 
 @font-face {
+    font-family: 'Maax';
+    src: url('/fonts/Maax-205TF/Maax-Bold-205TF.eot');
+    src: url('/fonts/Maax-205TF/Maax-Bold-205TF.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/Maax-205TF/Maax-Bold-205TF.woff2') format('woff2'),
+    url('/fonts/Maax-205TF/Maax-Bold-205TF.woff') format('woff'),
+    url('/fonts/Maax-205TF/Maax-Bold-205TF.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'Din';
-    src: url('/fonts/din-condensed/DIN-Regular.ttf');
+    src: url('/fonts/din-condensed/DIN-Regular.ttf') format('truetype');
     font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Din';
+    src: url('/fonts/din-condensed/DIN-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Din';
+    src: url('/fonts/din-condensed/DIN-Bold.ttf') format('truetype');
+    font-weight: 700;
     font-style: normal;
 }
