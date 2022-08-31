@@ -1,0 +1,16 @@
+.stabilo {
+    background-size: contain;
+    background-repeat: repeat-x;
+
+    &-green {
+        background-image: url('/images/renaissance/patterns/stabilo-green.png');
+    }
+
+    &-rose {
+        background-image: url('/images/renaissance/patterns/stabilo-rose.png');
+    }
+
+    &-blue {
+        background-image: url('/images/renaissance/patterns/stabilo-blue.png');
+    }
+}

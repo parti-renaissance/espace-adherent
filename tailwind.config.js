@@ -4,6 +4,14 @@ module.exports = {
         'assets/**/*.js',
     ],
     theme: {
+        container: {
+            center: true,
+        },
+        screens: {
+            'md': '768px',
+            'lg': '1024px',
+            'xl': '1280px',
+        },
         extend: {
             fontFamily: {
                 maax: 'Maax',

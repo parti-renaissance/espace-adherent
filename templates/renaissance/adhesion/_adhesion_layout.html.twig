@@ -7,7 +7,9 @@
 {% block content_left_side %}
     <div class="absolute bottom-0 md:h-full flex flex-col justify-end md:justify-center px-3.75 md:px-7.5 mb-3.75">
         <p class="text-white font-bold text-[1.75rem] leading-8 md:text-custom-xl md:mb-16">
-            {% block adhesion_title 'Adhérez au parti <br />Renaissance.' %}
+            {% block adhesion_title %}
+                <span class="stabilo stabilo-blue">{{ app.user ? '(Ré)' }}Adhérez</span> au parti <br />Renaissance.
+            {% endblock %}
         </p>
     </div>
 

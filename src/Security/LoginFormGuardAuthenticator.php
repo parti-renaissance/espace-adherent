@@ -70,10 +70,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             'csrf_token' => $request->request->get('_login_csrf'),
         ];
 
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['emailAddress']
-        );
+        $request->getSession()->set(Security::LAST_USERNAME, $credentials['emailAddress']);
 
         $this->currentAppCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
@@ -122,7 +119,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
 
         /** @var Adherent $adherent */
         if ($token->getUser() && $this->currentAppCode) {
-            return new RedirectResponse($this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateHomepageLink());
+            return new RedirectResponse($this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateForLoginSuccess());
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_search_events'));
@@ -131,6 +128,8 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $this->failedLoginAttemptRepository->save(FailedLoginAttempt::createFromRequest($request));
+
+        $this->currentAppCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
         return parent::onAuthenticationFailure($request, $exception);
     }
