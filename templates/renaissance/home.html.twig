@@ -22,14 +22,14 @@
                         Déjà adhérent En Marche, bénéficiez d'une inscription rapide
                     </p>
                     <a
-                            class="flex bg-dark-blue px-5 pt-3 pb-2 md:px-7.5 md:pt-4.25 md:pb-3.25 rounded w-fit items-center"
-                            href="{{ path('app_renaissance_login') }}"
+                        class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center"
+                        href="{{ path('app_renaissance_login') }}"
                     >
-                        <p
-                                class="font-bold text-xs leading-5 md:text-base md:leading-7.5 uppercase mr-4"
+                        <span
+                                class="font-bold text-xs md:text-base uppercase mr-4"
                         >
                             Me connecter
-                        </p>
+                        </span>
                         <i class="fa fa-caret-right"></i>
                     </a>
                 </div>
@@ -38,8 +38,8 @@
                         Vous soutenez le Président, adhérez au parti de la République et
                         du progrès. 3 minutes suffisent !
                     </p>
-                    <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 pt-3 pb-2 md:px-7.5 md:pt-4.25 md:pb-3.25 rounded w-fit items-center">
-                        <span class="font-bold text-xs leading-5 md:text-base md:leading-7.5 uppercase mr-4">
+                    <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
+                        <span class="font-bold text-xs md:text-base uppercase mr-4">
                             Adhérer
                         </span>
                         <i class="fa fa-caret-right"></i>
@@ -80,7 +80,7 @@
                         src="/images/renaissance/section-1.jpg"
                         class="hidden md:inline rounded-lg mb-12.5" alt="qui-sommes-nous"
                 />
-                <p class="font-normal text-base md:text-lg md:leading-7.5">
+                <p class="font-normal md:text-lg md:leading-7.5">
                     Depuis le 7 mai 2017, nous le mettons en œuvre. Le 24 avril 2022, le
                     Président de la République a été réélu et nous a confier une
                     mission, celle d’aller plus loin. Alors que notre continent traverse
@@ -88,7 +88,7 @@
                     nouvelle page : Renaissance.
                 </p>
                 <br/>
-                <p class="font-normal text-base md:text-lg md:leading-7.5">
+                <p class="font-normal md:text-lg md:leading-7.5">
                     Renaissance, c’est un parti qui fait confiance aux territoires.
                     Présentes partout en France, nos Fédérations départementales sont la
                     voix des territoires. Renaissance, c’est un parti de propositions.
@@ -99,7 +99,7 @@
                     dans notre engagement.
                 </p>
                 <br/>
-                <p class="font-normal text-base md:text-lg md:leading-7.5">
+                <p class="font-normal md:text-lg md:leading-7.5">
                     Renaissance, c’est le parti de la majorité. Nous accueillons toutes
                     les formations politiques qui ont l’ambition de défendre le projet
                     du Président de la République.
@@ -119,14 +119,14 @@
                     Faire un don pour aider Renaissance
                 </p>
                 <p
-                        class="text-white font-medium text-base lg:text-lg lg:leading-6.25"
+                        class="text-white font-medium lg:text-lg lg:leading-6.25"
                 >
                     66 % de votre don vient en déduction de votre impôt sur le revenu
                     (dans la limite de 20 % du revenu imposable).
                 </p>
                 <br/>
                 <p
-                        class="text-white font-medium text-base lg:text-lg lg:leading-6.25 mb-12.5 lg:mb-0"
+                        class="text-white font-medium lg:text-lg lg:leading-6.25 mb-12.5 lg:mb-0"
                 >
                     Par exemple : un don de 100 € vous revient en réalité à 34 € et vous
                     fait bénéficier d’une réduction d’impôt de 66 €. Le montant annuel
@@ -140,24 +140,18 @@
                     <!-- Button group -->
                     <div class="flex mb-5" role="group">
                         <button class="button-group bg-green rounded-tl-lg rounded-bl-lg">
-                            <span class="font-medium text-sm">30€</span>
-                        </button>
-                        <button class="button-group bg-green border-l-0">
-                            <span class="font-medium text-sm">60€</span>
-                        </button>
-                        <button class="button-group bg-green border-l-0">
-                            <span class="font-medium text-sm">90€</span>
+                            <span class="font-medium text-sm">Tarif réduit 10€</span>
                         </button>
                         <button
                                 class="button-group bg-green border-l-0 rounded-tr-lg rounded-br-lg"
                         >
-                            <span class="font-medium text-sm">120€</span>
+                            <span class="font-medium text-sm">Tarif normal 30€</span>
                         </button>
                     </div>
                     <!-- Other donation amount -->
                     <input
                             type="number"
-                            class="outline-0 border-white/20 border-2 rounded-lg p-5 mb-5 bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium placeholder:text-sm"
+                            class="border-white/20 focus:border-white focus:ring-0 border-2 rounded-lg p-5 mb-5 bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium placeholder:text-sm"
                             placeholder="Montant libre (€)"
                     />
                     <!-- Tax deduction -->
@@ -168,14 +162,14 @@
                     <!-- Button -->
                     <a
                             href="#"
-                            class="flex justify-center bg-white pt-5.75 pb-4.25 px-7.5 rounded"
+                            class="text-center bg-white py-5.75 px-7.5 rounded"
                     >
                         <span
-                                class="text-light-blue uppercase font-bold text-lg leading-5 mr-4"
+                                class="text-light-blue uppercase font-bold text-lg mr-4"
                         >
                             Donner à Renaissance
-                            <i class="fa fa-caret-right text-black"></i>
                         </span>
+                        <i class="fa fa-caret-right text-black"></i>
                     </a>
                 </div>
             </div>
@@ -453,7 +447,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Les Comités locaux
                     </p>
-                    <p class="text-medium-gray font-normal text-base">
+                    <p class="text-medium-gray font-normal">
                         Enracinés partout en France, les comités élisent un bureau
                         paritaire de 4 à 10 membres chargés de l’animation du territoire.
                     </p>
@@ -465,7 +459,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Le Bureau national
                     </p>
-                    <p class="text-medium-gray font-normal text-base">
+                    <p class="text-medium-gray font-normal">
                         Le secrétariat général exécutif, les Présidents de Fédérations y
                         siègent et votent pour élire le Secrétaire général. Les
                         parlementaires, les membres du gouvernement et les Présidents
@@ -480,7 +474,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Les Fédérations
                     </p>
-                    <p class="text-medium-gray font-normal text-base">
+                    <p class="text-medium-gray font-normal">
                         Représentant chacune une région, elles sont élues pour 3 ans et
                         leurs Présidents siègent au bureau national.
                     </p>
@@ -492,7 +486,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Les Comités locaux
                     </p>
-                    <p class="text-medium-gray font-normal text-base">
+                    <p class="text-medium-gray font-normal">
                         Composée de tous les Présidents des exécutifs locaux, elle élit un
                         Président et est régulièrement consultée.
                     </p>
@@ -504,7 +498,7 @@
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Le Congrès
                     </p>
-                    <p class="text-medium-gray font-normal text-base">
+                    <p class="text-medium-gray font-normal">
                         Le Congrès est l’organe de nos adhérents. Ils élisent un collège
                         de 120 d’entre eux qui siègeront au bureau national pendant 3 ans.
                     </p>
@@ -537,26 +531,27 @@
                     <input
                             type="text"
                             placeholder="Prénom*"
-                            class="rounded-lg border-2 border-white/20 outline-0 w-full bg-light-blue p-5 placeholder:text-white placeholder:font-medium text-sm mb-3.75"
+                            class="form-control"
                     />
                     <input
                             type="text"
                             placeholder="Nom*"
-                            class="rounded-lg border-2 border-white/20 outline-0 w-full bg-light-blue p-5 placeholder:text-white placeholder:font-medium text-sm mb-3.75"
+                            class="form-control"
                     />
                 </div>
                 <input
                         type="text"
                         placeholder="Email*"
-                        class="rounded-lg border-2 border-white/20 outline-0 w-full bg-light-blue p-5 placeholder:text-white placeholder:font-medium text-sm mb-3.75"
+                        class="form-control"
                 />
                 <button
-                        class="flex justify-center bg-white rounded w-full h-15 pt-6.25 pb-3.75"
+                        class="bg-white rounded w-full py-5.75"
                 >
                     <span
-                            class="font-din text-dark-blue uppercase font-bold text-lg leading-5 text-center my-auto"
+                            class="font-din text-dark-blue uppercase font-bold text-lg text-center"
                     >
                         M'inscrire
+                    </span>
                 </button>
             </div>
         </div>

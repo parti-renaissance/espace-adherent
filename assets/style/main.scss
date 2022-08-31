@@ -6,8 +6,16 @@
 @import 'components';
 
 @layer components {
+  .flex-column-container {
+    @apply block md:flex flex-col flex-1 border-t border-white w-10/12 pt-3.75 md:pt-7.5 mb-12.5 md:mb-0;
+  }
+
+  .button-group {
+    @apply flex-1 border-2 border-white/20 hover:border-white/20 text-white text-center font-medium text-sm px-7.5 py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue;
+  }
+
   .form-control {
-    @apply rounded-lg border-2 border-white/20 focus:outline-white w-full bg-light-blue text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75
+    @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-light-blue text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75
   }
 
   .form-group {
