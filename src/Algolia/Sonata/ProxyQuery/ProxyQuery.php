@@ -136,4 +136,9 @@ class ProxyQuery implements ProxyQueryInterface
     {
         return current($associationMappings)['fieldName'];
     }
+
+    public function getQueryBuilder(): QueryBuilder
+    {
+        return $this->queryBuilder;
+    }
 }
