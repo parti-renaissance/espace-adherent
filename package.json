@@ -17,7 +17,7 @@
     "@headlessui/react": "^1.6.6",
     "@mapbox/polylabel": "^1.0.2",
     "@sentry/browser": "^6.19.7",
-    "@sentry/tracing": "^6.19.7",
+    "@sentry/tracing": "^7.12.0",
     "@tailwindcss/forms": "^0.5.2",
     "algoliasearch": "^4.14.2",
     "atob": "^2.1.0",
