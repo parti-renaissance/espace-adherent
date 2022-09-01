@@ -16,7 +16,7 @@ final class VoteStatusesConvocationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Certifier votre compte',
+            'Convocation de la Convention de La République En Marche',
             [
                 'now' => self::formatDate(new \DateTime(), 'EEEE d MMMM y'),
                 'convocation_url' => $convocationUrl,
