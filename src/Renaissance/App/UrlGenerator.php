@@ -27,7 +27,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateHomepageLink(): string
     {
-        return $this->urlGenerator->generate('app_ren_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate('app_renaissance_homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     public function generateForLoginSuccess(): string

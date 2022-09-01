@@ -11,6 +11,7 @@ use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
 use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
+use App\Mailer\Message\VotingPlatformVoteStatusesVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -164,7 +165,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     private function sendVoteConfirmationEmail(Vote $vote, string $voterKey): void
     {
         if (DesignationTypeEnum::POLL === $vote->getElection()->getDesignationType()) {
-            $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
+            $message = VotingPlatformVoteStatusesVoteConfirmationMessage::create($vote, $voterKey);
         } else {
             $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
         }

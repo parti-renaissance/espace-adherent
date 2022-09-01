@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block vote_step_pool_title %}
-    Êtes-vous d’accord pour que La République En Marche devienne Renaissance ?
+    {{ cms_block(pool.code)|markdown }} (voir <a href="{{ path('homepage') }}" target="_blank" rel="noopener noreferrer">le text</a>)
 {% endblock %}
 
 {% block election_sub_title %}

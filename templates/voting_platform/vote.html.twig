@@ -7,7 +7,7 @@
         {% set vote_step_pool_title = block('vote_step_pool_title') %}
 
         {% if vote_step_pool_title %}
-            <h2 class="text--body text--black text--default-large b__nudge--bottom-larger l__wrapper--slim">{{ vote_step_pool_title }}</h2>
+            <h2 class="text--body text--black text--default-large b__nudge--bottom-larger l__wrapper--slim">{{ vote_step_pool_title|raw }}</h2>
         {% endif %}
 
         {{ form_start(form) }}

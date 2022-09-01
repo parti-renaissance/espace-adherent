@@ -252,14 +252,19 @@ class ConfigureCommand extends Command
         }
 
         $election = $this->createNewElection($designation);
-        $election->getCurrentRound()->addElectionPool($pool = new ElectionPool($designation->getType()));
-        $election->addElectionPool($pool);
 
-        $pool->addCandidateGroup($group = new CandidateGroup());
-        $group->addCandidate(new Candidate('Oui', '', ''));
+        for ($i = 1; $i <= 3; ++$i) {
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool(
+                'vote-statuses-resolution-title-'.$i
+            ));
+            $election->addElectionPool($pool);
 
-        $pool->addCandidateGroup($group = new CandidateGroup());
-        $group->addCandidate(new Candidate('Non', '', ''));
+            $pool->addCandidateGroup($group = new CandidateGroup());
+            $group->addCandidate(new Candidate('Oui', '', ''));
+
+            $pool->addCandidateGroup($group = new CandidateGroup());
+            $group->addCandidate(new Candidate('Non', '', ''));
+        }
 
         $this->entityManager->persist($list = $this->createVoterList($election, []));
         $this->entityManager->persist($election);
