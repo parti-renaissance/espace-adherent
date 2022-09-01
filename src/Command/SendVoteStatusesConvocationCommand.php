@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,7 +50,6 @@ class SendVoteStatusesConvocationCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
-            ->addArgument('convocation-date', InputArgument::REQUIRED)
         ;
     }
 
@@ -59,9 +57,8 @@ class SendVoteStatusesConvocationCommand extends Command
     {
         $limit = (int) $input->getOption('limit');
         $selectedEmails = $input->getOption('emails');
-        $convocationDate = new \DateTime($input->getArgument('convocation-date'));
 
-        if (!$count = $this->countAdherents($convocationDate, $selectedEmails)) {
+        if (!$count = $this->countAdherents($selectedEmails)) {
             $this->io->note('0 adherent to notify');
 
             return 0;
@@ -82,7 +79,7 @@ class SendVoteStatusesConvocationCommand extends Command
 
         while (
             $alreadySentCount < $total
-            && ($adherents = $this->getChunkAdherents($convocationDate, $selectedEmails, $chunkLimit))
+            && ($adherents = $this->getChunkAdherents($selectedEmails, $chunkLimit))
         ) {
             if ($this->transactionalMailer->sendMessage(VoteStatusesConvocationMessage::create($adherents, $certificationUrl))) {
                 if (!$selectedEmails) {
@@ -109,9 +106,9 @@ class SendVoteStatusesConvocationCommand extends Command
         return 0;
     }
 
-    private function countAdherents(\DateTime $convocationDate, array $emails): int
+    private function countAdherents(array $emails): int
     {
-        return (int) $this->getQueryBuilder($convocationDate, $emails)
+        return (int) $this->getQueryBuilder($emails)
             ->select('COUNT(adherent.id)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -119,9 +116,9 @@ class SendVoteStatusesConvocationCommand extends Command
     }
 
     /** @return Adherent[] */
-    private function getChunkAdherents(\DateTime $convocationDate, array $emails, int $limit = 500): array
+    private function getChunkAdherents(array $emails, int $limit = 500): array
     {
-        return $this->getQueryBuilder($convocationDate, $emails)
+        return $this->getQueryBuilder($emails)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -131,15 +128,14 @@ class SendVoteStatusesConvocationCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(\DateTime $convocationDate, array $emails): QueryBuilder
+    private function getQueryBuilder(array $emails): QueryBuilder
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, voteStatusesConvocationSentAt}')
             ->where('adherent.status = :status AND adherent.adherent = true AND adherent.source IS NULL')
-            ->andWhere('adherent.activatedAt IS NOT NULL AND adherent.activatedAt <= :date')
+            ->andWhere('adherent.activatedAt IS NOT NULL')
             ->setParameter('status', Adherent::ENABLED)
-            ->setParameter('date', (clone $convocationDate)->modify('-3 months'))
         ;
 
         if ($emails) {
