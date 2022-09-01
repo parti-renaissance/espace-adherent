@@ -371,6 +371,10 @@ TXT
 TXT
         ));
 
+        $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-1', 'Vote des statuts', 'Approuvez vous la résolution A ?'));
+        $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-2', 'Vote des statuts', 'Approuvez vous la résolution B ?'));
+        $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-3', 'Vote des statuts', 'Approuvez vous la résolution C ?'));
+
         $manager->flush();
     }
 

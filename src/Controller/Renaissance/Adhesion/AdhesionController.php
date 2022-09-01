@@ -17,7 +17,7 @@ class AdhesionController extends AbstractAdhesionController
         $command = $this->getCommand();
 
         if (!$this->processor->canFillPersonalInfo($command)) {
-            return $this->redirectToRoute('app_ren_homepage');
+            return $this->redirectToRoute('app_renaissance_homepage');
         }
 
         $this->processor->doFillPersonalInfo($command);

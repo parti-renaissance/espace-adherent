@@ -51,6 +51,6 @@ class ActivateController extends AbstractController
             $this->addFlash('info', 'adherent.activation.expired_key');
         }
 
-        return $this->redirectToRoute('app_ren_homepage');
+        return $this->redirectToRoute('app_renaissance_homepage');
     }
 }
