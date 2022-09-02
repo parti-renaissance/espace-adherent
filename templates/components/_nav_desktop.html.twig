@@ -139,7 +139,8 @@
     is_granted('ROLE_DELEGATED_CANDIDATE') or
     is_granted('ROLE_LRE') or
     is_granted('ROLE_COALITION_MODERATOR') or
-    is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF')
+    is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF') or
+    is_granted('ROLE_ADHERENT')
 %}
     {% set totalSections =
         (app.user.isSupervisor or app.user.isHost) +
@@ -187,7 +188,7 @@
             {% endif %}
             {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
                 <li>
-                    <a href="{{ data_corner_host }}" target="_blank" class="is-new">Je m'engage</a>
+                    <a href="{{ data_corner_host }}" target="_blank">Je m'engage</a>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_FORMATION_SPACE') %}
@@ -195,6 +196,9 @@
                     <a href="{{ path('app_formation_home') }}">Je me forme</a>
                 </li>
             {% endif %}
+            <li class="{{ totalSections == 0 ? 'm-auto--left m-auto--right' }}">
+                <a href="{{ path('app_funnel_certification') }}" class="link--white">Certifiez-vous</a>
+            </li>
         </ul>
     </div>
 {% endif %}
