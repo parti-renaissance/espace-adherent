@@ -56,11 +56,20 @@ class SessionModalActivatorListener implements EventSubscriberInterface
             return;
         }
 
-        $refDate = new \DateTimeImmutable();
+        if (
+            !$adherent->isCertified()
+            && $adherent->isAdherent()
+            && null === $adherent->getSource()
+            && (new \DateTime()) < (new \DateTime('2022-09-16 07:59:00'))
+        ) {
+            $request->getSession()->set(self::SESSION_KEY, self::CONTEXT_CERTIFICATION);
 
-        if ($adherent->getRegisteredAt() > $refDate->modify('-3 months')) {
             return;
         }
+
+        return;
+
+        $refDate = new \DateTimeImmutable();
 
         if (!$memberships = $adherent->getMemberships()->getMembershipsForApprovedCommittees()) {
             return;
@@ -73,12 +82,6 @@ class SessionModalActivatorListener implements EventSubscriberInterface
         });
 
         if (!$availableCommitteeMemberships) {
-            return;
-        }
-
-        if (!$adherent->isCertified()) {
-            $request->getSession()->set(self::SESSION_KEY, self::CONTEXT_CERTIFICATION);
-
             return;
         }
 
