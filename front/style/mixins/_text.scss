@@ -512,6 +512,12 @@ $text--size-extra-large--big: 128px;
     &--data-value {
         @include data-value;
     }
+
+    &--hover {
+        &--white {
+            &:hover { color: $white; }
+        }
+    }
 }
 
 .link {
