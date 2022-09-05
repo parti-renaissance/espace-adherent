@@ -169,36 +169,38 @@
     %}
 
     <div class="background--darker l__hide--on-tablet">
-        <ul class="l__wrapper space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-            {% if totalSections > 1 %}
-            <li>
-                <div class="nav-dropdown" style="margin: 0;">
-                    <a href="#">Mes espaces</a>
-                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    <i class="fa fa-caret-up" aria-hidden="true"></i>
-                    <div class="nav-dropdown__menu nav-dropdown__black">
-                        <ul class="list__links">
-                            {{ include('adherent/_list_my_sections.html.twig') }}
-                        </ul>
-                    </div>
-                </div>
-            </li>
-            {% else %}
-                {{ include('adherent/_list_my_sections.html.twig') }}
-            {% endif %}
-            {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
-                <li>
-                    <a href="{{ data_corner_host }}" target="_blank">Je m'engage</a>
-                </li>
-            {% endif %}
-            {% if is_granted('ROLE_FORMATION_SPACE') %}
-                <li>
-                    <a href="{{ path('app_formation_home') }}">Je me forme</a>
-                </li>
-            {% endif %}
-            <li class="{{ totalSections == 0 ? 'm-auto--left m-auto--right' }}">
-                <a href="{{ path('app_funnel_certification') }}" class="link--white">Certifiez-vous</a>
-            </li>
-        </ul>
+        <div class="l__row {{ totalSections == 0 ? 'l__row--center' }} font-roboto l__wrapper ">
+            <ul class="space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
+                {% if totalSections > 1 %}
+                    <li>
+                        <div class="nav-dropdown" style="margin: 0;">
+                            <a href="#">Mes espaces</a>
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            <div class="nav-dropdown__menu nav-dropdown__black">
+                                <ul class="list__links">
+                                    {{ include('adherent/_list_my_sections.html.twig') }}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                {% else %}
+                    {{ include('adherent/_list_my_sections.html.twig') }}
+                {% endif %}
+                {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
+                    <li>
+                        <a href="{{ data_corner_host }}" target="_blank">Je m'engage</a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_FORMATION_SPACE') %}
+                    <li>
+                        <a href="{{ path('app_formation_home') }}">Je me forme</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <div class="space--10-0 b__nudge--left-medium">
+                <a href="{{ path('app_funnel_certification') }}" class="link--no--decor text--blue text--hover--white text--bold">Certifiez-vous</a>
+            </div>
+        </div>
     </div>
 {% endif %}
