@@ -6,10 +6,14 @@ use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Controller\EnMarche\VotingPlatform\AbstractController;
 use App\Form\AdherentFunnelGeneralType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Security("is_granted('ROLE_ADHERENT')")
+ */
 class FunnelController extends AbstractController
 {
     /**
