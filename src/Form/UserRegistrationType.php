@@ -2,15 +2,11 @@
 
 namespace App\Form;
 
-use App\DataTransformer\ValueToDuplicatesTransformer;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
-use App\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,22 +29,9 @@ class UserRegistrationType extends AbstractType
             ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('emailAddress', RepeatedType::class, [
-                'type' => EmailType::class,
-                'invalid_message' => 'common.email.repeated',
-                'options' => ['constraints' => [new Repeated([
-                    'message' => 'common.email.repeated',
-                    'groups' => ['Registration', 'Update'],
-                ])]],
-            ])
+            ->add('emailAddress', RepeatedEmailType::class)
             ->add('password', PasswordType::class)
         ;
-
-        $emailForm = $builder->get('emailAddress');
-        $emailForm->resetViewTransformers()->addViewTransformer(new ValueToDuplicatesTransformer([
-            $emailForm->getOption('first_name'),
-            $emailForm->getOption('second_name'),
-        ]));
     }
 
     public function configureOptions(OptionsResolver $resolver)

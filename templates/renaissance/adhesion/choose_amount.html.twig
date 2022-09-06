@@ -17,12 +17,7 @@
         {{ form_start(form) }}
             {{ form_errors(form) }}
             <div>
-                <div class="text-black">
-                    {{ form_widget(form.predefinedAmount) }}
-                    {{ form_errors(form.predefinedAmount) }}
-                </div>
-
-                {{ form_row(form.otherAmount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
+                {{ form_row(form.amount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
 
                 {% include 'renaissance/adhesion/partials/previous-next-buttons.html.twig' with {
                     route_name: 'app_renaissance_adhesion',

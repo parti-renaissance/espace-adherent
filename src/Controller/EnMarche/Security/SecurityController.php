@@ -39,8 +39,10 @@ class SecurityController extends AbstractController
         $currentApp = $request->attributes->get('app');
 
         if ($this->getUser()) {
+            $this->addFlash('info', 'Vous êtes déjà connecté(e)');
+
             if ($currentApp) {
-                return $this->redirect($this->getParameter($currentApp.'_host'));
+                return $this->redirect('//'.$this->getParameter($currentApp.'_host'));
             }
 
             return $this->redirectToRoute('app_search_events');

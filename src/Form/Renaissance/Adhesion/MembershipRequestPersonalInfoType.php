@@ -3,18 +3,16 @@
 namespace App\Form\Renaissance\Adhesion;
 
 use App\Address\Address;
-use App\DataTransformer\ValueToDuplicatesTransformer;
 use App\Form\AddressType;
 use App\Form\BirthdateType;
 use App\Form\GenderType;
-use App\Renaissance\Membership\MembershipRequestCommand;
-use App\Validator\Repeated;
+use App\Form\RepeatedEmailType;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,30 +24,32 @@ class MembershipRequestPersonalInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $fromCertifiedAdherent = $options['from_certified_adherent'];
+        $fromAdherent = $options['from_adherent'] || $fromCertifiedAdherent;
+
         $builder
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
+                'disabled' => $fromCertifiedAdherent,
             ])
             ->add('lastName', TextType::class, [
                 'format_identity_case' => true,
+                'disabled' => $fromCertifiedAdherent,
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
                 'preferred_choices' => [Address::FRANCE],
             ])
-            ->add('emailAddress', RepeatedType::class, [
-                'type' => EmailType::class,
-                'invalid_message' => 'common.email.repeated',
-                'options' => ['constraints' => [new Repeated([
-                    'message' => 'common.email.repeated',
-                    'groups' => ['Registration', 'Update'],
-                ])]],
+            ->add('gender', GenderType::class, [
+                'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('gender', GenderType::class)
             ->add('customGender', TextType::class, [
                 'required' => false,
+                'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('birthdate', BirthdateType::class)
+            ->add('birthdate', BirthdateType::class, [
+                'disabled' => $fromCertifiedAdherent,
+            ])
             ->add('address', AddressType::class, [
                 'set_address_region' => true,
                 'label' => false,
@@ -60,34 +60,37 @@ class MembershipRequestPersonalInfoType extends AbstractType
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => [Address::FRANCE],
             ])
-            ->add('password', PasswordType::class)
+            ->add('fill_personal_info', SubmitType::class, ['label' => 'Étape suivante'])
         ;
 
-        $emailForm = $builder->get('emailAddress');
-        $emailForm->resetViewTransformers()->addViewTransformer(new ValueToDuplicatesTransformer([
-            $emailForm->getOption('first_name'),
-            $emailForm->getOption('second_name'),
-        ]));
+        if ($fromAdherent) {
+            $builder->add('emailAddress', EmailType::class, ['disabled' => true]);
+        } else {
+            $builder
+                ->add('emailAddress', RepeatedEmailType::class, [])
+                ->add('password', PasswordType::class)
+            ;
+        }
 
         // Use address country for phone by default
-        $builder->get('phone')->get('country')
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
-                if (!$formEvent->getData()) {
-                    $formEvent->setData(Address::FRANCE);
-                }
-            })
-        ;
-
-        $builder->add('fill_personal_info', SubmitType::class, ['label' => 'Étape suivante']);
+        $builder->get('phone')->get('country')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+            if (!$formEvent->getData()) {
+                $formEvent->setData(Address::FRANCE);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults([
-                'data_class' => MembershipRequestCommand::class,
-                'validation_groups' => 'fill_personal_info',
+                'data_class' => RenaissanceMembershipRequest::class,
+                'validation_groups' => ['fill_personal_info'],
+                'from_adherent' => false,
+                'from_certified_adherent' => false,
             ])
+            ->setAllowedTypes('from_adherent', 'bool')
+            ->setAllowedTypes('from_certified_adherent', 'bool')
         ;
     }
 

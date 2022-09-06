@@ -11,33 +11,29 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class MaxFiscalYearDonationValidator extends ConstraintValidator
 {
-    private $transactionRepository;
+    private TransactionRepository $transactionRepository;
 
     public function __construct(TransactionRepository $transactionRepository)
     {
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($donationRequest, Constraint $constraint)
     {
         if (!$constraint instanceof MaxFiscalYearDonation) {
             throw new UnexpectedTypeException($constraint, MaxFiscalYearDonation::class);
         }
 
-        if (null === $value) {
-            return;
+        if (!$donationRequest instanceof DonationRequestInterface) {
+            throw new UnexpectedValueException($donationRequest, DonationRequestInterface::class);
         }
 
-        if (!($donationRequest = $this->context->getObject()) instanceof DonationRequestInterface) {
-            throw new UnexpectedValueException($value, DonationRequestInterface::class);
-        }
-
-        if (!$email = $donationRequest->getEmailAddress()) {
+        if (!($email = $donationRequest->getEmailAddress()) or !$donationRequest->getAmount()) {
             return;
         }
 
         $totalCurrentAmountInCents = $this->transactionRepository->getTotalAmountInCentsByEmail($email);
-        $amountInCents = (int) $value * 100;
+        $amountInCents = (int) $donationRequest->getAmount() * 100;
         $maxDonationRemainingPossible = $constraint->maxDonationInCents - $totalCurrentAmountInCents;
 
         if ($maxDonationRemainingPossible < $amountInCents) {

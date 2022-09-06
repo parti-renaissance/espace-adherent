@@ -2,7 +2,7 @@
 
 namespace App\Form\Renaissance\Adhesion;
 
-use App\Renaissance\Membership\MembershipRequestCommand;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,7 +15,7 @@ class MembershipRequestMentionsType extends AbstractType
     {
         $builder
             ->add('conditions', CheckboxType::class, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
@@ -30,12 +30,10 @@ class MembershipRequestMentionsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => MembershipRequestCommand::class,
-                'validation_groups' => 'membership_request_mentions',
-            ])
-        ;
+        $resolver->setDefaults([
+            'data_class' => RenaissanceMembershipRequest::class,
+            'validation_groups' => ['membership_request_mentions'],
+        ]);
     }
 
     public function getBlockPrefix()

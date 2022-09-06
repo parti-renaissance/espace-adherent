@@ -76,7 +76,7 @@ class PaymentController extends AbstractAdhesionController
 
         if (!$successful) {
             if ($adherent = $donation->getDonator()->getAdherent()) {
-                $membershipRequestHandler->removeUnsuccessfulRenaissainceAdhesion($adherent);
+                $membershipRequestHandler->removeUnsuccessfulRenaissanceAdhesion($adherent);
             }
             $retryUrl = $this->generateUrl('app_renaissance_adhesion');
         }

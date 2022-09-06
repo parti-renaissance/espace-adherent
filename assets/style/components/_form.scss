@@ -1,0 +1,12 @@
+.form-control {
+    &:disabled {
+        cursor: not-allowed;
+        color: $disable-grey;
+        border-color: $disable-grey;
+
+        &::placeholder {
+            color: $disable-grey;
+        }
+    }
+
+}

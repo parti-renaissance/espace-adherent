@@ -48,7 +48,7 @@ class FormControllerTest extends WebTestCase
                     ],
                     'emailAddress' => [
                         'children' => [
-                            'second' => [
+                            'first' => [
                                 'errors' => [
                                     'Les adresses email ne correspondent pas.',
                                 ],
@@ -104,7 +104,7 @@ class FormControllerTest extends WebTestCase
                     ],
                     'emailAddress' => [
                         'children' => [
-                            'second' => [
+                            'first' => [
                                 'errors' => [
                                     'Les adresses email ne correspondent pas.',
                                 ],

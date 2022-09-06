@@ -38,6 +38,7 @@ use App\Mailchimp\Contact\MailchimpCleanableContactInterface;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Scope\FeatureEnum;
@@ -1479,21 +1480,29 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    public function updateMembership(PlatformMembershipRequest $membership, PostAddress $postAddress): void
+    /**
+     * @param PlatformMembershipRequest|RenaissanceMembershipRequest $membership
+     */
+    public function updateMembership(MembershipInterface $membership, PostAddress $postAddress): void
     {
-        $this->customGender = $membership->customGender;
-        $this->gender = $membership->gender;
-        $this->firstName = $membership->firstName;
-        $this->lastName = $membership->lastName;
-        $this->birthdate = $membership->getBirthdate();
+        if (!$this->isCertified()) {
+            $this->customGender = $membership->customGender;
+            $this->gender = $membership->gender;
+            $this->firstName = $membership->firstName;
+            $this->lastName = $membership->lastName;
+            $this->birthdate = clone $membership->getBirthdate();
+        }
+
         $this->position = $membership->position;
         $this->phone = $membership->getPhone();
-        $this->emailAddress = $membership->getEmailAddress();
-        $this->mandates = $membership->getMandates();
         $this->nationality = $membership->nationality;
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
+        }
+
+        if ($membership instanceof PlatformMembershipRequest) {
+            $this->mandates = $membership->getMandates();
         }
     }
 

@@ -15,6 +15,7 @@ class AdhesionController extends AbstractAdhesionController
     public function __invoke(Request $request): Response
     {
         $command = $this->getCommand();
+        $command->setRecaptcha($request->request->get('g-recaptcha-response'));
 
         if (!$this->processor->canFillPersonalInfo($command)) {
             return $this->redirectToRoute('app_renaissance_homepage');
@@ -23,7 +24,10 @@ class AdhesionController extends AbstractAdhesionController
         $this->processor->doFillPersonalInfo($command);
 
         $form = $this
-            ->createForm(MembershipRequestPersonalInfoType::class, $command)
+            ->createForm(MembershipRequestPersonalInfoType::class, $command, [
+                'from_adherent' => (bool) $command->getAdherentId(),
+                'from_certified_adherent' => $command->isCertified(),
+            ])
             ->handleRequest($request)
         ;
 

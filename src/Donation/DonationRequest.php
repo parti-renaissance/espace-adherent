@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueDonationSubscription
  * @MaxMonthDonation
  * @FrenchAddressOrNationalityDonation
+ * @MaxFiscalYearDonation
  */
 class DonationRequest implements DonationRequestInterface
 {
@@ -32,7 +33,6 @@ class DonationRequest implements DonationRequestInterface
     /**
      * @Assert\NotBlank
      * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
-     * @MaxFiscalYearDonation
      */
     private $amount;
 
