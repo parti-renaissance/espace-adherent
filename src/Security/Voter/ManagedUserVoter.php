@@ -46,7 +46,7 @@ class ManagedUserVoter extends AbstractAdherentVoter
 
         // Check Deputy role
         if (!$isGranted && $user->isDeputy()) {
-            $isGranted = $this->zoneRepository->isInZones($adherent->getZones(), [$user->getDeputyZone()]);
+            $isGranted = $this->zoneRepository->isInZones($adherent->getZones()->toArray(), [$user->getDeputyZone()]);
         }
 
         // Check Senator role
