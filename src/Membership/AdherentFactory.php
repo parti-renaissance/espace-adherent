@@ -44,7 +44,7 @@ class AdherentFactory
         }
 
         if ($membershipRequest instanceof RenaissanceMembershipRequest) {
-            return $this->createFromRenaisssanceMembershipRequest($membershipRequest);
+            return $this->createFromRenaissanceMembershipRequest($membershipRequest);
         }
 
         throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', \get_class($membershipRequest)));
@@ -138,13 +138,13 @@ class AdherentFactory
         return $adherent;
     }
 
-    public function createFromRenaisssanceMembershipRequest(RenaissanceMembershipRequest $request): Adherent
+    public function createFromRenaissanceMembershipRequest(RenaissanceMembershipRequest $request): Adherent
     {
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
             $this->encodePassword($request->password),
-            $request->gender,
+            $request->getGender(),
             $request->firstName,
             $request->lastName,
             $request->getBirthdate() ? clone $request->getBirthdate() : null,
@@ -159,7 +159,7 @@ class AdherentFactory
             [],
             null,
             $request->nationality,
-            $request->customGender
+            $request->getCustomGender()
         );
 
         $adherent->join();

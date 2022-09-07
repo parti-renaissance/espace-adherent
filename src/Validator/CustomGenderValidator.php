@@ -29,7 +29,7 @@ class CustomGenderValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, MembershipCustomGenderInterface::class);
         }
 
-        if (GenderEnum::OTHER !== $value->gender && !empty($value->customGender)) {
+        if (GenderEnum::OTHER !== $value->getGender() && !empty($value->getCustomGender())) {
             $this->context
                 ->buildViolation($constraint->messageInvalidChoice)
                 ->atPath('gender')
@@ -37,7 +37,7 @@ class CustomGenderValidator extends ConstraintValidator
             ;
         }
 
-        if (GenderEnum::OTHER === $value->gender && empty($value->customGender)) {
+        if (GenderEnum::OTHER === $value->getGender() && empty($value->getCustomGender())) {
             $this->context
                 ->buildViolation($constraint->messageNotBlank)
                 ->atPath('customGender')

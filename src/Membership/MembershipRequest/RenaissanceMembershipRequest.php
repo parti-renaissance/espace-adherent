@@ -3,10 +3,12 @@
 namespace App\Membership\MembershipRequest;
 
 use App\Address\Address;
+use App\Donation\DonationRequestInterface;
+use App\Entity\Adherent;
 use App\Membership\MembershipSourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
-use App\Renaissance\Membership\MembershipRequestCommand;
+use App\Renaissance\Membership\MembershipRequestStateEnum;
 use App\Validator\BannedAdherent;
 use App\Validator\CustomGender as AssertCustomGender;
 use App\Validator\MaxFiscalYearDonation;
@@ -17,33 +19,35 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueMembership(groups={"Registration", "Update"})
- * @AssertCustomGender(groups={"Registration", "Update"})
- * @AssertRecaptcha(groups={"Registration"})
+ * @AssertUniqueMembership(groups={"fill_personal_info"})
+ * @AssertCustomGender(groups={"fill_personal_info"})
+ * @AssertRecaptcha(groups={"fill_personal_info"})
+ * @MaxFiscalYearDonation(groups={"membership_request_amount"})
  */
-class RenaissanceMembershipRequest extends AbstractMembershipRequest implements RecaptchaChallengeInterface, MembershipCustomGenderInterface
+class RenaissanceMembershipRequest extends AbstractMembershipRequest implements RecaptchaChallengeInterface, MembershipCustomGenderInterface, DonationRequestInterface
 {
     use RecaptchaChallengeTrait;
 
+    private string $state = MembershipRequestStateEnum::STATE_START;
+
     /**
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
-     * @MaxFiscalYearDonation
+     * @Assert\NotBlank(groups={"membership_request_amount"})
+     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"membership_request_amount"})
      */
     private ?float $amount = null;
 
     /**
-     * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"fill_personal_info"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
-     *     groups={"Update"}
+     *     groups={"fill_personal_info"}
      * )
      */
-    public ?string $gender = null;
+    private ?string $gender = null;
 
-    public ?string $customGender = null;
+    private ?string $customGender = null;
 
     /**
      * @Assert\Length(
@@ -52,27 +56,25 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      *     allowEmptyString=false,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
-     *     groups={"Registration", "Update"}
+     *     groups={"fill_personal_info"}
      * )
      */
     public ?string $firstName = null;
 
     /**
-     * @var string
-     *
      * @Assert\Length(
      *     min=1,
      *     max=50,
      *     allowEmptyString=false,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
-     *     groups={"Registration", "Update"}
+     *     groups={"fill_personal_info"}
      * )
      */
     public ?string $lastName = null;
 
     /**
-     * @Assert\Valid
+     * @Assert\Valid(groups={"fill_personal_info"})
      */
     private Address $address;
 
@@ -87,48 +89,58 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public ?string $position = null;
 
     /**
-     * @Assert\NotBlank(groups="Registration")
-     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"Registration"})
+     * @Assert\Expression("this.getAdherentId() or this.password", groups="fill_personal_info")
+     * @Assert\Length(min=8, minMessage="adherent.plain_password.min_length", groups={"fill_personal_info"})
      */
-    public string $password;
+    public ?string $password = null;
 
     /**
-     * @var bool
-     *
-     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"Conditions"})
+     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"membership_request_mentions"})
      */
-    public $conditions;
+    public ?bool $conditions = null;
 
     /**
-     * @Assert\NotBlank(groups={"Registration", "Update"})
-     * @Assert\Country(message="common.nationality.invalid")
+     * @Assert\NotBlank(groups={"fill_personal_info"})
+     * @Assert\Country(message="common.nationality.invalid", groups={"fill_personal_info"})
      */
     public ?string $nationality = null;
 
     /**
-     * @Assert\NotBlank(groups={"Registration", "Update"})
-     * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
-     * @BannedAdherent(groups={"Registration"})
+     * @Assert\NotBlank(groups={"fill_personal_info"})
+     * @Assert\Email(message="common.email.invalid", groups={"fill_personal_info"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"fill_personal_info"})
+     * @BannedAdherent(groups={"fill_personal_info"})
      */
     protected string $emailAddress = '';
 
     /**
-     * @AssertPhoneNumber(defaultRegion="FR", groups={"Update"})
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"fill_personal_info"})
      */
     private ?PhoneNumber $phone = null;
 
     /**
-     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"Update"})
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"Update"})
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"fill_personal_info"})
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"fill_personal_info"})
      */
     private ?\DateTimeInterface $birthdate = null;
 
     private ?string $clientIp = null;
+    private ?int $adherentId = null;
+    private bool $isCertified = false;
 
     public function __construct()
     {
         $this->address = new Address();
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
     }
 
     public static function createWithCaptcha(?string $countryIso, string $recaptchaAnswer = null): self
@@ -139,27 +151,6 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         if ($countryIso) {
             $dto->address->setCountry($countryIso);
         }
-
-        return $dto;
-    }
-
-    public static function createFromCommand(MembershipRequestCommand $command): self
-    {
-        $dto = new self();
-        $dto->gender = $command->getGender();
-        $dto->customGender = $command->customGender;
-        $dto->firstName = $command->firstName;
-        $dto->lastName = $command->lastName;
-        $dto->nationality = $command->nationality;
-        $dto->password = $command->password;
-        $dto->allowEmailNotifications = $command->allowEmailNotifications;
-        $dto->allowMobileNotifications = $command->allowMobileNotifications;
-        $dto->setEmailAddress($command->getEmailAddress());
-        $dto->setAddress($command->getAddress());
-        $dto->setBirthdate($command->getBirthdate());
-        $dto->setAmount($command->getAmount());
-        $dto->setPhone($command->getPhone());
-        $dto->setClientIp($command->getClientIp());
 
         return $dto;
     }
@@ -179,6 +170,21 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         return $this->gender;
     }
 
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function getCustomGender(): ?string
+    {
+        return $this->customGender;
+    }
+
+    public function setCustomGender(?string $customGender): void
+    {
+        $this->customGender = $customGender;
+    }
+
     public function setAddress(Address $address): void
     {
         $this->address = $address;
@@ -196,7 +202,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     public function getEmailAddress(): string
     {
-        return $this->emailAddress ?: '';
+        return $this->emailAddress;
     }
 
     public function setPhone(?PhoneNumber $phone): void
@@ -229,8 +235,33 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         $this->clientIp = $clientIp;
     }
 
+    public function getAdherentId(): ?int
+    {
+        return $this->adherentId;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->isCertified;
+    }
+
     final public function getSource(): string
     {
         return MembershipSourceEnum::RENAISSANCE;
+    }
+
+    public function updateFromAdherent(Adherent $adherent): void
+    {
+        $this->adherentId = $adherent->getId();
+        $this->isCertified = $adherent->isCertified();
+        $this->emailAddress = $adherent->getEmailAddress();
+        $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
+        $this->birthdate = $adherent->getBirthdate();
+        $this->gender = $adherent->getGender();
+        $this->customGender = $adherent->getCustomGender();
+        $this->nationality = $adherent->getNationality();
+        $this->phone = $adherent->getPhone();
+        $this->address = Address::createFromAddress($adherent->getPostAddress());
     }
 }

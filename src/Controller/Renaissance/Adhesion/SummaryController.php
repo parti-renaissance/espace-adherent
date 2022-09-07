@@ -5,7 +5,6 @@ namespace App\Controller\Renaissance\Adhesion;
 use App\Donation\DonationRequest;
 use App\Donation\DonationRequestHandler;
 use App\Form\Renaissance\Adhesion\MembershipRequestProceedPaymentType;
-use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Membership\MembershipRequestHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +36,15 @@ class SummaryController extends AbstractAdhesionController
         if ($form->isSubmitted() && $form->isValid()) {
             $command->setClientIp($request->getClientIp());
 
-            $adherent = $membershipRequestHandler->createRenaissanceAdherent(
-                RenaissanceMembershipRequest::createFromCommand($command)
-            );
+            if (
+                $command->getAdherentId()
+                && ($user = $this->getUser())
+                && $user->getId() === $command->getAdherentId()
+            ) {
+                $adherent = $membershipRequestHandler->createOrUpdateRenaissanceAdherent($command, $user);
+            } else {
+                $adherent = $membershipRequestHandler->createOrUpdateRenaissanceAdherent($command);
+            }
 
             $donationRequest = DonationRequest::createFromAdherent($adherent, $command->getClientIp(), $command->getAmount());
             $donationRequest->forMembership();

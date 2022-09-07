@@ -2,17 +2,17 @@
 
 namespace App\Renaissance\Membership\Listener;
 
-use App\Renaissance\Membership\MembershipRequestCommand;
-use App\Renaissance\Membership\MembershipRequestCommandStateEnum;
-use App\Renaissance\Membership\MembershipRequestCommandStorage;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
+use App\Renaissance\Membership\MembershipRequestStateEnum;
+use App\Renaissance\Membership\MembershipRequestStorage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class MembershipRequestCommandStoreListener implements EventSubscriberInterface
+class MembershipRequestStoreListener implements EventSubscriberInterface
 {
-    private MembershipRequestCommandStorage $storage;
+    private MembershipRequestStorage $storage;
 
-    public function __construct(MembershipRequestCommandStorage $storage)
+    public function __construct(MembershipRequestStorage $storage)
     {
         $this->storage = $storage;
     }
@@ -28,11 +28,11 @@ class MembershipRequestCommandStoreListener implements EventSubscriberInterface
     {
         $command = $event->getSubject();
 
-        if (!$command instanceof MembershipRequestCommand) {
+        if (!$command instanceof RenaissanceMembershipRequest) {
             return;
         }
 
-        if (MembershipRequestCommandStateEnum::TO_FINISH === $event->getTransition()->getName()) {
+        if (MembershipRequestStateEnum::TO_FINISH === $event->getTransition()->getName()) {
             $this->storage->clear();
         } else {
             $this->storage->save($command);

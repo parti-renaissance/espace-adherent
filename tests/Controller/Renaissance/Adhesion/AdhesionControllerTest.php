@@ -43,6 +43,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->filter('form[name="app_renaissance_membership"]')->form([
+            'g-recaptcha-response' => 'fake',
             'app_renaissance_membership' => [
                 'gender' => 'male',
                 'firstName' => 'John',
@@ -77,7 +78,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit($crawler->filter('form[name="app_renaissance_membership"]')->form([
             'app_renaissance_membership' => [
-                'predefinedAmount' => 30,
+                'amount' => 30,
             ],
         ]));
 

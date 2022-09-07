@@ -199,6 +199,11 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
         return $this->gender;
     }
 
+    public function getCustomGender(): ?string
+    {
+        return $this->customGender;
+    }
+
     public function getFirstName(): ?string
     {
         return $this->firstName;

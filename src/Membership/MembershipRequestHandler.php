@@ -13,6 +13,7 @@ use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
+use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -91,9 +92,20 @@ class MembershipRequestHandler
         return $adherent;
     }
 
-    public function createRenaissanceAdherent(MembershipInterface $membershipRequest): Adherent
-    {
-        $this->manager->persist($adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest));
+    public function createOrUpdateRenaissanceAdherent(
+        RenaissanceMembershipRequest $membershipRequest,
+        Adherent $adherent = null
+    ): Adherent {
+        if ($adherent) {
+            $adherent->updateMembership(
+                $membershipRequest,
+                $this->addressFactory->createFromAddress($membershipRequest->getAddress())
+            );
+        } else {
+            $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+        }
+
+        $this->manager->persist($adherent);
 
         $this->referentZoneManager->assignZone($adherent);
 
@@ -105,20 +117,19 @@ class MembershipRequestHandler
             $membershipRequest->allowMobileNotifications
         ), UserEvents::RENAISSANCE_USER_CREATED);
 
-        if (null === $adherent->getSource() && $adherent->isAdherent()) {
-            $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
-        }
-
         return $adherent;
     }
 
     public function finishRenaissanceAdhesion(Adherent $adherent): void
     {
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $this->manager->flush();
+
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
     }
 
-    public function removeUnsuccessfulRenaissainceAdhesion(Adherent $adherent): void
+    public function removeUnsuccessfulRenaissanceAdhesion(Adherent $adherent): void
     {
         $this->manager->remove($adherent);
         $this->manager->flush();

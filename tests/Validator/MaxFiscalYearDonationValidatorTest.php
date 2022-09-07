@@ -3,7 +3,6 @@
 namespace Tests\App\Validator;
 
 use App\Donation\DonationRequest;
-use App\Donation\PayboxPaymentSubscription;
 use App\Repository\TransactionRepository;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxFiscalYearDonationValidator;
@@ -17,9 +16,9 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
      */
     public function testNoValidation(DonationRequest $donationRequest, ?int $value): void
     {
-        $this->setObject($donationRequest);
+        $donationRequest->setAmount($value);
 
-        $this->validator->validate($value, new MaxFiscalYearDonation());
+        $this->validator->validate($donationRequest, new MaxFiscalYearDonation());
 
         $this->assertNoViolation();
     }
@@ -31,7 +30,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
             null,
         ];
         yield 'No validation if no email' => [
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE, null),
+            $this->createDonationRequest(null),
             50,
         ];
     }
@@ -45,11 +44,11 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         int $maxDonation,
         int $totalCurrentAmount = 0
     ): void {
-        $this->setObject($donationRequest);
+        $donationRequest->setAmount($value);
         $this->validator = $this->createCustomValidatorSuccess($totalCurrentAmount);
         $this->validator->initialize($this->context);
 
-        $this->validator->validate($value, new MaxFiscalYearDonation(['maxDonationInCents' => $maxDonation]));
+        $this->validator->validate($donationRequest, new MaxFiscalYearDonation(['maxDonationInCents' => $maxDonation]));
 
         $this->assertNoViolation();
     }
@@ -57,24 +56,24 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
     public function donationProvider(): iterable
     {
         yield 'No violation with no subscription 0 total donation' => [
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE),
+            $this->createDonationRequest(),
             50,
             7500 * 100,
         ];
         yield 'No violation with no subscription max possible donation' => [
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE),
+            $this->createDonationRequest(),
             50,
             7500 * 100,
             7450 * 100,
         ];
         yield 'No violation with subscription 0 total donation' => [
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE),
+            $this->createDonationRequest(),
             50,
             7500 * 100,
             0,
         ];
         yield 'No violation with subscription max possible donation' => [
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE),
+            $this->createDonationRequest(),
             50,
             7500 * 100,
             7150 * 100,
@@ -91,11 +90,11 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         int $maxDonation,
         int $totalCurrentAmount = 0
     ): void {
-        $this->setObject($donationRequest);
+        $donationRequest->setAmount($value);
         $this->validator = $this->createCustomValidatorSuccess($totalCurrentAmount);
         $this->validator->initialize($this->context);
 
-        $this->validator->validate($value, new MaxFiscalYearDonation(['maxDonationInCents' => $maxDonation]));
+        $this->validator->validate($donationRequest, new MaxFiscalYearDonation(['maxDonationInCents' => $maxDonation]));
 
         $this
             ->buildViolation('donation.max_fiscal_year_donation')
@@ -112,7 +111,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
                 '{{ max_amount_per_fiscal_year }}' => 7500,
                 '{{ max_donation_remaining_possible }}' => 7500,
             ],
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE),
+            $this->createDonationRequest(),
             8000,
             7500 * 100,
         ];
@@ -122,7 +121,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
                 '{{ max_amount_per_fiscal_year }}' => 7500,
                 '{{ max_donation_remaining_possible }}' => 0,
             ],
-            $this->createDonationRequest(PayboxPaymentSubscription::NONE),
+            $this->createDonationRequest(),
             50,
             7500 * 100,
             7500 * 100,
@@ -156,16 +155,12 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
             ->willReturn($totalCurrentAmount)
         ;
 
-        return new MaxFiscalYearDonationValidator(
-            $transactionRepository
-        );
+        return new MaxFiscalYearDonationValidator($transactionRepository);
     }
 
-    private function createDonationRequest(
-        int $duration = PayboxPaymentSubscription::NONE,
-        ?string $email = 'test@test.test'
-    ): DonationRequest {
-        $donationRequest = new DonationRequest(Uuid::uuid4(), '123.0.0.1', 50., $duration);
+    private function createDonationRequest(?string $email = 'test@test.test'): DonationRequest
+    {
+        $donationRequest = new DonationRequest(Uuid::uuid4(), '123.0.0.1', 50.);
         $donationRequest->setEmailAddress($email);
 
         return $donationRequest;

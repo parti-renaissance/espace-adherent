@@ -4,8 +4,9 @@ namespace App\Renaissance\Membership;
 
 use MyCLabs\Enum\Enum;
 
-class MembershipRequestCommandStateEnum extends Enum
+class MembershipRequestStateEnum extends Enum
 {
+    public const STATE_START = 'start';
     public const STATE_PERSONAL_INFO = 'personal_info';
     public const STATE_ADHESION_AMOUNT = 'adhesion_amount';
     public const STATE_TERMS_AND_CONDITIONS = 'terms_and_conditions';
