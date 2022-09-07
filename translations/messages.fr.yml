@@ -916,6 +916,9 @@ voting_platform.pool_title.committee_supervisor: Animateurs Locaux
 voting_platform.pool_title.poll:  
 voting_platform.pool_title.national_council:  
 voting_platform.pool_title.executive_office:  
+voting_platform.pool_title.vote-statuses-resolution-title-1: Question 1
+voting_platform.pool_title.vote-statuses-resolution-title-2: Question 2
+voting_platform.pool_title.vote-statuses-resolution-title-3: Question 3
 designation.dashboard.stats.block_label.committee_supervisor: Binôme
 designation.dashboard.stats.block_label.female: Femme
 designation.dashboard.stats.block_label.male: Homme

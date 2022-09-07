@@ -18,7 +18,7 @@ class VoteCommand
     /**
      * @var string
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="voting_platform.pool_choice_is_empty")
      */
     private $poolChoice;
 

@@ -68,7 +68,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $this->client->submit($form);
 
-        $this->assertStringContainsString('Cette valeur ne doit pas être vide.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Une réponse est obligatoire', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->submit($form, ['election_candidates' => [
             'poolChoice' => $candidates[0],
