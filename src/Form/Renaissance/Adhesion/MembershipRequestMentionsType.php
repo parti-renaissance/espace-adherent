@@ -14,9 +14,7 @@ class MembershipRequestMentionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('conditions', CheckboxType::class, [
-                'required' => true,
-            ])
+            ->add('conditions', CheckboxType::class)
             ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
             ])
