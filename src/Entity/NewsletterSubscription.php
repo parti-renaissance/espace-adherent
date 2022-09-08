@@ -14,7 +14,7 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueEntity(fields={"email"}, message="neswletter.already_registered")
+ * @AssertUniqueEntity(fields={"email"}, message="newsletter.already_registered")
  *
  * @ORM\Table(name="newsletter_subscriptions")
  * @ORM\Entity(repositoryClass="App\Repository\NewsletterSubscriptionRepository")
@@ -43,8 +43,8 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaCha
      *
      * @ORM\Column(type="string", length=100, unique=true)
      *
-     * @Assert\NotBlank(message="neswletter.email.not_blank")
-     * @Assert\Email(message="neswletter.email.invalid")
+     * @Assert\NotBlank(message="newsletter.email.not_blank")
+     * @Assert\Email(message="newsletter.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $email;
@@ -57,8 +57,8 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaCha
      * @Assert\Length(
      *     min=2,
      *     max=11,
-     *     minMessage="neswletter.postalCode.invalid",
-     *     maxMessage="neswletter.postalCode.invalid"
+     *     minMessage="newsletter.postalCode.invalid",
+     *     maxMessage="newsletter.postalCode.invalid"
      * )
      */
     private $postalCode;

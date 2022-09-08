@@ -35,3 +35,9 @@
         {{ election.voteStartDate|date('d/m/Y \à H:i') }} au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
     {% endif %}
 {% endblock %}
+
+{% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
+
+{% block voting_platform_result_tab_pool_title %}
+    Question {{ loop.index }}
+{% endblock %}

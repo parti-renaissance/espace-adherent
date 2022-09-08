@@ -561,6 +561,18 @@
                     }
                 }
             }
+
+            .election-results .candidate__box.elected {
+                border: solid 3px $blue--soft-dark;
+            }
+
+            .election-results .progress-bar__gauge .slider {
+                background: $blue--soft-dark;
+            }
+
+            .election-results .ballots-detail__candidates-group.elected {
+                border-left: solid 3px $blue--soft-dark !important;
+            }
         }
 
         &__committee_supervisor,

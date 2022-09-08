@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
  *
- * @AssertUniqueEntity(fields={"emailAddress"}, message="legislative_neswletter.already_registered")
+ * @AssertUniqueEntity(fields={"emailAddress"}, message="legislative_newsletter.already_registered")
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
 class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
@@ -59,8 +59,8 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     /**
      * @ORM\Column(unique=true)
      *
-     * @Assert\NotBlank(message="neswletter.email.not_blank")
-     * @Assert\Email(message="neswletter.email.invalid")
+     * @Assert\NotBlank(message="newsletter.email.not_blank")
+     * @Assert\Email(message="newsletter.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
@@ -74,8 +74,8 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      * @Assert\Length(
      *     min=2,
      *     max=11,
-     *     minMessage="neswletter.postalCode.invalid",
-     *     maxMessage="neswletter.postalCode.invalid"
+     *     minMessage="newsletter.postalCode.invalid",
+     *     maxMessage="newsletter.postalCode.invalid"
      * )
      *
      * @Groups({"legislative_newsletter_subscriptions_write"})
