@@ -53,6 +53,7 @@ services:
             $transactionalMailer: '@app.mailer.transactional'
             $campaignMailer: '@app.mailer.campaign'
             $membershipProcessWorkflow: '@state_machine.membership_request'
+            $donationProcessWorkflow: '@state_machine.donation_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
             $votingPlatformCache: !service
                 class: Symfony\Component\Cache\Psr16Cache

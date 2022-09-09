@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Form\Renaissance\Donation;
+
+use App\Donation\DonationRequest;
+use App\Form\AcceptPersonalDataCollectType;
+use App\Form\RequiredCheckboxType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class DonationRequestMentionsType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('isPhysicalPerson', RequiredCheckboxType::class)
+            ->add('hasFrenchNationality', RequiredCheckboxType::class)
+            ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
+            ->add('donation_request_mentions', SubmitType::class, ['label' => 'Finaliser le don'])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults([
+                'data_class' => DonationRequest::class,
+            ])
+        ;
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'app_renaissance_donation';
+    }
+}

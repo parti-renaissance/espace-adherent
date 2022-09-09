@@ -1,0 +1,22 @@
+{% extends 'renaissance/donation/_donation_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block content_right_side %}
+    <section class="self-center w-full">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div>
+            {{ form_row(form.amount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
+
+            <div class="flex mt-4 justify-between">
+                <a href="{{ path('app_renaissance_donation_cheque') }}" class="w-full py-5 bg-blue-700 hover:bg-blue-500 text-white hover:text-white px-4 border border-blue-500 hover:border-transparent rounded font-din font-bold uppercase text-center">
+                    Je donne par chèque
+                </a>
+
+                {{ form_widget(form.donation_amount, { attr: { class: 'rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4' } }) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

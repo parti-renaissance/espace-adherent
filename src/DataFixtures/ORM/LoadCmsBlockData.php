@@ -371,6 +371,24 @@ TXT
 TXT
         ));
 
+        $manager->persist($this->createCmsBlock(
+            'renaissance-donation-rgpd-block',
+            'Affiché en bas du formulaire d\'acceptation des mentions légales des dons',
+            <<<'TXT'
+<p class="mt-4">
+    Les données recueillies sur ce formulaire sont traitées par Renaissance afin de gérer les informations relatives aux donateurs du mouvement et de permettre à Renaissance de vous envoyer des communications politiques.
+    Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à Renaissance de traiter votre demande.
+    Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+    Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : Renaissance, 68 rue du Rocher, 75008 Paris, France et <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>
+    <br /><br />
+    Ces dons sont versés à l’AFEMA (Association de financement de l’association La République En Marche agréée le 7 Mars 2016 sous le n°1158) au bénéfice du parti politique Renaissance (Numéro RNA W943004354).
+    <br /><br />
+    Aux termes de l’article 11-4 de la loi n° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique modifiée par la loi n° 2017-286 du 6 mars 2017 : « les dons consentis et les cotisations versées en qualité d’adhérent d’un ou de plusieurs partis politiques par une personne physique dûment identifiée à une ou plusieurs associations agréées en qualité d’association de financement ou à un ou plusieurs mandataires financiers d’un ou de plusieurs partis politiques ne peuvent annuellement excéder 7 500 euros. […] Les personnes morales à l’exception des partis ou groupements politiques ne peuvent contribuer au financement des partis ou groupements politiques, ni en consentant des dons, sous quelque forme que ce soit, à leurs associations de financement ou à leurs mandataires financiers, ni en leur fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués. ».
+    L'article 11-5 de la même loi précise que les personnes qui ont versé un don ou consenti un prêt à un ou plusieurs partis ou groupements politiques en violation des articles 11-3-1 et 11-4 sont punies de trois ans d'emprisonnement et de 45 000 euros d'amende.
+</p>
+TXT
+        ));
+
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-1', 'Vote des statuts', 'Approuvez vous la résolution A ?'));
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-2', 'Vote des statuts', 'Approuvez vous la résolution B ?'));
         $manager->persist($this->createCmsBlock('vote-statuses-resolution-title-3', 'Vote des statuts', 'Approuvez vous la résolution C ?'));

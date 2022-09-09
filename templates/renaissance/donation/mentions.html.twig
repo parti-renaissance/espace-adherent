@@ -1,0 +1,53 @@
+{% extends 'renaissance/donation/_donation_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block donation_title %}
+    Je donne <span class="stabilo stabilo-green">en ligne</span>
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="py-10">
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.isPhysicalPerson) }}
+                <label for="{{ form.isPhysicalPerson.vars.id }}">
+                    <span>
+                        Je certifie sur l'honneur être une personne physique et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel
+                    </span>
+                </label>
+                {{ form_errors(form.isPhysicalPerson) }}
+            </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.hasFrenchNationality) }}
+                <label for="{{ form.hasFrenchNationality.vars.id }}">
+                    <span>
+                        Je certifie être de nationalité française ou résider fiscalement en France
+                    </span>
+                </label>
+                {{ form_errors(form.hasFrenchNationality) }}
+            </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.personalDataCollection) }}
+                <label for="{{ form.personalDataCollection.vars.id }}">
+                    <span>
+                        J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous
+                    </span>
+                </label>
+                {{ form_errors(form.personalDataCollection) }}
+            </div>
+
+            <div class="mt-5 text-xs">
+                {{ cms_block('renaissance-donation-rgpd-block') }}
+            </div>
+
+            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
+                route_name: 'app_renaissance_donation_informations',
+                form_button: form.donation_request_mentions
+            } %}
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

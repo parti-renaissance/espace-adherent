@@ -1,0 +1,32 @@
+{% extends 'renaissance/donation/_donation_layout.html.twig' %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        Bootstrap.onLoad(function() {
+            dom('#app-donation-redirect-loader').style.display = 'block';
+            var form = dom('#app-donation-redirect-form');
+            form.style.display = 'none';
+            form.submit();
+        });
+    </script>
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="self-center">
+        <p class="hidden" id="app-donation-redirect-loader">
+            Veuillez patienter pendant que nous vous redirigeons vers votre banque...
+        </p>
+
+        <form action="{{ url }}" method="post" name="app_donation_payment" id="app-donation-redirect-form">
+            {% for field in form %}
+                <input
+                    type="{{ field.vars.block_prefixes[1] }}"
+                    name="{{ field.vars.name }}"
+                    {% if field.vars.value is not empty %}value="{{ field.vars.value }}"{% endif %}
+                />
+            {% endfor %}
+
+            <input type="submit" class="" value="Continuer vers ma banque" />
+        </form>
+    </section>
+{% endblock %}

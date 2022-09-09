@@ -23,7 +23,7 @@
         {{ form_start(form) }}
             {{ form_errors(form) }}
 
-            {% include 'renaissance/adhesion/partials/previous-next-buttons.html.twig' with {
+            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 route_name: 'app_renaissance_adhesion',
                 route_label: 'Modifier mes informations',
                 form_button: form.payment,
