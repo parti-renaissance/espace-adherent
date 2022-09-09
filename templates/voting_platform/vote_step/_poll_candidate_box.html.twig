@@ -1,0 +1,12 @@
+<div class="candidate__box l__row {{ not designation.isPollType() ? 'l__row--v-stretch' }} b__nudge--bottom-medium">
+    {{ form_widget(form) }}
+    <label for="{{ form.vars.id }}" class="candidate-pool text--medium b__nudge--left-medium cursor--pointer">
+        {% if candidate_group %}
+            {% for candidate in candidate_group.getCandidatesSorted() %}
+                {{ candidate.fullName }}
+            {% endfor %}
+        {% else %}
+            Vote blanc
+        {% endif %}
+    </label>
+</div>

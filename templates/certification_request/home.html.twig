@@ -7,7 +7,7 @@
         <h1 class="text--medium-large">Certification du profil</h1>
 
         <h2 class="section-subtitle">Votre profil certifié</h2>
-        <p class="text--body">Cela vous permet notamment de voter pour vos futurs animateurs et animatrices de comités locaux. C’est simple, rapide et sécurisé !</p>
+        <p class="text--body">Cela vous permet de voter pour les élections internes des nouveaux statuts si vous avez au moins 3 mois d'ancienneté à LaREM.</p>
         <div class="certification-status font-roboto b__border text--center b__nudge--bottom-large {{ app.user.isCertified ? 'certified' : '' }}">
             {% if app.user.isCertified %}
                 <img src="{{ asset('/images/icons/certification/certified-lg.svg') }}" alt="certif-img"/>
