@@ -8,5 +8,25 @@
             color: $disable-grey;
         }
     }
+}
 
+.form-group {
+    .button-group {
+        &:first-of-type {
+            border-left-width: 2px;
+            border-top-left-radius: .5rem;
+            border-bottom-left-radius: .5rem;
+        }
+
+        &:last-of-type {
+            border-right-width: 2px;
+            border-top-right-radius: .5rem;
+            border-bottom-right-radius: .5rem;
+        }
+    }
+
+    input:checked + label.button-group {
+        background: $white;
+        color: $dark-blue;
+    }
 }
