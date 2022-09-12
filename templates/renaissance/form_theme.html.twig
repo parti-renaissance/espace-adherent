@@ -34,3 +34,16 @@
         <div class="text-red-400 mb-2">{{ parent() }}</div>
     {%- endif -%}
 {%- endblock form_errors -%}
+
+{% block _app_renaissance_membership_amount_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
+{% block choice_tab_widget %}
+    <div class="flex">
+        {%- for child in form %}
+            {{- form_widget(child, {attr: {class: 'hidden'}}) -}}
+            {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: {class: 'button-group grow'}}) -}}
+        {% endfor -%}
+    </div>
+{% endblock %}

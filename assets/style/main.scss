@@ -11,7 +11,7 @@
   }
 
   .button-group {
-    @apply flex-1 border-2 border-white/20 hover:border-white/20 text-white text-center font-medium text-sm px-7.5 py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue;
+    @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue;
   }
 
   .form-control {
