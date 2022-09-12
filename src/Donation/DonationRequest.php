@@ -40,8 +40,8 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $uuid;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "donation_request_amount"})
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"Default", "donation_request_amount"})
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
      */
     private $amount;
 
