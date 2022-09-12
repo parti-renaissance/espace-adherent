@@ -27,6 +27,7 @@ class DonationRequestMentionsType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => DonationRequest::class,
+                'validation_groups' => ['Default', 'donation_request_mentions'],
             ])
         ;
     }

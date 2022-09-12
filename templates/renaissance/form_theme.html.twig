@@ -52,7 +52,7 @@
 {% block _app_renaissance_donation_confirmDonationType_row %}
     {{ form_errors(form.parent.children.confirmSubscriptionAmount) }}
     {%- for child in form %}
-        <div class="form__radio">
+        <div class="form-radio">
             {{- form_widget(child) -}}
             <label for="{{ child.vars.id }}">
                 {% if child.vars.value == constant('App\\Form\\Renaissance\\Donation\\DonationRequestConfirmType::CONFIRM_DONATION_TYPE_UNIQUE') %}

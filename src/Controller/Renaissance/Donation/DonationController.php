@@ -46,6 +46,6 @@ class DonationController extends AbstractDonationController
             return $this->redirectToRoute('app_renaissance_donation_informations');
         }
 
-        return $this->render('renaissance/donation/choose_amount.html.twig');
+        return $this->render('renaissance/donation/choose_donation_amount.html.twig');
     }
 }

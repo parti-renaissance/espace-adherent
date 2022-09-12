@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @MaxMonthDonation
  * @FrenchAddressOrNationalityDonation
  * @MaxFiscalYearDonation
- * @AssertRecaptcha
+ * @AssertRecaptcha(groups={"donation_request_mentions"})
  */
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {
@@ -40,84 +40,84 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $uuid;
 
     /**
-     * @Assert\NotBlank(groups={"donation_request_amount"})
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"donation_request_amount"})
+     * @Assert\NotBlank(groups={"Default", "donation_request_amount"})
+     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"Default", "donation_request_amount"})
      */
     private $amount;
 
     /**
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"fill_personal_info"})
+     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"Default", "fill_personal_info"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
-     *     groups={"fill_personal_info"}
+     *     groups={"Default", "fill_personal_info"}
      * )
      */
     public $gender;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
-     *     groups={"fill_personal_info"}
+     *     groups={"Default", "fill_personal_info"}
      * )
      */
     public $firstName;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
-     *     groups={"fill_personal_info"}
+     *     groups={"Default", "fill_personal_info"}
      * )
      */
     public $lastName;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Email(message="common.email.invalid", groups={"fill_personal_info"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"fill_personal_info"})
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\Email(message="common.email.invalid", groups={"Default", "fill_personal_info"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "fill_personal_info"})
      */
     private $emailAddress;
 
     /**
-     * @Assert\NotBlank(message="common.address.required", groups={"fill_personal_info"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"fill_personal_info"})
+     * @Assert\NotBlank(message="common.address.required", groups={"Default", "fill_personal_info"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "fill_personal_info"})
      */
     private $address;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Length(max=15, groups={"fill_personal_info"})
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\Length(max=15, groups={"Default", "fill_personal_info"})
      */
     private $postalCode;
 
     /**
-     * @Assert\Length(max=15, groups={"fill_personal_info"})
+     * @Assert\Length(max=15, groups={"Default", "fill_personal_info"})
      */
     private $city;
 
     /**
-     * @Assert\Length(max=255, groups={"fill_personal_info"})
+     * @Assert\Length(max=255, groups={"Default", "fill_personal_info"})
      */
     private $cityName;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"fill_personal_info"})
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "fill_personal_info"})
      */
     private $country;
 
     /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Country(message="common.nationality.invalid", groups={"fill_personal_info"})
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\Country(message="common.nationality.invalid", groups={"Default", "fill_personal_info"})
      */
     private $nationality;
 
