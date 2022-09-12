@@ -24,6 +24,11 @@ class MembershipRequestProcessor
         return $this->can($membershipRequestCommand, MembershipRequestStateEnum::TO_CHOOSE_ADHESION_AMOUNT);
     }
 
+    public function canFillAdditionalInformations(RenaissanceMembershipRequest $membershipRequestCommand): bool
+    {
+        return $this->can($membershipRequestCommand, MembershipRequestStateEnum::TO_FILL_ADDITIONAL_INFORMATIONS);
+    }
+
     public function canAcceptTermsAndConditions(RenaissanceMembershipRequest $membershipRequestCommand): bool
     {
         return $this->can($membershipRequestCommand, MembershipRequestStateEnum::TO_ACCEPT_TERMS_AND_CONDITIONS);
@@ -52,6 +57,11 @@ class MembershipRequestProcessor
     public function doChooseAmount(RenaissanceMembershipRequest $command): void
     {
         $this->apply($command, MembershipRequestStateEnum::TO_CHOOSE_ADHESION_AMOUNT);
+    }
+
+    public function doFillAdditionalInformations(RenaissanceMembershipRequest $command): void
+    {
+        $this->apply($command, MembershipRequestStateEnum::TO_FILL_ADDITIONAL_INFORMATIONS);
     }
 
     public function doAcceptTermsAndConditions(RenaissanceMembershipRequest $command): void

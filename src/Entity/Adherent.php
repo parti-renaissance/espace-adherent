@@ -672,6 +672,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $certifiedAt;
 
     /**
+     * @var
+     */
+    private $socioProfessionalCategory;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
@@ -808,6 +813,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $papUserRole = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private Zone $activismZone;
 
     private ?string $authAppCode = null;
 
@@ -1503,6 +1514,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($membership instanceof PlatformMembershipRequest) {
             $this->mandates = $membership->getMandates();
+        }
+
+        if ($membership instanceof RenaissanceMembershipRequest) {
+            $this->activismZone = $membership->getActivismZone();
         }
     }
 
@@ -3156,6 +3171,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setAuthAppCode(?string $authAppCode): void
     {
         $this->authAppCode = $authAppCode;
+    }
+
+    public function setActivismZone(?Zone $zone): void
+    {
+        $this->activismZone = $zone;
+    }
+
+    public function getActivismZone(): ?Zone
+    {
+        return $this->activismZone;
     }
 
     public function isStatusesVoter(): bool

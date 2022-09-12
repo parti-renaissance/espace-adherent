@@ -30,7 +30,7 @@ class AmountController extends AbstractAdhesionController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->processor->doChooseAmount($command);
 
-            return $this->redirectToRoute('app_renaissance_adhesion_mentions');
+            return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
         return $this->render('renaissance/adhesion/choose_amount.html.twig', [

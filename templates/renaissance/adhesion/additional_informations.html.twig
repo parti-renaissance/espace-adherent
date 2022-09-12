@@ -1,0 +1,38 @@
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block final_javascripts %}
+    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+{% endblock %}
+
+{% block content_right_side %}
+    {{ parent() }}
+
+    <section class="py-10">
+        {{ form_start(form) }}
+            <div class="overflow-auto">
+                {{ form_errors(form) }}
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.phone.country, { label: false, attr: { placeholder: 'Indicatif Pays', 'data-validated-with': form.phone.number.vars.id } }) }}
+                    {{ form_row(form.phone.number, { label: false, attr: { placeholder: 'Téléphone' } }) }}
+                </div>
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.position, { label: false, attr: { placeholder: 'Catégorie socio-professionelle' } }) }}
+                </div>
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.activismZone, { label: false, attr: { placeholder: 'Zone de militantisme' } }) }}
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
+                    {{ form_widget(form.fill_additional_informations, { attr: { class: 'w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase' } }) }}
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

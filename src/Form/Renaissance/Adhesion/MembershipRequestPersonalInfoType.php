@@ -8,7 +8,6 @@ use App\Form\BirthdateType;
 use App\Form\GenderType;
 use App\Form\RepeatedEmailType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -16,8 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MembershipRequestPersonalInfoType extends AbstractType
@@ -55,11 +52,6 @@ class MembershipRequestPersonalInfoType extends AbstractType
                 'label' => false,
                 'child_error_bubbling' => false,
             ])
-            ->add('phone', PhoneNumberType::class, [
-                'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => [Address::FRANCE],
-            ])
             ->add('fill_personal_info', SubmitType::class, ['label' => 'Étape suivante'])
         ;
 
@@ -71,13 +63,6 @@ class MembershipRequestPersonalInfoType extends AbstractType
                 ->add('password', PasswordType::class)
             ;
         }
-
-        // Use address country for phone by default
-        $builder->get('phone')->get('country')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
-            if (!$formEvent->getData()) {
-                $formEvent->setData(Address::FRANCE);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
