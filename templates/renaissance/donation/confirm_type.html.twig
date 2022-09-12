@@ -1,0 +1,31 @@
+{% extends 'renaissance/donation/_donation_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block donation_title %}
+    Je donne <span class="stabilo stabilo-green">en ligne</span>
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="py-10">
+        {{ form_start(form) }}
+        <div class="self-center w-full">
+            <div class="mb-5">
+                <h3>vous faites un don de : {{ donation.amount|format_currency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('App\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</h3>
+            </div>
+
+            {{ form_errors(form) }}
+
+            <p class="mb-5">Vous vous apprêtez à faire un don important, <strong>soutenez durablement la transformation du pays en donnant mensuellement</strong> :</p>
+            <div>
+                {{ form_row(form.confirmDonationType) }}
+            </div>
+
+            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
+                route_name: 'app_renaissance_donation',
+                form_button: form.confirm_type
+            } %}
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

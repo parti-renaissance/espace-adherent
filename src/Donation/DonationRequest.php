@@ -6,11 +6,14 @@ use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Form\DonationRequestType;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Renaissance\Donation\DonationRequestStateEnum;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxMonthDonation;
 use App\Validator\PayboxSubscription as AssertPayboxSubscription;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UniqueDonationSubscription;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -23,9 +26,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @MaxMonthDonation
  * @FrenchAddressOrNationalityDonation
  * @MaxFiscalYearDonation
+ * @AssertRecaptcha
  */
-class DonationRequest implements DonationRequestInterface
+class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     public const DEFAULT_AMOUNT = 50.0;
     public const ALERT_AMOUNT = 200;
 
@@ -128,18 +134,20 @@ class DonationRequest implements DonationRequestInterface
     private $duration;
 
     /**
-     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES)
+     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES, groups={"donation_confirm_type"})
      */
     private $confirmDonationType = DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE;
 
     /**
-     * @Assert\Range(min=0, max=7500)
+     * @Assert\Range(min=0, max=7500, groups={"donation_confirm_type"})
      */
     private $confirmSubscriptionAmount;
 
     private $type;
 
     private ?string $source = null;
+
+    private ?int $adherentId = null;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -414,5 +422,25 @@ class DonationRequest implements DonationRequestInterface
     public function getSource(): ?string
     {
         return $this->source;
+    }
+
+    public function getAdherentId(): ?int
+    {
+        return $this->adherentId;
+    }
+
+    public function updateFromAdherent(Adherent $adherent): void
+    {
+        $this->adherentId = $adherent->getId();
+        $this->gender = $adherent->getGender();
+        $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
+        $this->emailAddress = $adherent->getEmailAddress();
+        $this->address = $adherent->getAddress();
+        $this->postalCode = $adherent->getPostalCode();
+        $this->city = $adherent->getCity();
+        $this->cityName = $adherent->getCityName();
+        $this->country = $adherent->getCountry();
+        $this->nationality = $adherent->getNationality();
     }
 }

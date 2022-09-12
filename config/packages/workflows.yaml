@@ -202,6 +202,7 @@ framework:
                 - App\Donation\DonationRequest
             places:
                 - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
+                - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_CONFIRM_TYPE
                 - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_PERSONAL_INFO
                 - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_TERMS_AND_CONDITIONS
                 - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_PAYMENT
@@ -210,16 +211,25 @@ framework:
                 !php/const App\Renaissance\Donation\DonationRequestStateEnum::TO_CHOOSE_DONATION_AMOUNT:
                     from:
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
+                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_CONFIRM_TYPE
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_PERSONAL_INFO
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_TERMS_AND_CONDITIONS
-                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_PAYMENT
                     to: !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
+
+                !php/const App\Renaissance\Donation\DonationRequestStateEnum::TO_CHANGE_DONATION_TYPE:
+                    from:
+                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_CONFIRM_TYPE
+                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
+                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_PERSONAL_INFO
+                    to: !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_CONFIRM_TYPE
 
                 !php/const App\Renaissance\Donation\DonationRequestStateEnum::TO_FILL_PERSONAL_INFO:
                     from:
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_PERSONAL_INFO
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
+                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_CONFIRM_TYPE
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_TERMS_AND_CONDITIONS
+                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_PAYMENT
                     to: !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_PERSONAL_INFO
 
                 !php/const App\Renaissance\Donation\DonationRequestStateEnum::TO_ACCEPT_TERMS_AND_CONDITIONS:

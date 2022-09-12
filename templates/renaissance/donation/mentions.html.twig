@@ -6,6 +6,10 @@
     Je donne <span class="stabilo stabilo-green">en ligne</span>
 {% endblock %}
 
+{% block final_javascripts %}
+    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+{% endblock %}
+
 {% block content_right_side %}
     <section class="py-10">
         {{ form_start(form) }}
@@ -42,6 +46,18 @@
 
             <div class="mt-5 text-xs">
                 {{ cms_block('renaissance-donation-rgpd-block') }}
+            </div>
+
+            <div class="w-full">
+                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                {% if recaptcha_public_key is not empty %}
+                    {% for flashMessage in app.flashes("error_recaptcha") %}
+                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                    {% endfor %}
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
+                {% elseif app.debug %}
+                    <input type="hidden" name="g-recaptcha-response" value="fake" />
+                {% endif %}
             </div>
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {

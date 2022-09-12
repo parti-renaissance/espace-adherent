@@ -1,0 +1,93 @@
+.renaissance-donation {
+
+  &__amount-chooser {
+    position: relative;
+    padding-bottom: 60px;
+
+    &__after-taxes {
+      left: 0;
+      right: 0;
+      margin: 15px 0 25px;
+      font-size: 15px;
+
+      .renaissance-after-taxes-amount {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .renaissance-infos-taxe-reduction {
+        width: 18px;
+        min-width: 18px;
+        height: 18px;
+        display: inline-block;
+        box-sizing: border-box;
+        line-height: 15px;
+        font-size: 13px;
+        text-align: center;
+        border-radius: 20px;
+        background-color: #000ABB;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+
+        &__content {
+          opacity: 0;
+          pointer-events: none;
+          z-index: 25;
+          box-sizing: border-box;
+          background: #d3e2f0;
+          padding: 20px;
+          text-align: left;
+          position: absolute;
+          border-radius: 3px;
+          left: 0;
+          right: 0;
+          bottom: 35px;
+          transition: 0.125s opacity ease-in-out;
+          -webkit-transition: 0.125s opacity ease-in-out;
+          color: #444;
+
+          @media (min-width: 1000px) {
+            width: 480px;
+            padding: 30px;
+            right: -20px;
+            left: auto;
+          }
+
+          div {
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 15px;
+          }
+
+          p {
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+            margin: 0;
+          }
+        }
+
+        &:hover {
+          .renaissance-infos-taxe-reduction__content {
+            opacity: 1;
+            pointer-events: all;
+          }
+        }
+      }
+    }
+  }
+
+  .donation-button {
+    &:disabled {
+      &:before {
+        content: attr(data-error);
+        text-transform: none;
+        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #FF3A3A;
+      }
+    }
+  }
+}

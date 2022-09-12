@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\Donation;
 
 use App\Donation\DonationRequest;
+use App\Entity\Adherent;
 use App\Renaissance\Donation\DonationRequestProcessor;
 use App\Renaissance\Donation\DonationRequestStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +21,20 @@ class AbstractDonationController extends AbstractController
 
     protected function getCommand(): DonationRequest
     {
-        return $this->storage->getDonationRequest();
+        /** @var Adherent $user */
+        $user = $this->getUser();
+        $command = $this->storage->getDonationRequest();
+
+        if ($command->getAdherentId()) {
+            if (!$user || $user->getId() !== $command->getAdherentId()) {
+                $this->storage->clear();
+
+                return new DonationRequest();
+            }
+        } elseif ($user) {
+            $command->updateFromAdherent($user);
+        }
+
+        return $command;
     }
 }

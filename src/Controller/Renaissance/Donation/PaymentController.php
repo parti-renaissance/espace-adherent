@@ -72,12 +72,17 @@ class PaymentController extends AbstractDonationController
     ): Response {
         $retryUrl = null;
         $successful = self::RESULT_STATUS_EFFECTUE === $status;
+        $command = $this->getCommand();
 
         if (!$successful) {
             $retryUrl = $this->generateUrl(
                 'app_renaissance_donation_informations',
                 $donationRequestUtils->createRetryPayload($donation, $request)
             );
+        }
+
+        if ($this->processor->canFinishDonationRequest($command)) {
+            $this->processor->doFinishDonationRequest($command);
         }
 
         return $this->render('renaissance/donation/result.html.twig', [

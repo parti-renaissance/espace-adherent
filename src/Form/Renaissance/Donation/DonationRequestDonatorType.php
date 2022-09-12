@@ -19,15 +19,26 @@ class DonationRequestDonatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $fromAdherent = $options['from_adherent'];
+
         $builder
             ->add('gender', ChoiceType::class, [
                 'choices' => Genders::CIVILITY_CHOICES,
                 'translation_domain' => 'messages',
+                'disabled' => $fromAdherent,
                 'expanded' => true,
             ])
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
-            ->add('emailAddress', EmailType::class)
+            ->add('firstName', TextType::class, [
+                'format_identity_case' => true,
+                'disabled' => $fromAdherent,
+            ])
+            ->add('lastName', TextType::class, [
+                'format_identity_case' => true,
+                'disabled' => $fromAdherent,
+            ])
+            ->add('emailAddress', EmailType::class, [
+                'disabled' => $fromAdherent,
+            ])
             ->add('nationality', CountryType::class, [
                 'preferred_choices' => [Address::FRANCE],
                 'placeholder' => 'Nationalité',
@@ -51,7 +62,9 @@ class DonationRequestDonatorType extends AbstractType
             ->setDefaults([
                 'data_class' => DonationRequest::class,
                 'validation_groups' => ['fill_personal_info'],
+                'from_adherent' => false,
             ])
+            ->setAllowedTypes('from_adherent', 'bool')
         ;
     }
 

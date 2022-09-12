@@ -2,7 +2,9 @@
 
 namespace App\Controller\Renaissance\Donation;
 
-use App\Form\Renaissance\Donation\DonationRequestAmountType;
+use App\Donation\DonationRequestUtils;
+use App\Donation\PayboxPaymentSubscription;
+use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DonationController extends AbstractDonationController
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, DonationRequestUtils $donationRequestUtils): Response
     {
         $command = $this->getCommand();
 
@@ -22,19 +24,28 @@ class DonationController extends AbstractDonationController
 
         $this->processor->doChooseDonationAmount($command);
 
-        $form = $this
-            ->createForm(DonationRequestAmountType::class, $command)
-            ->handleRequest($request)
-        ;
+        if ($request->request->has('montant') && $request->request->has('abonnement')) {
+            $duration = $request->request->getInt('abonnement', PayboxPaymentSubscription::NONE);
+            $amount = $request->request->get('montant');
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if (!PayboxPaymentSubscription::isValid($duration)) {
+                throw new InvalidPayboxPaymentSubscriptionValueException($duration);
+            }
+
+            $command->setDuration($duration);
+            $command->setAmount((float) $amount);
+
+            if ($donationRequestUtils->hasAmountAlert($amount, $duration)) {
+                $this->processor->doChangeDonationType($command);
+
+                return $this->redirectToRoute('app_renaissance_donation_confirmation_type');
+            }
+
             $this->processor->doFillPersonalInfo($command);
 
             return $this->redirectToRoute('app_renaissance_donation_informations');
         }
 
-        return $this->render('renaissance/donation/choose_amount.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('renaissance/donation/choose_amount.html.twig');
     }
 }

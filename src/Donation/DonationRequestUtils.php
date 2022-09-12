@@ -196,7 +196,7 @@ class DonationRequestUtils
         return $str;
     }
 
-    private function hydrateFromRetryPayload(DonationRequest $request, string $payload): DonationRequest
+    public function hydrateFromRetryPayload(DonationRequest $request, string $payload): DonationRequest
     {
         try {
             $data = \GuzzleHttp\json_decode(urldecode($payload), true);

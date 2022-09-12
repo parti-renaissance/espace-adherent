@@ -19,6 +19,11 @@ class DonationRequestProcessor
         return $this->can($donationRequest, DonationRequestStateEnum::TO_CHOOSE_DONATION_AMOUNT);
     }
 
+    public function canChangeDonationType(DonationRequest $donationRequest): bool
+    {
+        return $this->can($donationRequest, DonationRequestStateEnum::TO_CHANGE_DONATION_TYPE);
+    }
+
     public function canFillPersonalInfo(DonationRequest $donationRequest): bool
     {
         return $this->can($donationRequest, DonationRequestStateEnum::TO_FILL_PERSONAL_INFO);
@@ -42,6 +47,11 @@ class DonationRequestProcessor
     public function doChooseDonationAmount(DonationRequest $command): void
     {
         $this->apply($command, DonationRequestStateEnum::TO_CHOOSE_DONATION_AMOUNT);
+    }
+
+    public function doChangeDonationType(DonationRequest $command): void
+    {
+        $this->apply($command, DonationRequestStateEnum::TO_CHANGE_DONATION_TYPE);
     }
 
     public function doFillPersonalInfo(DonationRequest $command): void
