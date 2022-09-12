@@ -1,6 +1,10 @@
+import RenaissanceAmountChooser from "./listeners/renaissance-amount-chooser";
+
 class Main {
     constructor() {
-        this._listeners = [];
+        this._listeners = [
+            RenaissanceAmountChooser,
+        ];
     }
 
     addListener(listener) {

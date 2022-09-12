@@ -24,7 +24,7 @@ class DonationController extends AbstractDonationController
 
         $this->processor->doChooseDonationAmount($command);
 
-        if ($request->request->has('montant') && $request->request->has('abonnement')) {
+        if ($request->request->has('montant') && is_numeric($request->request->get('montant'))) {
             $duration = $request->request->getInt('abonnement', PayboxPaymentSubscription::NONE);
             $amount = $request->request->get('montant');
 
