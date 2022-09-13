@@ -18,10 +18,20 @@
                 {{ form_widget(form.conditions) }}
                 <label for="{{ form.conditions.vars.id }}">
                     <span>
-                        Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de La République En Marche, ainsi qu'aux politiques de protection des données à caractère personnel du site
+                        Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de Renaissance, ainsi qu'aux politiques de protection des données à caractère personnel du site
                     </span>
                 </label>
                 {{ form_errors(form.conditions) }}
+            </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.exclusiveMembership) }}
+                <label for="{{ form.exclusiveMembership.vars.id }}">
+                        <span>
+                            Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
+                        </span>
+                </label>
+                {{ form_errors(form.exclusiveMembership) }}
             </div>
 
             <div class="border-t-1 border-white/10 pt-3.75 mb-5">

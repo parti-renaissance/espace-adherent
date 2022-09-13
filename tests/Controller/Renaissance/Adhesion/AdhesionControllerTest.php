@@ -92,6 +92,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->client->submit($crawler->filter('form[name="app_renaissance_membership"]')->form([
             'app_renaissance_membership' => [
                 'conditions' => true,
+                'exclusiveMembership' => true,
                 'allowEmailNotifications' => true,
                 'allowMobileNotifications' => true,
             ],
