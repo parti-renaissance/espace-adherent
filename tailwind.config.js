@@ -18,9 +18,9 @@ module.exports = {
                 din: 'Din',
             },
             colors: {
-                'light-blue': '#0370ED',
-                'dark-blue': '#000ABB',
-                green: '#00CF94',
+                'light-blue': '#73C0F1',
+                'dark-blue': '#00205F',
+                green: '#00C39B',
                 gray: '#EEEEEE',
                 'medium-gray': '#555555',
                 'background-gray': '#F9F9F9;',
