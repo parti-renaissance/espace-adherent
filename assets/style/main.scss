@@ -29,7 +29,7 @@
       @apply button-group grow bg-green first:rounded-tl-lg first:rounded-bl-lg last:border-l-0 last:rounded-tr-lg last:rounded-br-lg;
 
       &--selected {
-        @apply active:bg-white focus:outline-none focus:ring focus:ring-white;
+        @apply bg-white text-dark-blue;
       }
     }
 

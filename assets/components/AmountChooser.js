@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 
 const defaultAmounts = [20, 50, 120, 500];
 
-export default class NewAmountChooser extends React.Component {
+const amountAfterTaxReturn = (amount) => {
+    amount = parseInt(amount);
+
+    if (!amount || 0 >= amount) {
+        return '0,00';
+    }
+
+    return (amount * 0.34).toFixed(2);
+}
+
+export default class AmountChooser extends React.Component {
     constructor(props) {
         super(props);
 
@@ -75,9 +85,9 @@ export default class NewAmountChooser extends React.Component {
                         className="border-white/20 focus:border-white focus:ring-0 border-2 rounded-lg p-5 mb-5 bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium placeholder:text-sm"
                         id="renaissance-amount-chooser__other__input"
                         placeholder="Autre montant"
-                        min="0.01"
+                        min="1.0"
                         max={this.props.maxValue}
-                        step="0.01"
+                        step="0.5"
                         ref="other_amount"
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
@@ -122,12 +132,12 @@ export default class NewAmountChooser extends React.Component {
     }
 }
 
-NewAmountChooser.defaultProps = {
+AmountChooser.defaultProps = {
     maxValue: 7500,
     amounts: defaultAmounts,
 };
 
-NewAmountChooser.propTypes = {
+AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     amounts: PropTypes.arrayOf(PropTypes.number),
     value: PropTypes.number,

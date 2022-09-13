@@ -1,9 +1,9 @@
-import RenaissanceAmountChooser from "./listeners/renaissance-amount-chooser";
+import amountChooser from './listeners/amount-chooser'
 
 class Main {
     constructor() {
         this._listeners = [
-            RenaissanceAmountChooser,
+            amountChooser,
         ];
     }
 
@@ -20,8 +20,8 @@ class Main {
         import('pages/home_page').then((module) => module.default());
     }
 
-    runRenaissanceDonation() {
-        import('pages/renaissance_donation').catch((error) => { throw error; }).then((module) => module.default('.renaissance-donation-widget-wrapper'));
+    runDonationPage() {
+        import('pages/donation_page').catch((error) => { throw error; }).then((module) => module.default());
     }
 }
 

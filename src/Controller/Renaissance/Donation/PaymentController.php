@@ -30,7 +30,7 @@ class PaymentController extends AbstractDonationController
 
         $this->processor->doDonationPayment($command);
 
-        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation, false, true);
+        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
 
         return $this->render('renaissance/donation/payment.html.twig', [
             'url' => $paybox->getUrl(),
@@ -52,7 +52,7 @@ class PaymentController extends AbstractDonationController
             return $this->redirectToRoute('app_renaissance_donation');
         }
 
-        return $transactionCallbackHandler->handle($id, $request, $_callback_token, true);
+        return $transactionCallbackHandler->handle($id, $request, $_callback_token);
     }
 
     /**

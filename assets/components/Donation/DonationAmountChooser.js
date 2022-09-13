@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NewAmountChooser from '../NewAmountChooser';
+import AmountChooser from '../AmountChooser';
 
 const maxAbonnementAmount = 625;
 const maxAmount = 7500;
 
-export default class RenaissanceDonationAmountChooser extends React.Component {
+export default class DonationAmountChooser extends React.Component {
     constructor(props) {
         super(props);
 
@@ -72,7 +72,7 @@ export default class RenaissanceDonationAmountChooser extends React.Component {
                     </div>
                 </div>
 
-                <NewAmountChooser
+                <AmountChooser
                     amounts={this.state.abonnement ? [5, 10, 25, 50] : [30, 60, 120, 500]}
                     key={`amount-abo-${this.state.abonnement}`}
                     name={this.props.name}
@@ -92,7 +92,7 @@ export default class RenaissanceDonationAmountChooser extends React.Component {
     }
 }
 
-RenaissanceDonationAmountChooser.propTypes = {
+DonationAmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
     abonnement: PropTypes.bool,

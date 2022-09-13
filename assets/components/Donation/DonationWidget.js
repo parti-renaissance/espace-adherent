@@ -1,7 +1,7 @@
 import React from 'react';
-import RenaissanceDonationAmountChooser from "./RenaissanceDonationAmountChooser";
+import DonationAmountChooser from './DonationAmountChooser'
 
-export default class RenaissanceDonationWidget extends React.Component {
+export default class DonationWidget extends React.Component {
     constructor(props) {
         super(props);
 
@@ -16,7 +16,7 @@ export default class RenaissanceDonationWidget extends React.Component {
     render() {
         return (
             <div className={'renaissance-donation'}>
-                <RenaissanceDonationAmountChooser name={'montant'} abonnement={false} onChange={this.handleAmountChange} />
+                <DonationAmountChooser name={'montant'} abonnement={false} onChange={this.handleAmountChange} />
                 <button
                     className={'rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4 donation-button'}
                     type="submit"

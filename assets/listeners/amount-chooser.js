@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import NewAmountChooser from "../components/NewAmountChooser";
+import AmountChooser from '../components/AmountChooser'
 
 export default () => {
     findAll(document, 'input.renaissance-amount-chooser').forEach((element) => {
@@ -12,7 +12,7 @@ export default () => {
         remove(element);
 
         render(
-            <NewAmountChooser
+            <AmountChooser
                 name={name}
                 value={value}
             />,
