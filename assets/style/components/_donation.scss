@@ -5,11 +5,6 @@
     padding-bottom: 60px;
 
     &__after-taxes {
-      left: 0;
-      right: 0;
-      margin: 15px 0 25px;
-      font-size: 15px;
-
       .renaissance-after-taxes-amount {
         font-size: 20px;
         font-weight: bold;
@@ -22,18 +17,16 @@
         display: inline-block;
         box-sizing: border-box;
         line-height: 15px;
-        font-size: 13px;
         text-align: center;
         border-radius: 20px;
         background-color: #000ABB;
         font-weight: bold;
-        color: white;
         cursor: pointer;
+        margin-left: 5px;
 
         &__content {
           opacity: 0;
           pointer-events: none;
-          z-index: 25;
           box-sizing: border-box;
           background: #d3e2f0;
           padding: 20px;
@@ -42,7 +35,6 @@
           border-radius: 3px;
           left: 0;
           right: 0;
-          bottom: 35px;
           transition: 0.125s opacity ease-in-out;
           -webkit-transition: 0.125s opacity ease-in-out;
           color: #444;
@@ -50,7 +42,6 @@
           @media (min-width: 1000px) {
             width: 480px;
             padding: 30px;
-            right: -20px;
             left: auto;
           }
 

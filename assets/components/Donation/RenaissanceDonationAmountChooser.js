@@ -82,35 +82,10 @@ export default class RenaissanceDonationAmountChooser extends React.Component {
                 />
 
                 { this.state.abonnement && this.state.amount > maxAbonnementAmount
-                    && <div className="text-xs">
+                    && <div className="text-xs text-red-400">
                         Votre don mensuel ne peut dépasser {maxAbonnementAmount} euros.
                         Si vous souhaitez donner plus, vous pourrez compléter avec un don ponctuel.
                     </div>
-                }
-
-                {this.state.amount
-                    ? <div className="renaissance-donation__amount-chooser__after-taxes">
-                        soit <span className="renaissance-after-taxes-amount">
-                            {amountAfterTaxReturn(this.state.amount)} €
-                        </span> après réduction d’impôt <div className="renaissance-infos-taxe-reduction">
-                        ?
-                        <div className="renaissance-infos-taxe-reduction__content">
-                            <div>La réduction fiscale</div>
-                            <p>
-                                66 % de votre don vient en déduction de votre impôt sur
-                                le revenu (dans la limite de 20 % du revenu imposable).
-                                <br /><br />
-                                <strong>Par exemple :</strong> un don de 100 € vous revient
-                                en réalité à 34 € et vous fait bénéficier
-                                d’une réduction d’impôt de 66 €. Le montant annuel de votre
-                                don ne peut pas excéder 7500 € par personne physique.
-                                <br /><br />
-                                Le reçu fiscal pour votre don de l’année N vous sera envoyé
-                                au 2e trimestre de l’année N+1.
-                            </p>
-                        </div>
-                    </div>
-                    </div> : ''
                 }
             </div>
         );

@@ -88,6 +88,35 @@ export default class NewAmountChooser extends React.Component {
                         }
                     />
                 </div>
+
+                {this.state.amount
+                    ? <div className="renaissance-donation__amount-chooser__after-taxes text-white text-center mb-5">
+                        <p className="font-normal text-3xl leading-10">
+                            {amountAfterTaxReturn(this.state.amount)} €
+                        </p>
+                        <div className={'font-medium text-sm'}>
+                            après réduction d’impôts
+                            <div className="renaissance-infos-taxe-reduction">
+                            ?
+                                <div className="renaissance-infos-taxe-reduction__content">
+                                    <div>La réduction fiscale</div>
+                                    <p>
+                                        66 % de votre don vient en déduction de votre impôt sur
+                                        le revenu (dans la limite de 20 % du revenu imposable).
+                                        <br /><br />
+                                        <strong>Par exemple :</strong> un don de 100 € vous revient
+                                        en réalité à 34 € et vous fait bénéficier
+                                        d’une réduction d’impôt de 66 €. Le montant annuel de votre
+                                        don ne peut pas excéder 7500 € par personne physique.
+                                        <br /><br />
+                                        Le reçu fiscal pour votre don de l’année N vous sera envoyé
+                                        au 2e trimestre de l’année N+1.
+                                    </p>
+                                </div>
+                        </div>
+                    </div>
+                    </div> : ''
+                }
             </div>
         );
     }
