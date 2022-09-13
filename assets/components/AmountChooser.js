@@ -11,7 +11,7 @@ const amountAfterTaxReturn = (amount) => {
     }
 
     return (amount * 0.34).toFixed(2);
-}
+};
 
 export default class AmountChooser extends React.Component {
     constructor(props) {

@@ -18,7 +18,6 @@ export default class DonationAmountChooser extends React.Component {
         this.handleAbonnementChange = this.handleAbonnementChange.bind(this);
     }
 
-
     handleAmountChange(amount) {
         if (this.props.onChange) {
             this.props.onChange(amount);
