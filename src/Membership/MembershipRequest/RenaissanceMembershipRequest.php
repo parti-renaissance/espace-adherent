@@ -95,6 +95,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public ?string $password = null;
 
     /**
+     * @Assert\NotBlank(groups={"membership_request_mentions"})
      * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"membership_request_mentions"})
      */
     public ?bool $conditions = null;
