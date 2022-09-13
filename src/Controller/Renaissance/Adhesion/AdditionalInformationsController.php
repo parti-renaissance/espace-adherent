@@ -3,7 +3,6 @@
 namespace App\Controller\Renaissance\Adhesion;
 
 use App\Form\Renaissance\Adhesion\MembershipRequestAdditionalInformationsType;
-use App\Form\Renaissance\Adhesion\MembershipRequestAmountType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +28,7 @@ class AdditionalInformationsController extends AbstractAdhesionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->processor->doFillAdditionalInformations($command);
+            $this->processor->doAcceptTermsAndConditions($command);
 
             return $this->redirectToRoute('app_renaissance_adhesion_mentions');
         }

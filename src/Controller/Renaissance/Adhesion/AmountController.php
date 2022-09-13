@@ -28,7 +28,7 @@ class AmountController extends AbstractAdhesionController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->processor->doChooseAmount($command);
+            $this->processor->doFillAdditionalInformations($command);
 
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
