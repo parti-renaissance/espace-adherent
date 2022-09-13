@@ -69,7 +69,7 @@ app_adherent_reset_password:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%"
+        app_domain: "%app_host%|%coalitions_auth_host%|%jemengage_auth_host%|%renaissance_host%"
 
 app_jemengage:
     host: '%jemengage_auth_host%'
@@ -283,6 +283,13 @@ app_renaissance_login:
     host: "%renaissance_host%"
     path: "/connexion"
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
+    defaults:
+        app: renaissance
+
+app_renaissance_forgot_password:
+    host: "%renaissance_host%"
+    path: "/mot-de-passe-oublie"
+    controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
     defaults:
         app: renaissance
 

@@ -97,7 +97,10 @@ class SecurityController extends AbstractController
                 ($adherent = $adherentRepository->findOneByEmail($email))
                 && (
                     $currentApp === $adherent->getSource()
-                    || (null === $adherent->getSource() && MembershipSourceEnum::JEMENGAGE === $currentApp)
+                    || (
+                        null === $adherent->getSource() &&
+                        \in_array($currentApp, [MembershipSourceEnum::JEMENGAGE, MembershipSourceEnum::RENAISSANCE], true)
+                    )
                 )
             ) {
                 $handler->handle($adherent, $currentApp);
@@ -147,7 +150,7 @@ class SecurityController extends AbstractController
             $newPassword = $form->get('password')->getData();
 
             try {
-                $handler->reset($adherent, $resetPasswordToken, $newPassword);
+                $handler->reset($adherent, $resetPasswordToken, $newPassword, $appUrlGenerator->getAppCode());
                 $this->addFlash('info', 'adherent.reset_password.success');
 
                 return $this->redirect($appUrlGenerator->generateSuccessResetPasswordLink($request));

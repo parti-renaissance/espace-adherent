@@ -7,6 +7,7 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
+use App\Mailer\Message\RenaissanceResetPasswordConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -42,8 +43,12 @@ class AdherentResetPasswordHandler
         $this->dispatcher->dispatch(new UserResetPasswordEvent($adherent, $resetPasswordToken, $source ?? MembershipSourceEnum::PLATFORM), UserEvents::USER_FORGOT_PASSWORD);
     }
 
-    public function reset(Adherent $adherent, AdherentResetPasswordToken $token, string $newPassword): void
-    {
+    public function reset(
+        Adherent $adherent,
+        AdherentResetPasswordToken $token,
+        string $newPassword,
+        ?string $appCode = null
+    ): void {
         $newEncodedPassword = $this->encoderFactory
             ->getEncoder(Adherent::class)
             ->encodePassword($newPassword, $adherent->getSalt())
@@ -63,7 +68,9 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        if (null === $adherent->getSource()) {
+        if (MembershipSourceEnum::RENAISSANCE === $appCode) {
+            $this->mailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        } elseif (null === $adherent->getSource()) {
             $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } else {
             if ($hasBeenActivated) {

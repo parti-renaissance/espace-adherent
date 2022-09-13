@@ -6,6 +6,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Mailer\Message\Coalition\CoalitionResetPasswordMessage;
 use App\Mailer\Message\JeMengage\JeMengageResetPasswordMessage;
+use App\Mailer\Message\RenaissanceResetPasswordMessage;
 use App\Membership\Event\UserResetPasswordEvent;
 use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
@@ -35,6 +36,9 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
                 break;
             case MembershipSourceEnum::JEMENGAGE:
                 $message = JeMengageResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl);
+                break;
+            case MembershipSourceEnum::RENAISSANCE:
+                $message = RenaissanceResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl);
                 break;
             case MembershipSourceEnum::PLATFORM:
                 $message = AdherentResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl);
