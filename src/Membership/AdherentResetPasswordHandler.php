@@ -47,7 +47,7 @@ class AdherentResetPasswordHandler
         Adherent $adherent,
         AdherentResetPasswordToken $token,
         string $newPassword,
-        ?string $appCode
+        ?string $appCode = null
     ): void {
         $newEncodedPassword = $this->encoderFactory
             ->getEncoder(Adherent::class)
