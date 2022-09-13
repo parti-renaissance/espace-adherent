@@ -167,7 +167,7 @@ class DonationControllerTest extends WebTestCase
 
         // Check payment was successful
         $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
-        $callbackUrlRegExp = 'http://'.$this->getParameter('app_host').'/don/callback/(.+)'; // token
+        $callbackUrlRegExp = 'http://'.$this->getParameter('renaissance_host').'/don/callback/(.+)'; // token
         $callbackUrlRegExp .= '\?id=(.+)_john-doe';
         if (PayboxPaymentSubscription::NONE !== $duration) {
             $durationRegExp = $duration < 0 ? 0 : $duration - 1;
