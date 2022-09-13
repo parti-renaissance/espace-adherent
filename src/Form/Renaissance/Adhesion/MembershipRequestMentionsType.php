@@ -15,6 +15,7 @@ class MembershipRequestMentionsType extends AbstractType
     {
         $builder
             ->add('conditions', CheckboxType::class)
+            ->add('exclusiveMembership', CheckboxType::class)
             ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
             ])

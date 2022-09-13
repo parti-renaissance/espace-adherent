@@ -100,6 +100,11 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public ?bool $conditions = null;
 
     /**
+     * @Assert\IsTrue(message="adherent.exclusive_membership.no_accepted", groups={"membership_request_mentions"})
+     */
+    public ?bool $exclusiveMembership = null;
+
+    /**
      * @Assert\NotBlank(groups={"fill_personal_info"})
      * @Assert\Country(message="common.nationality.invalid", groups={"fill_personal_info"})
      */
