@@ -1,5 +1,5 @@
 import React from 'react';
-import DonationAmountChooser from './DonationAmountChooser'
+import DonationAmountChooser from './DonationAmountChooser';
 
 export default class DonationWidget extends React.Component {
     constructor(props) {

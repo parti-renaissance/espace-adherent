@@ -1,5 +1,5 @@
 import React from 'react';
-import RenaissanceAdhesionAmountChooser from "./RenaissanceAdhesionAmountChooser";
+import RenaissanceAdhesionAmountChooser from './RenaissanceAdhesionAmountChooser';
 
 export default class RenaissanceAdhesionWidget extends React.Component {
     constructor(props) {
