@@ -1,0 +1,24 @@
+{% extends 'renaissance/donation/_donation_layout.html.twig' %}
+
+{% block donation_title %}
+    Je donne <span class="stabilo stabilo-green">par chèque</span>
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="self-center w-full">
+        <div>
+            <h1>Vous pouvez télécharger un bulletin de don et nous envoyer le chèque à :</h1>
+            <p>
+                Renaissance <br/>
+                Pôle Financier <br/>
+                68 rue du Rocher, <br/>
+                75008 Paris
+            </p>
+        </div>
+        <div class="flex mt-4 justify-between">
+            <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4">
+                Télécharger un bulletin de don
+            </a>
+        </div>
+    </section>
+{% endblock %}

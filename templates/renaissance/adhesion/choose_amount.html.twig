@@ -19,7 +19,7 @@
 
             {{ form_row(form.amount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
 
-            {% include 'renaissance/adhesion/partials/previous-next-buttons.html.twig' with {
+            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 route_name: 'app_renaissance_adhesion',
                 form_button: form.membership_amount
             } %}

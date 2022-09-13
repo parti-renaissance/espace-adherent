@@ -137,40 +137,7 @@
             </div>
             <div class="flex-1 lg:pl-31.25">
                 <div class="flex flex-col">
-                    <!-- Button group -->
-                    <div class="flex mb-5" role="group">
-                        <button class="button-group bg-green rounded-tl-lg rounded-bl-lg">
-                            <span class="font-medium text-sm">Tarif réduit 10€</span>
-                        </button>
-                        <button
-                                class="button-group bg-green border-l-0 rounded-tr-lg rounded-br-lg"
-                        >
-                            <span class="font-medium text-sm">Tarif normal 30€</span>
-                        </button>
-                    </div>
-                    <!-- Other donation amount -->
-                    <input
-                            type="number"
-                            class="border-white/20 focus:border-white focus:ring-0 border-2 rounded-lg p-5 mb-5 bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium placeholder:text-sm"
-                            placeholder="Montant libre (€)"
-                    />
-                    <!-- Tax deduction -->
-                    <div class="text-white text-center mb-5">
-                        <p class="font-normal text-3xl leading-10">20,4€</p>
-                        <p class="font-medium text-sm">Après réduction d’impôt</p>
-                    </div>
-                    <!-- Button -->
-                    <a
-                            href="#"
-                            class="text-center bg-white py-5.75 px-7.5 rounded"
-                    >
-                        <span
-                                class="text-light-blue uppercase font-bold text-lg mr-4"
-                        >
-                            Donner à Renaissance
-                        </span>
-                        <i class="fa fa-caret-right text-black"></i>
-                    </a>
+                    {{ include('renaissance/donation/partials/_quick_form.html.twig') }}
                 </div>
             </div>
         </div>

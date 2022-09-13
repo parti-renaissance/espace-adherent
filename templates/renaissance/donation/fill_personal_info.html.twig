@@ -1,0 +1,53 @@
+{% extends 'renaissance/donation/_donation_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block donation_title %}
+    Je donne <span class="stabilo stabilo-green">en ligne</span>
+{% endblock %}
+
+{% block content_right_side %}
+    <section class="py-10">
+        {{ form_start(form) }}
+        <div class="overflow-auto">
+            {{ form_errors(form) }}
+
+            <div class="flex flex-row space-x-4">
+                {% for choice in form.gender %}
+                    {{ form_row(choice, { label_attr: { id: 'donation_gender_'~choice.vars.value }}) }}
+                {% endfor %}
+            </div>
+
+            <div class="flex flex-row space-x-4">
+                {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
+                {{ form_row(form.lastName, { label: false, attr: { placeholder: 'Nom' } }) }}
+            </div>
+
+            {{ form_row(form.emailAddress, { label: false, attr: { placeholder: 'E-mail' } }) }}
+
+            {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
+
+            <div>
+                <div class="text-black">
+                    {{ form_widget(form.address, { attr: { placeholder: 'Adresse postale' } }) }}
+                    {{ form_errors(form.address) }}
+                </div>
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.postalCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
+                    {{ form_widget(form.cityName, { label: false, attr: { placeholder: 'Ville' } }) }}
+                </div>
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_widget(form.country, { label: false }) }}
+                </div>
+            </div>
+
+            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
+                route_name: 'app_renaissance_donation',
+                form_button: form.fill_personal_info
+            } %}
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

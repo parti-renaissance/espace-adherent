@@ -1,6 +1,10 @@
+import amountChooser from './listeners/amount-chooser'
+
 class Main {
     constructor() {
-        this._listeners = [];
+        this._listeners = [
+            amountChooser,
+        ];
     }
 
     addListener(listener) {
@@ -14,6 +18,10 @@ class Main {
 
     runHomePage() {
         import('pages/home_page').then((module) => module.default());
+    }
+
+    runDonationPage() {
+        import('pages/donation_page').catch((error) => { throw error; }).then((module) => module.default());
     }
 }
 

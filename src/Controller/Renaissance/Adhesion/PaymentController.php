@@ -29,7 +29,7 @@ class PaymentController extends AbstractAdhesionController
 
         $this->processor->doPayMembership($command);
 
-        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation, true);
+        $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
 
         return $this->render('renaissance/adhesion/payment.html.twig', [
             'url' => $paybox->getUrl(),
@@ -51,7 +51,7 @@ class PaymentController extends AbstractAdhesionController
             return $this->redirectToRoute('app_renaissance_adhesion');
         }
 
-        return $transactionCallbackHandler->handle($id, $request, $_callback_token);
+        return $transactionCallbackHandler->handle($id, $request, $_callback_token, true);
     }
 
     /**

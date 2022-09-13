@@ -24,22 +24,26 @@ class TransactionCallbackHandler
         $this->donationRequestUtils = $donationRequestUtils;
     }
 
-    public function handle(string $donationUuid, Request $request, string $callbackToken): Response
-    {
+    public function handle(
+        string $donationUuid,
+        Request $request,
+        string $callbackToken,
+        bool $forMembership = false
+    ): Response {
         $donation = $this->donationRepository->findOneByUuid($donationUuid);
 
         if (!$donation) {
-            if ($donation->isForMembership()) {
+            if ($forMembership) {
                 return new RedirectResponse($this->router->generate('app_renaissance_adhesion'));
             }
 
-            return new RedirectResponse($this->router->generate('donation_index'));
+            return new RedirectResponse($this->router->generate('app_renaissance_donation'));
         }
 
         $payload = $this->donationRequestUtils->extractPayboxResultFromCallback($request, $callbackToken);
 
         return new RedirectResponse($this->router->generate(
-            $donation->isForMembership() ? 'app_renaissance_adhesion_payment_result' : 'donation_result',
+            $forMembership ? 'app_renaissance_adhesion_payment_result' : 'app_renaissance_donation_payment_result',
             $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid)
         ));
     }

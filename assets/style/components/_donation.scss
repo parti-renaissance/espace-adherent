@@ -1,0 +1,83 @@
+.renaissance-donation {
+    &__amount-chooser {
+        position: relative;
+        padding-bottom: 60px;
+
+        &__after-taxes {
+            .renaissance-after-taxes-amount {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .renaissance-infos-taxe-reduction {
+                width: 18px;
+                min-width: 18px;
+                height: 18px;
+                display: inline-block;
+                box-sizing: border-box;
+                line-height: 15px;
+                text-align: center;
+                border-radius: 20px;
+                background-color: #000ABB;
+                font-weight: bold;
+                cursor: pointer;
+                margin-left: 5px;
+
+                &__content {
+                    opacity: 0;
+                    pointer-events: none;
+                    box-sizing: border-box;
+                    background: #d3e2f0;
+                    padding: 20px;
+                    text-align: left;
+                    position: absolute;
+                    border-radius: 3px;
+                    left: 0;
+                    right: 0;
+                    transition: 0.125s opacity ease-in-out;
+                    -webkit-transition: 0.125s opacity ease-in-out;
+                    color: #444;
+
+                    @media (min-width: 1000px) {
+                        width: 480px;
+                        padding: 30px;
+                        left: auto;
+                    }
+
+                    div {
+                        font-size: 18px;
+                        color: #444;
+                        margin-bottom: 15px;
+                    }
+
+                    p {
+                        font-weight: normal;
+                        font-size: 14px;
+                        line-height: 20px;
+                        margin: 0;
+                    }
+                }
+
+                &:hover {
+                    .renaissance-infos-taxe-reduction__content {
+                        opacity: 1;
+                        pointer-events: all;
+                    }
+                }
+            }
+        }
+    }
+
+    .donation-button {
+        &:disabled {
+            &:before {
+                content: attr(data-error);
+                text-transform: none;
+                width: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #FF3A3A;
+            }
+        }
+    }
+}

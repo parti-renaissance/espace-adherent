@@ -6,10 +6,14 @@ use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Form\DonationRequestType;
+use App\Recaptcha\RecaptchaChallengeInterface;
+use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Renaissance\Donation\DonationRequestStateEnum;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxMonthDonation;
 use App\Validator\PayboxSubscription as AssertPayboxSubscription;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UniqueDonationSubscription;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -22,11 +26,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @MaxMonthDonation
  * @FrenchAddressOrNationalityDonation
  * @MaxFiscalYearDonation
+ * @AssertRecaptcha(groups={"donation_request_mentions"})
  */
-class DonationRequest implements DonationRequestInterface
+class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {
+    use RecaptchaChallengeTrait;
+
     public const DEFAULT_AMOUNT = 50.0;
     public const ALERT_AMOUNT = 200;
+
+    private string $state = DonationRequestStateEnum::STATE_DONATION_AMOUNT;
 
     private $uuid;
 
@@ -37,75 +46,78 @@ class DonationRequest implements DonationRequestInterface
     private $amount;
 
     /**
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
+     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"Default", "fill_personal_info"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
-     *     strict=true
+     *     strict=true,
+     *     groups={"Default", "fill_personal_info"}
      * )
      */
     public $gender;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
      *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
+     *     maxMessage="common.first_name.max_length",
+     *     groups={"Default", "fill_personal_info"}
      * )
      */
     public $firstName;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
      * @Assert\Length(
      *     min=1,
      *     max=50,
      *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length"
+     *     maxMessage="common.last_name.max_length",
+     *     groups={"Default", "fill_personal_info"}
      * )
      */
     public $lastName;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\Email(message="common.email.invalid", groups={"Default", "fill_personal_info"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "fill_personal_info"})
      */
     private $emailAddress;
 
     /**
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
+     * @Assert\NotBlank(message="common.address.required", groups={"Default", "fill_personal_info"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "fill_personal_info"})
      */
     private $address;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=15)
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\Length(max=15, groups={"Default", "fill_personal_info"})
      */
     private $postalCode;
 
     /**
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"Default", "fill_personal_info"})
      */
     private $city;
 
     /**
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=255, groups={"Default", "fill_personal_info"})
      */
     private $cityName;
 
     /**
-     * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "fill_personal_info"})
      */
     private $country;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.nationality.invalid")
+     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\Country(message="common.nationality.invalid", groups={"Default", "fill_personal_info"})
      */
     private $nationality;
 
@@ -122,12 +134,12 @@ class DonationRequest implements DonationRequestInterface
     private $duration;
 
     /**
-     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES)
+     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES, groups={"donation_confirm_type"})
      */
     private $confirmDonationType = DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE;
 
     /**
-     * @Assert\Range(min=0, max=7500)
+     * @Assert\Range(min=0, max=7500, groups={"donation_confirm_type"})
      */
     private $confirmSubscriptionAmount;
 
@@ -135,14 +147,16 @@ class DonationRequest implements DonationRequestInterface
 
     private ?string $source = null;
 
+    private ?int $adherentId = null;
+
     public function __construct(
-        UuidInterface $uuid,
-        string $clientIp,
+        UuidInterface $uuid = null,
+        string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB
     ) {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->clientIp = $clientIp;
         $this->emailAddress = '';
         $this->country = Address::FRANCE;
@@ -170,6 +184,16 @@ class DonationRequest implements DonationRequestInterface
         $dto->nationality = $adherent->getNationality();
 
         return $dto;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
     }
 
     public function getUuid(): UuidInterface
@@ -287,9 +311,14 @@ class DonationRequest implements DonationRequestInterface
         $this->code = $code;
     }
 
-    public function getClientIp(): string
+    public function getClientIp(): ?string
     {
         return $this->clientIp;
+    }
+
+    public function setClientIp(?string $clientIp): void
+    {
+        $this->clientIp = $clientIp;
     }
 
     public function getDuration(): ?int
@@ -393,5 +422,25 @@ class DonationRequest implements DonationRequestInterface
     public function getSource(): ?string
     {
         return $this->source;
+    }
+
+    public function getAdherentId(): ?int
+    {
+        return $this->adherentId;
+    }
+
+    public function updateFromAdherent(Adherent $adherent): void
+    {
+        $this->adherentId = $adherent->getId();
+        $this->gender = $adherent->getGender();
+        $this->firstName = $adherent->getFirstName();
+        $this->lastName = $adherent->getLastName();
+        $this->emailAddress = $adherent->getEmailAddress();
+        $this->address = $adherent->getAddress();
+        $this->postalCode = $adherent->getPostalCode();
+        $this->city = $adherent->getCity();
+        $this->cityName = $adherent->getCityName();
+        $this->country = $adherent->getCountry();
+        $this->nationality = $adherent->getNationality();
     }
 }
