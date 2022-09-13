@@ -96,9 +96,11 @@ class SecurityController extends AbstractController
             if (
                 ($adherent = $adherentRepository->findOneByEmail($email))
                 && (
-                    $adherent->isAdherent()
-                    || $currentApp === $adherent->getSource()
-                    || (null === $adherent->getSource() && MembershipSourceEnum::JEMENGAGE === $currentApp)
+                    $currentApp === $adherent->getSource()
+                    || (
+                        null === $adherent->getSource() &&
+                        \in_array($currentApp, [MembershipSourceEnum::JEMENGAGE, MembershipSourceEnum::RENAISSANCE], true)
+                    )
                 )
             ) {
                 $handler->handle($adherent, $currentApp);
