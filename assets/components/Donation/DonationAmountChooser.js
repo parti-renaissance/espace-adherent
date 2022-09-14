@@ -51,8 +51,8 @@ export default class DonationAmountChooser extends React.Component {
                             defaultChecked={!this.state.abonnement}
                             onChange={() => this.handleAbonnementChange(false)}
                         />
-                        <label htmlFor="donation-one-time" id="donation-one-time_label">
-                            Non! Une fois seulement
+                        <label htmlFor="donation-one-time" id="donation-one-time_label" className={'ml-2'}>
+                            Une fois seulement
                         </label>
                     </div>
                     <div>
@@ -65,8 +65,8 @@ export default class DonationAmountChooser extends React.Component {
                             defaultChecked={this.state.abonnement}
                             onChange={() => this.handleAbonnementChange(true)}
                         />
-                        <label htmlFor="donation-monthly" id="donation-monthly_label">
-                            Oui, tous les mois
+                        <label htmlFor="donation-monthly" id="donation-monthly_label" className={'ml-2'}>
+                            <span>tous les mois</span>
                         </label>
                     </div>
                 </div>

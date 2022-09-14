@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Donation\DonationEvents;
+use App\Donation\DonationSourceEnum;
 use App\Donation\DonationWasCreatedEvent;
 use App\Donation\DonationWasUpdatedEvent;
 use App\Entity\Adherent;
@@ -38,8 +39,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class DonationAdmin extends AbstractAdmin
+class MembershipDonationAdmin extends AbstractAdmin
 {
+    protected $baseRouteName = 'admin_app_membership_donation';
+    protected $baseRoutePattern = 'app/membership-donation';
+
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 128,
@@ -67,7 +71,10 @@ class DonationAdmin extends AbstractAdmin
     {
         /** @var QueryBuilder $proxyQuery */
         $proxyQuery = parent::createQuery($context);
-        $proxyQuery->andWhere($proxyQuery->expr()->isNull($proxyQuery->getRootAliases()[0].'.source'));
+        $proxyQuery
+            ->andWhere('o.source = :source')
+            ->setParameter('source', DonationSourceEnum::MEMBERSHIP)
+        ;
 
         return $proxyQuery;
     }
@@ -475,17 +482,16 @@ class DonationAdmin extends AbstractAdmin
             return [
                 'id' => $donation->getId(),
                 'Montant' => $donation->getAmountInEuros(),
-                'Code don' => $donation->getCode(),
+                'Code don d\'adhésion' => $donation->getCode(),
                 'Date' => $donation->getCreatedAt()->format('Y/m/d H:i:s'),
                 'Type' => $donation->getType(),
-                'Don récurrent' => $donation->hasSubscription(),
                 'Status' => $donation->getStatus(),
                 'Nationalité' => $donation->getNationality(),
                 'Addresse' => $donation->getAddress(),
                 'Code postal' => $donation->getPostalCode(),
                 'Ville' => $donation->getCityName(),
                 'Pays' => $donation->getCountry(),
-                'Numéro donateur' => $donator->getIdentifier(),
+                'Numéro adhérent donateur' => $donator->getIdentifier(),
                 'Nom' => $donator->getLastName(),
                 'Prénom' => $donator->getFirstName(),
                 'Civilité' => $donator->getGender(),
@@ -498,7 +504,6 @@ class DonationAdmin extends AbstractAdmin
                 'Pays de référence' => $referenceDonation ? $referenceDonation->getCountry() : null,
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
-                'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
             ];
         });
@@ -530,6 +535,10 @@ class DonationAdmin extends AbstractAdmin
      */
     public function prePersist($donation)
     {
+        if (!$donation->isForMembership()) {
+            $donation->setSource(DonationSourceEnum::MEMBERSHIP);
+        }
+
         parent::prePersist($donation);
 
         $this->handleFile($donation);
@@ -542,6 +551,10 @@ class DonationAdmin extends AbstractAdmin
      */
     public function preUpdate($donation)
     {
+        if (!$donation->isForMembership()) {
+            $donation->setSource(DonationSourceEnum::MEMBERSHIP);
+        }
+
         parent::preUpdate($donation);
 
         $this->handleFile($donation);
