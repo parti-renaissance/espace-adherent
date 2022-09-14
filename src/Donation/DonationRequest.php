@@ -22,10 +22,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueDonationSubscription
- * @MaxMonthDonation
- * @FrenchAddressOrNationalityDonation
- * @MaxFiscalYearDonation
+ * @UniqueDonationSubscription(groups={"choose_donation_amount"})
+ * @MaxMonthDonation(groups={"choose_donation_amount"})
+ * @FrenchAddressOrNationalityDonation(groups={"choose_donation_amount"})
+ * @MaxFiscalYearDonation(groups={"choose_donation_amount"})
  * @AssertRecaptcha(groups={"donation_request_mentions"})
  */
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
@@ -40,8 +40,8 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $uuid;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
+     * @Assert\NotBlank(groups={"choose_donation_amount"})
+     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"choose_donation_amount"})
      */
     private $amount;
 
@@ -129,7 +129,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $clientIp;
 
     /**
-     * @AssertPayboxSubscription
+     * @AssertPayboxSubscription(groups={"choose_donation_amount"})
      */
     private $duration;
 

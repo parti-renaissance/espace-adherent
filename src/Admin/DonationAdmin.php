@@ -14,7 +14,6 @@ use App\Form\UnitedNationsCountryType;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -61,15 +60,6 @@ class DonationAdmin extends AbstractAdmin
 
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
-    }
-
-    public function createQuery($context = 'list')
-    {
-        /** @var QueryBuilder $proxyQuery */
-        $proxyQuery = parent::createQuery($context);
-        $proxyQuery->andWhere($proxyQuery->expr()->isNull($proxyQuery->getRootAliases()[0].'.source'));
-
-        return $proxyQuery;
     }
 
     public function configureActionButtons($action, $object = null)
@@ -450,6 +440,10 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Tags',
                 'template' => 'admin/donation/list_tags.html.twig',
             ])
+            ->add('source', null, [
+                'label' => 'Don/Adhésion',
+                'template' => 'admin/donation/list_source.html.twig',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -500,6 +494,7 @@ class DonationAdmin extends AbstractAdmin
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
+                'Adhésion' => $donation->isForMembership(),
             ];
         });
     }

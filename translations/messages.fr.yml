@@ -523,6 +523,7 @@ donation.status.refunded: Remboursé
 donation.status.canceled: Souscription annulée/désabonnée
 donation.status.finished: Don terminé avec succes
 donation.status.error: Erreur
+donation.source.membership: Adhésion RE
 
 #
 # Transactions

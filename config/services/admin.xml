@@ -632,15 +632,7 @@
         -->
 
         <service id="app.admin.donation" class="App\Admin\DonationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Finances" default="true" />
-
-            <argument />
-            <argument>App\Entity\Donation</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.membership_donation" class="App\Admin\MembershipDonationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Adhésions RE" group="Finances" />
+            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Finances" />
 
             <argument />
             <argument>App\Entity\Donation</argument>
