@@ -45,7 +45,7 @@ export default class DonationAmountChooser extends React.Component {
                         <input
                             type="radio"
                             className="form-radio"
-                            name="abonnement"
+                            name="duration"
                             id="donation-one-time"
                             value="0"
                             defaultChecked={!this.state.abonnement}
@@ -59,9 +59,9 @@ export default class DonationAmountChooser extends React.Component {
                         <input
                             type="radio"
                             className="form-radio"
-                            name="abonnement"
+                            name="duration"
                             id="donation-monthly"
-                            value="1"
+                            value="-1"
                             defaultChecked={this.state.abonnement}
                             onChange={() => this.handleAbonnementChange(true)}
                         />

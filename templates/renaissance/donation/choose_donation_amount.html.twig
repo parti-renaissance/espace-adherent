@@ -10,9 +10,11 @@
 
 {% block content_right_side %}
     <section class="self-center w-full">
-        {{ form_start(form, {attr: {class: 'renaissance-donation-widget-wrapper'}}) }}
+        {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_rest(form) }}
+
+            <div class="renaissance-donation-widget-wrapper"></div>
         {{ form_end(form) }}
 
         <div class="flex mt-4 justify-between">
