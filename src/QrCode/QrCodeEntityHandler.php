@@ -37,6 +37,8 @@ class QrCodeEntityHandler
                 return 'app_qr_code';
             case QrCodeHostEnum::HOST_AVECVOUS:
                 return 'avecvous_qr_code';
+            case QrCodeHostEnum::HOST_RENAISSANCE:
+                return 'renaissance_qr_code';
             default:
                 throw new \InvalidArgumentException(sprintf('Unknow QrCode host "%s" for uuid: "%s".', $qrCode->getHost(), $qrCode->getUuid()));
         }
