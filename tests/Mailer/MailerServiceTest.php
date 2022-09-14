@@ -22,10 +22,15 @@ class MailerServiceTest extends TestCase
 
         $dispatcher->expects($this->at(0))->method('dispatch')->with(
             $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
+            $this->equalTo(MailerEvents::BEFORE_EMAIL_BUILD),
         );
 
         $dispatcher->expects($this->at(1))->method('dispatch')->with(
+            $this->isInstanceOf(MailerEvent::class),
+            $this->equalTo(MailerEvents::DELIVERY_MESSAGE)
+        );
+
+        $dispatcher->expects($this->at(2))->method('dispatch')->with(
             $this->isInstanceOf(MailerEvent::class),
             $this->equalTo(MailerEvents::DELIVERY_SUCCESS)
         );
@@ -50,10 +55,15 @@ class MailerServiceTest extends TestCase
 
         $dispatcher->expects($this->at(0))->method('dispatch')->with(
             $this->isInstanceOf(MailerEvent::class),
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE)
+            $this->equalTo(MailerEvents::BEFORE_EMAIL_BUILD)
         );
 
         $dispatcher->expects($this->at(1))->method('dispatch')->with(
+            $this->isInstanceOf(MailerEvent::class),
+            $this->equalTo(MailerEvents::DELIVERY_MESSAGE)
+        );
+
+        $dispatcher->expects($this->at(2))->method('dispatch')->with(
             $this->isInstanceOf(MailerEvent::class),
             $this->equalTo(MailerEvents::DELIVERY_ERROR)
         );
