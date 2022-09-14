@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
  * @FrenchAddressOrNationalityDonation(groups={"Default", "choose_donation_amount"})
  * @MaxFiscalYearDonation(groups={"Default", "choose_donation_amount"})
- * @AssertRecaptcha(groups={"Default", "donation_request_mentions"})
+ * @AssertRecaptcha(groups={"donation_request_mentions"})
  */
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {
@@ -326,9 +326,9 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         return $this->duration;
     }
 
-    public function setDuration(int $duration): void
+    public function setDuration(?int $duration): void
     {
-        $this->duration = $duration;
+        $this->duration = $duration ?? PayboxPaymentSubscription::NONE;
     }
 
     public function retryPayload(array $payload): self
