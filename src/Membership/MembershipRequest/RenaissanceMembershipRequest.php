@@ -5,6 +5,7 @@ namespace App\Membership\MembershipRequest;
 use App\Address\Address;
 use App\Donation\DonationRequestInterface;
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
@@ -130,6 +131,11 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      */
     private ?\DateTimeInterface $birthdate = null;
 
+    /**
+     * @Assert\Type(Zone::class)
+     */
+    private Zone $activismZone;
+
     private ?string $clientIp = null;
     private ?int $adherentId = null;
     private bool $isCertified = false;
@@ -231,6 +237,16 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         return $this->birthdate;
     }
 
+    public function setActivismZone(?Zone $zone): void
+    {
+        $this->activismZone = $zone;
+    }
+
+    public function getActivismZone(): ?Zone
+    {
+        return $this->activismZone;
+    }
+
     public function getClientIp(): ?string
     {
         return $this->clientIp;
@@ -269,5 +285,6 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         $this->nationality = $adherent->getNationality();
         $this->phone = $adherent->getPhone();
         $this->address = Address::createFromAddress($adherent->getPostAddress());
+        $this->activismZone = $adherent->getActivismZone();
     }
 }

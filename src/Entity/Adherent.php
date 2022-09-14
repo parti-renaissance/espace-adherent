@@ -809,6 +809,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $papUserRole = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private Zone $activismZone;
+
     private ?string $authAppCode = null;
 
     public function __construct()
@@ -1503,6 +1509,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($membership instanceof PlatformMembershipRequest) {
             $this->mandates = $membership->getMandates();
+        }
+
+        if ($membership instanceof RenaissanceMembershipRequest) {
+            $this->activismZone = $membership->getActivismZone();
         }
     }
 
@@ -3156,6 +3166,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setAuthAppCode(?string $authAppCode): void
     {
         $this->authAppCode = $authAppCode;
+    }
+
+    public function setActivismZone(?Zone $zone): void
+    {
+        $this->activismZone = $zone;
+    }
+
+    public function getActivismZone(): ?Zone
+    {
+        return $this->activismZone;
     }
 
     public function isStatusesVoter(): bool

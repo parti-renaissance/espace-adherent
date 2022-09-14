@@ -1,0 +1,35 @@
+{% extends 'renaissance/adhesion/_adhesion_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% set active_step = 'Informations additionnelles' %}
+
+{% block content_right_side %}
+    {{ parent() }}
+
+    <section class="py-10">
+        {{ form_start(form) }}
+            <div class="overflow-auto">
+                {{ form_errors(form) }}
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.phone.country, { label: false, attr: { placeholder: 'Indicatif Pays', 'data-validated-with': form.phone.number.vars.id } }) }}
+                    {{ form_row(form.phone.number, { label: false, attr: { placeholder: 'Téléphone' } }) }}
+                </div>
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.position, { label: false, attr: { placeholder: 'Catégorie socio-professionelle' } }) }}
+                </div>
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(form.activismZone, { label: false, attr: { placeholder: 'Zone de militantisme' } }) }}
+                </div>
+            </div>
+
+            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
+                route_name: 'app_renaissance_adhesion_amount',
+                form_button: form.fill_additional_informations
+            } %}
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

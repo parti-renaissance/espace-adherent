@@ -148,6 +148,7 @@ framework:
                 - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_START
                 - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
                 - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
+                - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
                 - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_TERMS_AND_CONDITIONS
                 - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
                 - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_PAYMENT
@@ -158,6 +159,7 @@ framework:
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_START
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_PAYMENT
                     to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
@@ -166,13 +168,20 @@ framework:
                     from:
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_TERMS_AND_CONDITIONS
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
                     to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
+
+                !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_FILL_ADDITIONAL_INFORMATIONS:
+                    from:
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_TERMS_AND_CONDITIONS
+                    to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
 
                 !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_ACCEPT_TERMS_AND_CONDITIONS:
                     from:
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_TERMS_AND_CONDITIONS
-                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
                     to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_TERMS_AND_CONDITIONS
 
                 !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_VALID_SUMMARY:

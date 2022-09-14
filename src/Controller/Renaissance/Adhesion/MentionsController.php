@@ -17,7 +17,7 @@ class MentionsController extends AbstractAdhesionController
         $command = $this->getCommand();
 
         if (!$this->processor->canAcceptTermsAndConditions($command)) {
-            return $this->redirectToRoute('app_renaissance_adhesion_amount');
+            return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
         $this->processor->doAcceptTermsAndConditions($command);

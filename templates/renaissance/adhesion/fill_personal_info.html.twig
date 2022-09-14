@@ -56,11 +56,6 @@
 
                     {{ form_row(form.customGender, { label: false, attr: { placeholder: 'Personnaliser mon genre' } }) }}
                 </div>
-
-                <div class="flex flex-row space-x-4">
-                    {{ form_row(form.phone.country, { label: false, attr: { placeholder: 'Indicatif Pays', 'data-validated-with': form.phone.number.vars.id } }) }}
-                    {{ form_row(form.phone.number, { label: false, attr: { placeholder: 'Téléphone' } }) }}
-                </div>
             </div>
 
             <div class="w-full">

@@ -83,6 +83,23 @@ class AdhesionControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/adhesion/informations-additionelles', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        // additional informations
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->client->submit($crawler->filter('form[name="app_renaissance_membership"]')->form([
+            'app_renaissance_membership' => [
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0612345678',
+                ],
+                'position' => 'student',
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/adhesion/mentions', $this->client);
 
         $crawler = $this->client->followRedirect();
