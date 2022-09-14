@@ -1,12 +1,13 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% set default_bg_color = 'bg-light-blue' %}
+{% set default_background_image = '/images/renaissance/parcours-adherent.jpg' %}
 
 {% block content %}
     <section class="w-screen h-screen md:flex">
-        <div style="background-image: url('/images/renaissance/login-background.jpg')" class="h-1/2 md:h-full md:w-1/2 bg-cover relative md:flex md:flex-col md:justify-between">
+        <div style="background-image: url('{{ asset(background_image|default(default_background_image)) }}')" class="h-1/2 md:h-full md:w-1/2 bg-cover relative md:flex md:flex-col md:justify-between">
             <div class="h-12.5 md:h-16.25 border-b-2 border-white/10 pl-7.5 md:flex md:items-center md:justify-between">
-                <a href="{{ path('app_renaissance_homepage') }}"><img src="/images/renaissance/logo.svg" alt="logo"/></a>
+                <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
                 <a href="{{ path('app_renaissance_homepage') }}" class="md:hidden text-white font-bold text-sm pr-7.5">
                     <i class="fa fa-caret-left text-white mr-4"></i> Retour

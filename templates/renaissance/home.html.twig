@@ -6,10 +6,10 @@
 
 {% block content %}
     <header class="sticky top-0 border-b border-b-white/10 bg-light-blue z-10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
-        <a href="{{ path('app_renaissance_homepage') }}"><img src="/images/renaissance/logo.svg" alt="logo"/></a>
+        <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
     </header>
 
-    <section class="h-[44.375rem] md:h-[68.75rem] lg:h-[65.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
+    <section class="h-[44.375rem] md:h-[65.75rem] lg:h-[69.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
         <div class="xl:container">
             <div class="max-w-[345px] md:max-w-[900px] mb-12.5 md:mb-[4.6875rem]">
                 <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem]">
@@ -18,17 +18,11 @@
             </div>
             <div class="md:flex md:gap-x-37.5 mb-12.5 text-white">
                 <div class="flex-column-container max-w-[31.875rem]">
-                    <p class="flex-1 font-medium mb-3.75 md:mb-12.5"
-                    >
+                    <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
                         Déjà adhérent de <i>La République En Marche</i>, vous pouvez rejoindre <i>Renaissance</i> en quelques clics !
                     </p>
-                    <a
-                        class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center"
-                        href="{{ path('app_renaissance_login') }}"
-                    >
-                        <span
-                                class="font-bold text-xs md:text-base uppercase mr-4"
-                        >
+                    <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center" href="{{ path('app_renaissance_login') }}">
+                        <span class="font-bold text-xs md:text-base uppercase mr-4">
                             Me connecter
                         </span>
                         <i class="fa fa-caret-right"></i>
@@ -48,34 +42,25 @@
             </div>
         </div>
     </section>
+
     <!-- Translated picture/video -->
     <div class="xl:container h-[180px] md:h-[350px] lg:h-[500px] mx-3.75 md:mx-20">
-        <img src="/images/renaissance/1_Header_PR_Renaissance.jpg" alt="bain-foule-macron" class="rounded-lg w-full -translate-y-1/2"/>
+        <img src="{{ asset('images/renaissance/bain-foule-macron.jpg') }}" alt="bain-foule-macron" class="rounded-lg w-full -translate-y-1/2"/>
     </div>
 
     <section class="px-3.75 md:px-20 mb-12.5 md:mb-25 -mt-12.5">
-        <div
-                class="max-w-7xl items-start mx-auto md:flex md:gap-x-28 lg:gap-x-37.5"
-        >
-            <div
-                    class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray pt-7.5 md:pt-12.5"
-            >
+        <div class="max-w-7xl items-start mx-auto md:flex md:gap-x-28 lg:gap-x-37.5">
+            <div class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray pt-7.5 md:pt-12.5">
                 <p class="text-dark-blue font-bold text-[1.5rem] leading-8 md:text-custom-xl mb-6.25 md:mb-7.5">
                     Renaissance: <br/>
-                    Qui <span class="stabilo stabilo-jaune">sommes-nous?</span>
+                    Qui <span class="stabilo stabilo-yellow">sommes-nous?</span>
                 </p>
-                <p
-                        class="text-dark-blue font-normal text-lg leading-6.25 md:text-2xl md:leading-9 mb-12.5 md:mb-0"
-                >
+                <p class="text-dark-blue font-normal text-lg leading-6.25 md:text-2xl md:leading-9 mb-12.5 md:mb-0">
                     Depuis le 6 avril 2016, nous avons entamé un rassemblement inédit des forces progressistes du pays autour d’un grand projet commun : bâtir une France unie dans une Europe plus forte.
                 </p>
-                <img src="/images/renaissance/2_Quisommesnous_Renaissance.jpg" class="rounded-lg mb-12.5 md:hidden" alt="qui-sommes-nous"/>
             </div>
             <div class="flex-1">
-                <img
-                        src="/images/renaissance/2_Quisommesnous_Renaissance.jpg"
-                        class="hidden md:inline rounded-lg mb-12.5" alt="qui-sommes-nous"
-                />
+                <img src="{{ asset('images/renaissance/qui-sommes-nous.jpg') }}" class="inline rounded-lg mb-12.5" alt="qui-sommes-nous"/>
                 <p class="font-normal md:text-lg md:leading-7.5">
                     « Retrouver l’esprit de conquête de 2016, construire le parti le plus décentralisé de la Vème République, unir un collectif qui puisera ses forces sur le terrain et rassemblera toutes les sensibilités progressistes de notre pays : voilà notre feuille de route pour les mois qui viennent.
                 </p>
@@ -89,33 +74,26 @@
                 </p>
                 <br/>
                 <p class="font-normal md:text-lg md:leading-7.5">
-                Stéphane Séjourné,
-                Secrétaire général de Renaissance
-            </p>
+                    Stéphane Séjourné,
+                    Secrétaire général de Renaissance
+                </p>
             </div>
         </div>
     </section>
+
     <!-- Donation section -->
     <section class="w-full md:mx-auto mb-12.5 lg:mb-25">
-        <div
-                class="max-w-7xl bg-green md:rounded-lg md:m-20 xl:mx-auto lg:flex px-3.75 md:px-20 py-12.5 md:py-30"
-        >
+        <div class="max-w-7xl bg-green md:rounded-lg md:m-20 xl:mx-auto lg:flex px-3.75 md:px-20 py-12.5 md:py-30">
             <div class="flex-1 lg:border-r-2 lg:border-white/10 lg:pr-31.25">
-                <p
-                        class="text-white font-bold text-custom-2xl lg:text-[2.1875rem] lg:leading-10 mb-6.25 lg:mb-10"
-                >
+                <p class="text-white font-bold text-custom-2xl lg:text-[2.1875rem] lg:leading-10 mb-6.25 lg:mb-10">
                     Faire un don pour aider Renaissance
                 </p>
-                <p
-                        class="text-white font-medium lg:text-lg lg:leading-6.25"
-                >
+                <p class="text-white font-medium lg:text-lg lg:leading-6.25">
                     66 % de votre don vient en déduction de votre impôt sur le revenu
                     (dans la limite de 20 % du revenu imposable).
                 </p>
                 <br/>
-                <p
-                        class="text-white font-medium lg:text-lg lg:leading-6.25 mb-12.5 lg:mb-0"
-                >
+                <p class="text-white font-medium lg:text-lg lg:leading-6.25 mb-12.5 lg:mb-0">
                     Par exemple : un don de 100 € vous revient en réalité à 34 € et vous
                     fait bénéficier d’une réduction d’impôt de 66 €. Le montant annuel
                     de votre don ne peut pas excéder 7500 € par personne physique. Le
@@ -132,27 +110,21 @@
     </section>
 
     <!-- Values and commitments -->
-    <section
-            class="px-3.75 md:px-20 bg-background-gray pt-12.5 lg:pt-25 mb-12.5 lg:mb-25"
-    >
+    <section class="px-3.75 md:px-20 bg-background-gray pt-12.5 lg:pt-25 mb-12.5 lg:mb-25">
         <div class="max-w-7xl mx-auto">
             <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-7.5"
-                    ></div>
-                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5"
-                    >
-                        Nos valeurs et nos <span class="stabilo stabilo-jaune">engagements</span>
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-7.5"></div>
+                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
+                        Nos valeurs et nos <span class="stabilo stabilo-yellow">engagements</span>
                     </p>
-                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5"
-                    >
+                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5">
                         Ce texte coconstruit avec l’ensemble des fondateurs du parti, engage chaque adhérent de Renaissance.
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
                     <img
-                        src="/images/renaissance/3_NosValeursEtEngagement_Renaissance.jpg"
+                        src="{{ asset('images/renaissance/nos-valeurs.jpg') }}"
                         class="rounded-lg md:h-full md:w-full"
                         alt="nos-valeurs"
                     />
@@ -170,7 +142,6 @@
                         data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
                         <h3 class="text-light-blue font-medium text-custom-xs lg:text-custom-base2 mb-2.5">{{ commitment.title }}</h3>
-
                         <div class="text-medium-gray font-normal text-xs lg:text-custom-base2">{{ commitment.shortDescription }}</div>
                     </div>
                 {% endfor %}
@@ -178,130 +149,121 @@
         </div>
     </section>
 
-    <section class="px-3.75 md:px-20 bg-white mb-12.5 lg:mb-37.5">
+    <section class="px-3.75 md:px-20 bg-white mb-12.5 lg:mb-20">
         <div class="max-w-7xl mx-auto">
             <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-7.5"
-                    ></div>
-                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5"
-                    >
-                        Le bureau <span class="stabilo stabilo-jaune">exécutif</span>
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-7.5"></div>
+                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
+                        Le bureau <span class="stabilo stabilo-yellow">exécutif</span>
                     </p>
                     <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5">
                         Une équipe paritaire de femmes et d’hommes engagés, rassemblant toutes les sensibilités de Renaissance et représentative de l’ensemble de nos territoires.
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
-                    <img src="/images/renaissance/4_Burex_Renaissance.jpg" class="rounded-lg md:h-full w-full"/>
-                </div>
-            </div>
-            <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5" ></div>
-            <!-- LIGNE 1 -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10 mb-6.25 lg:mb-12.5" >
-                <div class="flex flex-col">
-                    <img src="/images/renaissance/burex/macron.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Emmanuel Macron</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Président d'honneur</p>
-                </div>
-                <div class="flex flex-col">
-                    <img src="/images/renaissance/burex/sejourne.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Stéphane Séjourné</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général</p>
+                    <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="rounded-lg md:h-full w-full" alt="Burex"/>
                 </div>
             </div>
 
-            <!-- LIGNE 2 -->
-            <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
+            {% set memberGroups = [
+                [
+                    {
+                        name: 'Emmanuel Macron',
+                        position: 'Président d\'honneur',
+                        image: 'images/renaissance/burex/macron.jpg',
+                    },
+                    {
+                        name: 'Stéphane Séjourné',
+                        position: 'Secrétaire général',
+                        image: '/images/renaissance/burex/sejourne.jpg',
+                    },
+                ],
+                [
+                    {
+                        name: 'Clément Beaune',
+                        position: 'Secrétaire général délégué',
+                        image: '/images/renaissance/burex/beaune.jpg',
+                    },
+                    {
+                        name: 'Aurore Bergé',
+                        position: 'Secrétaire générale déléguée',
+                        image: '/images/renaissance/burex/berge.jpg',
+                    },
+                    {
+                        name: 'Brigitte Bourguignon',
+                        position: 'Secrétaire générale déléguée',
+                        image: '/images/renaissance/burex/bourguignon.jpg',
+                    },
+                    {
+                        name: 'Pascal Canfin',
+                        position: 'Secrétaire général délégué',
+                        image: '/images/renaissance/burex/canfin.jpg',
+                    },
+                    {
+                        name: 'Bérangère Couillard',
+                        position: 'Secrétaire générale déléguée',
+                        image: '/images/renaissance/burex/couillard.jpg',
+                    },
+                    {
+                        name: 'Gérald Darmanin',
+                        position: 'Secrétaire général délégué',
+                        image: '/images/renaissance/burex/darmanin.jpg',
+                    },
+                    {
+                        name: 'Amélie de Montchalin',
+                        position: 'Secrétaire générale déléguée',
+                        image: '/images/renaissance/burex/montchalin.jpg',
+                    },
+                    {
+                        name: 'Olivier Dussopt',
+                        position: 'Secrétaire général délégué',
+                        image: '/images/renaissance/burex/dussopt.jpg',
+                    },
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10 mb-6.25 lg:mb-12.5">
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/beaune.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Clément Beaune</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général délégué</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/berge.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Aurore Bergé</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/bourguignon.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Brigitte Bourguignon</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/canfin.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Pascal Canfin</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général délégué</p>
-                </div>
-            </div>
+                    {
+                        name: 'Fabienne Keller',
+                        position: 'Secrétaire générale déléguée',
+                        image: '/images/renaissance/burex/keller.jpg',
+                    },
+                    {
+                        name: 'Bruno Le Maire',
+                        position: 'Secrétaire général délégué',
+                        image: '/images/renaissance/burex/lemaire.jpg',
+                    },
+                    {
+                        name: 'Nathalie Nieson',
+                        position: 'Secrétaire générale déléguée',
+                        image: '/images/renaissance/burex/nieson.jpg',
+                    },
+                    {
+                        name: 'Bénédicte Peyrol',
+                        position: 'Secrétaire générale déléguée – Trésorière',
+                        image: '/images/renaissance/burex/peyrol.jpg',
+                    },
+                ],
+                [
+                    {
+                        name: 'Franck Riester',
+                        position: 'Secrétaire général délégué',
+                        image: '/images/renaissance/burex/riester.jpg',
+                    },
+                ]
+            ] %}
 
-                <!-- LIGNE 3 -->
-            <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
+            {% for members in memberGroups %}
+                <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10 mb-6.25 lg:mb-12.5">
-
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/couillard.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Bérangère Couillard</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée</p>
+                <div class="flex justify-center flex-wrap gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
+                    {% for member in members %}
+                        <div class="flex flex-col mb-6.25 lg:mb-12.5">
+                            <img src="{{ asset(member.image) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" height="100%" alt="{{ member.name }}"/>
+                            <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.name }}</p>
+                            <p class="text-center font-normal text-xs leading-4.5 md:text-sm">{{ member.position }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/darmanin.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Gérald Darmanin</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général délégué</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/montchalin.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Amélie de Montchalin</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/dussopt.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Olivier Dussopt</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général délégué</p>
-                </div>
-            </div>
-
-            <!-- LIGNE 4 -->
-            <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
-                
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/keller.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Fabienne Keller</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/lemaire.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Bruno Le Maire</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général délégué</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/nieson.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Nathalie Nieson</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée</p>
-                </div>
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/peyrol.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Bénédicte Peyrol</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire générale déléguée – Trésorière</p>
-                </div>
-            </div>
-
-            <!-- LIGNE 5 -->
-            <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
-                <div class="flex flex-col w-full">
-                    <img src="/images/renaissance/burex/riester.jpg" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out"/>
-                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">Franck Riester</p>
-                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">Secrétaire général délégué</p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
@@ -309,27 +271,21 @@
         <div class="max-w-7xl mx-auto">
             <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-7.5"
-                    ></div>
-                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5"
-                    >
-                        Devenir le parti le plus <span class="stabilo stabilo-jaune">délocalisé</span> de France
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-7.5"></div>
+                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
+                        Devenir le parti le plus <span class="stabilo stabilo-yellow">délocalisé</span> de France
                     </p>
-                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5 lg:mb-0"
-                    >
+                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5 lg:mb-0">
                         Pour aller au plus près des Français et être présents partout sur le terrain, nous avons inscrit dans nos statuts une organisation décentralisée et différenciée.
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
-                    <img src="/images/renaissance/6_PartiDecentralise_Renaissance.jpg" class="rounded-lg md:h-full md:w-full"/>
+                    <img src="{{ asset('images/renaissance/d2d.jpg') }}" class="rounded-lg md:h-full md:w-full" alt="d2d"/>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
                 <div class="mb-6.25 lg:mb-25">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"
-                    ></div>
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Les comités locaux
                     </p>
@@ -338,9 +294,7 @@
                     </p>
                 </div>
                 <div class="mb-6.25">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"
-                    ></div>
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         L’assemblée départementale
                     </p>
@@ -349,9 +303,7 @@
                     </p>
                 </div>
                 <div class="mb-6.25">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"
-                    ></div>
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         Le délégué régional
                     </p>
@@ -360,9 +312,7 @@
                     </p>
                 </div>
                 <div class="mb-6.25">
-                    <div
-                            class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"
-                    ></div>
+                    <div class="divide-y border-gray-border border-0.5 w-full mb-6.25 lg:mb-10"></div>
                     <p class="text-light-blue font-bold text-custom-base2 mb-2.5">
                         L’Assemblée des territoires
                     </p>
@@ -377,23 +327,17 @@
     <section class="md:px-20 md:mb-25">
         <div class="max-w-7xl lg:mx-auto md:flex w-full">
             <div
-                    class="bg-cover md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
-                    style="background-image: url('/images/renaissance/macron-newsletter.jpg')"
+                class="bg-cover md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
+                style="background-image: url('{{ asset('/images/renaissance/newsletter.jpg') }}')"
             >
-                <p
-                        class="text-white font-bold text-custom-2xl mb-5 lg:text-3xl lg:leading-[2.1875rem]"
-                >
+                <p class="text-white font-bold text-custom-2xl mb-5 lg:text-3xl lg:leading-[2.1875rem]">
                     Newsletter
                 </p>
-                <p
-                        class="text-white font-normal text-lg leading-6.25 lg:text-xl lg:leading-7.5"
-                >
+                <p class="text-white font-normal text-lg leading-6.25 lg:text-xl lg:leading-7.5">
                     Restez les premiers informés de l’actualité de <i>Renaissance</i>.
                 </p>
             </div>
-            <div
-                    class="bg-light-blue px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 md:rounded-tr-lg md:rounded-br-lg lg:w-[45.625rem]"
-            >
+            <div class="bg-light-blue px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 md:rounded-tr-lg md:rounded-br-lg lg:w-[45.625rem]">
                 {{ form_start(newsletter_form) }}
                     {% set error = app.flashes('newsletter_error')|first %}
                     {% if error %}
@@ -428,7 +372,7 @@
         <div class="max-w-7xl md:mx-auto mb-12.5">
             <a href="{{ path('app_renaissance_homepage') }}">
                 <img
-                    src="/images/renaissance/logo.svg"
+                    src="{{ asset('/images/renaissance/logo.svg') }}"
                     class="mx-auto mb-[7.8125rem] md:mb-50 h-[1.25rem] md:h-8.75"
                     alt="logo"
                 />

@@ -1,56 +1,43 @@
-{% extends 'base.html.twig' %}
+{% extends 'renaissance/double_columns_layout.html.twig' %}
 
-{% block app_title 'Renaissance' %}
-{% block page_title 'J\'adhère' %}
-{% block meta_description '' %}
-{% block canonical_url url('app_renaissance_adhesion') %}
+{% block page_title 'Adhésion' %}
 
-{#{% block open_graph_image (homepage_url ~ asset('images/donation-sharer.jpg'))|raw %}   @todo to change with renaissance open grap image#}
+{% set default_active_step = 'Informations' %}
 
-{% block stylesheets %}
-    <style type="text/css">
-        header,
-        footer {
-            display: none;
-        }
-        footer.footer--slim {
-            display: initial;
-        }
-    </style>
+{% block content_left_side %}
+    <div class="absolute bottom-0 md:h-full flex flex-col justify-end md:justify-center px-3.75 md:px-7.5 mb-3.75">
+        <p class="text-white font-bold text-[1.75rem] leading-8 md:text-custom-xl md:mb-16">
+            {% block adhesion_title %}
+                <span class="stabilo stabilo-blue">{{ app.user ? '(Ré)' }}Adhérez</span> au parti <br />Renaissance.
+            {% endblock %}
+        </p>
+    </div>
+
+    {% block navigation_steps %}
+        <div class="hidden md:flex md:items-center w-full h-[4.6875rem] border-t-2 border-white/20 py-7.5 pl-7.5">
+            {% for step in ['Informations', 'Contributions', 'Informations additionnelles', 'Mentions'] %}
+                <p class="{{ step == active_step|default(default_active_step) ? 'text-yellow' : 'text-white' }} font-bold text-sm mr-4">{{ step }}</p>
+
+                {% if not loop.last %}
+                    <i class="fa fa-caret-right text-white opacity-30 mr-4"></i>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endblock %}
 {% endblock %}
 
-{% block banner '' %}
-{% block footer '' %}
+{% block content_right_side %}
+    <div class="md:hidden h-12.5 flex justify-between items-center mb-12.5 bg-dark-gray/10">
+        <div class="mx-5.5 opacity-50">
+            <i class="fa fa-caret-left"></i>
+        </div>
 
-{% block content %}
-    <div class="adhesion__page">
+        <div class="text-white font-bold text-3.25 leading-5">
+            {{ active_step|default(default_active_step) }}
+        </div>
 
-        <section class="adhesion__content">
-            {% block adhesion_content %}{% endblock %}
-        </section>
-
-        <section class="adhesion__footer">
-            <div class="l__wrapper">
-                <div class="adhesion__footer__sections">
-                    <div class="footer__section text--body">
-                        <h5>Une question ? Contactez-nous.</h5>
-                        <p>01 86 95 09 15 / <a class="text--blue--dark link--no-decor" href="mailto:dons@en-marche.fr">contact@en-marche.fr</a></p>
-                    </div>
-                    <div class="footer__section text--body">
-                        <h5>Suivez Renaissance !</h5>
-                        <ul class="list__links list__links--no-decor list__links--svgs">
-                            <li><a href="https://www.facebook.com/EnMarche/" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook-square"></i></a></li>
-                            <li><a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-square"></i></a></li>
-                            <li><a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin-square"></i></a></li>
-                            <li><a href="https://www.flickr.com/photos/enmarchefr/albums" rel="noopener noreferrer" target="_blank"><i class="fa fa-flickr"></i></a></li>
-                            <li><a href="https://t.me/enmarchefr" rel="noopener noreferrer" target="_blank"><i class="fa fa-telegram"></i></a></li>
-                            <li><a href="{{ url('articles_feed') }}" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <a href="#" class="mx-5.5">
+            <i class="fa fa-caret-right text-white"></i>
+        </a>
     </div>
 {% endblock %}
