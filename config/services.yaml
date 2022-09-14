@@ -396,3 +396,10 @@ services:
     logger:
         alias: 'monolog.logger'
         public: true
+
+    App\Mailer\SenderMessageMapper:
+        arguments:
+            -
+                App\Mailer\Message\Renaissance\RenaissanceMessageInterface:
+                    name: Renaissance
+                    email: "%env(RENAISSANCE_SENDER_EMAIL)%"

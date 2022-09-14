@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class RenaissanceResetPasswordConfirmationMessage extends Message
+final class RenaissanceResetPasswordConfirmationMessage extends AbstractRenaissanceMessage
 {
     public static function createFromAdherent(Adherent $adherent): self
     {

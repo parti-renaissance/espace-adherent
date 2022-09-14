@@ -32,9 +32,11 @@ class MailerService
 
     public function sendMessage(Message $message): bool
     {
-        $delivered = true;
+        $this->dispatcher->dispatch(new MailerEvent($message), MailerEvents::BEFORE_EMAIL_BUILD);
+
         $email = $this->factory->createFromMessage($message);
 
+        $delivered = true;
         try {
             $this->dispatcher->dispatch(new MailerEvent($message, $email), MailerEvents::DELIVERY_MESSAGE);
             $this->transport->sendTemplateEmail($email);

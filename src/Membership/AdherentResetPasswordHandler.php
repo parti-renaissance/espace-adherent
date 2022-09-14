@@ -7,7 +7,7 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
-use App\Mailer\Message\RenaissanceResetPasswordConfirmationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
