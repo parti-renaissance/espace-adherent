@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance;
 
+use App\Form\Renaissance\NewsletterSubscriptionType;
 use App\Repository\CommitmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,9 @@ class HomeController extends AbstractController
 {
     public function __invoke(CommitmentRepository $commitmentRepository): Response
     {
-        return $this->render('renaissance/home.html.twig', ['commitments' => $commitmentRepository->getAllOrdered()]);
+        return $this->render('renaissance/home.html.twig', [
+            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, ['action' => $this->generateUrl('app_renaissance_newsletter_save')])->createView(),
+            'commitments' => $commitmentRepository->getAllOrdered(),
+        ]);
     }
 }

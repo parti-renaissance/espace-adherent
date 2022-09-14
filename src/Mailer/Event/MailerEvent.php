@@ -13,8 +13,11 @@ class MailerEvent extends Event
     private $email;
     private $exception;
 
-    public function __construct(Message $message, AbstractEmailTemplate $email, MailerException $exception = null)
-    {
+    public function __construct(
+        Message $message,
+        AbstractEmailTemplate $email = null,
+        MailerException $exception = null
+    ) {
         $this->message = $message;
         $this->email = $email;
         $this->exception = $exception;
@@ -25,12 +28,12 @@ class MailerEvent extends Event
         return $this->message;
     }
 
-    public function getEmail(): AbstractEmailTemplate
+    public function getEmail(): ?AbstractEmailTemplate
     {
         return $this->email;
     }
 
-    public function getException()
+    public function getException(): ?MailerException
     {
         return $this->exception;
     }

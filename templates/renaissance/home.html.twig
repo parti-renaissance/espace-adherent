@@ -2,6 +2,8 @@
 
 {% block page_title 'Bienvenue' %}
 
+{% form_theme newsletter_form 'renaissance/form_theme.html.twig' %}
+
 {% block content %}
     <header class="sticky top-0 border-b border-b-white/10 bg-light-blue z-10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
         <a href="{{ path('app_renaissance_homepage') }}"><img src="/images/renaissance/logo.svg" alt="logo"/></a>
@@ -494,26 +496,32 @@
             <div
                     class="bg-light-blue px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 md:rounded-tr-lg md:rounded-br-lg lg:w-[45.625rem]"
             >
-                <div class="lg:flex lg:flex-row lg:gap-x-3.75">
-                    <input
-                            type="text"
-                            placeholder="Prénom*"
-                            class="form-control"
-                    />
-                    <input
-                            type="text"
-                            placeholder="Nom*"
-                            class="form-control"
-                    />
-                </div>
-                <input
-                        type="text"
-                        placeholder="Email*"
-                        class="form-control"
-                />
-                <button class="bg-white rounded w-full py-5.75 font-din font-bold uppercase text-dark-blue text-lg">
-                    M'inscrire
-                </button>
+                {{ form_start(newsletter_form) }}
+                    {% set error = app.flashes('newsletter_error')|first %}
+                    {% if error %}
+                        <div class="text-red-500" id="newsletter-form-error">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+
+                    <div class="lg:flex lg:flex-row lg:gap-x-3.75">
+                        {{ form_widget(newsletter_form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
+                        {{ form_widget(newsletter_form.zipCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
+                    </div>
+
+                    {{ form_widget(newsletter_form.email, { label: false, attr: { placeholder: 'Email' } }) }}
+
+                    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                    {% if recaptcha_public_key is not empty %}
+                        <div class="g-recaptcha mb-3.75" data-sitekey="{{ recaptcha_public_key }}"></div>
+                    {% elseif app.debug %}
+                        <input type="hidden" name="g-recaptcha-response" value="fake" />
+                    {% endif %}
+
+                    <button type="submit" class="bg-white rounded w-full py-5.75 font-din font-bold uppercase text-dark-blue text-lg">
+                        M'inscrire
+                    </button>
+                {{ form_end(newsletter_form) }}
             </div>
         </div>
     </section>
@@ -624,6 +632,8 @@
 {% endblock %}
 
 {% block final_javascripts %}
+    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+
     <script type="text/javascript">
         Bootstrap.onLoad(function () {
             Main.runHomePage();

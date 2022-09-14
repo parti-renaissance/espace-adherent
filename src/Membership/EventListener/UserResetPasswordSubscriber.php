@@ -6,7 +6,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Mailer\Message\Coalition\CoalitionResetPasswordMessage;
 use App\Mailer\Message\JeMengage\JeMengageResetPasswordMessage;
-use App\Mailer\Message\RenaissanceResetPasswordMessage;
+use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
 use App\Membership\Event\UserResetPasswordEvent;
 use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
