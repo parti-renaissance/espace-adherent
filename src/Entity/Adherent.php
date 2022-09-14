@@ -672,11 +672,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $certifiedAt;
 
     /**
-     * @var
-     */
-    private $socioProfessionalCategory;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)

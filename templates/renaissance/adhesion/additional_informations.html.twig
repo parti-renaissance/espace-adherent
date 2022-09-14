@@ -2,9 +2,7 @@
 
 {% form_theme form 'renaissance/form_theme.html.twig' %}
 
-{% block final_javascripts %}
-    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
-{% endblock %}
+{% set active_step = 'Informations additionnelles' %}
 
 {% block content_right_side %}
     {{ parent() }}
