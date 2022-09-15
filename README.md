@@ -2,13 +2,6 @@
   <img src="https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg">
 </div>
 
-Vous souhaitez aider le projet ou simplement parler avec nous? Rejoignez nous sur [Slack](https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw):
-<div align="center">
-  <a href="https://join.slack.com/t/larepubliqueenmarche/shared_invite/zt-ot7i6oly-~sS3X5ljfMSrtbzqq_bRGw">
-    <img src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/2019-01_BrandRefresh_Old-to-New-Final.fr-FR.gif" height=25% width=25% alt="Slack Logo">
-  </a>
-</div>
-
 Powered by : 
 <div>
   <a href="http://symfony.com">
