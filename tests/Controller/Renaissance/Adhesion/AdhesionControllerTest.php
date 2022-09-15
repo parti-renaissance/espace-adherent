@@ -171,11 +171,15 @@ class AdhesionControllerTest extends WebTestCase
 
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=PAYBOX]')->form());
         $crawler = $this->payboxClient->submit($crawler->filter('form[name=form_pay]')->form([
-            'NUMERO_CARTE' => '4012001037141112',
+            'NUMERO_CARTE' => '1111222233334444',
             'MOIS_VALIDITE' => '12',
             'AN_VALIDITE' => '32',
             'CVVX' => '123',
         ]));
+
+        $this->payboxClient->submit($crawler->filter('form[name=form3dsecure]')->form());
+
+        $crawler = $this->payboxClient->clickLink('Continuer');
 
         $callbackUrl = $crawler->filter('td#ticketCell div.textCenter a')->attr('href');
         $callbackUrlRegExp = 'http://'.$this->getParameter('renaissance_host').'/adhesion/callback/(.+)'; // token
