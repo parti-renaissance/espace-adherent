@@ -23,7 +23,7 @@
         {% if not designation.isMajorityType %}
             {% if designation.isBlankVoteEnabled() %}
                 <div class="el">
-                    <div class="title">Blancs</div>
+                    <div class="title">{{ vote_blanc_label|default('Blancs') }}</div>
                     <span class="value">{{ pool_result.blank ?? 0 }}</span>
                 </div>
             {% endif %}
