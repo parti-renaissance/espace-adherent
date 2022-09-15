@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueDonationSubscription(groups={"Default", "choose_donation_amount"})
  * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
- * @FrenchAddressOrNationalityDonation(groups={"Default", "choose_donation_amount"})
+ * @FrenchAddressOrNationalityDonation(groups={"Default", "fill_personal_info"})
  * @MaxFiscalYearDonation(groups={"Default", "choose_donation_amount"})
  * @AssertRecaptcha(groups={"donation_request_mentions"})
  */
