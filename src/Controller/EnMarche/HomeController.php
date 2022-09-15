@@ -2,16 +2,11 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Address\GeoCoder;
-use App\Entity\Adherent;
-use App\Entity\NewsletterSubscription;
 use App\Exception\SitemapException;
-use App\Form\NewsletterSubscriptionType;
 use App\Repository\HomeBlockRepository;
 use App\Repository\LiveLinkRepository;
 use App\Sitemap\SitemapFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,26 +15,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="homepage", methods={"GET"})
      */
-    public function indexAction(
-        Request $request,
-        GeoCoder $geoCoder,
-        HomeBlockRepository $homeBlockRepository,
-        LiveLinkRepository $linkRepository
-    ): Response {
-        if (($user = $this->getUser()) instanceof Adherent) {
-            $newsletterSubscription = new NewsletterSubscription(
-                $user->getEmailAddress(),
-                $user->getPostalCode(),
-                $user->getCountry()
-            );
-        } else {
-            $newsletterSubscription = new NewsletterSubscription(null, null, $geoCoder->getCountryCodeFromIp($request->getClientIp()));
-        }
-
+    public function indexAction(HomeBlockRepository $homeBlockRepository, LiveLinkRepository $linkRepository): Response
+    {
         return $this->render('home/index.html.twig', [
             'blocks' => $homeBlockRepository->findHomeBlocks(),
             'live_links' => $linkRepository->findHomeLiveLinks(),
-            'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, $newsletterSubscription)->createView(),
         ]);
     }
 

@@ -29,6 +29,8 @@ class NewsletterController extends AbstractController
         NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
         NewsletterSubscriptionHandler $newsletterSubscriptionHandler
     ): Response {
+        return $this->redirectToRoute('homepage');
+
         if ($email = $request->query->get('mail')) {
             $subscription = $newsletterSubscriptionRepository->findOneNotConfirmedByEmail($email);
             if ($subscription) {
