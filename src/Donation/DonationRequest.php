@@ -328,7 +328,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     public function setDuration(?int $duration): void
     {
-        $this->duration = $duration;
+        $this->duration = $duration ?? PayboxPaymentSubscription::NONE;
     }
 
     public function retryPayload(array $payload): self
