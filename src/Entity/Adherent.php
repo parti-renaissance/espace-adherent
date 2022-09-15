@@ -813,7 +813,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=true)
      */
-    private Zone $activismZone;
+    private ?Zone $activismZone = null;
 
     private ?string $authAppCode = null;
 

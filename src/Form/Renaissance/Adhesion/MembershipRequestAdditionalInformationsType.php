@@ -7,7 +7,6 @@ use App\Form\ActivityPositionType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -26,10 +25,6 @@ class MembershipRequestAdditionalInformationsType extends AbstractType
             ])
             ->add('position', ActivityPositionType::class, [
                 'placeholder' => 'Catégorie socio-professionelle',
-                'required' => false,
-            ])
-            ->add('activismZone', ChoiceType::class, [
-                'placeholder' => 'Zone de militantisme',
                 'required' => false,
             ])
             ->add('fill_additional_informations', SubmitType::class, ['label' => 'Étape suivante'])
