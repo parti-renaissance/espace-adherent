@@ -3,8 +3,9 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Transaction;
+use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
 
-final class DonationThanksMessage extends Message
+final class DonationThanksMessage extends AbstractRenaissanceMessage
 {
     public static function createFromTransaction(Transaction $transaction): self
     {
