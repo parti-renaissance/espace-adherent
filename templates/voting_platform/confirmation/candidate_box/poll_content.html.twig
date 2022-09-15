@@ -15,7 +15,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <h3 class="text--medium">Ne se prononce pas</h3>
+                <h3 class="text--medium">{{ vote_blanc_label }}</h3>
             {% endif %}
         </div>
         <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
