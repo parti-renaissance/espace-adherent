@@ -15,11 +15,15 @@
   }
 
   .form-control {
-    @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75
+    @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75;
+
+    & option {
+      color: black;
+    }
   }
 
   .form-group {
-    @apply flex flex-col gap-x-3.75 w-full lg:max-w-[43.125rem]
+    @apply flex flex-col gap-x-3.75 w-full lg:max-w-[43.125rem];
   }
 
   .renaissance-amount-chooser {
@@ -37,7 +41,7 @@
       @apply flex flex-col gap-x-3.75 w-full lg:max-w-[43.125rem];
 
       &__input {
-        @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75
+        @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75;
       }
     }
   }
