@@ -1464,6 +1464,27 @@ SQL;
 
     public function associateWithVoterList(Designation $designation, VotersList $list): void
     {
+        /** @var Connection $connection */
+        $connection = $this->getEntityManager()->getConnection();
+
+        // 1. Create voters
+        $sql = <<<SQL
+INSERT IGNORE INTO voting_platform_voter (adherent_id, created_at, is_poll_voter)
+SELECT adherent.id, NOW(), 1 FROM adherents AS adherent
+WHERE 
+    adherent.status = :status
+    AND adherent.registered_at < :since_date
+    AND adherent.certified_at IS NOT NUll
+    AND adherent.adherent = 1
+    AND adherent.source IS NULL
+ON DUPLICATE KEY UPDATE is_poll_voter = 1
+SQL;
+        $connection->prepare($sql)->executeStatement([
+            'status' => Adherent::ENABLED,
+            'since_date' => (clone $designation->getVoteStartDate())->modify('-3 months')->format(\DateTimeInterface::ATOM),
+        ]);
+
+        // 2. Associate voters with voters list
         $sql = <<<SQL
 INSERT IGNORE INTO voting_platform_voters_list_voter (voters_list_id, voter_id)
 SELECT :voter_list_id, voter.id FROM voting_platform_voter AS voter
@@ -1472,10 +1493,10 @@ WHERE
     voter.is_poll_voter = 1
     AND adherent.status = :status
     AND adherent.registered_at < :since_date
+    AND adherent.certified_at IS NOT NUll
     AND adherent.adherent = 1
+    AND adherent.source IS NULL
 SQL;
-        /** @var Connection $connection */
-        $connection = $this->getEntityManager()->getConnection();
 
         $connection->prepare($sql)->executeStatement([
             'voter_list_id' => $list->getId(),
