@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+    {% block favicons %}
+        <link rel="icon" type="image/png" href="{{ asset('favicon-ren-32x32.png') }}" sizes="32x32" />
+    {% endblock %}
+
     <title>{% block title %}{% apply spaceless %}{% block page_title '' %}{% endapply %} | {% block app_title 'Renaissance' %}{% endblock %}</title>
 
     <link rel="stylesheet" type="text/css" href="{{ webpack_asset('bootstrap.css') }}" />
