@@ -26,5 +26,4 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don/coordonnees?montant=7490&abonnement=0"
     And I press "Finaliser mon don"
-    Then I should see "Vous avez déjà donné 200 euros cette année."
-    And I should see "Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné 200 euros cette année. Les dons étant limités à 7500 euros par an et par personne, vous pouvez encore donner 7300 euros."
+    And I should see "Le don que vous vous apprêtez à faire est trop élevé. Les dons étant limités à 7500 euros par an et par personne, veuillez vous rapprocher du Pôle Finance pour connaitre votre limite annuelle."

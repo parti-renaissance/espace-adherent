@@ -3,8 +3,7 @@
 namespace App\Controller\Renaissance\Donation;
 
 use App\Donation\DonationRequestUtils;
-use App\Donation\PayboxPaymentSubscription;
-use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
+use App\Form\Renaissance\Donation\DonationRequestAmountType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,18 +23,13 @@ class DonationController extends AbstractDonationController
 
         $this->processor->doChooseDonationAmount($command);
 
-        if ($request->request->has('montant') && is_numeric($request->request->get('montant'))) {
-            $duration = $request->request->getInt('abonnement') ? PayboxPaymentSubscription::UNLIMITED : PayboxPaymentSubscription::NONE;
-            $amount = $request->request->get('montant');
+        $form = $this
+            ->createForm(DonationRequestAmountType::class, $command)
+            ->handleRequest($request)
+        ;
 
-            if (!PayboxPaymentSubscription::isValid($duration)) {
-                throw new InvalidPayboxPaymentSubscriptionValueException($duration);
-            }
-
-            $command->setDuration($duration);
-            $command->setAmount((float) $amount);
-
-            if ($donationRequestUtils->hasAmountAlert($amount, $duration)) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($donationRequestUtils->hasAmountAlert($command->getAmount(), $command->getDuration())) {
                 $this->processor->doChangeDonationType($command);
 
                 return $this->redirectToRoute('app_renaissance_donation_confirmation_type');
@@ -46,6 +40,8 @@ class DonationController extends AbstractDonationController
             return $this->redirectToRoute('app_renaissance_donation_informations');
         }
 
-        return $this->render('renaissance/donation/choose_donation_amount.html.twig');
+        return $this->render('renaissance/donation/choose_donation_amount.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

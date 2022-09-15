@@ -73,10 +73,18 @@
             &:before {
                 content: attr(data-error);
                 text-transform: none;
-                width: 100%;
-                left: 50%;
-                transform: translateX(-50%);
+                top: 55%;
                 color: #FF3A3A;
+                position: absolute;
+
+                @media(max-width: 650px) {
+                    top: 79%;
+                    left: 21%;
+                }
+
+                @media(max-width: 1000px) {
+                    top: 80%;
+                }
             }
         }
     }

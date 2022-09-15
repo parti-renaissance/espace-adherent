@@ -440,6 +440,10 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Tags',
                 'template' => 'admin/donation/list_tags.html.twig',
             ])
+            ->add('source', null, [
+                'label' => 'Don/Adhésion',
+                'template' => 'admin/donation/list_source.html.twig',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -490,6 +494,7 @@ class DonationAdmin extends AbstractAdmin
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
+                'Adhésion' => $donation->isForMembership(),
             ];
         });
     }

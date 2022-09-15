@@ -15,7 +15,7 @@ final class DonationThanksMessage extends Message
             $donation->getUuid(),
             $donator->getEmailAddress(),
             $donator->getFullName(),
-            'Merci pour votre engagement',
+            'Merci pour votre don',
             [
                 'target_firstname' => self::escape($donator->getFirstName()),
                 'donation_amount' => $donation->getAmountInEuros(),

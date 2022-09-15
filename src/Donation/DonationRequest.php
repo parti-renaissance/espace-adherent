@@ -22,10 +22,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueDonationSubscription
- * @MaxMonthDonation
- * @FrenchAddressOrNationalityDonation
- * @MaxFiscalYearDonation
+ * @UniqueDonationSubscription(groups={"Default", "fill_personal_info"})
+ * @FrenchAddressOrNationalityDonation(groups={"Default", "fill_personal_info"})
+ * @MaxFiscalYearDonation(groups={"Default", "fill_personal_info"})
+ * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
  * @AssertRecaptcha(groups={"donation_request_mentions"})
  */
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
@@ -40,8 +40,8 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $uuid;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
+     * @Assert\NotBlank(groups={"Default", "choose_donation_amount"})
+     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"Default", "choose_donation_amount"})
      */
     private $amount;
 
@@ -129,7 +129,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $clientIp;
 
     /**
-     * @AssertPayboxSubscription
+     * @AssertPayboxSubscription(groups={"Default", "choose_donation_amount"})
      */
     private $duration;
 
@@ -326,9 +326,9 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         return $this->duration;
     }
 
-    public function setDuration(int $duration): void
+    public function setDuration(?int $duration): void
     {
-        $this->duration = $duration;
+        $this->duration = $duration ?? PayboxPaymentSubscription::NONE;
     }
 
     public function retryPayload(array $payload): self

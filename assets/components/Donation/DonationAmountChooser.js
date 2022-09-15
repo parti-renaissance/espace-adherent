@@ -45,28 +45,28 @@ export default class DonationAmountChooser extends React.Component {
                         <input
                             type="radio"
                             className="form-radio"
-                            name="abonnement"
+                            name="duration"
                             id="donation-one-time"
                             value="0"
                             defaultChecked={!this.state.abonnement}
                             onChange={() => this.handleAbonnementChange(false)}
                         />
-                        <label htmlFor="donation-one-time" id="donation-one-time_label">
-                            Non! Une fois seulement
+                        <label htmlFor="donation-one-time" id="donation-one-time_label" className={'ml-2'}>
+                            Une fois seulement
                         </label>
                     </div>
                     <div>
                         <input
                             type="radio"
                             className="form-radio"
-                            name="abonnement"
+                            name="duration"
                             id="donation-monthly"
-                            value="1"
+                            value="-1"
                             defaultChecked={this.state.abonnement}
                             onChange={() => this.handleAbonnementChange(true)}
                         />
-                        <label htmlFor="donation-monthly" id="donation-monthly_label">
-                            Oui, tous les mois
+                        <label htmlFor="donation-monthly" id="donation-monthly_label" className={'ml-2'}>
+                            <span>tous les mois</span>
                         </label>
                     </div>
                 </div>

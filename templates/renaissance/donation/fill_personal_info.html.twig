@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block content_right_side %}
-    <section class="py-10">
+    <section class="self-center w-full">
         {{ form_start(form) }}
         <div class="overflow-auto">
             {{ form_errors(form) }}
 
-            <div class="flex flex-row space-x-4">
+            <div class="mb-5 flex flex-row space-x-5">
                 {% for choice in form.gender %}
                     {{ form_row(choice, { label_attr: { id: 'donation_gender_'~choice.vars.value }}) }}
                 {% endfor %}
