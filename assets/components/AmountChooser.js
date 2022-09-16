@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const defaultAmounts = [20, 50, 120, 500];
+const defaultAmounts = [30, 60, 120, 500];
 
 const amountAfterTaxReturn = (amount) => {
     amount = parseInt(amount);
