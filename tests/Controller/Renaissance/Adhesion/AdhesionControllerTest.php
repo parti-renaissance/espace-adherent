@@ -108,8 +108,10 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->client->submit($crawler->filter('form[name="app_renaissance_membership"]')->form([
             'app_renaissance_membership' => [
+                'isPhysicalPerson' => true,
                 'conditions' => true,
                 'exclusiveMembership' => true,
+                'cguAccepted' => true,
                 'allowEmailNotifications' => true,
                 'allowMobileNotifications' => true,
             ],

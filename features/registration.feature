@@ -183,7 +183,7 @@ Feature:
     And I should see "Veuillez renseigner une ville."
     And I should see "Veuillez renseigner un genre."
     And I should see "Vous devez spécifier votre date de naissance."
-    And I should see "Vous devez accepter la charte."
+    And I should see "Vous devez accepter les conditions."
     And I should see "L'un des champs du formulaire est mal renseigné."
 
     And I fill in the following:
@@ -202,7 +202,7 @@ Feature:
     And I should see "Veuillez renseigner une ville."
     And I should see "Veuillez renseigner un genre."
     And I should see "Vous devez spécifier votre date de naissance."
-    And I should see "Vous devez accepter la charte."
+    And I should see "Vous devez accepter les conditions."
     And I should see "L'un des champs du formulaire est mal renseigné."
 
     Given I fill in hidden field "become_adherent_address_city" with "06000-6088"

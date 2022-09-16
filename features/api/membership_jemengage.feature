@@ -18,7 +18,7 @@ Feature:
     {
         "type": "https://symfony.com/errors/validation",
         "title": "Validation Failed",
-        "detail": "last_name: Cette valeur ne doit pas être vide.\ngender: Veuillez renseigner un genre.\nbirthdate: Vous devez spécifier votre date de naissance.\nphone: Cette valeur n'est pas un numéro de téléphone valide.\nemail_address: Cette valeur ne doit pas être vide.\ncgu_accepted: Vous devez accepter la charte.",
+        "detail": "last_name: Cette valeur ne doit pas être vide.\ngender: Veuillez renseigner un genre.\nbirthdate: Vous devez spécifier votre date de naissance.\nphone: Cette valeur n'est pas un numéro de téléphone valide.\nemail_address: Cette valeur ne doit pas être vide.\ncgu_accepted: Vous devez accepter les conditions générales d'utilisation.",
         "violations": [
             {
                 "propertyPath": "last_name",
@@ -63,7 +63,7 @@ Feature:
             },
             {
                 "propertyPath": "cgu_accepted",
-                "title": "Vous devez accepter la charte.",
+                "title": "Vous devez accepter les conditions générales d'utilisation.",
                 "parameters": {
                     "{{ value }}": "false"
                 },

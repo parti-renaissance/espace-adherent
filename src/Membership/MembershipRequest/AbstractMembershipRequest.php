@@ -36,7 +36,7 @@ abstract class AbstractMembershipRequest implements MembershipInterface
     public ?string $firstName = null;
 
     /**
-     * @Assert\IsTrue(message="common.conditions.not_accepted")
+     * @Assert\IsTrue(message="common.cgu.not_accepted", groups={"Default", "membership_request_mentions"})
      *
      * @Groups({"merbership:write"})
      */
