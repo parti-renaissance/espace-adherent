@@ -24,11 +24,13 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
     public const LAYOUT_DEFAULT = 'default';
     public const LAYOUT_DEFAULT_WITH_HEADER_IMAGE = 'default_with_header_image';
     public const LAYOUT_MUNICIPALES = 'municipales';
+    public const LAYOUT_RENAISSANCE = 'renaissance';
 
     public const LAYOUTS = [
         self::LAYOUT_DEFAULT,
         self::LAYOUT_DEFAULT_WITH_HEADER_IMAGE,
         self::LAYOUT_MUNICIPALES,
+        self::LAYOUT_RENAISSANCE,
     ];
 
     /**

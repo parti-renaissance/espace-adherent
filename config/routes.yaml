@@ -265,15 +265,6 @@ app_nous_reussirons:
     methods:  GET
     defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
-# This route must be loaded the last to prevent an override
-app_static_page:
-    host:    "%app_host%"
-    path:    /{slug}
-    methods: GET
-    defaults: { _controller: 'App\Controller\EnMarche\PageController:showPageAction' }
-    requirements:
-        slug: .+
-
 app_renaissance:
     host:   "%renaissance_host%"
     resource: "../src/Controller/Renaissance"
@@ -307,4 +298,16 @@ app_api_form_validation:
     defaults:
         app_domain: "%app_host%"
     requirements:
+        app_domain: "%app_host%|%renaissance_host%"
+
+# This route must be loaded the last to prevent an override
+app_static_page:
+    host: "{app_domain}"
+    path: /{slug}
+    methods: GET
+    defaults:
+        _controller: 'App\Controller\EnMarche\PageController:showPageAction'
+        app_domain: "%app_host%"
+    requirements:
+        slug: .+
         app_domain: "%app_host%|%renaissance_host%"

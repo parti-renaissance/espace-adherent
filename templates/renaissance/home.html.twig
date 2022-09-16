@@ -5,9 +5,7 @@
 {% form_theme newsletter_form 'renaissance/form_theme.html.twig' %}
 
 {% block content %}
-    <header class="sticky top-0 border-b border-b-white/10 bg-light-blue z-10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
-        <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
-    </header>
+    {% include 'renaissance/partials/site-header.html.twig' %}
 
     <section class="h-[44.375rem] md:h-[65.75rem] lg:h-[69.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
         <div class="xl:container">
