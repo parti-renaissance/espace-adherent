@@ -31,7 +31,13 @@ class SubscriptionTypeRepository extends ServiceEntityRepository
 
     public function addToAdherent(Adherent $adherent, array $types): void
     {
-        $adherent->setSubscriptionTypes($this->findBy(['code' => $types]));
+        $subscriptionTypes = $this->findBy(['code' => $types]);
+
+        foreach ($subscriptionTypes as $subscriptionType) {
+            if (!$adherent->hasSubscriptionType($subscriptionType->getCode())) {
+                $adherent->addSubscriptionType($subscriptionType);
+            }
+        }
     }
 
     /**

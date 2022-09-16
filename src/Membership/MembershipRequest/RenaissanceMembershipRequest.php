@@ -134,7 +134,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     /**
      * @Assert\Type(Zone::class)
      */
-    private Zone $activismZone;
+    private ?Zone $activismZone = null;
 
     private ?string $clientIp = null;
     private ?int $adherentId = null;
