@@ -1492,8 +1492,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function updateMembership(MembershipInterface $membership, PostAddress $postAddress): void
     {
         if (!$this->isCertified()) {
-            $this->customGender = $membership->customGender;
-            $this->gender = $membership->gender;
+            $this->customGender = $membership->getCustomGender();
+            $this->gender = $membership->getGender();
             $this->firstName = $membership->firstName;
             $this->lastName = $membership->lastName;
             $this->birthdate = clone $membership->getBirthdate();
@@ -3183,8 +3183,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->isCertified()
             && $this->isAdherent()
             && $this->isEnabled()
-            && $this->activatedAt
-            && (clone $this->activatedAt)->modify('+3 months') < new \DateTime('2022-09-01 08:00:00')
+            && $this->registeredAt
+            && (clone $this->registeredAt)->modify('+3 months') < new \DateTime('2022-09-16 08:00:00')
         ;
     }
 }
