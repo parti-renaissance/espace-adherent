@@ -6,6 +6,7 @@ use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Mailer\Message\AdherentAccountActivationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
@@ -149,7 +150,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertSame('John', $donation->getDonator()->getFirstName());
         $this->assertSame('john@test.com', $donation->getDonator()->getEmailAddress());
 
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
 
         $this->assertClientIsRedirectedTo(sprintf('/adhesion/%s/paiement', $donation->getUuid()->toString()), $this->client);
 
@@ -202,7 +203,7 @@ class AdhesionControllerTest extends WebTestCase
         $this->client->setServerParameter('HTTP_HOST', $this->getParameter('app_host'));
         self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
 
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(AdherentAccountActivationMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
     }
 
     protected function setUp(): void

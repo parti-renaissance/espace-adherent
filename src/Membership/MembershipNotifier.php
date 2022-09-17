@@ -36,10 +36,16 @@ class MembershipNotifier
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
 
         if ($isReminder) {
-            return $this->mailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl));
+            return MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
+                ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountActivationReminderMessage::create($adherent, $activationUrl))
+                : $this->mailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl))
+            ;
         }
 
-        return $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl));
+        return MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
+            ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountActivationMessage::create($adherent, $activationUrl))
+            : $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl))
+        ;
     }
 
     public function sendEmailReminder(Adherent $adherent): bool
@@ -51,7 +57,10 @@ class MembershipNotifier
 
     public function sendConfirmationJoinMessage(Adherent $adherent): void
     {
-        $this->mailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent));
+        MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
+            ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent))
+            : $this->mailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent))
+        ;
     }
 
     public function sendUnregistrationMessage(Adherent $adherent): void
