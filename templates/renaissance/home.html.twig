@@ -7,7 +7,7 @@
 {% block content %}
     {% include 'renaissance/partials/site-header.html.twig' %}
 
-    <section class="h-[44.375rem] md:h-[65.75rem] lg:h-[69.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
+    <section class="h-[50rem] md:h-[65.75rem] lg:h-[69.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
         <div class="xl:container">
             <div class="max-w-[345px] md:max-w-[900px] mb-12.5 md:mb-[4.6875rem]">
                 <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem]">
@@ -390,17 +390,17 @@
         </div>
     </section>
     <!-- Footer -->
-    <section class="bg-dark-blue pt-25 md:pt-50">
+    <section class="bg-dark-blue pt-25 md:pt-36">
         <div class="max-w-7xl md:mx-auto mb-12.5">
             <a href="{{ path('app_renaissance_homepage') }}">
                 <img
                     height="35"
                     src="{{ asset('/images/renaissance/logo.svg') }}"
-                    class="mx-auto mb-[7.8125rem] md:mb-50 h-[1.25rem] md:h-8.75"
+                    class="mx-auto mb-[7.8125rem] md:mb-36 h-[1.25rem] md:h-8.75"
                     alt="logo"
                 />
             </a>
-            <div class="grid grid-cols-3 lg:grid-cols-5 divide-white/10 gap-y-6.25 px-7.5 md:px-20 md:mb-6.25">
+            <div class="flex justify-center divide-white/10 gap-y-6.25 px-7.5 md:px-20 md:mb-6.25">
                 <!-- Facebook -->
                 <a
                     href="https://www.facebook.com/Renaissance"
@@ -432,7 +432,7 @@
                 <!-- Twitter -->
                 <a
                     href="https://twitter.com/renaissance "
-                    class="flex flex-col md:flex-row items-center pl-6.25 lg:px-12.5 lg:border-r-2 lg:border-white/10"
+                    class="flex flex-col md:flex-row items-center pl-6.25 lg:px-12.5 lg:border-white/10"
                 >
                     <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
                         <i
@@ -445,20 +445,17 @@
                 </a>
             </div>
         </div>
+
         <!-- Legal notice -->
-        <div
-                class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7.5 pb-12.5 md:py-6.25"
-        >
+        <div class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7.5 pb-12.5 md:py-6.25 text-white font-normal text-sm">
             <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}">
-                <span class="text-white font-normal text-sm">Mentions légales</span>
+                Mentions légales
             </a>
             <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}">
-                <span class="text-white font-normal text-sm">CGU</span>
+                CGU
             </a>
             <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}">
-                <span class="text-white font-normal text-sm">
-                    Données personnelles
-                </span>
+                Données personnelles
             </a>
         </div>
     </section>

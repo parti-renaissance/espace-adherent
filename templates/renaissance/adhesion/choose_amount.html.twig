@@ -10,10 +10,8 @@
     de votre contribution.
 {% endblock %}
 
-{% block content_right_side %}
-    {{ parent() }}
-
-    <section class="self-center w-full">
+{% block adhesion_content %}
+    <div class="w-96">
         {{ form_start(form) }}
             {{ form_errors(form) }}
 
@@ -24,5 +22,5 @@
                 form_button: form.membership_amount
             } %}
         {{ form_end(form) }}
-    </section>
+    </div>
 {% endblock %}
