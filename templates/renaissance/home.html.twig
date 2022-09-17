@@ -16,15 +16,27 @@
             </div>
             <div class="md:flex md:gap-x-37.5 mb-12.5 text-white">
                 <div class="flex-column-container max-w-[31.875rem]">
-                    <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                        Déjà adhérent de <i>La République En Marche</i>, vous pouvez rejoindre <i>Renaissance</i> en quelques clics !
-                    </p>
-                    <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center" href="{{ path('app_renaissance_login') }}">
+                    {% if app.user %}
+                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
+                            Bonjour, {{ app.user.firstName }} !
+                        </p>
+                        <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center" href="{{ path('logout', {app_domain: renaissance_host}) }}">
+                        <span class="font-bold text-xs md:text-base uppercase mr-4">
+                            Me déconnecter
+                        </span>
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    {% else %}
+                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
+                            Déjà adhérent de <i>La République En Marche</i>, vous pouvez rejoindre <i>Renaissance</i> en quelques clics !
+                        </p>
+                        <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center" href="{{ path('app_renaissance_login') }}">
                         <span class="font-bold text-xs md:text-base uppercase mr-4">
                             Me connecter
                         </span>
-                        <i class="fa fa-caret-right"></i>
-                    </a>
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="flex-column-container max-w-[31.875rem]">
                     <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
