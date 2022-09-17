@@ -127,7 +127,7 @@ class AdhesionControllerTest extends WebTestCase
 
         // summary
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $list = $crawler->filter('.py-10 > div');
+        $list = $crawler->filter('.my-10 > section > div');
         $this->assertStringContainsString('John', $list->eq(0)->text());
         $this->assertStringContainsString('Smith', $list->eq(1)->text());
         $this->assertStringContainsString('62 avenue des Champs-Élysées, 75008 Paris 8ème, FR', $list->eq(2)->text());

@@ -8,8 +8,8 @@
     Voici un récapitulatif<br/>de <span class="stabilo stabilo-blue">vos informations.</span>
 {% endblock %}
 
-{% block content_right_side %}
-    <section class="py-10">
+{% block adhesion_content %}
+    <section>
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Prénom', value: command.firstName } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nom', value: command.lastName } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Adresse postale', value: command.address.fullAddress } %}

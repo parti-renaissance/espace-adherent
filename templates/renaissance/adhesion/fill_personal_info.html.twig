@@ -6,77 +6,71 @@
     <script src="https://www.google.com/recaptcha/enterprise.js"></script>
 {% endblock %}
 
-{% block content_right_side %}
-    {{ parent() }}
+{% block adhesion_content %}
+    {{ form_start(form) }}
+        {% if app.user and app.user.certified %}
+            <div class="alert alert--tips b__nudge--bottom-large">
+                Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
+            </div>
+        {% endif %}
 
-    <section class="py-10">
-        {{ form_start(form) }}
-            <div class="overflow-auto">
-                {% if app.user and app.user.certified %}
-                    <div class="alert alert--tips b__nudge--bottom-large">
-                        Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
-                    </div>
-                {% endif %}
+        {{ form_errors(form) }}
 
-                {{ form_errors(form) }}
+        <div class="flex flex-row space-x-4">
+            {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
+            {{ form_row(form.lastName, { label: false, attr: { placeholder: 'Nom' } }) }}
+        </div>
 
-                <div class="flex flex-row space-x-4">
-                    {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
-                    {{ form_row(form.lastName, { label: false, attr: { placeholder: 'Nom' } }) }}
-                </div>
+        {% if form.emailAddress.first is defined %}
+            {{ form_row(form.emailAddress.first, { label: false, attr: { placeholder: 'E-mail' } }) }}
+            {{ form_row(form.emailAddress.second, { label: false, attr: {placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
+        {% else %}
+           {{ form_row(form.emailAddress, { label: false, attr: { placeholder: 'E-mail' } }) }}
+        {% endif %}
 
-                {% if form.emailAddress.first is defined %}
-                    {{ form_row(form.emailAddress.first, { label: false, attr: { placeholder: 'E-mail' } }) }}
-                    {{ form_row(form.emailAddress.second, { label: false, attr: {placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
-                {% else %}
-                   {{ form_row(form.emailAddress, { label: false, attr: { placeholder: 'E-mail' } }) }}
-                {% endif %}
+        {{ form.password is defined ? form_row(form.password, { label: false, attr: { placeholder: 'Mot de passe' } }) }}
 
-                {{ form.password is defined ? form_row(form.password, { label: false, attr: { placeholder: 'Mot de passe' } }) }}
+        {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
 
-                {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
-
-                <div>
-                    <div class="text-black">
-                        {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
-                        {{ form_errors(form.address.address) }}
-                    </div>
-
-                    <div class="flex flex-row space-x-4">
-                        {{ form_row(form.address.postalCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
-                        {{ form_widget(form.address.cityName, { label: false, attr: { placeholder: 'Ville' } }) }}
-                    </div>
-
-                    {{ form_row(form.address.city, { attr: { placeholder: 'Ville' } }) }}
-
-                    <div class="flex flex-row space-x-4">
-                        {{ form_row(form.address.region, { label: false, attr: { placeholder: 'Région' } }) }}
-                        {{ form_widget(form.address.country, { label: false }) }}
-                    </div>
-                </div>
-
-                {{ form_row(form.birthdate, { label: false }) }}
-
-                {{ form_row(form.gender, { label: false }) }}
+        <div>
+            <div class="text-black">
+                {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
+                {{ form_errors(form.address.address) }}
             </div>
 
-            <div class="w-full">
-                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                {% if recaptcha_public_key is not empty %}
-                    {% for flashMessage in app.flashes("error_recaptcha") %}
-                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                    {% endfor %}
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
-                {% elseif app.debug %}
-                    <input type="hidden" name="g-recaptcha-response" value="fake" />
-                {% endif %}
+            <div class="flex flex-row space-x-4">
+                {{ form_row(form.address.postalCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
+                {{ form_widget(form.address.cityName, { label: false, attr: { placeholder: 'Ville' } }) }}
             </div>
 
-            <div class="mt-4">
-                <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
-                    {{ form_widget(form.fill_personal_info, { attr: { class: 'w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase' } }) }}
-                </div>
+            {{ form_row(form.address.city, { attr: { placeholder: 'Ville' } }) }}
+
+            <div class="flex flex-row space-x-4">
+                {{ form_row(form.address.region, { label: false, attr: { placeholder: 'Région' } }) }}
+                {{ form_widget(form.address.country, { label: false }) }}
             </div>
-        {{ form_end(form) }}
-    </section>
+        </div>
+
+        {{ form_row(form.birthdate, { label: false }) }}
+
+        {{ form_row(form.gender, { label: false }) }}
+
+        <div>
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                {% for flashMessage in app.flashes("error_recaptcha") %}
+                    <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                {% endfor %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin:0 auto;"></div>
+            {% elseif app.debug %}
+                <input type="hidden" name="g-recaptcha-response" value="fake" />
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
+                {{ form_widget(form.fill_personal_info, { attr: { class: 'w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase' } }) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
 {% endblock %}

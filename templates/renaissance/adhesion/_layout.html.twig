@@ -5,8 +5,8 @@
 {% set default_active_step = 'Informations' %}
 
 {% block content_left_side %}
-    <div class="absolute bottom-0 md:h-full flex flex-col justify-end md:justify-center px-3.75 md:px-7.5 mb-3.75">
-        <p class="text-white font-bold text-[1.75rem] leading-8 md:text-custom-xl md:mb-16">
+    <div class="flex md:flex-grow md:items-center md:mt-0 ml-7 text-white font-bold text-[1.75rem] leading-8 md:text-custom-xl md:mb-16 w-full">
+        <p>
             {% block adhesion_title %}
                 <span class="stabilo stabilo-blue">{{ app.user ? '(Ré)' }}Adhérez</span> au parti <br />Renaissance.
             {% endblock %}
@@ -14,7 +14,7 @@
     </div>
 
     {% block navigation_steps %}
-        <div class="hidden md:flex md:items-center w-full h-[4.6875rem] border-t-2 border-white/20 py-7.5 pl-7.5">
+        <div class="hidden md:flex flex-wrap w-full border-t-2 border-white/20 py-7.5 pl-7">
             {% for step in ['Informations', 'Contributions', 'Informations additionnelles', 'Mentions'] %}
                 <p class="{{ step == active_step|default(default_active_step) ? 'text-yellow' : 'text-white' }} font-bold text-sm mr-4">{{ step }}</p>
 
@@ -27,17 +27,11 @@
 {% endblock %}
 
 {% block content_right_side %}
-    <div class="md:hidden h-12.5 flex justify-between items-center mb-12.5 bg-dark-gray/10">
-        <div class="mx-5.5 opacity-50">
-            <i class="fa fa-caret-left"></i>
-        </div>
+    <p class="md:hidden text-center text-white font-bold text-3.25 leading-5 bg-dark-gray/10 py-4">
+        {{ active_step|default(default_active_step) }}
+    </p>
 
-        <div class="text-white font-bold text-3.25 leading-5">
-            {{ active_step|default(default_active_step) }}
-        </div>
-
-        <a href="#" class="mx-5.5">
-            <i class="fa fa-caret-right text-white"></i>
-        </a>
+    <div class="mx-5 my-10 flex flex-grow items-center justify-center">
+        {% block adhesion_content '' %}
     </div>
 {% endblock %}
