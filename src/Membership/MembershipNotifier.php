@@ -55,9 +55,9 @@ class MembershipNotifier
         return $this->mailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
     }
 
-    public function sendConfirmationJoinMessage(Adherent $adherent): bool
+    public function sendConfirmationJoinMessage(Adherent $adherent): void
     {
-        return MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
+        MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
             ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent))
             : $this->mailer->sendMessage(Message\AdherentAccountConfirmationMessage::createFromAdherent($adherent))
         ;
