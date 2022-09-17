@@ -816,7 +816,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private ?Zone $activismZone = null;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?\DateTimeInterface $lastMembershipDonation = null;
 
