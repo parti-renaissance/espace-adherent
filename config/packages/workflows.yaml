@@ -160,6 +160,7 @@ framework:
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADDITIONAL_INFORMATIONS
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_TERMS_AND_CONDITIONS
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_PAYMENT
                     to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO

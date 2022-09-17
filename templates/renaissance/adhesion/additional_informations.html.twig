@@ -16,12 +16,14 @@
                     {{ form_row(form.phone.country, { label: false, attr: { placeholder: 'Indicatif Pays', 'data-validated-with': form.phone.number.vars.id } }) }}
                     {{ form_row(form.phone.number, { label: false, attr: { placeholder: 'Téléphone' } }) }}
                 </div>
+                {{ form_errors(form.phone) }}
 
                 <div class="flex flex-row space-x-4">
                     {{ form_row(form.position, { label: false, attr: { placeholder: 'Catégorie socio-professionelle' } }) }}
                 </div>
 
                 <div class="py-10 text-lg">
+                    {{ form_errors(form.exclusiveMembership) }}
                     <div class="border-t-1 border-white/10 pt-3.75 mb-5">
                         {{ form_widget(form.exclusiveMembership) }}
                         <label for="{{ form.exclusiveMembership.vars.id }}">
@@ -29,7 +31,6 @@
                                 Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
                             </span>
                         </label>
-                        {{ form_errors(form.exclusiveMembership) }}
                     </div>
 
                     <div class="border-t-1 border-white/10 pt-3.75 mb-5">
