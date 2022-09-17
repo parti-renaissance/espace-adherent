@@ -72,6 +72,8 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public const SENATORIAL_CANDIDATE_UUID = 'ab03c939-8f70-40a8-b2cd-d147ec7fd09e';
     public const COALITIONS_USER_1_UUID = '7dd297ad-a84c-4bbd-9fd2-d1152ebc3044';
 
+    public const RENAISSANCE_USER_1_UUID = '88c92d85-4e55-4e47-b1ce-b625b7de3871';
+
     public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
     public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
     public const MUNICIPAL_CHIEF_3_UUID = '991e29ff-0333-4a30-a228-067ac5bbe6a9';
@@ -1118,6 +1120,23 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::COALITIONS);
         $this->addReference('coalitions-user-1', $adherent);
+
+        $manager->persist($adherent = $this->adherentFactory->createFromArray([
+            'uuid' => self::RENAISSANCE_USER_1_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'renaissance-user-1@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Laure',
+            'last_name' => 'Fenix',
+            'address' => $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1942-01-10',
+            'registered_at' => '2017-01-25 19:31:45',
+            'is_adherent' => true,
+        ]));
+        $adherent->activate(AdherentActivationToken::generate($adherent));
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $this->addReference('renaissance-user-1', $adherent);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);

@@ -205,25 +205,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     /**
-     * Finds the list of adherent matching the given list of UUIDs.
-     */
-    public function findList(array $uuids): AdherentCollection
-    {
-        if (!$uuids) {
-            return new AdherentCollection();
-        }
-
-        $qb = $this->createQueryBuilder('a');
-
-        $query = $qb
-            ->where($qb->expr()->in('a.uuid', $uuids))
-            ->getQuery()
-        ;
-
-        return new AdherentCollection($query->getResult());
-    }
-
-    /**
      * Finds the list of referents.
      *
      * @return Adherent[]
