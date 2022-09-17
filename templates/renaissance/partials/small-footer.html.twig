@@ -8,10 +8,13 @@
     </a>
 </div>
 <div class="flex flex-col md:flex-row bg-dark-blue items-center md:justify-center gap-x-7.5 pb-12.5 md:py-6.25 text-white font-normal text-sm">
-    <a href="#">
-        Mentions légales & CGU
+    <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}">
+        Mentions légales
     </a>
-    <a href="#">
+    <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}">
+        CGU
+    </a>
+    <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}">
         Politique de confidentialité
     </a>
     <a href="#">

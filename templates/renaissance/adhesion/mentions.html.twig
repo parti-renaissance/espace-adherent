@@ -11,14 +11,24 @@
 {% block content_right_side %}
     {{ parent() }}
 
-    <section class="py-10">
+    <section class="py-10 text-lg">
         {{ form_start(form) }}
             {{ form_errors(form) }}
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.isPhysicalPerson) }}
+                <label for="{{ form.isPhysicalPerson.vars.id }}">
+                        <span>
+                            Je certifie sur l'honneur être une personne physique et que le règlement de ma cotisation ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel
+                        </span>
+                </label>
+                {{ form_errors(form.isPhysicalPerson) }}
+            </div>
+
             <div class="border-t-1 border-white/10 pt-3.75 mb-5">
                 {{ form_widget(form.conditions) }}
                 <label for="{{ form.conditions.vars.id }}">
                     <span>
-                        Oui, j'adhère à la charte des valeurs, aux statuts et aux règles de fonctionnement de Renaissance, ainsi qu'aux politiques de protection des données à caractère personnel du site
+                        Oui, j'adhère <a class="underline font-bold" href="{{ path('asset_url', {path: 'statuts-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">aux statuts</a> et <a class="underline font-bold" href="{{ path('asset_url', {path: 'corpus-des-valeurs-parti-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">au Corpus des Valeurs de Renaissance</a>
                     </span>
                 </label>
                 {{ form_errors(form.conditions) }}
@@ -35,10 +45,20 @@
             </div>
 
             <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.cguAccepted) }}
+                <label for="{{ form.cguAccepted.vars.id }}">
+                        <span>
+                            J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
+                        </span>
+                </label>
+                {{ form_errors(form.cguAccepted) }}
+            </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
                 {{ form_widget(form.allowEmailNotifications) }}
                 <label for="{{ form.allowEmailNotifications.vars.id }}">
                     <span>
-                        Je souhaite être informé(e) de l'actualité de Renaissance par e-mail ({{ 'common.optional'|trans }})
+                        Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par e-mai ({{ 'common.optional'|trans }})
                     </span>
                 </label>
                 {{ form_errors(form.allowEmailNotifications) }}
@@ -54,7 +74,7 @@
                 {{ form_errors(form.allowMobileNotifications) }}
             </div>
 
-            <div class="mt-5 text-xs">
+            <div class="mt-5 h-80 md:h-64 overflow-auto mb-5">
                 {{ cms_block('renaissance-adhesion-rgpd-block') }}
             </div>
 

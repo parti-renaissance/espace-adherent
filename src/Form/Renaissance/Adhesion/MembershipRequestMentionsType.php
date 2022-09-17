@@ -2,6 +2,7 @@
 
 namespace App\Form\Renaissance\Adhesion;
 
+use App\Form\RequiredCheckboxType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,8 +15,10 @@ class MembershipRequestMentionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('isPhysicalPerson', RequiredCheckboxType::class)
             ->add('conditions', CheckboxType::class)
             ->add('exclusiveMembership', CheckboxType::class)
+            ->add('cguAccepted', CheckboxType::class)
             ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
             ])

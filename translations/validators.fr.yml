@@ -44,7 +44,8 @@ common.address.not_geocodable: Votre adresse n'est pas reconnue. Vérifiez qu'el
 common.phone_number.required: Le numéro de téléphone est obligatoire.
 common.phone_number.invalid: Ce numéro de téléphone est invalide.
 
-common.conditions.not_accepted: Vous devez accepter la charte.
+common.cgu.not_accepted: Vous devez accepter les conditions générales d'utilisation.
+common.conditions.not_accepted: Vous devez accepter les conditions.
 
 common.recaptcha.empty_message: Merci de confirmer le captcha avant de continuer.
 common.recaptcha.invalid_message: Le captcha soumis est invalide.
