@@ -96,6 +96,9 @@ class AdhesionControllerTest extends WebTestCase
                     'number' => '0612345678',
                 ],
                 'position' => 'student',
+                'exclusiveMembership' => true,
+                'territoireProgresMembership' => false,
+                'agirMembership' => false,
             ],
         ]));
 
@@ -110,7 +113,6 @@ class AdhesionControllerTest extends WebTestCase
             'app_renaissance_membership' => [
                 'isPhysicalPerson' => true,
                 'conditions' => true,
-                'exclusiveMembership' => true,
                 'cguAccepted' => true,
                 'allowEmailNotifications' => true,
                 'allowMobileNotifications' => true,
