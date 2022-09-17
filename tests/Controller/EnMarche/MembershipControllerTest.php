@@ -256,7 +256,7 @@ class MembershipControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-        self::assertSame('Votre compte adhérent est maintenant actif.', $crawler->filter('.flash__inner')->text());
+        self::assertSame('Votre compte adhérent est maintenant actif. Pour poursuivre votre action militante, n\'hésitez pas à vous rendre sur l\'application mobile Je m\'engage.', $crawler->filter('.flash__inner')->text());
 
         $adherent = $this->adherentRepository->findOneByEmail('simple-user@example.ch');
 

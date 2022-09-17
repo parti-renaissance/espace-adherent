@@ -42,9 +42,9 @@ class ActivateController extends AbstractController
 
             if ($adherent->isAdherent()) {
                 $membershipNotifier->sendConfirmationJoinMessage($adherent);
-            }
 
-            return $this->render('renaissance/adhesion/adhesion_complete.html.twig');
+                $this->addFlash('info', 'adherent.activation.success');
+            }
         } catch (AdherentAlreadyEnabledException $e) {
             $this->addFlash('info', 'adherent.activation.already_active');
         } catch (AdherentTokenExpiredException $e) {
