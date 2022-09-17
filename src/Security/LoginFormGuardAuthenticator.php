@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\Adherent;
 use App\Entity\FailedLoginAttempt;
+use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -100,7 +101,11 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             return false;
         }
 
-        if (null !== $user->getSource() && $this->currentAppCode !== $user->getSource()) {
+        if (
+            null !== $user->getSource()
+            && MembershipSourceEnum::RENAISSANCE !== $user->getSource()
+            && $this->currentAppCode !== $user->getSource()
+        ) {
             return false;
         }
 

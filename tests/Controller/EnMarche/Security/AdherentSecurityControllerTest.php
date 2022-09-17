@@ -28,7 +28,10 @@ class AdherentSecurityControllerTest extends WebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
-    public function testAuthenticationIsSuccessful(): void
+    /**
+     * @dataProvider getAdherentEmails
+     */
+    public function testAuthenticationIsSuccessful(string $email, string $firstName): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -36,11 +39,11 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'carl999@example.fr',
+            '_login_email' => $email,
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
-        $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
+        $adherent = $this->adherentRepository->findOneByEmail($email);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
@@ -48,14 +51,22 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Carl', trim($crawler->filter('span.em-dropdown--trigger')->first()->text()));
+        $this->assertSame($firstName, trim($crawler->filter('span.em-dropdown--trigger')->first()->text()));
 
         $this->client->click($crawler->selectLink('Déconnexion')->link());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/', $this->client, false);
+        $this->assertClientIsRedirectedTo('/', $this->client);
 
         $crawler = $this->client->followRedirect();
-        $this->assertSame(0, $crawler->selectLink('Carl')->count());
+        $this->assertSame(0, $crawler->selectLink($firstName)->count());
+    }
+
+    public function getAdherentEmails(): array
+    {
+        return [
+            ['carl999@example.fr', 'Carl'],
+            ['renaissance-user-1@en-marche-dev.fr', 'Laure'],
+        ];
     }
 
     /**

@@ -8,7 +8,7 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 final class AuthenticationUtils
 {
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(TokenStorageInterface $tokenStorage)
     {
@@ -17,11 +17,11 @@ final class AuthenticationUtils
 
     public function authenticateAdherent(UserInterface $user)
     {
-        $this->doAuthenticateUser($user, 'main');
+        $this->doAuthenticateUser($user);
     }
 
-    private function doAuthenticateUser(UserInterface $user, string $firewallName)
+    private function doAuthenticateUser(UserInterface $user): void
     {
-        return $this->tokenStorage->setToken(new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles()));
+        $this->tokenStorage->setToken(new PostAuthenticationGuardToken($user, 'main', $user->getRoles()));
     }
 }
