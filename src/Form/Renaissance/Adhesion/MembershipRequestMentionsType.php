@@ -17,7 +17,6 @@ class MembershipRequestMentionsType extends AbstractType
         $builder
             ->add('isPhysicalPerson', RequiredCheckboxType::class)
             ->add('conditions', CheckboxType::class)
-            ->add('exclusiveMembership', CheckboxType::class)
             ->add('cguAccepted', CheckboxType::class)
             ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,

@@ -7,6 +7,7 @@ use App\Form\ActivityPositionType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -25,6 +26,15 @@ class MembershipRequestAdditionalInformationsType extends AbstractType
             ])
             ->add('position', ActivityPositionType::class, [
                 'placeholder' => 'Catégorie socio-professionelle',
+                'required' => false,
+            ])
+            ->add('exclusiveMembership', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('territoireProgresMembership', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('agirMembership', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('fill_additional_informations', SubmitType::class, ['label' => 'Étape suivante'])
