@@ -40,10 +40,6 @@ class MembershipRequestPersonalInfoType extends AbstractType
             ->add('gender', GenderType::class, [
                 'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('customGender', TextType::class, [
-                'required' => false,
-                'disabled' => $fromCertifiedAdherent,
-            ])
             ->add('birthdate', BirthdateType::class, [
                 'disabled' => $fromCertifiedAdherent,
             ])

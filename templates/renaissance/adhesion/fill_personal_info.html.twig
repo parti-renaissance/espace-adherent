@@ -57,11 +57,7 @@
 
                 {{ form_row(form.birthdate, { label: false }) }}
 
-                <div class="flex flex-row space-x-4">
-                    {{ form_row(form.gender, { label: false }) }}
-
-                    {{ form_row(form.customGender, { label: false, attr: { placeholder: 'Personnaliser mon genre' } }) }}
-                </div>
+                {{ form_row(form.gender, { label: false }) }}
             </div>
 
             <div class="w-full">
