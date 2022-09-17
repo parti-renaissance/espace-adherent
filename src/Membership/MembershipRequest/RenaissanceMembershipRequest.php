@@ -11,7 +11,6 @@ use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Renaissance\Membership\MembershipRequestStateEnum;
 use App\Validator\BannedAdherent;
-use App\Validator\CustomGender as AssertCustomGender;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UniqueMembership as AssertUniqueMembership;
@@ -21,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertUniqueMembership(groups={"fill_personal_info"})
- * @AssertCustomGender(groups={"fill_personal_info"})
  * @AssertRecaptcha(groups={"fill_personal_info"})
  * @MaxFiscalYearDonation(groups={"membership_request_amount"})
  */
