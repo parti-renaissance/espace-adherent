@@ -815,6 +815,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private ?Zone $activismZone = null;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private ?\DateTimeInterface $lastMembershipDonation = null;
+
     private ?string $authAppCode = null;
 
     public function __construct()
@@ -3186,5 +3191,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && $this->registeredAt
             && (clone $this->registeredAt)->modify('+3 months') < new \DateTime('2022-09-16 08:00:00')
         ;
+    }
+
+    public function donatedForMembership(): void
+    {
+        $this->lastMembershipDonation = new \DateTime('now');
+    }
+
+    public function hasActiveMembership(): bool
+    {
+        return null !== $this->lastMembershipDonation;
     }
 }

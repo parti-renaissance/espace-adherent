@@ -39,15 +39,27 @@
                     {% endif %}
                 </div>
                 <div class="flex-column-container max-w-[31.875rem]">
-                    <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                        Vous partagez nos valeurs et vous souhaitez défendre nos couleurs : adhérez en 3 minutes au parti d’Emmanuel Macron !
-                    </p>
-                    <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
-                        <span class="font-bold text-xs md:text-base uppercase mr-4">
-                            Adhérer
-                        </span>
-                        <i class="fa fa-caret-right"></i>
-                    </a>
+                    {% if app.user and app.user.hasActiveMembership %}
+                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
+                            Vous souhaitez faire un don?
+                        </p>
+                        <a href="{{ path('app_renaissance_donation') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
+                            <span class="font-bold text-xs md:text-base uppercase mr-4">
+                                Je donne
+                            </span>
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    {% else %}
+                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
+                            Vous partagez nos valeurs et vous souhaitez défendre nos couleurs : adhérez en 3 minutes au parti d’Emmanuel Macron !
+                        </p>
+                        <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
+                            <span class="font-bold text-xs md:text-base uppercase mr-4">
+                                Adhérer
+                            </span>
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

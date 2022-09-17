@@ -350,6 +350,10 @@ class Donator
     public function setLastSuccessfulDonation(?Donation $donation): void
     {
         $this->lastSuccessfulDonation = $donation;
+
+        if ($this->adherent && $donation->isForMembership()) {
+            $this->adherent->donatedForMembership();
+        }
     }
 
     public function getReferenceDonation(): ?Donation

@@ -2,16 +2,20 @@
 
 namespace App\Renaissance\Membership;
 
+use App\Entity\Adherent;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\StateMachine;
 
 class MembershipRequestProcessor
 {
     private StateMachine $workflow;
+    private Security $security;
 
-    public function __construct(StateMachine $membershipProcessWorkflow)
+    public function __construct(StateMachine $membershipProcessWorkflow, Security $security)
     {
         $this->workflow = $membershipProcessWorkflow;
+        $this->security = $security;
     }
 
     public function canFillPersonalInfo(RenaissanceMembershipRequest $membershipRequest): bool
@@ -86,6 +90,12 @@ class MembershipRequestProcessor
 
     private function can(RenaissanceMembershipRequest $command, string $transitionName): bool
     {
+        $user = $this->security->getUser();
+
+        if ($user instanceof Adherent && $user->hasActiveMembership()) {
+            return false;
+        }
+
         return $this->workflow->can($command, $transitionName);
     }
 
