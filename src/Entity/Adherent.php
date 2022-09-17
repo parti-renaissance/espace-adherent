@@ -820,6 +820,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private ?\DateTimeInterface $lastMembershipDonation = null;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $exclusiveMembership = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $territoireProgresMembership = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $agirMembership = false;
+
     private ?string $authAppCode = null;
 
     public function __construct()
@@ -1518,6 +1533,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($membership instanceof RenaissanceMembershipRequest) {
             $this->activismZone = $membership->getActivismZone();
+            $this->exclusiveMembership = $membership->exclusiveMembership;
+            $this->territoireProgresMembership = $membership->territoireProgresMembership;
+            $this->agirMembership = $membership->agirMembership;
         }
     }
 
@@ -3201,5 +3219,35 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasActiveMembership(): bool
     {
         return null !== $this->lastMembershipDonation;
+    }
+
+    public function isExclusiveMembership(): bool
+    {
+        return $this->exclusiveMembership;
+    }
+
+    public function setExclusiveMembership(bool $exclusiveMembership): void
+    {
+        $this->exclusiveMembership = $exclusiveMembership;
+    }
+
+    public function isTerritoireProgresMembership(): bool
+    {
+        return $this->territoireProgresMembership;
+    }
+
+    public function setTerritoireProgresMembership(bool $territoireProgresMembership): void
+    {
+        $this->territoireProgresMembership = $territoireProgresMembership;
+    }
+
+    public function isAgirMembership(): bool
+    {
+        return $this->agirMembership;
+    }
+
+    public function setAgirMembership(bool $agirMembership): void
+    {
+        $this->agirMembership = $agirMembership;
     }
 }

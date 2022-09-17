@@ -101,10 +101,11 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      */
     public ?bool $conditions = null;
 
-    /**
-     * @Assert\IsTrue(message="adherent.exclusive_membership.no_accepted", groups={"membership_request_mentions"})
-     */
-    public ?bool $exclusiveMembership = null;
+    public bool $exclusiveMembership = false;
+
+    public bool $territoireProgresMembership = false;
+
+    public bool $agirMembership = false;
 
     /**
      * @Assert\NotBlank(groups={"fill_personal_info"})
@@ -286,5 +287,8 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
         $this->phone = $adherent->getPhone();
         $this->address = Address::createFromAddress($adherent->getPostAddress());
         $this->activismZone = $adherent->getActivismZone();
+        $this->exclusiveMembership = $adherent->isExclusiveMembership();
+        $this->territoireProgresMembership = $adherent->isTerritoireProgresMembership();
+        $this->agirMembership = $adherent->isAgirMembership();
     }
 }
