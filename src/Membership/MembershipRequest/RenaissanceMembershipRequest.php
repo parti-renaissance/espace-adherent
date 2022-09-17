@@ -84,7 +84,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      *     callback={"App\Membership\ActivityPositionsEnum", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
-     *     groups={"Update"}
+     *     groups={"membership_request_additional_informations"}
      * )
      */
     public ?string $position = null;
@@ -101,6 +101,13 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      */
     public ?bool $conditions = null;
 
+    /**
+     * @Assert\Expression(
+     *     expression="!(value == false and this.territoireProgresMembership == false and this.agirMembership == false)",
+     *     message="adherent.exclusive_membership.no_accepted",
+     *     groups={"membership_request_additional_informations"}
+     * )
+     */
     public bool $exclusiveMembership = false;
 
     public bool $territoireProgresMembership = false;
@@ -122,7 +129,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     protected string $emailAddress = '';
 
     /**
-     * @AssertPhoneNumber(defaultRegion="FR", groups={"fill_personal_info"})
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"membership_request_additional_informations"})
      */
     private ?PhoneNumber $phone = null;
 
