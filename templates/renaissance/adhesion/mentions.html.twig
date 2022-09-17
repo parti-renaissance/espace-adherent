@@ -28,7 +28,7 @@
                 {{ form_widget(form.conditions) }}
                 <label for="{{ form.conditions.vars.id }}">
                     <span>
-                        Oui, j'adhère <a style="text-decoration: underline" href="https://en-marche.fr/assets/statuts-renaissance.pdf?mime_type=application/pdf" target="_blank">aux statuts</a> et <a style="text-decoration: underline" href="https://en-marche.fr/assets/corpus-des-valeurs-parti-renaissance.pdf?mime_type=application/pdf" target="_blank">au Corpus des Valeurs de Renaissance</a>
+                        Oui, j'adhère <a class="underline font-bold" href="{{ path('asset_url', {path: 'statuts-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">aux statuts</a> et <a class="underline font-bold" href="{{ path('asset_url', {path: 'corpus-des-valeurs-parti-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">au Corpus des Valeurs de Renaissance</a>
                     </span>
                 </label>
                 {{ form_errors(form.conditions) }}
@@ -48,7 +48,7 @@
                 {{ form_widget(form.cguAccepted) }}
                 <label for="{{ form.cguAccepted.vars.id }}">
                         <span>
-                            J’accepte les <a style="text-decoration: underline" href="{{ path('app_renaissance_homepage') ~ 'conditions-generales-utilisation'  }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_renaissance_homepage') ~ 'Politique-de-protection-des-donnees'  }}" style="text-decoration: underline" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
+                            J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
                         </span>
                 </label>
                 {{ form_errors(form.cguAccepted) }}
@@ -74,7 +74,7 @@
                 {{ form_errors(form.allowMobileNotifications) }}
             </div>
 
-            <div class="mt-5 h-[180px] overflow-auto mb-5">
+            <div class="mt-5 h-80 md:h-64 overflow-auto mb-5">
                 {{ cms_block('renaissance-adhesion-rgpd-block') }}
             </div>
 

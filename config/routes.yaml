@@ -82,6 +82,11 @@ app_jemengage:
 app_assets:
     resource: "../src/Controller/AssetsController.php"
     type:     "annotation"
+    host: "{app_domain}"
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_host%|%renaissance_host%"
 
 #
 # Mooc
