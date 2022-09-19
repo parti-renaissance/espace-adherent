@@ -9,6 +9,20 @@
 
         <!--
         ######################################################
+        # RE site web
+        ######################################################
+        -->
+
+        <service id="app.admin.commitment" class="App\Admin\CommitmentAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Valeurs et engagements" group="Re site web" />
+
+            <argument />
+            <argument>App\Entity\Commitment</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # Communication
         ######################################################
         -->
@@ -34,14 +48,6 @@
 
             <argument />
             <argument>App\Entity\Article</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.commitment" class="App\Admin\CommitmentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Valeurs et engagements" group="Communication" />
-
-            <argument />
-            <argument>App\Entity\Commitment</argument>
             <argument />
         </service>
 
