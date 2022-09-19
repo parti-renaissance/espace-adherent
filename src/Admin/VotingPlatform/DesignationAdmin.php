@@ -110,7 +110,7 @@ class DesignationAdmin extends AbstractAdmin
                     ->add('resultDisplayDelay', IntegerType::class, [
                         'label' => 'Durée d’affichage des résultats',
                         'attr' => ['min' => 0],
-                        'help' => 'en jours',
+                        'help' => 'en jours, la valeur 0 désactive l\'affichage des résultats',
                     ])
                     ->add('resultScheduleDelay', NumberType::class, [
                         'label' => 'Afficher les résultats au bout de :',
