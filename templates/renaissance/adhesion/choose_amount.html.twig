@@ -17,6 +17,10 @@
 
             {{ form_row(form.amount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
 
+            <p class="mt-4 text-sm">
+                * Tarif réservé aux adhérents dont la situation financière personnelle ne permet pas d'acquitter le montant de 30 €.
+            </p>
+
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 route_name: 'app_renaissance_adhesion',
                 form_button: form.membership_amount
