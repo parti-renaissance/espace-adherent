@@ -3,13 +3,13 @@
 namespace App\Admin;
 
 use App\Donation\DonationEvents;
+use App\Donation\DonationSourceEnum;
 use App\Donation\DonationWasCreatedEvent;
 use App\Donation\DonationWasUpdatedEvent;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\DonationTag;
 use App\Entity\PostAddress;
-use App\Entity\Transaction;
 use App\Form\UnitedNationsCountryType;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
@@ -27,6 +27,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
+use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -216,6 +217,26 @@ class DonationAdmin extends AbstractAdmin
             ->add('code', null, [
                 'label' => 'Code don',
             ])
+            ->add('source', CallbackFilter::class, [
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'label' => 'Adhésion ?',
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    if (1 === $value['value']) {
+                        $qb->andWhere($alias.'.source = :donation_source');
+                    } else {
+                        $qb->andWhere(sprintf('(%1$s.source IS NULL OR %1$s.source != :donation_source)', $alias));
+                    }
+
+                    $qb->setParameter('donation_source', DonationSourceEnum::MEMBERSHIP);
+
+                    return true;
+                },
+            ])
             ->add('type', ChoiceFilter::class, [
                 'label' => 'Type',
                 'show_filter' => true,
@@ -278,7 +299,6 @@ class DonationAdmin extends AbstractAdmin
                                     ->andX()
                                     ->add("$alias.type = :type_cb")
                                     ->add('transactions.payboxDateTime >= :start_date')
-                                    ->add('transactions.payboxResultCode = :success_code')
                             )
                             ->add(
                                 $qb
@@ -305,7 +325,6 @@ class DonationAdmin extends AbstractAdmin
                                     ->andX()
                                     ->add("$alias.type = :type_cb")
                                     ->add('transactions.payboxDateTime <= :end_date')
-                                    ->add('transactions.payboxResultCode = :success_code')
                             )
                             ->add(
                                 $qb
@@ -323,7 +342,6 @@ class DonationAdmin extends AbstractAdmin
                     }
 
                     $qb->setParameter('type_cb', Donation::TYPE_CB);
-                    $qb->setParameter('success_code', Transaction::PAYBOX_SUCCESS);
 
                     return true;
                 },
