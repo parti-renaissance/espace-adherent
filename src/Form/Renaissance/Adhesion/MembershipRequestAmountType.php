@@ -15,7 +15,7 @@ class MembershipRequestAmountType extends AbstractType
     {
         $builder->add('amount', ChoiceType::class, [
             'choices' => [
-                'Tarif réduit 10€' => 10,
+                'Tarif réduit 10€ *' => 10,
                 'Tarif normal 30€' => 30,
             ],
             'expanded' => true,
