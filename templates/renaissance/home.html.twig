@@ -349,7 +349,7 @@
     <section class="md:px-20 md:mb-25">
         <div class="max-w-7xl lg:mx-auto md:flex w-full">
             <div
-                class="bg-cover md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
+                class="bg-cover bg-bottom md:rounded-tl-lg md:rounded-bl-lg lg:w-[34.375rem] px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 min-h-[15.75rem]"
                 style="background-image: url('{{ asset('/images/renaissance/newsletter.jpg') }}')"
             >
                 <p class="text-white font-bold text-custom-2xl mb-5 lg:text-3xl lg:leading-[2.1875rem]">
@@ -359,7 +359,7 @@
                     Restez les premiers informés de l’actualité de <i>Renaissance</i>.
                 </p>
             </div>
-            <div class="bg-light-blue px-7.5 py-12.5 lg:px-[6.875rem] lg:py-25 md:rounded-tr-lg md:rounded-br-lg lg:w-[45.625rem]">
+            <div class="bg-light-blue px-7.5 py-10 lg:px-[6.875rem] md:rounded-tr-lg md:rounded-br-lg lg:w-[45.625rem]">
                 {{ form_start(newsletter_form) }}
                     {% set error = app.flashes('newsletter_error')|first %}
                     {% if error %}
@@ -375,7 +375,7 @@
 
                     {{ form_widget(newsletter_form.email, { label: false, attr: { placeholder: 'Email' } }) }}
 
-                    <div class="text-white pt-3.75 mb-5">
+                    <div class="text-white">
                         {{ form_widget(newsletter_form.conditions) }}
                         <label for="{{ newsletter_form.conditions.vars.id }}">
                         <span>
@@ -384,7 +384,7 @@
                         </label>
                     </div>
 
-                    <div class="text-white mb-5">
+                    <div class="text-white mb-3">
                         {{ form_widget(newsletter_form.cguAccepted) }}
                         <label for="{{ newsletter_form.cguAccepted.vars.id }}">
                             <span>
@@ -472,7 +472,7 @@
             <a href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}">
                 CGU
             </a>
-            <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}">
+            <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}">
                 Données personnelles
             </a>
         </div>
