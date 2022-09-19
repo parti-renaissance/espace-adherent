@@ -42,6 +42,10 @@ class MembershipNotifier
             ;
         }
 
+        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource() && $adherent->getActivatedAt()) {
+            return $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
+        }
+
         return MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
             ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountActivationMessage::create($adherent, $activationUrl))
             : $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl))
