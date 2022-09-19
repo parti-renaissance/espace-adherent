@@ -375,6 +375,24 @@
 
                     {{ form_widget(newsletter_form.email, { label: false, attr: { placeholder: 'Email' } }) }}
 
+                    <div class="text-white pt-3.75 mb-5">
+                        {{ form_widget(newsletter_form.conditions) }}
+                        <label for="{{ newsletter_form.conditions.vars.id }}">
+                        <span>
+                            J’accepte de recevoir la newsletter de Renaissance
+                        </span>
+                        </label>
+                    </div>
+
+                    <div class="text-white mb-5">
+                        {{ form_widget(newsletter_form.cguAccepted) }}
+                        <label for="{{ newsletter_form.cguAccepted.vars.id }}">
+                            <span>
+                                J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'Politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations accessibles <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'mentions-informations-newsletter', app_domain: renaissance_host}) }}">ici</a>
+                            </span>
+                        </label>
+                    </div>
+
                     <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                     {% if recaptcha_public_key is not empty %}
                         <div class="g-recaptcha mb-3.75" data-sitekey="{{ recaptcha_public_key }}"></div>

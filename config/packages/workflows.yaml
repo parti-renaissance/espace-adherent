@@ -245,14 +245,12 @@ framework:
                 !php/const App\Renaissance\Donation\DonationRequestStateEnum::TO_ACCEPT_TERMS_AND_CONDITIONS:
                     from:
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_TERMS_AND_CONDITIONS
-                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_PERSONAL_INFO
                     to: !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_TERMS_AND_CONDITIONS
 
                 !php/const App\Renaissance\Donation\DonationRequestStateEnum::TO_PAY_DONATION:
                     from:
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_PAYMENT
-                        - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_AMOUNT
                         - !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_TERMS_AND_CONDITIONS
                     to: !php/const App\Renaissance\Donation\DonationRequestStateEnum::STATE_DONATION_PAYMENT
 

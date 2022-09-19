@@ -32,6 +32,18 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
      */
     public ?string $email = null;
 
+    /**
+     * @Assert\NotBlank
+     * @Assert\IsTrue
+     */
+    public ?bool $conditions = null;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\IsTrue
+     */
+    public ?bool $cguAccepted = null;
+
     public static function createFromRecaptcha(?string $recaptchaResponse): self
     {
         $object = new self();
