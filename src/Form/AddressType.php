@@ -27,60 +27,64 @@ class AddressType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('address', TextType::class)
-            ->add('city', HiddenType::class, [
-                'required' => false,
-                'error_bubbling' => $options['child_error_bubbling'],
-                'disabled' => $options['disable_fields'],
-            ])
-            ->add('cityName', TextType::class, [
-                'required' => false,
-                'disabled' => $options['disable_fields'],
-            ])
-            ->add('country', UnitedNationsCountryType::class, [
-                'disabled' => $options['disable_fields'],
-                'placeholder' => 'Sélectionner un pays',
-                'preferred_choices' => ['FR'],
-            ])
-        ;
-        if ($options['set_address_region']) {
-            $builder->add('region', TextType::class, [
-                'required' => false,
-                'disabled' => $options['disable_fields'],
-            ]);
+        if ($options['as_hidden']) {
+            $builder
+                ->add('address', HiddenType::class, ['required' => false])
+                ->add('city', HiddenType::class, ['required' => false])
+                ->add('cityName', HiddenType::class, ['required' => false])
+                ->add('country', HiddenType::class, ['required' => false])
+                ->add('postalCode', HiddenType::class, ['required' => false])
+            ;
+        } else {
+            $builder
+                ->add('address', TextType::class)
+                ->add('city', HiddenType::class, [
+                    'required' => false,
+                    'error_bubbling' => $options['child_error_bubbling'],
+                    'disabled' => $options['disable_fields'],
+                ])
+                ->add('cityName', TextType::class, [
+                    'required' => false,
+                    'disabled' => $options['disable_fields'],
+                ])
+                ->add('country', UnitedNationsCountryType::class, [
+                    'disabled' => $options['disable_fields'],
+                    'placeholder' => 'Sélectionner un pays',
+                    'preferred_choices' => ['FR'],
+                ])
+                ->add('postalCode', TextType::class, [
+                    'error_bubbling' => $options['child_error_bubbling'],
+                    'disabled' => $options['disable_fields'],
+                ])
+            ;
+
+            if ($options['set_address_region']) {
+                $builder->add('region', TextType::class, [
+                    'required' => false,
+                    'disabled' => $options['disable_fields'],
+                ]);
+            }
         }
 
-        $field = $builder->create('postalCode', TextType::class, [
-            'error_bubbling' => $options['child_error_bubbling'],
-            'disabled' => $options['disable_fields'],
-        ]);
+        $builder
+            ->addModelTransformer($this->cityNameDataTransformer)
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                /** @var Address $address */
+                $address = $event->getData();
 
-        $field->addModelTransformer(new CallbackTransformer(
-            function ($data) {
-                return $data;
-            },
-            function ($value) {
-                return str_replace(' ', '', $value);
-            }
-        ));
+                if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
+                    $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
 
-        $builder->add($field);
-
-        $builder->addModelTransformer($this->cityNameDataTransformer);
-
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            /** @var Address $address */
-            $address = $event->getData();
-
-            if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
-                $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
-
-                if ($city) {
-                    $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
+                    if ($city) {
+                        $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
+                    }
                 }
-            }
-        });
+            })
+            ->get('postalCode')->addModelTransformer(new CallbackTransformer(
+                function ($data) { return $data; },
+                function ($value) { return str_replace(' ', '', $value); }
+            ))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -92,8 +96,10 @@ class AddressType extends AbstractType
                 'child_error_bubbling' => true,
                 'disable_fields' => false,
                 'set_address_region' => false,
+                'as_hidden' => false,
             ])
             ->setAllowedTypes('disable_fields', 'bool')
+            ->setAllowedTypes('as_hidden', 'bool')
             ->setAllowedTypes('child_error_bubbling', 'bool')
         ;
     }

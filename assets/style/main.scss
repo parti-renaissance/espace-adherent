@@ -15,7 +15,7 @@
   }
 
   .form-control {
-    @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75;
+    @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75 focus:ring-0;
 
     & option {
       color: black;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const defaultAmounts = [30, 60, 120, 500];
 
 const amountAfterTaxReturn = (amount) => {
-    amount = parseInt(amount);
+    amount = parseInt(amount, 10);
 
     if (!amount || 0 >= amount) {
         return '0,00';
@@ -70,10 +70,11 @@ export default class AmountChooser extends React.Component {
                 <input type="hidden" name={this.props.name} value={state} key={`selected_amount_${state}`}/>
                 <div className="flex mt-5 mb-5" role="group">
                     {this.props.amounts.map((amount) => (
-                        <button className={`renaissance-amount-chooser__button ${amount === state ? classSelected : ''}`}
-                                type="button"
-                                onClick={() => this.handleButtonClicked(amount)}
-                                key={`amount_${amount}`}>
+                        <button
+                            className={`renaissance-amount-chooser__button ${amount === state ? classSelected : ''}`}
+                            type="button"
+                            onClick={() => this.handleButtonClicked(amount)}
+                            key={`amount_${amount}`}>
                             {amount} €
                         </button>
                     ))}
@@ -123,8 +124,8 @@ export default class AmountChooser extends React.Component {
                                         au 2e trimestre de l’année N+1.
                                     </p>
                                 </div>
+                            </div>
                         </div>
-                    </div>
                     </div> : ''
                 }
             </div>

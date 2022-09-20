@@ -23,7 +23,7 @@ window.share = (type, link, title) => {
         `width=${width}, height=${height}, top=${top}, left=${left}`
     );
 
-    if ('object' === typeof popup && typeof 'undefined' !== popup.opener && null !== popup.opener) {
+    if ('object' === typeof popup && 'undefined' !== typeof popup.opener && null !== popup.opener) {
         popup.opener = null;
 
         if (window.focus) {

@@ -117,7 +117,7 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
      * @BannedAdherent(groups={"Registration"})
      */
-    protected string $emailAddress = '';
+    protected ?string $emailAddress = null;
 
     /**
      * @var PhoneNumber|null
@@ -227,16 +227,6 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
     public function getAddress(): Address
     {
         return $this->address;
-    }
-
-    public function setEmailAddress(string $emailAddress): void
-    {
-        $this->emailAddress = mb_strtolower($emailAddress);
-    }
-
-    public function getEmailAddress(): string
-    {
-        return $this->emailAddress ?: '';
     }
 
     public function setPhone(?PhoneNumber $phone): void

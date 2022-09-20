@@ -20,7 +20,7 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      *
      * @Groups({"merbership:write"})
      */
-    protected string $emailAddress = '';
+    protected ?string $emailAddress = null;
 
     /**
      * @Assert\Length(
@@ -52,13 +52,13 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      */
     public ?bool $allowMobileNotifications = null;
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmailAddress(?string $emailAddress): void
     {
-        $this->emailAddress = mb_strtolower($emailAddress);
+        $this->emailAddress = $emailAddress ? mb_strtolower($emailAddress) : $emailAddress;
     }
 }

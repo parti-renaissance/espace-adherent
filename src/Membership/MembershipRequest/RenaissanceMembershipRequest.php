@@ -124,7 +124,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"fill_personal_info"})
      * @BannedAdherent(groups={"fill_personal_info"})
      */
-    protected string $emailAddress = '';
+    protected ?string $emailAddress = null;
 
     /**
      * @AssertPhoneNumber(defaultRegion="FR", groups={"membership_request_additional_informations"})
@@ -211,16 +211,6 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
     public function getAddress(): Address
     {
         return $this->address;
-    }
-
-    public function setEmailAddress(string $emailAddress): void
-    {
-        $this->emailAddress = mb_strtolower($emailAddress);
-    }
-
-    public function getEmailAddress(): string
-    {
-        return $this->emailAddress;
     }
 
     public function setPhone(?PhoneNumber $phone): void

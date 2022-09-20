@@ -4,6 +4,10 @@
 
 {% block final_javascripts %}
     <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" async></script>
+    {% endif %}
 {% endblock %}
 
 {% block adhesion_content %}
@@ -32,24 +36,7 @@
 
         {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
 
-        <div>
-            <div class="text-black">
-                {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
-                {{ form_errors(form.address.address) }}
-            </div>
-
-            <div class="flex flex-row space-x-4">
-                {{ form_row(form.address.postalCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
-                {{ form_widget(form.address.cityName, { label: false, attr: { placeholder: 'Ville' } }) }}
-            </div>
-
-            {{ form_row(form.address.city, { attr: { placeholder: 'Ville' } }) }}
-
-            <div class="flex flex-row space-x-4">
-                {{ form_row(form.address.region, { label: false, attr: { placeholder: 'Région' } }) }}
-                {{ form_widget(form.address.country, { label: false }) }}
-            </div>
-        </div>
+        {{ form_row(form.address, { label: false }) }}
 
         {{ form_row(form.birthdate, { label: false }) }}
 
