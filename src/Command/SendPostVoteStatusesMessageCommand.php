@@ -51,6 +51,7 @@ class SendPostVoteStatusesMessageCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('created-before', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
@@ -58,8 +59,9 @@ class SendPostVoteStatusesMessageCommand extends Command
     {
         $limit = (int) $input->getOption('limit');
         $selectedEmails = $input->getOption('emails');
+        $createdBefore = $input->getOption('created-before');
 
-        if (!$count = $this->countAdherents($selectedEmails)) {
+        if (!$count = $this->countAdherents($selectedEmails, $createdBefore)) {
             $this->io->note('0 adherent to notify');
 
             return 0;
@@ -80,7 +82,7 @@ class SendPostVoteStatusesMessageCommand extends Command
 
         while (
             $alreadySentCount < $total
-            && ($adherents = $this->getChunkAdherents($selectedEmails, $chunkLimit))
+            && ($adherents = $this->getChunkAdherents($selectedEmails, $chunkLimit, $createdBefore))
         ) {
             if ($this->transactionalMailer->sendMessage(PostVoteStatusesMessage::create($adherents, $renaissanceAdhesionUrl))) {
                 if (!$selectedEmails) {
@@ -107,9 +109,9 @@ class SendPostVoteStatusesMessageCommand extends Command
         return 0;
     }
 
-    private function countAdherents(array $emails): int
+    private function countAdherents(array $emails, ?string $createdBefore = null): int
     {
-        return (int) $this->getQueryBuilder($emails)
+        return (int) $this->getQueryBuilder($emails, $createdBefore)
             ->select('COUNT(adherent.id)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -117,9 +119,9 @@ class SendPostVoteStatusesMessageCommand extends Command
     }
 
     /** @return Adherent[] */
-    private function getChunkAdherents(array $emails, int $limit = 500): array
+    private function getChunkAdherents(array $emails, int $limit = 500, ?string $createdBefore = null): array
     {
-        return $this->getQueryBuilder($emails)
+        return $this->getQueryBuilder($emails, $createdBefore)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -129,7 +131,7 @@ class SendPostVoteStatusesMessageCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(array $emails): QueryBuilder
+    private function getQueryBuilder(array $emails, ?string $createdBefore = null): QueryBuilder
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -139,6 +141,13 @@ class SendPostVoteStatusesMessageCommand extends Command
             ->setParameter('status', Adherent::ENABLED)
             ->setParameter('renaissance_source', MembershipSourceEnum::RENAISSANCE)
         ;
+
+        if ($createdBefore) {
+            $queryBuilder
+                ->andWhere('adherent.createdAt < :created_before')
+                ->setParameter('created_before', \DateTime::createFromFormat('Y-m-d H:i:s', '2022-09-17 20:00:00'))
+            ;
+        }
 
         if ($emails) {
             $queryBuilder
