@@ -75,14 +75,14 @@ class SendPostVoteStatusesMessageCommand extends Command
         $this->io->progressStart($total);
         $alreadySentCount = 0;
 
-        $certificationUrl = $this->urlGenerator->generate('app_certification_request_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $renaissanceAdhesionUrl = $this->urlGenerator->generate('app_renaissance_adhesion', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $now = new \DateTime();
 
         while (
             $alreadySentCount < $total
             && ($adherents = $this->getChunkAdherents($selectedEmails, $chunkLimit))
         ) {
-            if ($this->transactionalMailer->sendMessage(PostVoteStatusesMessage::create($adherents, $certificationUrl))) {
+            if ($this->transactionalMailer->sendMessage(PostVoteStatusesMessage::create($adherents, $renaissanceAdhesionUrl))) {
                 if (!$selectedEmails) {
                     array_walk($adherents, function (Adherent $adherent) use ($now) {
                         $adherent->globalNotificationSentAt = $now;
