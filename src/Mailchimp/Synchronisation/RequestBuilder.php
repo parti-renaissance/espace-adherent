@@ -43,6 +43,7 @@ class RequestBuilder implements LoggerAwareInterface
     private $isAdherent;
 
     private $interests;
+    private ?\DateTime $lastMembershipDonation = null;
 
     private $activeTags = [];
     private $inactiveTags = [];
@@ -100,6 +101,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setCity($adherent->getCityName())
             ->setCountryName($adherent->getCountryName())
             ->setAdhesionDate($adherent->getRegisteredAt())
+            ->setLastMembershipDonation($adherent->getLastMembershipDonation())
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
@@ -244,6 +246,13 @@ class RequestBuilder implements LoggerAwareInterface
     public function setAdhesionDate(?\DateTimeInterface $adhesionDate): self
     {
         $this->adhesionDate = $adhesionDate;
+
+        return $this;
+    }
+
+    public function setLastMembershipDonation(?\DateTimeInterface $lastMembershipDonation): self
+    {
+        $this->lastMembershipDonation = $lastMembershipDonation;
 
         return $this;
     }
@@ -447,6 +456,10 @@ class RequestBuilder implements LoggerAwareInterface
 
         if (null !== $this->isAdherent) {
             $mergeFields[MemberRequest::MERGE_FIELD_ADHERENT] = $this->isAdherent ? 'oui' : 'non';
+        }
+
+        if ($this->lastMembershipDonation) {
+            $mergeFields[MemberRequest::MERGE_FIELD_LAST_MEMBERSHIP_DONATION] = $this->lastMembershipDonation->format(MemberRequest::DATE_FORMAT);
         }
 
         if ($this->city) {

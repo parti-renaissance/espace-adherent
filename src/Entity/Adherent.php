@@ -3230,6 +3230,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return null !== $this->lastMembershipDonation;
     }
 
+    public function getLastMembershipDonation(): ?\DateTimeInterface
+    {
+        return $this->lastMembershipDonation;
+    }
+
     public function isExclusiveMembership(): bool
     {
         return $this->exclusiveMembership;
