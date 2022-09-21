@@ -6,17 +6,18 @@
     Je donne <span class="stabilo stabilo-green">en ligne</span>
 {% endblock %}
 
+{% block final_javascripts %}
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" async></script>
+    {% endif %}
+{% endblock %}
+
 {% block donation_content %}
     <section class="w-96">
         {{ form_start(form) }}
-        <div class="overflow-auto">
             {{ form_errors(form) }}
 
-            <div class="mb-5 flex flex-row space-x-5">
-                {% for choice in form.gender %}
-                    {{ form_row(choice, { label_attr: { id: 'donation_gender_'~choice.vars.value }}) }}
-                {% endfor %}
-            </div>
+            {{ form_row(form.gender, { label: false }) }}
 
             <div class="flex flex-row space-x-4">
                 {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
@@ -27,27 +28,12 @@
 
             {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
 
-            <div>
-                <div class="text-black">
-                    {{ form_widget(form.address, { attr: { placeholder: 'Adresse postale' } }) }}
-                    {{ form_errors(form.address) }}
-                </div>
-
-                <div class="flex flex-row space-x-4">
-                    {{ form_row(form.postalCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
-                    {{ form_widget(form.cityName, { label: false, attr: { placeholder: 'Ville' } }) }}
-                </div>
-
-                <div class="flex flex-row space-x-4">
-                    {{ form_widget(form.country, { label: false }) }}
-                </div>
-            </div>
+            {{ form_row(form.address, { label: false }) }}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 route_name: 'app_renaissance_donation',
                 form_button: form.fill_personal_info
             } %}
-            {{ form_end(form) }}
-        </div>
+        {{ form_end(form) }}
     </section>
 {% endblock %}

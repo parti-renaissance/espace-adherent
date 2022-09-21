@@ -103,14 +103,6 @@ class DonationRequestType extends AbstractType
                 'preferred_choices' => [Address::FRANCE],
                 'placeholder' => 'Nationalité',
             ])
-            ->add('address', TextType::class)
-            ->add('postalCode', TextType::class)
-            ->add('cityName', TextType::class, [
-                'required' => false,
-            ])
-            ->add('country', UnitedNationsCountryType::class, [
-                'preferred_choices' => [Address::FRANCE],
-            ])
             ->add('isPhysicalPerson', RequiredCheckboxType::class)
             ->add('hasFrenchNationality', RequiredCheckboxType::class)
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class)

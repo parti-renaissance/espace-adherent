@@ -81,7 +81,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
         $donationRequest = new DonationRequest(Uuid::uuid4(), '123.0.0.1');
 
         $donationRequest->setNationality($nationality);
-        $donationRequest->setCountry($country);
+        $donationRequest->getAddress()->setCountry($country);
 
         return $donationRequest;
     }

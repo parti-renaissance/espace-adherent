@@ -19,6 +19,19 @@
     {%- endif -%}
 {%- endblock date_widget -%}
 
+{%- block choice_widget_expanded -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' flex mb-3.75')|trim}) %}
+
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <div class="mr-3">
+                {{- form_widget(child) -}}
+                {{- form_label(child, null, {label_attr: { class: 'ml-2' }, translation_domain: choice_translation_domain}) -}}
+            </div>
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
 {%- block choice_widget_collapsed -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
     {{- parent() -}}

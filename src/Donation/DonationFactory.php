@@ -24,12 +24,7 @@ class DonationFactory
             $request->getType(),
             $request->getAmount() * 100,
             new \DateTimeImmutable(),
-            $this->addressFactory->createFlexible(
-                $request->getCountry(),
-                $request->getPostalCode(),
-                $request->getCityName(),
-                $request->getAddress()
-            ),
+            $this->addressFactory->createFromAddress($request->getAddress()),
             $request->getClientIp(),
             $request->getDuration(),
             $this->donationRequestUtils->buildDonationReference(
