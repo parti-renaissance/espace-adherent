@@ -4,7 +4,7 @@
     "build-prod": "node_modules/.bin/webpack --config webpack.production.js",
     "build-dev": "node_modules/.bin/webpack --config webpack.development.js",
     "watch": "node_modules/.bin/webpack --config webpack.development.js --progress --color --watch",
-    "lint": "eslint front/**/*.js .eslintrc.js",
+    "lint": "eslint front/**/*.js assets/**/*.js .eslintrc.js",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --watch"
   },

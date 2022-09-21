@@ -11,16 +11,16 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertValidAddress
- * @AssertGeocodableAddress
+ * @AssertValidAddress(groups={"Default", "fill_personal_info"})
+ * @AssertGeocodableAddress(groups={"Default", "fill_personal_info"})
  */
 class Address implements AddressInterface, GeocodableInterface
 {
     public const FRANCE = 'FR';
 
     /**
-     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update"})
+     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update", "fill_personal_info"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
@@ -30,33 +30,33 @@ class Address implements AddressInterface, GeocodableInterface
      * @Assert\Expression(
      *     expression="value or 'FR' != this.getCountry()",
      *     message="common.postal_code.not_blank",
-     *     groups={"Default", "Registration", "Update"}
+     *     groups={"Default", "Registration", "Update", "fill_personal_info"}
      * )
-     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
-     * @FrenchZipCode(groups={"Default", "Registration", "Update"})
+     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
+     * @FrenchZipCode(groups={"Default", "Registration", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
     private $postalCode;
 
     /**
-     * @Assert\Length(max=15, groups={"Default", "Update"})
+     * @Assert\Length(max=15, groups={"Default", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
     private $city;
 
     /**
-     * @Assert\Length(max=255, groups={"Default", "Update"})
-     * @Assert\Expression(expression="(this.getCountry() === constant('App\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update"})
+     * @Assert\Length(max=255, groups={"Default", "Update", "fill_personal_info"})
+     * @Assert\Expression(expression="(this.getCountry() === constant('App\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
     private $cityName;
 
     /**
-     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update"})
+     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
      *
      * @SymfonySerializer\Groups({"profile_write", "merbership:write"})
      */
@@ -181,16 +181,6 @@ class Address implements AddressInterface, GeocodableInterface
         if ($this->city && 5 === strpos($this->city, '-')) {
             list(, $inseeCode) = explode('-', $this->city);
         }
-
-        return $inseeCode;
-    }
-
-    /**
-     * Returns the french national INSEE code from the city code.
-     */
-    private static function getInseeCodeFromCityCode(string $cityCode): string
-    {
-        [, $inseeCode] = explode('-', $cityCode);
 
         return $inseeCode;
     }

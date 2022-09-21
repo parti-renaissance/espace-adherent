@@ -3,7 +3,7 @@
 namespace App\Form\Renaissance\Adhesion;
 
 use App\Address\Address;
-use App\Form\AddressType;
+use App\Form\AutocompleteAddressType;
 use App\Form\BirthdateType;
 use App\Form\GenderType;
 use App\Form\RepeatedEmailType;
@@ -43,11 +43,7 @@ class MembershipRequestPersonalInfoType extends AbstractType
             ->add('birthdate', BirthdateType::class, [
                 'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('address', AddressType::class, [
-                'set_address_region' => true,
-                'label' => false,
-                'child_error_bubbling' => false,
-            ])
+            ->add('address', AutocompleteAddressType::class)
             ->add('fill_personal_info', SubmitType::class, ['label' => 'Étape suivante'])
         ;
 

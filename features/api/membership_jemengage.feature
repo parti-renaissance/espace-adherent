@@ -57,7 +57,7 @@ Feature:
                 "propertyPath": "email_address",
                 "title": "Cette valeur ne doit pas être vide.",
                 "parameters": {
-                    "{{ value }}": "\"\""
+                    "{{ value }}": "null"
                 },
                 "type": "@string@"
             },
