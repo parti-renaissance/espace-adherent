@@ -34,10 +34,10 @@ class DonationFactoryTest extends TestCase
         $request->gender = 'male';
         $request->setAmount(70.0);
         $request->setEmailAddress('m.dupont@example.fr');
-        $request->setCountry('FR');
-        $request->setPostalCode('69000');
-        $request->setCityName('Lyon');
-        $request->setAddress('2, Rue de la République');
+        $request->getAddress()->setCountry('FR');
+        $request->getAddress()->setPostalCode('69000');
+        $request->getAddress()->setCityName('Lyon');
+        $request->getAddress()->setAddress('2, Rue de la République');
         $request->setDuration(0);
 
         $donator = $this->createConfiguredMock(Donator::class, [

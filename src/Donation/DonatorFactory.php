@@ -11,8 +11,8 @@ class DonatorFactory
         return new Donator(
             $request->getLastName(),
             $request->getFirstName(),
-            $request->getCityName(),
-            $request->getCountry(),
+            $request->getAddress()->getCityName(),
+            $request->getAddress()->getCountry(),
             $request->getEmailAddress(),
             $request->getGender()
         );

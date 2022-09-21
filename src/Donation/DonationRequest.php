@@ -15,7 +15,6 @@ use App\Validator\MaxMonthDonation;
 use App\Validator\PayboxSubscription as AssertPayboxSubscription;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UniqueDonationSubscription;
-use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -88,32 +87,11 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private $emailAddress;
 
     /**
-     * @Assert\NotBlank(message="common.address.required", groups={"Default", "fill_personal_info"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "fill_personal_info"})
+     * @var Address
+     *
+     * @Assert\Valid
      */
     private $address;
-
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Length(max=15, groups={"Default", "fill_personal_info"})
-     */
-    private $postalCode;
-
-    /**
-     * @Assert\Length(max=15, groups={"Default", "fill_personal_info"})
-     */
-    private $city;
-
-    /**
-     * @Assert\Length(max=255, groups={"Default", "fill_personal_info"})
-     */
-    private $cityName;
-
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "fill_personal_info"})
-     */
-    private $country;
 
     /**
      * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
@@ -159,7 +137,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->clientIp = $clientIp;
         $this->emailAddress = '';
-        $this->country = Address::FRANCE;
+        $this->address = new Address();
         $this->setAmount($amount);
         $this->duration = $duration;
         $this->type = $type;
@@ -176,11 +154,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
         $dto->emailAddress = $adherent->getEmailAddress();
-        $dto->address = $adherent->getAddress();
-        $dto->postalCode = $adherent->getPostalCode();
-        $dto->city = $adherent->getCity();
-        $dto->cityName = $adherent->getCityName();
-        $dto->country = $adherent->getCountry();
+        $dto->address = Address::createFromAddress($adherent->getPostAddress());
         $dto->nationality = $adherent->getNationality();
 
         return $dto;
@@ -251,54 +225,14 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         return $this->emailAddress;
     }
 
-    public function getAddress(): ?string
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
-    public function setAddress(?string $address)
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(?string $postalCode)
-    {
-        $this->postalCode = $postalCode;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city)
-    {
-        $this->city = $city;
-    }
-
-    public function getCityName(): ?string
-    {
-        return $this->cityName;
-    }
-
-    public function setCityName(?string $cityName)
-    {
-        $this->cityName = $cityName;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country)
-    {
-        $this->country = $country;
     }
 
     public function getCode(): ?string
@@ -352,7 +286,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         }
 
         if ($payload['co']) {
-            $retry->country = (string) $payload['co'];
+            $retry->address->setCountry((string) $payload['co']);
         }
 
         if ($payload['na']) {
@@ -360,15 +294,15 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         }
 
         if (isset($payload['pc'])) {
-            $retry->postalCode = (string) $payload['pc'];
+            $retry->address->setPostalCode((string) $payload['pc']);
         }
 
         if (isset($payload['ci'])) {
-            $retry->cityName = (string) $payload['ci'];
+            $retry->address->setCityName((string) $payload['ci']);
         }
 
         if (isset($payload['ad'])) {
-            $retry->address = (string) $payload['ad'];
+            $retry->address->setAddress((string) $payload['ad']);
         }
 
         return $retry;
@@ -436,11 +370,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         $this->firstName = $adherent->getFirstName();
         $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
-        $this->address = $adherent->getAddress();
-        $this->postalCode = $adherent->getPostalCode();
-        $this->city = $adherent->getCity();
-        $this->cityName = $adherent->getCityName();
-        $this->country = $adherent->getCountry();
+        $this->address = Address::createFromAddress($adherent->getPostAddress());
         $this->nationality = $adherent->getNationality();
     }
 }

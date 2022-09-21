@@ -157,7 +157,7 @@
                     {% set slug = commitment.title|slug %}
                     <div
                         id="valeur-{{ slug }}"
-                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger"
+                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
                         data-commitment-title="{{ commitment.title|e('html_attr') }}"
                         data-commitment-slug="{{ slug }}"
                         data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"

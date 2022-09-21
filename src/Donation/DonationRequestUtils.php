@@ -99,7 +99,7 @@ class DonationRequestUtils
             $donation = DonationRequest::createFromAdherent($currentUser, $clientIp, $amount, $duration);
         } else {
             $donation = new DonationRequest(Uuid::uuid4(), $clientIp, $amount, $duration);
-            $donation->setCountry($this->geocoder->getCountryCodeFromIp($clientIp));
+            $donation->getAddress()->setCountry($this->geocoder->getCountryCodeFromIp($clientIp));
         }
 
         if ($request->query->has(self::RETRY_PAYLOAD)) {
