@@ -444,7 +444,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    public ?\DateTime $voteStatusesConvocationSentAt = null;
+    public ?\DateTime $globalNotificationSentAt = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})

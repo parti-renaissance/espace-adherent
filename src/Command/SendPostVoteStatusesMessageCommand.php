@@ -4,7 +4,8 @@ namespace App\Command;
 
 use App\Entity\Adherent;
 use App\Mailer\MailerService;
-use App\Mailer\Message\VoteStatusesConvocationMessage;
+use App\Mailer\Message\PostVoteStatusesMessage;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -16,9 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendVoteStatusesConvocationCommand extends Command
+class SendPostVoteStatusesMessageCommand extends Command
 {
-    protected static $defaultName = 'app:vote-statuses:send-convocation';
+    protected static $defaultName = 'app:vote-statuses:send-post-message';
 
     private AdherentRepository $adherentRepository;
     private EntityManagerInterface $entityManager;
@@ -81,10 +82,10 @@ class SendVoteStatusesConvocationCommand extends Command
             $alreadySentCount < $total
             && ($adherents = $this->getChunkAdherents($selectedEmails, $chunkLimit))
         ) {
-            if ($this->transactionalMailer->sendMessage(VoteStatusesConvocationMessage::create($adherents, $certificationUrl))) {
+            if ($this->transactionalMailer->sendMessage(PostVoteStatusesMessage::create($adherents, $certificationUrl))) {
                 if (!$selectedEmails) {
                     array_walk($adherents, function (Adherent $adherent) use ($now) {
-                        $adherent->voteStatusesConvocationSentAt = $now;
+                        $adherent->globalNotificationSentAt = $now;
                     });
                 }
 
@@ -132,10 +133,11 @@ class SendVoteStatusesConvocationCommand extends Command
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, voteStatusesConvocationSentAt}')
-            ->where('adherent.status = :status AND adherent.adherent = true AND adherent.source IS NULL')
+            ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, globalNotificationSentAt}')
+            ->where('adherent.status = :status AND adherent.adherent = true AND (adherent.source IS NULL OR adherent.source = :renaissance_source)')
             ->andWhere('adherent.activatedAt IS NOT NULL')
             ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('renaissance_source', MembershipSourceEnum::RENAISSANCE)
         ;
 
         if ($emails) {
@@ -144,7 +146,7 @@ class SendVoteStatusesConvocationCommand extends Command
                 ->setParameter('emails', $emails)
             ;
         } else {
-            $queryBuilder->andWhere('adherent.voteStatusesConvocationSentAt IS NULL');
+            $queryBuilder->andWhere('adherent.globalNotificationSentAt IS NULL');
         }
 
         return $queryBuilder;

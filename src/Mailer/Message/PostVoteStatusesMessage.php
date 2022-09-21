@@ -5,7 +5,7 @@ namespace App\Mailer\Message;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class VoteStatusesConvocationMessage extends Message
+final class PostVoteStatusesMessage extends Message
 {
     /** @param Adherent[] $adherents */
     public static function create(array $adherents, string $convocationUrl): self
