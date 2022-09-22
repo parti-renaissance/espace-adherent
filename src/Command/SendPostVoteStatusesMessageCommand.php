@@ -4,7 +4,8 @@ namespace App\Command;
 
 use App\Entity\Adherent;
 use App\Mailer\MailerService;
-use App\Mailer\Message\VoteStatusesConvocationMessage;
+use App\Mailer\Message\PostVoteStatusesMessage;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -16,9 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendVoteStatusesConvocationCommand extends Command
+class SendPostVoteStatusesMessageCommand extends Command
 {
-    protected static $defaultName = 'app:vote-statuses:send-convocation';
+    protected static $defaultName = 'app:vote-statuses:send-post-message';
 
     private AdherentRepository $adherentRepository;
     private EntityManagerInterface $entityManager;
@@ -50,6 +51,7 @@ class SendVoteStatusesConvocationCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('created-after', null, InputOption::VALUE_REQUIRED, '', '2022-09-17 20:00:00')
         ;
     }
 
@@ -57,8 +59,9 @@ class SendVoteStatusesConvocationCommand extends Command
     {
         $limit = (int) $input->getOption('limit');
         $selectedEmails = $input->getOption('emails');
+        $createdAfter = $input->getOption('created-after');
 
-        if (!$count = $this->countAdherents($selectedEmails)) {
+        if (!$count = $this->countAdherents($selectedEmails, $createdAfter)) {
             $this->io->note('0 adherent to notify');
 
             return 0;
@@ -74,17 +77,17 @@ class SendVoteStatusesConvocationCommand extends Command
         $this->io->progressStart($total);
         $alreadySentCount = 0;
 
-        $certificationUrl = $this->urlGenerator->generate('app_certification_request_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $renaissanceAdhesionUrl = $this->urlGenerator->generate('app_renaissance_adhesion', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $now = new \DateTime();
 
         while (
             $alreadySentCount < $total
-            && ($adherents = $this->getChunkAdherents($selectedEmails, $chunkLimit))
+            && ($adherents = $this->getChunkAdherents($selectedEmails, $createdAfter, $chunkLimit))
         ) {
-            if ($this->transactionalMailer->sendMessage(VoteStatusesConvocationMessage::create($adherents, $certificationUrl))) {
+            if ($this->transactionalMailer->sendMessage(PostVoteStatusesMessage::create($adherents, $renaissanceAdhesionUrl))) {
                 if (!$selectedEmails) {
                     array_walk($adherents, function (Adherent $adherent) use ($now) {
-                        $adherent->voteStatusesConvocationSentAt = $now;
+                        $adherent->globalNotificationSentAt = $now;
                     });
                 }
 
@@ -106,9 +109,9 @@ class SendVoteStatusesConvocationCommand extends Command
         return 0;
     }
 
-    private function countAdherents(array $emails): int
+    private function countAdherents(array $emails, string $createdAfter): int
     {
-        return (int) $this->getQueryBuilder($emails)
+        return (int) $this->getQueryBuilder($emails, $createdAfter)
             ->select('COUNT(adherent.id)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -116,9 +119,9 @@ class SendVoteStatusesConvocationCommand extends Command
     }
 
     /** @return Adherent[] */
-    private function getChunkAdherents(array $emails, int $limit = 500): array
+    private function getChunkAdherents(array $emails, string $createdAfter, int $limit = 500): array
     {
-        return $this->getQueryBuilder($emails)
+        return $this->getQueryBuilder($emails, $createdAfter)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
@@ -128,14 +131,17 @@ class SendVoteStatusesConvocationCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(array $emails): QueryBuilder
+    private function getQueryBuilder(array $emails, string $createdAfter): QueryBuilder
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, voteStatusesConvocationSentAt}')
-            ->where('adherent.status = :status AND adherent.adherent = true AND adherent.source IS NULL')
+            ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, globalNotificationSentAt}')
+            ->where('adherent.status = :status AND adherent.adherent = true')
+            ->andWhere('adherent.source IS NULL OR (adherent.source = :renaissance_source AND adherent.activatedAt < :created_after)')
             ->andWhere('adherent.activatedAt IS NOT NULL')
             ->setParameter('status', Adherent::ENABLED)
+            ->setParameter('renaissance_source', MembershipSourceEnum::RENAISSANCE)
+            ->setParameter('created_after', \DateTime::createFromFormat('Y-m-d H:i:s', $createdAfter))
         ;
 
         if ($emails) {
@@ -144,7 +150,7 @@ class SendVoteStatusesConvocationCommand extends Command
                 ->setParameter('emails', $emails)
             ;
         } else {
-            $queryBuilder->andWhere('adherent.voteStatusesConvocationSentAt IS NULL');
+            $queryBuilder->andWhere('adherent.globalNotificationSentAt IS NULL');
         }
 
         return $queryBuilder;

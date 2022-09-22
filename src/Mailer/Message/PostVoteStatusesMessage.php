@@ -5,7 +5,7 @@ namespace App\Mailer\Message;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class VoteStatusesConvocationMessage extends Message
+final class PostVoteStatusesMessage extends Message
 {
     /** @param Adherent[] $adherents */
     public static function create(array $adherents, string $convocationUrl): self
@@ -16,7 +16,7 @@ final class VoteStatusesConvocationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Convocation de la Convention de La République En Marche',
+            'Vous avez voté pour Renaissance !',
             [
                 'now' => self::formatDate(new \DateTime(), 'EEEE d MMMM y'),
                 'convocation_url' => $convocationUrl,
@@ -37,6 +37,14 @@ final class VoteStatusesConvocationMessage extends Message
                 ]
             );
         }
+
+        return self::updateSenderInfo($message);
+    }
+
+    protected static function updateSenderInfo(Message $message): Message
+    {
+        $message->setSenderEmail('contact@parti-renaissance.fr');
+        $message->setSenderName('Renaissance');
 
         return $message;
     }
