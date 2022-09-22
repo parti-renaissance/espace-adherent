@@ -1049,6 +1049,40 @@ HELP
             ])
             ->add('municipalChiefManagedArea.jecouteAccess', null, ['label' => 'Candidat municipal: Accès J\'écoute'])
             ->add('municipalChiefManagedArea.inseeCode', null, ['label' => 'Candidat municipal: Insee code'])
+            ->add('activeMembership', CallbackFilter::class, [
+                'label' => 'Cotisation active',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'yes',
+                        'no',
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return "global.$choice";
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    switch ($value['value']) {
+                        case 'yes':
+                            $qb->andWhere("$alias.lastMembershipDonation IS NOT NULL");
+
+                            return true;
+
+                        case 'no':
+                            $qb->andWhere("$alias.lastMembershipDonation IS NULL");
+
+                            return true;
+                        default:
+                            return false;
+                    }
+                },
+            ])
+            ->add('lastMembershipDonation', DateRangeFilter::class, [
+                'label' => 'Date de dernière cotisation',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
         ;
     }
 
@@ -1131,6 +1165,9 @@ HELP
             ->add('type', null, [
                 'label' => 'Rôles',
                 'template' => 'admin/adherent/list_status.html.twig',
+            ])
+            ->add('lastMembershipDonation', null, [
+                'label' => 'Dernière cotisation',
             ])
             ->add('mailchimpStatus', null, [
                 'label' => 'Abonnement',

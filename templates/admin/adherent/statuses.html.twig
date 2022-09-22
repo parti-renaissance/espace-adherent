@@ -138,6 +138,10 @@
     <span class="label label-default">Utilisateur</span>
 {% endif %}
 
+{% if object.isRenaissanceUser %}
+    <span class="label label-info">Renaissance</span>
+{% endif %}
+
 {% if object.hasPrintPrivilege %}
     <span title="Accès LMI">&nbsp;🖨</span>
 {% endif %}
