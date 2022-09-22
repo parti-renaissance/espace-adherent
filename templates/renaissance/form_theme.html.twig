@@ -77,7 +77,14 @@
     {% endfor -%}
 {% endblock %}
 
-{% block autocomplete_input_row %}
+{% block autocomplete_address_row %}
+    <div>
+        {{ form_errors(form) }}
+        {{ form_widget(form, { label: false }) }}
+    </div>
+{% endblock %}
+
+{% block autocomplete_input_widget %}
     {% set attr = attr|merge({ class: (attr.class|default('') ~ ' address-autocomplete')|trim }) %}
     {{ block('form_widget') }}
 {% endblock %}

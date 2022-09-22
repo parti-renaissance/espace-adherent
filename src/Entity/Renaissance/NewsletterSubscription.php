@@ -29,6 +29,11 @@ class NewsletterSubscription
     public string $zipCode;
 
     /**
+     * @ORM\Column(length=2, nullable=true)
+     */
+    public string $country;
+
+    /**
      * @ORM\Column(unique=true)
      */
     public string $email;
@@ -54,7 +59,8 @@ class NewsletterSubscription
         $object = new self();
 
         $object->firstName = $request->firstName;
-        $object->zipCode = $request->zipCode;
+        $object->zipCode = $request->postalCode;
+        $object->country = $request->country;
         $object->email = $request->email;
 
         return $object;

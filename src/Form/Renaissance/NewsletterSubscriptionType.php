@@ -12,11 +12,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsletterSubscriptionType extends AbstractType
 {
+    public function getParent()
+    {
+        return NewsletterZoneType::class;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('firstName', TextType::class)
-            ->add('zipCode', TextType::class)
             ->add('email', EmailType::class)
             ->add('conditions', CheckboxType::class)
             ->add('cguAccepted', CheckboxType::class)

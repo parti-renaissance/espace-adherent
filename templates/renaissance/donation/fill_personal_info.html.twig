@@ -28,7 +28,7 @@
 
             {{ form_row(form.nationality, { label: 'Nationalité' }) }}
 
-            {{ form_row(form.address, { label: 'Adresse postale' }) }}
+            {{ form_row(form.address) }}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 route_name: 'app_renaissance_donation',
