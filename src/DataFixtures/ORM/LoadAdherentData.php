@@ -1136,6 +1136,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->donatedForMembership();
         $this->addReference('renaissance-user-1', $adherent);
 
         // Create adherents accounts activation keys
