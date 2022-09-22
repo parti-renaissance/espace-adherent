@@ -17,18 +17,18 @@
         {{ form_start(form) }}
             {{ form_errors(form) }}
 
-            {{ form_row(form.gender, { label: false }) }}
+            {{ form_row(form.gender, { label: 'Genre' }) }}
 
             <div class="flex flex-row space-x-4">
-                {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
-                {{ form_row(form.lastName, { label: false, attr: { placeholder: 'Nom' } }) }}
+                {{ form_row(form.firstName, { label: 'Prénom' }) }}
+                {{ form_row(form.lastName, { label: 'Nom' }) }}
             </div>
 
-            {{ form_row(form.emailAddress, { label: false, attr: { placeholder: 'E-mail' } }) }}
+            {{ form_row(form.emailAddress, { label: 'E-mail' }) }}
 
-            {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
+            {{ form_row(form.nationality, { label: 'Nationalité' }) }}
 
-            {{ form_row(form.address, { label: false }) }}
+            {{ form_row(form.address, { label: 'Adresse postale' }) }}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 route_name: 'app_renaissance_donation',

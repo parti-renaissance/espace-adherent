@@ -11,11 +11,11 @@
   }
 
   .button-group {
-    @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue;
+    @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
   }
 
   .form-control {
-    @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75 focus:ring-0;
+    @apply border-0 w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium focus:ring-0 p-0;
 
     & option {
       color: black;
@@ -23,14 +23,27 @@
   }
 
   .form-group {
-    @apply flex flex-col gap-x-3.75 w-full;
+    @apply flex flex-col gap-x-3.75 w-full rounded-lg border-2 border-white/20 focus-within:border-white px-4 py-3 mb-3.75;
+
+    label {
+      font-size: small;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .5);
+    }
+
+    &:focus-within {
+      label {
+        color: white;
+      }
+    }
   }
 
   .renaissance-amount-chooser {
     @apply flex flex-col;
 
     &__button {
-      @apply button-group grow bg-green first:rounded-tl-lg first:rounded-bl-lg last:border-l-0 last:rounded-tr-lg last:rounded-br-lg;
+      @apply button-group grow bg-green;
 
       &--selected {
         @apply bg-white text-dark-blue;

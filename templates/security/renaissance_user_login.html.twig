@@ -7,15 +7,15 @@
 {% block content_right_side %}
     <section class="flex flex-grow items-center justify-center p-5">
         <div class="w-96">
-            {{ form_start(form, { action: path('app_user_login_check', {app_domain: renaissance_host}) }) }}
+            {{ form_start(form, { action: path('app_user_login_check', { app_domain: renaissance_host }) }) }}
                 {% if error %}
                     <div class="text-red-400 py-3">
                         {{- error.messageKey|trans(error.messageData)|raw -}}
                     </div>
                 {% endif %}
 
-                {{ form_row(form._login_email, { label: false, attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
-                {{ form_row(form._login_password, { label: false, attr: { placeholder: 'Mot de passe' } }) }}
+                {{ form_row(form._login_email, { label: 'E-mail', attr: { autocapitalize: 'off' } }) }}
+                {{ form_row(form._login_password, { label: 'Mot de passe' }) }}
 
                 <div class="mb-4">
                     <a href="{{ path('app_renaissance_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ?</a>

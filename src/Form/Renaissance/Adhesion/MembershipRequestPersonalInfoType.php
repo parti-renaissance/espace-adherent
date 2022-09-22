@@ -34,10 +34,11 @@ class MembershipRequestPersonalInfoType extends AbstractType
                 'disabled' => $fromCertifiedAdherent,
             ])
             ->add('nationality', CountryType::class, [
-                'placeholder' => 'Nationalité',
+                'placeholder' => '',
                 'preferred_choices' => [Address::FRANCE],
             ])
             ->add('gender', GenderType::class, [
+                'placeholder' => '',
                 'disabled' => $fromCertifiedAdherent,
             ])
             ->add('birthdate', BirthdateType::class, [
