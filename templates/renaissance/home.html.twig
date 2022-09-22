@@ -370,7 +370,7 @@
 
                     <div class="lg:flex lg:flex-row lg:gap-x-3.75">
                         {{ form_row(newsletter_form.firstName, { label: 'Prénom' }) }}
-                        {{ form_row(newsletter_form.zipCode, { label: 'Code postal' }) }}
+                        {{ form_row(newsletter_form.autocomplete) }}
                     </div>
 
                     {{ form_row(newsletter_form.email, { label: 'E-mail' }) }}
@@ -378,9 +378,9 @@
                     <div class="text-white">
                         {{ form_widget(newsletter_form.conditions) }}
                         <label for="{{ newsletter_form.conditions.vars.id }}">
-                        <span>
-                            J’accepte de recevoir la newsletter de Renaissance
-                        </span>
+                            <span>
+                                J’accepte de recevoir la newsletter de Renaissance
+                            </span>
                         </label>
                     </div>
 
@@ -411,52 +411,26 @@
     <section class="bg-dark-blue pt-25 md:pt-36">
         <div class="max-w-7xl md:mx-auto mb-12.5">
             <a href="{{ path('app_renaissance_homepage') }}">
-                <img
-                    height="35"
-                    src="{{ asset('/images/renaissance/logo.svg') }}"
-                    class="mx-auto mb-[7.8125rem] md:mb-36 h-[1.25rem] md:h-8.75"
-                    alt="logo"
-                />
+                <img height="35" src="{{ asset('/images/renaissance/logo.svg') }}" class="mx-auto mb-[7.8125rem] md:mb-36 h-[1.25rem] md:h-8.75" alt="logo"/>
             </a>
             <div class="flex justify-center divide-white/10 gap-y-6.25 px-7.5 md:px-20 md:mb-6.25">
-                <!-- Facebook -->
-                <a
-                    href="https://www.facebook.com/Renaissance"
-                    class="flex flex-col md:flex-row items-center pr-6.25 lg:px-12.5 border-r-2 border-white/10"
-                >
+                <a href="https://www.facebook.com/renaissance" class="flex flex-col md:flex-row items-center pr-6.25 lg:px-12.5 border-r-2 border-white/10">
                     <span class="fa-stack mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-                        <i
-                            class="fa fa-circle fa-stack-2x"
-                            style="color: rgba(255, 255, 255, 0.1)"
-                        ></i>
+                        <i class="fa fa-circle fa-stack-2x" style="color: rgba(255, 255, 255, 0.1)"></i>
                         <i class="fa fa-facebook-f fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="text-white font-medium text-custom-base1">Facebook</span>
                 </a>
-                <!-- Instagram -->
-                <a
-                    href="https://www.instagram.com/renaissance"
-                    class="flex flex-col md:flex-row items-center px-6.25 lg:px-12.5 border-r-2 border-white/10"
-                >
+                <a href="https://www.instagram.com/renaissance" class="flex flex-col md:flex-row items-center px-6.25 lg:px-12.5 border-r-2 border-white/10">
                     <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-                        <i
-                            class="fa fa-circle fa-stack-2x"
-                            style="color: rgba(255, 255, 255, 0.1)"
-                        ></i>
+                        <i class="fa fa-circle fa-stack-2x" style="color: rgba(255, 255, 255, 0.1)"></i>
                         <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="text-white font-medium text-custom-base1">Instagram</span>
                 </a>
-                <!-- Twitter -->
-                <a
-                    href="https://twitter.com/renaissance "
-                    class="flex flex-col md:flex-row items-center pl-6.25 lg:px-12.5 lg:border-white/10"
-                >
+                <a href="https://twitter.com/renaissance" class="flex flex-col md:flex-row items-center pl-6.25 lg:px-12.5 lg:border-white/10">
                     <span class="fa-stack md:fa-2x mb-5 md:mb-0 md:mr-7.5 lg:mr-5.75">
-                        <i
-                            class="fa fa-circle fa-stack-2x"
-                            style="color: rgba(255, 255, 255, 0.1)"
-                        ></i>
+                        <i class="fa fa-circle fa-stack-2x" style="color: rgba(255, 255, 255, 0.1)"></i>
                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                     </span>
                     <span class="text-white font-medium text-custom-base1">Twitter</span>
@@ -481,6 +455,10 @@
 
 {% block final_javascripts %}
     <script src="https://www.google.com/recaptcha/enterprise.js"></script>
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" async></script>
+    {% endif %}
 
     <script type="text/javascript">
         Bootstrap.onLoad(function () {

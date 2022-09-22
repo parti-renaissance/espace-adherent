@@ -22,9 +22,14 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     public ?string $firstName = null;
 
     /**
+     * @Assert\Expression("this.postalCode || this.country")
+     */
+    public ?string $postalCode = null;
+
+    /**
      * @Assert\NotBlank
      */
-    public ?string $zipCode = null;
+    public ?string $country = null;
 
     /**
      * @Assert\NotBlank
