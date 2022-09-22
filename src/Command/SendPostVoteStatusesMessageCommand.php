@@ -137,7 +137,7 @@ class SendPostVoteStatusesMessageCommand extends Command
             ->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, firstName, lastName, emailAddress, globalNotificationSentAt}')
             ->where('adherent.status = :status AND adherent.adherent = true')
-            ->andWhere('adherent.source IS NULL OR (adherent.source = :renaissance_source AND adherent.activatedAt > :created_after)')
+            ->andWhere('adherent.source IS NULL OR (adherent.source = :renaissance_source AND adherent.activatedAt < :created_after)')
             ->andWhere('adherent.activatedAt IS NOT NULL')
             ->setParameter('status', Adherent::ENABLED)
             ->setParameter('renaissance_source', MembershipSourceEnum::RENAISSANCE)
