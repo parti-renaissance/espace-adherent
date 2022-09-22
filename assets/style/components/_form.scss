@@ -10,7 +10,12 @@
     }
 }
 
-.form-group {
+form {
+    label.required:after {
+        content: '*';
+        margin-left: 3px;
+    }
+
     .button-group {
         &:first-of-type {
             border-left-width: 2px;

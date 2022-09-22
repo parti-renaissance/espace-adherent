@@ -27,6 +27,7 @@ class DonationRequestDonatorType extends AbstractType
                 'translation_domain' => 'messages',
                 'disabled' => $fromAdherent,
                 'expanded' => true,
+                'placeholder' => '',
             ])
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
@@ -41,7 +42,7 @@ class DonationRequestDonatorType extends AbstractType
             ])
             ->add('nationality', CountryType::class, [
                 'preferred_choices' => [Address::FRANCE],
-                'placeholder' => 'Nationalité',
+                'placeholder' => '',
             ])
             ->add('address', AutocompleteAddressType::class)
         ;

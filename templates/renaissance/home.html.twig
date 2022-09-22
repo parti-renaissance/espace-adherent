@@ -147,7 +147,7 @@
                 <div class="md:w-3/5 lg:2/3">
                     <img
                         src="{{ asset('images/renaissance/nos-valeurs.jpg') }}"
-                        class="rounded-lg md:h-full md:w-full"
+                        class="rounded-lg w-full"
                         alt="nos-valeurs"
                     />
                 </div>
@@ -184,7 +184,7 @@
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
-                    <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="rounded-lg md:h-full w-full" alt="Burex"/>
+                    <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="rounded-lg w-full" alt="Burex"/>
                 </div>
             </div>
 
@@ -302,7 +302,7 @@
                     </p>
                 </div>
                 <div class="md:w-3/5 lg:2/3">
-                    <img src="{{ asset('images/renaissance/d2d.jpg') }}" class="rounded-lg md:h-full md:w-full" alt="d2d"/>
+                    <img src="{{ asset('images/renaissance/d2d.jpg') }}" class="rounded-lg w-full" alt="d2d"/>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10">
@@ -369,11 +369,11 @@
                     {% endif %}
 
                     <div class="lg:flex lg:flex-row lg:gap-x-3.75">
-                        {{ form_widget(newsletter_form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
-                        {{ form_widget(newsletter_form.zipCode, { label: false, attr: { placeholder: 'Code postal' } }) }}
+                        {{ form_row(newsletter_form.firstName, { label: 'Prénom' }) }}
+                        {{ form_row(newsletter_form.zipCode, { label: 'Code postal' }) }}
                     </div>
 
-                    {{ form_widget(newsletter_form.email, { label: false, attr: { placeholder: 'Email' } }) }}
+                    {{ form_row(newsletter_form.email, { label: 'E-mail' }) }}
 
                     <div class="text-white">
                         {{ form_widget(newsletter_form.conditions) }}

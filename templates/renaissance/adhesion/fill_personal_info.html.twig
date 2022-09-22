@@ -21,26 +21,26 @@
         {{ form_errors(form) }}
 
         <div class="flex flex-row space-x-4">
-            {{ form_row(form.firstName, { label: false, attr: { placeholder: 'Prénom' } }) }}
-            {{ form_row(form.lastName, { label: false, attr: { placeholder: 'Nom' } }) }}
+            {{ form_row(form.firstName, { label: 'Prénom' }) }}
+            {{ form_row(form.lastName, { label: 'Nom' }) }}
         </div>
 
         {% if form.emailAddress.first is defined %}
-            {{ form_row(form.emailAddress.first, { label: false, attr: { placeholder: 'E-mail' } }) }}
-            {{ form_row(form.emailAddress.second, { label: false, attr: {placeholder: 'Re-saisir l\'e-mail', 'data-validated-with': form.emailAddress.first.vars.id } }) }}
+            {{ form_row(form.emailAddress.first, { label: 'E-mail' }) }}
+            {{ form_row(form.emailAddress.second, { label: 'Re-saisir l\'e-mail' }) }}
         {% else %}
-           {{ form_row(form.emailAddress, { label: false, attr: { placeholder: 'E-mail' } }) }}
+           {{ form_row(form.emailAddress, { label: 'E-mail' }) }}
         {% endif %}
 
-        {{ form.password is defined ? form_row(form.password, { label: false, attr: { placeholder: 'Mot de passe' } }) }}
+        {{ form.password is defined ? form_row(form.password, { label: 'Mot de passe' }) }}
 
-        {{ form_row(form.nationality, { label: false, attr: { placeholder: 'Nationalité'} }) }}
+        {{ form_row(form.nationality, { label: 'Nationalité' }) }}
 
-        {{ form_row(form.address, { label: false }) }}
+        {{ form_row(form.address, { label: 'Adresse postale' }) }}
 
-        {{ form_row(form.birthdate, { label: false }) }}
+        {{ form_row(form.birthdate, { label: 'Date de naissance' }) }}
 
-        {{ form_row(form.gender, { label: false }) }}
+        {{ form_row(form.gender, { label: 'Genre' }) }}
 
         <div>
             <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />

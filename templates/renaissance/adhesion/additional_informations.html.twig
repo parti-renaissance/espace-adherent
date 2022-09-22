@@ -5,58 +5,55 @@
 {% set active_step = 'Informations additionnelles' %}
 
 {% block adhesion_content %}
-    <section>
-        {{ form_start(form) }}
-            {{ form_errors(form) }}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-            <div class="flex flex-row space-x-4">
-                {{ form_row(form.phone.country, { label: false, attr: { placeholder: 'Indicatif Pays', 'data-validated-with': form.phone.number.vars.id } }) }}
-                {{ form_row(form.phone.number, { label: false, attr: { placeholder: 'Téléphone' } }) }}
-            </div>
-            {{ form_errors(form.phone) }}
+        {{ form_errors(form.phone) }}
 
-            <div class="flex flex-row space-x-4">
-                {{ form_row(form.position, { label: false, attr: { placeholder: 'Catégorie socio-professionelle' } }) }}
-            </div>
+        <div class="flex flex-row space-x-4">
+            {{ form_row(form.phone.country, { label: 'Indicatif Pays' }) }}
+            {{ form_row(form.phone.number, { label: 'Téléphone' }) }}
+        </div>
 
-            <div class="py-10 text-lg">
-                {{ form_errors(form.exclusiveMembership) }}
-                <div class="border-t-1 border-white/10 pt-3.75 mb-5">
-                    {{ form_widget(form.exclusiveMembership) }}
-                    <label for="{{ form.exclusiveMembership.vars.id }}">
-                        <span>
-                            Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
-                        </span>
-                    </label>
-                </div>
+        {{ form_row(form.position, { label: 'Catégorie socio-professionelle' }) }}
 
-                <div class="border-t-1 border-white/10 pt-3.75 mb-5">
-                    {{ form_widget(form.territoireProgresMembership) }}
-                    <label for="{{ form.territoireProgresMembership.vars.id }}">
-                        <span>
-                            Vous êtes membre de « Territoires de Progrès » et pouvez bénéficier à ce titre de la
-                            double-adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
-                        </span>
-                    </label>
-                    {{ form_errors(form.territoireProgresMembership) }}
-                </div>
-
-                <div class="border-t-1 border-white/10 pt-3.75 mb-5">
-                    {{ form_widget(form.agirMembership) }}
-                    <label for="{{ form.agirMembership.vars.id }}">
-                        <span>
-                            Vous êtes membre d’ « Agir, la droite constructive » et pouvez bénéficier à ce titre de la
-                            double-adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
-                        </span>
-                    </label>
-                    {{ form_errors(form.agirMembership) }}
-                </div>
+        <div class="py-10 text-lg">
+            {{ form_errors(form.exclusiveMembership) }}
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.exclusiveMembership) }}
+                <label for="{{ form.exclusiveMembership.vars.id }}">
+                    <span>
+                        Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
+                    </span>
+                </label>
             </div>
 
-            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                route_name: 'app_renaissance_adhesion_amount',
-                form_button: form.fill_additional_informations
-            } %}
-        {{ form_end(form) }}
-    </section>
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.territoireProgresMembership) }}
+                <label for="{{ form.territoireProgresMembership.vars.id }}">
+                    <span>
+                        Vous êtes membre de « Territoires de Progrès » et pouvez bénéficier à ce titre de la
+                        double-adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
+                    </span>
+                </label>
+                {{ form_errors(form.territoireProgresMembership) }}
+            </div>
+
+            <div class="border-t-1 border-white/10 pt-3.75 mb-5">
+                {{ form_widget(form.agirMembership) }}
+                <label for="{{ form.agirMembership.vars.id }}">
+                    <span>
+                        Vous êtes membre d’ « Agir, la droite constructive » et pouvez bénéficier à ce titre de la
+                        double-adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
+                    </span>
+                </label>
+                {{ form_errors(form.agirMembership) }}
+            </div>
+        </div>
+
+        {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
+            route_name: 'app_renaissance_adhesion_amount',
+            form_button: form.fill_additional_informations
+        } %}
+    {{ form_end(form) }}
 {% endblock %}

@@ -20,7 +20,7 @@
 {%- endblock date_widget -%}
 
 {%- block choice_widget_expanded -%}
-    {% set attr = attr|merge({class: (attr.class|default('') ~ ' flex mb-3.75')|trim}) %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' flex')|trim}) %}
 
     <div {{ block('widget_container_attributes') }}>
         {%- for child in form %}
@@ -61,7 +61,6 @@
     </div>
 {% endblock %}
 
-
 {% block _app_renaissance_donation_confirmDonationType_row %}
     {{ form_errors(form.parent.children.confirmSubscriptionAmount) }}
     {%- for child in form %}
@@ -76,4 +75,9 @@
             </label>
         </div>
     {% endfor -%}
+{% endblock %}
+
+{% block autocomplete_input_row %}
+    {% set attr = attr|merge({ class: (attr.class|default('') ~ ' address-autocomplete')|trim }) %}
+    {{ block('form_widget') }}
 {% endblock %}

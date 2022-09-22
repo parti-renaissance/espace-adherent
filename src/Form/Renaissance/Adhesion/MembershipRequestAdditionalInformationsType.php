@@ -25,7 +25,7 @@ class MembershipRequestAdditionalInformationsType extends AbstractType
                 'preferred_country_choices' => [Address::FRANCE],
             ])
             ->add('position', ActivityPositionType::class, [
-                'placeholder' => 'Catégorie socio-professionelle',
+                'placeholder' => '',
                 'required' => false,
             ])
             ->add('exclusiveMembership', CheckboxType::class, [
