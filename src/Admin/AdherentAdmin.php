@@ -1050,7 +1050,7 @@ HELP
             ->add('municipalChiefManagedArea.jecouteAccess', null, ['label' => 'Candidat municipal: Accès J\'écoute'])
             ->add('municipalChiefManagedArea.inseeCode', null, ['label' => 'Candidat municipal: Insee code'])
             ->add('activeMembership', CallbackFilter::class, [
-                'label' => 'Cotisation active',
+                'label' => 'Cotisation à jour',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
