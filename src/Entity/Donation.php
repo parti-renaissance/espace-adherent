@@ -204,6 +204,11 @@ class Donation implements GeoPointInterface
      */
     private ?string $source = null;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $membership = false;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $type = null,
@@ -618,10 +623,23 @@ class Donation implements GeoPointInterface
     public function setSource(?string $source): void
     {
         $this->source = $source;
+
+        if (DonationSourceEnum::MEMBERSHIP === $source) {
+            $this->setMembership(true);
+        }
     }
 
-    public function isForMembership(): bool
+    public function isMembership(): bool
     {
-        return DonationSourceEnum::MEMBERSHIP === $this->source;
+        return $this->membership;
+    }
+
+    public function setMembership(bool $membership): void
+    {
+        $this->membership = $membership;
+
+        if ($membership) {
+            $this->donator->setMembershipDonation($this);
+        }
     }
 }

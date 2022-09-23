@@ -351,8 +351,13 @@ class Donator
     {
         $this->lastSuccessfulDonation = $donation;
 
-        if ($this->adherent && $donation->isForMembership()) {
-            $this->adherent->donatedForMembership();
+        $this->setMembershipDonation($donation);
+    }
+
+    public function setMembershipDonation(Donation $donation): void
+    {
+        if ($this->adherent && $donation->isMembership()) {
+            $this->adherent->donatedForMembership($donation->getDonatedAt());
         }
     }
 
