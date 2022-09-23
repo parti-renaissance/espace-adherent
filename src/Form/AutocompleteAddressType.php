@@ -16,7 +16,6 @@ class AutocompleteAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('autocomplete', AutocompleteInputType::class, [
-            'label' => 'Adresse postale',
             'attr' => [
                 'placeholder' => false,
                 'data-form' => $builder->getName(),
