@@ -27,15 +27,14 @@ class NewsletterControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        self::assertStringContainsString('Cette valeur n\'est pas valide.', $crawler->filter('#newsletter-form-error')->text());
+        self::assertStringContainsString('Cette valeur ne doit pas être vide.', $crawler->filter('#newsletter-form-error')->text());
 
         $this->client->submit($crawler->filter('form[name="newsletter_subscription"]')->form([
             'g-recaptcha-response' => 'fake',
             'newsletter_subscription' => [
                 'firstName' => 'Jules',
                 'email' => 'jules@en-marche-dev.fr',
-                'postalCode' => '06500',
-                'country' => 'FR',
+                'zipCode' => '06500',
                 'cguAccepted' => true,
                 'conditions' => true,
             ],
@@ -54,7 +53,6 @@ class NewsletterControllerTest extends WebTestCase
         self::assertSame('Jules', $nl->firstName);
         self::assertSame('jules@en-marche-dev.fr', $nl->email);
         self::assertSame('06500', $nl->zipCode);
-        self::assertSame('FR', $nl->country);
         self::assertNotEmpty($nl->token);
         self::assertEmpty($nl->confirmedAt);
     }

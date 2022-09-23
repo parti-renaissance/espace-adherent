@@ -6,7 +6,7 @@ export default () => {
         const addressObject = {};
 
         if (element.dataset.form) {
-            findAll(element.closest('form'), `input[name*="${element.dataset.form}"]`).forEach((addressElement) => {
+            findAll(element.closest('form'), `input[name*="[${element.dataset.form}]"]`).forEach((addressElement) => {
                 const name = addressElement.name.substring(addressElement.name.indexOf(`[${element.dataset.form}]`) + element.dataset.form.length + 2).replace(/(\]|\[)/g, '');
                 addressObject[name] = addressElement;
             });
