@@ -3,7 +3,6 @@
 namespace App\Admin;
 
 use App\Donation\DonationEvents;
-use App\Donation\DonationSourceEnum;
 use App\Donation\DonationWasCreatedEvent;
 use App\Donation\DonationWasUpdatedEvent;
 use App\Entity\Adherent;
@@ -27,7 +26,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
-use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -123,6 +121,11 @@ class DonationAdmin extends AbstractAdmin
                     'label' => 'Montant',
                     'disabled' => !$this->isCurrentRoute('create'),
                 ])
+                ->add('membership', CheckboxType::class, [
+                    'label' => 'Cotisation',
+                    'required' => false,
+                    'disabled' => $donation->isMembership(),
+                ])
                 ->add('code', null, [
                     'label' => 'Code don',
                 ])
@@ -217,24 +220,33 @@ class DonationAdmin extends AbstractAdmin
             ->add('code', null, [
                 'label' => 'Code don',
             ])
-            ->add('source', CallbackFilter::class, [
+            ->add('membership', CallbackFilter::class, [
+                'label' => 'Cotisation ?',
                 'show_filter' => true,
-                'field_type' => BooleanType::class,
-                'label' => 'Adhésion ?',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'yes',
+                        'no',
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return "global.$choice";
+                    },
+                ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return;
+                    switch ($value['value']) {
+                        case 'yes':
+                            $qb->andWhere("$alias.membership = TRUE");
+
+                            return true;
+
+                        case 'no':
+                            $qb->andWhere("$alias.membership = FALSE");
+
+                            return true;
+                        default:
+                            return false;
                     }
-
-                    if (1 === $value['value']) {
-                        $qb->andWhere($alias.'.source = :donation_source');
-                    } else {
-                        $qb->andWhere(sprintf('(%1$s.source IS NULL OR %1$s.source != :donation_source)', $alias));
-                    }
-
-                    $qb->setParameter('donation_source', DonationSourceEnum::MEMBERSHIP);
-
-                    return true;
                 },
             ])
             ->add('type', ChoiceFilter::class, [
@@ -458,9 +470,8 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Tags',
                 'template' => 'admin/donation/list_tags.html.twig',
             ])
-            ->add('source', null, [
-                'label' => 'Don/Adhésion',
-                'template' => 'admin/donation/list_source.html.twig',
+            ->add('membership', null, [
+                'label' => 'Cotisation',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
@@ -512,7 +523,7 @@ class DonationAdmin extends AbstractAdmin
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
-                'Adhésion' => $donation->isForMembership(),
+                'Cotisation' => $donation->isMembership(),
             ];
         });
     }

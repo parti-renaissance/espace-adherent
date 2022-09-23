@@ -3211,9 +3211,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ;
     }
 
-    public function donatedForMembership(): void
+    public function donatedForMembership(\DateTimeInterface $donatedAt = null): void
     {
-        $this->lastMembershipDonation = new \DateTime('now');
+        if (!$donatedAt) {
+            $donatedAt = new \DateTime('now');
+        }
+
+        if (
+            !$this->lastMembershipDonation
+            || ($this->lastMembershipDonation && $this->lastMembershipDonation < $donatedAt)
+        ) {
+            $this->lastMembershipDonation = $donatedAt;
+        }
     }
 
     public function hasActiveMembership(): bool

@@ -22,6 +22,7 @@
             <tr class="sonata-ba-list-field-header">
                 <th class="sonata-ba-list-field-header-text">Don de<br>référence</th>
                 <th class="sonata-ba-list-field-header-text">Montant</th>
+                <th class="sonata-ba-list-field-header-text">Cotisation</th>
                 <th class="sonata-ba-list-field-header-text">Type</th>
                 <th class="sonata-ba-list-field-header-text">Date</th>
                 <th class="sonata-ba-list-field-header-text">Status</th>
@@ -51,6 +52,13 @@
 
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ donation.amountInEuros|format_currency('EUR') }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {% if donation.isMembership %}
+                                <span class="label label-success">oui</span>
+                            {% else %}
+                                <span class="label label-danger">non</span>
+                            {% endif %}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ macros.get_donation_type_badge(donation.type) }}
