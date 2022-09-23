@@ -37,7 +37,8 @@ class SaveNewsletterController extends AbstractController
             return $this->redirectToRoute('app_renaissance_homepage');
         }
 
-        $errors = $form->getErrors();
+        $errors = $form->getErrors(true);
+
         if ($errors->count()) {
             $this->addFlash('newsletter_error', $errors->current()->getMessage());
         }
