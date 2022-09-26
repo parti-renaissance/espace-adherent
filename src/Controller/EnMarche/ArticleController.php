@@ -18,6 +18,13 @@ class ArticleController extends AbstractController
 {
     public const PER_PAGE = 12;
 
+    private string $appRenaissanceHost;
+
+    public function __construct(string $renaissanceHost)
+    {
+        $this->appRenaissanceHost = $renaissanceHost;
+    }
+
     /**
      * @Route(
      *     "/articles/{category}/{page}",
@@ -69,9 +76,16 @@ class ArticleController extends AbstractController
      * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view", methods={"GET"})
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
-    public function articleAction(Article $article, ArticleRepository $repository): Response
+    public function articleAction(Article $article, ArticleRepository $repository, Request $request): Response
     {
-        return $this->render('article/article.html.twig', [
+        if (
+            ($article->isForRenaissance() && $request->attributes->get('app_domain', $request->getHost()) !== $this->appRenaissanceHost)
+            || (!$article->isForRenaissance() && $request->attributes->get('app_domain', $request->getHost()) === $this->appRenaissanceHost)
+        ) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render(sprintf('article/%s.html.twig', $article->isForRenaissance() ? 'renaissance_article' : 'article'), [
             'article' => $article,
             'latestArticles' => $repository->findThreeLatestOtherThan($article),
         ]);

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Article;
 
+use App\Admin\AbstractAdmin;
 use App\Entity\Article;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class ArticleAdmin extends AbstractAdmin
+abstract class AbstractArticleAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -45,54 +45,54 @@ class ArticleAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-8'])
-                ->add('title', TextType::class, [
-                    'label' => 'Titre',
-                ])
-                ->add('description', TextareaType::class, [
-                    'label' => 'Description',
-                ])
-                ->add('twitterDescription', TextareaType::class, [
-                    'label' => 'Description pour Twitter',
-                    'required' => false,
-                ])
-                ->add('keywords', null, [
-                    'label' => 'Mots clés de recherche',
-                    'required' => false,
-                ])
-                ->add('media', null, [
-                    'label' => 'Image principale',
-                    'required' => false,
-                ])
-                ->add('displayMedia', CheckboxType::class, [
-                    'label' => 'Afficher l\'image principale dans l\'article',
-                    'required' => false,
-                ])
-                ->add('themes', null, [
-                    'label' => 'Thèmes',
-                ])
+            ->add('title', TextType::class, [
+                'label' => 'Titre',
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+            ])
+            ->add('twitterDescription', TextareaType::class, [
+                'label' => 'Description pour Twitter',
+                'required' => false,
+            ])
+            ->add('keywords', null, [
+                'label' => 'Mots clés de recherche',
+                'required' => false,
+            ])
+            ->add('media', null, [
+                'label' => 'Image principale',
+                'required' => false,
+            ])
+            ->add('displayMedia', CheckboxType::class, [
+                'label' => 'Afficher l\'image principale dans l\'article',
+                'required' => false,
+            ])
+            ->add('themes', null, [
+                'label' => 'Thèmes',
+            ])
             ->end()
             ->with('Publication', ['class' => 'col-md-4'])
-                ->add('published', CheckboxType::class, [
-                    'label' => 'Publier l\'article',
-                    'required' => false,
-                ])
-                ->add('publishedAt', DatePickerType::class, [
-                    'label' => 'Date de publication',
-                ])
-                ->add('slug', null, [
-                    'label' => 'URL de publication',
-                    'help' => 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique',
-                ])
-                ->add('category', null, [
-                    'label' => 'Catégorie de publication',
-                ])
+            ->add('published', CheckboxType::class, [
+                'label' => 'Publier l\'article',
+                'required' => false,
+            ])
+            ->add('publishedAt', DatePickerType::class, [
+                'label' => 'Date de publication',
+            ])
+            ->add('slug', null, [
+                'label' => 'URL de publication',
+                'help' => 'Ne spécifier que la fin : http://en-marche.fr/articles/[votre-valeur]<br />Doit être unique',
+            ])
+            ->add('category', null, [
+                'label' => 'Catégorie de publication',
+            ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-12'])
-                ->add('content', TextareaType::class, [
-                    'label' => 'Contenu',
-                    'required' => false,
-                    'attr' => ['class' => 'content-editor', 'rows' => 20],
-                ])
+            ->add('content', TextareaType::class, [
+                'label' => 'Contenu',
+                'required' => false,
+                'attr' => ['class' => 'content-editor', 'rows' => 20],
+            ])
             ->end()
         ;
     }
@@ -139,5 +139,22 @@ class ArticleAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery();
+
+        $query
+            ->andWhere(sprintf('%s.forRenaissance = :forRenaissance', $query->getRootAliases()[0]))
+            ->setParameter('forRenaissance', $this->isRenaissanceArticle())
+        ;
+
+        return $query;
+    }
+
+    protected function isRenaissanceArticle(): bool
+    {
+        return false;
     }
 }

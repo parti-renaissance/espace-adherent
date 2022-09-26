@@ -123,6 +123,11 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      */
     private $slug;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private ?bool $forRenaissance = false;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -182,9 +187,19 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
         return $this->themes;
     }
 
+    public function isForRenaissance(): ?bool
+    {
+        return $this->forRenaissance;
+    }
+
+    public function setForRenaissance(?bool $forRenaissance): void
+    {
+        $this->forRenaissance = $forRenaissance;
+    }
+
     public function isIndexable(): bool
     {
-        return $this->isPublished() && $this->isNotDeleted();
+        return $this->isPublished() && $this->isNotDeleted() && !$this->isForRenaissance();
     }
 
     public function getIndexOptions(): array

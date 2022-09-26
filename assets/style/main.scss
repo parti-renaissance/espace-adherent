@@ -58,4 +58,46 @@
       }
     }
   }
+
+  .article-content {
+    @apply font-normal text-lg;
+
+    a {
+      color: #73C0F1;
+    }
+
+    h1, h2, h3 {
+      @apply font-bold mb-8;
+    }
+
+    h1 {
+      @apply text-custom-2xl;
+    }
+
+    h2 {
+      @apply text-custom-xl;
+    }
+
+    h2 {
+      @apply text-custom;
+    }
+
+    ol {
+      @apply list-disc
+    }
+
+    figure {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    blockquote {
+      display: block;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      margin-inline-start: 40px;
+      margin-inline-end: 40px;
+    }
+  }
 }

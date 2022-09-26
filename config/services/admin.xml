@@ -21,6 +21,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.renaissance_article" class="App\Admin\Article\RenaissanceArticleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Actualités" group="Re site web" />
+
+            <argument />
+            <argument>App\Entity\Article</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Communication
@@ -43,7 +51,7 @@
             </call>
         </service>
 
-        <service id="app.admin.article" class="App\Admin\ArticleAdmin">
+        <service id="app.admin.article" class="App\Admin\Article\ArticleAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Actualités" group="Communication" />
 
             <argument />
