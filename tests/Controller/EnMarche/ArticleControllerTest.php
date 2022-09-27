@@ -11,6 +11,7 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group article
+ * @group debug
  */
 class ArticleControllerTest extends WebTestCase
 {
@@ -62,7 +63,7 @@ class ArticleControllerTest extends WebTestCase
         $reflectionMethod = new \ReflectionMethod(ArticleController::class, 'isPaginationValid');
         $reflectionMethod->setAccessible(true);
 
-        $articleController = $this->getMockBuilder(ArticleController::class)
+        $articleController = $this->getMockBuilder(ArticleController::class)->disableOriginalConstructor()
             ->setMethods(['isPaginationValid'])
             ->getMock()
         ;
