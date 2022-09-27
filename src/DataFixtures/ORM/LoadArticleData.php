@@ -77,9 +77,9 @@ class LoadArticleData extends Fixture
         ]));
 
         $manager->persist($this->articleFactory->createFromArray([
-            'title' => '« Troisième actualité: Les outre-mer sont l’un des piliers de notre richesse culturelle. »',
-            'slug' => 'outre-mer-3',
-            'description' => 'outre-mer 3',
+            'title' => 'Nouvelle actualité Renaissance: Premier article renaissance.',
+            'slug' => 'article-re',
+            'description' => 'article renaissance',
             'media' => $media,
             'displayMedia' => true,
             'published' => true,
