@@ -6,15 +6,16 @@
 {% block content %}
     <main class="flex flex-col h-screen">
         {% include 'renaissance/partials/site-header.html.twig' %}
+
         <section class="article-content flex-grow">
             <header class="py-10 text-center font-bold">
                 <h1 class="text-custom-2xl text-black">
                     {{ article.title }}
                 </h1>
-                <span class="text-sm text-stone-400">{{ article.publishedAt|format_datetime('none', 'none', "d MMMM yyyy") }} - {{ article.description }}</span>
+                <p class="text-sm text-stone-400">{{ article.publishedAt|format_datetime('none', 'none', "d MMMM yyyy") }} - {{ article.description }}</p>
             </header>
 
-            <article class="article-content max-w-screen-lg mx-5 md:mx-auto my-20">
+            <article class="page-content max-w-screen-lg mx-5 md:mx-auto">
                 {% if article.media and article.displayMedia %}
                     <figure class="rounded-lg w-full mb-12.5">
                         <img src="{{ media_asset(article.media, {'q': 70}) }}"
@@ -35,22 +36,17 @@
                 {% endif %}
             </article>
 
-            <div class="mt-8 flex justify-center flex-wrap gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
-                <h1 class="text-custom-2xl text-black">Dernières actualités</h1>
-                {% for article in latestArticles %}
-                    <div class="flex flex-col lg:w-[25rem] px-3.5 py-10 lg:px-[1.875rem] lg:py-25 min-h-[10.75rem]">
-                        <div class="bg-white rounded-lg shadow-lg">
-                            <div class="bg-cover bg-bottom rounded-t-lg min-h-[15.75rem]" style="background-image: url('{{ media_asset(article.media, {'q': 70}) }}')"></div>
-                            <div class="p-6">
-                                <h2 class="font-bold mb-2 text-custom-xl text-ellipsis overflow-hidden">{{ article.title }}</h2>
-                                <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="underline text-sm">Lire 👉</a>
-                            </div>
+            {% if latestArticles %}
+                <h1 class="mt-8 text-center text-custom-2xl text-black">Dernières actualités</h1>
 
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+                <div class="flex mx-auto max-w-screen-lg gap-x-3.75 my-4">
+                    {% for article in latestArticles %}
+                        {% include 'article/partial/article-item.html.twig' %}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </section>
+
         {% include 'renaissance/partials/small-footer.html.twig' %}
     </main>
 {% endblock %}

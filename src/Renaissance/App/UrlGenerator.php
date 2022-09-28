@@ -2,9 +2,9 @@
 
 namespace App\Renaissance\App;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentExpirableTokenInterface;
-use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AbstractAppUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -22,7 +22,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public static function getAppCode(): string
     {
-        return MembershipSourceEnum::RENAISSANCE;
+        return AppCodeEnum::RENAISSANCE;
     }
 
     public function generateHomepageLink(): string

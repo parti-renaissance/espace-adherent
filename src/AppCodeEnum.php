@@ -7,13 +7,16 @@ use MyCLabs\Enum\Enum;
 final class AppCodeEnum extends Enum
 {
     public const PLATFORM = 'platform';
+    public const RENAISSANCE = 'renaissance';
     public const COALITIONS = 'coalitions';
+    public const JEMENGAGE = 'jemengage';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';
 
     public static function getJemangageAppCodes(): array
     {
         return [
+            self::JEMENGAGE,
             self::JEMENGAGE_WEB,
             self::JEMENGAGE_MOBILE,
         ];
@@ -24,8 +27,8 @@ final class AppCodeEnum extends Enum
         return \in_array($code, static::getJemangageAppCodes(), true);
     }
 
-    public static function isCoalitionsApp(?string $code): bool
+    public static function isRenaissanceApp(?string $code): bool
     {
-        return self::COALITIONS === $code;
+        return self::RENAISSANCE === $code;
     }
 }
