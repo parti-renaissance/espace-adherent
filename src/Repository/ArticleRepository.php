@@ -38,8 +38,12 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * @return Article[]
      */
-    public function findByCategoryPaginated(string $category, int $page, int $perPage): array
-    {
+    public function findByCategoryPaginated(
+        string $category,
+        int $page,
+        int $perPage,
+        bool $isForRenaissance = false
+    ): array {
         $qb = $this->createQueryBuilder('a')
             ->select('a', 'm')
             ->leftJoin('a.media', 'm')
@@ -47,8 +51,10 @@ class ArticleRepository extends ServiceEntityRepository
             ->addSelect('category')
             ->andWhere('a.published = :published')
             ->andWhere('category.display = :display')
+            ->andWhere('a.forRenaissance = :forRenaissance')
             ->setParameter('published', true)
             ->setParameter('display', true)
+            ->setParameter('forRenaissance', $isForRenaissance)
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($perPage)
             ->setFirstResult(($page - 1) * $perPage)
@@ -135,7 +141,7 @@ class ArticleRepository extends ServiceEntityRepository
      */
     public function findThreeLatestOtherThan(Article $article): array
     {
-        return $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->select('a', 'm')
             ->leftJoin('a.media', 'm')
             ->where('a.published = :published')
@@ -143,6 +149,13 @@ class ArticleRepository extends ServiceEntityRepository
             ->andWhere('a.id != :current')
             ->setParameter('current', $article->getId())
             ->orderBy('a.publishedAt', 'DESC')
+        ;
+
+        if ($article->isForRenaissance()) {
+            $qb->andWhere('a.forRenaissance = 1');
+        }
+
+        return $qb
             ->setMaxResults(3)
             ->getQuery()
             ->getResult()

@@ -1,7 +1,15 @@
 {% if object.published %}
-    <a href="{{ path('article_view', {'categorySlug': object.category.slug, 'articleSlug': object.slug}) }}" class="btn btn-sm btn-default view_link"
-       title="Prévisualiser" target="_blank" rel="noopener noreferrer">
-        <i class="fa fa-search-plus" aria-hidden="true"></i>
-        Prévisualiser
-    </a>
+    {% if object.isForRenaissance %}
+        <a href="{{ path('article_view', {categorySlug: object.category.slug, articleSlug: object.slug, app_domain: renaissance_host}) }}" class="btn btn-sm btn-default view_link"
+           title="Prévisualiser" target="_blank" rel="noopener noreferrer">
+            <i class="fa fa-search-plus" aria-hidden="true"></i>
+            Prévisualiser
+        </a>
+    {% else %}
+        <a href="{{ path('article_view', {categorySlug: object.category.slug, articleSlug: object.slug}) }}" class="btn btn-sm btn-default view_link"
+           title="Prévisualiser" target="_blank" rel="noopener noreferrer">
+            <i class="fa fa-search-plus" aria-hidden="true"></i>
+            Prévisualiser
+        </a>
+    {% endif %}
 {% endif %}

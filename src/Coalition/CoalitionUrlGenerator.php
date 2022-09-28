@@ -2,12 +2,12 @@
 
 namespace App\Coalition;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentExpirableTokenInterface;
 use App\Entity\Coalition\Cause;
 use App\Entity\Event\CauseEvent;
 use App\Entity\Event\CoalitionEvent;
-use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AbstractAppUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,7 +34,7 @@ class CoalitionUrlGenerator extends AbstractAppUrlGenerator
 
     public static function getAppCode(): string
     {
-        return MembershipSourceEnum::COALITIONS;
+        return AppCodeEnum::COALITIONS;
     }
 
     public function guessAppCodeFromRequest(Request $request): ?string

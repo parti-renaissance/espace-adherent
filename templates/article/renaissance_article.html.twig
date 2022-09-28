@@ -1,0 +1,52 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title article.title %}
+{% block canonical_url url('article_view', { categorySlug: article.category.slug, articleSlug: article.slug, app_domain: renaissance_host }) %}
+
+{% block content %}
+    <main class="flex flex-col h-screen">
+        {% include 'renaissance/partials/site-header.html.twig' %}
+
+        <section class="article-content flex-grow">
+            <header class="py-10 text-center font-bold">
+                <h1 class="text-custom-2xl text-black">
+                    {{ article.title }}
+                </h1>
+                <p class="text-sm text-stone-400">{{ article.publishedAt|format_datetime('none', 'none', "d MMMM yyyy") }} - {{ article.description }}</p>
+            </header>
+
+            <article class="page-content max-w-screen-lg mx-5 md:mx-auto">
+                {% if article.media and article.displayMedia %}
+                    <figure class="rounded-lg w-full mb-12.5">
+                        <img src="{{ media_asset(article.media, {'q': 70}) }}"
+                             title="{{ article.media.name }}"
+                             alt="{{ article.media.name }}" />
+                    </figure>
+                {% endif %}
+
+                {{ article.content|markdown }}
+
+                {% if article.category.ctaLink and article.category.ctaLabel %}
+                    <a href="{{ article.category.ctaLink }}" class="category">
+                        <div class="category__label">
+                            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                            {{ article.category.ctaLabel }}
+                        </div>
+                    </a>
+                {% endif %}
+            </article>
+
+            {% if latestArticles %}
+                <h1 class="mt-8 text-center text-custom-2xl text-black">Dernières actualités</h1>
+
+                <div class="flex mx-auto max-w-screen-lg gap-x-3.75 my-4">
+                    {% for article in latestArticles %}
+                        {% include 'article/partial/article-item.html.twig' %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+
+        {% include 'renaissance/partials/small-footer.html.twig' %}
+    </main>
+{% endblock %}

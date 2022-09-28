@@ -19,6 +19,7 @@
     "@sentry/browser": "^6.19.7",
     "@sentry/tracing": "^6.19.7",
     "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "algoliasearch": "^4.14.2",
     "atob": "^2.1.0",
     "autoprefixer": "^10.4.12",

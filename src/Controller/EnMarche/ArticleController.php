@@ -2,9 +2,11 @@
 
 namespace App\Controller\EnMarche;
 
+use App\AppCodeEnum;
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
 use App\Feed\ArticleFeedGenerator;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\ArticleCategoryRepository;
 use App\Repository\ArticleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -69,9 +71,19 @@ class ArticleController extends AbstractController
      * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view", methods={"GET"})
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
-    public function articleAction(Article $article, ArticleRepository $repository): Response
-    {
-        return $this->render('article/article.html.twig', [
+    public function articleAction(
+        Article $article,
+        ArticleRepository $repository,
+        Request $request,
+        AuthAppUrlManager $appUrlManager
+    ): Response {
+        $appCode = $appUrlManager->getAppCodeFromRequest($request);
+
+        if ($article->isForRenaissance() xor AppCodeEnum::isRenaissanceApp($appCode)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render(AppCodeEnum::isRenaissanceApp($appCode) ? 'article/renaissance_article.html.twig' : 'article/article.html.twig', [
             'article' => $article,
             'latestArticles' => $repository->findThreeLatestOtherThan($article),
         ]);

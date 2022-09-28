@@ -19,6 +19,7 @@ class ArticleFactory
         $article->setPublishedAt($data['publishedAt'] ?? new \DateTime());
         $article->setCategory($data['category']);
         $article->setKeywords($data['keywords'] ?? '');
+        $article->setForRenaissance($data['forRenaissance'] ?? false);
 
         return $article;
     }

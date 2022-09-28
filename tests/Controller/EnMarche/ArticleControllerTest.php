@@ -62,7 +62,7 @@ class ArticleControllerTest extends WebTestCase
         $reflectionMethod = new \ReflectionMethod(ArticleController::class, 'isPaginationValid');
         $reflectionMethod->setAccessible(true);
 
-        $articleController = $this->getMockBuilder(ArticleController::class)
+        $articleController = $this->getMockBuilder(ArticleController::class)->disableOriginalConstructor()
             ->setMethods(['isPaginationValid'])
             ->getMock()
         ;

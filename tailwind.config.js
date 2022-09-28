@@ -8,9 +8,9 @@ module.exports = {
             center: true,
         },
         screens: {
-            'md': '768px',
-            'lg': '1024px',
-            'xl': '1280px',
+            md: '768px',
+            lg: '1024px',
+            xl: '1280px',
         },
         extend: {
             fontFamily: {
@@ -86,5 +86,6 @@ module.exports = {
     ],
     plugins: [
         require('@tailwindcss/forms')({ strategy: 'base' }),
+        require('@tailwindcss/line-clamp'),
     ],
 };

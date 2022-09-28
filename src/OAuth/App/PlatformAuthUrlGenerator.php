@@ -2,9 +2,9 @@
 
 namespace App\OAuth\App;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentExpirableTokenInterface;
-use App\Membership\MembershipSourceEnum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -12,7 +12,7 @@ class PlatformAuthUrlGenerator extends AbstractAppUrlGenerator
 {
     public static function getAppCode(): string
     {
-        return MembershipSourceEnum::PLATFORM;
+        return AppCodeEnum::PLATFORM;
     }
 
     public function generateHomepageLink(): string
