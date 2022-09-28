@@ -20,13 +20,6 @@ class ArticleController extends AbstractController
 {
     public const PER_PAGE = 12;
 
-    private string $appRenaissanceHost;
-
-    public function __construct(string $renaissanceHost)
-    {
-        $this->appRenaissanceHost = $renaissanceHost;
-    }
-
     /**
      * @Route(
      *     "/articles/{category}/{page}",

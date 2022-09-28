@@ -11,7 +11,6 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  * @group article
- * @group debug
  */
 class ArticleControllerTest extends WebTestCase
 {
