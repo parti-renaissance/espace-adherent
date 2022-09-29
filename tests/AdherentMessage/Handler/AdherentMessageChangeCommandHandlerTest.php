@@ -106,8 +106,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 3,
                         'subject_line' => '[Comité] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -181,8 +181,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 1,
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -230,8 +230,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 1,
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code2',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -303,8 +303,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 2,
                         'subject_line' => '[Député] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -376,8 +376,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 6,
                         'subject_line' => '[Sénateur] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -450,8 +450,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Paris 1er',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'application_request_candidate_list_id',
@@ -521,8 +521,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Bois-Colombes',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -564,8 +564,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Annecy-le-Vieux',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -607,8 +607,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Seynod',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -650,8 +650,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Cran-Gevrier',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -693,8 +693,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Meythet',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -736,8 +736,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - Pringy',
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -808,8 +808,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'settings' => [
                         'subject_line' => '[Candidat] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                         'template_id' => 7,
                     ],
                     'recipients' => [
@@ -871,8 +871,8 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'settings' => [
                         'subject_line' => 'Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name | La République En Marche !',
+                        'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                        'from_name' => 'Full Name | Renaissance',
                         'template_id' => 8,
                     ],
                     'recipients' => [

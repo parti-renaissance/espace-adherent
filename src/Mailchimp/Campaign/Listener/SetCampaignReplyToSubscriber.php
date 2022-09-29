@@ -38,6 +38,6 @@ class SetCampaignReplyToSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->getRequest()->setReplyTo('ne-pas-repondre@en-marche.fr');
+        $event->getRequest()->setReplyTo('ne-pas-repondre@parti-renaissance.fr');
     }
 }
