@@ -406,7 +406,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     protected function getFromNameSuffix(): string
     {
-        return ' | La République En Marche !';
+        return ' | Renaissance';
     }
 
     public function getSentAt(): ?\DateTimeInterface
