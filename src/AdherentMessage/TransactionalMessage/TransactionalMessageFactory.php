@@ -4,8 +4,8 @@ namespace App\AdherentMessage\TransactionalMessage;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\ReferentInstancesMessage;
-use App\Mailer\Message\AdherentMessage\ReferentToInstancesMembershipMessage;
 use App\Mailer\Message\Message;
+use App\Mailer\Message\Renaissance\AdherentMessage\RenaissanceReferentToInstancesMembershipMessage;
 
 class TransactionalMessageFactory
 {
@@ -13,7 +13,7 @@ class TransactionalMessageFactory
     {
         switch (\get_class($message)) {
             case ReferentInstancesMessage::class:
-                return ReferentToInstancesMembershipMessage::create($message, $recipients);
+                return RenaissanceReferentToInstancesMembershipMessage::create($message, $recipients);
         }
 
         throw new \RuntimeException(sprintf('Unknown transactional adherent message "%s"', \get_class($message)));
