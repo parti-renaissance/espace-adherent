@@ -11,6 +11,7 @@ use App\Newsletter\NewsletterValueObject;
 class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
 {
     private $zipCode;
+    private $firstName;
     private $countryName;
     private $type;
     private $siteCode;
@@ -19,6 +20,13 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
     public function setZipCode(?string $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -55,6 +63,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
     {
         return $this
             ->setEmail($newsletter->getEmail())
+            ->setFirstName($newsletter->getFirstName())
             ->setZipCode($newsletter->getZipCode())
             ->setCountryName($newsletter->getCountryName())
             ->setType($newsletter->getType())
@@ -69,6 +78,10 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
 
         if ($this->zipCode) {
             $mergeFields[MemberRequest::MERGE_FIELD_ZIP_CODE] = $this->zipCode;
+        }
+
+        if ($this->firstName) {
+            $mergeFields[MemberRequest::MERGE_FIELD_FIRST_NAME] = $this->firstName;
         }
 
         if ($this->countryName) {

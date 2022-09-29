@@ -4,6 +4,7 @@ namespace App\Entity\Renaissance;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\NewsletterSubscriptionInterface;
 use App\Renaissance\Newsletter\SubscriptionRequest;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -13,7 +14,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity(repositoryClass="App\Repository\Renaissance\NewsletterSubscriptionRepository")
  * @ORM\Table(name="renaissance_newsletter_subscription")
  */
-class NewsletterSubscription
+class NewsletterSubscription implements NewsletterSubscriptionInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -58,5 +59,20 @@ class NewsletterSubscription
         $object->email = $request->email;
 
         return $object;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function getToken(): ?UuidInterface
+    {
+        return $this->token;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return null !== $this->confirmedAt;
     }
 }

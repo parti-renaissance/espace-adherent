@@ -98,9 +98,17 @@ class Manager implements LoggerAwareInterface
 
     public function editNewsletterMember(NewsletterValueObject $newsletter): void
     {
-        $listId = NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE === $newsletter->getType() ?
-            $this->mailchimpObjectIdMapping->getNewsletterLegislativeCandidateListId() :
-            $this->mailchimpObjectIdMapping->getNewsletterListId();
+        switch ($newsletter->getType()) {
+            case NewsletterTypeEnum::SITE_LEGISLATIVE_CANDIDATE:
+                $listId = $this->mailchimpObjectIdMapping->getNewsletterLegislativeCandidateListId();
+                break;
+            case NewsletterTypeEnum::SITE_RENAISSANCE:
+                $listId = $this->mailchimpObjectIdMapping->getNewsletterRenaissanceListId();
+                break;
+            default:
+                $listId = $this->mailchimpObjectIdMapping->getNewsletterListId();
+                break;
+        }
 
         $requestBuilder = $this->requestBuildersLocator->get(NewsletterMemberRequestBuilder::class);
 

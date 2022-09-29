@@ -23,20 +23,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssertRecaptcha(groups={"Subscription"})
  */
-class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaChallengeInterface
+class NewsletterSubscription implements NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use RecaptchaChallengeTrait;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
 
     /**
      * @var string
@@ -91,13 +83,6 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaCha
      *
      * @ORM\Column(type="uuid", unique=true, nullable=true)
      */
-    private $uuid;
-
-    /**
-     * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid", unique=true, nullable=true)
-     */
     private $token;
 
     /**
@@ -122,11 +107,6 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaCha
     public function __toString()
     {
         return $this->email ?: '';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -192,16 +172,6 @@ class NewsletterSubscription implements EntitySoftDeletedInterface, RecaptchaCha
     public function isConfirmed(): bool
     {
         return null !== $this->confirmedAt;
-    }
-
-    public function getUuid(): ?UuidInterface
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(UuidInterface $uuid): void
-    {
-        $this->uuid = $uuid;
     }
 
     public function getToken(): ?UuidInterface

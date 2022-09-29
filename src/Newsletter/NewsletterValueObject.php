@@ -5,12 +5,14 @@ namespace App\Newsletter;
 use App\Entity\Geo\Zone;
 use App\Entity\LegislativeNewsletterSubscription;
 use App\Entity\NewsletterSubscription;
+use App\Entity\Renaissance\NewsletterSubscription as RenaissanceNewsletterSubscription;
 use App\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
 
 class NewsletterValueObject
 {
     private $email;
     private $zipCode;
+    private $firstName;
     private $countryName;
     private $siteCode;
     private $type;
@@ -22,9 +24,9 @@ class NewsletterValueObject
         return $this->email;
     }
 
-    public function setEmail(?string $email): void
+    public function getFirstName(): ?string
     {
-        $this->email = $email;
+        return $this->firstName;
     }
 
     public function isSubscribed(): bool
@@ -32,19 +34,9 @@ class NewsletterValueObject
         return $this->subscribed;
     }
 
-    public function setSubscribed(bool $subscribed): void
-    {
-        $this->subscribed = $subscribed;
-    }
-
     public function getZipCode(): ?string
     {
         return $this->zipCode;
-    }
-
-    public function setZipCode(?string $zipCode): void
-    {
-        $this->zipCode = $zipCode;
     }
 
     public function getCountryName(): ?string
@@ -52,19 +44,9 @@ class NewsletterValueObject
         return $this->countryName;
     }
 
-    public function setCountryName(?string $countryName): void
-    {
-        $this->countryName = $countryName;
-    }
-
     public function getSiteCode(): ?string
     {
         return $this->siteCode;
-    }
-
-    public function setSiteCode(?string $siteCode): void
-    {
-        $this->siteCode = $siteCode;
     }
 
     /** @return Zone[] */
@@ -76,11 +58,6 @@ class NewsletterValueObject
     public function getType(): ?string
     {
         return $this->type;
-    }
-
-    public function setType(?string $type): void
-    {
-        $this->type = $type;
     }
 
     public static function createFromNewsletterSubscription(NewsletterSubscription $newsletter): self
@@ -96,6 +73,19 @@ class NewsletterValueObject
             NewsletterTypeEnum::MAIN_SITE_FROM_EVENT
             : NewsletterTypeEnum::MAIN_SITE
         ;
+
+        return $object;
+    }
+
+    public static function createFromRenaissanceNewsletterSubscription(
+        RenaissanceNewsletterSubscription $newsletter
+    ): self {
+        $object = new self();
+
+        $object->email = $newsletter->getEmail();
+        $object->zipCode = $newsletter->zipCode;
+        $object->firstName = $newsletter->firstName;
+        $object->type = NewsletterTypeEnum::SITE_RENAISSANCE;
 
         return $object;
     }

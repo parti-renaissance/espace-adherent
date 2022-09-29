@@ -2,12 +2,12 @@
 
 namespace App\Mailer\Message;
 
-use App\Entity\NewsletterSubscription;
+use App\Entity\NewsletterSubscriptionInterface;
 use Ramsey\Uuid\Uuid;
 
 final class NewsletterSubscriptionConfirmationMessage extends Message
 {
-    public static function create(NewsletterSubscription $subscription, string $confirmationLink): self
+    public static function create(NewsletterSubscriptionInterface $subscription, string $confirmationLink): self
     {
         return new self(
             Uuid::uuid4(),

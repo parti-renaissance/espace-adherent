@@ -13,6 +13,11 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         parent::__construct($registry, NewsletterSubscription::class);
     }
 
+    public function findById(int $id): ?NewsletterSubscription
+    {
+        return $this->find($id);
+    }
+
     public function findOneByEmail(string $email): ?NewsletterSubscription
     {
         return $this->findOneBy(['email' => $email]);

@@ -91,6 +91,7 @@ services:
             $jecouteListId:                         '%env(MAILCHIMP_JECOUTE_LIST_ID)%'
             $jeMengageListId:                       '%env(MAILCHIMP_JEMENGAGE_LIST_ID)%'
             $newsletterLegislativeCandidateListId:  '%env(MAILCHIMP_NEWSLETTER_LEGISLATIVE_CANDIDATE_LIST_ID)%'
+            $newsletterRenaissanceListId:           '%env(MAILCHIMP_NEWSLETTER_RENAISSANCE_LIST_ID)%'
             $coalitionsListId:                      '%env(MAILCHIMP_COALITIONS_LIST_ID)%'
 
             $folderIds:                             '%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%'

@@ -13,6 +13,11 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         parent::__construct($registry, NewsletterSubscription::class);
     }
 
+    public function findById(int $id): ?NewsletterSubscription
+    {
+        return $this->disableSoftDeleteableFilter()->find($id);
+    }
+
     public function isSubscribed(string $email): bool
     {
         return (bool) $this
