@@ -25,7 +25,7 @@ class AciveMembershipConditionBuilder implements SegmentConditionBuilderInterfac
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         return [[
-            'condition_type' => 'Date',
+            'condition_type' => 'DateMerge',
             'op' => $filter->isActiveMembership() ? 'blank_not' : 'blank',
             'field' => MemberRequest::MERGE_FIELD_LAST_MEMBERSHIP_DONATION,
             'value' => $filter->isActiveMembership() ? 'is not blank' : 'is blank',
