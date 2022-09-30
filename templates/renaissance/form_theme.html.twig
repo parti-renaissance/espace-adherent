@@ -55,7 +55,7 @@
 {% block choice_tab_widget %}
     <div class="flex">
         {%- for child in form %}
-            {{- form_widget(child, {attr: {class: 'hidden'}}) -}}
+            {{- form_widget(child, {attr: {class: 'hidden choice-widget'}}) -}}
             {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: {class: 'button-group grow'}}) -}}
         {% endfor -%}
     </div>
