@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\NewsletterSubscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class NewsletterSubscriptionRepository extends ServiceEntityRepository
@@ -11,6 +12,11 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, NewsletterSubscription::class);
+    }
+
+    public function findById(int $id): ?NewsletterSubscription
+    {
+        return $this->disableSoftDeleteableFilter()->find($id);
     }
 
     public function isSubscribed(string $email): bool
@@ -65,12 +71,8 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         return $this;
     }
 
-    public function enableSoftDeleteableFilter(): self
+    public function createQueryBuilderForSynchronization(): QueryBuilder
     {
-        if ($this->_em->getFilters()->has('softdeleteable')) {
-            $this->_em->getFilters()->enable('softdeleteable');
-        }
-
-        return $this;
+        return $this->disableSoftDeleteableFilter()->createQueryBuilder('newsletter');
     }
 }

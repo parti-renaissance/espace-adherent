@@ -2,11 +2,11 @@
 
 namespace App\Newsletter\Handler;
 
-use App\Entity\NewsletterSubscription;
+use App\Entity\NewsletterSubscriptionInterface;
+use App\Entity\Renaissance\NewsletterSubscription;
 use App\Mailchimp\Manager;
 use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use App\Newsletter\NewsletterValueObject;
-use App\Repository\NewsletterSubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -14,24 +14,19 @@ class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements Message
 {
     private $manager;
     private $entityManager;
-    private $repository;
 
-    public function __construct(
-        Manager $manager,
-        ObjectManager $entityManager,
-        NewsletterSubscriptionRepository $repository
-    ) {
+    public function __construct(Manager $manager, ObjectManager $entityManager)
+    {
         $this->manager = $manager;
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
     }
 
     public function __invoke(MailchimpSyncNewsletterSubscriptionEntityCommand $command): void
     {
-        /** @var NewsletterSubscription|null $newsletter */
-        $newsletter = $this->repository
-            ->disableSoftDeleteableFilter()
-            ->find($command->getNewsletterSubscriptionId())
+        /** @var NewsletterSubscriptionInterface|null $newsletter */
+        $newsletter = $this->entityManager
+            ->getRepository($command->getNewsletterSubscriptionClass())
+            ->findById($command->getNewsletterSubscriptionId())
         ;
 
         if (!$newsletter) {
@@ -40,10 +35,12 @@ class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements Message
 
         $this->entityManager->refresh($newsletter);
 
-        $this->manager->editNewsletterMember(NewsletterValueObject::createFromNewsletterSubscription($newsletter));
+        $this->manager->editNewsletterMember(
+            $newsletter instanceof NewsletterSubscription ?
+                NewsletterValueObject::createFromRenaissanceNewsletterSubscription($newsletter) :
+                NewsletterValueObject::createFromNewsletterSubscription($newsletter)
+        );
 
         $this->entityManager->clear();
-
-        $this->repository->enableSoftDeleteableFilter();
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Newsletter;
 
 use App\Entity\Adherent;
-use App\Entity\NewsletterSubscription;
+use App\Entity\NewsletterSubscriptionInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class NewsletterEvent extends Event
@@ -11,13 +11,13 @@ class NewsletterEvent extends Event
     private $newsletter;
     private $adherent;
 
-    public function __construct(NewsletterSubscription $newsletter, Adherent $adherent = null)
+    public function __construct(NewsletterSubscriptionInterface $newsletter, Adherent $adherent = null)
     {
         $this->newsletter = $newsletter;
         $this->adherent = $adherent;
     }
 
-    public function getNewsletter(): NewsletterSubscription
+    public function getNewsletter(): NewsletterSubscriptionInterface
     {
         return $this->newsletter;
     }

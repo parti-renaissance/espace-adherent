@@ -42,6 +42,7 @@ class MailchimpSyncSubscriber implements EventSubscriberInterface
         }
 
         $this->bus->dispatch(new MailchimpSyncNewsletterSubscriptionEntityCommand(
+            \get_class($event->getNewsletter()),
             $event->getNewsletter()->getId()
         ));
     }
