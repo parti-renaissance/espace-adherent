@@ -18,7 +18,7 @@ class ActiveMembershipFilterBuilder implements AdherentFilterBuilderInterface
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('isActiveMembership', 'Cotisation active')
+            ->createBooleanSelect('isActiveMembership', 'Adhérent Renaissance')
             ->getFilters()
         ;
     }
