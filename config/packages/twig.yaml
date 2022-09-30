@@ -32,6 +32,7 @@ twig:
         enable_assessor_space:       "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         enable_municipal_space:      "%env(bool:ENABLE_MUNICIPAL_SPACE)%"
         cookiebot_cbid:              "%env(COOKIEBOT_CBID)%"
+        axeptio_clid:                "%env(AXEPTIO_CLID)%"
 
     form_themes:
         - 'form_theme.html.twig'
