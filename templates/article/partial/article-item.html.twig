@@ -2,7 +2,7 @@
     <div class="rounded-tl-lg rounded-tr-lg bg-cover bg-bottom h-1/2" style="background-image: url('{{ media_asset(article.media, {q: 70}) }}')"></div>
     <div class="flex flex-col py-6 px-5 h-1/2 border-gray-border border-2 rounded-bl-lg rounded-br-lg border-t-0">
         <p class="line-clamp-3">
-            <a href="{{ path('article_view', {categorySlug: article.category.slug, articleSlug: article.slug}) }}" class="font-bold mb-2 text-light-blue">
+            <a href="{{ path('article_view', {categorySlug: article.category.slug, articleSlug: article.slug, app_domain: renaissance_host}) }}" class="font-bold mb-2 text-light-blue">
                 {{ article.title }}
             </a>
         </p>

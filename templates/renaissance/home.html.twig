@@ -114,6 +114,15 @@
         </div>
     </section>
 
+    <!-- Articles section -->
+    {% if articles %}
+        <section class="flex justify-center mx-auto max-w-screen-lg gap-x-3.75 mb-12.5 lg:mb-25">
+            {% for article in articles %}
+                {% include 'article/partial/article-item.html.twig' %}
+            {% endfor %}
+        </section>
+    {% endif %}
+
     <!-- Values and commitments -->
     <section class="px-3.75 md:px-20 bg-background-gray pt-12.5 lg:pt-25 mb-12.5 lg:mb-25">
         <div class="max-w-7xl mx-auto">
