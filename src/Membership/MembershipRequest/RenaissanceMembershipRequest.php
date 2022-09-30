@@ -31,7 +31,7 @@ class RenaissanceMembershipRequest extends AbstractMembershipRequest implements 
 
     /**
      * @Assert\NotBlank(groups={"membership_request_amount"})
-     * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0", groups={"membership_request_amount"})
+     * @Assert\GreaterThanOrEqual(value=1, message="donation.amount.greater_than_1", groups={"membership_request_amount"})
      */
     private ?float $amount = null;
 
