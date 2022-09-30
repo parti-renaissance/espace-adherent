@@ -2,11 +2,13 @@
 
 namespace App\Command;
 
+use App\Entity\NewsletterSubscription as EMNewsletterSubscription;
+use App\Entity\Renaissance\NewsletterSubscription as RenaissanceNewsletterSubscription;
 use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
-use App\Repository\NewsletterSubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -14,20 +16,18 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class MailchimpSyncAllNewsletterCommand extends Command
 {
+    private const TYPE_EM = 'en-marche';
+    private const TYPE_RENAISSANCE = 'renaissance';
+
     protected static $defaultName = 'mailchimp:sync:all-newsletter';
 
-    private $repository;
     private $entityManager;
     private $bus;
     /** @var SymfonyStyle */
     private $io;
 
-    public function __construct(
-        NewsletterSubscriptionRepository $repository,
-        ObjectManager $entityManager,
-        MessageBusInterface $bus
-    ) {
-        $this->repository = $repository;
+    public function __construct(ObjectManager $entityManager, MessageBusInterface $bus)
+    {
         $this->entityManager = $entityManager;
         $this->bus = $bus;
 
@@ -36,7 +36,10 @@ class MailchimpSyncAllNewsletterCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Send all newsletter subscription to Mailchimp');
+        $this
+            ->setDescription('Send all newsletter subscription to Mailchimp')
+            ->addArgument('type', InputArgument::REQUIRED, 'Type of newsletters to sync: '.implode(' or ', [self::TYPE_EM, self::TYPE_RENAISSANCE]))
+        ;
     }
 
     public function initialize(InputInterface $input, OutputInterface $output)
@@ -46,7 +49,12 @@ class MailchimpSyncAllNewsletterCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $paginator = $this->getPaginator();
+        $type = $input->getArgument('type');
+        if (self::TYPE_RENAISSANCE !== $type) {
+            $type = self::TYPE_EM;
+        }
+
+        $paginator = $this->getPaginator($type);
 
         $count = $paginator->count();
 
@@ -76,11 +84,14 @@ class MailchimpSyncAllNewsletterCommand extends Command
         return 0;
     }
 
-    private function getPaginator(): Paginator
+    private function getPaginator(string $type): Paginator
     {
-        $queryBuilder = $this->repository
-            ->disableSoftDeleteableFilter()
-            ->createQueryBuilder('newsletter')
+        $queryBuilder = $this->entityManager->getRepository(
+            self::TYPE_RENAISSANCE === $type ?
+                RenaissanceNewsletterSubscription::class :
+                EMNewsletterSubscription::class
+        )
+            ->createQueryBuilderForSynchronization()
             ->setMaxResults(500)
         ;
 

@@ -86,6 +86,7 @@ class NewsletterValueObject
         $object->zipCode = $newsletter->zipCode;
         $object->firstName = $newsletter->firstName;
         $object->type = NewsletterTypeEnum::SITE_RENAISSANCE;
+        $object->subscribed = $newsletter->isConfirmed();
 
         return $object;
     }
