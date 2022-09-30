@@ -54,6 +54,13 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     protected $isCertified;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
+     */
+    protected ?bool $isActiveMembership = null;
+
+    /**
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
@@ -146,6 +153,16 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->isCertified = $isCertified;
     }
 
+    public function isActiveMembership(): ?bool
+    {
+        return $this->isActiveMembership;
+    }
+
+    public function setIsActiveMembership(?bool $isAciveMembership): void
+    {
+        $this->isActiveMembership = $isAciveMembership;
+    }
+
     public function getZone(): ?Zone
     {
         return $this->zone;
@@ -211,6 +228,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->includeAdherentsNoCommittee = true;
         $this->includeAdherentsInCommittee = true;
         $this->isCertified = null;
+        $this->isActiveMembership = null;
         $this->audienceType = null;
 
         parent::reset();
