@@ -14,6 +14,8 @@ class MembershipRequestAmountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('amount', ChoiceType::class, [
+            'required' => false,
+            'placeholder' => false,
             'choices' => [
                 'Tarif réduit 10€ *' => 10,
                 'Tarif normal 30€' => 30,
