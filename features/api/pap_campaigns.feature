@@ -2763,7 +2763,7 @@ Feature:
                     "uuid": "cd76b8cf-af20-4976-8dd9-eb067a2f30c7",
                     "first_name": "Pierre",
                     "last_name": "Kiroule",
-                    "age": 57
+                    "age": @integer@
                 },
                 "campaign": {
                     "uuid": "08463014-bbfe-421c-b8fb-5e456414b088",
