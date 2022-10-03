@@ -20,8 +20,8 @@ final class Version20221003152108 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A902FDD7D17F50A6 ON donators (uuid)');
 
         $this->addSql('UPDATE donators SET uuid = UUID() WHERE uuid IS NULL');
-        $this->addSql('UPDATE donators AS d SET d.created_at = (SELECT d2.created_at FROM donations AS d2 WHERE d2.donator_id = d.id ORDER BY d2.created_at LIMIT 1) WHERE d.created_at IS NULL');
-        $this->addSql('UPDATE donators AS d SET d.updated_at = d.created_at WHERE d.updated_at IS NULL');
+        $this->addSql('UPDATE donators AS d SET d.created_at = COALESCE((SELECT d2.created_at FROM donations AS d2 WHERE d2.donator_id = d.id ORDER BY d2.created_at LIMIT 1), NOW()) WHERE d.created_at IS NULL');
+        $this->addSql('UPDATE donators AS d SET d.updated_at = COALESCE(d.created_at, NOW()) WHERE d.updated_at IS NULL');
 
         $this->addSql('ALTER TABLE
           donators
