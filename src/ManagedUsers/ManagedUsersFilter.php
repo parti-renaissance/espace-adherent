@@ -135,6 +135,11 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      */
+    private ?bool $isRenaissance = null;
+
+    /**
+     * @Groups({"filter_write"})
+     */
     private ?bool $onlyJeMengageUsers = null;
 
     public function __construct(
@@ -404,6 +409,16 @@ class ManagedUsersFilter
     public function setIsCertified(?bool $isCertified): void
     {
         $this->isCertified = $isCertified;
+    }
+
+    public function getIsRenaissance(): ?bool
+    {
+        return $this->isRenaissance;
+    }
+
+    public function setIsRenaissance(?bool $isRenaissance): void
+    {
+        $this->isRenaissance = $isRenaissance;
     }
 
     public function getSubscriptionType(): ?string
