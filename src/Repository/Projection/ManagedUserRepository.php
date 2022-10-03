@@ -270,9 +270,9 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
 
-        if (null !== $filter->getIsRenaissance()) {
+        if (null !== $filter->getIsRenaissanceMembership()) {
             $qb
-                ->andWhere(sprintf('u.source %s :source_renaissance', $filter->getIsRenaissance() ? '=' : '!='))
+                ->andWhere(sprintf('u.source %s :source_renaissance', $filter->getIsRenaissanceMembership() ? '=' : '!='))
                 ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
             ;
         }

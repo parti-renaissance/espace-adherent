@@ -48,7 +48,7 @@ class ColumnsConfigurator
                 ],
             ],
             [
-                'key' => 'is_renaissance',
+                'key' => 'is_renaissance_membership',
                 'label' => 'Adhérent Renaissance',
                 'type' => self::COLUMN_TYPE_BOOLEAN,
                 'filter' => [

@@ -537,7 +537,7 @@ class ManagedUser
     /**
      * @Groups({"managed_user_read"})
      */
-    public function getIsRenaissance(): bool
+    public function getIsRenaissanceMembership(): bool
     {
         return MembershipSourceEnum::RENAISSANCE === $this->source;
     }

@@ -135,7 +135,7 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $isRenaissance = null;
+    private ?bool $isRenaissanceMembership = null;
 
     /**
      * @Groups({"filter_write"})
@@ -411,14 +411,14 @@ class ManagedUsersFilter
         $this->isCertified = $isCertified;
     }
 
-    public function getIsRenaissance(): ?bool
+    public function getIsRenaissanceMembership(): ?bool
     {
-        return $this->isRenaissance;
+        return $this->isRenaissanceMembership;
     }
 
-    public function setIsRenaissance(?bool $isRenaissance): void
+    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
     {
-        $this->isRenaissance = $isRenaissance;
+        $this->isRenaissanceMembership = $isRenaissanceMembership;
     }
 
     public function getSubscriptionType(): ?string
