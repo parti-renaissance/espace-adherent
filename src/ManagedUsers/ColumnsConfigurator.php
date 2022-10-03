@@ -48,6 +48,14 @@ class ColumnsConfigurator
                 ],
             ],
             [
+                'key' => 'is_renaissance_membership',
+                'label' => 'Adhérent Renaissance',
+                'type' => self::COLUMN_TYPE_BOOLEAN,
+                'filter' => [
+                    'type' => self::FILTER_TYPE_BOOLEAN,
+                ],
+            ],
+            [
                 'key' => 'email_subscription',
                 'label' => 'Abonné email',
                 'type' => self::COLUMN_TYPE_BOOLEAN,
