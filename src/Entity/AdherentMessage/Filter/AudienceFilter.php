@@ -58,7 +58,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
      *
      * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
-    protected ?bool $isRenaissanceMembership = null;
+    protected ?bool $isActiveMembership = null;
 
     /**
      * @var Zone|null
@@ -153,14 +153,14 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->isCertified = $isCertified;
     }
 
-    public function isRenaissanceMembership(): ?bool
+    public function isActiveMembership(): ?bool
     {
-        return $this->isRenaissanceMembership;
+        return $this->isActiveMembership;
     }
 
-    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
+    public function setIsActiveMembership(?bool $isAciveMembership): void
     {
-        $this->isRenaissanceMembership = $isRenaissanceMembership;
+        $this->isActiveMembership = $isAciveMembership;
     }
 
     public function getZone(): ?Zone
@@ -228,7 +228,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->includeAdherentsNoCommittee = true;
         $this->includeAdherentsInCommittee = true;
         $this->isCertified = null;
-        $this->isRenaissanceMembership = null;
+        $this->isActiveMembership = null;
         $this->audienceType = null;
 
         parent::reset();
