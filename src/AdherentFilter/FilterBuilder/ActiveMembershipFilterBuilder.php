@@ -10,9 +10,7 @@ class ActiveMembershipFilterBuilder implements AdherentFilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool
     {
-        return \in_array($scope, [ScopeEnum::REFERENT], true)
-            && FeatureEnum::MESSAGES === $feature
-        ;
+        return FeatureEnum::MESSAGES === $feature;
     }
 
     public function build(string $scope, string $feature = null): array
