@@ -312,6 +312,14 @@ Feature:
             }
         },
         {
+            "key": "is_renaissance_membership",
+            "label": "Adhérent Renaissance",
+            "type": "boolean",
+            "filter": {
+                "type": "boolean"
+            }
+        },
+        {
             "key": "email_subscription",
             "label": "Abonné email",
             "type": "boolean",
@@ -529,7 +537,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": false,
-                "email_subscription": false
+                "email_subscription": false,
+                "is_renaissance_membership": false
             },
             {
                 "city": "Melun",
@@ -545,7 +554,8 @@ Feature:
                 "postal_code": "77000",
                 "region": "Île-de-France",
                 "region_code": "11",
-                "sms_subscription": false
+                "sms_subscription": false,
+                "is_renaissance_membership": false
             },
             {
                 "postal_code": "8802",
@@ -563,7 +573,8 @@ Feature:
                 "region_code": null,
                 "region": null,
                 "sms_subscription": true,
-                "email_subscription": true
+                "email_subscription": true,
+                "is_renaissance_membership": false
             },
             {
                 "postal_code": "92110",
@@ -579,7 +590,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": true,
-                "email_subscription": true
+                "email_subscription": true,
+                "is_renaissance_membership": false
             },
             {
                 "postal_code": "8057",
@@ -599,7 +611,8 @@ Feature:
                 "region_code": null,
                 "region": null,
                 "sms_subscription": true,
-                "email_subscription": false
+                "email_subscription": false,
+                "is_renaissance_membership": false
             }
         ]
     }
@@ -631,7 +644,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": false,
-                "email_subscription": false
+                "email_subscription": false,
+                "is_renaissance_membership": false
             }
         ]
     }
@@ -670,7 +684,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": false,
-                "email_subscription": false
+                "email_subscription": false,
+                "is_renaissance_membership": false
             },
             {
                 "postal_code": "92110",
@@ -686,7 +701,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": true,
-                "email_subscription": true
+                "email_subscription": true,
+                "is_renaissance_membership": false
             }
         ]
     }
@@ -844,7 +860,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": true,
-                "email_subscription": true
+                "email_subscription": true,
+                "is_renaissance_membership": false
             },
             {
                 "postal_code": "75008",
@@ -864,7 +881,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": true,
-                "email_subscription": true
+                "email_subscription": true,
+                "is_renaissance_membership": false
             }
         ]
     }
@@ -900,7 +918,8 @@ Feature:
                 "region_code": "11",
                 "region": "Île-de-France",
                 "sms_subscription": true,
-                "email_subscription": true
+                "email_subscription": true,
+                "is_renaissance_membership": false
             }
         ]
     }

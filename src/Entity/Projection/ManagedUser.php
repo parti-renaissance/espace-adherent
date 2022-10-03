@@ -4,6 +4,7 @@ namespace App\Entity\Projection;
 
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
+use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -531,6 +532,14 @@ class ManagedUser
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
+    }
+
+    /**
+     * @Groups({"managed_user_read"})
+     */
+    public function getIsRenaissanceMembership(): bool
+    {
+        return MembershipSourceEnum::RENAISSANCE === $this->source;
     }
 
     /**
