@@ -479,7 +479,7 @@ class DonatorAdmin extends AbstractAdmin
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Adhérent' => $adherent instanceof Adherent,
                 'Téléphone adhérent' => $phone,
-                'Nombre de dons réussis' => $donator->countSuccessfullDonations(),
+                'Nombre de dons réussis' => $donator->countSuccessfulDonations(),
                 'Montant total donné' => $donator->getTotalDonated(),
             ];
         });

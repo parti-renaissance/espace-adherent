@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,14 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Donator
 {
-    /**
-     * The unique auto incremented primary key.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdentityTrait;
+    use EntityTimestampableTrait;
 
     /**
      * The unique account identifier.
@@ -70,7 +65,7 @@ class Donator
     /**
      * @ORM\Column(length=2)
      */
-    private $country = 'FR';
+    private $country;
 
     /**
      * @ORM\Column(nullable=true)
@@ -138,6 +133,7 @@ class Donator
         string $emailAddress = null,
         string $gender = null
     ) {
+        $this->uuid = Uuid::uuid4();
         $this->lastName = $lastName;
         $this->firstName = $firstName;
         $this->city = $city;
@@ -157,11 +153,6 @@ class Donator
             $this->lastName,
             $this->identifier
         );
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getIdentifier(): ?string
@@ -268,15 +259,6 @@ class Donator
         return $donation->getCreatedAt();
     }
 
-    public function getLastDonationAmount(): ?float
-    {
-        if (!$donation = $this->lastSuccessfulDonation) {
-            return null;
-        }
-
-        return $donation->getAmountInEuros();
-    }
-
     /**
      * @return Donation[]|Collection
      */
@@ -381,19 +363,6 @@ class Donator
         $this->comment = $comment;
     }
 
-    public function getReferenceAddress(): ?string
-    {
-        if ($donation = $this->referenceDonation) {
-            return $donation->getInlineFormattedAddress();
-        }
-
-        if ($donation = $this->lastSuccessfulDonation) {
-            return $donation->getInlineFormattedAddress();
-        }
-
-        return null;
-    }
-
     public function getReferenceNationality(): ?string
     {
         if ($donation = $this->referenceDonation) {
@@ -426,7 +395,7 @@ class Donator
         $this->kinships->removeElement($kinship);
     }
 
-    public function countSuccessfullDonations(): int
+    public function countSuccessfulDonations(): int
     {
         $count = 0;
 

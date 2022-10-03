@@ -15,7 +15,7 @@ class DonatorRepository extends ServiceEntityRepository
 
     public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Donator
     {
-        return $this
+        $donators = $this
             ->createQueryBuilder('donator')
             ->andWhere('donator.emailAddress = :emailAddress')
             ->andWhere('donator.firstName = :firstName')
@@ -24,7 +24,13 @@ class DonatorRepository extends ServiceEntityRepository
             ->setParameter('firstName', $firstName)
             ->setParameter('lastName', $lastName)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
+
+        if ($donators) {
+            return current($donators);
+        }
+
+        return null;
     }
 }
