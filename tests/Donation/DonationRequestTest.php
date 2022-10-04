@@ -5,7 +5,6 @@ namespace Tests\App\Donation;
 use App\Donation\DonationRequest;
 use App\Entity\Adherent;
 use libphonenumber\PhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Tests\App\AbstractKernelTestCase;
 
 class DonationRequestTest extends AbstractKernelTestCase
@@ -34,7 +33,6 @@ class DonationRequestTest extends AbstractKernelTestCase
         $donationRequest = DonationRequest::createFromAdherent($adherent, '3.3.3.3', '30.0', 0);
 
         $this->assertInstanceOf(DonationRequest::class, $donationRequest);
-        $this->assertInstanceOf(UuidInterface::class, $donationRequest->getUuid());
         $this->assertSame('male', $donationRequest->getGender());
         $this->assertSame('Damien', $donationRequest->getFirstName());
         $this->assertSame('DUPONT', $donationRequest->getLastName());

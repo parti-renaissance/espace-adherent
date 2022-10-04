@@ -16,8 +16,6 @@ use App\Validator\PayboxSubscription as AssertPayboxSubscription;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UniqueDonationSubscription;
 use App\ValueObject\Genders;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,8 +33,6 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public const ALERT_AMOUNT = 200;
 
     private string $state = DonationRequestStateEnum::STATE_DONATION_AMOUNT;
-
-    private $uuid;
 
     /**
      * @Assert\NotBlank(groups={"Default", "choose_donation_amount"})
@@ -128,13 +124,11 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private ?int $adherentId = null;
 
     public function __construct(
-        UuidInterface $uuid = null,
         string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB
     ) {
-        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->clientIp = $clientIp;
         $this->emailAddress = '';
         $this->address = new Address();
@@ -149,7 +143,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE
     ): self {
-        $dto = new self(Uuid::uuid4(), $clientIp, $amount, $duration);
+        $dto = new self($clientIp, $amount, $duration);
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
@@ -168,11 +162,6 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public function setState(string $state): void
     {
         $this->state = $state;
-    }
-
-    public function getUuid(): UuidInterface
-    {
-        return $this->uuid;
     }
 
     public function getAmount(): ?float

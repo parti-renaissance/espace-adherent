@@ -80,11 +80,11 @@ class DonationController extends AbstractController
             $donationRequestUtils->startDonationRequest($donationRequest);
 
             if ($form->isValid()) {
-                $donationRequestHandler->handle($donationRequest);
+                $donation = $donationRequestHandler->handle($donationRequest);
                 $donationRequestUtils->terminateDonationRequest();
 
                 return $this->redirectToRoute('donation_pay', [
-                    'uuid' => $donationRequest->getUuid()->toString(),
+                    'uuid' => $donation->getUuid(),
                 ]);
             }
         }

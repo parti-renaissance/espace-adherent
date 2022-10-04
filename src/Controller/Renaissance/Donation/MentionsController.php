@@ -36,10 +36,10 @@ class MentionsController extends AbstractDonationController
         if ($form->isSubmitted() && $form->isValid()) {
             $command->setClientIp($request->getClientIp());
 
-            $donationRequestHandler->handle($command);
+            $donation = $donationRequestHandler->handle($command);
 
             return $this->redirectToRoute('app_renaissance_donation_payment', [
-                'uuid' => $command->getUuid(),
+                'uuid' => $donation->getUuid(),
             ]);
         }
 

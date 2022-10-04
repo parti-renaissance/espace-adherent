@@ -49,10 +49,10 @@ class SummaryController extends AbstractAdhesionController
             $donationRequest = DonationRequest::createFromAdherent($adherent, $command->getClientIp(), $command->getAmount());
             $donationRequest->forMembership();
 
-            $donationRequestHandler->handle($donationRequest);
+            $donation = $donationRequestHandler->handle($donationRequest);
 
             return $this->redirectToRoute('app_renaissance_adhesion_payment', [
-                'uuid' => $donationRequest->getUuid(),
+                'uuid' => $donation->getUuid(),
             ]);
         }
 

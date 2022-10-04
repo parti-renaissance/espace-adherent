@@ -3217,10 +3217,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $donatedAt = new \DateTime('now');
         }
 
-        if (
-            !$this->lastMembershipDonation
-            || ($this->lastMembershipDonation && $this->lastMembershipDonation < $donatedAt)
-        ) {
+        if (!$this->lastMembershipDonation || $this->lastMembershipDonation < $donatedAt) {
             $this->lastMembershipDonation = $donatedAt;
         }
     }
