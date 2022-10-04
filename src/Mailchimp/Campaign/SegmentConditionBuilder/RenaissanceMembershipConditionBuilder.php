@@ -7,11 +7,11 @@ use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
-class AciveMembershipConditionBuilder implements SegmentConditionBuilderInterface
+class RenaissanceMembershipConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AudienceFilter && null !== $filter->isActiveMembership();
+        return $filter instanceof AudienceFilter && null !== $filter->isRenaissanceMembership();
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array
@@ -26,9 +26,9 @@ class AciveMembershipConditionBuilder implements SegmentConditionBuilderInterfac
     {
         return [[
             'condition_type' => 'DateMerge',
-            'op' => $filter->isActiveMembership() ? 'blank_not' : 'blank',
+            'op' => $filter->isRenaissanceMembership() ? 'blank_not' : 'blank',
             'field' => MemberRequest::MERGE_FIELD_LAST_MEMBERSHIP_DONATION,
-            'value' => $filter->isActiveMembership() ? 'is not blank' : 'is blank',
+            'value' => $filter->isRenaissanceMembership() ? 'is not blank' : 'is blank',
         ]];
     }
 }
