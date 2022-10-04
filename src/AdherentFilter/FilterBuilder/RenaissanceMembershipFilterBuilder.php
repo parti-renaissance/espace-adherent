@@ -3,20 +3,18 @@
 namespace App\AdherentFilter\FilterBuilder;
 
 use App\Filter\FilterCollectionBuilder;
-use App\Scope\FeatureEnum;
-use App\Scope\ScopeEnum;
 
-class ActiveMembershipFilterBuilder implements AdherentFilterBuilderInterface
+class RenaissanceMembershipFilterBuilder implements AdherentFilterBuilderInterface
 {
     public function supports(string $scope, string $feature = null): bool
     {
-        return FeatureEnum::MESSAGES === $feature;
+        return true;
     }
 
     public function build(string $scope, string $feature = null): array
     {
         return (new FilterCollectionBuilder())
-            ->createBooleanSelect('isActiveMembership', 'Adhérent Renaissance')
+            ->createBooleanSelect('isRenaissanceMembership', 'Adhérent Renaissance')
             ->getFilters()
         ;
     }
