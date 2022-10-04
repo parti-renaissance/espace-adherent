@@ -637,9 +637,5 @@ class Donation implements GeoPointInterface
     public function setMembership(bool $membership): void
     {
         $this->membership = $membership;
-
-        if ($membership) {
-            $this->donator->setMembershipDonation($this);
-        }
     }
 }
