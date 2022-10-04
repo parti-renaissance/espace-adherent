@@ -489,6 +489,17 @@ Feature:
             "type": "select"
         },
         {
+            "code": "isRenaissanceMembership",
+            "label": "Adhérent Renaissance",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
             "code": "zones",
             "label": "Zone géographique",
             "options": {
@@ -778,6 +789,17 @@ Feature:
         {
             "code": "onlyJeMengageUsers",
             "label": "Compte de la majorité présidentielle",
+            "options": {
+                "choices": [
+                    "Non",
+                    "Oui"
+                ]
+            },
+            "type": "select"
+        },
+        {
+            "code": "isRenaissanceMembership",
+            "label": "Adhérent Renaissance",
             "options": {
                 "choices": [
                     "Non",
