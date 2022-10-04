@@ -292,55 +292,34 @@ Feature:
                 "female": "Femme",
                 "male": "Homme",
                 "other": "Autre"
-            },
-            "filter": {
-                "type": "select"
             }
         },
         {
             "key": "first_name",
-            "label": "Prénom",
-            "filter": {
-                "type": "string"
-            }
+            "label": "Prénom"
         },
         {
             "key": "last_name",
-            "label": "Nom",
-            "filter": {
-                "type": "string"
-            }
+            "label": "Nom"
         },
         {
             "key": "is_renaissance_membership",
             "label": "Adhérent Renaissance",
-            "type": "boolean",
-            "filter": {
-                "type": "boolean"
-            }
+            "type": "boolean"
         },
         {
             "key": "email_subscription",
             "label": "Abonné email",
-            "type": "boolean",
-            "filter": {
-                "type": "boolean"
-            }
+            "type": "boolean"
         },
         {
             "key": "sms_subscription",
             "label": "Abonné tel",
-            "type": "boolean",
-            "filter": {
-                "type": "boolean"
-            }
+            "type": "boolean"
         },
         {
             "key": "postal_code",
-            "label": "Code postal",
-            "filter": {
-                "type": "string"
-            }
+            "label": "Code postal"
         },
         {
             "key": "city_code",
@@ -348,10 +327,7 @@ Feature:
         },
         {
             "key": "city",
-            "label": "Commune",
-            "filter": {
-                "type": "string"
-            }
+            "label": "Commune"
         },
         {
             "key": "department_code",
@@ -397,12 +373,6 @@ Feature:
                 "travail": "Travail",
                 "villes_et_quartiers": "Villes et quartiers",
                 "famille": "Famille"
-            },
-            "filter": {
-                "type": "select",
-                "options": {
-                    "multiple": true
-                }
             }
         }
     ]

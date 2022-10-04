@@ -10,11 +10,7 @@ class ColumnsConfigurator
     private const COLUMN_TYPE_BOOLEAN = 'boolean';
     private const COLUMN_TYPE_TRANS = 'trans';
 
-    private const FILTER_TYPE_STRING = 'string';
-    private const FILTER_TYPE_SELECT = 'select';
-    private const FILTER_TYPE_BOOLEAN = 'boolean';
-
-    private $adherentInterests;
+    private array $adherentInterests;
 
     public function __construct(array $adherentInterests)
     {
@@ -29,54 +25,33 @@ class ColumnsConfigurator
                 'label' => 'Genre',
                 'type' => self::COLUMN_TYPE_TRANS,
                 'messages' => Genders::CHOICES_LABELS,
-                'filter' => [
-                    'type' => self::FILTER_TYPE_SELECT,
-                ],
             ],
             [
                 'key' => 'first_name',
                 'label' => 'Prénom',
-                'filter' => [
-                    'type' => self::FILTER_TYPE_STRING,
-                ],
             ],
             [
                 'key' => 'last_name',
                 'label' => 'Nom',
-                'filter' => [
-                    'type' => self::FILTER_TYPE_STRING,
-                ],
             ],
             [
                 'key' => 'is_renaissance_membership',
                 'label' => 'Adhérent Renaissance',
                 'type' => self::COLUMN_TYPE_BOOLEAN,
-                'filter' => [
-                    'type' => self::FILTER_TYPE_BOOLEAN,
-                ],
             ],
             [
                 'key' => 'email_subscription',
                 'label' => 'Abonné email',
                 'type' => self::COLUMN_TYPE_BOOLEAN,
-                'filter' => [
-                    'type' => self::FILTER_TYPE_BOOLEAN,
-                ],
             ],
             [
                 'key' => 'sms_subscription',
                 'label' => 'Abonné tel',
                 'type' => self::COLUMN_TYPE_BOOLEAN,
-                'filter' => [
-                    'type' => self::FILTER_TYPE_BOOLEAN,
-                ],
             ],
             [
                 'key' => 'postal_code',
                 'label' => 'Code postal',
-                'filter' => [
-                    'type' => self::FILTER_TYPE_STRING,
-                ],
             ],
             [
                 'key' => 'city_code',
@@ -85,9 +60,6 @@ class ColumnsConfigurator
             [
                 'key' => 'city',
                 'label' => 'Commune',
-                'filter' => [
-                    'type' => self::FILTER_TYPE_STRING,
-                ],
             ],
             [
                 'key' => 'department_code',
@@ -110,12 +82,6 @@ class ColumnsConfigurator
                 'label' => 'Intérêts',
                 'type' => self::COLUMN_TYPE_ARRAY.'|'.self::COLUMN_TYPE_TRANS,
                 'messages' => $this->adherentInterests,
-                'filter' => [
-                    'type' => self::FILTER_TYPE_SELECT,
-                    'options' => [
-                        'multiple' => true,
-                    ],
-                ],
             ],
         ];
     }
