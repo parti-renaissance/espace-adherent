@@ -286,7 +286,7 @@ class ManagedUserRepository extends ServiceEntityRepository
                 : 'u.source != :source_jme OR u.source IS NULL'
             ;
 
-            $qb->setParameter('source_renaissance', MembershipSourceEnum::JEMENGAGE);
+            $qb->setParameter('source_jme', MembershipSourceEnum::JEMENGAGE);
         }
 
         if (!empty($userSourceConditions)) {
