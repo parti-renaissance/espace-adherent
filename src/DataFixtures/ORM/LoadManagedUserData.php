@@ -106,7 +106,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscribedTags' => '92,59',
             'zones' => [
                 LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'), // Hauts-de-Seine
-                LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'), // Nord
+                LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'), // Clichy
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
