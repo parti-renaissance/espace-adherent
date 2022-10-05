@@ -12,23 +12,19 @@ use App\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DonationFactoryTest extends TestCase
 {
-    private const DONATION_REQUEST_UUID = 'cfd3c04f-cce0-405d-865f-f5f3a2c1792e';
-
     public function testCreateDonationFromDonationRequest(): void
     {
-        $uuid = Uuid::fromString(self::DONATION_REQUEST_UUID);
         $phone = new PhoneNumber();
         $phone->setCountryCode('FR');
         $phone->setNationalNumber('0123456789');
 
-        $request = new DonationRequest($uuid, '3.3.3.3');
+        $request = new DonationRequest('3.3.3.3');
         $request->firstName = 'Damien';
         $request->lastName = 'DUPONT';
         $request->gender = 'male';
@@ -62,7 +58,6 @@ class DonationFactoryTest extends TestCase
         $this->assertSame(70.0, $donation->getAmountInEuros());
         $this->assertSame(0, $donation->getDuration());
         $this->assertSame('3.3.3.3', $donation->getClientIp());
-        $this->assertSame(self::DONATION_REQUEST_UUID, $donation->getUuid()->toString());
     }
 
     private function createFactory(): DonationFactory

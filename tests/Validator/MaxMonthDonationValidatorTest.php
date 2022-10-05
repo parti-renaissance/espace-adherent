@@ -5,7 +5,6 @@ namespace Tests\App\Validator;
 use App\Donation\DonationRequest;
 use App\Validator\MaxMonthDonation;
 use App\Validator\MaxMonthDonationValidator;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class MaxMonthDonationValidatorTest extends ConstraintValidatorTestCase
@@ -15,7 +14,7 @@ class MaxMonthDonationValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidation($amount, int $subscription, int $violation = 0): void
     {
-        $donationRequest = new DonationRequest(Uuid::uuid4(), '123.0.0.1', $amount, $subscription);
+        $donationRequest = new DonationRequest('123.0.0.1', $amount, $subscription);
         $this->setObject($donationRequest);
         $this->validator->validate($donationRequest, new MaxMonthDonation());
 

@@ -6,7 +6,6 @@ use App\Donation\DonationRequest;
 use App\Utils\AreaUtils;
 use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\FrenchAddressOrNationalityDonationValidator;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidatorTestCase
@@ -78,7 +77,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
         ?string $nationality = AreaUtils::CODE_FRANCE,
         ?string $country = AreaUtils::CODE_FRANCE
     ): DonationRequest {
-        $donationRequest = new DonationRequest(Uuid::uuid4(), '123.0.0.1');
+        $donationRequest = new DonationRequest('123.0.0.1');
 
         $donationRequest->setNationality($nationality);
         $donationRequest->getAddress()->setCountry($country);
