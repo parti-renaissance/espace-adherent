@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance;
 use App\Form\Renaissance\Donation\DonationRequestAmountType;
 use App\Form\Renaissance\NewsletterSubscriptionType;
 use App\Repository\CommitmentRepository;
+use App\Repository\HomeBlockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,9 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HomeController extends AbstractController
 {
-    public function __invoke(CommitmentRepository $commitmentRepository): Response
-    {
+    public function __invoke(
+        CommitmentRepository $commitmentRepository,
+        HomeBlockRepository $homeBlockRepository
+    ): Response {
+        $homeBlocks = [];
+        foreach ($homeBlockRepository->findHomeBlocks(true) as $homeBlock) {
+            $homeBlocks[$homeBlock->getPositionName()] = $homeBlock;
+        }
+
         return $this->render('renaissance/home.html.twig', [
+            'blocks' => $homeBlocks,
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, ['action' => $this->generateUrl('app_renaissance_newsletter_save')])->createView(),
             'donation_form' => $this->createForm(DonationRequestAmountType::class, null, ['action' => $this->generateUrl('app_renaissance_donation')])->createView(),
             'commitments' => $commitmentRepository->getAllOrdered(),

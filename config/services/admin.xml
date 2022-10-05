@@ -29,6 +29,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.renaissance_home_block" class="App\Admin\HomeBlock\RenaissanceHomeBlockAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Blocs d'articles" group="Re site web" />
+
+            <argument />
+            <argument>App\Entity\HomeBlock</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Communication
@@ -67,7 +75,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.home_block" class="App\Admin\HomeBlockAdmin">
+        <service id="app.admin.home_block" class="App\Admin\HomeBlock\HomeBlockAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Blocs d'articles" group="Communication" />
 
             <argument />

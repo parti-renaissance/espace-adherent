@@ -19,6 +19,7 @@ class HomeBlockFactory
         $block->setTitleCta($data['titleCta'] ?? null);
         $block->setColorCta($data['colorCta'] ?? null);
         $block->setBgColor($data['bgColor'] ?? null);
+        $block->setForRenaissance($data['forRenaissance'] ?? false);
 
         return $block;
     }

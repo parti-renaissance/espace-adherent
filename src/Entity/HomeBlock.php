@@ -12,14 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\HomeBlockRepository")
  *
  * @UniqueEntity(fields={"position"})
+ * @UniqueEntity(fields={"positionName"})
  */
 class HomeBlock
 {
     public const TYPE_ARTICLE = 'article';
     public const TYPE_VIDEO = 'video';
     public const TYPE_BANNER = 'banner';
-
-    public const HEADER_BANNER = 11;
 
     /**
      * @var int
@@ -164,6 +163,11 @@ class HomeBlock
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $forRenaissance = false;
 
     public function __toString()
     {
@@ -333,5 +337,15 @@ class HomeBlock
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function isForRenaissance(): ?bool
+    {
+        return $this->forRenaissance;
+    }
+
+    public function setForRenaissance(bool $forRenaissance): void
+    {
+        $this->forRenaissance = $forRenaissance;
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\HomeBlock;
 
+use App\Admin\Color;
 use App\Entity\HomeBlock;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -12,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class HomeBlockAdmin extends AbstractAdmin
+abstract class AbstractHomeBlockAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -152,5 +153,22 @@ class HomeBlockAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery();
+
+        $query
+            ->andWhere(sprintf('%s.forRenaissance = :forRenaissance', $query->getRootAliases()[0]))
+            ->setParameter('forRenaissance', $this->isRenaissanceHomeBlock())
+        ;
+
+        return $query;
+    }
+
+    protected function isRenaissanceHomeBlock(): bool
+    {
+        return false;
     }
 }

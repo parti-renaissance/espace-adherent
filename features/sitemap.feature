@@ -32,7 +32,7 @@ Feature:
   Scenario: The images sitemap displays correctly
     Given I am on "/sitemap_images_1.xml"
     Then the response should be in XML
-    And the XML element "//urlset" should have 18 element
+    And the XML element "//urlset" should have 19 element
 
   Scenario: The committees sitemap displays correctly
     Given I am on "/sitemap_committees_1.xml"
