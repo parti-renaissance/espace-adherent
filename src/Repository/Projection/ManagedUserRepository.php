@@ -290,7 +290,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (!empty($userSourceConditions)) {
-            $qb->andWhere($qb->expr()->orX(...$userSourceConditions));
+            $qb->andWhere($qb->expr()->andX(...$userSourceConditions));
         }
 
         return $qb;
