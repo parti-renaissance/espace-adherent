@@ -270,23 +270,28 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
 
+        $userSourceConditions = [];
         if (null !== $filter->getIsRenaissanceMembership()) {
-            $qb
-                ->andWhere(sprintf('u.source %s :source_renaissance', $filter->getIsRenaissanceMembership() ? '=' : '!='))
-                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
+            $userSourceConditions[] = $filter->getIsRenaissanceMembership()
+                ? 'u.source = :source_renaissance'
+                : 'u.source != :source_renaissance OR u.source IS NULL'
             ;
+
+            $qb->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE);
         }
 
-        $userTypeConditions = [];
-        if ($filter->getOnlyJeMengageUsers() || null === $filter->getOnlyJeMengageUsers()) {
-            $userTypeConditions[] = 'u.source = :jme_user_type';
-            $qb->setParameter('jme_user_type', MembershipSourceEnum::JEMENGAGE);
+        if (null !== $filter->getOnlyJeMengageUsers()) {
+            $userSourceConditions[] = $filter->getOnlyJeMengageUsers()
+                ? 'u.source = :source_jme'
+                : 'u.source != :source_jme OR u.source IS NULL'
+            ;
+
+            $qb->setParameter('source_renaissance', MembershipSourceEnum::JEMENGAGE);
         }
 
-        if (!$filter->getOnlyJeMengageUsers()) {
-            $userTypeConditions[] = 'u.source IS NULL';
+        if (!empty($userSourceConditions)) {
+            $qb->andWhere($qb->expr()->orX(...$userSourceConditions));
         }
-        $qb->andWhere($qb->expr()->orX(...$userTypeConditions));
 
         return $qb;
     }
