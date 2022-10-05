@@ -13,7 +13,6 @@ use App\Exception\InvalidDonationStatusException;
 use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use App\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\SlugifyInterface;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -98,7 +97,7 @@ class DonationRequestUtils
         if ($currentUser) {
             $donation = DonationRequest::createFromAdherent($currentUser, $clientIp, $amount, $duration);
         } else {
-            $donation = new DonationRequest(Uuid::uuid4(), $clientIp, $amount, $duration);
+            $donation = new DonationRequest($clientIp, $amount, $duration);
             $donation->getAddress()->setCountry($this->geocoder->getCountryCodeFromIp($clientIp));
         }
 

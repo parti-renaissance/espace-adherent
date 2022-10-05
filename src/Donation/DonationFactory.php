@@ -5,6 +5,7 @@ namespace App\Donation;
 use App\Address\PostAddressFactory;
 use App\Entity\Donation;
 use App\Entity\Donator;
+use Ramsey\Uuid\Uuid;
 
 class DonationFactory
 {
@@ -20,7 +21,7 @@ class DonationFactory
     public function createFromDonationRequest(DonationRequest $request, Donator $donator): Donation
     {
         $donation = new Donation(
-            $request->getUuid(),
+            $uuid = Uuid::uuid4(),
             $request->getType(),
             $request->getAmount() * 100,
             new \DateTimeImmutable(),
@@ -28,7 +29,7 @@ class DonationFactory
             $request->getClientIp(),
             $request->getDuration(),
             $this->donationRequestUtils->buildDonationReference(
-                $request->getUuid(),
+                $uuid,
                 $request->getFirstName().' '.$request->getLastName()
             ),
             $request->getNationality(),

@@ -6,7 +6,6 @@ use App\Donation\DonationRequest;
 use App\Repository\TransactionRepository;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxFiscalYearDonationValidator;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
@@ -160,7 +159,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
 
     private function createDonationRequest(?string $email = 'test@test.test'): DonationRequest
     {
-        $donationRequest = new DonationRequest(Uuid::uuid4(), '123.0.0.1', 50.);
+        $donationRequest = new DonationRequest('123.0.0.1', 50.);
         $donationRequest->setEmailAddress($email);
 
         return $donationRequest;
