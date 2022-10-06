@@ -1071,11 +1071,11 @@ SQL;
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
-            ->andWhere($qb->expr()->OrX(
-                'adherent.source IS NULL AND adherent.adherent = true',
-                'adherent.source = :source_jme',
-                'adherent.source = :source_renaissance',
-            ))
+            ->andWhere((new OrX())
+                ->add('adherent.source IS NULL AND adherent.adherent = true')
+                ->add('adherent.source = :source_jme')
+                ->add('adherent.source = :source_renaissance')
+            )
             ->setParameter('source_jme', MembershipSourceEnum::JEMENGAGE)
             ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
         ;
