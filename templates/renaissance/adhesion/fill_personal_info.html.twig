@@ -11,57 +11,53 @@
 {% endblock %}
 
 {% block adhesion_content %}
-    <section>
-        <div class="mb-4">
-            <a class="text-sm text-dark-blue hover:text-white" href="https://storage.googleapis.com/enmarche-prod/Renaissance-Bulletin-adhesion.pdf" target="_blank">
-                Télécharger le bulletin d'adhésion
-            </a>
+    {{ form_start(form) }}
+        {% if app.user and app.user.certified %}
+            <div class="alert alert--tips b__nudge--bottom-large">
+                Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
+            </div>
+        {% endif %}
+
+        {{ form_errors(form) }}
+
+        <div class="flex flex-row space-x-4">
+            {{ form_row(form.firstName, { label: 'Prénom' }) }}
+            {{ form_row(form.lastName, { label: 'Nom' }) }}
         </div>
 
-        {{ form_start(form) }}
-            {% if app.user and app.user.certified %}
-                <div class="alert alert--tips b__nudge--bottom-large">
-                    Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
-                </div>
+        {% if form.emailAddress.first is defined %}
+            {{ form_row(form.emailAddress.first, { label: 'E-mail' }) }}
+            {{ form_row(form.emailAddress.second, { label: 'Re-saisir l\'e-mail' }) }}
+        {% else %}
+           {{ form_row(form.emailAddress, { label: 'E-mail' }) }}
+        {% endif %}
+
+        {{ form.password is defined ? form_row(form.password, { label: 'Mot de passe' }) }}
+
+        {{ form_row(form.nationality, { label: 'Nationalité' }) }}
+
+        {{ form_row(form.address, { label: 'Adresse postale' }) }}
+
+        {{ form_row(form.birthdate, { label: 'Date de naissance' }) }}
+
+        {{ form_row(form.gender, { label: 'Genre' }) }}
+
+        <div>
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                {% for flashMessage in app.flashes("error_recaptcha") %}
+                    <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
+                {% endfor %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin:0 auto;"></div>
+            {% elseif app.debug %}
+                <input type="hidden" name="g-recaptcha-response" value="fake" />
             {% endif %}
+        </div>
 
-            {{ form_errors(form) }}
-
-            <div class="flex flex-row space-x-4">
-                {{ form_row(form.firstName, { label: 'Prénom' }) }}
-                {{ form_row(form.lastName, { label: 'Nom' }) }}
+        <div class="mt-4">
+            <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
+                {{ form_widget(form.fill_personal_info, { attr: { class: 'w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase' } }) }}
             </div>
-
-            {% if form.emailAddress.first is defined %}
-                {{ form_row(form.emailAddress.first, { label: 'E-mail' }) }}
-                {{ form_row(form.emailAddress.second, { label: 'Re-saisir l\'e-mail' }) }}
-            {% else %}
-                {{ form_row(form.emailAddress, { label: 'E-mail' }) }}
-            {% endif %}
-
-            {{ form.password is defined ? form_row(form.password, { label: 'Mot de passe' }) }}
-
-            {{ form_row(form.address, { label: 'Adresse postale' }) }}
-
-            <div>
-                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                {% if recaptcha_public_key is not empty %}
-                    {% for flashMessage in app.flashes("error_recaptcha") %}
-                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                    {% endfor %}
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin:0 auto;"></div>
-                {% elseif app.debug %}
-                    <input type="hidden" name="g-recaptcha-response" value="fake" />
-                {% endif %}
-            </div>
-
-            <div class="mt-4">
-                <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
-                    <button type="submit" class="w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase">
-                        Étape suivante
-                    </button>
-                </div>
-            </div>
-        {{ form_end(form) }}
-    </section>
+        </div>
+    {{ form_end(form) }}
 {% endblock %}

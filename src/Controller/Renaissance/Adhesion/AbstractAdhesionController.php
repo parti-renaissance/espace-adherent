@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class AbstractAdhesionController extends AbstractController
 {
-    protected MembershipRequestStorage $storage;
+    private MembershipRequestStorage $storage;
     protected MembershipRequestProcessor $processor;
 
     public function __construct(MembershipRequestStorage $storage, MembershipRequestProcessor $processor)
