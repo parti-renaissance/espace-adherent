@@ -2,7 +2,7 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
-use App\Form\Renaissance\Adhesion\MembershipRequestPersonalInfoType;
+use App\Form\Renaissance\Adhesion\PersonalInfoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +24,7 @@ class AdhesionController extends AbstractAdhesionController
         $this->processor->doFillPersonalInfo($command);
 
         $form = $this
-            ->createForm(MembershipRequestPersonalInfoType::class, $command, [
+            ->createForm(PersonalInfoType::class, $command, [
                 'from_adherent' => (bool) $command->getAdherentId(),
                 'from_certified_adherent' => $command->isCertified(),
             ])
