@@ -1071,8 +1071,9 @@ SQL;
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
+            ->andWhere('adherent.adherent = true')
             ->andWhere((new OrX())
-                ->add('adherent.source IS NULL AND adherent.adherent = true')
+                ->add('adherent.source IS NULL')
                 ->add('adherent.source = :source_jme')
                 ->add('adherent.source = :source_renaissance')
             )
@@ -1146,9 +1147,13 @@ SQL;
                 'z2',
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                     $zoneQueryBuilder
-                        ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
-                        ->andWhere(sprintf('(%1$s.source IS NULL OR %1$s.source = :user_type)', $entityClassAlias))
                         ->andWhere(sprintf('%s.status = :adherent_status', $entityClassAlias))
+                        ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
+                        ->andWhere((new OrX())
+                            ->add(sprintf('%s.source IS NULL', $entityClassAlias))
+                            ->add(sprintf('%s.source = :source_jme', $entityClassAlias))
+                            ->add(sprintf('%s.source = :source_renaissance', $entityClassAlias))
+                        )
                     ;
                 }
             );
