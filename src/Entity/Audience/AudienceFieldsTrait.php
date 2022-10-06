@@ -107,6 +107,15 @@ trait AudienceFieldsTrait
      *
      * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
      */
+    private $isRenaissanceMembership;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Groups({"audience_read", "audience_write", "phoning_campaign_read", "phoning_campaign_write"})
+     */
     private $hasEmailSubscription;
 
     /**
@@ -235,6 +244,16 @@ trait AudienceFieldsTrait
         $this->isCertified = $isCertified;
     }
 
+    public function getIsRenaissanceMembership(): ?bool
+    {
+        return $this->isRenaissanceMembership;
+    }
+
+    public function setIsRenaissanceMembership(?bool $isRenaissanceMembership): void
+    {
+        $this->isRenaissanceMembership = $isRenaissanceMembership;
+    }
+
     public function getHasEmailSubscription(): ?bool
     {
         return $this->hasEmailSubscription;
@@ -299,6 +318,7 @@ trait AudienceFieldsTrait
             'has_email_subscription' => $this->hasEmailSubscription,
             'is_committee_member' => $this->isCommitteeMember,
             'is_certified' => $this->isCertified,
+            'is_renaissance_membership' => $this->isRenaissanceMembership,
             'scope' => $this->scope,
             'zones' => array_map(function (Zone $zone): string {
                 return $zone->getUuid()->toString();

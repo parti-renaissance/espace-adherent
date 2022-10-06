@@ -1136,6 +1136,13 @@ SQL;
             $qb->andWhere('adherent.certifiedAt '.($isCertified ? 'IS NOT NULL' : 'IS NULL'));
         }
 
+        if (null !== $isRenaissanceMembership = $audience->getIsRenaissanceMembership()) {
+            $qb->andWhere($isRenaissanceMembership
+                ? 'adherent.source = :source_renaissance'
+                : 'adherent.source != :source_renaissance OR adherent.source IS NULL'
+            );
+        }
+
         if ($zones = $audience->getZones()->toArray()) {
             $this->withGeoZones(
                 $zones,
