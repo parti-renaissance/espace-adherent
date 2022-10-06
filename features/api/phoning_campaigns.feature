@@ -104,6 +104,7 @@ Feature:
         "age_max": 80,
         "registered_since": "2020-11-08T10:25:20.677Z",
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
@@ -153,6 +154,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": false,
         "is_certified": true,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": true
       },
@@ -217,6 +219,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": null,
         "is_certified": null,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": true
       },
@@ -259,6 +262,7 @@ Feature:
         "age_max": 80,
         "registered_since": "2020-11-08T10:25:20.677Z",
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
@@ -404,6 +408,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": null,
         "is_certified": null,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": null
       },
@@ -462,6 +467,7 @@ Feature:
         "age_max": 80,
         "registered_since": "2020-11-08T10:25:20.677Z",
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
@@ -486,6 +492,7 @@ Feature:
         "has_email_subscription": null,
         "has_sms_subscription": true,
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "last_name": "Doe",
         "registered_since": "2020-11-08T00:00:00+01:00",
@@ -568,6 +575,7 @@ Feature:
         "has_email_subscription": null,
         "has_sms_subscription": true,
         "is_certified": null,
+        "is_renaissance_membership": null,
         "is_committee_member": null,
         "last_name": null,
         "registered_since": null,
@@ -638,6 +646,7 @@ Feature:
         "age_max": 80,
         "registered_since": "2020-11-08T10:25:20.677Z",
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
@@ -703,6 +712,7 @@ Feature:
         "age_max": 80,
         "registered_since": "2020-11-08T10:25:20.677Z",
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
@@ -770,6 +780,7 @@ Feature:
         "age_max": 80,
         "registered_since": "2020-11-08T10:25:20.677Z",
         "is_certified": true,
+        "is_renaissance_membership": null,
         "is_committee_member": false,
         "has_sms_subscription": false,
         "zones": [
@@ -1509,6 +1520,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": null,
         "is_certified": null,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": null
       },
@@ -1605,6 +1617,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": false,
         "is_certified": true,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": true
       },
@@ -1744,6 +1757,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": false,
         "is_certified": true,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": true
       },
@@ -2524,6 +2538,7 @@ Feature:
         "registered_until": null,
         "is_committee_member": null,
         "is_certified": null,
+        "is_renaissance_membership": null,
         "has_email_subscription": null,
         "has_sms_subscription": null
       },
