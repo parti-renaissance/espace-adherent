@@ -1069,10 +1069,15 @@ SQL;
     {
         $qb = $this
             ->createQueryBuilder('adherent')
-            ->andWhere('(adherent.source IS NULL AND adherent.adherent = true) OR adherent.source = :user_type')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
-            ->setParameter('user_type', MembershipSourceEnum::JEMENGAGE)
+            ->andWhere($qb->expr()->OrX(
+                'adherent.source IS NULL AND adherent.adherent = true',
+                'adherent.source = :source_jme',
+                'adherent.source = :source_renaissance',
+            ))
+            ->setParameter('source_jme', MembershipSourceEnum::JEMENGAGE)
+            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
         ;
 
         if ($firstName = $audience->getFirstName()) {
