@@ -14,15 +14,19 @@
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nom', value: command.lastName } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Adresse postale', value: command.address.fullAddress } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'E-mail', value: command.emailAddress } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Date de naissance', value: command.birthdate|format_date(pattern='d MMMM y') } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Genre', value: constant('App\\ValueObject\\Genders::CHOICES_LABELS')[command.gender] } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Nationalité', value: command.nationality|countryName } %}
+        {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Téléphone', value: command.phone ? command.phone|phone_number_format } %}
         {% include 'renaissance/adhesion/partials/summary_row.html.twig' with { label: 'Cotisation', value: command.amount|format_currency('EUR')|replace({',00' : ''}) } %}
 
-        {{ form_start(form, { attr: { class: 'mt-10' } }) }}
+        {{ form_start(form) }}
             {{ form_errors(form) }}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                previous_route_name: 'app_renaissance_adhesion',
-                previous_route_label: 'Modifier mes informations',
-                next_button_label: 'Confirmer',
+                route_name: 'app_renaissance_adhesion',
+                route_label: 'Modifier mes informations',
+                form_button: form.payment,
             } %}
         {{ form_end(form) }}
     </section>

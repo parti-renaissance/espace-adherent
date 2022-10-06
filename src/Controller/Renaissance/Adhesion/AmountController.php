@@ -2,13 +2,13 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
-use App\Form\Renaissance\Adhesion\AdhesionAmountType;
+use App\Form\Renaissance\Adhesion\MembershipRequestAmountType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/adhesion/cotisation", name="app_renaissance_adhesion_amount", methods={"GET|POST"})
+ * @Route(path="/adhesion/contribution", name="app_renaissance_adhesion_amount", methods={"GET|POST"})
  */
 class AmountController extends AbstractAdhesionController
 {
@@ -23,12 +23,14 @@ class AmountController extends AbstractAdhesionController
         $this->processor->doChooseAmount($command);
 
         $form = $this
-            ->createForm(AdhesionAmountType::class, $command)
+            ->createForm(MembershipRequestAmountType::class, $command)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('app_renaissance_adhesion_summary');
+            $this->processor->doFillAdditionalInformations($command);
+
+            return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
         return $this->render('renaissance/adhesion/choose_amount.html.twig', [

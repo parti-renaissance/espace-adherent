@@ -61,8 +61,8 @@
             </div>
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                previous_route_name: 'app_renaissance_donation_informations',
-                next_button_label: 'Finaliser le don',
+                route_name: 'app_renaissance_donation_informations',
+                form_button: form.donation_request_mentions
             } %}
         {{ form_end(form) }}
     </section>

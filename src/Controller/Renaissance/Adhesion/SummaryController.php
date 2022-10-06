@@ -2,15 +2,13 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
-use App\Entity\Adherent;
-use App\Entity\Renaissance\Adhesion\AdherentRequest;
-use App\Form\Renaissance\Adhesion\AdhesionConfirmationType;
-use App\Membership\MembershipNotifier;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Donation\DonationRequest;
+use App\Donation\DonationRequestHandler;
+use App\Form\Renaissance\Adhesion\MembershipRequestProceedPaymentType;
+use App\Membership\MembershipRequestHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @Route(path="/adhesion/recapitulatif", name="app_renaissance_adhesion_summary", methods={"GET|POST"})
@@ -19,35 +17,43 @@ class SummaryController extends AbstractAdhesionController
 {
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
-        MembershipNotifier $notifier,
-        EncoderFactoryInterface $encoders
+        MembershipRequestHandler $membershipRequestHandler,
+        DonationRequestHandler $donationRequestHandler
     ): Response {
         $command = $this->getCommand();
 
         if (!$this->processor->canValidSummary($command)) {
-            return $this->redirectToRoute('app_renaissance_adhesion_amount');
+            return $this->redirectToRoute('app_renaissance_adhesion_mentions');
         }
 
         $this->processor->doValidSummary($command);
 
         $form = $this
-            ->createForm(AdhesionConfirmationType::class)
+            ->createForm(MembershipRequestProceedPaymentType::class)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($adherentRequest = AdherentRequest::create(
-                $command,
-                $command->password ? $encoders->getEncoder(Adherent::class)->encodePassword($command->password, null) : null
-            ));
-            $entityManager->flush();
+            $command->setClientIp($request->getClientIp());
 
-            $notifier->sendRenaissanceValidationEmail($adherentRequest);
+            if (
+                $command->getAdherentId()
+                && ($user = $this->getUser())
+                && $user->getId() === $command->getAdherentId()
+            ) {
+                $adherent = $membershipRequestHandler->createOrUpdateRenaissanceAdherent($command, $user);
+            } else {
+                $adherent = $membershipRequestHandler->createOrUpdateRenaissanceAdherent($command);
+            }
 
-            $this->storage->clear();
+            $donationRequest = DonationRequest::createFromAdherent($adherent, $command->getClientIp(), $command->getAmount());
+            $donationRequest->forMembership();
 
-            return $this->render('renaissance/adhesion/confirmation.html.twig');
+            $donation = $donationRequestHandler->handle($donationRequest);
+
+            return $this->redirectToRoute('app_renaissance_adhesion_payment', [
+                'uuid' => $donation->getUuid(),
+            ]);
         }
 
         return $this->render('renaissance/adhesion/summary.html.twig', [
