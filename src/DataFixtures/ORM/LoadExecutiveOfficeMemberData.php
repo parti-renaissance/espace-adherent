@@ -3,11 +3,20 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Image\ImageManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadExecutiveOfficeMemberData extends Fixture
 {
+    private ImageManager $imageManager;
+
+    public function __construct(ImageManager $imageManager)
+    {
+        $this->imageManager = $imageManager;
+    }
+
     public function load(ObjectManager $manager)
     {
         $member1 = new ExecutiveOfficeMember(
@@ -99,6 +108,70 @@ class LoadExecutiveOfficeMemberData extends Fixture
         $manager->persist($member3);
         $manager->persist($member4);
         $manager->persist($member5);
+
+        // BurEx Renaissance
+        $membersRE = [];
+
+        $membersRE[] = new ExecutiveOfficeMember(
+            null,
+            'John',
+            'Doe',
+            'Président d\'honneur',
+            'Président d\'honneur',
+            true,
+            'Président d\'honneur',
+            false,
+            false,
+            true
+        );
+
+        $membersRE[] = new ExecutiveOfficeMember(
+            null,
+            'Jane',
+            'Doe',
+            'Secrétaire général',
+            'Secrétaire général',
+            true,
+            'Secrétaire général',
+            true,
+            false,
+            false
+        );
+
+        foreach (['A', 'B', 'C', 'D', 'E'] as $lastName) {
+            $membersRE[] = new ExecutiveOfficeMember(
+                null,
+                'Jack',
+                "$lastName.",
+                'Secrétaire général délégué',
+                'Secrétaire général délégué',
+                true,
+                'Secrétaire général délégué',
+                false,
+                true,
+                false
+            );
+        }
+
+        foreach ($membersRE as $member) {
+            $member->setForRenaissance(true);
+
+            $member->setFacebookProfile('https://facebook.com/renaissance');
+            $member->setTwitterProfile('https://twitter.com/renaissance');
+            $member->setInstagramProfile('https://www.instagram.com/renaissance');
+            $member->setLinkedInProfile('https://fr.linkedin.com/company/renaissance');
+
+            $member->setImage(new UploadedFile(
+                __DIR__.'/../renaissance/burex/macron.jpg',
+                'image.jpg',
+                'image/jpeg',
+                null,
+                true
+            ));
+            $this->imageManager->saveImage($member);
+
+            $manager->persist($member);
+        }
 
         $manager->flush();
     }

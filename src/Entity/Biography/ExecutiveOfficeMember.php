@@ -2,6 +2,8 @@
 
 namespace App\Entity\Biography;
 
+use App\Entity\EntitySourceableInterface;
+use App\Entity\EntitySourceableTrait;
 use App\Validator\UniqueExecutiveOfficeMemberRole;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -13,14 +15,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueExecutiveOfficeMemberRole
  */
-class ExecutiveOfficeMember extends AbstractBiography
+class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceableInterface
 {
+    use EntitySourceableTrait;
+
     /**
      * @ORM\Column
      *
      * @Assert\Length(max=255)
      */
     private $job;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $president = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
@@ -41,13 +50,15 @@ class ExecutiveOfficeMember extends AbstractBiography
         bool $published = null,
         string $job = null,
         bool $executiveOfficer = null,
-        bool $deputyGeneralDelegate = false
+        bool $deputyGeneralDelegate = false,
+        bool $president = false
     ) {
         parent::__construct($uuid, $firstName, $lastName, $description, $content, $published);
 
         $this->job = $job;
         $this->executiveOfficer = $executiveOfficer;
         $this->deputyGeneralDelegate = $deputyGeneralDelegate;
+        $this->president = $president;
     }
 
     public function setExecutiveOfficer(bool $executiveOfficer): void
@@ -68,6 +79,16 @@ class ExecutiveOfficeMember extends AbstractBiography
     public function isDeputyGeneralDelegate(): ?bool
     {
         return $this->deputyGeneralDelegate;
+    }
+
+    public function setPresident(bool $president): void
+    {
+        $this->president = $president;
+    }
+
+    public function isPresident(): ?bool
+    {
+        return $this->president;
     }
 
     public function getJob(): ?string

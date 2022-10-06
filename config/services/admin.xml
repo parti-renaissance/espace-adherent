@@ -37,6 +37,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.renaissance_biography_executive_office_member" class="App\Admin\ExecutiveOfficeMember\RenaissanceExecutiveOfficeMemberAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Biographies BurEx" group="Re site web" />
+
+            <argument />
+            <argument>App\Entity\Biography\ExecutiveOfficeMember</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Communication
@@ -117,7 +125,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.biography_executive_office_member" class="App\Admin\ExecutiveOfficeMemberAdmin">
+        <service id="app.admin.biography_executive_office_member" class="App\Admin\ExecutiveOfficeMember\ExecutiveOfficeMemberAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Biographies BurEx" group="Communication" />
 
             <argument />
@@ -875,6 +883,7 @@
         <service id="app.admin.simple_image_upload_extension" class="App\Admin\Extension\SimpleImageUploadExtension">
             <tag name="sonata.admin.extension" target="app.admin.jecoute.resource.link" />
             <tag name="sonata.admin.extension" target="app.admin.biography_executive_office_member" />
+            <tag name="sonata.admin.extension" target="app.admin.renaissance_biography_executive_office_member" />
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.header_block" />
             <tag name="sonata.admin.extension" target="app.admin.thematic_community" />
             <tag name="sonata.admin.extension" target="app.admin.commitment" />

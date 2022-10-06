@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\ExecutiveOfficeMember;
 
 use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class ExecutiveOfficeMemberAdmin extends AbstractAdmin
+abstract class AbstractExecutiveOfficeMemberAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -33,6 +33,18 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 ->add('job', TextType::class, [
                     'label' => 'Poste',
                 ])
+        ;
+
+        if ($this instanceof RenaissanceExecutiveOfficeMemberAdmin) {
+            $formMapper
+                ->add('president', CheckboxType::class, [
+                    'label' => 'Président',
+                    'required' => false,
+                ])
+            ;
+        }
+
+        $formMapper
                 ->add('executiveOfficer', CheckboxType::class, [
                     'label' => 'Délégué général',
                     'required' => false,
@@ -126,6 +138,18 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 'label' => 'Photo',
                 'virtual_field' => true,
             ])
+        ;
+
+        if ($this instanceof RenaissanceExecutiveOfficeMemberAdmin) {
+            $listMapper
+                ->add('president', null, [
+                    'label' => 'Président',
+                    'editable' => true,
+                ])
+            ;
+        }
+
+        $listMapper
             ->add('executiveOfficer', null, [
                 'label' => 'Délégué général',
                 'editable' => true,
@@ -155,5 +179,22 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery();
+
+        $query
+            ->andWhere(sprintf('%s.forRenaissance = :forRenaissance', $query->getRootAliases()[0]))
+            ->setParameter('forRenaissance', $this->isForRenaissance())
+        ;
+
+        return $query;
+    }
+
+    protected function isForRenaissance(): bool
+    {
+        return false;
     }
 }

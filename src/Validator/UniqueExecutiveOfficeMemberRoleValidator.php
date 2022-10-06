@@ -34,8 +34,38 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, ExecutiveOfficeMember::class);
         }
 
+        if ($value->isPresident() && $value->isExecutiveOfficer()) {
+            $this->context
+                ->buildViolation($constraint->uniquePresidentOrExecutiveOfficerMessage)
+                ->atPath('president')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if ($value->isPresident() && $value->isDeputyGeneralDelegate()) {
+            $this->context
+                ->buildViolation($constraint->uniquePresidentOrDeputyGeneralDelegate)
+                ->atPath('president')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if ($value->isExecutiveOfficer() && $value->isDeputyGeneralDelegate()) {
+            $this->context
+                ->buildViolation($constraint->uniqueExecutiveOfficerOrDeputyGeneralDelegate)
+                ->atPath('executiveOfficer')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
         if ($value->isExecutiveOfficer()) {
-            $executiveOfficer = $this->executiveOfficeMemberRepository->findOneExecutiveOfficerMember();
+            $executiveOfficer = $this->executiveOfficeMemberRepository->findOneExecutiveOfficerMember(true, $value->isForRenaissance());
 
             if ($executiveOfficer && $value->getUuid() !== $executiveOfficer->getUuid()) {
                 $this->context
@@ -44,15 +74,24 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
                     ->atPath('executiveOfficer')
                     ->addViolation()
                 ;
+
+                return;
             }
         }
 
-        if ($value->isExecutiveOfficer() && $value->isDeputyGeneralDelegate()) {
-            $this->context
-                ->buildViolation($constraint->uniqueRoleMessage)
-                ->atPath('executiveOfficer')
-                ->addViolation()
-            ;
+        if ($value->isPresident()) {
+            $president = $this->executiveOfficeMemberRepository->findOnePresidentMember(true, $value->isForRenaissance());
+
+            if ($president && $value->getUuid() !== $president->getUuid()) {
+                $this->context
+                    ->buildViolation($constraint->uniquePresidentMessage)
+                    ->setParameter('{{ fullName }}', $president->getFullName())
+                    ->atPath('presidents')
+                    ->addViolation()
+                ;
+
+                return;
+            }
         }
     }
 }

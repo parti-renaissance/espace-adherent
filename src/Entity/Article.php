@@ -48,13 +48,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
+class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface, EntitySourceableInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
     use EntityContentTrait;
     use EntityMediaTrait;
     use EntityPublishableTrait;
+    use EntitySourceableTrait;
 
     /**
      * @var int
@@ -123,11 +124,6 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      */
     private $slug;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private ?bool $forRenaissance = false;
-
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -185,16 +181,6 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     public function getThemes()
     {
         return $this->themes;
-    }
-
-    public function isForRenaissance(): ?bool
-    {
-        return $this->forRenaissance;
-    }
-
-    public function setForRenaissance(?bool $forRenaissance): void
-    {
-        $this->forRenaissance = $forRenaissance;
     }
 
     public function isIndexable(): bool

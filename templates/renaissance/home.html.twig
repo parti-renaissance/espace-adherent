@@ -171,103 +171,25 @@
                 </div>
             </div>
 
-            {% set memberGroups = [
-                [
-                    {
-                        name: 'Emmanuel Macron',
-                        position: 'Président d\'honneur',
-                        image: 'images/renaissance/burex/macron.jpg',
-                    },
-                    {
-                        name: 'Stéphane Séjourné',
-                        position: 'Secrétaire général',
-                        image: '/images/renaissance/burex/sejourne.jpg',
-                    },
-                ],
-                [
-                    {
-                        name: 'Clément Beaune',
-                        position: 'Secrétaire général délégué',
-                        image: '/images/renaissance/burex/beaune.jpg',
-                    },
-                    {
-                        name: 'Aurore Bergé',
-                        position: 'Secrétaire générale déléguée',
-                        image: '/images/renaissance/burex/berge.jpg',
-                    },
-                    {
-                        name: 'Brigitte Bourguignon',
-                        position: 'Secrétaire générale déléguée',
-                        image: '/images/renaissance/burex/bourguignon.jpg',
-                    },
-                    {
-                        name: 'Pascal Canfin',
-                        position: 'Secrétaire général délégué',
-                        image: '/images/renaissance/burex/canfin.jpg',
-                    },
-                    {
-                        name: 'Bérangère Couillard',
-                        position: 'Secrétaire générale déléguée',
-                        image: '/images/renaissance/burex/couillard.jpg',
-                    },
-                    {
-                        name: 'Gérald Darmanin',
-                        position: 'Secrétaire général délégué',
-                        image: '/images/renaissance/burex/darmanin.jpg',
-                    },
-                    {
-                        name: 'Amélie de Montchalin',
-                        position: 'Secrétaire générale déléguée',
-                        image: '/images/renaissance/burex/montchalin.jpg',
-                    },
-                    {
-                        name: 'Olivier Dussopt',
-                        position: 'Secrétaire général délégué',
-                        image: '/images/renaissance/burex/dussopt.jpg',
-                    },
-
-                    {
-                        name: 'Fabienne Keller',
-                        position: 'Secrétaire générale déléguée',
-                        image: '/images/renaissance/burex/keller.jpg',
-                    },
-                    {
-                        name: 'Bruno Le Maire',
-                        position: 'Secrétaire général délégué',
-                        image: '/images/renaissance/burex/lemaire.jpg',
-                    },
-                    {
-                        name: 'Nathalie Nieson',
-                        position: 'Secrétaire générale déléguée',
-                        image: '/images/renaissance/burex/nieson.jpg',
-                    },
-                    {
-                        name: 'Bénédicte Peyrol',
-                        position: 'Secrétaire générale déléguée – Trésorière',
-                        image: '/images/renaissance/burex/peyrol.jpg',
-                    },
-                ],
-                [
-                    {
-                        name: 'Franck Riester',
-                        position: 'Secrétaire général délégué',
-                        image: '/images/renaissance/burex/riester.jpg',
-                    },
-                ]
+            {% set executive_office_groups = [
+                executive_office_members.specialGroup,
+                executive_office_members.regularGroup
             ] %}
 
-            {% for members in memberGroups %}
-                <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
+            {% for executive_office_group in executive_office_groups %}
+                {% if executive_office_group is not empty %}
+                    <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
 
-                <div class="flex justify-center flex-wrap gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
-                    {% for member in members %}
-                        <div class="flex flex-col mb-6.25 lg:mb-12.5">
-                            <img src="{{ asset(member.image) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" height="100%" alt="{{ member.name }}"/>
-                            <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.name }}</p>
-                            <p class="text-center font-normal text-xs leading-4.5 md:text-sm">{{ member.position }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
+                    <div class="flex justify-center flex-wrap gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
+                        {% for member in executive_office_group %}
+                            <div class="flex flex-col mb-6.25 lg:mb-12.5">
+                                <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" height="100%" alt="{{ member.fullName }}"/>
+                                <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.fullName }}</p>
+                                <p class="text-center font-normal text-xs leading-4.5 md:text-sm">{{ member.job }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </section>
