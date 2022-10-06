@@ -1530,13 +1530,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         if ($membership instanceof PlatformMembershipRequest) {
             $this->mandates = $membership->getMandates();
         }
-
-        if ($membership instanceof RenaissanceMembershipRequest) {
-            $this->activismZone = $membership->getActivismZone();
-            $this->exclusiveMembership = $membership->exclusiveMembership;
-            $this->territoireProgresMembership = $membership->territoireProgresMembership;
-            $this->agirMembership = $membership->agirMembership;
-        }
     }
 
     /**

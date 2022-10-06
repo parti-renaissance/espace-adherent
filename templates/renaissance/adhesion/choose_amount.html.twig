@@ -19,10 +19,10 @@
 {% endblock %}
 
 {% block adhesion_content %}
-    <div class="w-96">
-        {{ form_start(form) }}
-            {{ form_errors(form.amount) }}
+    {{ form_start(form) }}
+        {{ form_errors(form.amount) }}
 
+        <div class="w-96 mx-auto">
             {{ form_widget(form.amount, { label: false, attr: { placeholder: 'Autre montant' } }) }}
 
             <div id="amount-tax-return" class="mt-5"></div>
@@ -30,11 +30,51 @@
             <p class="mt-4 text-sm">
                 * Tarif réservé aux étudiants, personnes bénéficiant des minimas sociaux, sans emploi.
             </p>
+        </div>
 
-            {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                route_name: 'app_renaissance_adhesion',
-                form_button: form.membership_amount
-            } %}
-        {{ form_end(form) }}
-    </div>
+        <div class="mt-10 max-w-xl mx-auto mention-checkbox-container">
+            {{ form_row(form.isPhysicalPerson, {label: 'Je certifie sur l\'honneur être une personne physique et que le règlement de ma cotisation ne provient pas du compte d\'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel'}) }}
+
+            <div class="form__checkbox">
+                {{ form_widget(form.conditions) }}
+                <label for="{{ form.conditions.vars.id }}">
+                    Oui, j'adhère <a class="underline font-bold" href="{{ path('asset_url', {path: 'statuts-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">aux statuts</a> et <a class="underline font-bold" href="{{ path('asset_url', {path: 'corpus-des-valeurs-parti-renaissance.pdf', mime_type: 'application/pdf', app_domain: renaissance_host}) }}" target="_blank">au Corpus des Valeurs de Renaissance</a>
+                </label>
+                {{ form_errors(form.conditions) }}
+            </div>
+
+            <div class="form__checkbox">
+                {{ form_widget(form.cguAccepted) }}
+                <label for="{{ form.cguAccepted.vars.id }}">
+                    J’accepte les <a class="underline font-bold" href="{{ path('app_static_page', {slug: 'conditions-generales-utilisation', app_domain: renaissance_host}) }}" target="_blank">CGU du site Renaissance</a> et déclare avoir lu la <a href="{{ path('app_static_page', {slug: 'politique-de-protection-des-donnees', app_domain: renaissance_host}) }}" class="underline font-bold" target="_blank">politique de protection des données personnelles</a> et les mentions d’informations relatives au traitement de mes données ci-dessous
+                </label>
+                {{ form_errors(form.cguAccepted) }}
+            </div>
+
+            <div class="form__checkbox">
+                {{ form_widget(form.allowEmailNotifications) }}
+                <label for="{{ form.allowEmailNotifications.vars.id }}">
+                    Je souhaite recevoir les informations sur l'actualité de Renaissance et ses communications politiques par e-mai ({{ 'common.optional'|trans }})
+                </label>
+                {{ form_errors(form.allowEmailNotifications) }}
+            </div>
+
+            <div class="form__checkbox">
+                {{ form_widget(form.allowMobileNotifications) }}
+                <label for="{{ form.allowMobileNotifications.vars.id }}">
+                    Je souhaite recevoir des informations sur les actions militantes du parti par téléphone ({{ 'common.optional'|trans }})
+                </label>
+                {{ form_errors(form.allowMobileNotifications) }}
+            </div>
+        </div>
+
+        <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-3.75">
+            {{ cms_block('renaissance-adhesion-rgpd-block') }}
+        </div>
+
+        {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
+            previous_route_name: 'app_renaissance_adhesion',
+        } %}
+
+    {{ form_end(form) }}
 {% endblock %}

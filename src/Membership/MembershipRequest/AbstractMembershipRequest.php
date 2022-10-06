@@ -36,19 +36,19 @@ abstract class AbstractMembershipRequest implements MembershipInterface
     public ?string $firstName = null;
 
     /**
-     * @Assert\IsTrue(message="common.cgu.not_accepted", groups={"Default", "membership_request_mentions"})
+     * @Assert\IsTrue(message="common.cgu.not_accepted", groups={"Default", "membership_request_amount"})
      *
      * @Groups({"merbership:write"})
      */
     public bool $cguAccepted = false;
 
     /**
-     * @Groups({"merbership:write", "membership_request_mentions"})
+     * @Groups({"merbership:write"})
      */
     public ?bool $allowEmailNotifications = null;
 
     /**
-     * @Groups({"merbership:write", "membership_request_mentions"})
+     * @Groups({"merbership:write"})
      */
     public ?bool $allowMobileNotifications = null;
 

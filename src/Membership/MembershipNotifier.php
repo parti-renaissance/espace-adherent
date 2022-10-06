@@ -4,8 +4,10 @@ namespace App\Membership;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
+use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\MailerService;
 use App\Mailer\Message;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
 use App\OAuth\CallbackManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -46,10 +48,21 @@ class MembershipNotifier
             return $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
         }
 
-        return MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
-            ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountActivationMessage::create($adherent, $activationUrl))
-            : $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl))
-        ;
+        return $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl));
+    }
+
+    public function sendRenaissanceValidationEmail(AdherentRequest $adherentRequest): void
+    {
+        $activationUrl = $this->callbackManager->generateUrl(
+            'app_renaissance_membership_activate',
+            [
+                'uuid' => $adherentRequest->getUuid()->toString(),
+                'token' => $adherentRequest->token->toString(),
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $this->mailer->sendMessage(RenaissanceAdherentAccountActivationMessage::create($adherentRequest, $activationUrl));
     }
 
     public function sendEmailReminder(Adherent $adherent): bool

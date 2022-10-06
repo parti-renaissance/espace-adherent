@@ -31,8 +31,7 @@
             {{ form_row(form.address, { label: 'Adresse postale' }) }}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
-                route_name: 'app_renaissance_donation',
-                form_button: form.fill_personal_info
+                previous_route_name: 'app_renaissance_donation',
             } %}
         {{ form_end(form) }}
     </section>
