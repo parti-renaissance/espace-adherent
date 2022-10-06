@@ -2,13 +2,12 @@
 
 namespace App\Form\Renaissance\Adhesion;
 
-use App\Entity\Adherent;
 use App\Form\AutocompleteAddressType;
 use App\Form\RepeatedEmailType;
-use App\Form\UserPasswordType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,7 +36,7 @@ class PersonalInfoType extends AbstractType
         } else {
             $builder
                 ->add('emailAddress', RepeatedEmailType::class, [])
-                ->add('password', UserPasswordType::class, ['user_class' => Adherent::class])
+                ->add('password', PasswordType::class)
             ;
         }
     }

@@ -59,21 +59,33 @@ class AdherentRequest
      */
     public ?string $password = null;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public bool $allowEmailNotifications = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public bool $allowMobileNotifications = false;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
         $this->token = Uuid::uuid4();
     }
 
-    public static function create(RenaissanceMembershipRequest $command): self
+    public static function create(RenaissanceMembershipRequest $command, ?string $password): self
     {
         $object = new self();
 
         $object->firstName = $command->firstName;
         $object->lastName = $command->lastName;
-        $object->password = $command->password;
+        $object->password = $password;
         $object->email = $command->getEmailAddress();
         $object->amount = (int) (100 * $command->getAmount());
+        $object->allowEmailNotifications = $command->allowEmailNotifications;
+        $object->allowMobileNotifications = $command->allowMobileNotifications;
         $object->setPostAddress(PostAddressFactory::createFromAddress($command->getAddress()));
 
         return $object;
