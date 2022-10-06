@@ -15,7 +15,7 @@
 
     {% block navigation_steps %}
         <div class="hidden md:flex flex-wrap w-full border-t-2 border-white/20 py-7.5 pl-7 items-center">
-            {% for step in ['Informations', 'Contributions', 'Informations additionnelles', 'Mentions'] %}
+            {% for step in ['Informations', 'Contributions'] %}
                 <p class="{{ step == active_step|default(default_active_step) ? 'text-yellow' : 'text-white' }} font-bold text-sm mr-4">{{ step }}</p>
 
                 {% if not loop.last %}

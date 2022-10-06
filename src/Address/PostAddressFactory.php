@@ -37,7 +37,7 @@ class PostAddressFactory
         return $address;
     }
 
-    public function createFromAddress(Address $address): PostAddress
+    public static function createFromAddress(Address $address): PostAddress
     {
         if ($address->isFrenchAddress()) {
             return PostAddress::createFrenchAddress(

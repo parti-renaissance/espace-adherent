@@ -18,11 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
  * membership account.
  *
  * @Route(
- *     path="/adhesion/finaliser/{adherent_uuid}/{activation_token}",
+ *     path="/adhesion/finaliser/{uuid}/{token}",
  *     name="app_renaissance_membership_activate",
  *     requirements={
- *         "adherent_uuid": "%pattern_uuid%",
- *         "activation_token": "%pattern_sha1%"
+ *         "uuid": "%pattern_uuid%",
+ *         "token": "%pattern_uuid%"
  *     },
  *     methods={"GET"}
  * )

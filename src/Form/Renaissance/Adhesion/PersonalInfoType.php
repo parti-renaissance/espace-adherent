@@ -2,22 +2,17 @@
 
 namespace App\Form\Renaissance\Adhesion;
 
-use App\Address\Address;
 use App\Form\AutocompleteAddressType;
-use App\Form\BirthdateType;
-use App\Form\GenderType;
 use App\Form\RepeatedEmailType;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MembershipRequestPersonalInfoType extends AbstractType
+class PersonalInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,19 +28,7 @@ class MembershipRequestPersonalInfoType extends AbstractType
                 'format_identity_case' => true,
                 'disabled' => $fromCertifiedAdherent,
             ])
-            ->add('nationality', CountryType::class, [
-                'placeholder' => '',
-                'preferred_choices' => [Address::FRANCE],
-            ])
-            ->add('gender', GenderType::class, [
-                'placeholder' => '',
-                'disabled' => $fromCertifiedAdherent,
-            ])
-            ->add('birthdate', BirthdateType::class, [
-                'disabled' => $fromCertifiedAdherent,
-            ])
             ->add('address', AutocompleteAddressType::class)
-            ->add('fill_personal_info', SubmitType::class, ['label' => 'Étape suivante'])
         ;
 
         if ($fromAdherent) {
