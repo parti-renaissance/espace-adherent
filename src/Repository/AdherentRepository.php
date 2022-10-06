@@ -1071,9 +1071,8 @@ SQL;
             ->createQueryBuilder('adherent')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
-            ->andWhere('adherent.adherent = true')
             ->andWhere((new OrX())
-                ->add('adherent.source IS NULL')
+                ->add('adherent.source IS NULL AND adherent.adherent = true')
                 ->add('adherent.source = :source_jme')
                 ->add('adherent.source = :source_renaissance')
             )
@@ -1365,9 +1364,14 @@ SQL;
         $qb = $this->createQueryBuilder('a')
             ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
             ->andWhere('a.status = :status')
-            ->andWhere('((a.source IS NULL AND a.adherent = :true) OR a.source = :jemengage_source)')
+            ->andWhere((new Orx())
+                ->add('a.source IS NULL AND a.adherent = :true')
+                ->add('a.source = :source_jme')
+                ->add('a.source = :source_renaissance')
+            )
             ->setParameters([
-                'jemengage_source' => MembershipSourceEnum::JEMENGAGE,
+                'source_jme' => MembershipSourceEnum::JEMENGAGE,
+                'source_renaissance' => MembershipSourceEnum::RENAISSANCE,
                 'name' => '%'.strtolower(trim($name)).'%',
                 'status' => Adherent::ENABLED,
                 'true' => true,
