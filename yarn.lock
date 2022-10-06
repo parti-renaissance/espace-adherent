@@ -2161,10 +2161,10 @@ core-js-pure@^3.0.0:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.10.1.tgz#28642697dfcf02e0fd9f4d9891bd03a22df28ecf"
   integrity sha512-PeyJH2SE0KuxY5eCGNWA+W+CeDpB6M1PN3S7Am7jSv/Ttuxz2SnWbIiVQOn/TDaGaGtxo8CRWHkXwJscbUHtVw==
 
-core-js@^3.25.4:
-  version "3.25.4"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.4.tgz#76f6bc330a79aafbaf77e9645293351ea5d09b5b"
-  integrity sha512-JDLxg61lFPFYQ7U0HKoyKwVUV63VbbVTb/K73Yf+k4Mf4ZBZxCjfyrWZjTk1ZM7ZrgFSqhSIOmuzYAxG2f/reQ==
+core-js@^3.25.5:
+  version "3.25.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.5.tgz#e86f651a2ca8a0237a5f064c2fe56cef89646e27"
+  integrity sha512-nbm6eZSjm+ZuBQxCUPQKQCoUEfFOXjUZ8dTTyikyKaWrTYmAVbykQfwsKE5dBK88u3QCkCrzsx/PPlKfhsvgpw==
 
 cosmiconfig@^7.0.0:
   version "7.0.1"
