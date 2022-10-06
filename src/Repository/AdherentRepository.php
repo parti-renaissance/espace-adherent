@@ -1069,10 +1069,16 @@ SQL;
     {
         $qb = $this
             ->createQueryBuilder('adherent')
-            ->andWhere('(adherent.source IS NULL AND adherent.adherent = true) OR adherent.source = :user_type')
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
-            ->setParameter('user_type', MembershipSourceEnum::JEMENGAGE)
+            ->andWhere('adherent.adherent = true')
+            ->andWhere((new OrX())
+                ->add('adherent.source IS NULL')
+                ->add('adherent.source = :source_jme')
+                ->add('adherent.source = :source_renaissance')
+            )
+            ->setParameter('source_jme', MembershipSourceEnum::JEMENGAGE)
+            ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
         ;
 
         if ($firstName = $audience->getFirstName()) {
@@ -1141,9 +1147,13 @@ SQL;
                 'z2',
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                     $zoneQueryBuilder
-                        ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
-                        ->andWhere(sprintf('(%1$s.source IS NULL OR %1$s.source = :user_type)', $entityClassAlias))
                         ->andWhere(sprintf('%s.status = :adherent_status', $entityClassAlias))
+                        ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
+                        ->andWhere((new OrX())
+                            ->add(sprintf('%s.source IS NULL', $entityClassAlias))
+                            ->add(sprintf('%s.source = :source_jme', $entityClassAlias))
+                            ->add(sprintf('%s.source = :source_renaissance', $entityClassAlias))
+                        )
                     ;
                 }
             );
