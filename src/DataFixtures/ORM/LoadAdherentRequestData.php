@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class LoadAdherentRequestData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -17,13 +18,13 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
     public const ADHERENT_REQUEST_2_UUID = '3edb2e0a-f0d7-4fb5-aa75-b8b965beb3cb';
     public const ADHERENT_REQUEST_3_UUID = '37aa3e2a-0928-41d0-a6f1-af06c3facac1';
 
-    private EncoderFactoryInterface $encoder;
+    private PasswordEncoderInterface $encoder;
 
-    public function __construct(FranceCities $franceCities, EncoderFactoryInterface $encoder)
+    public function __construct(FranceCities $franceCities, EncoderFactoryInterface $encoders)
     {
         parent::__construct($franceCities);
 
-        $this->encoder = $encoder;
+        $this->encoder = $encoders->getEncoder(Adherent::class);
     }
 
     public function load(ObjectManager $manager)
@@ -83,16 +84,9 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $adherentRequest->lastName = $lastName;
         $adherentRequest->email = $email;
         $adherentRequest->amount = $amount;
-        $adherentRequest->password = $this->encodePassword('secret!12345');
         $adherentRequest->setPostAddress($address);
+        $adherentRequest->password = $this->encoder->encodePassword(LoadAdherentData::DEFAULT_PASSWORD, null);
 
         return $adherentRequest;
-    }
-
-    private function encodePassword(string $password): string
-    {
-        $encoder = $this->encoder->getEncoder(Adherent::class);
-
-        return $encoder->encodePassword($password, null);
     }
 }

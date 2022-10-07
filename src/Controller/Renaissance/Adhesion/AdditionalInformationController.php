@@ -45,7 +45,7 @@ class AdditionalInformationController extends AbstractController
             return $this->render('renaissance/adhesion/end_adhesion.html.twig');
         }
 
-        return $this->render('renaissance/adhesion/additionnal_informations.html.twig', [
+        return $this->render('renaissance/adhesion/additional_information.html.twig', [
            'form' => $form->createView(),
         ]);
     }

@@ -10,6 +10,10 @@
 
 {% block adhesion_content %}
     <section>
+        {% if app.request.query.has('form_payment') %}
+            <h1>Paiement Validé ! Plus que quelques informations et c'est fini</h1>
+        {% endif %}
+
         {{ form_start(form) }}
             {% if app.user and app.user.certified %}
                 <div class="alert alert--tips b__nudge--bottom-large">
@@ -65,4 +69,3 @@
         {{ form_end(form) }}
     </section>
 {% endblock %}
-

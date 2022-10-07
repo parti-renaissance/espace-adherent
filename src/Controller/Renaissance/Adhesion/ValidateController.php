@@ -2,13 +2,11 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
-use App\Donation\DonationRequest;
-use App\Donation\DonationRequestHandler;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
-use App\Form\Renaissance\Adhesion\AdhesionPaymentType;
 use App\Membership\MembershipRequestHandler;
 use App\Repository\AdherentRepository;
 use App\Security\AuthenticationUtils;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,49 +29,39 @@ use Symfony\Component\Routing\Annotation\Route;
 class ValidateController extends AbstractController
 {
     public function __invoke(
+        LoggerInterface $logger,
         Request $request,
         AdherentRequest $adherentRequest,
         AdherentRepository $adherentRepository,
         MembershipRequestHandler $membershipRequestHandler,
-        DonationRequestHandler $donationRequestHandler,
         AuthenticationUtils $authenticationUtils
     ): Response {
-        $form = $this
-            ->createForm(AdhesionPaymentType::class)
-            ->handleRequest($request)
-        ;
+        // Step 1 : create or update existing adherent
+        $adherent = $adherentRepository->findOneByEmail($adherentRequest->email);
+        $tokenUsedAt = $adherentRequest->tokenUsedAt;
 
-        if ($form->isSubmitted() && $form->isValid() && $adherentRequest->getAdherent()) {
-            $donationRequest = DonationRequest::createFromAdherent(
-                $adherentRequest->getAdherent(),
-                $request->getClientIp(),
-                $adherentRequest->amount
-            );
-            $donationRequest->forMembership();
-
-            $donation = $donationRequestHandler->handle($donationRequest);
-
-            return $this->redirectToRoute('app_renaissance_adhesion_payment', [
-                'uuid' => $donation->getUuid(),
-            ]);
+        if (null === $tokenUsedAt) {
+            $adherent = $membershipRequestHandler->createOrUpdateRenaissanceAdherent($adherentRequest, $adherent);
         }
 
-        // Todo we need to handle adherent ActivateAt here or when the process is finish?
-        if ($adherent = $adherentRepository->findOneByEmail($adherentRequest->email)) {
-            if ($adherent->getLastMembershipDonation()) {
-                $authenticationUtils->authenticateAdherent($adherent);
+        if (!$adherent) {
+            $logger->error('[Validation compte] adherent introuvable, adherentRequest : '.$adherentRequest->getId());
 
-                return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
-            }
+            $this->addFlash('error', 'Une erreur s\'est produite.');
 
-            $membershipRequestHandler->createOrUpdateRenaissanceAdherent($adherentRequest, $adherent);
-        } else {
-            $membershipRequestHandler->createOrUpdateRenaissanceAdherent($adherentRequest);
+            return $this->redirectToRoute('app_renaissance_homepage');
+        }
+
+        // Step 2 : connect existing adherent
+        $authenticationUtils->authenticateAdherent($adherent);
+
+        // Step 3 : redirect to final step if already paid
+        if ($adherent->getLastMembershipDonation()) {
+            return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
         return $this->render('renaissance/adhesion/validate.html.twig', [
             'adherent_request' => $adherentRequest,
-            'form' => $form->createView(),
         ]);
     }
 }

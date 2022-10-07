@@ -24,7 +24,6 @@ class SubscriptionListener implements EventSubscriberInterface
     {
         return [
             UserEvents::USER_CREATED => 'onUserCreated',
-            UserEvents::RENAISSANCE_USER_CREATED => 'onUserCreated',
             UserEvents::USER_SWITCH_TO_ADHERENT => 'addSubscriptionTypeToAdherent',
         ];
     }

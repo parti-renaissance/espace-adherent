@@ -1565,6 +1565,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         if (!$this->postAddress->equals($adherentRequest->getPostAddressModel())) {
             $this->postAddress = $adherentRequest->getPostAddressModel();
         }
+
+        if ($adherentRequest->password) {
+            $this->password = $adherentRequest->password;
+        }
     }
 
     /**

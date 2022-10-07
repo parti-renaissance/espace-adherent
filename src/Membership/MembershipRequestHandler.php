@@ -102,23 +102,20 @@ class MembershipRequestHandler
             $adherent = $this->adherentFactory->createFromRenaissanceAdherentRequest($adherentRequest);
         }
 
-        $adherentRequest->setAdherent($adherent);
-
-        $this->manager->persist($adherentRequest);
         $this->manager->persist($adherent);
-
         $this->referentZoneManager->assignZone($adherent);
-
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(
-            new UserEvent(
-                $adherent,
-                $adherentRequest->allowEmailNotifications,
-                $adherentRequest->allowMobileNotifications
-            ),
-            UserEvents::RENAISSANCE_USER_CREATED
-        );
+        $this->dispatcher->dispatch(new UserEvent(
+            $adherent,
+            $adherentRequest->allowEmailNotifications,
+            $adherentRequest->allowMobileNotifications
+        ), UserEvents::USER_CREATED);
+
+        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+
+        $adherentRequest->activate();
+        $this->manager->flush();
 
         return $adherent;
     }
@@ -130,12 +127,6 @@ class MembershipRequestHandler
 
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
-    }
-
-    public function removeUnsuccessfulRenaissanceAdhesion(Adherent $adherent): void
-    {
-        $this->manager->remove($adherent);
-        $this->manager->flush();
     }
 
     public function join(Adherent $user, PlatformMembershipRequest $membershipRequest): void

@@ -153,7 +153,7 @@ class AdherentFactory
         );
 
         $adherent->join();
-        $adherent->setSource($adherentRequest->getSource());
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->setPapUserRole(true);
 
         return $adherent;

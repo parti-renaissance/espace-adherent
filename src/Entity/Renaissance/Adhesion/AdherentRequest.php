@@ -3,12 +3,10 @@
 namespace App\Entity\Renaissance\Adhesion;
 
 use App\Address\PostAddressFactory;
-use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
-use App\Membership\MembershipSourceEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -57,6 +55,11 @@ class AdherentRequest
     public UuidInterface $token;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $tokenUsedAt = null;
+
+    /**
      * @ORM\Column(nullable=true)
      */
     public ?string $password = null;
@@ -70,12 +73,6 @@ class AdherentRequest
      * @ORM\Column(type="boolean", options={"default": false})
      */
     public bool $allowMobileNotifications = false;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private ?Adherent $adherent = null;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -104,18 +101,8 @@ class AdherentRequest
         return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
-    public function getAdherent(): ?Adherent
+    public function activate(): void
     {
-        return $this->adherent;
-    }
-
-    public function setAdherent(Adherent $adherent): void
-    {
-        $this->adherent = $adherent;
-    }
-
-    final public function getSource(): string
-    {
-        return MembershipSourceEnum::RENAISSANCE;
+        $this->tokenUsedAt = new \DateTime();
     }
 }

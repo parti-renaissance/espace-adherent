@@ -3,19 +3,52 @@
 namespace App\Controller\Renaissance\Adhesion;
 
 use App\Controller\EnMarche\DonationController;
+use App\Donation\DonationRequest;
+use App\Donation\DonationRequestHandler;
 use App\Donation\PayboxFormFactory;
 use App\Donation\TransactionCallbackHandler;
+use App\Entity\Adherent;
 use App\Entity\Donation;
-use App\Form\Renaissance\Adhesion\AdditionalInfoType;
-use App\Security\AuthenticationUtils;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class PaymentController extends AbstractAdhesionController
 {
+    /**
+     * @Route(path="/adhesion/pre-paiement", name="app_renaissance_adhesion_pre_payment", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_ADHERENT')")
+     */
+    public function prePaymentAction(
+        Request $request,
+        UserInterface $adherent,
+        DonationRequestHandler $donationRequestHandler
+    ): Response {
+        if (!$amount = $request->query->getInt('amount')) {
+            throw new BadRequestHttpException();
+        }
+
+        /** @var Adherent $adherent */
+        if ($adherent->getLastMembershipDonation()) {
+            return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
+        }
+
+        $donationRequest = DonationRequest::createFromAdherent($adherent, $request->getClientIp(), $amount / 100);
+        $donationRequest->forMembership();
+
+        $donation = $donationRequestHandler->handle($donationRequest);
+
+        return $this->redirectToRoute('app_renaissance_adhesion_payment', [
+            'uuid' => $donation->getUuid(),
+        ]);
+    }
+
     /**
      * @Route(path="/adhesion/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="app_renaissance_adhesion_payment", methods={"GET"})
      */
@@ -55,36 +88,16 @@ class PaymentController extends AbstractAdhesionController
      * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
      */
-    public function resultAction(
-        Request $request,
-        Donation $donation,
-        AuthenticationUtils $authenticationUtils,
-        string $status
-    ): Response {
-        $retryUrl = null;
-        $successful = DonationController::RESULT_STATUS_EFFECTUE === $status;
-
-        if (!$successful) {
-            $retryUrl = $this->generateUrl('app_renaissance_adhesion_payment', ['uuid' => $donation->getUuid()]);
-        }
-
-        if ($successful) {
-            $authenticationUtils->authenticateAdherent($donation->getDonator()->getAdherent());
+    public function resultAction(Request $request, Donation $donation, string $status): Response
+    {
+        if ($successful = DonationController::RESULT_STATUS_EFFECTUE === $status) {
+            return $this->redirectToRoute('app_renaissance_adhesion_additional_informations', ['from_payment' => true]);
         }
 
         return $this->render('renaissance/adhesion/result.html.twig', [
             'successful' => $successful,
             'result_code' => $request->query->get('result'),
-            'retry_url' => $retryUrl,
-            'additional_info_form' => $this
-                ->createForm(
-                    AdditionalInfoType::class,
-                    $adherent = $donation->getDonator()->getAdherent(),
-                    [
-                        'action' => $this->generateUrl('app_renaissance_adhesion_additional_informations'),
-                        'from_certified_adherent' => $adherent->isCertified(),
-                    ]
-                )->createView(),
+            'retry_url' => $this->generateUrl('app_renaissance_adhesion_payment', ['uuid' => $donation->getUuid()]),
         ]);
     }
 }
