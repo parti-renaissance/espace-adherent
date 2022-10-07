@@ -12,12 +12,6 @@
 
 {% block adhesion_content %}
     <section>
-        <div class="mb-4">
-            <a class="text-sm text-dark-blue hover:text-white" href="https://storage.googleapis.com/enmarche-prod/Renaissance-Bulletin-adhesion.pdf" target="_blank">
-                Télécharger le bulletin d'adhésion
-            </a>
-        </div>
-
         {{ form_start(form) }}
             {% if app.user and app.user.certified %}
                 <div class="alert alert--tips b__nudge--bottom-large">
@@ -55,12 +49,16 @@
                 {% endif %}
             </div>
 
-            <div class="mt-4">
-                <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
-                    <button type="submit" class="w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase">
-                        Étape suivante
-                    </button>
-                </div>
+            <div class="mt-4 flex flex-col">
+                <button type="submit" class="w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase">
+                    Étape suivante
+                </button>
+
+                <div class="or-separator"></div>
+
+                <a class="w-full text-center rounded py-5 bg-dark-blue text-white font-din font-bold uppercase" href="https://storage.googleapis.com/enmarche-prod/Renaissance-Bulletin-adhesion.pdf" target="_blank">
+                    Télécharger le bulletin d'adhésion
+                </a>
             </div>
         {{ form_end(form) }}
     </section>
