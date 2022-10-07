@@ -1,0 +1,25 @@
+{% extends 'renaissance/adhesion/_layout.html.twig' %}
+
+{% block navigation_steps '' %}
+
+{% block adhesion_title %}
+    Bienvenue <span class="stabilo stabilo-blue">{{ adherent_request.firstName }}.</span>
+{% endblock %}
+
+{% block adhesion_content %}
+    <section class="w-96">
+        <div class="text-center font-normal">
+            <h1 class="font-bold mt-5">Votre adresse email est validée !</h1>
+            <p>
+                Vous pouvez dès à présent procéder au paiement de votre cotisation de: <br/>
+                <span class="font-normal text-3xl leading-10">{{ (adherent_request.amount/100)|format_currency('EUR')|replace({',00' : ''}) }}</span>
+            </p>
+        </div>
+
+        <div class="mt-10 text-center">
+            <a href="{{ path('app_renaissance_adhesion_pre_payment', { amount: adherent_request.amount }) }}" class="w-full py-5 bg-blue-700 hover:bg-blue-500 text-white hover:text-white px-4 border border-blue-500 hover:border-transparent rounded font-din font-bold uppercase text-center">
+                Procéder au paiement
+            </a>
+        </div>
+    </section>
+{% endblock %}

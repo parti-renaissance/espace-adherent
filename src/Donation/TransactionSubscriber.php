@@ -81,7 +81,11 @@ class TransactionSubscriber implements EventSubscriberInterface
 
         if ($transaction->isSuccessful()) {
             if ($donation->isMembership()) {
-                $this->membershipRequestHandler->finishRenaissanceAdhesion($donation->getDonator()->getAdherent());
+                if ($adherent = $donation->getDonator()->getAdherent()) {
+                    $this->membershipRequestHandler->finishRenaissanceAdhesion($adherent);
+                } else {
+                    $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
+                }
 
                 return;
             }

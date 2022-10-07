@@ -4,6 +4,7 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
+use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
@@ -129,6 +130,31 @@ class AdherentFactory
             $adherent->join();
             $adherent->setPapUserRole(true);
         }
+
+        return $adherent;
+    }
+
+    public function createFromRenaissanceAdherentRequest(AdherentRequest $adherentRequest): Adherent
+    {
+        $adherent = Adherent::create(
+            Adherent::createUuid($adherentRequest->email),
+            $adherentRequest->email,
+            $adherentRequest->password,
+            null,
+            $adherentRequest->firstName,
+            $adherentRequest->lastName,
+            null,
+            null,
+            $adherentRequest->getPostAddressModel(),
+            null,
+            null,
+            false,
+            Adherent::ENABLED
+        );
+
+        $adherent->join();
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->setPapUserRole(true);
 
         return $adherent;
     }

@@ -13,7 +13,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Renaissance\AdherentRequestRepository")
  */
 class AdherentRequest
 {
@@ -55,6 +55,11 @@ class AdherentRequest
     public UuidInterface $token;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $tokenUsedAt = null;
+
+    /**
      * @ORM\Column(nullable=true)
      */
     public ?string $password = null;
@@ -69,9 +74,9 @@ class AdherentRequest
      */
     public bool $allowMobileNotifications = false;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->token = Uuid::uuid4();
     }
 
@@ -94,5 +99,10 @@ class AdherentRequest
     public function getFullName(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
+    }
+
+    public function activate(): void
+    {
+        $this->tokenUsedAt = new \DateTime();
     }
 }

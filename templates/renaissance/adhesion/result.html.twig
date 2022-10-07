@@ -4,44 +4,20 @@
 
 {% block adhesion_title %}
     <span class="text-yellow font-bold">
-        {% if successful %}
-            Adhésion réussie !
-        {% else %}
-            L’adhésion a échoué !
-        {% endif %}
+        Paiement a échoué !
     </span>
 {% endblock %}
 
 {% block adhesion_content %}
     <section>
-        {% if successful %}
-            <div>
-                <h1>Adhésion réussie !</h1>
-                <p>
-                    Le paiement a bien été validé. Vous êtes désormais inscrit, <br/>
-                    bienvenu(e)! Il ne reste plus qu’à confirmer votre inscription <br/>
-                    en cliquant sur le lien que vous avez reçu sur votre email.
-                </p>
-            </div>
-            <div class="mt-4">
-                <a href="{{ path('app_renaissance_homepage') }}" class="bg-green hover:bg-green text-white-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                    Retourner sur la page d'accueil
-                </a>
-            </div>
-        {% else %}
-            <div>
-                <div>
-                    <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
+        <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 
-                    <a href="{{ retry_url }}">
-                        Je souhaite réessayer
-                    </a>
+        <a href="{{ retry_url }}" class="text-dark-blue hover:text-white">
+            Je souhaite réessayer
+        </a>
 
-                    <p>
-                        Si le problème persiste, veuillez <a href="https://contact.en-marche.fr" target="_blank" rel="noopener noreferrer">nous contacter</a>.
-                    </p>
-                </div>
-            </div>
-        {% endif %}
+        <p>
+            Si le problème persiste, veuillez <a href="mailto:contact@parti-renaissance.fr" class="text-dark-blue hover:text-white" target="_blank">nous contacter</a>.
+        </p>
     </section>
 {% endblock %}
