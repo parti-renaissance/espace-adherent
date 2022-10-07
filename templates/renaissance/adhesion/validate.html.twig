@@ -1,0 +1,34 @@
+{% extends 'renaissance/adhesion/_layout.html.twig' %}
+
+{% form_theme form 'renaissance/form_theme.html.twig' %}
+
+{% block navigation_steps '' %}
+
+{% block adhesion_title %}
+    Bienvenue <span class="stabilo stabilo-blue">{{ adherent_request.firstName }}.</span>
+{% endblock %}
+
+{% block adhesion_content %}
+    <section class="w-96">
+        <div class="text-center font-normal text-lg leading-6.25 md:text-2xl md:leading-9">
+            <h1 class="font-bold mt-5">Votre adresse email est validée !</h1>
+            <p>
+                Vous pouvez procéder dès à présent procéder au paiement de votre cotisation de: <br/>
+                <span class="font-normal text-3xl leading-10">{{ (adherent_request.amount/100)|format_currency('EUR')|replace({',00' : ''}) }}</span>
+            </p>
+        </div>
+
+        {{ form_start(form, { attr: { class: 'mt-10' } }) }}
+            {{ form_errors(form) }}
+
+            <div class="mt-4">
+                <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
+                    <button type="submit" class="rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4">
+                        Procéder au paiement
+                    </button>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
+

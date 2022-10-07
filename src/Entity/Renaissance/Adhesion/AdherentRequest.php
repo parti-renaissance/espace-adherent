@@ -3,17 +3,19 @@
 namespace App\Entity\Renaissance\Adhesion;
 
 use App\Address\PostAddressFactory;
+use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
+use App\Membership\MembershipSourceEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Renaissance\AdherentRequestRepository")
  */
 class AdherentRequest
 {
@@ -69,9 +71,15 @@ class AdherentRequest
      */
     public bool $allowMobileNotifications = false;
 
-    public function __construct()
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private ?Adherent $adherent = null;
+
+    public function __construct(UuidInterface $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->token = Uuid::uuid4();
     }
 
@@ -94,5 +102,20 @@ class AdherentRequest
     public function getFullName(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    public function setAdherent(Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
+    }
+
+    final public function getSource(): string
+    {
+        return MembershipSourceEnum::RENAISSANCE;
     }
 }

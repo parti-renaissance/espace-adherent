@@ -24,6 +24,7 @@ use App\Entity\Instance\InstanceQuality;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
+use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Entity\Team\Member;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
@@ -1529,6 +1530,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($membership instanceof PlatformMembershipRequest) {
             $this->mandates = $membership->getMandates();
+        }
+    }
+
+    public function updateMembershipFromAdherentRequest(AdherentRequest $adherentRequest): void
+    {
+        if (!$this->isCertified()) {
+            $this->firstName = $adherentRequest->firstName;
+            $this->lastName = $adherentRequest->lastName;
+        }
+
+        if (!$this->postAddress->equals($adherentRequest->getPostAddressModel())) {
+            $this->postAddress = $adherentRequest->getPostAddressModel();
         }
     }
 

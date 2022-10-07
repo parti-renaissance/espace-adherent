@@ -1,0 +1,77 @@
+<?php
+
+namespace App\DataFixtures\ORM;
+
+use App\Entity\PostAddress;
+use App\Entity\Renaissance\Adhesion\AdherentRequest;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
+
+class LoadAdherentRequestData extends AbstractLoadPostAddressData implements DependentFixtureInterface
+{
+    public const ADHERENT_REQUEST_1_UUID = 'b03cee7b-6ace-4acd-96ff-a3f1037cf9f7';
+    public const ADHERENT_REQUEST_2_UUID = '3edb2e0a-f0d7-4fb5-aa75-b8b965beb3cb';
+    public const ADHERENT_REQUEST_3_UUID = '37aa3e2a-0928-41d0-a6f1-af06c3facac1';
+
+    public function load(ObjectManager $manager)
+    {
+        $adherentRequest1 = $this->createAdherentRequest(
+            self::ADHERENT_REQUEST_1_UUID,
+            'renaissance-user-1@en-marche-dev.fr',
+            'Laure',
+            'Fenix',
+            3000,
+            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923)
+        );
+
+        $adherentRequest2 = $this->createAdherentRequest(
+            self::ADHERENT_REQUEST_2_UUID,
+            'future-renaissance-user-2@en-marche-dev.fr',
+            'Daniel',
+            'Dumas',
+            1000,
+            $this->createPostAddress('44 rue des courcelles', '75008-75108')
+        );
+
+        $adherentRequest3 = $this->createAdherentRequest(
+            self::ADHERENT_REQUEST_3_UUID,
+            'future-renaissance-user-3@en-marche-dev.fr',
+            'Amelie',
+            'Moulin',
+            3000,
+            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923)
+        );
+
+        $manager->persist($adherentRequest1);
+        $manager->persist($adherentRequest2);
+        $manager->persist($adherentRequest3);
+
+        $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadAdherentData::class,
+        ];
+    }
+
+    private function createAdherentRequest(
+        string $uuid,
+        string $email,
+        string $firstName,
+        string $lastName,
+        int $amount,
+        PostAddress $address
+    ): AdherentRequest {
+        $adherentRequest = new AdherentRequest(Uuid::fromString($uuid));
+        $adherentRequest->firstName = $firstName;
+        $adherentRequest->lastName = $lastName;
+        $adherentRequest->email = $email;
+        $adherentRequest->amount = $amount;
+        $adherentRequest->setPostAddress($address);
+
+        return $adherentRequest;
+    }
+}

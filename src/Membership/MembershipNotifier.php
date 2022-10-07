@@ -44,7 +44,7 @@ class MembershipNotifier
             ;
         }
 
-        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource() && $adherent->getActivatedAt()) {
+        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource()) {
             return $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
         }
 
@@ -93,7 +93,7 @@ class MembershipNotifier
         ];
 
         return $this->callbackManager->generateUrl(
-            MembershipSourceEnum::RENAISSANCE === $adherent->getSource() ? 'app_renaissance_membership_activate' : 'app_membership_activate',
+            MembershipSourceEnum::RENAISSANCE === $adherent->getSource() ? 'app_renaissance_membership_validate' : 'app_membership_activate',
             $params,
             UrlGeneratorInterface::ABSOLUTE_URL
         );

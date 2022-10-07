@@ -21,14 +21,6 @@ class PaymentController extends AbstractAdhesionController
      */
     public function paymentAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
-        $command = $this->getCommand();
-
-        if (!$this->processor->canPayMembership($command)) {
-            return $this->redirectToRoute('app_renaissance_adhesion');
-        }
-
-        $this->processor->doPayMembership($command);
-
         $paybox = $payboxFormFactory->createPayboxFormForDonation($donation);
 
         return $this->render('renaissance/adhesion/payment.html.twig', [
@@ -72,7 +64,6 @@ class PaymentController extends AbstractAdhesionController
     ): Response {
         $retryUrl = null;
         $successful = DonationController::RESULT_STATUS_EFFECTUE === $status;
-        $command = $this->getCommand();
 
         if (!$successful) {
             if (!$this->getUser() && $adherent = $donation->getDonator()->getAdherent()) {
@@ -82,10 +73,6 @@ class PaymentController extends AbstractAdhesionController
         }
 
         $membershipRegistrationProcess->terminate();
-
-        if ($this->processor->canFinishMembershipRequest($command)) {
-            $this->processor->doFinishMembershipRequest($command);
-        }
 
         return $this->render('renaissance/adhesion/result.html.twig', [
             'successful' => $successful,

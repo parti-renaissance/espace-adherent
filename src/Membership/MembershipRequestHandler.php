@@ -6,6 +6,7 @@ use App\Address\PostAddressFactory;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\Adherent\UnregistrationHandler;
 use App\Entity\Adherent;
+use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\Event\AdherentAccountWasCreatedEvent;
 use App\Membership\Event\UserEvent;
@@ -13,7 +14,6 @@ use App\Membership\MembershipRequest\CoalitionMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
-use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -93,29 +93,32 @@ class MembershipRequestHandler
     }
 
     public function createOrUpdateRenaissanceAdherent(
-        RenaissanceMembershipRequest $membershipRequest,
+        AdherentRequest $adherentRequest,
         Adherent $adherent = null
     ): Adherent {
         if ($adherent) {
-            $adherent->updateMembership(
-                $membershipRequest,
-                $this->addressFactory->createFromAddress($membershipRequest->getAddress())
-            );
+            $adherent->updateMembershipFromAdherentRequest($adherentRequest);
         } else {
-            $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
+            $adherent = $this->adherentFactory->createFromRenaissanceAdherentRequest($adherentRequest);
         }
 
+        $adherentRequest->setAdherent($adherent);
+
+        $this->manager->persist($adherentRequest);
         $this->manager->persist($adherent);
 
         $this->referentZoneManager->assignZone($adherent);
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new UserEvent(
-            $adherent,
-            $membershipRequest->allowEmailNotifications,
-            $membershipRequest->allowMobileNotifications
-        ), UserEvents::RENAISSANCE_USER_CREATED);
+        $this->dispatcher->dispatch(
+            new UserEvent(
+                $adherent,
+                $adherentRequest->allowEmailNotifications,
+                $adherentRequest->allowMobileNotifications
+            ),
+            UserEvents::RENAISSANCE_USER_CREATED
+        );
 
         return $adherent;
     }
