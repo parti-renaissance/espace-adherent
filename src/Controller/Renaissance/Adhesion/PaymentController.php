@@ -90,12 +90,11 @@ class PaymentController extends AbstractAdhesionController
      */
     public function resultAction(Request $request, Donation $donation, string $status): Response
     {
-        if ($successful = DonationController::RESULT_STATUS_EFFECTUE === $status) {
+        if (DonationController::RESULT_STATUS_EFFECTUE === $status) {
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations', ['from_payment' => true]);
         }
 
         return $this->render('renaissance/adhesion/result.html.twig', [
-            'successful' => $successful,
             'result_code' => $request->query->get('result'),
             'retry_url' => $this->generateUrl('app_renaissance_adhesion_payment', ['uuid' => $donation->getUuid()]),
         ]);

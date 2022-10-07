@@ -118,23 +118,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findOneActiveSympathizerByEmail(string $email): ?Adherent
-    {
-        return $this->createQueryBuilder('adherent')
-            ->where('adherent.emailAddress = :email')
-            ->andWhere('adherent.status = :status')
-            ->andWhere('adherent.adherent = :true')
-            ->andWhere('adherent.lastMembershipDonation IS NULL')
-            ->setParameters([
-                'email' => $email,
-                'status' => Adherent::ENABLED,
-                'true' => true,
-            ])
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
-    }
-
     /**
      * Finds an active Adherent instance by its id.
      */

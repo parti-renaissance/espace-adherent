@@ -38,14 +38,7 @@ class MembershipNotifier
         $activationUrl = $this->generateMembershipActivationUrl($adherent, $token);
 
         if ($isReminder) {
-            return MembershipSourceEnum::RENAISSANCE === $adherent->getSource()
-                ? $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountActivationReminderMessage::create($adherent, $activationUrl))
-                : $this->mailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl))
-            ;
-        }
-
-        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource()) {
-            return $this->mailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
+            return $this->mailer->sendMessage(Message\AdherentAccountActivationReminderMessage::create($adherent, $activationUrl));
         }
 
         return $this->mailer->sendMessage(Message\AdherentAccountActivationMessage::create($adherent, $activationUrl));
@@ -93,7 +86,7 @@ class MembershipNotifier
         ];
 
         return $this->callbackManager->generateUrl(
-            MembershipSourceEnum::RENAISSANCE === $adherent->getSource() ? 'app_renaissance_membership_validate' : 'app_membership_activate',
+            'app_membership_activate',
             $params,
             UrlGeneratorInterface::ABSOLUTE_URL
         );

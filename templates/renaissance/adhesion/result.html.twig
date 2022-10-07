@@ -10,18 +10,14 @@
 
 {% block adhesion_content %}
     <section>
-        <div>
-            <div>
-                <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
+        <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 
-                <a href="{{ retry_url }}" class="text-dark-blue hover:text-white">
-                    Je souhaite réessayer
-                </a>
+        <a href="{{ retry_url }}" class="text-dark-blue hover:text-white">
+            Je souhaite réessayer
+        </a>
 
-                <p>
-                    Si le problème persiste, veuillez <a href="mailto:contact@parti-renaissance.fr" class="text-dark-blue hover:text-white" target="_blank">nous contacter</a>.
-                </p>
-            </div>
-        </div>
+        <p>
+            Si le problème persiste, veuillez <a href="mailto:contact@parti-renaissance.fr" class="text-dark-blue hover:text-white" target="_blank">nous contacter</a>.
+        </p>
     </section>
 {% endblock %}

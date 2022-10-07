@@ -122,11 +122,7 @@ class MembershipRequestHandler
 
     public function finishRenaissanceAdhesion(Adherent $adherent): void
     {
-        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $this->manager->flush();
-
-        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_CREATED);
-        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->notifier->sendConfirmationJoinMessage($adherent);
     }
 
     public function join(Adherent $user, PlatformMembershipRequest $membershipRequest): void

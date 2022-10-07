@@ -37,12 +37,9 @@ class AdditionalInformationController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($adherent);
             $entityManager->flush();
 
-            $membershipRegistrationProcess->terminate();
-
-            return $this->render('renaissance/adhesion/end_adhesion.html.twig');
+            return $this->redirectToRoute('app_renaissance_adhesion_finish');
         }
 
         return $this->render('renaissance/adhesion/additional_information.html.twig', [
