@@ -6,8 +6,8 @@ use App\Controller\EnMarche\DonationController;
 use App\Donation\PayboxFormFactory;
 use App\Donation\TransactionCallbackHandler;
 use App\Entity\Donation;
-use App\Membership\MembershipRegistrationProcess;
-use App\Membership\MembershipRequestHandler;
+use App\Form\Renaissance\Adhesion\AdditionalInfoType;
+use App\Security\AuthenticationUtils;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,27 +58,25 @@ class PaymentController extends AbstractAdhesionController
     public function resultAction(
         Request $request,
         Donation $donation,
-        MembershipRegistrationProcess $membershipRegistrationProcess,
-        MembershipRequestHandler $membershipRequestHandler,
+        AuthenticationUtils $authenticationUtils,
         string $status
     ): Response {
         $retryUrl = null;
         $successful = DonationController::RESULT_STATUS_EFFECTUE === $status;
 
         if (!$successful) {
-            if (!$this->getUser() && $adherent = $donation->getDonator()->getAdherent()) {
-                $membershipRequestHandler->removeUnsuccessfulRenaissanceAdhesion($adherent);
-            }
-            $retryUrl = $this->generateUrl('app_renaissance_adhesion');
+            $retryUrl = $this->generateUrl('app_renaissance_adhesion_payment', ['uuid' => $donation->getUuid()]);
         }
 
-        $membershipRegistrationProcess->terminate();
+        if ($successful) {
+            $authenticationUtils->authenticateAdherent($donation->getDonator()->getAdherent());
+        }
 
         return $this->render('renaissance/adhesion/result.html.twig', [
             'successful' => $successful,
             'result_code' => $request->query->get('result'),
-            'donation' => $donation,
             'retry_url' => $retryUrl,
+            'additional_info_form' => $this->createForm(AdditionalInfoType::class, $donation->getDonator()->getAdherent(), ['action' => $this->generateUrl('app_renaissance_adhesion_additional_informations')])->createView(),
         ]);
     }
 }

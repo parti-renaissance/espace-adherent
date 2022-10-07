@@ -57,6 +57,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -156,6 +157,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "survey_replies_list",
      *     "adherent_change_diff",
      * })
+     * @Assert\NotBlank(message="common.gender.not_blank", groups={"additional_info"})
+     * @Assert\Choice(
+     *     callback={"App\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice",
+     *     strict=true,
+     *     groups={"additional_info"}
+     * )
      */
     private $gender;
 
@@ -177,6 +185,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @Groups({"profile_read", "phoning_campaign_call_read"})
+     *
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"additional_info"})
      */
     private $phone;
 
@@ -189,6 +199,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="date", nullable=true)
      *
      * @Groups({"profile_read", "adherent_change_diff"})
+     *
+     * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info"})
+     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info"})
      */
     private $birthdate;
 
@@ -556,6 +569,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(length=2, nullable=true)
      *
      * @Groups({"profile_read"})
+     *
+     * @Assert\NotBlank(groups={"additional_info"})
+     * @Assert\Country(message="common.nationality.invalid", groups={"additional_info"})
      */
     private $nationality;
 
@@ -823,6 +839,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Assert\Expression(
+     *     expression="!(value == false and this.isTerritoireProgresMembership() == false and this.isAgirMembership() == false)",
+     *     message="adherent.exclusive_membership.no_accepted",
+     *     groups={"additional_info"}
+     * )
      */
     private bool $exclusiveMembership = false;
 
