@@ -32,7 +32,7 @@
             </p>
         </div>
 
-        <div class="mt-10 max-w-xl mx-auto mention-checkbox-container">
+        <div class="my-10 max-w-xl mx-auto mention-checkbox-container">
             {{ form_row(form.isPhysicalPerson, {label: 'Je certifie sur l\'honneur être une personne physique et que le règlement de ma cotisation ne provient pas du compte d\'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel'}) }}
 
             <div class="form__checkbox">
@@ -68,13 +68,12 @@
             </div>
         </div>
 
-        <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-3.75">
-            {{ cms_block('renaissance-adhesion-rgpd-block') }}
-        </div>
-
         {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
             previous_route_name: 'app_renaissance_adhesion',
         } %}
 
+        <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-3.75">
+            {{ cms_block('renaissance-adhesion-rgpd-block') }}
+        </div>
     {{ form_end(form) }}
 {% endblock %}
