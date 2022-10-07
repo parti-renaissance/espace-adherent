@@ -10,8 +10,8 @@
 
 {% block adhesion_content %}
     <section>
-        {% if app.request.query.has('form_payment') %}
-            <h1>Paiement Validé ! Plus que quelques informations et c'est fini</h1>
+        {% if app.request.query.has('from_payment') %}
+            <h1 class="mb-5 font-normal text-lg leading-6.25 md:text-2xl md:leading-9">Paiement Validé ! Plus que quelques informations et c'est fini</h1>
         {% endif %}
 
         {{ form_start(form) }}
@@ -61,7 +61,7 @@
 
             <div class="mt-4">
                 <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
-                    <button type="submit" class="rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4">
+                    <button type="submit" class="w-full py-5 bg-blue-700 hover:bg-blue-500 text-white hover:text-white px-4 border border-blue-500 hover:border-transparent rounded font-din font-bold uppercase text-cente">
                         Finaliser
                     </button>
                 </div>

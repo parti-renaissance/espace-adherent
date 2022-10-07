@@ -3293,4 +3293,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->agirMembership = $agirMembership;
     }
+
+    public function fillActivatedAtNow(): void
+    {
+        $this->activatedAt = new \DateTime();
+    }
 }

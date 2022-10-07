@@ -35,9 +35,10 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
             'Laure',
             'Fenix',
             3000,
-            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923)
+            $this->createPostAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            true,
+            true
         );
-        $adherentRequest1->setAdherent($this->getReference('renaissance-user-1'));
 
         $adherentRequest2 = $this->createAdherentRequest(
             self::ADHERENT_REQUEST_2_UUID,
@@ -45,7 +46,8 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
             'Daniel',
             'Dumas',
             1000,
-            $this->createPostAddress('44 rue des courcelles', '75008-75108')
+            $this->createPostAddress('44 rue des courcelles', '75008-75108'),
+            true,
         );
 
         $adherentRequest3 = $this->createAdherentRequest(
@@ -77,7 +79,9 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         string $firstName,
         string $lastName,
         int $amount,
-        PostAddress $address
+        PostAddress $address,
+        $allowEmailNotifications = false,
+        $allowMobileNotifications = false
     ): AdherentRequest {
         $adherentRequest = new AdherentRequest(Uuid::fromString($uuid));
         $adherentRequest->firstName = $firstName;
@@ -86,6 +90,8 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $adherentRequest->amount = $amount;
         $adherentRequest->setPostAddress($address);
         $adherentRequest->password = $this->encoder->encodePassword(LoadAdherentData::DEFAULT_PASSWORD, null);
+        $adherentRequest->allowEmailNotifications = $allowEmailNotifications;
+        $adherentRequest->allowMobileNotifications = $allowMobileNotifications;
 
         return $adherentRequest;
     }

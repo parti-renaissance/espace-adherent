@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *         "uuid": "%pattern_uuid%",
  *         "token": "%pattern_uuid%"
  *     },
- *     methods={"GET|POST"}
+ *     methods={"GET"}
  * )
  *
  * @Entity("adherentRequest", expr="repository.findOneBy({'uuid': uuid, 'token': token})")

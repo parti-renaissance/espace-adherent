@@ -152,6 +152,7 @@ class AdherentFactory
             Adherent::ENABLED
         );
 
+        $adherent->fillActivatedAtNow();
         $adherent->join();
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->setPapUserRole(true);
