@@ -102,6 +102,11 @@ class MembershipRequestHandler
             $adherent = $this->adherentFactory->createFromRenaissanceAdherentRequest($adherentRequest);
         }
 
+        $adherent->enable();
+        $adherent->join();
+        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
+        $adherent->setPapUserRole(true);
+
         $this->manager->persist($adherent);
         $this->referentZoneManager->assignZone($adherent);
         $this->manager->flush();

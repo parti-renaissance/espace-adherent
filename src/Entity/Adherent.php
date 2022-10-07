@@ -1417,13 +1417,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $token->consume($this);
+        $this->enable($timestamp);
+    }
 
+    public function enable(string $timestamp = 'now'): void
+    {
         $this->status = self::ENABLED;
         $this->activatedAt = new \DateTime($timestamp);
     }
 
     /**
-     * Resets the Adherent password using a reset pasword token.
+     * Resets the Adherent password using a reset password token.
      *
      * @throws \InvalidArgumentException
      * @throws AdherentException
@@ -3292,10 +3296,5 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setAgirMembership(bool $agirMembership): void
     {
         $this->agirMembership = $agirMembership;
-    }
-
-    public function fillActivatedAtNow(): void
-    {
-        $this->activatedAt = new \DateTime();
     }
 }
