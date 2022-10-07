@@ -47,7 +47,7 @@ class MembershipNotifier
     public function sendRenaissanceValidationEmail(AdherentRequest $adherentRequest): void
     {
         $activationUrl = $this->callbackManager->generateUrl(
-            'app_renaissance_membership_activate',
+            'app_renaissance_membership_validate',
             [
                 'uuid' => $adherentRequest->getUuid()->toString(),
                 'token' => $adherentRequest->token->toString(),
