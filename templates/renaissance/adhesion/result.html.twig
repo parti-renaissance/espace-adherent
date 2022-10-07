@@ -1,32 +1,77 @@
 {% extends 'renaissance/adhesion/_layout.html.twig' %}
 
+{% form_theme additional_info_form 'renaissance/form_theme.html.twig' %}
+
 {% block navigation_steps '' %}
 
 {% block adhesion_title %}
-    <span class="text-yellow font-bold">
-        {% if successful %}
-            Adhésion réussie !
-        {% else %}
-            L’adhésion a échoué !
-        {% endif %}
-    </span>
+    {% if successful %}
+        <span class="text-yellow font-bold">Paiement réussi !</span><br/>
+        Encore quelques <br/><span class="stabilo stabilo-blue">renseignements</span> et c'est fini
+    {% else %}
+        <span class="text-yellow font-bold">Paiement échoué !</span>
+    {% endif %}
 {% endblock %}
 
 {% block adhesion_content %}
     <section>
         {% if successful %}
             <div>
-                <h1>Adhésion réussie !</h1>
-                <p>
-                    Le paiement a bien été validé. Vous êtes désormais inscrit, <br/>
-                    bienvenu(e)! Il ne reste plus qu’à confirmer votre inscription <br/>
-                    en cliquant sur le lien que vous avez reçu sur votre email.
-                </p>
-            </div>
-            <div class="mt-4">
-                <a href="{{ path('app_renaissance_homepage') }}" class="bg-green hover:bg-green text-white-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                    Retourner sur la page d'accueil
-                </a>
+                <h1>Paiement Validé ! Plus que quelques informations et c'est fini</h1>
+
+                {{ form_start(additional_info_form) }}
+                {% if app.user and app.user.certified %}
+                    <div class="alert alert--tips b__nudge--bottom-large">
+                        Votre profil est certifié, vous ne pouvez donc plus modifier votre genre et date de naissance.
+                    </div>
+                {% endif %}
+
+                {{ form_errors(additional_info_form) }}
+
+                {{ form_row(additional_info_form.birthdate, { label: 'Date de naissance' }) }}
+
+                {{ form_row(additional_info_form.gender, { label: 'Genre' }) }}
+
+                {{ form_row(additional_info_form.nationality, { label: 'Nationalité' }) }}
+
+                <div class="flex flex-row space-x-4">
+                    {{ form_row(additional_info_form.phone.country, { label: 'Indicatif Pays' }) }}
+                    {{ form_row(additional_info_form.phone.number, { label: 'Téléphone' }) }}
+                </div>
+
+                <div class="mt-10 max-w-xl mx-auto mention-checkbox-container">
+                    <div class="form__checkbox">
+                        {{ form_widget(additional_info_form.exclusiveMembership) }}
+                        <label for="{{ additional_info_form.exclusiveMembership.vars.id }}">
+                            Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
+                        </label>
+                        {{ form_errors(additional_info_form.exclusiveMembership) }}
+                    </div>
+
+                    <div class="form__checkbox">
+                        {{ form_widget(additional_info_form.territoireProgresMembership) }}
+                        <label for="{{ additional_info_form.territoireProgresMembership.vars.id }}">
+                            Je suis membre de « Territoires de Progrès » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
+                        </label>
+                        {{ form_errors(additional_info_form.territoireProgresMembership) }}
+                    </div>
+
+                    <div class="form__checkbox">
+                        {{ form_widget(additional_info_form.agirMembership) }}
+                        <label for="{{ additional_info_form.agirMembership.vars.id }}">
+                            Je suis membre d'« Agir, la droite constructive » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.                    </label>
+                        {{ form_errors(additional_info_form.agirMembership) }}
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
+                        <button type="submit" class="rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4">
+                            Finaliser
+                        </button>
+                    </div>
+                </div>
+                {{ form_end(additional_info_form) }}
             </div>
         {% else %}
             <div>

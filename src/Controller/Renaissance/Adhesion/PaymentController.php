@@ -76,7 +76,15 @@ class PaymentController extends AbstractAdhesionController
             'successful' => $successful,
             'result_code' => $request->query->get('result'),
             'retry_url' => $retryUrl,
-            'additional_info_form' => $this->createForm(AdditionalInfoType::class, $donation->getDonator()->getAdherent(), ['action' => $this->generateUrl('app_renaissance_adhesion_additional_informations')])->createView(),
+            'additional_info_form' => $this
+                ->createForm(
+                    AdditionalInfoType::class,
+                    $adherent = $donation->getDonator()->getAdherent(),
+                    [
+                        'action' => $this->generateUrl('app_renaissance_adhesion_additional_informations'),
+                        'from_certified_adherent' => $adherent->isCertified(),
+                    ]
+                )->createView(),
         ]);
     }
 }

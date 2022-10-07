@@ -8,6 +8,7 @@ use App\Form\BirthdateType;
 use App\Form\GenderType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -49,7 +50,7 @@ class AdditionalInfoType extends AbstractType
         ;
 
         // Use address country for phone by default
-        $builder->get('phone')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+        $builder->get('phone')->get('country')->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
             if (!$formEvent->getData()) {
                 $formEvent->setData(Address::FRANCE);
             }

@@ -149,7 +149,7 @@ class AdherentFactory
             null,
             null,
             false,
-            Adherent::ENABLED,
+            Adherent::ENABLED
         );
 
         $adherent->join();
