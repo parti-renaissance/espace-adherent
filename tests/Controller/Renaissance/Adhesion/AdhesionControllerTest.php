@@ -3,10 +3,12 @@
 namespace Tests\App\Controller\Renaissance\Adhesion;
 
 use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Mailer\Message\AdherentAccountActivationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountActivationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
@@ -108,12 +110,19 @@ class AdhesionControllerTest extends WebTestCase
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
 
-        // remove this return in second part
-        return;
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/adhesion/finaliser/%s/%s', $adherentRequest->getUuid(), $adherentRequest->token));
 
-        $this->assertClientIsRedirectedTo(sprintf('/adhesion/confirmation', $donation->getUuid()->toString()), $this->client);
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountConfirmationMessage::class));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertInstanceOf(Adherent::class, $adherent = $this->adherentRepository->findOneByEmail('john@test.com'));
+
+        $this->client->click($crawler->selectLink('Procéder au paiement')->link());
 
         $crawler = $this->client->followRedirect();
+
+        $this->assertInstanceOf(Donation::class, $donation = $this->donationRepository->findInProgressMembershipDonationFromAdherent($adherent));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -157,12 +166,39 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->client->followRedirect();
 
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
+
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->setServerParameter('HTTP_HOST', $this->getParameter('app_host'));
         self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
 
         $this->assertCount(1, $this->getEmailRepository()->findMessages(RenaissanceAdherentAccountActivationMessage::class));
+
+        $form = $crawler->filter('form[name="app_renaissance_membership"]')->form([
+            'app_renaissance_membership' => [
+                'birthdate' => [
+                    'day' => 1,
+                    'month' => 1,
+                    'year' => 1989,
+                ],
+                'nationality' => 'FR',
+                'gender' => 'male',
+                'phone' => [
+                    'country' => 'FR',
+                    'number' => '0612345678',
+                ],
+                'exclusiveMembership' => true,
+                'territoireProgresMembership' => false,
+                'agirMembership' => false,
+            ],
+        ]);
+
+        $this->client->submit($form);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/adhesion/fin', $this->client);
     }
 
     protected function setUp(): void
