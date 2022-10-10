@@ -45,7 +45,7 @@
                         </p>
                         <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
                             <span class="font-bold text-xs md:text-base uppercase mr-4">
-                                Adhérer
+                                {{ app.user ? '(Re)' }} Adhérer
                             </span>
                             <i class="fa fa-caret-right"></i>
                         </a>
@@ -60,7 +60,7 @@
                             <i class="fa fa-caret-right"></i>
                         </a>
                     {% else %}
-                        <p>Nous partageons les mêmes valeurs, terminez votre adhésion au parti d’Emmanuel Macron !</p>
+                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">Nous partageons les mêmes valeurs, terminez votre adhésion au parti d’Emmanuel Macron !</p>
                         <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
                             <span class="font-bold text-xs md:text-base uppercase mr-4">
                                 Je termine mon adhésion
