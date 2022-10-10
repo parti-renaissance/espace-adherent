@@ -13,7 +13,7 @@
 {% block donation_content %}
     <section class="w-96">
         {{ form_start(form) }}
-            {{ form_errors(form) }}
+            {{ form_errors(form, { error_raw: true }) }}
             <div class="border-t-1 border-white/10 pt-3.75 mb-5">
                 {{ form_widget(form.isPhysicalPerson) }}
                 <label for="{{ form.isPhysicalPerson.vars.id }}">
@@ -44,10 +44,6 @@
                 {{ form_errors(form.personalDataCollection) }}
             </div>
 
-            <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-3.75">
-                {{ cms_block('renaissance-donation-rgpd-block') }}
-            </div>
-
             <div class="w-full">
                 <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                 {% if recaptcha_public_key is not empty %}
@@ -64,6 +60,10 @@
                 previous_route_name: 'app_renaissance_donation_informations',
                 next_button_label: 'Finaliser le don',
             } %}
+
+            <div class="mt-5 h-80 md:h-64 overflow-auto mb-5 border border-white/10 py-2 px-3.75">
+                {{ cms_block('renaissance-donation-rgpd-block') }}
+            </div>
         {{ form_end(form) }}
     </section>
 {% endblock %}

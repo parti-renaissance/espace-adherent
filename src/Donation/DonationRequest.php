@@ -9,7 +9,6 @@ use App\Form\DonationRequestType;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Renaissance\Donation\DonationRequestStateEnum;
-use App\Validator\FrenchAddressOrNationalityDonation;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxMonthDonation;
 use App\Validator\PayboxSubscription as AssertPayboxSubscription;
@@ -20,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueDonationSubscription(groups={"Default", "fill_personal_info"})
- * @FrenchAddressOrNationalityDonation(groups={"Default", "fill_personal_info"})
  * @MaxFiscalYearDonation(groups={"Default", "fill_personal_info"})
  * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
  * @AssertRecaptcha(groups={"donation_request_mentions"})
