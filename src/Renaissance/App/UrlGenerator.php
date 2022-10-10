@@ -32,7 +32,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateForLoginSuccess(): string
     {
-        return $this->urlGenerator->generate('app_renaissance_adhesion');
+        return $this->urlGenerator->generate('app_renaissance_homepage');
     }
 
     public function generateSuccessResetPasswordLink(Request $request): string
