@@ -12,7 +12,7 @@
             <h1 class="font-bold mt-5">Votre adresse email est validée !</h1>
             <p>
                 Vous pouvez dès à présent procéder au paiement de votre cotisation de: <br/>
-                <span class="font-normal text-3xl leading-10">{{ (adherent_request.amount/100)|format_currency('EUR')|replace({',00' : ''}) }}</span>
+                <span class="font-normal text-3xl leading-10">{{ adherent_request.amount|format_currency('EUR')|replace({',00' : ''}) }}</span>
             </p>
         </div>
 

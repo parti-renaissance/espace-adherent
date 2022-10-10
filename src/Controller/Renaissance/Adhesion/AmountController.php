@@ -2,7 +2,7 @@
 
 namespace App\Controller\Renaissance\Adhesion;
 
-use App\Form\Renaissance\Adhesion\AdhesionAmountType;
+use App\Form\Renaissance\Adhesion\AdhesionMentionStep2Type;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +23,7 @@ class AmountController extends AbstractAdhesionController
         $this->processor->doChooseAmount($command);
 
         $form = $this
-            ->createForm(AdhesionAmountType::class, $command)
+            ->createForm(AdhesionMentionStep2Type::class, $command)
             ->handleRequest($request)
         ;
 

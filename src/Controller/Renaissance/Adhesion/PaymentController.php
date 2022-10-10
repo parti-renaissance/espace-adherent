@@ -9,12 +9,12 @@ use App\Donation\PayboxFormFactory;
 use App\Donation\TransactionCallbackHandler;
 use App\Entity\Adherent;
 use App\Entity\Donation;
+use App\Form\Renaissance\Adhesion\PrePaymentType;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -30,22 +30,24 @@ class PaymentController extends AbstractAdhesionController
         UserInterface $adherent,
         DonationRequestHandler $donationRequestHandler
     ): Response {
-        if (!$amount = $request->query->getInt('amount')) {
-            throw new BadRequestHttpException();
-        }
-
         /** @var Adherent $adherent */
         if ($adherent->getLastMembershipDonation()) {
             return $this->redirectToRoute('app_renaissance_adhesion_additional_informations');
         }
 
-        $donationRequest = DonationRequest::createFromAdherent($adherent, $request->getClientIp(), $amount / 100);
-        $donationRequest->forMembership();
+        if ($amount = $request->query->getInt('amount')) {
+            $donationRequest = DonationRequest::createFromAdherent($adherent, $request->getClientIp(), $amount);
+            $donationRequest->forMembership();
 
-        $donation = $donationRequestHandler->handle($donationRequest);
+            $donation = $donationRequestHandler->handle($donationRequest);
 
-        return $this->redirectToRoute('app_renaissance_adhesion_payment', [
-            'uuid' => $donation->getUuid(),
+            return $this->redirectToRoute('app_renaissance_adhesion_payment', [
+                'uuid' => $donation->getUuid(),
+            ]);
+        }
+
+        return $this->render('renaissance/adhesion/pre-payment.html.twig', [
+            'form' => $this->createForm(PrePaymentType::class)->createView(),
         ]);
     }
 

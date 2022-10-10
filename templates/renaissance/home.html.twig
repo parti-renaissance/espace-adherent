@@ -39,7 +39,17 @@
                     {% endif %}
                 </div>
                 <div class="flex-column-container max-w-[31.875rem]">
-                    {% if app.user and app.user.hasActiveMembership %}
+                    {% if not app.user or not app.user.isRenaissanceUser() %}
+                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
+                            Vous partagez nos valeurs et vous souhaitez défendre nos couleurs : adhérez en 3 minutes au parti d’Emmanuel Macron !
+                        </p>
+                        <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
+                            <span class="font-bold text-xs md:text-base uppercase mr-4">
+                                Adhérer
+                            </span>
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    {% elseif app.user.hasActiveMembership() %}
                         <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
                             Vous souhaitez faire un don?
                         </p>
@@ -50,12 +60,9 @@
                             <i class="fa fa-caret-right"></i>
                         </a>
                     {% else %}
-                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                            Vous partagez nos valeurs et vous souhaitez défendre nos couleurs : adhérez en 3 minutes au parti d’Emmanuel Macron !
-                        </p>
-                        <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
+                        <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
                             <span class="font-bold text-xs md:text-base uppercase mr-4">
-                                Adhérer
+                                Je termine mon adhésion
                             </span>
                             <i class="fa fa-caret-right"></i>
                         </a>

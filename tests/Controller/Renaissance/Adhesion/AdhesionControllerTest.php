@@ -98,12 +98,12 @@ class AdhesionControllerTest extends WebTestCase
         $this->assertStringContainsString('john@test.com', $list->eq(3)->text());
         $this->assertStringContainsString('30 €', $list->eq(4)->text());
 
-        $this->client->submit($crawler->selectButton('Confirmer')->form());
+        $this->client->submit($crawler->selectButton('Confirmer mon e-mail')->form());
 
         $adherentRequest = $this->getEntityManager()->getRepository(AdherentRequest::class)->findOneBy(['email' => 'john@test.com']);
         $this->assertInstanceOf(AdherentRequest::class, $adherentRequest);
 
-        $this->assertEquals(3000, $adherentRequest->amount);
+        $this->assertEquals(30, $adherentRequest->amount);
         $this->assertSame('Smith', $adherentRequest->lastName);
         $this->assertSame('John', $adherentRequest->firstName);
         $this->assertSame('john@test.com', $adherentRequest->email);
