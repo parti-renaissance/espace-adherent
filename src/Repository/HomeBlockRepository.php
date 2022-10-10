@@ -16,13 +16,29 @@ class HomeBlockRepository extends ServiceEntityRepository
     /**
      * @return HomeBlock[]
      */
-    public function findHomeBlocks(bool $forRenaissance = false)
+    public function findAllForRenaissance(): array
+    {
+        return $this->createQueryBuilder('h', 'h.positionName')
+            ->select('h', 'm')
+            ->leftJoin('h.media', 'm')
+            ->andWhere('h.forRenaissance = :for_renaissance')
+            ->setParameter('for_renaissance', true)
+            ->orderBy('h.position', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return HomeBlock[]
+     */
+    public function findHomeBlocks(): array
     {
         return $this->createQueryBuilder('h')
             ->select('h', 'm')
             ->leftJoin('h.media', 'm')
             ->andWhere('h.forRenaissance = :for_renaissance')
-            ->setParameter('for_renaissance', $forRenaissance)
+            ->setParameter('for_renaissance', false)
             ->orderBy('h.position', 'ASC')
             ->getQuery()
             ->getResult()

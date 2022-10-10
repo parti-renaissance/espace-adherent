@@ -19,13 +19,8 @@ class HomeController extends AbstractController
         CommitmentRepository $commitmentRepository,
         HomeBlockRepository $homeBlockRepository
     ): Response {
-        $homeBlocks = [];
-        foreach ($homeBlockRepository->findHomeBlocks(true) as $homeBlock) {
-            $homeBlocks[$homeBlock->getPositionName()] = $homeBlock;
-        }
-
         return $this->render('renaissance/home.html.twig', [
-            'blocks' => $homeBlocks,
+            'blocks' => $homeBlockRepository->findAllForRenaissance(),
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, ['action' => $this->generateUrl('app_renaissance_newsletter_save')])->createView(),
             'donation_form' => $this->createForm(DonationRequestAmountType::class, null, ['action' => $this->generateUrl('app_renaissance_donation')])->createView(),
             'commitments' => $commitmentRepository->getAllOrdered(),

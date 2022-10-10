@@ -5,33 +5,55 @@
 {% form_theme newsletter_form 'renaissance/form_theme.html.twig' %}
 
 {% block content %}
-    {% include 'renaissance/partials/site-header.html.twig' %}
-
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
-    <section class="h-[50rem] md:h-[65.75rem] lg:h-[69.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-cover"
-             style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
-        <div class="xl:container">
-            <div class="max-w-[345px] md:max-w-[900px] mb-12.5 md:mb-[4.6875rem]">
-                <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem]">
-                    {{ home_block_banner.title }}
-                </p>
-            </div>
+    <section class="flex flex-col justify-between h-screen bg-cover mb-12.5 lg:mb-25" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
+        <div class="flex justify-between w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
+            <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
-            <div class="md:flex md:gap-x-37.5 mb-12.5 text-white">
-                <div class="flex-column-container max-w-[31.875rem]">
-                    <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center"
-                       href="{{ home_block_banner.link }}">
-                        <span class="font-bold text-xs md:text-base uppercase mr-4">
-                            {{ home_block_banner.titleCta }}
-                        </span>
+            <div>
+                {% if app.user %}
+                    <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
+                        Me déconnecter
+                    </a>
+                {% else %}
+                    <a class="button button-green" href="{{ path('app_renaissance_login') }}">
+                        Me connecter
+                    </a>
+                {% endif %}
+
+                {% if not app.user or not app.user.isRenaissanceUser() %}
+                    <a href="{{ path('app_renaissance_adhesion') }}" class="button button-blue">
+                        {{ app.user ? '(Re)' }} Adhérer
+                    </a>
+                {% elseif app.user.hasActiveMembership() %}
+                    <a href="{{ path('app_renaissance_donation') }}" class="button button-green">
+                        Je donne
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
+                        Je termine mon adhésion
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="xl:container mb-12.5">
+            <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem] mb-12.5">
+                {{ home_block_banner.title }}
+            </p>
+
+            {% if home_block_banner.link and home_block_banner.titleCta %}
+                <div>
+                    <a class="button button-white" href="{{ home_block_banner.link }}">
+                        {{ home_block_banner.titleCta }}
                     </a>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </section>
 
-    <section class="px-3.75 md:px-20 mb-12.5 md:mb-25 -mt-12.5">
+    <section class="px-3.75 md:px-20 mb-12.5 md:mb-25">
         <div class="max-w-7xl items-start mx-auto md:flex md:gap-x-28 lg:gap-x-37.5">
             <div class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray pt-7.5 md:pt-12.5">
                 <p class="text-dark-blue font-bold text-[1.5rem] leading-8 md:text-custom-xl mb-6.25 md:mb-7.5">

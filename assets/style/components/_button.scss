@@ -1,0 +1,36 @@
+.button {
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: .25rem;
+    margin: 0 .25rem;
+
+    &-blue {
+        color: $white;
+        background: $dark-blue;
+
+        &:hover {
+            color: $dark-blue;
+            background: $white;
+        }
+    }
+
+    &-green {
+        color: $white;
+        background: $green;
+
+        &:hover {
+            color: $green;
+            background: $white;
+        }
+    }
+
+    &-white {
+        color: $dark-blue;
+        background: $white;
+
+        &:hover {
+            color: $white;
+            background: $dark-blue;
+        }
+    }
+}
