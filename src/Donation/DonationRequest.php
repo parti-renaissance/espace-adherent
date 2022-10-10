@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueDonationSubscription(groups={"Default", "fill_personal_info"})
- * @FrenchAddressOrNationalityDonation(groups={"Default", "fill_personal_info"})
+ * @FrenchAddressOrNationalityDonation(groups={"Default", "donation_request_mentions"})
  * @MaxFiscalYearDonation(groups={"Default", "fill_personal_info"})
  * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
  * @AssertRecaptcha(groups={"donation_request_mentions"})
@@ -84,8 +84,6 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     /**
      * @var Address
-     *
-     * @Assert\Valid
      */
     private $address;
 
@@ -122,6 +120,11 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private ?string $source = null;
 
     private ?int $adherentId = null;
+
+    /**
+     * @Assert\IsTrue(message="common.conditions.not_accepted", groups={"donation_request_mentions"})
+     */
+    public bool $hasFrenchNationality = false;
 
     public function __construct(
         string $clientIp = null,

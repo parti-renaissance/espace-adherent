@@ -29,7 +29,7 @@ class FrenchAddressOrNationalityDonationValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, DonationRequest::class);
         }
 
-        if (AreaUtils::CODE_FRANCE !== $value->getNationality() && AreaUtils::CODE_FRANCE !== $value->getAddress()->getCountry()) {
+        if (!$value->hasFrenchNationality && AreaUtils::CODE_FRANCE !== $value->getNationality() && AreaUtils::CODE_FRANCE !== $value->getAddress()->getCountry()) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->addViolation()
