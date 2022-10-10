@@ -52,6 +52,10 @@
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
+{% block adhesion_amount_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
 {% block choice_tab_widget %}
     <div class="flex">
         {%- for child in form %}

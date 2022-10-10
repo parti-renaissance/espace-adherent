@@ -88,7 +88,7 @@ class AdherentRequest
         $object->lastName = $command->lastName;
         $object->password = $password;
         $object->email = $command->getEmailAddress();
-        $object->amount = (int) (100 * $command->getAmount());
+        $object->amount = $command->amount;
         $object->allowEmailNotifications = $command->allowEmailNotifications;
         $object->allowMobileNotifications = $command->allowMobileNotifications;
         $object->setPostAddress(PostAddressFactory::createFromAddress($command->getAddress()));
