@@ -29,6 +29,7 @@
 
             {{ form_row(form.nationality, { label: 'Nationalité' }) }}
 
+            {{ form_errors(form.phone) }}
             <div class="flex flex-row space-x-4">
                 {{ form_row(form.phone.country, { label: 'Indicatif Pays' }) }}
                 {{ form_row(form.phone.number, { label: 'Téléphone' }) }}

@@ -25,22 +25,18 @@ class AdditionalInfoType extends AbstractType
             ->add('nationality', CountryType::class, [
                 'placeholder' => '',
                 'preferred_choices' => [Address::FRANCE],
-                'error_bubbling' => true,
             ])
             ->add('gender', GenderType::class, [
                 'placeholder' => '',
                 'disabled' => $fromCertifiedAdherent,
-                'error_bubbling' => true,
             ])
             ->add('birthdate', BirthdateType::class, [
                 'disabled' => $fromCertifiedAdherent,
-                'error_bubbling' => true,
             ])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => [Address::FRANCE],
-                'error_bubbling' => true,
             ])
             ->add('exclusiveMembership', CheckboxType::class, [
                 'required' => false,
