@@ -17,6 +17,10 @@
 
     .button {
         @apply px-5 py-3 md:px-7.5 md:py-4.25 text-xs md:text-base;
+
+        &-full {
+            @apply w-full px-7.5 py-4.25;
+        }
     }
 
     .form-control {
@@ -51,7 +55,7 @@
             @apply button-group grow bg-green;
 
             &--selected {
-                @apply bg-white text-dark-blue;
+                @apply bg-white text-green;
             }
         }
 

@@ -101,7 +101,7 @@ export default class AmountChooser extends React.Component {
                 </div>
 
                 {this.state.amount
-                    ? <div className="renaissance-donation__amount-chooser__after-taxes text-white text-center mb-5">
+                    ? <div className="renaissance-donation__amount-chooser__after-taxes text-center mb-5">
                         <p className="font-normal text-3xl leading-10">
                             {amountAfterTaxReturn(this.state.amount)} €
                         </p>
