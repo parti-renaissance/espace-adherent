@@ -15,6 +15,10 @@
         @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
     }
 
+    .button {
+        @apply px-5 py-3 md:px-7.5 md:py-4.25 text-xs md:text-base;
+    }
+
     .form-control {
         @apply border-0 w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium focus:ring-0 p-0;
 

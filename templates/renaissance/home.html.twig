@@ -5,80 +5,55 @@
 {% form_theme newsletter_form 'renaissance/form_theme.html.twig' %}
 
 {% block content %}
-    {% include 'renaissance/partials/site-header.html.twig' %}
+    {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
-    <section class="h-[50rem] md:h-[65.75rem] lg:h-[69.625rem] pt-25 md:pt-[10.3125rem] px-3.75 md:px-20 bg-light-blue">
-        <div class="xl:container">
-            <div class="max-w-[345px] md:max-w-[900px] mb-12.5 md:mb-[4.6875rem]">
-                <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem]">
-                    Rejoignez Renaissance, le parti d'Emmanuel Macron.
-                </p>
+    <section class="flex flex-col justify-between h-screen bg-cover mb-12.5 lg:mb-25" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
+        <div class="flex justify-between w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
+            <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
+
+            <div>
+                {% if app.user %}
+                    <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
+                        Me déconnecter
+                    </a>
+                {% else %}
+                    <a class="button button-green" href="{{ path('app_renaissance_login') }}">
+                        Me connecter
+                    </a>
+                {% endif %}
+
+                {% if not app.user or not app.user.isRenaissanceUser() %}
+                    <a href="{{ path('app_renaissance_adhesion') }}" class="button button-blue">
+                        {{ app.user ? '(Re)' }} Adhérer
+                    </a>
+                {% elseif app.user.hasActiveMembership() %}
+                    <a href="{{ path('app_renaissance_donation') }}" class="button button-green">
+                        Je donne
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="button button-green">
+                        Je termine mon adhésion
+                    </a>
+                {% endif %}
             </div>
-            <div class="md:flex md:gap-x-37.5 mb-12.5 text-white">
-                <div class="flex-column-container max-w-[31.875rem]">
-                    {% if app.user %}
-                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                            Bonjour, {{ app.user.firstName }} !
-                        </p>
-                        <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center" href="{{ path('logout', {app_domain: renaissance_host}) }}">
-                        <span class="font-bold text-xs md:text-base uppercase mr-4">
-                            Me déconnecter
-                        </span>
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    {% else %}
-                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                            Déjà adhérent de <i>La République En Marche</i>, vous pouvez rejoindre <i>Renaissance</i> en quelques clics !
-                        </p>
-                        <a class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center" href="{{ path('app_renaissance_login') }}">
-                        <span class="font-bold text-xs md:text-base uppercase mr-4">
-                            Me connecter
-                        </span>
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    {% endif %}
+        </div>
+
+        <div class="xl:container mb-12.5">
+            <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem] mb-12.5">
+                {{ home_block_banner.title }}
+            </p>
+
+            {% if home_block_banner.link and home_block_banner.titleCta %}
+                <div>
+                    <a class="button button-white" href="{{ home_block_banner.link }}">
+                        {{ home_block_banner.titleCta }}
+                    </a>
                 </div>
-                <div class="flex-column-container max-w-[31.875rem]">
-                    {% if not app.user or not app.user.isRenaissanceUser() %}
-                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                            Vous partagez nos valeurs et vous souhaitez défendre nos couleurs : adhérez en 3 minutes au parti d’Emmanuel Macron !
-                        </p>
-                        <a href="{{ path('app_renaissance_adhesion') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
-                            <span class="font-bold text-xs md:text-base uppercase mr-4">
-                                {{ app.user ? '(Re)' }} Adhérer
-                            </span>
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    {% elseif app.user.hasActiveMembership() %}
-                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">
-                            Vous souhaitez faire un don?
-                        </p>
-                        <a href="{{ path('app_renaissance_donation') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
-                            <span class="font-bold text-xs md:text-base uppercase mr-4">
-                                Je donne
-                            </span>
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    {% else %}
-                        <p class="flex-1 font-medium mb-3.75 md:mb-12.5">Nous partageons les mêmes valeurs, terminez votre adhésion au parti d’Emmanuel Macron !</p>
-                        <a href="{{ path('app_renaissance_adhesion_pre_payment') }}" class="flex bg-dark-blue px-5 py-3 pb-2 md:px-7.5 md:py-4.25 rounded w-fit items-center">
-                            <span class="font-bold text-xs md:text-base uppercase mr-4">
-                                Je termine mon adhésion
-                            </span>
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
+            {% endif %}
         </div>
     </section>
 
-    <!-- Translated picture/video -->
-    <div class="xl:container h-[180px] md:h-[350px] lg:h-[500px] mx-3.75 md:mx-20">
-        <img src="{{ asset('images/renaissance/bain-foule-macron.jpg') }}" alt="bain-foule-macron" class="rounded-lg w-full -translate-y-1/2"/>
-    </div>
-
-    <section class="px-3.75 md:px-20 mb-12.5 md:mb-25 -mt-12.5">
+    <section class="px-3.75 md:px-20 mb-12.5 md:mb-25">
         <div class="max-w-7xl items-start mx-auto md:flex md:gap-x-28 lg:gap-x-37.5">
             <div class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray pt-7.5 md:pt-12.5">
                 <p class="text-dark-blue font-bold text-[1.5rem] leading-8 md:text-custom-xl mb-6.25 md:mb-7.5">

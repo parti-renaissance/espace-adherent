@@ -94,6 +94,7 @@ class LoadHomeBlockData extends Fixture
                 'titleCta' => $homeBlockData['titleCta'] ?? null,
                 'colorCta' => $homeBlockData['colorCta'] ?? null,
                 'bgColor' => $homeBlockData['bgColor'] ?? null,
+                'forRenaissance' => $homeBlockData['forRenaissance'] ?? false,
             ]));
         }
 
@@ -206,6 +207,18 @@ class LoadHomeBlockData extends Fixture
             'titleCta' => 'Laissez un message',
             'colorCta' => 'black',
             'bgColor' => 'green',
+        ],
+        [
+            'positionName' => 'Bannière principale accueil',
+            'type' => HomeBlock::TYPE_BANNER,
+            'title' => 'Rejoignez Renaissance, le parti d\'Emmanuel Macron.',
+            'path' => 'bain-foule-macron.jpg',
+            'pathTitle' => 'Emmanuel Macron',
+            'link' => 'https://renaissance.code/adhesion',
+            'titleCta' => '(Re)Adhérez',
+            'colorCta' => 'black',
+            'bgColor' => 'green',
+            'forRenaissance' => true,
         ],
     ];
 }
