@@ -163,6 +163,21 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Article[]
+     */
+    public function findLatestForRenaissance(int $limit): array
+    {
+        return $this->createFindAllQueryBuilder()
+            ->andWhere('a.forRenaissance = :true')
+            ->setParameter('true', true)
+            ->setMaxResults($limit)
+            ->orderBy('a.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * Get the query builder to find all articles.
      */
     private function createFindAllQueryBuilder(): QueryBuilder
