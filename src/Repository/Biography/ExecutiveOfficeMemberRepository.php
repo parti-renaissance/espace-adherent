@@ -15,10 +15,10 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
         parent::__construct($registry, ExecutiveOfficeMember::class);
     }
 
-    public function findAllPublishedMembers(): ExecutiveOfficeMemberCollection
+    public function findAllPublishedMembers(bool $forRenaissance = false): ExecutiveOfficeMemberCollection
     {
         $allMembers = $this
-            ->createPublishedQueryBuilder()
+            ->createPublishedQueryBuilder(true, $forRenaissance)
             ->orderBy('executiveOfficeMember.lastName', 'ASC')
             ->getQuery()
             ->getResult()
@@ -27,30 +27,44 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
         return $this->createExecutiveOfficeMemberCollection($allMembers);
     }
 
-    public function findOneExecutiveOfficerMember(bool $published = true): ?ExecutiveOfficeMember
-    {
+    public function findOneExecutiveOfficerMember(
+        bool $published = true,
+        bool $forRenaissance = false
+    ): ?ExecutiveOfficeMember {
         return $this
-            ->createPublishedQueryBuilder($published)
+            ->createPublishedQueryBuilder($published, $forRenaissance)
             ->andWhere('executiveOfficeMember.executiveOfficer = true')
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
 
-    public function findOneDeputyGeneralDelegateMember(bool $published = true): ?ExecutiveOfficeMember
+    public function findOnePresidentMember(bool $published = true, bool $forRenaissance = false): ?ExecutiveOfficeMember
     {
         return $this
-            ->createPublishedQueryBuilder($published)
+            ->createPublishedQueryBuilder($published, $forRenaissance)
+            ->andWhere('executiveOfficeMember.president = true')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findOneDeputyGeneralDelegateMember(
+        bool $published = true,
+        bool $forRenaissance = false
+    ): ?ExecutiveOfficeMember {
+        return $this
+            ->createPublishedQueryBuilder($published, $forRenaissance)
             ->andWhere('executiveOfficeMember.deputyGeneralDelegate = true')
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
 
-    public function findOnePublishedBySlug(string $slug): ?ExecutiveOfficeMember
+    public function findOnePublishedBySlug(string $slug, bool $forRenaissance = false): ?ExecutiveOfficeMember
     {
         return $this
-            ->createPublishedQueryBuilder()
+            ->createPublishedQueryBuilder(true, $forRenaissance)
             ->andWhere('executiveOfficeMember.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()
@@ -58,12 +72,14 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createPublishedQueryBuilder(bool $published = true): QueryBuilder
+    private function createPublishedQueryBuilder(bool $published = true, bool $forRenaissance = false): QueryBuilder
     {
         return $this
             ->createQueryBuilder('executiveOfficeMember')
             ->andWhere('executiveOfficeMember.published = :published')
             ->setParameter('published', $published)
+            ->andWhere('executiveOfficeMember.forRenaissance = :for_renaissance')
+            ->setParameter('for_renaissance', $forRenaissance)
         ;
     }
 

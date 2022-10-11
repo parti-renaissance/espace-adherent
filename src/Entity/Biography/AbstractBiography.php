@@ -117,6 +117,11 @@ abstract class AbstractBiography implements ImageOwnerInterface
         $this->published = $published;
     }
 
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
