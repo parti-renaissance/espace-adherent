@@ -2,6 +2,7 @@
 
 namespace App\Donation;
 
+use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Repository\AdherentRepository;
@@ -37,7 +38,7 @@ class DonationRequestHandler
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function handle(DonationRequest $donationRequest): Donation
+    public function handle(DonationRequest $donationRequest, Adherent $adherent = null): Donation
     {
         if (!$donator = $this->donatorRepository->findOneForMatching(
             $donationRequest->getEmailAddress(),
@@ -45,6 +46,10 @@ class DonationRequestHandler
             $donationRequest->getLastName()
         )) {
             $donator = $this->createDonator($donationRequest);
+        }
+
+        if ($adherent && !$donator->isAdherent()) {
+            $donator->setAdherent($adherent);
         }
 
         $donation = $this->donationFactory->createFromDonationRequest($donationRequest, $donator);
