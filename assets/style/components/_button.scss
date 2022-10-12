@@ -14,6 +14,16 @@
         }
     }
 
+    &-blue-lighter {
+        color: $dark-blue;
+        background: $blue-lighter;
+
+        &:hover {
+            color: $blue-lighter;
+            background: $dark-blue;
+        }
+    }
+
     &-green {
         color: $white;
         background: $green;

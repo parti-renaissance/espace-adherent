@@ -7,17 +7,17 @@
 {% block content %}
     {% set home_block_banner = blocks['Bannière principale accueil'] %}
 
-    <section class="flex flex-col justify-between h-screen bg-cover mb-12.5 lg:mb-25" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
-        <div class="flex justify-between w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
+    <section class="flex flex-col justify-between h-screen bg-cover bg-bottom pb-12 md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media) }}')">
+        <div class="flex justify-between items-center w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
             <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
-            <div>
+            <div class="flex flex-nowrap">
                 {% if app.user %}
                     <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
                         Me déconnecter
                     </a>
                 {% else %}
-                    <a class="button button-green" href="{{ path('app_renaissance_login') }}">
+                    <a class="button button-blue-lighter" href="{{ path('app_renaissance_login') }}">
                         Me connecter
                     </a>
                 {% endif %}
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="xl:container mb-12.5">
+        <div class="xl:container px-4 mb-2.5">
             <p class="text-white font-bold text-3xl md:text-[4.375rem] md:leading-[5.5rem] mb-12.5">
                 {{ home_block_banner.title }}
             </p>
@@ -53,107 +53,65 @@
         </div>
     </section>
 
-    <section class="px-3.75 md:px-20 mb-12.5 md:mb-25">
-        <div class="max-w-7xl items-start mx-auto md:flex md:gap-x-28 lg:gap-x-37.5">
-            <div class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray pt-7.5 md:pt-12.5">
-                <p class="text-dark-blue font-bold text-[1.5rem] leading-8 md:text-custom-xl mb-6.25 md:mb-7.5">
-                    Renaissance: <br/>
-                    Qui <span class="stabilo stabilo-yellow">sommes-nous?</span>
+    <section class="px-4 py-12 md:py-15 bg-lighter-blue">
+        <div class="xl:container md:flex md:gap-x-28 lg:gap-x-37.5">
+            <div class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray">
+                <p class="text-dark-blue text-custom-xl mb-8">
+                    Qui<br/>
+                    <span class="font-bold">sommes-nous ?</span>
                 </p>
-                <p class="text-dark-blue font-normal text-lg leading-6.25 md:text-2xl md:leading-9 mb-12.5 md:mb-0">
+                <p class="text-dark-blue font-normal text-lg leading-6.25 md:text-2xl md:leading-9 mb-8 md:mb-0">
                     Depuis le 6 avril 2016, nous avons entamé un rassemblement inédit des forces progressistes du pays autour d’un grand projet commun : bâtir une France unie dans une Europe plus forte.
                 </p>
             </div>
             <div class="flex-1">
-                <img src="{{ asset('images/renaissance/qui-sommes-nous.jpg') }}" class="inline rounded-lg mb-12.5" alt="qui-sommes-nous"/>
+                <p class="mb-8">
+                    <img src="{{ asset('images/renaissance/qui-sommes-nous.jpg') }}" class="rounded-lg w-full" alt="qui-sommes-nous"/>
+                </p>
                 <p class="font-normal md:text-lg md:leading-7.5">
                     « Retrouver l’esprit de conquête de 2016, construire le parti le plus décentralisé de la Vème République, unir un collectif qui puisera ses forces sur le terrain et rassemblera toutes les sensibilités progressistes de notre pays : voilà notre feuille de route pour les mois qui viennent.
                 </p>
-                <br/>
                 <p class="font-normal md:text-lg md:leading-7.5">
                     Face à la montée des populismes et des conservatismes, et par-delà les crises, nous ancrerons les idées et le projet de Renaissance dans les grands débats du siècle.
                 </p>
-                <br/>
-                <p class="font-normal md:text-lg md:leading-7.5">
+                <p class="font-normal md:text-lg md:leading-7.5 mb-5">
                     Ce sera notre honneur et notre responsabilité. »
                 </p>
-                <br/>
-                <p class="font-normal md:text-lg md:leading-7.5">
-                    Stéphane Séjourné,
+                <p class="font-roboto uppercase text-right md:text-lg md:leading-7.5">
+                    <span class="font-medium">Stéphane Séjourné,</span><br/>
                     Secrétaire général de Renaissance
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Donation section -->
-    <section class="w-full md:mx-auto mb-12.5 lg:mb-25">
-        <div class="max-w-7xl bg-green md:rounded-lg md:m-20 xl:mx-auto lg:flex px-3.75 md:px-20 py-12.5 md:py-30">
-            <div class="flex-1 lg:border-r-2 lg:border-white/10 lg:pr-31.25">
-                <p class="text-white font-bold text-custom-2xl lg:text-[2.1875rem] lg:leading-10 mb-6.25 lg:mb-10">
-                    Faire un don pour aider Renaissance
-                </p>
-                <p class="text-white font-medium lg:text-lg lg:leading-6.25">
-                    66 % de votre don vient en déduction de votre impôt sur le revenu
-                    (dans la limite de 20 % du revenu imposable).
-                </p>
-                <br/>
-                <p class="text-white font-medium lg:text-lg lg:leading-6.25 mb-12.5 lg:mb-0">
-                    Par exemple : un don de 100 € vous revient en réalité à 34 € et vous
-                    fait bénéficier d’une réduction d’impôt de 66 €. Le montant annuel
-                    de votre don ne peut pas excéder 7500 € par personne physique. Le
-                    reçu fiscal pour votre don de l’année N vous sera envoyé au 2e
-                    trimestre de l’année N+1.
-                </p>
-            </div>
-            <div class="flex-1 lg:pl-31.25">
-                <div class="flex flex-col">
-                    {% include'renaissance/donation/partials/_quick_form.html.twig' with {form_donation: donation_form} %}
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Articles section -->
-    {% if articles %}
-        <section class="flex justify-center mx-auto max-w-screen-lg gap-x-3.75 mb-12.5 lg:mb-25">
-            {% for article in articles %}
-                {% include 'article/partial/article-item.html.twig' %}
-            {% endfor %}
-        </section>
-    {% endif %}
-
     <!-- Values and commitments -->
-    <section class="px-3.75 md:px-20 bg-background-gray pt-12.5 lg:pt-25 mb-12.5 lg:mb-25">
-        <div class="max-w-7xl mx-auto">
-            <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
-                <div class="md:w-2/5 lg:1/3">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-7.5"></div>
-                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
-                        Nos valeurs et nos <span class="stabilo stabilo-yellow">engagements</span>
+    <section class="px-4 py-12 md:py-15">
+        <div class="xl:container">
+            <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
+                <div>
+                    <p class="text-dark-blue text-custom-xl mb-8">
+                        Nos valeurs<br/>
+                        <span class="font-bold">et nos engagements</span>
                     </p>
-                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5">
+                    <p class="text-dark-blue mb-8">
                         Ce texte coconstruit avec l’ensemble des fondateurs du parti, engage chaque adhérent de Renaissance.
                     </p>
                 </div>
-                <div class="md:w-3/5 lg:2/3">
-                    <img
-                        src="{{ asset('images/renaissance/nos-valeurs.jpg') }}"
-                        class="rounded-lg w-full"
-                        alt="nos-valeurs"
-                    />
+                <div class="mb-8">
+                    <img src="{{ asset('images/renaissance/nos-valeurs.jpg') }}" class="rounded-lg w-full" alt="nos-valeurs"/>
                 </div>
             </div>
-            <div class="columns-2 md:columns-3 lg:columns-4 gap-3.75 lg:gap-10 pb-12.5 lg:pb-25">
+            <div class="columns-2 md:columns-3 lg:columns-4 gap-3.75 lg:gap-10">
                 {% for commitment in commitments %}
                     {% set slug = commitment.title|slug %}
                     <div
-                        id="valeur-{{ slug }}"
-                        class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
-                        data-commitment-title="{{ commitment.title|e('html_attr') }}"
-                        data-commitment-slug="{{ slug }}"
-                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
-                        data-commitment-description="{{ commitment.description|e('html_attr') }}"
+                            id="valeur-{{ slug }}"
+                            class="{{ not loop.first ? 'mt-8 ' }} h-fit bg-white active:bg-yellow px-3.75 py-5 cursor-pointer rounded p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 duration-200 slide-over--trigger break-inside-avoid"
+                            data-commitment-title="{{ commitment.title|e('html_attr') }}"
+                            data-commitment-slug="{{ slug }}"
+                            data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath()}) }}"
+                            data-commitment-description="{{ commitment.description|e('html_attr') }}"
                     >
                         <h3 class="text-light-blue font-medium text-custom-xs lg:text-custom-base2 mb-2.5">{{ commitment.title }}</h3>
                         <div class="text-medium-gray font-normal text-xs lg:text-custom-base2">{{ commitment.shortDescription }}</div>
@@ -163,19 +121,52 @@
         </div>
     </section>
 
-    <section class="px-3.75 md:px-20 bg-white mb-12.5 lg:mb-20">
-        <div class="max-w-7xl mx-auto">
-            <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
-                <div class="md:w-2/5 lg:1/3">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-7.5"></div>
-                    <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
-                        Le bureau <span class="stabilo stabilo-yellow">exécutif</span>
+    <!-- Donation section -->
+    <section class="w-full bg-lighter-green px-4 py-12 md:py-15 text-green">
+        <div class="xl:container">
+            <div class="md:flex md:gap-x-28 lg:gap-x-37.5">
+                <div class="flex-1">
+                    <p class="text-custom-xl mb-8">
+                        Faites un don<br/>
+                        <span class="font-bold">pour aider Renaissance</span>
                     </p>
-                    <p class="text-dark-blue font-normal text-lg leading-6.25 lg:text-2xl lg:leading-9 mb-12.5">
+
+                    <p class="lg:text-lg lg:leading-6.25">
+                        66 % de votre don vient en déduction de votre impôt sur le revenu
+                        (dans la limite de 20 % du revenu imposable).
+                    </p>
+
+                    <p class="lg:text-lg lg:leading-6.25 mb-3">
+                        Par exemple : un don de 100 € vous revient en réalité à 34 € et vous
+                        fait bénéficier d’une réduction d’impôt de 66 €. Le montant annuel
+                        de votre don ne peut pas excéder 7500 € par personne physique. Le
+                        reçu fiscal pour votre don de l’année N vous sera envoyé au 2e
+                        trimestre de l’année N+1.
+                    </p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex flex-col">
+                        {% include'renaissance/donation/partials/_quick_form.html.twig' with {form_donation: donation_form} %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-4 py-12 md:py-15">
+        <div class="xl:container">
+            <div class="md:flex md:gap-x-28 lg:gap-x-37.5 mb-8">
+                <div class="flex-1">
+                    <p class="text-dark-blue text-custom-xl mb-8">
+                        Le bureau<br/>
+                        <span class="font-bold">exécutif</span>
+                    </p>
+                    <p class="text-dark-blue text-lg leading-6.25 lg:text-2xl lg:leading-9">
                         Une équipe paritaire de femmes et d’hommes engagés, rassemblant toutes les sensibilités de Renaissance et représentative de l’ensemble de nos territoires.
                     </p>
                 </div>
-                <div class="md:w-3/5 lg:2/3">
+
+                <div class="flex-1 hidden md:flex">
                     <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="rounded-lg w-full" alt="Burex"/>
                 </div>
             </div>
@@ -187,14 +178,14 @@
 
             {% for executive_office_group in executive_office_groups %}
                 {% if executive_office_group is not empty %}
-                    <div class="divide-y border-gray-border border-0.5 mb-6.25 lg:mb-12.5"></div>
-
-                    <div class="flex justify-center flex-wrap gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
+                    <div class="flex overflow-x-auto flex-nowrap md:justify-center md:flex-wrap gap-x-3.75 gap-y-6.25 lg:gap-x-7.5 lg:gap-y-10">
                         {% for member in executive_office_group %}
-                            <div class="flex flex-col mb-6.25 lg:mb-12.5">
-                                <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" height="100%" alt="{{ member.fullName }}"/>
-                                <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.fullName }}</p>
-                                <p class="text-center font-normal text-xs leading-4.5 md:text-sm">{{ member.job }}</p>
+                            <div class="flex-none">
+                                <div class="flex flex-col mb-6.25 lg:mb-12.5">
+                                    <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" height="100%" alt="{{ member.fullName }}"/>
+                                    <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.fullName }}</p>
+                                    <p class="text-center font-normal text-xs leading-4.5 md:text-sm">{{ member.job }}</p>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
@@ -203,11 +194,21 @@
         </div>
     </section>
 
-    <section class="px-3.75 md:px-20 bg-white mb-[4.6875rem] lg:mb-37.5">
+    <!-- Articles section -->
+    {% if articles %}
+        <section class="px-4 py-12 md:py-15 bg-lighter-blue">
+            <div class="flex justify-center mx-auto max-w-screen-lg gap-x-3.75">
+                {% for article in articles %}
+                    {% include 'article/partial/article-item.html.twig' %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    <section class="px-4 py-12 md:py-15">
         <div class="max-w-7xl mx-auto">
             <div class="md:flex md:gap-12.5 lg:gap-37.5 mb-12.5 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">
-                    <div class="divide-y border-gray-border border-0.5 w-full mb-7.5"></div>
                     <p class="text-dark-blue font-bold text-custom-2xl lg:text-custom-xl mb-6.25 lg:mb-7.5">
                         Le parti le plus <span class="stabilo stabilo-yellow">décentralisé</span> de France
                     </p>
@@ -259,6 +260,7 @@
             </div>
         </div>
     </section>
+
     <!-- Newsletter -->
     <section class="md:px-20 md:mb-25">
         <div class="max-w-7xl lg:mx-auto md:flex w-full">
@@ -379,7 +381,7 @@
         </div>
 
         <!-- Legal notice -->
-        <div class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7.5 pb-12.5 md:py-6.25 text-white font-normal text-sm">
+        <div class="md:bg-dark-gray/10 flex flex-col items-center md:flex-row md:justify-center gap-x-7.5 py-6.25 text-white font-normal text-sm">
             <a href="{{ path('app_static_page', {slug: 're-mentions-legales', app_domain: renaissance_host}) }}">
                 Mentions légales
             </a>
