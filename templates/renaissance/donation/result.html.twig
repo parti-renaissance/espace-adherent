@@ -1,6 +1,6 @@
 {% extends 'renaissance/donation/_layout.html.twig' %}
 
-{% block donation_title %}
+{% block donation_content_title %}
     <span class="text-yellow font-bold">
         {% if successful %}
             Votre don est validé
@@ -14,7 +14,7 @@
     <section class="w-96">
         {% if successful %}
             <div>
-                <h1 class="font-bold mt-5">Votre don est validé !</h1>
+                <h1 class="text-xl font-bold mb-5">Votre don est validé !</h1>
                 <p>
                     Continuons à transformer notre pays ensemble ! Les dons sont une ressource vitale pour Renaissance !
                     Chaque don, quel que soit le montant, nous permet d'engager une action concrète pour réussir ensemble la transformation du pays.
@@ -23,13 +23,13 @@
                 </p>
             </div>
             <div class="mt-4">
-                <a href="{{ path('app_renaissance_homepage') }}" class="bg-blue-700 hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                <a href="{{ path('app_renaissance_homepage') }}" class="bg-green hover:bg-white hover:text-green text-white font-semibold hover:text-white py-2 px-4 border hover:border-green rounded">
                     Retourner sur la page d'accueil
                 </a>
             </div>
         {% else %}
             <div>
-                <h1 class="text-yellow font-bold mt-5">Votre don a échoué !</h1>
+                <h1 class="text-xl font-bold mb-5">Votre don a échoué !</h1>
                 <p>{{ get_payment_message_by_code(result_code)|trans|raw }}</p>
             </div>
             <div class="mt-4">

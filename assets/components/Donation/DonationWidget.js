@@ -18,7 +18,7 @@ export default class DonationWidget extends React.Component {
             <div className={'renaissance-donation'}>
                 <DonationAmountChooser name={'amount'} abonnement={false} onChange={this.handleAmountChange} />
                 <button
-                    className={'rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4 donation-button'}
+                    className={'rounded w-full py-5 bg-green text-white hover:bg-white hover:text-green button-group grow border hover:border-green font-din font-bold uppercase text-center px-4 donation-button'}
                     type="submit"
                     key={`amount-${this.state.amount}`}
                     onClick={this.handleSubmitClick}

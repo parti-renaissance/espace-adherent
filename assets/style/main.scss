@@ -12,7 +12,7 @@
     }
 
     .button-group {
-        @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue first:rounded-tl first:rounded-bl last:rounded-tr last:rounded-br;
+        @apply cursor-pointer border-2 border-black/20 hover:border-light-blue-500/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-black py-5 active:border-light-blue-500/20 active:text-black first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
     }
 
     .button {
@@ -24,7 +24,7 @@
     }
 
     .form-control {
-        @apply border-0 w-full bg-transparent text-white font-medium text-sm placeholder:text-white placeholder:font-medium focus:ring-0 p-0;
+        @apply border-0 w-full bg-gray text-dark-blue font-medium text-sm placeholder:text-dark-blue placeholder:font-medium focus:ring-0 p-0;
 
         & option {
             color: black;
@@ -32,18 +32,18 @@
     }
 
     .form-group {
-        @apply flex flex-col gap-x-3.75 w-full rounded-lg border-2 border-white/20 focus-within:border-white px-4 py-3 mb-3.75;
+        @apply flex flex-col gap-x-3.75 bg-gray w-full rounded-lg border-2 border-gray/20 focus-within:border-dark-blue px-4 py-3 mb-3.75;
 
         label {
             font-size: small;
             font-weight: 500;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, .5);
+            color: #1254D8;
         }
 
         &:focus-within {
             label {
-                color: white;
+                color: #00205F;
             }
         }
     }

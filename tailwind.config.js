@@ -20,8 +20,10 @@ module.exports = {
             colors: {
                 'lighter-blue': '#EDF5FF',
                 'light-blue': '#73C0F1',
+                'light-blue-500': '#1254D8',
                 'dark-blue': '#00205F',
                 'lighter-green': '#2EA78F14',
+                'light-green': '#DAF5EF',
                 green: '#2EA78F',
                 gray: '#EEEEEE',
                 'medium-gray': '#555555',
@@ -29,6 +31,7 @@ module.exports = {
                 'dark-gray': '#222222',
                 'gray-border': '#DDDDDD',
                 yellow: '#FFDC6B',
+                'white-slate': '#FDFDFD',
             },
             spacing: {
                 3.25: '0.8125rem',
