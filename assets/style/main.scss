@@ -12,7 +12,7 @@
     }
 
     .button-group {
-        @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue first:rounded-tl-lg first:rounded-bl-lg last:rounded-tr-lg last:rounded-br-lg;
+        @apply cursor-pointer border-2 border-white/20 hover:border-white/20 border-l-1 border-r-1 first:border-l-2 last:border-r-2 text-center font-medium text-sm text-white py-5 active:bg-white hover:bg-white active:text-dark-blue hover:text-dark-blue first:rounded-tl first:rounded-bl last:rounded-tr last:rounded-br;
     }
 
     .button {
@@ -52,10 +52,14 @@
         @apply flex flex-col;
 
         &__button {
-            @apply button-group grow bg-green;
+            @apply bg-white text-green button-group grow border border-green border-x-0.5 first:border-l-1 last:border-r-1;
+
+            &:hover {
+                @apply bg-lighter-green text-green border-green;
+            }
 
             &--selected {
-                @apply bg-white text-green;
+                @apply bg-lighter-green;
             }
         }
 
@@ -63,7 +67,7 @@
             @apply flex flex-col gap-x-3.75 w-full lg:max-w-[43.125rem];
 
             &__input {
-                @apply rounded-lg border-2 border-white/20 focus:border-white w-full bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium p-5 mb-3.75;
+                @apply rounded border focus:ring-0 border-green focus:border-green w-full bg-white text-green font-medium text-sm placeholder:text-green placeholder:font-medium p-5 mb-3.75;
             }
         }
     }

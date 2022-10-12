@@ -11,7 +11,7 @@
         <div class="flex justify-between items-center w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
             <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
-            <div class="flex flex-nowrap">
+            <div class="flex flex-nowrap gap-x-2">
                 {% if app.user %}
                     <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
                         Me déconnecter
@@ -53,9 +53,20 @@
         </div>
     </section>
 
+    <!-- Articles section -->
+    {% if articles %}
+        <section class="px-4 py-12 md:py-15">
+            <div class="flex justify-center mx-auto max-w-screen-lg gap-x-3.75">
+                {% for article in articles %}
+                    {% include 'article/partial/article-item.html.twig' %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
     <section class="px-4 py-12 md:py-15 bg-lighter-blue">
         <div class="xl:container md:flex md:gap-x-28 lg:gap-x-37.5">
-            <div class="md:sticky md:top-8 flex-1 md:w-1/3 border-t border-gray">
+            <div class="md:sticky md:top-8 flex-1 md:w-1/3">
                 <p class="text-dark-blue text-custom-xl mb-8">
                     Qui<br/>
                     <span class="font-bold">sommes-nous ?</span>
@@ -193,17 +204,6 @@
             {% endfor %}
         </div>
     </section>
-
-    <!-- Articles section -->
-    {% if articles %}
-        <section class="px-4 py-12 md:py-15 bg-lighter-blue">
-            <div class="flex justify-center mx-auto max-w-screen-lg gap-x-3.75">
-                {% for article in articles %}
-                    {% include 'article/partial/article-item.html.twig' %}
-                {% endfor %}
-            </div>
-        </section>
-    {% endif %}
 
     <section class="px-4 py-12 md:py-15">
         <div class="max-w-7xl mx-auto">

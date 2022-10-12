@@ -83,8 +83,7 @@ export default class AmountChooser extends React.Component {
                 <div className="renaissance-amount-chooser__other">
                     <input
                         type="number"
-                        className="border-white/20 focus:border-white focus:ring-0 border-2 rounded-lg p-5 mb-5 bg-green text-white font-medium text-sm placeholder:text-white placeholder:font-medium placeholder:text-sm"
-                        id="renaissance-amount-chooser__other__input"
+                        className="renaissance-amount-chooser__other__input"
                         placeholder="Autre montant"
                         min="1.0"
                         max={this.props.maxValue}
