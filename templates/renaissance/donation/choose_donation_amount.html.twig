@@ -11,7 +11,10 @@
 {% endblock %}
 
 {% block donation_content %}
-    <section class="w-96">
+    <section>
+        <p class="uppercase text-center text-green font-din text-xl mb-12">
+            Faire <span class="stabilo stabilo-green font-bold">un don</span> au parti Renaissance
+        </p>
         {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_rest(form) }}

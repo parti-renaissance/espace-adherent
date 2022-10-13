@@ -53,6 +53,16 @@
         }
     }
 
+    &-yellow {
+        color: $white;
+        background: $yellow;
+
+        &:hover {
+            color: $yellow;
+            background: $white;
+        }
+    }
+
     &-white {
         color: $dark-blue;
         background: $white;
@@ -62,4 +72,5 @@
             background: $dark-blue;
         }
     }
+
 }
