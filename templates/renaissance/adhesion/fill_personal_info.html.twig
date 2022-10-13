@@ -16,8 +16,8 @@
 
 {% block adhesion_content %}
     <section>
-        <p class="uppercase text-center font-din text-xl mb-12">
-            J'adhère à Renaissance
+        <p class="flex justify-center uppercase text-center font-din text-xl text-light-blue mb-12">
+            J'adhère à <img src="{{ asset('/images/renaissance/logo.svg') }}" class="ml-2 re-logo-light-blue" alt="logo"/>
         </p>
         {{ form_start(form) }}
             {% if app.user and app.user.certified %}
