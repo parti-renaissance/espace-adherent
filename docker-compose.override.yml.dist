@@ -9,8 +9,7 @@ version: "3.9"
 #
 #networks:
 #    enmarche:
-#        external:
-#            name: enmarche
+#        name: enmarche
 
 
 #services:
