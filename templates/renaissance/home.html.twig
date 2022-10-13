@@ -11,7 +11,7 @@
         <div class="flex justify-between items-center w-full border-b border-b-white/10 px-3.75 py-4.75 md:px-7.5 md:py-6.25">
             <a href="{{ path('app_renaissance_homepage') }}"><img src="{{ asset('/images/renaissance/logo.svg') }}" alt="logo"/></a>
 
-            <div class="flex flex-nowrap gap-x-2">
+            <div class="flex flex-nowrap gap-x-2 text-center">
                 {% if app.user %}
                     <a class="button button-white" href="{{ path('logout', { app_domain: renaissance_host }) }}">
                         Me déconnecter
