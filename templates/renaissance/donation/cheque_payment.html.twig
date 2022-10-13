@@ -1,14 +1,14 @@
 {% extends 'renaissance/donation/_layout.html.twig' %}
 
-{% block donation_title %}
-    Je donne <span class="stabilo stabilo-green">par chèque</span>
+{% block donation_content_title %}
+    Je donne <span class="stabilo stabilo-green font-bold">par chèque</span>
 {% endblock %}
 
 {% block donation_content %}
     <section class="w-96">
-        <div class="text-center font-normal text-lg leading-6.25 md:text-2xl md:leading-9">
-            <h1>Vous pouvez télécharger un bulletin de don et nous envoyer le chèque à :</h1>
-            <p>
+        <div class="text-bg-green text-center font-normal leading-6.25 md:text-2xl md:leading-9">
+            <h1 class="text-custom-2xl">Vous pouvez télécharger un bulletin de don et nous envoyer le chèque à :</h1>
+            <p class="text-lg">
                 Renaissance <br/>
                 Pôle Financier <br/>
                 68 rue du Rocher, <br/>
@@ -16,7 +16,7 @@
             </p>
         </div>
         <div class="flex mt-4 justify-between">
-            <a href="https://storage.googleapis.com/en-marche-fr/Bulletin-don_RENAISSANCE_sept2022_digital.pdf" class="rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4">
+            <a href="https://storage.googleapis.com/en-marche-fr/Bulletin-don_RENAISSANCE_sept2022_digital.pdf" class="button button-green">
                 Télécharger un bulletin de don
             </a>
         </div>

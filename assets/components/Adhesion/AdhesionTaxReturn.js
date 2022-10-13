@@ -15,7 +15,7 @@ export default class AdhesionTaxReturn extends React.Component {
     render() {
         const { value } = this.props;
         return (
-            <div className="renaissance-donation__amount-chooser__after-taxes text-white text-center mb-5">
+            <div className="renaissance-donation__amount-chooser__after-taxes text-black text-center mb-5">
                 <p className="font-normal text-3xl leading-10">
                     {amountAfterTaxReturn(value)} €
                 </p>

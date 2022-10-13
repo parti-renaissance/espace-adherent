@@ -1,0 +1,21 @@
+<div class="flex h-full w-full items-center justify-center md:hidden">
+    <a href="{{ path('app_renaissance_homepage') }}">
+        <img src="{{ asset('/images/renaissance/logo-circle.svg') }}" class="re-logo {{ re_logo_class|default('') }}" alt="logo"/>
+    </a>
+</div>
+
+<div class="hidden md:flex flex-col justify-center md:self-end text-white font-bold text-[1.75rem] leading-8 md:text-custom-xl">
+    <p class="mb-16 whitespace-nowrap {{ text_color_class|default('') }}">
+        Humanistes <br/>
+        Citoyens <br/>
+        Européens <br/>
+        Libre-penseurs <br/>
+        Progressistes <br/>
+        Ambitieux <br/>
+        Écologistes <br/>
+        Féministes
+    </p>
+    <p class="mb-16">
+        <img src="{{ asset('/images/renaissance/logo-circle.svg') }}" class="re-logo {{ re_logo_class|default('') }}" alt="logo"/>
+    </p>
+</div>

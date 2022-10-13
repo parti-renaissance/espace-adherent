@@ -10,8 +10,15 @@
     {% endif %}
 {% endblock %}
 
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' %}
+{% endblock %}
+
 {% block adhesion_content %}
     <section>
+        <p class="uppercase text-center font-din text-xl mb-12">
+            J'adhère à Renaissance
+        </p>
         {{ form_start(form) }}
             {% if app.user and app.user.certified %}
                 <div class="alert alert--tips b__nudge--bottom-large">
@@ -49,14 +56,12 @@
                 {% endif %}
             </div>
 
-            <div class="mt-4 flex flex-col">
-                <button type="submit" class="w-full rounded py-5 bg-white text-dark-blue font-din font-bold uppercase">
-                    Étape suivante
-                </button>
+            <div class="mt-12 flex flex-col">
+                <button type="submit" class="button button-light-blue button-full">Étape suivante</button>
 
                 <div class="or-separator"></div>
 
-                <a class="w-full text-center rounded py-5 bg-dark-blue text-white font-din font-bold uppercase" href="https://storage.googleapis.com/enmarche-prod/Renaissance-Bulletin-adhesion.pdf" target="_blank">
+                <a class="button button-blue button-full" href="https://storage.googleapis.com/enmarche-prod/Renaissance-Bulletin-adhesion.pdf" target="_blank">
                     Télécharger le bulletin d'adhésion
                 </a>
             </div>
