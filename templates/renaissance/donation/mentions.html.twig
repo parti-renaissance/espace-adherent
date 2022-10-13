@@ -13,7 +13,7 @@
 {% block donation_content %}
     <section class="w-96">
         {{ form_start(form) }}
-            {{ form_errors(form, { error_raw: true }) }}
+            {{ form_errors(form) }}
             <div class="border-t-1 border-white/10 pt-3.75 mb-5">
                 {{ form_widget(form.isPhysicalPerson) }}
                 <label for="{{ form.isPhysicalPerson.vars.id }}">

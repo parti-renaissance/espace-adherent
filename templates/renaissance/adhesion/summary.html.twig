@@ -2,11 +2,14 @@
 
 {% form_theme form 'renaissance/form_theme.html.twig' %}
 
-{% block navigation_steps '' %}
+{% set left_side_background = 'bg-light-green' %}
 
-{#{% block adhesion_title %}
-    Voici un récapitulatif<br/>de <span class="stabilo stabilo-blue">vos informations.</span>
-{% endblock %}#}
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 're-logo-green',
+        text_color_class: 'text-green',
+    } %}
+{% endblock %}
 
 {% block adhesion_content %}
     <section>

@@ -1,9 +1,12 @@
 {% extends 'renaissance/adhesion/_layout.html.twig' %}
 
-{% block navigation_steps '' %}
+{% set left_side_background = 'bg-light-green' %}
 
-{% block adhesion_title %}
-    Merci pour votre inscription.
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 're-logo-green',
+        text_color_class: 'text-green',
+    } %}
 {% endblock %}
 
 {% block adhesion_content %}

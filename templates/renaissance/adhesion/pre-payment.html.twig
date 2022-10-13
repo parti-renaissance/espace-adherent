@@ -2,8 +2,6 @@
 
 {% form_theme form 'renaissance/form_theme.html.twig' %}
 
-{% set active_step = 'Contributions' %}
-
 {% block final_javascripts %}
     <script type="text/javascript">
         Bootstrap.onLoad(function () {
@@ -12,10 +10,13 @@
     </script>
 {% endblock %}
 
-{% block adhesion_title %}
-    Bienvenue <span class="stabilo stabilo-blue">{{ app.user.firstName }}.</span><br/>
-    Choisissez le montant<br/>
-    de votre contribution.
+{% set left_side_background = 'bg-light-green' %}
+
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 're-logo-green',
+        text_color_class: 'text-green',
+    } %}
 {% endblock %}
 
 {% block adhesion_content %}
@@ -29,7 +30,7 @@
                 * Tarif réservé aux étudiants, personnes bénéficiant des minimas sociaux, sans emploi.
             </p>
 
-            <button type="submit" class="mt-5 rounded w-full py-5 bg-white text-dark-blue font-din font-bold uppercase text-center px-4">
+            <button type="submit" class="button button-green button-full mt-10">
                 Étape suivante
             </button>
         {{ form_end(form) }}

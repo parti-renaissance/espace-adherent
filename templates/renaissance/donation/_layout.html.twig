@@ -4,29 +4,13 @@
 
 {% block back_btn_target path('app_renaissance_donation') %}
 
-{% set donation_background = 'bg-light-green' %}
+{% set left_side_background = 'bg-light-green' %}
 
 {% block content_left_side %}
-    <div class="flex md:flex-grow md:items-center md:mt-0 ml-14 text-green font-bold text-[1.75rem] leading-8 md:text-custom-xl md:mb-16 w-full">
-        <p>
-            {% block donation_title %}
-                Humanistes <br/>
-                Citoyens <br/>
-                Européens <br/>
-                Libre-penseurs <br/>
-                Progressistes <br/>
-                Ambitieux <br/>
-                Écologistes <br/>
-                Féministes
-            {% endblock %}
-        </p>
-    </div>
-
-    <div class="flex md:flex-nowrap ml-14 md:mb-10 bg-cover">
-        <a href="{{ path('app_renaissance_homepage') }}">
-            <img style="filter: invert(48%) sepia(95%) saturate(307%) hue-rotate(118deg) brightness(97%) contrast(89%);" height="80" width="80" src="{{ asset('/images/renaissance/logo-monogramme-re.svg') }}" alt="logo"/>
-        </a>
-    </div>
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 're-logo-green',
+        text_color_class: 'text-green',
+    } %}
 {% endblock %}
 
 {% block content_right_side %}

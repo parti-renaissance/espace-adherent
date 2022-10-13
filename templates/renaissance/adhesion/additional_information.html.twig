@@ -1,11 +1,13 @@
 {% extends 'renaissance/adhesion/_layout.html.twig' %}
 
 {% form_theme form 'renaissance/form_theme.html.twig' %}
+{% set left_side_background = 'bg-light-red' %}
 
-{% block navigation_steps '' %}
-
-{% block adhesion_title %}
-    Encore quelques <br/><span class="stabilo stabilo-blue">renseignements</span>
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 're-logo-red',
+        text_color_class: 'text-red',
+    } %}
 {% endblock %}
 
 {% block adhesion_content %}
@@ -36,33 +38,35 @@
             </div>
 
             <div class="mt-10 max-w-xl mx-auto mention-checkbox-container">
+
+                {{ form_errors(form.exclusiveMembership) }}
                 <div class="form__checkbox">
                     {{ form_widget(form.exclusiveMembership) }}
                     <label for="{{ form.exclusiveMembership.vars.id }}">
                         Je certifie sur l'honneur que je n'appartiens à aucun autre parti politique
                     </label>
                 </div>
-                {{ form_errors(form.exclusiveMembership) }}
 
+                {{ form_errors(form.territoireProgresMembership) }}
                 <div class="form__checkbox">
                     {{ form_widget(form.territoireProgresMembership) }}
                     <label for="{{ form.territoireProgresMembership.vars.id }}">
                         Je suis membre de « Territoires de Progrès » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
                     </label>
-                    {{ form_errors(form.territoireProgresMembership) }}
                 </div>
 
+                {{ form_errors(form.agirMembership) }}
                 <div class="form__checkbox">
                     {{ form_widget(form.agirMembership) }}
                     <label for="{{ form.agirMembership.vars.id }}">
-                        Je suis membre d'« Agir, la droite constructive » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.                    </label>
-                    {{ form_errors(form.agirMembership) }}
+                        Je suis membre d'« Agir, la droite constructive » et je peux bénéficier à ce titre de la double adhésion prévue dans les dispositions transitoires des statuts de Renaissance.
+                    </label>
                 </div>
             </div>
 
             <div class="mt-4">
                 <div class="2xl:max-w-[70rem] border-t-2 border-white/10 md:border-none">
-                    <button type="submit" class="w-full py-5 bg-blue-700 hover:bg-blue-500 text-white hover:text-white px-4 border border-blue-500 hover:border-transparent rounded font-din font-bold uppercase text-cente">
+                    <button type="submit" class="button button-red button-full">
                         Finaliser
                     </button>
                 </div>

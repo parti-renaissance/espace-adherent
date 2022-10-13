@@ -13,6 +13,16 @@
         }
     }
 
+    &-light-blue {
+        color: white;
+        background: $light-blue;
+
+        &:hover {
+            color: $light-blue;
+            background: white;
+        }
+    }
+
     &-blue-lighter {
         color: $dark-blue;
         background: $blue-lighter;
@@ -20,6 +30,16 @@
         &:hover {
             color: $blue-lighter;
             background: $dark-blue;
+        }
+    }
+
+    &-red {
+        color: $white;
+        background: $red;
+
+        &:hover {
+            color: $red;
+            background: $white;
         }
     }
 

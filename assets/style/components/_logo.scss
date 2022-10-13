@@ -1,0 +1,12 @@
+.re-logo {
+    width: 5rem;
+    height: 5rem;
+
+    &-green {
+        filter: invert(52%) sepia(68%) saturate(419%) hue-rotate(118deg) brightness(92%) contrast(86%);
+    }
+
+    &-red {
+        filter: invert(30%) sepia(99%) saturate(7409%) hue-rotate(342deg) brightness(90%) contrast(109%);
+    }
+}

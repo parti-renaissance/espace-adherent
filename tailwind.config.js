@@ -32,6 +32,8 @@ module.exports = {
                 'gray-border': '#DDDDDD',
                 yellow: '#FFDC6B',
                 'white-slate': '#FDFDFD',
+                'light-red': '#FFC9D4',
+                red: '#F00032',
             },
             spacing: {
                 3.25: '0.8125rem',

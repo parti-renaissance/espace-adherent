@@ -1,6 +1,13 @@
 {% extends 'renaissance/adhesion/_layout.html.twig' %}
 
-{% block navigation_steps '' %}
+{% set left_side_background = 'bg-light-red' %}
+
+{% block content_left_side %}
+    {% include 'renaissance/partials/left-side-content.html.twig' with {
+        re_logo_class: 're-logo-red',
+        text_color_class: 'text-red',
+    } %}
+{% endblock %}
 
 {% block final_javascripts %}
     <script type="text/javascript">
