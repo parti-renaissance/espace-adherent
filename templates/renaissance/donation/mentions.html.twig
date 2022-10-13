@@ -8,10 +8,6 @@
 
 {% set back_btn_target = path('app_renaissance_donation_informations') %}
 
-{% block final_javascripts %}
-    <script src="https://www.google.com/recaptcha/enterprise.js"></script>
-{% endblock %}
-
 {% block donation_content %}
     <section class="w-96">
         <p class="uppercase text-center text-green font-din text-xl mb-12">
@@ -50,17 +46,30 @@
                 {{ form_errors(form.personalDataCollection) }}
             </div>
 
+        {% if re_friendly_site_key is not empty %}
             <div class="w-full">
-                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-                {% if recaptcha_public_key is not empty %}
-                    {% for flashMessage in app.flashes("error_recaptcha") %}
-                        <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
-                    {% endfor %}
-                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
-                {% elseif app.debug %}
-                    <input type="hidden" name="g-recaptcha-response" value="fake" />
-                {% endif %}
+                <script
+                        type="module"
+                        src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.1/widget.module.min.js"
+                        async
+                        defer
+                ></script>
+                <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.1/widget.min.js" async defer></script>
+
+
+                <div class="frc-captcha mb-5"
+                     data-sitekey="{{ re_friendly_site_key }}"
+                     data-puzzle-endpoint="https://eu-api.friendlycaptcha.eu/api/v1/puzzle"
+                     data-lang="fr"
+                ></div>
+                <input type="hidden" name="recaptcha_site_key" value="{{ re_friendly_site_key }}" />
             </div>
+        {% elseif app.debug %}
+            <div class="w-full">
+                <input type="hidden" name="frc-captcha-solution" value="fake" />
+                <input type="hidden" name="recaptcha_site_key" value="fake_key" />
+            </div>
+        {% endif %}
 
             {% include 'renaissance/partials/previous-next-buttons.html.twig' with {
                 previous_route_name: 'app_renaissance_donation_informations',

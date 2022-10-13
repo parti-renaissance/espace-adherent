@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueDonationSubscription(groups={"Default", "fill_personal_info"})
  * @MaxFiscalYearDonation(groups={"Default", "fill_personal_info"})
  * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
- * @AssertRecaptcha(groups={"donation_request_mentions"})
+ * @AssertRecaptcha(api="friendly_captcha", groups={"donation_request_mentions"})
  */
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {

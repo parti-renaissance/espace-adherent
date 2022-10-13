@@ -15,7 +15,8 @@ class AdhesionController extends AbstractAdhesionController
     public function __invoke(Request $request): Response
     {
         $command = $this->getCommand($request);
-        $command->setRecaptcha($request->request->get('g-recaptcha-response'));
+        $command->setRecaptcha($request->request->get('frc-captcha-solution'));
+        $command->setRecaptchaSiteKey($request->request->get('recaptcha_site_key'));
 
         if (!$this->processor->canFillPersonalInfo($command)) {
             return $this->redirectToRoute('app_renaissance_homepage');

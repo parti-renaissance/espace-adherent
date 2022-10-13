@@ -20,7 +20,8 @@ class MentionsController extends AbstractDonationController
         DonationRequestHandler $donationRequestHandler
     ): Response {
         $command = $this->getCommand();
-        $command->setRecaptcha($request->request->get('g-recaptcha-response'));
+        $command->setRecaptcha($request->request->get('frc-captcha-solution'));
+        $command->setRecaptchaSiteKey($request->request->get('recaptcha_site_key'));
 
         if (!$this->processor->canAcceptTermsAndConditions($command)) {
             return $this->redirectToRoute('app_renaissance_donation_informations');

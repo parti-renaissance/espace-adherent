@@ -9,7 +9,7 @@ use App\Validator\UniqueRenaissanceNewsletter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertRecaptcha
+ * @AssertRecaptcha(api="friendly_captcha")
  * @UniqueRenaissanceNewsletter
  */
 class SubscriptionRequest implements RecaptchaChallengeInterface
@@ -44,10 +44,11 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
      */
     public ?bool $cguAccepted = null;
 
-    public static function createFromRecaptcha(?string $recaptchaResponse): self
+    public static function createFromRecaptcha(?string $recaptchaResponse, ?string $recaptchaSiteKey): self
     {
         $object = new self();
         $object->recaptcha = $recaptchaResponse;
+        $object->recaptchaSiteKey = $recaptchaSiteKey;
 
         return $object;
     }
