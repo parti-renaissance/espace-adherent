@@ -26,9 +26,10 @@ class AudienceSnapshotType extends AbstractType
             ->add('ageMax', IntegerType::class, ['label' => 'Âge max', 'required' => false, 'attr' => ['min' => 1]])
             ->add('registeredSince', DatePickerType::class, ['label' => 'Date d\'adhésion (depuis le)', 'required' => false])
             ->add('registeredUntil', DatePickerType::class, ['label' => 'Date d\'adhésion (au)', 'required' => false])
-            ->add('isCertified', BooleanType::class, ['label' => 'Certifié', 'required' => false])
-            ->add('isCommitteeMember', BooleanType::class, ['label' => 'Membre de comité', 'required' => false])
-            ->add('hasSmsSubscription', BooleanType::class, ['label' => 'Abonné aux SMS', 'required' => false])
+            ->add('isCertified', BooleanType::class, ['transform' => true, 'label' => 'Certifié', 'required' => false])
+            ->add('isCommitteeMember', BooleanType::class, ['transform' => true, 'label' => 'Membre de comité', 'required' => false])
+            ->add('hasSmsSubscription', BooleanType::class, ['transform' => true, 'label' => 'Abonné aux SMS', 'required' => false])
+            ->add('isRenaissanceMembership', BooleanType::class, ['transform' => true, 'label' => 'Adhérent Renaissance', 'required' => false])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôles',
                 'required' => false,
