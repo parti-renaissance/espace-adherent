@@ -111,13 +111,9 @@ class MembershipRequestHandler
         $this->referentZoneManager->assignZone($adherent);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(new UserEvent(
-            $adherent,
-            $adherentRequest->allowEmailNotifications,
-            $adherentRequest->allowMobileNotifications
-        ), UserEvents::USER_CREATED);
-
+        $this->dispatcher->dispatch(new UserEvent($adherent, $adherentRequest->allowEmailNotifications, $adherentRequest->allowMobileNotifications), UserEvents::USER_CREATED);
         $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
 
         $adherentRequest->activate();
         $this->manager->flush();
