@@ -1,6 +1,7 @@
 {% extends 'renaissance/adhesion/_layout.html.twig' %}
 
 {% set left_side_background = 'bg-light-red' %}
+{% set back_btn_target = path('app_renaissance_homepage') %}
 
 {% block content_left_side %}
     {% include 'renaissance/partials/left-side-content.html.twig' with {
@@ -15,7 +16,7 @@
             <h1>Adhésion réussie !</h1>
             <p>
                 Vous êtes désormais inscrit, <br/>
-                bienvenu(e)! Il ne reste plus qu’à confirmer votre inscription <br/>
+                bienvenu(e) ! Il ne reste plus qu’à confirmer votre inscription <br/>
                 en cliquant sur le lien que vous avez reçu sur votre email.
             </p>
         </div>

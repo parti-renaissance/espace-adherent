@@ -162,6 +162,7 @@ framework:
                     from:
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
                         - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_PERSONAL_INFO
+                        - !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_SUMMARY
                     to: !php/const App\Renaissance\Membership\MembershipRequestStateEnum::STATE_ADHESION_AMOUNT
 
                 !php/const App\Renaissance\Membership\MembershipRequestStateEnum::TO_VALID_SUMMARY:

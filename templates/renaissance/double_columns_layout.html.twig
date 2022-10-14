@@ -4,10 +4,18 @@
 
 {% block content %}
     <section class="w-screen h-screen flex flex-col md:flex-row">
-        <div class="flex justify-center h-1/4 md:h-full w-full md:w-1/3 bg-cover bg-center md:bg-bottom {{ left_side_background is defined ? left_side_background }}"
+        <div class="flex flex-col justify-center md:justify-between h-1/4 md:h-full w-full md:w-1/3 bg-cover bg-center md:bg-bottom {{ left_side_background is defined ? left_side_background }}"
              {% if left_side_background is not defined %}style="background-image: linear-gradient(43.31deg, #1254D8 7%, rgba(18, 84, 216, 0) 57.62%), url('{{ asset(background_image|default(default_background_image)) }}')"{% endif %}>
 
-            {% block content_left_side '' %}
+            <div class="ml-7.5 md:m-7.5">
+                {% if back_btn_target is defined %}
+                    <a href="{{ back_btn_target }}" class="text-dark-blue hover:text-green font-bold text-sm">
+                        <i class="fa fa-caret-left mr-3"></i> Retour
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="self-center">{% block content_left_side '' %}</div>
         </div>
 
         <!-- Right side -->
