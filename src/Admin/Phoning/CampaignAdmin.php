@@ -112,6 +112,7 @@ class CampaignAdmin extends AbstractAdmin
                     'admin_code' => AudienceAdmin::SERVICE_CODE,
                 ])
                 ->add('hasSmsSubscription', BooleanType::class, [
+                    'transform' => true,
                     'label' => 'Abonné aux SMS',
                     'required' => true,
                 ])
