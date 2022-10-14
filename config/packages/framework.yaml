@@ -8,7 +8,7 @@ framework:
         name_converter: "serializer.name_converter.camel_case_to_snake_case"
     trusted_hosts:   ~
     session:
-        name:        enmarche
+        name:        renaissance
         handler_id:  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
     fragments:       ~
     http_method_override: true
