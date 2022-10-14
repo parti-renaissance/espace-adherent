@@ -76,7 +76,7 @@ class CommitmentAdmin extends AbstractAdmin
                 return;
             }
 
-            if ($commitment->position === 0) {
+            if (0 === $commitment->position) {
                 $queryBuilder = $this->getModelManager()->createQuery(Commitment::class)->select('COUNT(1)');
                 $commitment->position = (1 + current(current($this->getModelManager()->executeQuery($queryBuilder))));
             }
