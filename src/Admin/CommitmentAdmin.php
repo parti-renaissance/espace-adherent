@@ -4,12 +4,21 @@ namespace App\Admin;
 
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CommitmentAdmin extends AbstractAdmin
 {
+    protected function configureDefaultFilterValues(array &$filterValues)
+    {
+        $filterValues = array_merge($filterValues, [
+            '_sort_order' => 'ASC',
+            '_sort_by' => 'position',
+        ]);
+    }
+
     protected function configureListFields(ListMapper $list)
     {
         $list
@@ -17,6 +26,16 @@ class CommitmentAdmin extends AbstractAdmin
             ->add('position', null, ['label' => 'Position'])
             ->add('createdAt', null, ['label' => 'Créée le'])
             ->add('updatedAt', null, ['label' => 'Modifiée le'])
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                    'delete' => [],
+                    'move' => [
+                        'template' => '@PixSortableBehavior/Default/_sort_drag_drop.html.twig',
+                        'enable_top_bottom_buttons' => true,
+                    ],
+                ],
+            ])
         ;
     }
 
@@ -47,5 +66,11 @@ class CommitmentAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('show');
+        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 }

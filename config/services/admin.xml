@@ -18,7 +18,7 @@
 
             <argument />
             <argument>App\Entity\Commitment</argument>
-            <argument />
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
         </service>
 
         <service id="app.admin.renaissance_article" class="App\Admin\Article\RenaissanceArticleAdmin">
