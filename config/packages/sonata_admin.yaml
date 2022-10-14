@@ -6,3 +6,5 @@ sonata_admin:
     security:
         handler: sonata.admin.security.handler.role
     persist_filters: true
+    options:
+        html5_validate: false

@@ -19,16 +19,22 @@ class Commitment implements ImageOwnerInterface
 
     /**
      * @ORM\Column
+     *
+     * @Assert\NotBlank
      */
     public ?string $title = null;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
     public ?string $shortDescription = null;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
     public ?string $description = null;
 
