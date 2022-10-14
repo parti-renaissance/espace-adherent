@@ -2,12 +2,15 @@
 
 namespace App\Admin;
 
+use App\Entity\Commitment;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Form\Event\PreSetDataEvent;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormEvents;
 
 class CommitmentAdmin extends AbstractAdmin
 {
@@ -55,7 +58,6 @@ class CommitmentAdmin extends AbstractAdmin
                     'attr' => ['class' => 'simplified-content-editor', 'rows' => 20],
                     'help' => 'help.markdown',
                     'help_html' => true,
-                    'required' => false,
                 ])
             ->end()
             ->with('Photo', ['class' => 'col-md-6'])
@@ -66,6 +68,19 @@ class CommitmentAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
+
+        // Increase the position according to the total number of commitments in DB
+        $form->getFormBuilder()->addEventListener(FormEvents::PRE_SET_DATA, function (PreSetDataEvent $event) {
+            /** @var Commitment $commitment */
+            if ((!$commitment = $event->getData()) || $commitment->getId()) {
+                return;
+            }
+
+            if (0 === $commitment->position) {
+                $queryBuilder = $this->getModelManager()->createQuery(Commitment::class)->select('COUNT(1)');
+                $commitment->position = (1 + current(current($this->getModelManager()->executeQuery($queryBuilder))));
+            }
+        });
     }
 
     protected function configureRoutes(RouteCollection $collection)
