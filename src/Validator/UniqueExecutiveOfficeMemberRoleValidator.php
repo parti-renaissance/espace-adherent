@@ -34,36 +34,6 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, ExecutiveOfficeMember::class);
         }
 
-        if ($value->isPresident() && $value->isExecutiveOfficer()) {
-            $this->context
-                ->buildViolation($constraint->uniquePresidentOrExecutiveOfficerMessage)
-                ->atPath('president')
-                ->addViolation()
-            ;
-
-            return;
-        }
-
-        if ($value->isPresident() && $value->isDeputyGeneralDelegate()) {
-            $this->context
-                ->buildViolation($constraint->uniquePresidentOrDeputyGeneralDelegate)
-                ->atPath('president')
-                ->addViolation()
-            ;
-
-            return;
-        }
-
-        if ($value->isExecutiveOfficer() && $value->isDeputyGeneralDelegate()) {
-            $this->context
-                ->buildViolation($constraint->uniqueExecutiveOfficerOrDeputyGeneralDelegate)
-                ->atPath('executiveOfficer')
-                ->addViolation()
-            ;
-
-            return;
-        }
-
         if ($value->isExecutiveOfficer()) {
             $executiveOfficer = $this->executiveOfficeMemberRepository->findOneExecutiveOfficerMember(true, $value->isForRenaissance());
 
@@ -71,7 +41,7 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation($constraint->uniqueExecutiveOfficerMessage)
                     ->setParameter('{{ fullName }}', $executiveOfficer->getFullName())
-                    ->atPath('executiveOfficer')
+                    ->atPath('role')
                     ->addViolation()
                 ;
 
@@ -86,7 +56,7 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation($constraint->uniquePresidentMessage)
                     ->setParameter('{{ fullName }}', $president->getFullName())
-                    ->atPath('presidents')
+                    ->atPath('role')
                     ->addViolation()
                 ;
 

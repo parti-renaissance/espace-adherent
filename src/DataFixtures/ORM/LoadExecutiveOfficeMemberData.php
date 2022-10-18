@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Entity\Biography\ExecutiveOfficeRoleEnum;
 use App\Image\ImageManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -27,8 +28,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             "Christophe Castaner, né le 3 janvier 1966 à Ollioules, est un juriste et homme politique français. Député pour les Alpes-de-Haute-Provence, tête de liste du Parti socialiste aux élections régionales de 2015 en Provence-Alpes-Côte d'Azur, il rejoint le mouvement En marche d'Emmanuel Macron en 2016",
             true,
             'Délégué général du mouvement',
-            true,
-            false
+            ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICER
         );
 
         $member1->setFacebookProfile('https://www.facebook.com/christophe.castaner');
@@ -44,8 +44,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             "Députée LaREM de l'Isère, chargée d'animer la réflexion sur les libertés publiques, la justice, la défense et la sécurité intérieure, ainsi que sur les nouveaux risques. Déléguée adjointe : Marie-Hélène REGNIER, référente LaREM dans l'Aude.",
             true,
             'Déléguée à la Garantie des libertés et de la sécurité',
-            false,
-            false
+            ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICE_MEMBER
         );
 
         $member2->setFacebookProfile('https://facebook.com/EnMarche');
@@ -61,8 +60,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             "47 ans, mariée, 3 enfants, référente LaREM en Moselle depuis octobre 2016. Elle est ingénieur en chef des travaux publics de l'Etat, directrice adjointe du Centre d'études et d'expertises sur l'Environnement, les Mobilités et l'Aménagement, Est. Elle est adjointe au Maire de Metz, vice-présidente de l'agence d'urbanisme d'Agglomérations de Moselle et conseillère communautaire de Metz Métropole.",
             true,
             'Référente',
-            false,
-            false
+            ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICE_MEMBER
         );
 
         $member3->setFacebookProfile('https://facebook.com/EnMarche');
@@ -78,8 +76,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             "32 ans, députée de Paris. Engagée de la 1ère heure auprès d'Emmanuel Macron, Laetitia a été experte du programme Justice puis référente territoriale d'En Marche. Issue des quartiers populaires, engagée pour l'égalité des chances, elle est avocate au Barreau de Paris où elle a fondé son cabinet.",
             true,
             'Déléguée à la Communication',
-            false,
-            false
+            ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICE_MEMBER
         );
 
         $member4->setFacebookProfile('https://facebook.com/EnMarche');
@@ -95,8 +92,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             'Délégué général adjoint à LaREM',
             true,
             'Délégué général adjoint',
-            false,
-            true
+            ExecutiveOfficeRoleEnum::DEPUTY_GENERAL_DELEGATE
         );
         $member5->setFacebookProfile('https://facebook.com/EnMarche');
         $member5->setTwitterProfile('https://twitter.com/enmarchefr');
@@ -120,9 +116,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             'Président d\'honneur',
             true,
             'Président d\'honneur',
-            false,
-            false,
-            true
+            ExecutiveOfficeRoleEnum::PRESIDENT
         );
 
         $membersRE[] = new ExecutiveOfficeMember(
@@ -133,9 +127,7 @@ class LoadExecutiveOfficeMemberData extends Fixture
             'Secrétaire général',
             true,
             'Secrétaire général',
-            true,
-            false,
-            false
+            ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICER
         );
 
         foreach (['A', 'B', 'C', 'D', 'E'] as $lastName) {
@@ -147,9 +139,33 @@ class LoadExecutiveOfficeMemberData extends Fixture
                 'Secrétaire général délégué',
                 true,
                 'Secrétaire général délégué',
-                false,
+                ExecutiveOfficeRoleEnum::DEPUTY_GENERAL_DELEGATE
+            );
+        }
+
+        foreach (['A', 'B', 'C', 'D', 'E'] as $lastName) {
+            $membersRE[] = new ExecutiveOfficeMember(
+                null,
+                'Luc',
+                "$lastName.",
+                'Délégué fonctionnel',
+                'Délégué fonctionnel',
                 true,
-                false
+                'Délégué fonctionnel',
+                ExecutiveOfficeRoleEnum::FUNCTIONAL_DELEGATE
+            );
+        }
+
+        foreach (['A', 'B', 'C', 'D', 'E'] as $lastName) {
+            $membersRE[] = new ExecutiveOfficeMember(
+                null,
+                'Jeremy',
+                "$lastName.",
+                'Membre de droit',
+                'Membre de droit',
+                true,
+                'Membre de droit',
+                ExecutiveOfficeRoleEnum::MEMBER_BY_RIGHT
             );
         }
 
