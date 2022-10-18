@@ -202,7 +202,7 @@
                         {% for member in executive_office_group %}
                             <div class="flex-none first:ml-auto last:mr-auto">
                                 <div class="flex flex-col">
-                                    <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" height="100%" alt="{{ member.fullName }}"/>
+                                    <img src="{{ path('asset_url', {path: member.imagePath}) }}" class="rounded mb-10 md:mb-5 hover:scale-105 transition ease-in-out" style="height:350px;" alt="{{ member.fullName }}"/>
                                     <p class="text-center text-dark-gray font-medium text-xs leading-5 md:text-sm">{{ member.fullName }}</p>
                                     <p class="text-center font-normal text-xs leading-4.5 md:text-sm">{{ member.job }}</p>
                                 </div>
