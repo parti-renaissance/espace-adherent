@@ -123,6 +123,7 @@ class MembershipRequestHandler
 
     public function finishRenaissanceAdhesion(Adherent $adherent): void
     {
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
         $this->notifier->sendConfirmationJoinMessage($adherent);
     }
 
