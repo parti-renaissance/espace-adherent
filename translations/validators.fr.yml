@@ -369,9 +369,6 @@ message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 executive_office_member.president.unique: Le membre {{ fullName }} est déjà président.
 executive_office_member.executive_officer.unique: Le membre {{ fullName }} est déjà délégué général.
 executive_office_member.deputy_general_delegate.unique: Le membre {{ fullName }} est déjà délégué général adjoint.
-executive_office_member.president_or_executive_officer: Un membre ne peut pas être président et délégué général en même temps.
-executive_office_member.president_or_deputy_general_delegate: Un membre ne peut pas être président et délégué général adjoint en même temps.
-executive_office_member.executive_officer_or_deputy_general_delegate: Un membre ne peut pas être délégué général et délégué général adjoint en même temps.
 
 #
 # Assessor

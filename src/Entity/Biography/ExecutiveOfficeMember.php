@@ -27,6 +27,11 @@ class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceabl
     private $job;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $role;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $president = false;
@@ -49,46 +54,22 @@ class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceabl
         string $content = null,
         bool $published = null,
         string $job = null,
-        bool $executiveOfficer = null,
-        bool $deputyGeneralDelegate = false,
-        bool $president = false
+        string $role = null
     ) {
         parent::__construct($uuid, $firstName, $lastName, $description, $content, $published);
 
         $this->job = $job;
-        $this->executiveOfficer = $executiveOfficer;
-        $this->deputyGeneralDelegate = $deputyGeneralDelegate;
-        $this->president = $president;
-    }
-
-    public function setExecutiveOfficer(bool $executiveOfficer): void
-    {
-        $this->executiveOfficer = $executiveOfficer;
+        $this->role = $role;
     }
 
     public function isExecutiveOfficer(): ?bool
     {
-        return $this->executiveOfficer;
-    }
-
-    public function setDeputyGeneralDelegate(bool $deputyGeneralDelegate): void
-    {
-        $this->deputyGeneralDelegate = $deputyGeneralDelegate;
-    }
-
-    public function isDeputyGeneralDelegate(): ?bool
-    {
-        return $this->deputyGeneralDelegate;
-    }
-
-    public function setPresident(bool $president): void
-    {
-        $this->president = $president;
+        return ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICER === $this->role;
     }
 
     public function isPresident(): ?bool
     {
-        return $this->president;
+        return ExecutiveOfficeRoleEnum::PRESIDENT === $this->role;
     }
 
     public function getJob(): ?string
@@ -104,5 +85,15 @@ class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceabl
     public function getImagePath(): string
     {
         return sprintf('images/biographies/notre-organisation/%s', $this->getImageName());
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): void
+    {
+        $this->role = $role;
     }
 }

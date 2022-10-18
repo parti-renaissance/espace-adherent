@@ -2,12 +2,14 @@
 
 namespace App\Admin\ExecutiveOfficeMember;
 
+use App\Entity\Biography\ExecutiveOfficeRoleEnum;
 use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -33,25 +35,13 @@ abstract class AbstractExecutiveOfficeMemberAdmin extends AbstractAdmin
                 ->add('job', TextType::class, [
                     'label' => 'Poste',
                 ])
-        ;
-
-        if ($this instanceof RenaissanceExecutiveOfficeMemberAdmin) {
-            $formMapper
-                ->add('president', CheckboxType::class, [
-                    'label' => 'Président',
+                ->add('role', ChoiceType::class, [
+                    'label' => 'Rôle',
                     'required' => false,
-                ])
-            ;
-        }
-
-        $formMapper
-                ->add('executiveOfficer', CheckboxType::class, [
-                    'label' => 'Délégué général',
-                    'required' => false,
-                ])
-                ->add('deputyGeneralDelegate', CheckboxType::class, [
-                    'label' => 'Délégué général adjoint',
-                    'required' => false,
+                    'choices' => ExecutiveOfficeRoleEnum::ALL,
+                    'choice_label' => function (string $role) {
+                        return 'executive_office_role.'.$role;
+                    },
                 ])
                 ->add('description', TextType::class, [
                     'label' => 'Description',
@@ -110,6 +100,16 @@ abstract class AbstractExecutiveOfficeMemberAdmin extends AbstractAdmin
             ->add('job', null, [
                 'label' => 'Poste',
             ])
+            ->add('role', ChoiceFilter::class, [
+                'label' => 'Rôle',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => ExecutiveOfficeRoleEnum::ALL,
+                    'choice_label' => function (string $choice) {
+                        return "executive_office_role.$choice";
+                    },
+                ],
+            ])
             ->add('published', null, [
                 'label' => 'Publié',
             ])
@@ -138,25 +138,9 @@ abstract class AbstractExecutiveOfficeMemberAdmin extends AbstractAdmin
                 'label' => 'Photo',
                 'virtual_field' => true,
             ])
-        ;
-
-        if ($this instanceof RenaissanceExecutiveOfficeMemberAdmin) {
-            $listMapper
-                ->add('president', null, [
-                    'label' => 'Président',
-                    'editable' => true,
-                ])
-            ;
-        }
-
-        $listMapper
-            ->add('executiveOfficer', null, [
-                'label' => 'Délégué général',
-                'editable' => true,
-            ])
-            ->add('deputyGeneralDelegate', null, [
-                'label' => 'Délégué général adjoint',
-                'editable' => true,
+            ->add('role', 'trans', [
+                'label' => 'Rôle',
+                'format' => 'executive_office_role.%s',
             ])
             ->add('published', null, [
                 'label' => 'Publié',

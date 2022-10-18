@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Entity\Biography\ExecutiveOfficeRoleEnum;
 use App\Image\ImageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -81,7 +82,7 @@ class ImportExecutiveOfficeMembersCommand extends Command
 
         $csv = $this->createReader($filename);
 
-        $this->io->progressStart($total = $csv->count());
+        $this->io->progressStart($csv->count());
 
         $line = 1;
         $count = 0;
@@ -139,11 +140,16 @@ class ImportExecutiveOfficeMembersCommand extends Command
                 $description,
                 $content,
                 true,
-                $position,
-                $executiveOfficer,
-                $deputyGeneralDelegate,
-                $president
+                $position
             );
+
+            if ($president) {
+                $executiveOfficeMember->setRole(ExecutiveOfficeRoleEnum::PRESIDENT);
+            } elseif ($executiveOfficer) {
+                $executiveOfficeMember->setRole(ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICER);
+            } elseif ($deputyGeneralDelegate) {
+                $executiveOfficeMember->setRole(ExecutiveOfficeRoleEnum::DEPUTY_GENERAL_DELEGATE);
+            }
 
             if ($forRenaissance) {
                 $executiveOfficeMember->setForRenaissance(true);

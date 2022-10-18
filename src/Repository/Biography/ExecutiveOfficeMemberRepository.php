@@ -4,6 +4,7 @@ namespace App\Repository\Biography;
 
 use App\Collection\ExecutiveOfficeMemberCollection;
 use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Entity\Biography\ExecutiveOfficeRoleEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,7 +34,8 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
     ): ?ExecutiveOfficeMember {
         return $this
             ->createPublishedQueryBuilder($published, $forRenaissance)
-            ->andWhere('executiveOfficeMember.executiveOfficer = true')
+            ->andWhere('executiveOfficeMember.role = :role')
+            ->setParameter('role', ExecutiveOfficeRoleEnum::EXECUTIVE_OFFICER)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -43,19 +45,8 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
     {
         return $this
             ->createPublishedQueryBuilder($published, $forRenaissance)
-            ->andWhere('executiveOfficeMember.president = true')
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
-    public function findOneDeputyGeneralDelegateMember(
-        bool $published = true,
-        bool $forRenaissance = false
-    ): ?ExecutiveOfficeMember {
-        return $this
-            ->createPublishedQueryBuilder($published, $forRenaissance)
-            ->andWhere('executiveOfficeMember.deputyGeneralDelegate = true')
+            ->andWhere('executiveOfficeMember.role = :role')
+            ->setParameter('role', ExecutiveOfficeRoleEnum::PRESIDENT)
             ->getQuery()
             ->getOneOrNullResult()
         ;
