@@ -27,6 +27,7 @@
 /docker-dev.lock
 docker-dev.md5
 node_modules
+.idea
 /.env.local
 /.env.local.php
 /.env.*.local

@@ -1,11 +1,13 @@
 import amountChooser from './listeners/amount-chooser'
 import addressAutocomplete from './listeners/address-autocomplete'
+import carousel from './listeners/carousel'
 
 class Main {
     constructor() {
         this._listeners = [
             amountChooser,
             addressAutocomplete,
+            carousel,
         ];
     }
 
