@@ -13,7 +13,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
 {
     private ZoneRepository $zoneRepository;
 
-    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    protected function needApplyFilter(string $property, string $resourceClass): bool
     {
         return is_a($resourceClass, News::class, true);
     }
@@ -44,7 +44,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
 
     protected function getAllowedOperationNames(string $resourceClass): array
     {
-        return ['get_private'];
+        return ['_get_private_item', '_get_private_collection'];
     }
 
     /**

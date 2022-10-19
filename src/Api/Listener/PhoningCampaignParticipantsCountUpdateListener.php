@@ -2,7 +2,7 @@
 
 namespace App\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Phoning\Campaign;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;

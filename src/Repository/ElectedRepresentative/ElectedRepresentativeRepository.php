@@ -2,7 +2,7 @@
 
 namespace App\Repository\ElectedRepresentative;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;

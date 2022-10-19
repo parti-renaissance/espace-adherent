@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\AdherentRoleEnum;
 use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;

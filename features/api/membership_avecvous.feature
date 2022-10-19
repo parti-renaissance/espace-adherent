@@ -247,6 +247,7 @@ Feature:
       "detail": "recaptcha: Merci de confirmer le captcha avant de continuer.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "recaptcha",
           "message": "Merci de confirmer le captcha avant de continuer."
         }
@@ -277,6 +278,7 @@ Feature:
       "detail": "recaptcha: Le captcha soumis est invalide.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "recaptcha",
           "message": "Le captcha soumis est invalide."
         }
@@ -307,6 +309,7 @@ Feature:
       "detail": "cgu_accepted: Veuillez accepter les CGU.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "cgu_accepted",
           "message": "Veuillez accepter les CGU."
         }
@@ -337,6 +340,7 @@ Feature:
       "detail": "email_address: Ceci n'est pas une adresse e-mail valide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "email_address",
           "message": "Ceci n'est pas une adresse e-mail valide."
         }
@@ -367,6 +371,7 @@ Feature:
       "detail": "email_address: Cette valeur est déjà utilisée.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "email_address",
           "message": "Cette valeur est déjà utilisée."
         }
@@ -397,6 +402,7 @@ Feature:
       "detail": "first_name: Cette valeur ne doit pas être vide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "first_name",
           "message": "Cette valeur ne doit pas être vide."
         }
@@ -427,6 +433,7 @@ Feature:
       "detail": "first_name: Votre prénom doit comporter au moins 2 caractères.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "first_name",
           "message": "Votre prénom doit comporter au moins 2 caractères."
         }
@@ -457,6 +464,7 @@ Feature:
       "detail": "first_name: Votre prénom ne peut pas dépasser 50 caractères.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "first_name",
           "message": "Votre prénom ne peut pas dépasser 50 caractères."
         }
@@ -487,6 +495,7 @@ Feature:
       "detail": "source: Cette valeur ne doit pas être vide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "source",
           "message": "Cette valeur ne doit pas être vide."
         }
@@ -517,6 +526,7 @@ Feature:
       "detail": "source: Cette valeur n'est pas valide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "source",
           "message": "Cette valeur n'est pas valide."
         }
@@ -542,6 +552,7 @@ Feature:
       "detail": "interests: Une ou plusieurs des valeurs soumises sont invalides.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "interests",
           "message": "Une ou plusieurs des valeurs soumises sont invalides."
         }
@@ -567,6 +578,7 @@ Feature:
       "detail": "cgu_accepted: Veuillez accepter les CGU.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "cgu_accepted",
           "message": "Veuillez accepter les CGU."
         }
@@ -592,6 +604,7 @@ Feature:
       "detail": "phone: Cette valeur n'est pas un numéro de téléphone valide.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "phone",
           "message": "Cette valeur n'est pas un numéro de téléphone valide."
         }
@@ -617,6 +630,7 @@ Feature:
       "detail": "birthdate: Cette valeur doit être comprise entre @string@ à @string@ et @string@ à @string@.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "birthdate",
           "message": "Cette valeur doit être comprise entre @string@ à @string@ et @string@ à @string@."
         }
@@ -644,6 +658,7 @@ Feature:
       "detail": "post_address.address: Vous devez saisir au maximum @string@ caractères.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "post_address.address",
           "message": "Vous devez saisir au maximum @string@ caractères."
         }
@@ -671,6 +686,7 @@ Feature:
       "detail": "post_address.postal_code: Vous devez saisir au maximum @string@ caractères.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "post_address.postal_code",
           "message": "Vous devez saisir au maximum @string@ caractères."
         }
@@ -698,6 +714,7 @@ Feature:
       "detail": "post_address.city_name: Vous devez saisir au maximum @string@ caractères.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "post_address.city_name",
           "message": "Vous devez saisir au maximum @string@ caractères."
         }
@@ -725,6 +742,7 @@ Feature:
       "detail": "post_address.country: Cette valeur n'est pas un pays valide.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "post_address.country",
           "message": "Cette valeur n'est pas un pays valide."
         }

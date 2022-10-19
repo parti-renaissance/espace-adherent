@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *         "get": {
  *             "path": "/v3/jecoute/resource-links",
- *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *         }
  *     },
  *     itemOperations={}

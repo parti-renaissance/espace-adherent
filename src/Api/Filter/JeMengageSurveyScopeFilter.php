@@ -17,7 +17,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
 {
     private ZoneRepository $zoneRepository;
 
-    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    protected function needApplyFilter(string $property, string $resourceClass): bool
     {
         return is_a($resourceClass, Survey::class, true);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;

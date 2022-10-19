@@ -2,7 +2,7 @@
 
 namespace App\Repository\Coalition;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Coalition\Filter\CauseFilter;
 use App\Entity\Coalition\Cause;
 use App\Repository\PaginatorTrait;

@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Entity\Geo\Zone;
 use App\Entity\LegislativeNewsletterSubscription;
 use App\Repository\Geo\ZoneRepository;

@@ -18,7 +18,7 @@ final class PapVotePlaceScopeFilter extends AbstractScopeFilter
         $this->repository = $repository;
     }
 
-    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    protected function needApplyFilter(string $property, string $resourceClass): bool
     {
         return is_a($resourceClass, VotePlace::class, true);
     }

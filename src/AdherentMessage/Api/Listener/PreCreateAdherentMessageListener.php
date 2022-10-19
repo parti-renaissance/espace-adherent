@@ -2,7 +2,7 @@
 
 namespace App\AdherentMessage\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\AdherentMessage\Events;
 use App\AdherentMessage\MessageEvent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;

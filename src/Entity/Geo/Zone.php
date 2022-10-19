@@ -5,7 +5,7 @@ namespace App\Entity\Geo;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -110,7 +110,7 @@ class Zone implements GeoInterface
      *     "pap_campaign_read",
      *     "pap_campaign_read_after_write",
      *     "phoning_campaign_read",
-     *     "phoning_campaign_list"
+     *     "phoning_campaign_list",
      * })
      *
      * @ApiProperty(

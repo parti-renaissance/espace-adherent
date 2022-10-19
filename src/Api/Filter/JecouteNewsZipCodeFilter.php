@@ -2,18 +2,16 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Jecoute\News;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 
 final class JecouteNewsZipCodeFilter extends AbstractFilter
 {
-    /**
-     * @var ZoneRepository
-     */
-    private $zoneRepository;
+    private ?ZoneRepository $zoneRepository = null;
 
     protected function filterProperty(
         string $property,
@@ -21,8 +19,9 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
-    ): void {
+        Operation $operation = null,
+        array $context = []
+    ) {
         if (News::class !== $resourceClass
             || 'zipCode' !== $property
             || empty($value)
@@ -30,14 +29,16 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
             return;
         }
 
-        $zones = $this->zoneRepository->findByPostalCode($value);
+        if (!$zones = $this->zoneRepository->findByPostalCode($value)) {
+            return;
+        }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
             ->leftJoin(sprintf('%s.zone', $rootAlias), 'zone')
             ->leftJoin('zone.children', 'children')
-            ->where('zone IS NULL OR zone IN (:zones) OR children IN (:zones)')
+            ->andWhere('zone IS NULL OR zone IN (:zones) OR children IN (:zones)')
             ->setParameter('zones', $zones)
         ;
     }
@@ -65,6 +66,7 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
         return $description;
     }
 
+    /** @required */
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

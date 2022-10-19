@@ -2,20 +2,21 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\QueryBuilder;
 
-class GeoZoneExtension implements ContextAwareQueryCollectionExtensionInterface
+class GeoZoneExtension implements QueryCollectionExtensionInterface
 {
     public function applyToCollection(
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         if (Zone::class === $resourceClass) {
             $queryBuilder
                 ->andWhere(sprintf('%s.active = :true', $queryBuilder->getRootAliases()[0]))

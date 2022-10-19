@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     shortName="PapVotePlace",
  *     attributes={
  *         "pagination_client_enabled": true,
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
+ *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
  *         "normalization_context": {
  *             "iri": true,
  *             "groups": {"pap_vote_place_read"},

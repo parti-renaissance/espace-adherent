@@ -751,10 +751,12 @@ Feature:
         "detail": "text: Le texte est obligatoire.\ntitle: Cette valeur ne doit pas être vide.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "text",
                 "message": "Le texte est obligatoire."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "title",
                 "message": "Cette valeur ne doit pas être vide."
             }
@@ -783,14 +785,17 @@ Feature:
         "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "text",
                 "message": "Le texte ne doit pas contenir plus de 1000 caractères."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "title",
                 "message": "Vous devez saisir au maximum 120 caractères."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "external_link",
                 "message": "Cette valeur n'est pas une URL valide."
             }
@@ -1219,6 +1224,7 @@ Feature:
         "detail": "zone: Veuillez spécifier une zone.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "zone",
                 "message": "Veuillez spécifier une zone."
             }
@@ -1250,6 +1256,7 @@ Feature:
       "detail": "zone: Cette zone ne correspond pas à une région, un département ou un arrondissement",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Cette zone ne correspond pas à une région, un département ou un arrondissement"
         }
@@ -1281,6 +1288,7 @@ Feature:
       "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }

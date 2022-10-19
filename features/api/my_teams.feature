@@ -84,18 +84,22 @@ Feature:
         "detail": "adherent: Ce militant ne peut pas être ajouter à l'équipe.\nadherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.\nrole: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "adherent",
                 "message": "Ce militant ne peut pas être ajouter à l'équipe."
             },
             {
+                "code": null,
                 "message": "Le militant choisi ne fait pas partie de la zone géographique que vous gérez.",
                 "propertyPath": "adherent"
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "role",
                 "message": "Ce poste n'est pas valide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "scope_features",
                 "message": "Une ou plusieurs des accès délégués ne sont pas valides."
             }
@@ -128,10 +132,12 @@ Feature:
         "detail": "adherent: Veuillez sélectionner un militant.\nscope_features: Vous pouvez déléguer que les accès que vous possédez.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "adherent",
                 "message": "Veuillez sélectionner un militant."
             },
             {
+                "code": null,
                 "propertyPath": "scope_features",
                 "message": "Vous pouvez déléguer que les accès que vous possédez."
             }
@@ -163,6 +169,7 @@ Feature:
         "detail": "adherent: Le militant fait déjà partie de cette équipe.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "adherent",
                 "message": "Le militant fait déjà partie de cette équipe."
             }
@@ -194,6 +201,7 @@ Feature:
         "detail": "adherent: Le militant choisi ne fait pas partie de la zone géographique que vous gérez.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "adherent",
                 "message": "Le militant choisi ne fait pas partie de la zone géographique que vous gérez."
             }

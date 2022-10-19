@@ -2,7 +2,7 @@
 Feature:
   In order to get information for referent space
   As a referent
-  I should be able to acces API data accessible by referent
+  I should be able to access API data accessible by referent
 
   Scenario: As a non logged-in user I can not get the committee, cities and countries managed by referent for autocomplete
     When I am on "/api/statistics/search/autocomplete?type=committee&value=en"

@@ -31,11 +31,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     collectionOperations={},
  *     itemOperations={},
- *     subresourceOperations={
- *         "api_buildings_building_blocks_get_subresource": {
- *             "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
- *         },
- *     },
  * )
  */
 class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface

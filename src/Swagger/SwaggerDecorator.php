@@ -4,7 +4,7 @@ namespace App\Swagger;
 
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
-use ApiPlatform\Core\PathResolver\OperationPathResolverInterface;
+use ApiPlatform\PathResolver\OperationPathResolverInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SwaggerDecorator implements NormalizerInterface

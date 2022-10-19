@@ -224,7 +224,20 @@ services:
 
     App\Normalizer\ItemNormalizerDecorator:
         decorates: 'api_platform.serializer.normalizer.item'
-        arguments: ['@App\Normalizer\ItemNormalizerDecorator.inner']
+        arguments:
+            - '@api_platform.metadata.property.name_collection_factory'
+            - '@api_platform.metadata.property.metadata_factory'
+            - '@api_platform.iri_converter'
+            - '@api_platform.resource_class_resolver'
+            - '@api_platform.property_accessor'
+            - '@api_platform.name_converter'
+            - '@serializer.mapping.class_metadata_factory'
+            - '@api_platform.item_data_provider'
+            - "%api_platform.allow_plain_identifiers%"
+            - []
+            - !tagged_iterator 'api_platform.data_transformer'
+            - ~
+            - '@api_platform.security.resource_access_checker'
 
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
         tags: [{name: 'serializer.normalizer', priority: -801}] # to be just after CustomNormalizer
@@ -316,14 +329,6 @@ services:
         arguments:
             $qualityUpdaters: !tagged_iterator 'app.instance.quality_updater'
 
-    api_platform.subresource_operation_factory:
-        class: App\Api\ApiPlatform\Core\Operation\Factory\SubresourceOperationFactory
-        arguments:
-            - '@api_platform.metadata.resource.metadata_factory'
-            - '@api_platform.metadata.property.name_collection_factory'
-            - '@api_platform.metadata.property.metadata_factory'
-            - '@api_platform.path_segment_name_generator'
-
     App\OvhCloud\Driver:
         arguments:
             $applicationKey: '%env(OVHCLOUD_APPLICATION_KEY)%'
@@ -340,9 +345,6 @@ services:
 
     App\RepublicanSilence\ZoneExtractorFactory:
         arguments: [!tagged_iterator 'app.republican_silence.zone_extractor']
-
-    Symfony\Component\Serializer\NameConverter\NameConverterInterface:
-        alias: api_platform.name_converter
 
     App\Api\Serializer\RiposteGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'

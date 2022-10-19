@@ -63,12 +63,12 @@ Feature:
       "OK"
     """
 
-  Scenario Outline: As a logged-in (delegated) referent I can retrive my messages
+  Scenario Outline: As a logged-in (delegated) referent I can retrieve my messages
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/adherent_messages?scope=<scope>"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be a superset of:
+    And the JSON should be equal to:
     """
     {
         "metadata": {
@@ -87,7 +87,7 @@ Feature:
                 "recipient_count": 0,
                 "source": "platform",
                 "synchronized": false,
-                "from_name": "Referent Referent | La République En Marche !",
+                "from_name": "Referent Referent | Renaissance",
                 "created_at": "@string@.isDateTime()",
                 "sent_at": null,
                 "author": {
@@ -104,27 +104,19 @@ Feature:
                     "unsubscribe": 0,
                     "unsubscribe_rate": 0
                 },
-                "zones": [
-                    {
-                      "code": "13",
-                      "name": "Bouches-du-Rhône",
-                      "postal_code": [],
-                      "type": "department",
-                      "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
-                    }
-                ]
+                "zones": "@array@"
             },
             {
                 "uuid": "@uuid@",
                 "label": "@string@",
                 "subject": "@string@",
-                "status": "draft",
+                "status": "sent",
                 "recipient_count": 0,
                 "source": "platform",
-                "synchronized": true,
-                "from_name": "Referent Referent | La République En Marche !",
+                "synchronized": false,
+                "from_name": "Referent Referent | Renaissance",
                 "created_at": "@string@.isDateTime()",
-                "sent_at": null,
+                "sent_at": "@string@.isDateTime()",
                 "author": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
@@ -139,15 +131,7 @@ Feature:
                     "unsubscribe": 0,
                     "unsubscribe_rate": 0
                 },
-                "zones": [
-                    {
-                      "code": "13",
-                      "name": "Bouches-du-Rhône",
-                      "postal_code": [],
-                      "type": "department",
-                      "uuid": "e3f01553-906e-11eb-a875-0242ac150002"
-                    }
-                ]
+                "zones": "@array@"
             }
         ]
     }

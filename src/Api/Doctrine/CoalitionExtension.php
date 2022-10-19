@@ -2,9 +2,10 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Coalition\Cause;
 use App\Entity\Coalition\Coalition;
 use Doctrine\ORM\QueryBuilder;
@@ -16,9 +17,9 @@ class CoalitionExtension implements QueryItemExtensionInterface, QueryCollection
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }
 
@@ -26,8 +27,9 @@ class CoalitionExtension implements QueryItemExtensionInterface, QueryCollection
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
-    ) {
+        Operation $operation = null,
+        array $context = []
+    ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }
 
@@ -43,8 +45,8 @@ class CoalitionExtension implements QueryItemExtensionInterface, QueryCollection
         } elseif (Cause::class === $resourceClass) {
             $queryBuilder
                 ->innerJoin("${alias}.coalition", 'coalition')
-                ->leftJoin("${alias}.secondCoalition", 'second_coalition')
-                ->andWhere('coalition.enabled = :true AND (second_coalition IS NULL OR second_coalition.enabled = :true)')
+                ->leftJoin("${alias}.secondCoalition", 'coalition_2')
+                ->andWhere('coalition.enabled = :true AND (coalition_2 IS NULL OR coalition_2.enabled = :true)')
                 ->setParameter('true', true)
             ;
         }

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;

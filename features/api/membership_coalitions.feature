@@ -59,9 +59,12 @@ Feature:
     }
     """
     Then the response status code should be 400
-    And the JSON should be a superset of:
+    And the JSON should be equal to:
     """
     {
+      "detail": "@string@",
+      "title": "Validation Failed",
+      "type": "@string@",
       "violations": [
         {
           "propertyPath": "email_address",
@@ -69,6 +72,14 @@ Feature:
           "parameters": {
             "{{ email }}": "carl999@example.fr"
           }
+        },
+        {
+          "parameters": {
+            "{{ value }}": "false"
+          },
+          "propertyPath": "cgu_accepted",
+          "title": "Vous devez accepter les conditions générales d'utilisation.",
+          "type": "@string@"
         }
       ]
     }

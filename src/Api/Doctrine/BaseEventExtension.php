@@ -2,9 +2,11 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
+use App\Api\Filter\EventsGroupSourceFilter;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
@@ -13,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 
-class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQueryCollectionExtensionInterface
+class BaseEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
     private Security $security;
     private AuthorizationCheckerInterface $authorizationChecker;
@@ -34,9 +36,9 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
         }
@@ -46,21 +48,21 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
             ->setParameter('institutional', EventTypeEnum::TYPE_INSTITUTIONAL)
         ;
 
-        $this->modifyQuery($queryBuilder, BaseEvent::STATUSES, $operationName);
+        $this->modifyQuery($queryBuilder, BaseEvent::STATUSES, $operation->getName());
     }
 
     public function applyToCollection(
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
         }
 
-        if (BaseEvent::class === $resourceClass && empty($context['filters']['group_source'])) {
+        if (BaseEvent::class === $resourceClass && empty($context['filters'][EventsGroupSourceFilter::PROPERTY_NAME])) {
             $allowedTypes = [
                 EventTypeEnum::TYPE_DEFAULT,
                 EventTypeEnum::TYPE_COMMITTEE,
@@ -86,7 +88,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
             return;
         }
 
-        $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operationName);
+        $this->modifyQuery($queryBuilder, BaseEvent::ACTIVE_STATUSES, $operation->getName());
 
         /** @var $user Adherent */
         if ($this->authorizationChecker->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
@@ -113,7 +115,12 @@ class BaseEventExtension implements QueryItemExtensionInterface, ContextAwareQue
     {
         $alias = $queryBuilder->getRootAliases()[0];
 
-        if (\in_array($operationName, ['get_public', 'get'])
+        if (\in_array($operationName, [
+            'api_base_events_get_public_item',
+            'api_base_events_get_public_collection',
+            'api_base_events_get_item',
+            'api_base_events_get_collection',
+        ])
             && !$this->security->getUser() instanceof Adherent) {
             $queryBuilder->andWhere("$alias.private = false");
         }

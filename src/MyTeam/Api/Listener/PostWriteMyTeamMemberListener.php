@@ -2,7 +2,7 @@
 
 namespace App\MyTeam\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\MyTeam\Member;
 use App\MyTeam\DelegatedAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -33,7 +33,7 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         }
 
         // suppression
-        if ('delete' === $request->get('_api_item_operation_name')) {
+        if ('api_my_team_members_delete_item' === $request->get('_api_item_operation_name')) {
             /** @var Member $member */
             $member = $event->getRequest()->get('data');
             if ($delegatedAccess = $this->delegatedAccessManager->findDelegatedAccess($member)) {
@@ -50,7 +50,7 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         }
 
         // creation
-        if ('post' === $request->get('_api_item_operation_name')
+        if ('api_my_team_members_post_collection' === $request->get('_api_collection_operation_name')
             && $member->getScopeFeatures()) {
             $this->delegatedAccessManager->createDelegatedAccessForMember($member);
         }

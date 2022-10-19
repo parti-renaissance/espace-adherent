@@ -28,14 +28,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "normalization_context": {"groups": {"contact_read"}},
- *             "path": "/contacts/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/contacts/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
  *             "normalization_context": {"groups": {"contact_read_after_write"}},
  *             "denormalization_context": {"groups": {"contact_update"}},
- *             "path": "/contacts/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/contacts/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "validation_groups": {"Default", "contact_update"},
  *         }
  *     }

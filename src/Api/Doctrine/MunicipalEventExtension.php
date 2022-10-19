@@ -2,9 +2,11 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
+use App\Entity\Event\BaseEvent;
 use App\Entity\Event\MunicipalEvent;
 use Doctrine\ORM\QueryBuilder;
 
@@ -15,9 +17,9 @@ class MunicipalEventExtension implements QueryItemExtensionInterface, QueryColle
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }
 
@@ -25,8 +27,9 @@ class MunicipalEventExtension implements QueryItemExtensionInterface, QueryColle
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
-    ) {
+        Operation $operation = null,
+        array $context = []
+    ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }
 
@@ -37,7 +40,7 @@ class MunicipalEventExtension implements QueryItemExtensionInterface, QueryColle
 
             $queryBuilder
                 ->andWhere("$alias.status = :status")
-                ->setParameter('status', MunicipalEvent::STATUS_SCHEDULED)
+                ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
                 ->andWhere("$alias.finishAt > :now")
                 ->setParameter('now', new \DateTime())
             ;

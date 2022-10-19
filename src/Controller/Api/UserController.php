@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
+use ApiPlatform\Problem\Serializer\ConstraintViolationListNormalizer;
 use App\AdherentProfile\Password;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;

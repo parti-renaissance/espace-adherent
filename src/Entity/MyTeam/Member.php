@@ -33,21 +33,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "denormalization_context": {
  *             "groups": {"my_team_member_write"}
  *         },
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/my_team_members/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/my_team_members/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
- *             "path": "/v3/my_team_members/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/my_team_members/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "delete": {
- *             "path": "/v3/my_team_members/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')",
+ *             "path": "/v3/my_team_members/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')",
  *         }
  *     },
  *     collectionOperations={

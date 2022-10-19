@@ -2,21 +2,21 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEventCategory;
-use App\Entity\Event\EventCategory;
 use Doctrine\ORM\QueryBuilder;
 
-class BaseEventCategoryExtension implements ContextAwareQueryCollectionExtensionInterface
+class BaseEventCategoryExtension implements QueryCollectionExtensionInterface
 {
     public function applyToCollection(
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         if (is_subclass_of($resourceClass, BaseEventCategory::class)) {
             $alias = $queryBuilder->getRootAliases()[0];
             $queryBuilder
@@ -24,7 +24,7 @@ class BaseEventCategoryExtension implements ContextAwareQueryCollectionExtension
                 ->andWhere("$alias.status = :status")
                 ->andWhere('egc.status = :status')
                 ->setParameters([
-                    'status' => EventCategory::ENABLED,
+                    'status' => BaseEventCategory::ENABLED,
                 ])
             ;
         }

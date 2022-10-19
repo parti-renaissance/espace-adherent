@@ -14,7 +14,7 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
     private AdherentMessageRepository $adherentMessageRepository;
     private AuthoredItemsCollectionExtension $authoredItemsCollectionExtension;
 
-    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    protected function needApplyFilter(string $property, string $resourceClass): bool
     {
         return is_a($resourceClass, AbstractAdherentMessage::class, true);
     }

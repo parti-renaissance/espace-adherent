@@ -2,8 +2,9 @@
 
 namespace App\Api\Doctrine;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Adherent;
 use App\Entity\AuthoredItemsCollectionInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\Security;
 
 class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterface
 {
-    private $security;
+    private Security $security;
     private bool $skip = false;
 
     public function __construct(Security $security)
@@ -23,9 +24,9 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null,
+        Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         $user = $this->security->getUser();
 
         if (

@@ -48,6 +48,7 @@ class RestContext extends BehatchRestContext
         $diContext = $scope->getEnvironment()->getContext(DIContext::class);
         $this->entityManager = $diContext->get('doctrine')->getManager();
         $this->privateCryptKey = new CryptKey($diContext->getParameter('ssl_private_key'));
+        $this->accessToken = null;
     }
 
     /**
@@ -165,7 +166,7 @@ class RestContext extends BehatchRestContext
     {
         $this->addAccessTokenToTheAuthorizationHeader();
 
-        $this->setAcceptApplicationJsonHeader($url);
+        $this->setAcceptApplicationJsonHeader($url, $method, $body);
 
         return parent::iSendARequestTo($method, $url, $body, $files);
     }
@@ -277,10 +278,20 @@ class RestContext extends BehatchRestContext
         return $driver->getClient();
     }
 
-    private function setAcceptApplicationJsonHeader(string $url): void
-    {
+    private function setAcceptApplicationJsonHeader(
+        string $url,
+        string $method = null,
+        PyStringNode &$body = null
+    ): void {
         if (preg_match('#^/?(api|oauth)/#', $url) && false === strpos($url, 'oauth/v2/auth')) {
             $this->iAddHeaderEqualTo('Accept', 'application/json');
+
+            if (\in_array($method, ['PUT', 'POST'], true)) {
+                $this->iAddHeaderEqualTo('Content-type', 'application/json');
+                if (null === $body) {
+                    $body = new PyStringNode(['{}'], 1);
+                }
+            }
         }
     }
 }

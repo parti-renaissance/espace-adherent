@@ -2,14 +2,15 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEvent;
 use App\Repository\Event\BaseEventRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
 
-final class EventsZipCodeFilter extends AbstractContextAwareFilter
+final class EventsZipCodeFilter extends AbstractFilter
 {
     /**
      * @var BaseEventRepository
@@ -27,8 +28,9 @@ final class EventsZipCodeFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
-    ): void {
+        Operation $operation = null,
+        array $context = []
+    ) {
         if (
             !is_a($resourceClass, BaseEvent::class, true)
             || 'zipCode' !== $property

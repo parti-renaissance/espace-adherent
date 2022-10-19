@@ -219,6 +219,7 @@ Feature:
       "detail": "zone: Un rôle national ne peut pas définir de zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Un rôle national ne peut pas définir de zone."
         }
@@ -408,6 +409,7 @@ Feature:
       "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "La zone spécifiée n'est pas gérée par votre rôle."
         }
@@ -445,6 +447,7 @@ Feature:
       "detail": "zone: Veuillez spécifier une zone.",
       "violations": [
         {
+          "code": null,
           "propertyPath": "zone",
           "message": "Veuillez spécifier une zone."
         }
@@ -515,6 +518,7 @@ Feature:
         "detail": "name: Une équipe porte déjà le même nom.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "name",
                 "message": "Une équipe porte déjà le même nom."
             }
@@ -532,9 +536,9 @@ Feature:
     Then the response status code should be 201
 
   Scenario Outline: As a user granted with local scope, I cannot create a team with the same name and zone
-    When I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
+    When I am logged with "<user>" via OAuth client "JeMengage Web"
     And I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
       "name": "Équipe locale du département 92",
@@ -551,6 +555,7 @@ Feature:
         "detail": "name: Une équipe porte déjà le même nom.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "name",
                 "message": "Une équipe porte déjà le même nom."
             }
@@ -559,7 +564,7 @@ Feature:
     """
 
     When I add "Content-Type" header equal to "application/json"
-    And I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    And I send a "POST" request to "/api/v3/teams?scope=<scope>" with body:
     """
     {
       "name": "Première équipe de phoning",
@@ -681,7 +686,7 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-    "Request body should not be empty."
+    "Vous devez fournir l'id d'au moins un membre."
     """
 
     # Empty item

@@ -5,8 +5,9 @@ namespace App\Entity\Event;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Api\Filter\EventScopeFilter;
@@ -15,7 +16,6 @@ use App\Api\Filter\EventsZipCodeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
-use App\Api\Filter\OrderFilter;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -96,28 +96,30 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/v3/events/{id}",
+ *             "path": "/v3/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {
  *                 "groups": {"event_read", "image_owner_exposed", "with_user_registration"}
  *             },
  *         },
  *         "get_public": {
  *             "method": "GET",
- *             "path": "/events/{id}",
+ *             "path": "/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *         },
  *         "put": {
- *             "path": "/v3/events/{id}",
- *             "access_control": "is_granted('CAN_MANAGE_EVENT', object)",
- *             "requirements": {"id": "%pattern_uuid%"},
+ *             "path": "/v3/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('CAN_MANAGE_EVENT', object)",
  *         },
  *         "delete": {
- *             "path": "/v3/events/{id}",
- *             "requirements": {"id": "%pattern_uuid%"},
- *             "access_control": "is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
+ *             "path": "/v3/events/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
- *                         "name": "id",
+ *                         "name": "uuid",
  *                         "in": "path",
  *                         "type": "uuid",
  *                         "description": "The UUID of the Event.",
@@ -129,7 +131,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "subscribe": {
  *             "method": "POST|DELETE",
  *             "path": "/v3/events/{uuid}/subscribe",
- *             "access_control": "is_granted('ROLE_USER')",
+ *             "security": "is_granted('ROLE_USER')",
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Event\SubscribeAsAdherentController",
  *             "requirements": {"uuid": "%pattern_uuid%"}
@@ -137,7 +139,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "subscribe_anonymous": {
  *             "method": "POST",
  *             "path": "/events/{uuid}/subscribe",
- *             "access_control": "is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *             "security": "is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Event\SubscribeAsAnonymousController",
  *             "requirements": {"uuid": "%pattern_uuid%"}
@@ -172,7 +174,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             },
  *         },
  *         "post": {
- *             "access_control": "is_granted('ROLE_USER')",
+ *             "security": "is_granted('ROLE_USER')",
  *             "path": "/v3/events",
  *             "validation_groups": {"Default", "api_put_validation", "event_creation"},
  *         },
@@ -454,6 +456,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      */
     protected $postAddress;
 
+    /**
+     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_write"})
+     */
     protected $category;
 
     public function getCategory(): ?EventCategoryInterface

@@ -2,7 +2,7 @@
 
 namespace App\Coalition\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Coalition\CauseFollowerChangeEvent;
 use App\Entity\Coalition\Cause;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +39,7 @@ class AddCauseFollowerListener implements EventSubscriberInterface
         $data = $event->getRequest()->attributes->get('data');
         $operationName = $event->getRequest()->attributes->get('_api_item_operation_name');
 
-        if ('follow' !== $operationName || !$data instanceof Cause) {
+        if ('api_causes_follow_item' !== $operationName || !$data instanceof Cause) {
             return;
         }
 

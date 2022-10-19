@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Assessor\Filter\AssociationVotePlaceFilter;
 use App\Entity\Adherent;
 use App\Entity\AssessorOfficeEnum;

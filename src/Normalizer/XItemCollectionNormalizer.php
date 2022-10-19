@@ -2,8 +2,8 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\Doctrine\Orm\Paginator;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

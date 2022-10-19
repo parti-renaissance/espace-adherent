@@ -20,7 +20,7 @@ Feature:
     Examples:
       | method  | url                                                             |
       | GET     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
-      | PUT     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
+      | PUT     | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7      |
       | DELETE  | /api/v3/audience-segments/830d230f-67fb-4217-9986-1a3ed7d3d5e7  |
 
   Scenario: As a logged-in user I cannot get audience segments
@@ -115,6 +115,7 @@ Feature:
        "detail":"filter.scope.type: Le scope n'est pas autoris\u00e9",
        "violations":[
           {
+             "code": null,
              "propertyPath":"filter.scope.type",
              "message":"Le scope n'est pas autorisé"
           }
@@ -139,6 +140,7 @@ Feature:
       "detail": "filter: Cette valeur ne doit pas être nulle.",
       "violations": [
         {
+          "code": "@uuid@",
           "propertyPath": "filter",
           "message": "Cette valeur ne doit pas être nulle."
         }

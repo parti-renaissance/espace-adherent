@@ -2,7 +2,7 @@
 
 namespace App\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventEvent;
 use App\Events;
@@ -40,7 +40,7 @@ class PostEventEditListener implements EventSubscriberInterface
 
         $this->dispatcher->dispatch(
             new EventEvent($event->getAuthor(), $event),
-            'post' === $operationName ? Events::EVENT_CREATED : Events::EVENT_UPDATED
+            'api_base_events_post_collection' === $operationName ? Events::EVENT_CREATED : Events::EVENT_UPDATED
         );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Event\EventManagerSpaceEnum;

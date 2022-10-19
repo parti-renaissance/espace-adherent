@@ -2,7 +2,7 @@
 
 namespace App\Pap\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Adherent;
 use App\Entity\Pap\CampaignHistory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

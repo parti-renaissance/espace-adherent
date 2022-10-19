@@ -108,6 +108,3 @@ Feature:
     When I send a "GET" request to "/api/articles/in-qui-aliquam-aperiam-provident-necessitatibus"
     Then the response status code should be 404
     And the JSON node "detail" should be equal to "Not Found"
-
-
-

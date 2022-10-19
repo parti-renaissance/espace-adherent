@@ -13,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
 
 final class ScopeVisibilityFilter extends AbstractScopeFilter
 {
-    protected function needApplyFilter(string $property, string $resourceClass, string $operationName = null): bool
+    protected function needApplyFilter(string $property, string $resourceClass): bool
     {
         return is_a($resourceClass, EntityScopeVisibilityInterface::class, true);
     }
@@ -78,9 +78,9 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
     protected function getAllowedOperationNames(string $resourceClass): array
     {
         if (is_a($resourceClass, News::class, true)) {
-            return ['get_private'];
+            return ['_get_private_item', '_get_private_collection'];
         }
 
-        return ['get'];
+        return ['_get_item', '_get_collection'];
     }
 }

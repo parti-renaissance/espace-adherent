@@ -2,7 +2,7 @@
 
 namespace App\Repository\Election;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Entity\Adherent;

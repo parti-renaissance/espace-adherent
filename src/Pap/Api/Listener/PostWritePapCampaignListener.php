@@ -2,7 +2,7 @@
 
 namespace App\Pap\Api\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Pap\Campaign;
 use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

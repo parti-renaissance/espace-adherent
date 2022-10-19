@@ -432,7 +432,7 @@ Feature:
     Then the response status code should be 404
 
   Scenario: As a non logged-in user I can get causes of some coalition
-    Given I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/causes"
+    Given I send a "GET" request to "/api/causes?coalition.uuid=d5289058-2a35-4cf0-8f2f-a683d97d8315"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -499,7 +499,7 @@ Feature:
     """
 
   Scenario: As a non logged-in user I can paginate causes of some coalition
-    Given I send a "GET" request to "/api/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315/causes?page=2"
+    Given I send a "GET" request to "/api/causes?coalition.uuid=d5289058-2a35-4cf0-8f2f-a683d97d8315&page=2"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -763,18 +763,22 @@ Feature:
         "detail": "first_name: Cette valeur ne doit pas être vide.\nemail_address: Cette valeur ne doit pas être vide.\nzone: Cette valeur ne doit pas être vide.\ncgu_accepted: Cette valeur ne doit pas être vide.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "first_name",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "zone",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
+                "code": "@uuid@",
                 "propertyPath": "cgu_accepted",
                 "message": "Cette valeur ne doit pas être vide."
             }
@@ -804,6 +808,7 @@ Feature:
         "detail": "email_address: Vous avez déjà soutenu cette cause.",
         "violations": [
             {
+                "code": "@uuid@",
                 "propertyPath": "email_address",
                 "message": "Vous avez déjà soutenu cette cause."
             }
@@ -833,6 +838,7 @@ Feature:
         "detail": "email_address: L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause.",
         "violations": [
             {
+                "code": null,
                 "propertyPath": "email_address",
                 "message": "L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause."
             }
@@ -1168,17 +1174,17 @@ Feature:
     And I send a "GET" request to "/api/causes?order[followersCount]=asc"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | items[0].name             | Cause pour l'éducation  |
+      | items[0].name             | Cause pour la culture 2 |
       | items[0].followers_count  | 0                       |
-      | items[1].name             | Cause pour la culture 2 |
+      | items[1].name             | Cause pour la culture 3 |
       | items[1].followers_count  | 0                       |
 
     When I send a "GET" request to "/api/causes?order[followers_count]=asc"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | items[0].name             | Cause pour l'éducation  |
+      | items[0].name             | Cause pour la culture 2 |
       | items[0].followers_count  | 0                       |
-      | items[1].name             | Cause pour la culture 2 |
+      | items[1].name             | Cause pour la culture 3 |
       | items[1].followers_count  | 0                       |
 
     When I add "Content-Type" header equal to "application/json"
@@ -1186,8 +1192,8 @@ Feature:
     Then the response status code should be 200
     And the JSON nodes should match:
       | items[0].name             | Cause pour la culture   |
-      | items[1].followers_count  | 4                       |
-      | items[1].name             | Cause pour l'éducation  |
+      | items[1].followers_count  | 5                       |
+      | items[1].name             | Cause pour la culture 2 |
       | items[1].followers_count  | 0                       |
 
     When I add "Content-Type" header equal to "application/json"

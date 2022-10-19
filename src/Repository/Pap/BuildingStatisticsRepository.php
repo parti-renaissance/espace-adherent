@@ -2,7 +2,7 @@
 
 namespace App\Repository\Pap;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Pap\BuildingStatistics;
 use App\Entity\Pap\Campaign;
 use App\Pap\BuildingStatusEnum;

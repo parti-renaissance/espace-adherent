@@ -2,7 +2,7 @@
 
 namespace App\Assessor;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Assessor\Filter\AssessorRequestFilters;
 use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;

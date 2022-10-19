@@ -2,7 +2,6 @@
 
 namespace App\Exporter;
 
-use ApiPlatform\Core\Api\UrlGeneratorInterface;
 use App\Coalition\CoalitionUrlGenerator;
 use App\Coalition\Filter\CauseFilter;
 use App\Entity\Adherent;
@@ -13,6 +12,7 @@ use App\Repository\Geo\CityRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CausesExporter

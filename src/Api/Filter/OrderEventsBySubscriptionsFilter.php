@@ -2,13 +2,14 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Doctrine\ORM\QueryBuilder;
 
-final class OrderEventsBySubscriptionsFilter extends AbstractContextAwareFilter
+final class OrderEventsBySubscriptionsFilter extends AbstractFilter
 {
     private const PROPERTY_NAME = 'order';
     private const SUB_PROPERTY_NAME = 'subscriptions';
@@ -19,7 +20,8 @@ final class OrderEventsBySubscriptionsFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ) {
         if (
             !is_a($resourceClass, BaseEvent::class, true)

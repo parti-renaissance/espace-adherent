@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche\AssessorSpace;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Assessor\AssessorRole\AssessorAssociationManager;
 use App\Assessor\Filter\AssessorRequestExportFilter;
 use App\Assessor\Filter\AssociationVotePlaceFilter;

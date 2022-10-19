@@ -2,6 +2,7 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
@@ -15,6 +16,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
+ * @ApiResource(
+ *     itemOperations={},
+ *     collectionOperations={},
+ *     subresourceOperations={},
+ * )
  *
  * @ManagedZone(zoneGetMethodName="getZone")
  */
@@ -136,7 +143,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         }
     }
 
-    public function isCertified(): ?bool
+    public function getIsCertified(): ?bool
     {
         return $this->isCertified;
     }

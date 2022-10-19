@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ApiResource(
  *     attributes={
- *         "access_control": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
+ *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
  *         "normalization_context": {
  *             "groups": {"pap_building_statistics_read"},
  *         },

@@ -2,13 +2,14 @@
 
 namespace App\Api\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\QueryBuilder;
 
-final class SurveyTypeFilter extends AbstractContextAwareFilter
+final class SurveyTypeFilter extends AbstractFilter
 {
     private const PROPERTY_NAME = 'type';
 
@@ -18,7 +19,8 @@ final class SurveyTypeFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        Operation $operation = null,
+        array $context = []
     ) {
         if (
             Survey::class !== $resourceClass

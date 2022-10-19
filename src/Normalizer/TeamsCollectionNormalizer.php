@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Team\Team;
 use App\Repository\Team\TeamRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;

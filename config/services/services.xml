@@ -165,17 +165,6 @@
             <argument key="$operationPathResolver" type="service" id="api_platform.operation_path_resolver"/>
         </service>
 
-        <!-- Filter -->
-        <service id="App\Api\Filter\JecouteNewsZipCodeFilter">
-            <argument type="service" id="doctrine"/>
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="logger" on-invalid="ignore"/>
-            <argument type="collection"><argument key="status"/></argument>
-            <call method="setZoneRepository">
-                <argument type="service" id="App\Repository\Geo\ZoneRepository" />
-            </call>
-        </service>
-
         <!-- ChezVous -->
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
