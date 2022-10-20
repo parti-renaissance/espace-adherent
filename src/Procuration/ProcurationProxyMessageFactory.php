@@ -11,7 +11,6 @@ use App\Mailer\Message\Procuration\ProcurationProxyRegistrationConfirmationMessa
 use App\Mailer\Message\Procuration\ProcurationProxyReminderMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestRegistrationConfirmationMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestReminderMessage;
-use App\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcurationProxyMessageFactory
@@ -19,7 +18,7 @@ class ProcurationProxyMessageFactory
     private $urlGenerator;
     private $replyToEmailAddress;
 
-    public function __construct(RemoteUrlGenerator $urlGenerator, string $replyToEmailAddress)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $replyToEmailAddress)
     {
         $this->urlGenerator = $urlGenerator;
         $this->replyToEmailAddress = $replyToEmailAddress;

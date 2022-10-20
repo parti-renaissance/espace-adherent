@@ -6,8 +6,8 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventInvite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EventInvitationMessage;
-use App\Routing\RemoteUrlGenerator;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventInvitationHandler
 {
@@ -18,7 +18,7 @@ class EventInvitationHandler
     public function __construct(
         ObjectManager $manager,
         MailerService $transactionalMailer,
-        RemoteUrlGenerator $urlGenerator
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->manager = $manager;
         $this->mailer = $transactionalMailer;
@@ -29,9 +29,9 @@ class EventInvitationHandler
     {
         $invite = EventInvite::create($event, $invitation);
 
-        $url = $this->urlGenerator->generateRemoteUrl('app_committee_event_show', [
+        $url = $this->urlGenerator->generate('app_committee_event_show', [
             'slug' => $event->getSlug(),
-        ]);
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $this->mailer->sendMessage(EventInvitationMessage::createFromInvite($invite, $event, $url));
 

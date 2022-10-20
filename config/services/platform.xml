@@ -21,19 +21,8 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <!-- BoardMember -->
-        <service id="App\BoardMember\BoardMemberManager">
-            <argument type="service" id="App\Repository\AdherentRepository" />
-            <argument type="service" id="App\Repository\BoardMember\RoleRepository" />
-        </service>
-
         <service id="App\BoardMember\BoardMemberMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <!-- Routing -->
-        <service id="app.routing.remote_url_generator" class="App\Routing\RemoteUrlGenerator">
-            <argument type="service" id="router"/>
         </service>
 
         <!-- Search -->

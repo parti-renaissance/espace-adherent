@@ -22,8 +22,6 @@
             <argument type="service" id="App\Repository\MyEuropeChoiceRepository"/>
         </service>
 
-        <service id="App\Interactive\MyEuropeSerializer" />
-
         <!-- Facebook filters -->
         <service id="App\Facebook\PictureImporter">
             <argument type="service" id="app.http_client.facebook_graph_api" />
