@@ -304,7 +304,6 @@ class OAuthServerControllerTest extends WebTestCase
             'postal_code' => '77190',
             'nickname' => 'pont',
             'use_nickname' => false,
-            'comments_cgu_accepted' => false,
             'elected' => false,
             'larem' => false,
             'emailAddress' => 'carl999@example.fr',
