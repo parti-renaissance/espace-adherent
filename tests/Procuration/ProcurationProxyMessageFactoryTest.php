@@ -9,10 +9,10 @@ use App\Mailer\Message\Procuration\ProcurationProxyCancelledMessage;
 use App\Mailer\Message\Procuration\ProcurationProxyRegistrationConfirmationMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestRegistrationConfirmationMessage;
 use App\Procuration\ProcurationProxyMessageFactory;
-use App\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @group procuration
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class ProcurationProxyMessageFactoryTest extends TestCase
 {
     /**
-     * @var RemoteUrlGenerator|MockObject
+     * @var UrlGeneratorInterface|MockObject
      */
     private $urlGenerator;
 
@@ -33,7 +33,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->urlGenerator = $this->createMock(RemoteUrlGenerator::class);
+        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $this->factory = new ProcurationProxyMessageFactory($this->urlGenerator, 'procurations@en-marche-dev.fr');
     }
 

@@ -38,7 +38,7 @@
                     </service>
                 </argument>
 
-                <!-- Max image size in numer of pixels (2000x2000) -->
+                <!-- Max image size in number of pixels (2000x2000) -->
                 <argument key="max_image_size">4000000</argument>
             </argument>
         </service>
