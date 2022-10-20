@@ -114,7 +114,6 @@ Feature:
       "elected": false,
       "larem": false,
       "certified": false,
-      "comments_cgu_accepted": false,
       "detailed_roles": [
         {
           "label": "ROLE_REFERENT",
@@ -161,7 +160,6 @@ Feature:
       "use_nickname":true,
       "elected": false,
       "larem": true,
-      "comments_cgu_accepted": false,
       "certified": true,
       "detailed_roles": [],
       "emailAddress":"jacques.picard@en-marche.fr",

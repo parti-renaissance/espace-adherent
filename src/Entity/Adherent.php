@@ -461,13 +461,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public ?\DateTime $globalNotificationSentAt = null;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"user_profile"})
-     */
-    private $commentsCguAccepted = false;
-
-    /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
     private $mandates;
@@ -2312,16 +2305,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setConsularManagedArea(?ConsularManagedArea $consularManagedArea): void
     {
         $this->consularManagedArea = $consularManagedArea;
-    }
-
-    public function isCommentsCguAccepted(): bool
-    {
-        return $this->commentsCguAccepted;
-    }
-
-    public function setCommentsCguAccepted(bool $commentsCguAccepted): void
-    {
-        $this->commentsCguAccepted = $commentsCguAccepted;
     }
 
     public function getMedia(): ?Media

@@ -25,7 +25,6 @@ Feature:
       "nickname": "pont",
       "use_nickname": false,
       "certified": false,
-      "comments_cgu_accepted": false,
       "elected": false,
       "larem": false,
       "detailed_roles": [],
@@ -45,7 +44,6 @@ Feature:
     {
         "nickname": "kikouslove",
         "email_address": "jacques.picard@en-marche.fr",
-        "comments_cgu_accepted": false,
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
         "last_name": "Picard",
